@@ -30,6 +30,9 @@ window.NUBE_AD = {
       cb(snap.docChanges().map(ch => ({id: ch.doc.id, data: ch.doc.data(), removed: ch.type === 'removed'})), snap.metadata.fromCache);
     }, err => console.error('nube escuchar', path, err));
   },
+  watchDoc(path, cb) {
+    return onSnapshot(doc(db, path), s => cb(s.exists() ? s.data() : null), err => console.error('nube escuchar', path, err));
+  },
   del() { return deleteField(); },
   inc(n) { return increment(n); },
   viejas(colPath, campo, menorQue, max) {

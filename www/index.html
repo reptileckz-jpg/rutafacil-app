@@ -5920,38 +5920,42 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- arranque automático en la versión real ---------- */
 setTimeout(function(){if(nbPuede())nbIniciar()},0);
 /* ---------- Personal: accesos a la app ---------- */
-function nbCuentaDe(t,ref){var L=Object.keys(NB.usuarios).map(function(uid){var p=NB.usuarios[uid];return {uid:uid,p:p}}).filter(function(x){var p=x.p;return p&&(t==='a'?(p.rol==='admin'&&p.adm===ref):(p.rol==='chofer'&&+p.chId===+ref))});
+function nbCuentaDe(t,ref){var L=Object.keys(NB.usuarios).map(function(uid){var p=NB.usuarios[uid];return {uid:uid,p:p}}).filter(function(x){var p=x.p;return p&&(t==='a'?(p.rol==='admin'&&p.adm===ref):t==='k'?p.rol==='cont':t==='l'?(p.rol==='local'&&+p.chId===+ref):(p.rol==='chofer'&&+p.chId===+ref))});
  L.sort(function(a,b){return (b.p.activo?1:0)-(a.p.activo?1:0)||num(b.p.t)-num(a.p.t)});return L[0]||null}
 function nbIdBase(){var mx=0;Object.keys(NB.usuarios).forEach(function(u){mx=Math.max(mx,num(NB.usuarios[u].idBase))});return mx+100000}
 function nbGenPw(){var s='';for(var i=0;i<6;i++)s+=Math.floor(Math.random()*10);return s}
 function nbAccHTML(){if(!NB.on||!NB.listo||S.role!=='admin'||!NB.perfil||NB.perfil.rol!=='admin')return '';var h='<div class="card nbacc" data-k="nbacc"><b>Accesos a la app</b><div class="lbl">Quién puede entrar en su celular. Cada uno entra una vez con su usuario y contraseña, y luego con su PIN.</div>';
  var fila=function(t,ref,nom,sub){var c=nbCuentaDe(t,ref),p=c&&c.p,yo=c&&NB.user&&c.uid===NB.user.uid,nuevo=NB.nuevo&&NB.nuevo.t===t&&String(NB.nuevo.ref)===String(ref);
   var r='<div style="border-top:1px solid var(--line);padding:10px 0"><div style="display:flex;align-items:center;gap:8px"><span class="grow"><b>'+esc(nom)+'</b> <span class="lbl">'+sub+'</span><br><span class="nbst '+(p&&p.activo?'':'neg')+'">'+(p&&p.activo?'✓ Entra '+(p.usuario?'con el usuario <b>'+esc(p.usuario)+'</b>':'con '+esc(p.email||''))+(yo?' (eres tú)':''):(p?'Acceso quitado':'Sin acceso'))+'</span></span></div>';
-  if(nuevo){var N=NB.nuevo;if(N.listo)r+='<div class="card good" style="margin:8px 0 0"><b>Listo. Dale estos datos:</b><div style="font-size:18px;margin-top:6px">'+(t==='c'?'Usuario: <b>'+esc(N.u)+'</b><br>':'Correo: <b>'+esc(N.e)+'</b><br>')+'Contraseña: <b>'+esc(N.pw)+'</b></div><div class="lbl">Anótalos ahora: después ya no se pueden ver.</div>'+(N.tel?'<a class="btn sm" style="margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/52'+String(N.tel).replace(/\D/g,'').slice(-10)+'?text='+encodeURIComponent('Hola '+nom+'. Para entrar a Ruta Fácil:\n'+(t==='c'?'Usuario: '+N.u:'Correo: '+N.e)+'\nContraseña: '+N.pw+'\nLa primera vez necesitas internet. Después entras con tu PIN.')+'">📲 Mandárselos por WhatsApp</a>':'')+'<button class="btn sm sec" style="margin-top:8px" data-act="nbaccok">Ya los anoté</button></div>';
-   else r+='<div class="card" style="margin:8px 0 0">'+(t==='c'?'<div class="field"><label for="nbau">Usuario</label><input id="nbau" type="text" autocapitalize="none" data-nbb="nbN.u" value="'+esc(N.u)+'" style="width:160px;text-align:left"></div>':'<div class="field"><label for="nbae">Su correo</label><input id="nbae" type="email" data-nbb="nbN.e" value="'+esc(N.e||'')+'" style="width:190px;text-align:left"></div>')
+  if(nuevo){var N=NB.nuevo;if(N.listo)r+='<div class="card good" style="margin:8px 0 0"><b>Listo. Dale estos datos:</b><div style="font-size:18px;margin-top:6px">'+(N.e?'Correo: <b>'+esc(N.e)+'</b><br>':'Usuario: <b>'+esc(N.u)+'</b><br>')+'Contraseña: <b>'+esc(N.pw)+'</b></div><div class="lbl">Anótalos ahora: después ya no se pueden ver.</div>'+(N.tel?'<a class="btn sm" style="margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/52'+String(N.tel).replace(/\D/g,'').slice(-10)+'?text='+encodeURIComponent('Hola '+nom+'. Para entrar a Ruta Fácil:\n'+(N.e?'Correo: '+N.e:'Usuario: '+N.u)+'\nContraseña: '+N.pw+'\nLa primera vez necesitas internet. Después entras con tu PIN.')+'">📲 Mandárselos por WhatsApp</a>':'')+'<button class="btn sm sec" style="margin-top:8px" data-act="nbaccok">Ya los anoté</button></div>';
+   else r+='<div class="card" style="margin:8px 0 0">'+(!N.e?'<div class="field"><label for="nbau">Usuario</label><input id="nbau" type="text" autocapitalize="none" data-nbb="nbN.u" value="'+esc(N.u)+'" style="width:160px;text-align:left"></div>':'<div class="field"><label for="nbae">Su correo</label><input id="nbae" type="email" data-nbb="nbN.e" value="'+esc(N.e||'')+'" style="width:190px;text-align:left"></div>')
     +'<div class="field"><label for="nbap">Contraseña</label><input id="nbap" type="text" data-nbb="nbN.pw" value="'+esc(N.pw)+'" style="width:160px;text-align:left"></div>'+(N.err?'<div class="neg">'+esc(N.err)+'</div>':'')+'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:2" data-act="nbaccsi"'+(N.ocupado?' disabled':'')+'>'+(N.ocupado?'Creando…':(N.reset?'Darle la contraseña nueva':'Darle acceso'))+'</button><button class="btn sm sec" style="flex:1" data-act="nbaccno">Cancelar</button></div></div>';
    return r+'</div>'}
-  if(!p||!p.activo)r+='<button class="btn sm" style="margin-top:6px" data-act="nbacc" data-t="'+t+'" data-ref="'+esc(String(ref))+'">'+(p?'Devolverle el acceso':'Darle acceso')+'</button>';
-  else if(!yo)r+='<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">'+(t==='c'?'<button class="btn sm sec" data-act="nbacc" data-t="c" data-ref="'+ref+'" data-reset="1">Contraseña nueva</button>':'<button class="btn sm sec" data-act="nbaccmail" data-e="'+esc(p.email||'')+'">Mandarle correo para cambiar contraseña</button>')+'<button class="btn sm sec" style="color:var(--danger)" data-act="nbaccquita" data-uid="'+c.uid+'">Quitar acceso</button></div>';
+  var soyDue=!!(NB.perfil&&NB.perfil.duenio),esDue=!!(p&&p.duenio),manda=t!=='a'||soyDue;
+  if(!p||!p.activo){if(manda)r+='<button class="btn sm" style="margin-top:6px" data-act="nbacc" data-t="'+t+'" data-ref="'+esc(String(ref))+'">'+(p?'Devolverle el acceso':'Darle acceso')+'</button>';else r+='<div class="lbl">Solo el dueño da acceso a los administradores.</div>'}
+  else if(!yo)r+='<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">'+(esDue?'<button class="btn sm sec" data-act="nbaccmail" data-e="'+esc(p.email||'')+'">Mandarle correo para cambiar contraseña</button>':'<button class="btn sm sec" data-act="nbacc" data-t="'+t+'" data-ref="'+esc(String(ref))+'" data-reset="1">Contraseña nueva</button>')+(manda&&!esDue?'<button class="btn sm sec" data-act="nbcorte" data-uid="'+c.uid+'">Cerrar su sesión en sus celulares</button><button class="btn sm sec" style="color:var(--danger)" data-act="nbaccquita" data-uid="'+c.uid+'">Quitar acceso</button>':'')+'</div>';
   return r+'</div>'};
  (S.admins||[]).forEach(function(a){h+=fila('a',a.k,a.n,'· Administrador')});
- (S.choferes||[]).forEach(function(c){if(c.baja||c.arch||esAdm(c)||!esCh(c))return;h+=fila('c',c.id,c.n||'Chofer','· Chofer')});
+ (S.choferes||[]).forEach(function(c){if(c.baja||c.arch||esAdm(c))return;if(esCh(c))h+=fila('c',c.id,c.n||'Chofer','· Chofer'+(S.enc&&+S.enc.ch===+c.id&&encVig()?' y encargado':''));else if(c.puesto==='local')h+=fila('l',c.id,c.n||'Venta local','· Venta local')});
+ if(S.cfg.contador||S.pins.cont||nbCuentaDe('k','cont'))h+=fila('k','cont',(S.cfg.contadorN||'Contador'),'· Contador');else h+='<button class="link" style="margin-top:6px" data-act="nbacc" data-t="k" data-ref="cont">+ Darle acceso al contador</button>';
+ h+='<div class="lbl" style="margin-top:8px">El encargado entra con su misma cuenta de chofer: mientras sea encargado le aparece "Entrar como encargado".</div>';
  return h+'</div>'}
 var _pers29=personal;personal=function(){var h=_pers29.apply(this,arguments);var a=nbAccHTML();if(!a)return h;var i=h.indexOf('</h1>');return i<0?a+h:h.slice(0,i+5)+a+h.slice(i+5)};
 if(typeof VIEWS!=='undefined'&&VIEWS.personal)VIEWS.personal=personal;
-document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(['nbacc','nbaccsi','nbaccno','nbaccok','nbaccquita','nbaccmail','nbsalir'].indexOf(a)<0)return;e.stopImmediatePropagation();var ad=NB.ad;
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(['nbacc','nbaccsi','nbaccno','nbaccok','nbaccquita','nbaccmail','nbsalir','nbcorte'].indexOf(a)<0)return;e.stopImmediatePropagation();var ad=NB.ad;
  if(a==='nbsalir'){abrirModal('¿Cerrar la sesión en este celular?','Para volver a entrar vas a necesitar tu usuario y contraseña (y internet).',[['Sí, cerrar sesión','nbsalirya']]);return}
- if(a==='nbacc'){var t=b.dataset.t,ref=b.dataset.ref,nom='',tel='';if(t==='c'){var ch=S.choferes.filter(function(x){return String(x.id)===ref})[0];nom=ch?ch.n:'';tel=ch?ch.tel:''}else{var A=(S.admins||[]).filter(function(x){return x.k===ref})[0];nom=A?A.n:''}
-  var prev=nbCuentaDe(t,ref);NB.nuevo={t:t,ref:ref,nom:nom,tel:tel,u:prev&&prev.p.usuario?prev.p.usuario:nbSlug(nom.split(' ')[0]),e:prev&&prev.p.email&&t==='a'?prev.p.email:'',pw:nbGenPw(),reset:!!b.dataset.reset||!!prev,prev:prev};render();return}
+ if(a==='nbacc'){var t=b.dataset.t,ref=b.dataset.ref,nom='',tel='';if(t==='c'||t==='l'){var ch=S.choferes.filter(function(x){return String(x.id)===ref})[0];nom=ch?ch.n:'';tel=ch?ch.tel:''}else if(t==='k'){nom=S.cfg.contadorN||'Contador'}else{var A=(S.admins||[]).filter(function(x){return x.k===ref})[0];nom=A?A.n:''}
+  var prev=nbCuentaDe(t,ref);NB.nuevo={t:t,ref:ref,nom:nom,tel:tel,u:prev&&prev.p.usuario?prev.p.usuario:nbSlug(nom.split(' ')[0]),e:prev&&prev.p.duenio?prev.p.email:'',pw:nbGenPw(),reset:!!b.dataset.reset||!!prev,prev:prev};render();return}
+ if(a==='nbcorte'){var u2=b.dataset.uid;nbCorte(u2).then(function(){toast('Listo: se cierra su sesión en todos sus celulares. Para volver a entrar necesita usuario y contraseña.');render()},function(er){toast(nbErrTxt(er))});return}
  if(a==='nbaccno'){NB.nuevo=null;render();return}
  if(a==='nbaccok'){NB.nuevo=null;render();return}
  if(a==='nbaccmail'){ad.reset(b.dataset.e).then(function(){toast('Le mandamos el correo a '+b.dataset.e)},function(er){toast(nbErrTxt(er))});return}
  if(a==='nbaccquita'){var uid=b.dataset.uid;ad.set('usuarios_app/'+uid,{activo:false,quitado:Date.now()},true).then(function(){toast('Acceso quitado');if(NB.usuarios[uid])NB.usuarios[uid].activo=false;render()},function(er){toast(nbErrTxt(er))});return}
- if(a==='nbaccsi'){var N=NB.nuevo;if(!N||N.ocupado)return;N.u=nbSlug(N.u);N.pw=String(N.pw||'').trim();N.e=String(N.e||'').trim();N.err='';if(N.pw.length<6){N.err='La contraseña debe tener al menos 6 letras o números';render();return}if(N.t==='a'&&N.e.indexOf('@')<0){N.err='Escribe su correo';render();return}
+ if(a==='nbaccsi'){var N=NB.nuevo;if(!N||N.ocupado)return;N.u=nbSlug(N.u);N.pw=String(N.pw||'').trim();N.e=String(N.e||'').trim();N.err='';if(N.pw.length<6){N.err='La contraseña debe tener al menos 6 letras o números';render();return}
   N.ocupado=true;render();var prev=N.prev&&N.prev.p,base=prev&&prev.idBase?prev.idBase:nbIdBase();
-  var paso=N.t==='c'?ad.get('usuarios/'+N.u).then(function(d){if(d&&d.email&&!(prev&&prev.usuario===N.u))throw {code:'usuario-ocupado'};return N.u+'.'+Date.now().toString(36)+'@rutafacil.app'}):Promise.resolve(N.e);
-  paso.then(function(email){N.email=email;return ad.crearOtro(email,N.pw)}).then(function(uid){var perfil=N.t==='c'?{rol:'chofer',activo:true,nombre:N.nom,chId:+N.ref,usuario:N.u,email:N.email,idBase:base,t:Date.now()}:{rol:'admin',activo:true,nombre:N.nom,adm:N.ref,chId:2,email:N.email,idBase:base,t:Date.now()};
-   var ps=[ad.set('usuarios_app/'+uid,perfil,false)];if(N.t==='c')ps.push(ad.set('usuarios/'+N.u,{email:N.email,uid:uid},false));if(N.prev&&N.prev.uid!==uid)ps.push(ad.set('usuarios_app/'+N.prev.uid,{activo:false,reemplazo:uid},true));
+  var paso=!N.e?ad.get('usuarios/'+N.u).then(function(d){if(d&&d.email&&!(prev&&prev.usuario===N.u))throw {code:'usuario-ocupado'};return N.u+'.'+Date.now().toString(36)+'@rutafacil.app'}):Promise.resolve(N.e);
+  paso.then(function(email){N.email=email;return ad.crearOtro(email,N.pw)}).then(function(uid){var perfil=N.t==='a'?{rol:'admin',activo:true,nombre:N.nom,adm:N.ref,chId:2,email:N.email,idBase:base,t:Date.now()}:N.t==='k'?{rol:'cont',activo:true,nombre:N.nom,chId:0,email:N.email,idBase:base,t:Date.now()}:{rol:N.t==='l'?'local':'chofer',activo:true,nombre:N.nom,chId:+N.ref,email:N.email,idBase:base,t:Date.now()};if(!N.e)perfil.usuario=N.u;if(prev&&prev.duenio)perfil.duenio=true;
+   var ps=[ad.set('usuarios_app/'+uid,perfil,false)];if(!N.e)ps.push(ad.set('usuarios/'+N.u,{email:N.email,uid:uid},false));if(N.prev&&N.prev.uid!==uid)ps.push(ad.set('usuarios_app/'+N.prev.uid,{activo:false,reemplazo:uid},true));
    return Promise.all(ps).then(function(){NB.usuarios[uid]=perfil;if(N.prev&&NB.usuarios[N.prev.uid])NB.usuarios[N.prev.uid].activo=false})})
   .then(function(){N.ocupado=false;N.listo=true;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(N.reset?'Le dio contraseña nueva a ':'Le dio acceso a la app a ')+N.nom});render()},function(er){N.ocupado=false;N.err=er&&er.code==='usuario-ocupado'?'Ese usuario ya lo tiene otra persona. Escribe otro.':nbErrTxt(er);render()});return}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="nbsalirya"]');if(!b)return;e.stopImmediatePropagation();S.modal=null;try{NB.ad.salir()}catch(er){}render()},true);
@@ -5963,14 +5967,25 @@ function nbIndicador(){var el=document.getElementById('nbind');if(el)el.textCont
 var _menu29=menuHTML;menuHTML=function(r){var h=_menu29.apply(this,arguments);if(!NB.on||!NB.listo)return h;var add='<div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px"><div id="nbind" class="lbl">'+nbEstadoTxt()+'</div><div class="lbl">'+esc(NB.user&&NB.user.email&&!/@rutafacil\.app$/.test(NB.user.email)?NB.user.email:(NB.perfil&&NB.perfil.usuario?'Usuario: '+NB.perfil.usuario:''))+'</div><button class="link" data-act="nbsalir">Cerrar sesión en este celular</button></div>';
  var i=h.lastIndexOf('</nav>');return i<0?h+add:h.slice(0,i)+add+h.slice(i)};
 
-/* el teclado no tapa lo que se escribe (en toda la app): al escribir se deja espacio abajo y el campo sube a la parte de arriba */
-(function(){var st=document.createElement('style');st.textContent='html.kbopen main::after,html.kbopen [id$="ov"]::after{content:"";display:block;height:55vh;pointer-events:none}';document.head.appendChild(st)})();
+/* el teclado no tapa lo que se escribe (en toda la app).
+   El celular ya achica la pantalla cuando sale el teclado; aquí solo se mueve lo justo para que el campo quede a la vista.
+   Solo si el campo está hasta abajo y ya no hay para dónde subir, se agrega un espacio abajo. */
+(function(){var st=document.createElement('style');st.textContent=[
+ 'html.kbopen [id$="ov"]{overflow-y:auto;align-items:safe flex-end}',
+ 'html.kbesp main::after,.kbesp::after{content:"";display:block;height:40vh;pointer-events:none}'].join('\n');document.head.appendChild(st)})();
 function kbCampo(el){return el&&(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&!/^(checkbox|radio|file|range|button|submit|color|hidden)$/i.test(el.type||'')))}
-function kbContenedor(el){for(var p=el.parentElement;p&&p!==document.body;p=p.parentElement){var oy=getComputedStyle(p).overflowY;if((oy==='auto'||oy==='scroll')&&p.scrollHeight>p.clientHeight)return p}return null}
-function tecladoAcomoda(){var el=document.activeElement;if(!kbCampo(el))return;var r=el.getBoundingClientRect(),vh=(window.visualViewport?window.visualViewport.height:innerHeight),meta=Math.min(innerHeight*0.25,vh*0.35);if(r.top>=meta-10&&r.bottom<=vh*0.5)return;var c=kbContenedor(el),d=r.top-meta;if(c)c.scrollTop+=d;else window.scrollBy(0,d)}
-document.addEventListener('focusin',function(e){if(!kbCampo(e.target))return;document.documentElement.classList.add('kbopen');setTimeout(tecladoAcomoda,300);setTimeout(tecladoAcomoda,700)},true);
-document.addEventListener('focusout',function(){setTimeout(function(){if(!kbCampo(document.activeElement))document.documentElement.classList.remove('kbopen')},200)},true);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',function(){setTimeout(tecladoAcomoda,60)});
+function kbContenedor(el){for(var p=el.parentElement;p&&p!==document.body;p=p.parentElement){var oy=getComputedStyle(p).overflowY;if(oy==='auto'||oy==='scroll')return p}return null}
+function kbVisible(el){var r=el.getBoundingClientRect(),vh=window.visualViewport?window.visualViewport.height:innerHeight;return r.top>=Math.max(56,vh*0.06)&&r.bottom<=vh-12}
+function tecladoAcomoda(){var el=document.activeElement;if(!kbCampo(el)||kbVisible(el))return;
+ try{el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'})}catch(e){el.scrollIntoView(false)}
+ if(kbVisible(el))return;
+ /* ya no hay para dónde subir: un espacio abajo y otra vez */
+ var c=kbContenedor(el);if(c)c.classList.add('kbesp');else document.documentElement.classList.add('kbesp');
+ try{el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'})}catch(e){}}
+var _kbT=0;function kbProg(ms){clearTimeout(_kbT);_kbT=setTimeout(tecladoAcomoda,ms)}
+document.addEventListener('focusin',function(e){if(!kbCampo(e.target))return;document.documentElement.classList.add('kbopen');kbProg(350)},true);
+document.addEventListener('focusout',function(){setTimeout(function(){if(kbCampo(document.activeElement))return;document.documentElement.classList.remove('kbopen','kbesp');Array.prototype.forEach.call(document.querySelectorAll('.kbesp'),function(x){x.classList.remove('kbesp')})},200)},true);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',function(){kbProg(80)});
 
 /* ===================== v6.0 · Vehículos sin "nombre": se arma con marca, modelo y año ===================== */
 function vehNomDe(f){var p=[f.marca,f.modelo,f.anio].map(function(x){return String(x==null?'':x).trim()}).filter(Boolean);return p.join(' ')}
@@ -6179,7 +6194,7 @@ var MAP_COL={'var(--accent)':'#2F7D32','var(--muted)':'#8A8F86','var(--orange)':
 function mapCol(c){return MAP_COL[c]||c||'#2F7D32'}
 function mapaVivoHTML(id,data,alto){return '<div class="mapviv" data-vivo="'+id+'" data-key="map-'+id+'" style="height:'+(alto||220)+'px" role="img" aria-label="Mapa"></div><div hidden data-mapdata="'+id+'" data-j="'+esc(JSON.stringify(data))+'"></div>'}
 function mapaMonta(){if(!mapaHay())return;Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){var id=el.getAttribute('data-vivo'),dd=document.querySelector('[data-mapdata="'+id+'"]');if(!dd)return;var j=dd.getAttribute('data-j');
- if(!el._m){try{var m=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false,tap:true});L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'}).addTo(m);el._m=m;el._g=L.layerGroup().addTo(m);el._j=null;el._fit=false}catch(e){console.error('mapa',e);return}}
+ if(!el._m){try{var m=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false,tap:true});mapaCapa(m,el);el._m=m;el._g=L.layerGroup().addTo(m);el._j=null;el._fit=false}catch(e){console.error('mapa',e);return}}
  if(el._j===j){el._m.invalidateSize();return}el._j=j;var d;try{d=JSON.parse(j)}catch(e){return}var g=el._g;g.clearLayers();var B=[];
  var ic=function(html,cls,w){return L.divIcon({html:html,className:'',iconSize:null,iconAnchor:[(w||24)/2,(w||24)/2]})};
  if(d.bod!==false){g.addLayer(L.marker([BOD.lat,BOD.lng],{icon:ic('<div class="mk bod">B</div>')}));B.push([BOD.lat,BOD.lng])}
@@ -6212,6 +6227,15 @@ function gpsRevisa(){var debe=gpsDebe();if(debe&&_gpsW==null){try{_gpsW=navigato
   if(!_gpsL||Date.now()-_gpsU>120000||gpsDist(_gpsL,o)>200){_gpsU=Date.now();_gpsL=o;S.gps=o;try{render()}catch(e){}}},function(){},{enableHighAccuracy:true,maximumAge:30000,timeout:60000})}catch(e){}}
  else if(!debe&&_gpsW!=null){try{navigator.geolocation.clearWatch(_gpsW)}catch(e){}_gpsW=null}}
 setInterval(function(){try{gpsRevisa()}catch(e){}},15000);setTimeout(function(){try{gpsRevisa()}catch(e){}},3000);
+
+/* ---------- mapa de calles sin llave (antes CARTO pedía "API key"): Esri y, si falla, OpenStreetMap ---------- */
+var MAPA_CAPAS=[['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri · © OpenStreetMap'}],
+ ['https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}]];
+function mapaCapa(m,el,i){try{mapaCapa0(m,el,i)}catch(e){console.error("capa",e)}}
+function mapaCapa0(m,el,i){i=i||0;var c=MAPA_CAPAS[i];if(!c){mapaSinCalles(el);return}var bien=0,mal=0,t=L.tileLayer(c[0],c[1]);
+ t.on('tileload',function(){bien++;var a=el.querySelector('.mapafalla');if(a)a.remove()});
+ t.on('tileerror',function(){mal++;if(!bien&&mal>=4&&!t._cambio){t._cambio=true;m.removeLayer(t);mapaCapa(m,el,i+1)}});t.addTo(m);el._capa=t}
+function mapaSinCalles(el){if(el.querySelector('.mapafalla'))return;var d=document.createElement('div');d.className='mapafalla';d.style.cssText='position:absolute;left:8px;right:8px;top:8px;z-index:500;background:var(--surface);border-radius:10px;padding:8px 10px;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.2)';d.textContent='No cargaron las calles (¿sin internet?). Los puntos sí están; cuando haya señal se ven las calles.';el.appendChild(d)}
 
 /* ===================== v6.1 · Diseño: separación, tarjetas pintadas, menú que se desliza, Ajustes ordenado,
    fotos de personal (cámara o galería, frente y reverso), guía para empezar y avisos juntos ===================== */
@@ -6271,6 +6295,101 @@ var _ini35=inicio;inicio=function(){var h=_ini35.apply(this,arguments),g=guiaHTM
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guiaoff"],[data-act="guiaruta"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='guiaoff'){S.guiaOff=true;render();return}S.menu=false;S.usrSel=true;render()},true);
 /* ---------- avisos al abrir: uno solo que te lleva a Avisos ---------- */
 var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.length>1&&!avisoBloq()){var n=_toastQ.length;_toastQ.length=0;setTimeout(function(){toast('Tienes '+n+' avisos nuevos. Míralos en Inicio → Avisos.')},400)}return _r35b.apply(this,arguments)};
+
+/* ===================== v6.2 · Acceso: huella, PIN olvidado, cambiar de usuario, sesiones, papeles y bajas ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ '#pinov .pinmas{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px}#pinov .pinmas .link{min-height:40px;font-size:15px}',
+ '#pinov .huella{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px auto 0;min-height:48px;padding:0 18px;border-radius:24px;border:1px solid var(--line);background:var(--surface);font-size:16px;font-weight:700;color:var(--fg)}',
+ '#pxov{position:fixed;inset:0;z-index:205;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}#pxov .w{background:var(--bg);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom,0px))}',
+ '#bjov{position:fixed;inset:0;z-index:91;background:var(--bg);overflow-y:auto}#bjov .w{max-width:560px;margin:0 auto;padding:calc(14px + var(--sbar,0px)) 16px 40px}'
+].join('\n');document.head.appendChild(st)})();
+/* lo que faltaba compartir en la nube (encargos, encargado, vacaciones, revisiones, reglas…) */
+['pinPista','pinPide','encargos','enc','atiende','vac','hoyOk','inspHoy','inspMes','inspSem','recep','recepPrev','reglas','cajaBase','chBuroNo','provPagT','mayRech','primerDia'].forEach(function(k){if(typeof NB_SH!=='undefined'&&NB_SH.indexOf(k)<0)NB_SH.push(k)});
+['ciEnvH','stopsOrig'].forEach(function(k){if(AR_K.indexOf(k)<0)AR_K.push(k)});
+/* ---------- sesión: chofer 40 min sin usar → PIN ---------- */
+var _plm36=pinLimMin;pinLimMin=function(k){k=k||pinKey();if(/^c:/.test(k)||k==='local')return 40;return _plm36.apply(this,arguments)};
+/* ---------- huella ---------- */
+function bioPl(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.NativeBiometric||null}
+function bioLlave(k){return 'bio:'+(k||pinKey())}
+function bioActiva(k){try{return localStorage.getItem(bioLlave(k))==='1'}catch(e){return false}}
+var _bioHay=null;function bioHay(cb){var p=bioPl();if(!p||!p.isAvailable){_bioHay=false;cb(false);return}if(_bioHay!=null){cb(_bioHay);return}p.isAvailable().then(function(r){_bioHay=!!(r&&r.isAvailable);cb(_bioHay)},function(){_bioHay=false;cb(false)})}
+var _bioEnCurso=false;
+function bioEntrar(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;_bioEnCurso=true;
+ p.verifyIdentity({reason:'Para entrar a Ruta Fácil',title:'Entrar con tu huella',subtitle:pinNom(k),negativeButtonText:'Usar mi PIN',maxAttempts:3}).then(function(){_bioEnCurso=false;if(!_pin||_pin.k!==k)return;var cb=_pin.cb,m=_pin.modo;S.pinOk[k]=true;_pinAct=Date.now();if(S.pinF)delete S.pinF[k];_pin={v:'',modo:null};try{vibrar(20)}catch(e){}render();if(m!=='entrar'&&cb)setTimeout(cb,0)},function(){_bioEnCurso=false})}
+/* al abrir la pantalla del PIN con huella activada, se pide sola */
+var _bioUltK='';var _r36a=render;render=function(){var r=_r36a.apply(this,arguments);try{if(_pin&&_pin.modo==='entrar'&&bioActiva(_pin.k)&&!document.getElementById('pnov')){var sig=_pin.k+':'+(_pin.bloq||0)+':'+(S.pinF&&S.pinF[_pin.k]?S.pinF[_pin.k].hasta:'');if(sig!==_bioUltK){_bioUltK=sig;setTimeout(bioEntrar,350)}}else if(!_pin||!_pin.modo)_bioUltK=''}catch(e){}return r};
+/* ---------- pantalla del PIN: huella, olvidé mi PIN, cambiar de usuario ---------- */
+var _pH36=pinHTML;pinHTML=function(){var h=_pH36.apply(this,arguments);if(!h||!_pin||_pin.modo!=='entrar')return h;var k=_pin.k,nm=esc(pinNom(k)),mas='';h=h.replace(/<button class="link" data-act="usrcambia">[^<]*<\/button>/,'');
+ if(bioActiva(k)&&bioPl())mas+='<button class="huella" data-act="biousar">🫆 Entrar con mi huella</button>';
+ mas+='<div class="pinmas"><button class="link" data-act="pinolv">Olvidé mi PIN</button><button class="link" data-act="pinotro">No soy '+nm+' · cambiar de usuario</button></div>';
+ return h.replace(/<\/div><\/div>$/,mas+'</div></div>')};
+function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(S.pinPista||{})[k],pend=(S.pinPide||{})[k],h='';
+ if(x.t==='olv')h='<b style="font-size:20px">¿Olvidaste tu PIN?</b>'+(pista?'<div class="card note" style="margin-top:10px"><div class="lbl">Tu pista</div><b style="font-size:18px">'+esc(pista)+'</b></div>':'<div class="lbl" style="margin-top:6px">No dejaste pista.</div>')
+  +(pend?'<div class="card good" style="margin-top:10px"><b>Ya le pediste al administrador que lo reinicie</b><div class="lbl">Cuando lo haga, cierra y abre la app: te va a pedir crear uno nuevo.</div></div>':'<button class="btn" style="margin-top:12px" data-act="pinpide">Pedirle al administrador que lo reinicie</button>')+'<button class="btn sec" style="margin-top:8px" data-act="pxx">Regresar</button>';
+ if(x.t==='otro'){var enc=S.role==='rep'&&S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent);h='<b style="font-size:20px">¿Cambiar de usuario?</b><div class="lbl" style="margin-top:6px">Se cierra la sesión de '+nm+' en este celular y te pide usuario y contraseña (necesitas internet).</div>'+(enc?'<div class="card note" style="margin-top:10px">'+nm+' tiene su ruta en curso: se queda guardada en la nube y la sigue cuando vuelva a entrar.</div>':'')
+  +'<button class="btn" style="margin-top:12px" data-act="pinotrosi">Sí, cerrar sesión de '+nm+'</button><button class="btn sec" style="margin-top:8px" data-act="pxx">Regresar</button>'}
+ if(x.t==='pista')h='<b style="font-size:20px">¿Dejas una pista para tu PIN?</b><div class="lbl" style="margin-top:6px">Algo que solo tú entiendas, por si se te olvida. Ejemplo: "mi año de nacimiento al revés". Nunca pongas el PIN.</div><div class="field"><label for="pxp">Pista</label><input id="pxp" type="text" data-pxb="p" value="'+esc(x.p||'')+'" style="width:190px;text-align:left"></div>'+(x.err?'<div class="neg">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="pistasave">Guardar pista</button><button class="btn sec" style="margin-top:8px" data-act="pistano">Sin pista</button>';
+ if(x.t==='bio')h='<div style="font-size:44px;text-align:center">🫆</div><b style="font-size:20px">¿Entrar con tu huella?</b><div class="lbl" style="margin-top:6px">Así ya no escribes el PIN en este celular. El PIN sigue sirviendo por si la huella falla.</div><button class="btn" style="margin-top:12px" data-act="bioactiva">Sí, usar mi huella</button><button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button>';
+ return '<div id="pxov" role="dialog" aria-label="PIN"><div class="w">'+h+'</div></div>'}
+var _suH36=setupHTML;setupHTML=function(){var a=_suH36.apply(this,arguments);return a};
+var _r36b=render;render=function(){var r=_r36b.apply(this,arguments);try{var o=document.getElementById('pxov'),h=pxHTML();if(h){if(!o){o=document.createElement('div');document.body.appendChild(o)}var sig=JSON.stringify([S.px&&S.px.t,S.px&&S.px.err,(S.pinPide||{})[S.px&&S.px.k]]);if(o.dataset.sig!==sig){var v=(o.querySelector('#pxp')||{}).value;o.outerHTML=h;var n=document.getElementById('pxov');n.dataset.sig=sig;if(v&&n.querySelector('#pxp'))n.querySelector('#pxp').value=v}}else if(o)o.remove()}catch(e){console.error(e)}return r};
+document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pxb&&S.px)S.px[t.dataset.pxb]=t.value},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='biousar'){e.stopImmediatePropagation();bioEntrar();return}
+ if(a==='pinolv'){e.stopImmediatePropagation();S.px={t:'olv',k:_pin.k};render();return}
+ if(a==='pinotro'){e.stopImmediatePropagation();S.px={t:'otro',k:_pin.k};render();return}
+ if(a==='pxx'){e.stopImmediatePropagation();S.px=null;render();return}
+ if(a==='pinpide'){e.stopImmediatePropagation();var k=S.px.k;S.pinPide=S.pinPide||{};S.pinPide[k]=Date.now();S.avPrecio.push('URGENTE: '+pinNom(k)+' olvidó su PIN y pide que se lo reinicies. [pin:'+k+']');toast('Listo, le avisamos al administrador');render();return}
+ if(a==='pinotrosi'){e.stopImmediatePropagation();S.px=null;try{guardarYa()}catch(er){}if(typeof NB!=='undefined'&&NB.on&&NB.ad){try{localStorage.removeItem('nbSesion')}catch(er){}_pin={v:'',modo:null};NB.ad.salir().then(function(){location.reload()},function(){location.reload()})}else{_pin={v:'',modo:null};S.usrSel=true;render()}return}
+ if(a==='pistasave'){e.stopImmediatePropagation();var x=S.px,p=String(x.p||'').trim();if(!p){x.err='Escribe la pista o toca "Sin pista"';render();return}if(/\d{4}/.test(p)&&p.indexOf(S.pins[x.k]||'@@@@')>-1){x.err='La pista no puede llevar tu PIN';render();return}S.pinPista=S.pinPista||{};S.pinPista[x.k]=p;pxSigue(x.k);return}
+ if(a==='pistano'){e.stopImmediatePropagation();pxSigue(S.px.k);return}
+ if(a==='bioactiva'){e.stopImmediatePropagation();var k2=S.px.k,pl=bioPl();if(!pl){S.px=null;render();return}pl.verifyIdentity({reason:'Para activar la huella en Ruta Fácil',title:'Pon tu huella',negativeButtonText:'Cancelar'}).then(function(){try{localStorage.setItem(bioLlave(k2),'1')}catch(er){}S.px=null;toast('Listo: la próxima vez entras con tu huella');render()},function(){toast('No se activó la huella');S.px=null;render()});return}
+ if(a==='biono'){e.stopImmediatePropagation();try{localStorage.setItem(bioLlave(S.px.k)+':no','1')}catch(er){}S.px=null;render();return}
+ if(a==='biooff'){e.stopImmediatePropagation();try{localStorage.removeItem(bioLlave())}catch(er){}toast('Huella quitada de este celular');render();return}
+ if(a==='bioon'){e.stopImmediatePropagation();S.px={t:'bio',k:pinKey()};render();return}},true);
+function pxSigue(k){S.px=null;bioHay(function(si){var no=false;try{no=localStorage.getItem(bioLlave(k)+':no')==='1'}catch(e){}if(si&&!bioActiva(k)&&!no)S.px={t:'bio',k:k};render()});render()}
+/* después de crear el PIN: pista y huella */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd"]');if(!b||typeof _pnew==='undefined'||!_pnew||!_pnew.v1)return;var k=_pnew.k,antes=S.pins[k];setTimeout(function(){if(S.pins[k]&&S.pins[k]!==antes&&S.pinOk[k]){S.px={t:'pista',k:k,p:(S.pinPista||{})[k]||''};if(S.pinPide)delete S.pinPide[k];render()}},60)},true);
+/* después de entrar con PIN (sin huella activada): ofrecer la huella una vez */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pind"]');if(!b||!_pin||_pin.modo!=='entrar'||_pin.v.length!==3)return;var k=_pin.k;setTimeout(function(){if(S.pinOk[k]&&!bioActiva(k)){var no=false;try{no=localStorage.getItem(bioLlave(k)+':no')==='1'}catch(er){}if(!no)bioHay(function(si){if(si&&!S.px){S.px={t:'bio',k:k};render()}})}},80)},true);
+/* en Ajustes: quitar o poner la huella en este celular */
+var _aj36=ajHTML;ajHTML=function(){var h=_aj36.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!bioPl())return h;var on=bioActiva();
+ var c='<div class="card" data-key="huella"><b>Huella en este celular</b><div class="lbl">'+(on?'Entras con tu huella. El PIN sigue sirviendo.':'Entras con tu PIN.')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="'+(on?'biooff':'bioon')+'">'+(on?'Quitar la huella':'Usar mi huella')+'</button></div>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ---------- avisos del PIN olvidado: llevan a reiniciarlo ---------- */
+function avPinK(x){var m=/\[pin:([^\]]+)\]/.exec(x||'');return m?m[1]:null}
+/* ---------- sesión revocada / acceso quitado: se cierra en ese celular ---------- */
+function nbSesionIni(){try{var t=+localStorage.getItem('nbSesion');if(!t){t=Date.now();localStorage.setItem('nbSesion',String(t))}return t}catch(e){return 0}}
+function nbRevisaSesion(p){if(!p||!NB.user)return;var ini=nbSesionIni();if(p.activo===false||(p.corte&&p.corte>ini)){try{localStorage.removeItem('nbSesion')}catch(e){}toast('Tu sesión se cerró en este celular');setTimeout(function(){NB.ad.salir().then(function(){location.reload()})},800)}}
+if(typeof nbEmpezarSync==='function'){var _nes36=nbEmpezarSync;nbEmpezarSync=function(){var r=_nes36.apply(this,arguments);try{nbSesionIni();if(NB.ad&&NB.user&&!NB._unp){var path='usuarios_app/'+NB.user.uid;if(NB.ad.watchDoc)NB._unp=NB.ad.watchDoc(path,function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}});else{NB._unp=setInterval(function(){NB.ad.get(path).then(function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}},function(){})},60000)}}}catch(e){}return r}}
+/* el administrador cierra la sesión de alguien en todos sus celulares (por si perdió el celular) */
+function nbCorte(uid){var t=Date.now();return NB.ad.set('usuarios_app/'+uid,{corte:t},true).then(function(){if(NB.usuarios[uid])NB.usuarios[uid].corte=t})}
+/* ---------- papeles: encargado, contador y venta local ---------- */
+var _nfr36=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='encargado'){S.role='admin';S.encOn=true;if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}return}if(p.rol==='cont'){S.role='cont';return}if(p.rol==='local'){S.role='local';return}return _nfr36.apply(this,arguments)};
+var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
+/* ---------- baja de un chofer: se le quita el acceso y sus clientes se pasan por zona ---------- */
+function bjCentro(id){var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)&&c.lat!=null});if(!L.length)return null;return {lat:sum(L,function(c){return c.lat})/L.length,lng:sum(L,function(c){return c.lng})/L.length,n:L.length}}
+function bjSugiere(c,quita){var mejor=null,dm=1e9;choferesL().forEach(function(ch){if(ch.baja||+ch.id===+quita)return;var ce=bjCentro(ch.id);var d=c.lat!=null&&ce?kmE(ce,c):null;var carga=S.cli.filter(function(x){return !x.oculto&&String(x.chofer)===String(ch.id)}).length;var score=(d==null?50:d)+carga*0.15;if(score<dm){dm=score;mejor=ch.id}});return mejor}
+function bjHTML(){var x=S.bj;if(!x)return '';var ch=S.choferes.filter(function(c){return c.id===x.id})[0];if(!ch){S.bj=null;return ''}var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(ch.id)}),ops=choferesL().filter(function(o){return !o.baja&&o.id!==ch.id});
+ return '<div id="bjov" role="dialog" aria-label="Dar de baja"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Dar de baja a '+esc(ch.n)+'</b><div class="lbl">Ya no va a poder entrar a la app. Su historial se queda guardado.</div></span><button class="helpb" style="margin:0" data-act="bjx" aria-label="Cerrar">×</button></div>'
+  +(L.length?'<div class="card"><b>Sus '+L.length+' clientes: ¿a quién se los pasas?</b><div class="lbl">La app sugiere por zona (al chofer que tiene clientes más cerca) sin cargar de más una ruta. Cámbialo si quieres.</div>'+L.map(function(c){var v=x.asig[c.id];return '<div class="field"><label for="bj'+c.id+'">'+esc(c.n)+'</label><select id="bj'+c.id+'" data-bjc="'+c.id+'">'+ops.map(function(o){return '<option value="'+o.id+'"'+(+v===o.id?' selected':'')+'>'+esc(esAdm(o)?chofN(2):o.n)+'</option>'}).join('')+'</select></div>'}).join('')+'</div>':'<div class="card note">No tiene clientes asignados.</div>')
+  +'<button class="btn" style="margin-top:12px;background:var(--danger)" data-act="bjsi">Dar de baja'+(L.length?' y pasar sus clientes':'')+'</button></div></div>'}
+var _suH36b=setupHTML;setupHTML=function(){return bjHTML()||_suH36b.apply(this,arguments)};
+var _fiE36=fiEmp;fiEmp=function(f){var h=_fiE36.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||S.chEdit===ch.id||!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');
+ var c=ch.baja?'<div class="card note"><b>Dado de baja</b><div class="lbl">'+esc(ch.bajaF?fmtF(ch.bajaF):'')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="bjreact" data-id="'+ch.id+'">Volver a darlo de alta</button></div>':'<button class="link" style="color:var(--danger);margin:10px 0" data-act="bjabre" data-id="'+ch.id+'">Dar de baja a '+esc(ch.n)+'</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.bjc&&S.bj)S.bj.asig[t.dataset.bjc]=+t.value},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='bjabre'){e.stopImmediatePropagation();var id=+b.dataset.id,asig={};S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)}).forEach(function(c){asig[c.id]=bjSugiere(c,id)});S.bj={id:id,asig:asig};render();return}
+ if(a==='bjx'){e.stopImmediatePropagation();S.bj=null;render();return}
+ if(a==='bjsi'){e.stopImmediatePropagation();var x=S.bj,ch=S.choferes.filter(function(c){return c.id===x.id})[0];var n=0;Object.keys(x.asig).forEach(function(cid){var c=cl(+cid);if(c&&x.asig[cid]!=null){c.chofer=+x.asig[cid];n++}});ch.baja=true;ch.bajaF=iso(TODAY);
+  if(typeof NB!=='undefined'&&NB.on&&NB.ad)Object.keys(NB.usuarios||{}).forEach(function(uid){var p=NB.usuarios[uid];if(p&&+p.chId===+ch.id&&p.rol!=='admin'&&p.activo){NB.ad.set('usuarios_app/'+uid,{activo:false,quitado:Date.now()},true);p.activo=false}});
+  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Dio de baja a '+ch.n+(n?' y pasó '+n+' clientes':'')});toast(ch.n+' dado de baja'+(n?' · '+n+' clientes pasados':''));S.bj=null;S.openCh=null;render();return}
+ if(a==='bjreact'){e.stopImmediatePropagation();var c2=S.choferes.filter(function(c){return c.id===+b.dataset.id})[0];if(c2){c2.baja=false;toast(c2.n+' de alta otra vez. Dale acceso en "Accesos a la app"')}render();return}},true);
+/* ---------- al acabar el día, el chofer vuelve a poner su PIN ---------- */
+var _pinDia36=iso(new Date());
+setInterval(function(){var d=iso(new Date());if(d===_pinDia36)return;_pinDia36=d;if(S.pinOk&&Object.keys(S.pinOk).length&&(S.role==='rep'||S.role==='local')){S.pinOk={};try{pinEntrar()}catch(e){}render()}},60000);
+/* al volver a la app después de un rato: si ya pasó el tiempo, pide el PIN de una vez (sin esperar a que toque) */
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{if(pinBloq())render()}catch(e){}}});
 
 
 /* ---------- Estructura ---------- */

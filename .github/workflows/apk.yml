@@ -56,6 +56,17 @@ jobs:
           sed -i 's#</manifest>#    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-feature android:name="android.hardware.location.gps" android:required="false" />\n</manifest>#' $M
           grep -n "LOCATION" $M
 
+      - name: Partes nativas (huella, WhatsApp, impresora Bluetooth, Descargas)
+        run: |
+          D=android/app/src/main/java/com/rutafacil/app
+          cp nativo/RutaNativa.java nativo/MainActivity.java $D/
+          G=android/app/build.gradle
+          sed -i '0,/dependencies {/s//dependencies {\n    implementation "androidx.biometric:biometric:1.1.0"/' $G
+          grep -n "biometric" $G
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />\n    <uses-permission android:name="android.permission.USE_BIOMETRIC" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />\n    <queries><package android:name="com.whatsapp" /><package android:name="com.whatsapp.w4b" /></queries>\n</manifest>#' $M
+          grep -n "BLUETOOTH\|queries" $M
+
       - name: Íconos y pantalla de inicio
         run: npx @capacitor/assets generate --android --iconBackgroundColor '#2F7D32' --iconBackgroundColorDark '#2F7D32' --splashBackgroundColor '#F6F1E3' --splashBackgroundColorDark '#1E2A1A'
 
@@ -89,6 +100,7 @@ jobs:
           path: salida/*.apk
 
       - name: Publicar en Releases
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.${{ github.run_number }}

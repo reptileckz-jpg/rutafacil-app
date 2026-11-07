@@ -1,0 +1,7 @@
+{
+  "appId": "com.rutafacil.app",
+  "appName": "Ruta Fácil",
+  "webDir": "www",
+  "android": { "allowMixedContent": false },
+  "server": { "androidScheme": "https" }
+}

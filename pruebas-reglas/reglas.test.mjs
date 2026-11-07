@@ -51,7 +51,7 @@ await prueba('admin (no dueño): da contraseña nueva a otro admin (lo reemplaza
 await prueba('admin (no dueño): NO reemplaza al dueño', () => assertFails(setDoc(doc(db('admin2'), 'usuarios_app/x'), { rol: 'admin', activo: true, reemplaza: 'duenio' })));
 await prueba('admin: cierra la sesión de otro admin en sus celulares', () => assertSucceeds(setDoc(doc(db('admin2'), 'usuarios_app/admin3b'), { corte: Date.now() }, { merge: true })));
 await prueba('nadie toma el lugar del dueño', () => assertFails(setDoc(doc(db('admin2'), 'meta/duenio'), { uid: 'admin2' })));
-await prueba('fotos: el chofer sube, el admin borra', async () => { await assertSucceeds(setDoc(doc(db('danu'), 'n/pn/f/1'), { d: 'x' })); await assertFails(deleteDoc(doc(db('danu'), 'n/pn/f/1'))); await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/f/1'))); });
+await prueba('fotos: el chofer sube, el admin borra', async () => { await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/f/1'), { d: 'x' })); await assertFails(deleteDoc(doc(db('pepe'), 'n/pn/f/1'))); await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/f/1'))); });
 await prueba('cuenta nueva del negocio: el dueño crea su perfil', async () => {
   await env.clearFirestore();
   const d = db('nuevoDuenio');

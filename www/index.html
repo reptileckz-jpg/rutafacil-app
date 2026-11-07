@@ -5440,7 +5440,7 @@ var _fiCli23=fiCli;fiCli=function(f){var h=_fiCli23.apply(this,arguments),c=cl(f
  else h=h.replace(/(<div class="fihero"><span class="avt"[^>]*>[^<]*<\/span>)/,'$1<label class="btn sm sec" for="fhx'+c.id+'" style="display:inline-flex;align-items:center;cursor:pointer;width:auto">📷 Foto de la fachada</label>'+inp);
  return h};
 /* "excepción tuya" solo si de verdad es distinta al máximo general */
-var _limB23=limBase;limBase=function(c){if(c.limMan!=null&&c.limMan!==''&&num(c.limMan)===num(crCfg().crCli))c.limMan=null;return _limB23.apply(this,arguments)};
+limBase=function(c){var d=limDefDe(c);if(c.limMan!=null&&c.limMan!==''&&num(c.limMan)===d)c.limMan=null;return c.limMan!=null&&c.limMan!==''?num(c.limMan):d};
 /* la tarjeta del buró se puede tocar */
 var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
  return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
@@ -5454,7 +5454,7 @@ function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=c
   +'<div class="card">'+rw('Te debe',c.cred>0?'<b class="neg">'+money(c.cred)+'</b>':'<b style="color:var(--accent)">Nada</b>')+(c.cred>0?rw('Desde hace',edad+' días'):'')+rw('Límite que puede deber',money(lim)+(c.limMan!=null?' (excepción tuya)':''))+rw('Buró',BURO[b.n][0]+' '+BURO[b.n][1]+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es)':''))+'</div>'
   +(c.cred>0?'<div class="card"><b>Cobrarle</b><div class="field"><label for="abc_'+c.id+'">¿Cuánto te pagó? $</label><input id="abc_'+c.id+'" type="number" inputmode="decimal" min="0" step="any"></div><div class="acc"><button class="btn sm" data-act="cobrar" data-id="'+c.id+'">Registrar pago</button><button class="btn sm sec" data-act="cobrartodo" data-id="'+c.id+'">Pagó todo ('+money(c.cred)+')</button></div>'
    +(c.tel?'<a class="btn sm sec" style="margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" data-act="crrec" data-id="'+c.id+'" href="'+waLink(c,msg)+'">📲 Recordarle por WhatsApp</a>':'<div class="lbl" style="margin-top:6px">Agrega su teléfono para recordarle por WhatsApp.</div>')+(c.recUlt?'<div class="lbl" style="margin-top:4px">Último recordatorio: '+esc(c.recUlt)+'</div>':'')+'</div>':'')
-  +'<div class="card"><b>Su límite</b><div class="lbl">El máximo general es '+money(num(cf.crCli))+'. Si le pones otro, queda como excepción tuya (y el buró lo baja igual si se atrasa).</div><div class="acc"><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="-500">Bajar $500</button><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="500">Subir $500</button></div>'
+  +'<div class="card"><b>Su límite</b><div class="lbl">El máximo para '+(chCredDe(c)?'los clientes de '+esc(chCredDe(c).n):'cada cliente')+' es '+money(limDefDe(c))+'. Si le pones otro, queda como excepción tuya (y el buró lo baja igual si se atrasa).</div><div class="acc"><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="-500">Bajar $500</button><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="500">Subir $500</button></div>'
    +'<div class="field" style="margin-top:8px"><label for="crlv">Ponerle exactamente $</label><input id="crlv" type="number" inputmode="decimal" min="0" data-bind="crLimV" value="'+esc(S.crLimV==null?limBase(c):S.crLimV)+'"></div><div class="acc"><button class="btn sm" data-act="crlimset" data-id="'+c.id+'">Guardar límite</button>'+(c.limMan!=null?'<button class="btn sm sec" data-act="crlimdef" data-id="'+c.id+'">Quitar excepción</button>':'')+'</div></div>'
   +'<div class="card"><b>Buró</b><div class="acc">'+(b.n?'<button class="btn sm sec" data-act="buroreset" data-id="'+c.id+'">Perdonar: regresar a Bueno</button>':'')+(b.n<3?'<button class="btn sm sec" data-act="crbaja" data-id="'+c.id+'">Bajarlo un nivel</button>':'')+'</div></div>'
   +'<div class="card"><b>Fiarle o no</b><div class="lbl">Congelar: por ahora no se le fía, pero puede pagar lo que debe. Cancelar: queda solo de contado hasta que lo reactives.</div><div class="acc">'
@@ -5465,8 +5465,8 @@ function crHist(c,x){S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:c.n+
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
  if(a==='cropen'){e.stopImmediatePropagation();S.crCli=+b.dataset.id;S.crLimV=null;render();var o=document.getElementById('crov');if(o)o.scrollTop=0;return}
  if(a==='crx'){e.stopImmediatePropagation();S.crCli=null;render();return}
- if(a==='crlim'){e.stopImmediatePropagation();var v=Math.max(0,limBase(c)+num(b.dataset.d));c.limMan=v===num(crCfg().crCli)?null:v;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v));toast('Límite de '+c.n+': '+money(limEf(c)));render();return}
- if(a==='crlimset'){e.stopImmediatePropagation();var v2=num(S.crLimV==null?limBase(c):S.crLimV);c.limMan=v2===num(crCfg().crCli)?null:v2;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v2));toast('Límite guardado: '+money(limEf(c)));render();return}
+ if(a==='crlim'){e.stopImmediatePropagation();var v=Math.max(0,limBase(c)+num(b.dataset.d));c.limMan=v===limDefDe(c)?null:v;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v));toast('Límite de '+c.n+': '+money(limEf(c)));render();return}
+ if(a==='crlimset'){e.stopImmediatePropagation();var v2=num(S.crLimV==null?limBase(c):S.crLimV);c.limMan=v2===limDefDe(c)?null:v2;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v2));toast('Límite guardado: '+money(limEf(c)));render();return}
  if(a==='crlimdef'){e.stopImmediatePropagation();c.limMan=null;S.crLimV=null;crHist(c,'quitó la excepción de límite');toast('Regresó al máximo general');render();return}
  if(a==='crbaja'){e.stopImmediatePropagation();var bb=buroDe(c);bb.n=Math.min(3,bb.n+1);bb.ok=0;bb.porque='Lo bajó el administrador';crHist(c,'buró bajado a '+BURO[bb.n][1]);toast(c.n+': '+BURO[bb.n][1]);render();return}
  if(a==='crfrz'){e.stopImmediatePropagation();c.credFrz=b.dataset.v==='1';crHist(c,c.credFrz?'congeló su crédito':'descongeló su crédito');toast(c.credFrz?'Crédito congelado: solo puede pagar':'Crédito activo otra vez');render();return}
@@ -5554,17 +5554,18 @@ var _pc26=vwParCfg;vwParCfg=function(p,ix){var h=_pc26.apply(this,arguments),v=S
  if(!falta.length)return h;
  h+='<div class="card note" style="padding:10px 12px;margin-top:10px"><b>📍 Sin ubicación</b>';
  falta.forEach(function(f){var nm=f[1].n||'';h+='<div style="margin-top:6px">'+(f[0]==='bas'&&f[1].nueva&&!String(p.nbn||'').trim()?'La báscula nueva':esc(nm)+(f[0]==='bas'?' (báscula)':' (proveedor)'))+'</div>';
+  if(f[0]==='provn')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubnp'+ix+'" style="font-size:14px">Ubicación aproximada (link de Google Maps o coordenadas)</label><input id="ubnp'+ix+'" type="text" data-bind="vw.par.'+ix+'.nub" value="'+esc(p.nub||'')+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>';
   if((f[0]==='bas'&&f[1].id!=null)||f[0]==='prov')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubp'+ix+f[0]+'" style="font-size:14px">Pégala aquí (link de Google Maps o coordenadas)</label><input id="ubp'+ix+f[0]+'" type="text" data-ubpega="'+f[0]+':'+(f[0]==='bas'?f[1].id:esc(nm))+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>'});
  var qn=v&&v.quien!==2?chofN(v.quien):'el chofer';
  h+='<div class="chips" role="group" aria-label="Pedirle al chofer" style="margin-top:8px"><button data-act="ubpide" data-i="'+ix+'" data-v="1" aria-pressed="'+!p.noUb+'">Que '+esc(qn)+' la guarde al llegar</button><button data-act="ubpide" data-i="'+ix+'" data-v="0" aria-pressed="'+!!p.noUb+'">No pedirla</button></div>'
   +'<div class="lbl" style="margin-top:4px">Al llegar, la app toma la ubicación del GPS, el nombre y una foto del lugar.</div></div>';return h};
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ubpega)return;var pr=t.dataset.ubpega.split(':'),c=ubParse(t.value);
  if(!c){toast(/goo\.gl|maps\.app/.test(t.value)?'Ese link corto no trae la ubicación. En Google Maps deja presionado el lugar y copia los números':'No encontré la ubicación en ese texto');return}
- var o=pr[0]==='bas'?S.basc.filter(function(b){return b.id===+pr[1]})[0]:provD(pr.slice(1).join(':'));if(!o)return;o.lat=c.lat;o.lng=c.lng;toast('Ubicación guardada');render()},true);
+ var o=pr[0]==='bas'?S.basc.filter(function(b){return b.id===+pr[1]})[0]:provD(pr.slice(1).join(':'));if(!o)return;o.lat=c.lat;o.lng=c.lng;o.ubAprox=true;o.ubPor='';toast('Ubicación guardada');render()},true);
 /* ---- qué lugar del viaje toca y si le falta algo ---- */
 function ubDeNodo(v,a){if(!a||a.t==='bod')return null;var p=v.par[a.i]||{};
  if(a.t==='bas'){var bs=a.bid!=null?S.basc.filter(function(b){return b.id===a.bid})[0]:null;return {k:'bas',bid:bs?bs.id:null,pi:a.i,n:bs?bs.n:String(p.nbn||'').trim(),key:'b'+(bs?bs.id:'n'+a.i),need:!bs||!ubTiene(bs),obj:bs,noUb:!!p.noUb}}
- var d=provD(a.n);return {k:'prov',n:a.n,pi:a.i,key:'p'+a.n,need:!ubTiene(d),obj:d,noUb:!!p.noUb}}
+ var d=provD(a.n);return {k:'prov',n:a.n,pi:a.i,key:'p'+a.n,need:!ubTiene(d)||!!d.ubAprox,aprox:ubTiene(d)&&!!d.ubAprox,obj:d,noUb:!!p.noUb&&!d.ubAprox}}
 function ubFaltanViaje(v){var N=vwNodos(v),L=[],vis={};N.forEach(function(a){var r=ubDeNodo(v,a);if(r&&r.need&&!r.noUb&&!vis[r.key]){vis[r.key]=1;L.push(r.n||'la báscula nueva')}});return L}
 /* aviso al empezar el viaje */
 var _vB26=vwBody;vwBody=function(k){var h=_vB26.apply(this,arguments),v=S.vw;if(!v||(vwEsAdm()&&!vwYo())||['ruta','camino'].indexOf(k)<0)return h;var L=ubFaltanViaje(v);if(!L.length)return h;
@@ -5594,7 +5595,7 @@ function ubHTML(){var u=S.ub;if(!u)return '';var foto=u.modo==='foto',datos=u.mo
 var _suH26=setupHTML;setupHTML=function(){return ubHTML()||_suH26.apply(this,arguments)};
 /* GPS: en la demo (o en pruebas) se simula */
 function ubGps(){var u=S.ub;if(!u)return;u.est='buscando';render();
- var ok=function(la,ln,ac){if(!S.ub)return;S.ub.lat=+la.toFixed(6);S.ub.lng=+ln.toFixed(6);S.ub.acc=ac;S.ub.est='conf';vibrarSi();render()},
+ var ok=function(la,ln,ac){if(!S.ub)return;S.ub.lat=+la.toFixed(6);S.ub.lng=+ln.toFixed(6);S.ub.acc=ac;vibrarSi();if(S.ub.modo==='act'){S.ub.est='ok';ubGuardar();return}S.ub.est='conf';render()},
   mal=function(m){if(!S.ub)return;S.ub.fallos++;S.ub.est='err';S.ub.err=m;render()};
  if(!REAL||window.__pnTest){setTimeout(function(){var b=u.k==='cli'?{lat:BOD.lat+.02,lng:BOD.lng+.02}:{lat:BOD.lat+.3,lng:BOD.lng+.3};ok(b.lat+(Math.random()-.5)*.02,b.lng+(Math.random()-.5)*.02,12)},window.__pnTest?50:700);return}
  if(!navigator.geolocation){mal('Este teléfono no deja usar el GPS');return}
@@ -5609,7 +5610,7 @@ function ubGuardar(){var u=S.ub;if(!u)return;var o=null,nm=ubNom();
  else if(u.k==='prov')o=provD(u.n);
  else if(u.k==='cli'){o=cl(u.id);if(!o)return;if(u.modo!=='foto'){o.tel=u.tel||o.tel||'';o.recibe=u.recibe||o.recibe||'';if(o.rapida&&S.d){S.d.rtel=S.d.rtel||u.tel;S.d.gps=true}}}
  if(!o)return;
- if(u.est==='ok'){o.lat=u.lat;o.lng=u.lng;o.ubPor=ubQuien();o.ubF=iso(TODAY);if(u.k!=='cli'||!o.rapida)S.avPrecio.push(ubQuien()+' guardó la ubicación de '+nm+(u.foto?' (con foto)':''))}
+ if(u.est==='ok'){o.lat=u.lat;o.lng=u.lng;o.ubAprox=false;o.ubPor=ubQuien();o.ubF=iso(TODAY);if(u.k!=='cli'||!o.rapida)S.avPrecio.push(ubQuien()+' guardó la ubicación de '+nm+(u.foto?' (con foto)':''))}
  if(u.foto){o.foto=u.foto;o.fotoH=u.fotoH||Date.now()}
  var sigue=u.sigue;S.ub=null;toast(u.modo==='foto'?'Foto guardada':'Guardado: '+nm);render();if(sigue)ubSeguir();return true}
 var _ubPasa=false;
@@ -5617,7 +5618,7 @@ function ubSeguir(){setTimeout(function(){var b=document.querySelector('#vwov [d
 /* ---- al tocar "Ya llegué" en el viaje ---- */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vwnext"]');if(!b||!b.closest('#vwov')||_ubPasa||UB_LEGADO())return;var v=S.vw;if(!v||v.side||(vwEsAdm()&&!vwYo()))return;
  var T=vwTramo(v);if(!T)return;var r=ubDeNodo(v,T.a);if(!r)return;v.ubSkip=v.ubSkip||{};v.ubFoto=v.ubFoto||{};
- if(r.need){if(r.noUb||v.ubSkip[r.key])return;e.preventDefault();e.stopImmediatePropagation();ubAbrir(r,{sigue:true});return}
+ if(r.need){if(r.noUb||v.ubSkip[r.key])return;e.preventDefault();e.stopImmediatePropagation();ubAbrir(r,{sigue:true,modo:r.aprox?'act':'gps'});return}
  if(!v.ubFoto[r.key]&&ubFotoSug(r.obj)){e.preventDefault();e.stopImmediatePropagation();ubAbrir(r,{sigue:true,modo:'foto'})}},true);
 /* ---- botones ---- */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -5659,6 +5660,71 @@ var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),
  var pv=provD((v.par[T.a.i]||{}).prov||''),q=r.k==='bas'?((r.obj&&r.obj.dir)||((r.n||'báscula')+' '+(pv.dir||''))):((r.obj&&r.obj.dir)||r.n);
  h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
  return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
+
+/* ===================== v5.1 · Ubicación aproximada → exacta, datos que el chofer no puede cambiar,
+   teléfono confirmado y crédito por chofer =====================
+   - El admin pone una ubicación aproximada del proveedor (o báscula). El chofer, al llegar, solo toca
+     "Actualizar ubicación" y la app guarda la exacta. Ya exacta, el chofer no la puede cambiar.
+   - El chofer puede AGREGAR datos del cliente (ubicación, teléfono, quién recibe, foto) pero no cambiarlos.
+   - El admin confirma el teléfono del cliente desde su ficha ("Confirmado hace 3 días").
+   - En la ficha del chofer (Personal) se cambian el máximo por cliente y el tope total de sus clientes. */
+function hace(t){var m=Math.max(0,Math.round((Date.now()-t)/60000));if(m<1)return 'hace un momento';if(m<60)return 'hace '+m+' min';var h=Math.round(m/60);if(h<24)return 'hace '+h+' h';var d=Math.round(h/24);if(d<31)return 'hace '+d+' día'+(d>1?'s':'');var me=Math.round(d/30);return 'hace '+me+' mes'+(me>1?'es':'')}
+function digs(t){return String(t||'').replace(/\D/g,'').slice(-10)}
+/* ---------- crédito por chofer ---------- */
+function chCredDe(c){var ch=c&&S.choferes.filter(function(x){return String(x.id)===String(c.chofer)})[0];return ch&&esCh(ch)&&!esAdm(ch)?ch:null}
+function limDefDe(c){var ch=chCredDe(c);return ch&&ch.crCli!=null&&ch.crCli!==''?num(ch.crCli):num(crCfg().crCli)}
+function chCredCard(ch){var cf=crCfg(),bb=chBuro(ch),mine=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(ch.id)}),pc=ch.crCli!=null&&ch.crCli!=='',pt=ch.crMax!=null&&ch.crMax!=='';
+ return '<div class="card" data-k="chcred"><b>Crédito de sus clientes</b><div class="field"><label for="chcc'+ch.id+'">Máximo que le puede deber cada cliente $</label><input id="chcc'+ch.id+'" type="number" inputmode="decimal" min="0" data-chcr="'+ch.id+':crCli" value="'+esc(pc?ch.crCli:cf.crCli)+'"></div>'
+  +'<div class="field"><label for="chct'+ch.id+'">Tope de todos sus clientes juntos $</label><input id="chct'+ch.id+'" type="number" inputmode="decimal" min="0" data-chcr="'+ch.id+':crMax" value="'+esc(pt?ch.crMax:cf.crCh)+'"></div>'
+  +'<div class="lbl" style="margin-top:4px">Sus '+mine.length+' clientes le deben '+money(bb.tot)+' de '+money(chTope(ch))+(bb.atr>0?' · '+money(bb.atr)+' atrasado':'')+' · '+['🟢 cobra bien','🟡 se atrasa','🟠 cobra mal'][bb.n]+'</div>'
+  +(pc||pt?'<button class="link" style="margin-top:4px" data-act="chcrdef" data-id="'+ch.id+'">Usar los de Ajustes ('+money(num(cf.crCli))+' y '+money(num(cf.crCh))+')</button>':'<div class="lbl">Son los mismos de Ajustes. Si los cambias aquí, solo cambian para '+esc(ch.n)+'.</div>')+'</div>'}
+var _fiE27=fiEmp;fiEmp=function(f){var h=_fiE27.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||S.chEdit===ch.id)return h;
+ if(!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');return i<0?h:h.slice(0,i)+chCredCard(ch)+h.slice(i)}catch(e){return h}};
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.chcr)return;var pr=t.dataset.chcr.split(':'),ch=S.choferes.filter(function(x){return x.id===+pr[0]})[0];if(!ch)return;var k=pr[1],cf=crCfg(),def=num(k==='crCli'?cf.crCli:cf.crCh),ant=k==='crCli'?(ch.crCli!=null&&ch.crCli!==''?num(ch.crCli):def):chTope(ch),v=Math.max(0,num(t.value));
+ ch[k]=v===def?null:String(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(k==='crCli'?'Cambió el máximo por cliente de ':'Cambió el tope total de ')+ch.n+': '+money(ant)+' → '+money(v)});
+ toast((k==='crCli'?'Cada cliente de ':'Todos los clientes de ')+ch.n+': hasta '+money(v));render()},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="chcrdef"]');if(!b)return;e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];if(!ch)return;ch.crCli=null;ch.crMax=null;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Regresó el crédito de '+ch.n+' a lo de Ajustes'});toast('Crédito de '+ch.n+': igual que Ajustes');render()},true);
+/* el límite que se ve en todos lados (c.lim) es el de verdad; si el admin lo cambia en "Editar datos", queda como excepción */
+function limSync(){(S.cli||[]).forEach(function(c){try{if(c._limS!=null&&c.lim!==c._limS&&c.lim!==''&&c.lim!=null){var d=limDefDe(c);c.limMan=num(c.lim)===d?null:num(c.lim)}var v=limEf(c);c.lim=v;c._limS=v}catch(e){}})}
+var _r27=render;render=function(){limSync();return _r27.apply(this,arguments)};
+/* ---------- ficha del cliente: teléfono confirmado y límite real ---------- */
+function telConfOk(c){return !!(c.tel&&c.telConf&&digs(c.telConf.tel)===digs(c.tel))}
+function telDeChofer(c){var d=digs(c.tel);if(d.length<10)return null;return S.choferes.filter(function(x){return digs(x.tel)===d})[0]||null}
+var _fiC27=fiCli;fiCli=function(f){var h=_fiC27.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='admin')return h;try{
+ var old=rw('Teléfono',c.tel?esc(c.tel):'sin registrar');if(h.indexOf(old)>-1&&c.tel){var dc=telDeChofer(c),ok=telConfOk(c);
+  var nv=rw('Teléfono',esc(c.tel))+'<div style="margin:-2px 0 8px;font-size:14px">'+(dc?'<div class="neg">⚠ Es el teléfono de '+esc(dc.n)+', no del cliente</div>':'')+(ok?'<span style="color:var(--accent)">✓ Número confirmado '+hace(c.telConf.t)+'</span>':'<span class="neg">Sin confirmar</span>'+(c.telPor?' <span class="lbl">· lo puso '+esc(chofN(c.telPor))+'</span>':'')+' <button class="btn sm" style="width:auto;margin-left:6px" data-act="telconf" data-id="'+c.id+'">Confirmar número</button>')+'</div>';
+  h=h.replace(old,nv)}
+ var oldL=rw('Límite de crédito',c.lim?money(c.lim):'sin límite');if(h.indexOf(oldL)>-1){var ch=chCredDe(c);h=h.replace(oldL,rw('Límite de crédito',money(limEf(c))+'<br><span class="lbl">'+(c.limMan!=null?'excepción tuya':(ch?'el de los clientes de '+esc(ch.n):'el de Ajustes'))+(buroDe(c).n?' · bajado por el buró':'')+'</span>'))}}catch(e){}return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="telconf"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c||!c.tel)return;
+ var dc=telDeChofer(c);if(dc&&!b.dataset.ya){abrirModal('Ese es el teléfono de '+dc.n,'El número '+c.tel+' es el de '+dc.n+'. ¿De verdad es el del cliente? Mejor llámale para confirmarlo.',[['Sí, es del cliente','telconfya:'+c.id]]);return}
+ c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado');render()},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act||'';if(a.indexOf('telconfya:')!==0)return;e.stopImmediatePropagation();var c=cl(+a.split(':')[1]);S.modal=null;if(c&&c.tel){c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado')}render()},true);
+/* ---------- el chofer agrega datos, no los cambia ---------- */
+var _ubH27=ubHTML;ubHTML=function(){var u=S.ub;if(!u)return '';
+ if(u.modo==='act'){var nm=esc(ubNom());return '<div id="ubov" role="dialog" aria-label="Actualizar ubicación"><div class="ubw"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Actualiza la ubicación de '+nm+'</b><div class="lbl">La que hay es aproximada. Ya estás con '+(u.k==='bas'?'la báscula':'él')+': la app guarda la exacta sola.</div></span></div>'
+  +(u.est==='buscando'?'<div class="card" style="padding:14px;margin-top:12px;font-size:17px">Buscando tu ubicación…</div>':(u.est==='err'?'<div class="neg" style="margin-top:10px">'+esc(u.err||'')+'</div>':'')+'<button class="btn ubgps" style="margin-top:14px" data-act="ubgps">📍 Estoy con '+nm+': actualizar ubicación</button>'+(u.est==='err'&&u.fallos>=2?'<button class="btn sm sec" style="margin-top:8px" data-act="ubskip">Seguir sin actualizar (le aviso al administrador)</button>':''))
+  +'</div></div>'}
+ var h=_ubH27();if(u.k==='cli'&&S.role!=='admin'){var c=cl(u.id);if(c){
+  if(String(c.tel||'').trim())h=h.replace(/<input id="ubtel"[^>]*>/,'<b style="font-size:16px">'+esc(c.tel)+'</b>');
+  if(String(c.recibe||'').trim())h=h.replace(/<input id="ubrec"[^>]*>/,'<b style="font-size:16px">'+esc(c.recibe)+'</b>')}}
+ return h};
+var _ubG27=ubGuardar;ubGuardar=function(){var u=S.ub;if(!u)return;var c=u.k==='cli'?cl(u.id):null,telAntes=c?String(c.tel||'').trim():'';
+ if(c&&S.role!=='admin'){if(telAntes)u.tel=c.tel;if(String(c.recibe||'').trim())u.recibe=c.recibe;if(ubTiene(c)&&u.modo!=='foto'){u.est=u.est==='ok'?'':u.est}}
+ var nm=ubNom(),act=u.modo==='act',r=_ubG27.apply(this,arguments);
+ if(c&&!telAntes&&String(c.tel||'').trim()&&S.role!=='admin'){c.telPor=+S.chofHoy;c.telConf=null;if(!c.rapida)S.avPrecio.push(chofN(+S.chofHoy)+' agregó el teléfono de '+c.n+': '+c.tel+'. Confírmalo en su ficha.')}
+ if(act&&r!==false)toast('Ubicación de '+nm+' actualizada');return r};
+/* básculas con ubicación aproximada también se actualizan */
+var _ubN27=ubDeNodo;ubDeNodo=function(v,a){var r=_ubN27.apply(this,arguments);if(r&&r.k==='bas'&&r.obj&&ubTiene(r.obj)&&r.obj.ubAprox){r.need=true;r.aprox=true;r.noUb=false}return r};
+/* proveedor nuevo del viaje: su ubicación aproximada */
+var _r27b=render;render=function(){try{(S.vws||[]).forEach(function(v){(v.par||[]).forEach(function(p){if(p.nub&&p.prov&&p.prov!=='__nuevo'){var c=ubParse(p.nub),d=provD(p.prov);if(c&&!ubTiene(d)){d.lat=c.lat;d.lng=c.lng;d.ubAprox=true}p.nub=''}})});
+ (S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&c.tel&&c.telPor==null)c.telPor=c.porCh})}catch(e){}return _r27b.apply(this,arguments)};
+/* ---------- ficha del proveedor: ubicación (aproximada o exacta) ---------- */
+function provUbTxt(d){if(!ubTiene(d))return 'sin ubicación';if(d.ubAprox)return 'aproximada · el chofer la pone exacta cuando vaya';return 'exacta'+(d.ubPor?' · la guardó '+esc(d.ubPor)+(d.ubF?' el '+fmtF(d.ubF):''):'')}
+function provUbPega(n){var d=provD(n);return '<div class="field"><label for="pvub">'+(ubTiene(d)&&!d.ubAprox?'Ubicación (ya es exacta; solo cámbiala si está mal)':'Ubicación aproximada (link de Google Maps o coordenadas)')+'</label><input id="pvub" type="text" data-ubpega="prov:'+esc(n)+'" placeholder="19.5432, -96.9271" style="width:190px;text-align:left"></div><div class="lbl">Ahora: '+provUbTxt(d)+'</div>'}
+function provUbIns(h){h=h.replace(/<button class="btn sm sec" style="margin:6px 0" data-act="pvedit" data-n="([^"]*)">/g,function(m,enc){var n;try{n=decodeURIComponent(enc)}catch(e){n=enc}return rw('Ubicación',provUbTxt(provD(n)))+m});
+ if(S.pvEdit!=null)h=h.replace('<button class="btn sm" style="margin:6px 0" data-act="pvlisto">',provUbPega(S.pvEdit)+'<button class="btn sm" style="margin:6px 0" data-act="pvlisto">');return h}
+var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
+var _pvC27=proveedoresCard;proveedoresCard=function(){return provUbIns(_pvC27.apply(this,arguments))};
 
 
 /* ---------- Estructura ---------- */

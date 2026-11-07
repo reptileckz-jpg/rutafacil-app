@@ -13,6 +13,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.app.NotificationChannel;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.pm.ResolveInfo;
+import android.os.UserManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import android.util.Base64;
 
 import androidx.biometric.BiometricManager;
@@ -43,7 +53,10 @@ import java.util.concurrent.Executor;
 @CapacitorPlugin(
     name = "RutaNativa",
     permissions = {
-        @Permission(alias = "bt", strings = { Manifest.permission.BLUETOOTH_CONNECT })
+        @Permission(alias = "bt", strings = { Manifest.permission.BLUETOOTH_CONNECT }),
+        @Permission(alias = "camara", strings = { Manifest.permission.CAMERA }),
+        @Permission(alias = "ubicacion", strings = { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }),
+        @Permission(alias = "notif", strings = { Manifest.permission.POST_NOTIFICATIONS })
     }
 )
 public class RutaNativa extends Plugin {
@@ -69,16 +82,34 @@ public class RutaNativa extends Plugin {
             try {
                 FragmentActivity act = (FragmentActivity) getActivity();
                 Executor ex = ContextCompat.getMainExecutor(act);
+                final int maxFallos = call.getInt("maxAttempts", 3);
+                final int[] fallos = { 0 };
+                final boolean[] listo = { false };
+                final BiometricPrompt[] ref = { null };
                 BiometricPrompt bp = new BiometricPrompt(act, ex, new BiometricPrompt.AuthenticationCallback() {
                     @Override
                     public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                        if (listo[0]) return;
+                        listo[0] = true;
                         call.resolve();
                     }
                     @Override
+                    public void onAuthenticationFailed() {
+                        fallos[0]++;
+                        if (fallos[0] >= maxFallos && !listo[0]) {
+                            listo[0] = true;
+                            try { if (ref[0] != null) ref[0].cancelAuthentication(); } catch (Exception e) { }
+                            call.reject("Se equivocó " + fallos[0] + " veces", "fallos");
+                        }
+                    }
+                    @Override
                     public void onAuthenticationError(int code, CharSequence msg) {
+                        if (listo[0]) return;
+                        listo[0] = true;
                         call.reject(String.valueOf(msg), String.valueOf(code));
                     }
                 });
+                ref[0] = bp;
                 BiometricPrompt.PromptInfo.Builder b = new BiometricPrompt.PromptInfo.Builder()
                     .setTitle(titulo)
                     .setNegativeButtonText(no)
@@ -277,5 +308,180 @@ public class RutaNativa extends Plugin {
                 try { if (so != null) so.close(); } catch (Exception e2) { }
             }
         }).start();
+    }
+
+    /* ---------------- permisos (pantalla de la primera vez) ---------------- */
+    private String estado(String alias) {
+        if (alias.equals("notif") && Build.VERSION.SDK_INT < 33) return NotificationManagerCompat.from(getContext()).areNotificationsEnabled() ? "si" : "no";
+        if (alias.equals("bt") && Build.VERSION.SDK_INT < 31) return "si";
+        PermissionState p = getPermissionState(alias);
+        return p == PermissionState.GRANTED ? "si" : (p == PermissionState.DENIED ? "no" : "preguntar");
+    }
+
+    @PluginMethod
+    public void permisosEstado(PluginCall call) {
+        JSObject o = new JSObject();
+        o.put("camara", estado("camara"));
+        o.put("ubicacion", estado("ubicacion"));
+        o.put("notif", estado("notif"));
+        o.put("bt", estado("bt"));
+        call.resolve(o);
+    }
+
+    @PluginMethod
+    public void pedirPermisos(PluginCall call) {
+        JSArray L = call.getArray("cuales");
+        java.util.List<String> al = new java.util.ArrayList<>();
+        try {
+            for (int i = 0; i < L.length(); i++) {
+                String a = L.getString(i);
+                if (a.equals("notif") && Build.VERSION.SDK_INT < 33) continue;
+                if (a.equals("bt") && Build.VERSION.SDK_INT < 31) continue;
+                al.add(a);
+            }
+        } catch (Exception e) { }
+        if (al.isEmpty()) { permisosEstado(call); return; }
+        requestPermissionForAliases(al.toArray(new String[0]), call, "permisosListos");
+    }
+
+    @PermissionCallback
+    private void permisosListos(PluginCall call) {
+        permisosEstado(call);
+    }
+
+    @PluginMethod
+    public void abrirAjustes(PluginCall call) {
+        try {
+            Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            i.setData(Uri.parse("package:" + getContext().getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(i);
+            call.resolve();
+        } catch (Exception e) {
+            call.reject(e.getMessage());
+        }
+    }
+
+    /* ---------------- aviso en la barra del celular ---------------- */
+    @PluginMethod
+    public void notificar(PluginCall call) {
+        try {
+            String titulo = call.getString("titulo", "Ruta Fácil");
+            String texto = call.getString("texto", "");
+            Context ctx = getContext();
+            String canal = "avisos";
+            if (Build.VERSION.SDK_INT >= 26) {
+                NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (nm.getNotificationChannel(canal) == null) {
+                    NotificationChannel ch = new NotificationChannel(canal, "Avisos de la ruta", NotificationManager.IMPORTANCE_HIGH);
+                    ch.setDescription("Entregas nuevas y avisos del administrador");
+                    nm.createNotificationChannel(ch);
+                }
+            }
+            Intent abre = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, abre, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder b = new NotificationCompat.Builder(ctx, canal)
+                .setSmallIcon(ctx.getApplicationInfo().icon)
+                .setContentTitle(titulo)
+                .setContentText(texto)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(texto))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pi);
+            if (Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                NotificationManagerCompat.from(ctx).notify((int) (System.currentTimeMillis() % 100000), b.build());
+            }
+            call.resolve();
+        } catch (Exception e) {
+            call.reject(e.getMessage());
+        }
+    }
+
+    /* ---------------- celular del negocio (solo si la app es "dueña" del celular) ---------------- */
+    private DevicePolicyManager dpm() { return (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE); }
+    private ComponentName adminCmp() { return new ComponentName(getContext(), RutaAdmin.class); }
+    private boolean esDuenio() { return dpm().isDeviceOwnerApp(getContext().getPackageName()); }
+    private String restriccion(String clave) {
+        switch (clave) {
+            case "instalar": return UserManager.DISALLOW_INSTALL_APPS;
+            case "desinstalar": return UserManager.DISALLOW_UNINSTALL_APPS;
+            case "restablecer": return UserManager.DISALLOW_FACTORY_RESET;
+            case "ubicacion": return UserManager.DISALLOW_CONFIG_LOCATION;
+            case "cuentas": return UserManager.DISALLOW_MODIFY_ACCOUNTS;
+        }
+        return null;
+    }
+
+    @PluginMethod
+    public void celEstado(PluginCall call) {
+        JSObject o = new JSObject();
+        boolean d = esDuenio();
+        o.put("owner", d);
+        JSObject r = new JSObject();
+        if (d) {
+            android.os.Bundle b = dpm().getUserRestrictions(adminCmp());
+            for (String k : new String[] { "instalar", "desinstalar", "restablecer", "ubicacion", "cuentas" }) r.put(k, b.getBoolean(restriccion(k), false));
+        }
+        o.put("restr", r);
+        call.resolve(o);
+    }
+
+    @PluginMethod
+    public void celRestringe(PluginCall call) {
+        if (!esDuenio()) { call.reject("La app no administra este celular"); return; }
+        String r = restriccion(call.getString("clave", ""));
+        if (r == null) { call.reject("No sé qué limitar"); return; }
+        try {
+            if (call.getBoolean("on", false)) dpm().addUserRestriction(adminCmp(), r);
+            else dpm().clearUserRestriction(adminCmp(), r);
+            dpm().setUninstallBlocked(adminCmp(), getContext().getPackageName(), true);
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void celApps(PluginCall call) {
+        try {
+            PackageManager pm = getContext().getPackageManager();
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            java.util.List<ResolveInfo> L = pm.queryIntentActivities(i, PackageManager.MATCH_DISABLED_COMPONENTS);
+            JSArray out = new JSArray();
+            java.util.HashSet<String> ya = new java.util.HashSet<>();
+            for (ResolveInfo ri : L) {
+                String pkg = ri.activityInfo.packageName;
+                if (pkg.equals(getContext().getPackageName()) || !ya.add(pkg)) continue;
+                JSObject a = new JSObject();
+                a.put("pkg", pkg);
+                a.put("nombre", String.valueOf(ri.loadLabel(pm)));
+                boolean oc = false;
+                try { if (esDuenio()) oc = dpm().isApplicationHidden(adminCmp(), pkg); } catch (Exception e) { }
+                a.put("oculta", oc);
+                out.put(a);
+            }
+            JSObject r = new JSObject();
+            r.put("lista", out);
+            call.resolve(r);
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void celOcultar(PluginCall call) {
+        if (!esDuenio()) { call.reject("La app no administra este celular"); return; }
+        try {
+            dpm().setApplicationHidden(adminCmp(), call.getString("pkg"), call.getBoolean("oculta", true));
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void celLiberar(PluginCall call) {
+        if (!esDuenio()) { call.resolve(); return; }
+        try {
+            for (String k : new String[] { "instalar", "desinstalar", "restablecer", "ubicacion", "cuentas" }) dpm().clearUserRestriction(adminCmp(), restriccion(k));
+            dpm().setUninstallBlocked(adminCmp(), getContext().getPackageName(), false);
+            dpm().clearDeviceOwnerApp(getContext().getPackageName());
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
     }
 }

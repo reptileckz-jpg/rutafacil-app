@@ -59,13 +59,15 @@ jobs:
       - name: Partes nativas (huella, WhatsApp, impresora Bluetooth, Descargas)
         run: |
           D=android/app/src/main/java/com/rutafacil/app
-          cp nativo/RutaNativa.java nativo/MainActivity.java $D/
+          cp nativo/RutaNativa.java nativo/MainActivity.java nativo/RutaAdmin.java $D/
+          mkdir -p android/app/src/main/res/xml && cp nativo/ruta_admin.xml android/app/src/main/res/xml/
           G=android/app/build.gradle
           sed -i '0,/dependencies {/s//dependencies {\n    implementation "androidx.biometric:biometric:1.1.0"/' $G
           grep -n "biometric" $G
           M=android/app/src/main/AndroidManifest.xml
-          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />\n    <uses-permission android:name="android.permission.USE_BIOMETRIC" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />\n    <queries><package android:name="com.whatsapp" /><package android:name="com.whatsapp.w4b" /></queries>\n</manifest>#' $M
-          grep -n "BLUETOOTH\|queries" $M
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />\n    <uses-permission android:name="android.permission.USE_BIOMETRIC" />\n    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />\n    <queries><package android:name="com.whatsapp" /><package android:name="com.whatsapp.w4b" /><intent><action android:name="android.media.action.IMAGE_CAPTURE" /></intent><intent><action android:name="android.intent.action.MAIN" /></intent></queries>\n</manifest>#' $M
+          sed -i 's#</application>#    <receiver android:name=".RutaAdmin" android:exported="true" android:permission="android.permission.BIND_DEVICE_ADMIN"><meta-data android:name="android.app.device_admin" android:resource="@xml/ruta_admin" /><intent-filter><action android:name="android.app.action.DEVICE_ADMIN_ENABLED" /></intent-filter></receiver>\n    </application>#' $M
+          grep -n "BLUETOOTH\|queries\|CAMERA\|NOTIF\|RutaAdmin" $M
 
       - name: Íconos y pantalla de inicio
         run: npx @capacitor/assets generate --android --iconBackgroundColor '#2F7D32' --iconBackgroundColorDark '#2F7D32' --splashBackgroundColor '#F6F1E3' --splashBackgroundColorDark '#1E2A1A'

@@ -1,0 +1,30 @@
+name: Probar reglas de la nube
+
+# Prueba las reglas de Firestore con el emulador de Firebase. No publica nada.
+on:
+  push:
+    paths: [firestore.rules, pruebas-reglas/**]
+  workflow_dispatch:
+
+jobs:
+  reglas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Instalar el emulador
+        run: |
+          npm i -g firebase-tools@13
+          mkdir -p /tmp/rt && cd /tmp/rt && npm init -y >/dev/null && npm i @firebase/rules-unit-testing@3 firebase@10 --no-audit --no-fund
+      - name: Probar
+        run: |
+          cp pruebas-reglas/reglas.test.mjs firestore.rules /tmp/rt/
+          cd /tmp/rt
+          echo '{"emulators":{"firestore":{"port":8080}}}' > firebase.json
+          firebase emulators:exec --only firestore --project rutafacil-prueba "node reglas.test.mjs"

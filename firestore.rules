@@ -1,0 +1,87 @@
+rules_version = '2';
+// Reglas de Ruta Fácil (Plátanos Nietos).
+// Quién puede leer y escribir qué. Se pegan en Firebase → Firestore Database → Reglas → Publicar.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- ayudantes ----------
+    function sesion() { return request.auth != null; }
+    function perfilDe(uid) { return get(/databases/$(database)/documents/usuarios_app/$(uid)).data; }
+    function existePerfil() { return sesion() && exists(/databases/$(database)/documents/usuarios_app/$(request.auth.uid)); }
+    function yo() { return perfilDe(request.auth.uid); }
+    function activo() { return existePerfil() && yo().activo == true; }
+    function esAdmin() { return activo() && yo().rol == 'admin'; }
+    function esDuenio() { return esAdmin() && yo().get('duenio', false) == true; }
+    function esContador() { return activo() && yo().rol == 'cont'; }
+    // un chofer que el administrador dejó de encargado (hasta cierta fecha)
+    function esEncargado() { return activo() && yo().rol == 'chofer' && yo().get('encHasta', 0) > request.time.toMillis(); }
+    function mandaComoAdmin() { return esAdmin() || esEncargado(); }
+
+    // ---------- dueño del negocio (se crea una sola vez, al abrir la cuenta) ----------
+    match /meta/duenio {
+      allow read: if sesion();
+      allow create: if sesion() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if esDuenio();
+    }
+
+    // ---------- usuario → correo (se lee antes de entrar, para entrar con "usuario") ----------
+    match /usuarios/{u} {
+      allow get: if true;
+      allow list: if esAdmin();
+      allow write: if esAdmin();
+    }
+
+    // ---------- perfiles (qué papel tiene cada quien) ----------
+    match /usuarios_app/{uid} {
+      function nuevo() { return request.resource.data; }
+      function antes() { return resource.data; }
+      allow get: if sesion() && (request.auth.uid == uid || esAdmin());
+      allow list: if esAdmin();
+      // el primer perfil: el dueño, justo después de abrir la cuenta del negocio
+      allow create: if sesion() && request.auth.uid == uid
+                    && get(/databases/$(database)/documents/meta/duenio).data.uid == uid
+                    && nuevo().rol == 'admin' && nuevo().duenio == true;
+      // los demás los crea un administrador. Un administrador nuevo solo lo crea el dueño;
+      // otro administrador solo puede darle "contraseña nueva" a un administrador que ya existe (reemplaza)
+      allow create: if esAdmin() && request.auth.uid != uid
+                    && nuevo().get('duenio', false) == false
+                    && (nuevo().rol != 'admin' || esDuenio()
+                        || (nuevo().get('reemplaza', '') != '' && perfilDe(nuevo().reemplaza).rol == 'admin'
+                            && perfilDe(nuevo().reemplaza).get('duenio', false) == false));
+      // nadie se cambia a sí mismo; el papel no cambia (salvo el dueño); a un administrador
+      // otro administrador solo le cierra la sesión o lo reemplaza con su contraseña nueva
+      allow update: if esAdmin() && request.auth.uid != uid
+                    && nuevo().get('duenio', false) == antes().get('duenio', false)
+                    && (nuevo().rol == antes().rol || esDuenio())
+                    && (antes().rol != 'admin' || esDuenio()
+                        || nuevo().diff(antes()).affectedKeys().hasOnly(['corte'])
+                        || (nuevo().diff(antes()).affectedKeys().hasOnly(['activo', 'reemplazo']) && nuevo().activo == false));
+      allow delete: if esDuenio() && request.auth.uid != uid;
+    }
+
+    // ---------- datos del negocio ----------
+    // "s~algo" = compartido, "r~chofer~algo" = de la ruta de un chofer
+    match /n/{neg}/d/{id} {
+      allow read: if activo();
+      // lo delicado solo lo cambia el administrador (o el encargado, o el contador para lo de dinero)
+      allow write: if mandaComoAdmin()
+                   || (esContador() && !(id in ['s~choferes', 's~usuarios', 's~vehAsig', 's~admins']))
+                   || (activo() && request.method != 'delete' && !(id in [
+                        's~precio', 's~cfg', 's~pagosSueldo', 's~adelantos', 's~bonos', 's~fijos',
+                        's~metaMes', 's~mesCerr', 's~reglas', 's~vehAsig', 's~admins', 's~bods',
+                        's~mayP', 's~mayMin', 's~cajaBase', 's~aportes', 's~porPagar', 's~pagoPide',
+                        's~enc', 's~vac', 's~bienes', 's~fijosPag'
+                      ]));
+    }
+    // fotos (comprimidas); las borra el administrador después de un mes
+    match /n/{neg}/f/{id} {
+      allow read, create, update: if activo();
+      allow delete: if mandaComoAdmin();
+    }
+
+    // todo lo demás, cerrado
+    match /{todo=**} {
+      allow read, write: if false;
+    }
+  }
+}

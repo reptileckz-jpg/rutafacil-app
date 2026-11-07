@@ -13,3 +13,5 @@ No hace falta instalar Android Studio.
 
 ## Identificador
 `com.rutafacil.app` (no se puede cambiar).
+
+_Última vez armado: 2026-11-07._

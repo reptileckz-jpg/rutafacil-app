@@ -1,6 +1,8 @@
 <meta charset="utf-8">
 <title>Plátanos · primera vez</title>
 <script>window.PN_MODO="vacio"</script>
+<link rel="stylesheet" href="leaflet/leaflet.css">
+<script src="leaflet/leaflet.js"></script>
 <script src="firebase.js"></script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1261,7 +1263,7 @@ function lotePrecioHTML(c){if(!c)return '';var k=cC(c),lp=S.lp&&S.lp.id===c.id?S
   :'<div class="lbl" id="lpint" style="margin-top:8px">'+interTxt(c,lp.R)+'</div><div style="display:flex;flex-direction:column;gap:8px;margin-top:10px"><button class="btn" style="min-height:56px" data-act="lphoy" data-id="'+c.id+'">Usar desde hoy</button>'+(c.cajas&&cajasViejas(c)?'<button class="btn sec" style="min-height:56px" data-act="lpinter" data-id="'+c.id+'">Precio intermedio mientras se acaba el anterior</button>':'')+'<button class="btn sec" style="min-height:56px" data-act="lpdesp" data-id="'+c.id+'">Cuando se acabe el lote anterior</button></div>')}
 function vwQuitar(o){var i=S.vws.indexOf(o);if(i>-1)S.vws.splice(i,1);S.vw=S.vws[0]||null;S.vwI=0}
 function vwAvanzar(){var v=S.vw,k=v.k,L=vwSteps(),i=L.indexOf(k),c;if(v.bWait){toast('Espera instrucciones del administrador');return false}
- if(k==='insp'){var io=v.insp;if(!(io&&io.skip)){if(!io||(!io.ya&&!inspCompleta(io))){toast('Revisa todos los puntos');return false}if(io.wait){toast('Espera la respuesta del administrador');return false}if(inspFallas(io).length&&!io.ok){io.preg=true;return true}inspMarca(vehById(v.veh),chofN(v.quien),io)}}
+ if(k==='insp'){var io=v.insp;if(!(io&&io.skip)){if(!io||(!io.ya&&!inspCompleta(io))){toast('Revisa todos los puntos');return false}if(io.wait){toast('Espera la respuesta del administrador');return false}if(inspFallas(io).length&&!io.ok){io.preg=true;setTimeout(render,0);return false}inspMarca(vehById(v.veh),chofN(v.quien),io)}}
  if(k==='prov'){for(var pi=0;pi<v.par.length;pi++){var pq=v.par[pi];if(pq.prov==='__nuevo'){var np=String(pq.np||'').trim();if(!np){toast('Escribe el nombre del proveedor nuevo');return false}var dn=provD(np);dn.tipo=pq.t==='R'?'Roatán':(pq.t==='M'?'Macho':'Ambos');dn.dir=pq.nd||'';pq.prov=np}if(pq.t!=='R'){if(pq.met)provD(pq.prov).met=pq.met;else pq.met=provD(pq.prov).met||''}}}
  if(k==='tanque'){var vdf=vehById(v.veh);if(vdf&&vdf.def&&num(v.def==null?4:v.def)<=1&&!v.defOk){abrirModal(v.def?'Solo tiene 1 cuadrito de DEF':'El DEF está vacío','¿Sales así? Se le avisa al administrador. Ponle DEF en cuanto puedas.',[['Sí, salgo así','defsale']]);return false}}
  if(FOTOS_OBLIGATORIAS&&k==='tanque'&&!vwEsAdm()&&!v.ftSal){toast('Toma la foto del medidor de combustible');return false}
@@ -4446,7 +4448,7 @@ var _rTr=render;render=function(){var antes={};OV_ANIM.forEach(function(x){antes
  return res};
 /* menús que se despliegan: se abren suave (solo cuando tú los abres) */
 var _sumT=0;document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('summary'))_sumT=Date.now()},true);
-document.addEventListener('toggle',function(e){var d=e.target;if(!d||d.tagName!=='DETAILS'||!d.open||Date.now()-_sumT>600)return;Array.prototype.forEach.call(d.children,function(c){if(c.tagName!=='SUMMARY'){c.classList.remove('d-in');void c.offsetWidth;c.classList.add('d-in')}})},true);
+document.addEventListener('toggle',function(e){var d=e.target;if(!d||d.tagName!=='DETAILS'||!d.open||Date.now()-_sumT>600)return;/* con animate() no se toca la clase: así el motor de pantalla no la quita y no parpadea */Array.prototype.forEach.call(d.children,function(c){if(c.tagName!=='SUMMARY'&&c.animate){try{c.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:220,easing:'ease'})}catch(er){}}})},true);
 
 /* ===================== v5 · Motor: solo se actualiza lo que cambió =====================
    Antes, cada vez que algo cambiaba se borraba toda la pantalla y se volvía a crear: por eso
@@ -4461,6 +4463,8 @@ function mSame(a,b){if(a.nodeType!==b.nodeType)return false;if(a.nodeType!==1)re
  if(a.tagName==='INPUT'&&a.type!==b.type)return false;return true}
 function mNode(a,b){
  if(a.nodeType===3||a.nodeType===8){if(a.nodeValue!==b.nodeValue)a.nodeValue=b.nodeValue;return}
+ /* los mapas reales (Leaflet) se manejan solos: no se tocan */
+ if(a.nodeType===1&&a.getAttribute('data-vivo')&&a.getAttribute('data-vivo')===b.getAttribute('data-vivo'))return;
  if(a.nodeType!==1)return;
  var act=document.activeElement===a;
  mAttrs(a,b);
@@ -6046,6 +6050,227 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   var c=pedNuevoCli(String(p.nn).trim(),String(p.nt||'').trim(),+S.chofHoy);p.cli=String(c.id);S.avPrecio.push(chofN(+S.chofHoy)+' registró un cliente nuevo por pedido: '+c.n+(c.tel?' · tel. '+c.tel:''));return}
  if(!cl(+p.cli)){e.stopImmediatePropagation();p.err='Elige el cliente';render();return}
  if(!(num(p.R)>0||num(p.M)>0)){e.stopImmediatePropagation();p.err='Escribe cuántas cajas o kilos pidió';render();return}},true);
+
+/* ===================== v6.1 · Cierre por pasos, reabrir con permiso, carga extra, fotos obligatorias, PIN ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ /* la barra de Total ya no tapa lo de abajo */
+ 'main:has(.entbar){padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}',
+ '#cxov,#fnov{position:fixed;inset:0;z-index:92;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}',
+ '#cxov .w,#fnov .w{max-width:520px;margin:0 auto;padding:calc(14px + var(--sbar,0px)) 16px 40px}',
+ '.fotono{display:block;margin:6px auto 0;font-size:13px;color:var(--muted);background:none;border:0;text-decoration:underline;min-height:32px}',
+ '.cienv{text-align:center}.cienv .big{font-size:44px;line-height:1}'
+].join('\n');document.head.appendChild(st)})();
+if(typeof REAL!=='undefined'&&REAL)FOTOS_OBLIGATORIAS=true;
+['reab','gps'].forEach(function(k){if(AR_K.indexOf(k)<0)AR_K.push(k)});
+/* ---------- 1. Cierre: un paso por pantalla ---------- */
+var CI_P=['Odómetro','Gasolina','Fotos','Cajas','Efectivo','Enviar'];
+cierrePasos=function(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cierre.sent)return;var m=document.querySelector('main');if(!m||m.querySelector('.wz-hd'))return;
+ var K=Array.prototype.slice.call(m.children).filter(function(x){return !x.classList.contains('foot')&&x.tagName!=='H1'&&!x.classList.contains('pnback')}),cur=Math.max(0,Math.min(5,S.cierreP||0));
+ var paso=function(el){var t=el.textContent||'';if(/Odómetro final/.test(t))return 'veh';if(/Combustible del día/.test(t))return 1;if(/Fotos del vehículo/.test(t))return 2;if(/Cajas que salieron|sin visitar|pasaron a la ruta|Cajas vacías que regresan|Cajas llenas que regresan/.test(t))return 3;if(/Otros gastos de la ruta|Efectivo a entregar/.test(t))return 4;if(el.tagName==='BUTTON'&&/Enviar cierre|Terminar mi ruta/.test(t))return 5;return -1};
+ K.forEach(function(el){var p=paso(el);if(p==='veh'){if(cur!==0&&cur!==1){el.classList.add('wz-hide');return}var ks=Array.prototype.slice.call(el.children),corte=-1;ks.forEach(function(k,i){if(corte<0&&/Nivel del tanque/.test(k.textContent||'')&&k.classList.contains('lbl'))corte=i});ks.forEach(function(k,i){var tanque=corte>-1&&i>=corte;if((cur===0&&tanque)||(cur===1&&!tanque))k.classList.add('wz-hide')});return}if(p>=0&&p!==cur)el.classList.add('wz-hide')});
+ var hd=document.createElement('div');hd.innerHTML='<div class="lbl" style="margin:0 2px"><b>Paso '+(cur+1)+' de 6 · '+CI_P[cur]+'</b></div><div class="wz-hd">'+CI_P.map(function(x,i){return '<i class="'+(i<=cur?'on':'')+'"></i>'}).join('')+'</div>';var h1=m.querySelector('h1');if(h1)h1.after(hd);
+ if(cur===1){var tk=document.createElement('div');tk.className='card';tk.innerHTML=S.cierre.tankOk?'<div style="color:var(--accent);font-weight:700">✓ Tanque confirmado: '+esc(S.cierre.tank||S.cierre.tankIni||'')+'</div>':'<button class="btn" data-act="citankok">Sí, el tanque está en '+esc(S.cierre.tank||S.cierre.tankIni||'')+'</button><div class="lbl" style="margin-top:4px">Primero mueve la aguja al nivel que marca el tablero.</div>';var vc=K.filter(function(x){return paso(x)==='veh'})[0];(vc?vc.after(tk):hd.after(tk))}
+ if(cur===0){var nt=document.createElement('div');nt.className='card note';nt.innerHTML='<b>Escribe lo que marca el tablero</b><div style="font-size:14px">Y tómale foto al odómetro.</div>';hd.after(nt)}
+ if(cur===5){var r=cierreRes(),c=S.cierre,res=document.createElement('div');res.className='card good';res.innerHTML='<b>Revisa antes de enviar</b>'+rw('Odómetro',num(c.odo).toLocaleString('es-MX')+' km ('+Math.max(0,r.km)+' km)')+rw('Tanque',esc(c.tank||c.tankIni||''))+rw('Vendiste',money(r.total))+rw('Debes entregar',money(r.efectivo))+rw('Cajas entregadas',r.R)+rw('Cajas llenas que regresan',r.reg)+rw('Cajas vacías recibidas',r.V)+'<div class="lbl" style="margin-top:6px">Al enviarlo ya no lo puedes cambiar. Si te equivocaste, el administrador te lo puede reabrir.</div>';var bt=K.filter(function(x){return paso(x)===5})[0];if(bt)bt.before(res);else hd.after(res)}
+ var nav=document.createElement('div');nav.className='wz-nav';nav.innerHTML=(cur>0?'<button class="btn sec" data-act="cipaso" data-v="'+(cur-1)+'">Atrás</button>':'')+(cur<5?'<button class="btn" data-act="cipaso" data-v="'+(cur+1)+'">Siguiente</button>':'');var foot=m.querySelector('.foot');if(nav.innerHTML)(foot?foot.before(nav):m.appendChild(nav))};
+/* no avanza sin lo de cada paso */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b||!S.cierre)return;var a=+b.dataset.v,cur=S.cierreP||0,c=S.cierre,falta='';if(a<=cur)return;
+ if(cur===0){if(!(num(c.odo)>0))falta='Escribe el odómetro';else if(num(c.odo)<num(c.odoIni))falta='El odómetro no puede ser menor al de la salida ('+num(c.odoIni).toLocaleString('es-MX')+' km)';else if(FOTOS_OBLIGATORIAS&&!(S.salida.fotosFin&&S.salida.fotosFin.odo))falta='Toma la foto del odómetro'}
+ if(cur===1&&!c.tankOk)falta='Confirma el nivel del tanque';
+ if(cur===2&&FOTOS_OBLIGATORIAS){var ff=S.salida.fotosFin||{},fl=FOTOS.filter(function(x){return !ff[x[0]]});if(fl.length)falta='Faltan fotos: '+fl.map(function(x){return x[1].toLowerCase()}).join(', ')}
+ if(falta){e.stopImmediatePropagation();toast(falta);try{vibrar([60,40,60])}catch(er){}}},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="citankok"]');if(!b||!S.cierre)return;e.stopImmediatePropagation();S.cierre.tankOk=true;render()},true);
+/* al enviar: regresa a "Hola, Danu" con el cierre confirmado */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="enviar"]');if(!b||S.role!=='rep')return;var c=S.cierre;setTimeout(function(){if(c&&c.sent){S.cierreP=0;S.tab.rep='ruta';S.ciEnvH=hhmm();render();window.scrollTo(0,0)}},30)},true);
+/* ---------- 2. Seguir trabajando después del cierre: con permiso del administrador ---------- */
+function reabDe(id){return nbRGet(id,'reab')||null}
+var _seguirOk=false;
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="seguir"]');if(!b||_seguirOk||S.role!=='rep')return;e.stopImmediatePropagation();var r=S.reab;
+ if(r&&r.est==='pend'){toast('Ya le pediste permiso al administrador. Espera su respuesta');return}
+ S.reab={k:b.dataset.k||'carga',est:'pend',t:Date.now(),h:hhmm()};S.avPrecio.push('URGENTE: '+chofN(S.chofHoy)+' pide reabrir su ruta para '+(S.reab.k==='carga'?'cargar más':'dar otra vuelta')+'. Autorízalo en Inicio.');render()},true);
+/* lo que ve el chofer mientras espera */
+var _ru32=ruta;ruta=function(){var h=_ru32.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return h;var r=S.reab,top='';
+ top='<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+'Entrega '+money((S.cierre.res||{}).efectivo||0)+' en efectivo al administrador.</div></div>';
+ if(r&&r.est==='pend')top+='<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'. Cuando te autorice, aquí te sale para seguir.</div></div>';
+ else if(r&&r.est==='no')top+='<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>';
+ h=h.replace(/(<div class="hello">[\s\S]*?<\/div>)/,'$1'+top);
+ return h.replace(/<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Cargar más<\/button>/,'<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Pedir permiso: cargar más</button>').replace(/<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Otra vuelta<\/button>/,'<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Pedir permiso: otra vuelta</button>').replace('Como aún no entregas el efectivo, se reabre tu cierre.','Para seguir, el administrador tiene que autorizarlo.').replace('Como ya entregaste el efectivo, se abre un segundo cierre.','Para seguir, el administrador tiene que autorizarlo.')};
+/* cuando el admin autoriza, en el celular del chofer se reabre y se abre la pantalla de carga */
+var _r32=render;render=function(){try{if(S.role==='rep'&&S.reab&&S.reab.est==='ok'&&S.cierre&&S.cierre.sent&&!_seguirOk){var k=S.reab.k;S.reab=null;_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta con tu permiso')}}catch(e){console.error(e)}return _r32.apply(this,arguments)};
+/* en Inicio del admin: autorizar */
+var _cT32=cierreTop;cierreTop=function(){var h=_cT32.apply(this,arguments);if(S.role!=='admin')return h;
+ nbRutaIds().forEach(function(id){var r=reabDe(id);if(!r||r.est!=='pend')return;h='<div class="card alert" data-key="reab'+id+'"><b style="font-size:17px">'+esc(chofN(id))+' quiere seguir trabajando</b><div class="lbl">Ya mandó su cierre y pide '+(r.k==='carga'?'cargar más fruta':'dar otra vuelta')+' ('+esc(r.h||'')+'). Si lo autorizas, se reabre su ruta y registra lo que carga.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="reabsi" data-id="'+id+'">Autorizar</button><button class="btn sec" style="flex:1" data-act="reabno" data-id="'+id+'">No</button></div></div>'+h});return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="reabsi"],[data-act="reabno"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,r=reabDe(id);if(!r)return;var n=JSON.parse(JSON.stringify(r));n.est=b.dataset.act==='reabsi'?'ok':'no';n.por=quien();nbRSet(id,'reab',n);
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(n.est==='ok'?'Autorizó':'No autorizó')+' que '+chofN(id)+' siga trabajando'});toast(n.est==='ok'?'Autorizado: ya le salió para seguir':'Le avisamos que no');render()},true);
+/* ---------- 3. Carga extra: su propia pantalla (cajas, kilos y foto) ---------- */
+function cxHTML(){var x=S.cx;if(!x||S.role!=='rep')return '';var f=x.foto;
+ return '<div id="cxov" role="dialog" aria-label="Lo que cargaste"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">¿Cuánto cargaste?</b><div class="lbl">'+(x.k==='vuelta'?'Para tu otra vuelta. ':'')+'Ya traes '+S.inv.reparto+' cajas y '+S.inv.repartoKg+' kg en el camión.</div></span><button class="helpb" style="margin:0" data-act="cxx" aria-label="Cerrar">×</button></div>'
+  +'<div class="card">'+numStep('cx.R','Cajas de roatán que cargaste',x.R,'cxR')+kgStep('cx.M','Kilos de macho que cargaste',x.M,'cxM')+'<div class="lbl">En bodega hay '+S.inv.maduras+' cajas maduras y '+S.inv.kgMaduro+' kg de macho maduro.</div></div>'
+  +'<div class="card"><b>Foto de lo que cargaste (obligatoria)</b><label class="ubfoto" for="cxF" style="display:flex;align-items:center;justify-content:center;min-height:120px;border:2px dashed var(--line);border-radius:14px;margin-top:8px;cursor:pointer;overflow:hidden">'+(f?'<img src="'+f+'" alt="Lo que cargaste" style="width:100%;max-height:220px;object-fit:cover">':'📷 Tomar foto')+'</label><input id="cxF" type="file" accept="image/*" capture="environment" data-cxf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'+(f?'':'<button class="fotono" data-act="fotono" data-cx="1">No pude tomarla</button>')+'</div>'
+  +(x.err?'<div class="neg" role="alert" style="font-weight:700;margin:8px 0">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px;min-height:56px" data-act="cxsave">Guardar lo que cargué</button></div></div>'}
+var _suH32=setupHTML;setupHTML=function(){return fnHTML()||cxHTML()||_suH32.apply(this,arguments)};
+/* la tarjeta "Cargar más mercancía" ahora abre esa pantalla */
+extraCard=function(){return '<button class="btn sec" style="width:100%;margin:8px 0" data-act="cxabre">📦 Cargar más mercancía'+(S.extras&&S.extras.length?' · '+S.extras.length+' carga'+(S.extras.length>1?'s':'')+' extra':'')+'</button>'};
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||t.dataset.cxf!=='1'||!t.files||!t.files[0]||!S.cx)return;fotoLeer(t.files[0],function(u){if(S.cx){S.cx.foto=u;render()}})},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='cxabre'){e.stopImmediatePropagation();S.cx={R:'',M:'',foto:null,k:'carga'};render();return}
+ if(a==='cxx'){e.stopImmediatePropagation();S.cx=null;render();return}
+ if(a==='cxsave'){e.stopImmediatePropagation();var x=S.cx,R=Math.round(num(x.R)),M=r2(num(x.M));x.err='';
+  if(R<=0&&M<=0)x.err='Escribe cuántas cajas o kilos cargaste';else if(R>S.inv.maduras)x.err='En bodega solo hay '+S.inv.maduras+' cajas maduras';else if(M>S.inv.kgMaduro)x.err='En bodega solo hay '+S.inv.kgMaduro+' kg de macho maduro';else if(FOTOS_OBLIGATORIAS&&!x.foto)x.err='Toma la foto de lo que cargaste';
+  if(x.err){render();return}
+  S.rm={R:String(R),M:String(M)};var n0=S.extras.length,bt=document.createElement('button');bt.dataset.act='extracarga';bt.style.display='none';document.body.appendChild(bt);bt.click();bt.remove();if(S.extras.length>n0)S.extras[S.extras.length-1].foto=x.foto;S.cx=null;render();window.scrollTo(0,0);return}},true);
+/* ---------- 4. Fotos obligatorias, con "No pude tomarla" ---------- */
+function sinFotoURL(mot){var t=String(mot||'').slice(0,60).replace(/[<&>]/g,'');return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" fill="#F3E3C3"/><text x="160" y="66" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#6B4A10">Sin foto</text><text x="160" y="96" text-anchor="middle" font-family="Arial" font-size="13" fill="#6B4A10">'+t+'</text></svg>')}
+function fnHTML(){var x=S.fotoNo;if(!x)return '';return '<div id="fnov" role="dialog" aria-label="No pude tomar la foto"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">¿Por qué no pudiste tomarla?</b><div class="lbl">'+esc(x.l||'')+'. Se le avisa al administrador.</div></span><button class="helpb" style="margin:0" data-act="fnx" aria-label="Cerrar">×</button></div>'
+ +'<div class="chips" role="group" style="margin:10px 0">'+['No prende la cámara','Está muy oscuro','No tengo el celular a la mano','Otro'].map(function(m){return '<button data-act="fnm" data-v="'+m+'" aria-pressed="'+(x.m===m)+'">'+m+'</button>'}).join('')+'</div>'
+ +(x.m==='Otro'?'<div class="field"><label for="fnt">Escribe el motivo</label><input id="fnt" type="text" data-bind="fotoNo.t" value="'+esc(x.t||'')+'" style="width:190px;text-align:left"></div>':'')+(x.err?'<div class="neg" style="font-weight:700">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="fnsave">Seguir sin foto</button></div></div>'}
+var _fT32=fotoTile;fotoTile=function(k,l,g){var h=_fT32.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS)return h;var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
+var _vF32=vwFotoUna;vwFotoUna=function(key,l){var h=_vF32.apply(this,arguments);if(vwEsAdm()||!FOTOS_OBLIGATORIAS||S.vw[key])return h;return h+'<button class="fotono" data-act="fotono" data-vw="'+key+'" data-l="'+esc(String(l).replace(/ \((opcional|obligatoria)[^)]*\)/,''))+'">No pude tomarla</button>'};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='fotono'){e.stopImmediatePropagation();e.preventDefault();S.fotoNo={g:b.dataset.g,k:b.dataset.k,vw:b.dataset.vw,cx:b.dataset.cx,l:b.dataset.l||'Foto',m:'',t:''};render();return}
+ if(a==='fnx'){e.stopImmediatePropagation();S.fotoNo=null;render();return}
+ if(a==='fnm'){e.stopImmediatePropagation();S.fotoNo.m=b.dataset.v;S.fotoNo.err='';render();return}
+ if(a==='fnsave'){e.stopImmediatePropagation();var x=S.fotoNo,mot=x.m==='Otro'?String(x.t||'').trim():x.m;if(!mot){x.err='Escoge o escribe el motivo';render();return}var u=sinFotoURL(mot);
+  if(x.vw&&S.vw)S.vw[x.vw]=u;else if(x.cx&&S.cx)S.cx.foto=u;else if(x.k){S.salida[x.g]=S.salida[x.g]||{};S.salida[x.g][x.k]=u}
+  S.avPrecio.push(chofN(S.chofHoy)+' no tomó la foto "'+(x.l||'')+'": '+mot);S.fotoNo=null;render();return}},true);
+/* ---------- 5. PIN: nada de "saltar" en la versión real ---------- */
+var _pH32=pinHTML;pinHTML=function(){var h=_pH32.apply(this,arguments);if(!REAL||!h)return h;return h.replace(/<div[^>]*>En la demo el PIN de todos es 1234\.?<\/div>/,'').replace(/<button[^>]*data-act="pinskip"[^>]*>[^<]*<\/button>/,'')};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pinskip"]');if(b&&REAL){e.stopImmediatePropagation();e.preventDefault()}},true);
+/* ---------- 6. Versión real: fuera textos y botones "de la demo" ---------- */
+var DEMO_RX=/\s*\((?:opcional )?en la demo[^)]*\)|\s*\(demo\)|\s*\(solo en la demo\)/g;
+function sinDemo(){if(!REAL)return;var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode()))if(/demo/i.test(n.nodeValue))L.push(n);
+ L.forEach(function(n){var p=n.parentElement;if(!p||p.closest('script,style'))return;var v=n.nodeValue;
+  if(/Herramientas de la demo|Ver como|Saltar|Simular|Avanzar el reloj|Probar aviso|En la demo el PIN/i.test(v)){var box=p.closest('details,button')||p;box.style.display='none';return}
+  var nv=v.replace(DEMO_RX,'');if(nv!==v)n.nodeValue=nv})}
+var _r32b=render;render=function(){var r=_r32b.apply(this,arguments);try{sinDemo()}catch(e){}return r};
+
+/* ===================== v6.1 · Inicio de ruta: odómetro y tanque confirmados, revisión que se encoge ===================== */
+/* la revisión del vehículo, ya terminada, queda chiquita */
+var _iR33=inspRepHTML;inspRepHTML=function(){var r=S.inspR,h=_iR33.apply(this,arguments);if(!h||!r||!r.ok||r.preg||r.wait||S.inspVer)return h;
+ return '<button class="card good" data-act="inspver" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;border:0;cursor:pointer"><span style="font-size:22px">✓</span><span class="grow"><b>Revisión del vehículo lista</b><br><span class="lbl">'+(inspFallas(r).length?'Con '+inspFallas(r).length+' cosa(s) reportada(s)':'Todo está bien')+'</span></span><span class="lbl">Ver</span></button>'};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="inspver"],[data-act="inspoculta"]');if(!b)return;e.stopImmediatePropagation();S.inspVer=b.dataset.act==='inspver';render()},true);
+/* odómetro y tanque: el chofer los tiene que confirmar */
+function salConfHTML(){if(S.role!=='rep'||S.salida.ok)return '';var s=S.salida,c=S.cierre||{};
+ return '<div class="card note" data-key="salconf" style="padding:10px 12px"><b>Confirma lo que marca el tablero</b>'
+  +'<div style="margin-top:8px">'+(s.odoOk?'<span style="color:var(--accent);font-weight:700">✓ Odómetro: '+num(c.odoIni).toLocaleString('es-MX')+' km</span>':'<div class="lbl">Odómetro: viene puesto el último que se registró ('+num(c.odoIni).toLocaleString('es-MX')+' km). Si el tablero marca otro, corrígelo arriba.</div><button class="btn sm" style="margin-top:6px" data-act="salodook">Sí, marca '+num(c.odoIni).toLocaleString('es-MX')+' km</button>')+'</div>'
+  +'<div style="margin-top:10px">'+(s.tankOk?'<span style="color:var(--accent);font-weight:700">✓ Tanque: '+esc(c.tankIni||'')+'</span>':'<div class="lbl">Tanque: mueve la aguja a lo que marca el tablero.</div><button class="btn sm" style="margin-top:6px" data-act="saltankok">Sí, el tanque está en '+esc(c.tankIni||'')+'</button>')+'</div></div>'}
+var _ru33=ruta;ruta=function(){var h=_ru33.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return h;var x=salConfHTML(),i=h.indexOf('<div class="lbl" style="margin:10px 0 6px">Nivel del tanque al salir');
+ if(i<0){i=h.indexOf('Fotos del vehículo (');if(i>-1)i=h.lastIndexOf('<div',i)}return i>-1?h.slice(0,i)+x+h.slice(i):h.replace('data-act="iniciar"','data-act="iniciar"')+x};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='salodook'){e.stopImmediatePropagation();S.salida.odoOk=true;render();return}
+ if(a==='saltankok'){e.stopImmediatePropagation();S.salida.tankOk=true;render();return}},true);
+document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.bind==='cierre.odoIni'&&S.salida)S.salida.odoOk=true},true);
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="iniciar"]');if(!b||S.role!=='rep'||!REAL)return;var s=S.salida,f='';if(!s.odoOk)f='Confirma el odómetro';else if(!s.tankOk)f='Confirma el nivel del tanque';
+ if(f){e.stopImmediatePropagation();e.preventDefault();toast(f);try{vibrar([60,40,60])}catch(er){}var el=document.querySelector('[data-key="salconf"]');if(el)el.scrollIntoView({block:'center'})}},true);
+
+/* ===================== v6.1 · Mapas reales (OpenStreetMap) y ubicación en vivo de los choferes =====================
+   - En el APK viene Leaflet (mapas de OpenStreetMap, gratis). Si no está (página de prueba), se queda el dibujo de antes.
+   - El celular del chofer manda su ubicación cada 2 minutos (o si se movió más de 200 m) mientras reparte o va de viaje.
+   - El admin ve a cada chofer en el mapa en vivo, con "hace X min". */
+(function(){var st=document.createElement('style');st.textContent=[
+ '.mapviv{width:100%;background:#E8EEE4;position:relative;z-index:0}',
+ '.mk{min-width:24px;height:24px;padding:0 4px;border-radius:12px;border:2px solid #fff;color:#fff;font:700 12px/20px Arial;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.4);box-sizing:border-box;white-space:nowrap}',
+ '.mk.bod{border-radius:6px;background:#1E2A1A}.mk.yo{background:#2F6DB5;border-radius:50%;width:28px;height:28px;line-height:24px;font-size:13px}',
+ '.mk.ch{background:#C0392B;border-radius:50%;width:30px;height:30px;line-height:26px;font-size:14px}',
+ '.leaflet-container{font:inherit}.leaflet-control-attribution{font-size:9px}'
+].join('\n');document.head.appendChild(st)})();
+function mapaHay(){return !!(window.L&&window.L.map)}
+var MAP_COL={'var(--accent)':'#2F7D32','var(--muted)':'#8A8F86','var(--orange)':'#E07B1A','var(--danger)':'#C0392B','var(--fg)':'#1E2A1A'};
+function mapCol(c){return MAP_COL[c]||c||'#2F7D32'}
+function mapaVivoHTML(id,data,alto){return '<div class="mapviv" data-vivo="'+id+'" data-key="map-'+id+'" style="height:'+(alto||220)+'px" role="img" aria-label="Mapa"></div><div hidden data-mapdata="'+id+'" data-j="'+esc(JSON.stringify(data))+'"></div>'}
+function mapaMonta(){if(!mapaHay())return;Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){var id=el.getAttribute('data-vivo'),dd=document.querySelector('[data-mapdata="'+id+'"]');if(!dd)return;var j=dd.getAttribute('data-j');
+ if(!el._m){try{var m=L.map(el,{zoomControl:true,attributionControl:true,scrollWheelZoom:false,tap:true});L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'}).addTo(m);el._m=m;el._g=L.layerGroup().addTo(m);el._j=null;el._fit=false}catch(e){console.error('mapa',e);return}}
+ if(el._j===j){el._m.invalidateSize();return}el._j=j;var d;try{d=JSON.parse(j)}catch(e){return}var g=el._g;g.clearLayers();var B=[];
+ var ic=function(html,cls,w){return L.divIcon({html:html,className:'',iconSize:null,iconAnchor:[(w||24)/2,(w||24)/2]})};
+ if(d.bod!==false){g.addLayer(L.marker([BOD.lat,BOD.lng],{icon:ic('<div class="mk bod">B</div>')}));B.push([BOD.lat,BOD.lng])}
+ if(d.line&&d.line.length>1)g.addLayer(L.polyline(d.line.map(function(o){return [o.lat,o.lng]}),{color:'#2F7D32',weight:4,opacity:.8,dashArray:'8 6'}));
+ (d.pts||[]).forEach(function(o){if(o.lat==null)return;var r=Math.max(18,(o.r||8)*2.4);g.addLayer(L.marker([o.lat,o.lng],{icon:ic('<div class="mk" style="background:'+mapCol(o.col)+';opacity:'+(o.op==null?1:o.op)+';min-width:'+r+'px;height:'+r+'px;line-height:'+(r-4)+'px">'+esc(o.t||'')+'</div>','',r)}).bindTooltip(esc(o.n||o.t||''),{direction:'top'}));B.push([o.lat,o.lng])});
+ (d.marks||[]).forEach(function(o){if(o.lat==null)return;g.addLayer(L.marker([o.lat,o.lng],{zIndexOffset:1000,icon:ic('<div class="mk '+(o.yo?'yo':'ch')+'"'+(o.col?' style="background:'+mapCol(o.col)+'"':'')+'>'+esc(o.t||'')+'</div>','',30)}).bindTooltip(esc(o.n||o.t||'')+(o.hace?' · '+o.hace:''),{direction:'top'}));B.push([o.lat,o.lng])});
+ if(!el._fit||d.refit){if(B.length>1)el._m.fitBounds(B,{padding:[28,28],maxZoom:15});else if(B.length)el._m.setView(B[0],14);el._fit=true}setTimeout(function(){try{el._m.invalidateSize()}catch(e){}},60)})}
+var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta()}catch(e){console.error(e)}return r};
+/* el dibujo de siempre → mapa real */
+var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
+ var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
+ return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
+var _vM34=vwMapa;vwMapa=function(v,small){if(!mapaHay())return _vM34.apply(this,arguments);var N=vwNodos(v),pos=vwPos(v),seen={},pts=[];
+ N.forEach(function(n,j){if(n.t==='bod'||n.lat==null)return;var k=n.lat.toFixed(4)+','+n.lng.toFixed(4);if(seen[k]){seen[k].t+=' y '+j;return}var o={lat:n.lat,lng:n.lng,t:String(j),n:(n.t==='bas'?'Báscula ':'')+n.n,col:n.t==='bas'?'var(--fg)':'var(--accent)'};seen[k]=o;pts.push(o)});
+ var mk=v.started&&['reg','cv','fin','gracias','done'].indexOf(v.k)<0&&pos?[{lat:pos.lat,lng:pos.lng,t:(chofN(v.quien)||'?').slice(0,1),n:chofN(v.quien),col:'#2F6DB5'}]:[];
+ return mapaVivoHTML('vw'+S.vws.indexOf(v)+(small?'s':''),{pts:pts,line:N.filter(function(n){return n.lat!=null}).map(function(n){return {lat:n.lat,lng:n.lng}}),marks:mk,bod:false},small?160:220)+'<div class="lbl" style="margin-top:4px">Los números son las paradas del viaje.'+(mk.length?' El punto azul es '+esc(v.quien===2?'tu ubicación':chofN(v.quien))+'.':'')+'</div>'};
+/* ---------- ubicación real ---------- */
+function gpsReciente(id,min){var g=nbRGet(id,'gps');if(!g||g.lat==null)return null;return Date.now()-num(g.t)<(min||20)*60000?g:null}
+function haceTxt(t){var m=Math.round((Date.now()-t)/60000);return m<1?'ahora':'hace '+m+' min'}
+function gpsMarcas(){var L=[];nbRutaIds().forEach(function(id,i){var g=gpsReciente(id,30);if(!g)return;L.push({lat:g.lat,lng:g.lng,t:(chofN(id)||'?').slice(0,1),n:chofN(id),hace:haceTxt(g.t),col:['#C0392B','#2F6DB5','#8E44AD','#E07B1A'][i%4]})});return L}
+/* el viaje usa la ubicación real del chofer si es reciente */
+var _vP34=vwPos;vwPos=function(v){var g=v&&v.started?gpsReciente(v.quien,15):null;return g?{lat:g.lat,lng:g.lng}:_vP34.apply(this,arguments)};
+/* el admin: en "Mapa en vivo" cada chofer dice dónde está */
+var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
+/* el celular del chofer manda su ubicación */
+var _gpsW=null,_gpsU=0,_gpsL=null;
+function gpsDebe(){if(!REAL||S.role!=='rep'||!navigator.geolocation)return false;var ruta=S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent);var viaje=(S.vws||[]).some(function(x){return x.quien===+S.chofHoy&&x.started&&['done','fin','gracias','cv'].indexOf(x.k)<0});return ruta||viaje}
+function gpsDist(a,b){var R=6371000,t=Math.PI/180,dl=(b.lat-a.lat)*t,dn=(b.lng-a.lng)*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
+function gpsRevisa(){var debe=gpsDebe();if(debe&&_gpsW==null){try{_gpsW=navigator.geolocation.watchPosition(function(p){var o={lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6),t:Date.now(),acc:Math.round(p.coords.accuracy||0)};S.pos={lat:o.lat,lng:o.lng};
+  if(!_gpsL||Date.now()-_gpsU>120000||gpsDist(_gpsL,o)>200){_gpsU=Date.now();_gpsL=o;S.gps=o;try{render()}catch(e){}}},function(){},{enableHighAccuracy:true,maximumAge:30000,timeout:60000})}catch(e){}}
+ else if(!debe&&_gpsW!=null){try{navigator.geolocation.clearWatch(_gpsW)}catch(e){}_gpsW=null}}
+setInterval(function(){try{gpsRevisa()}catch(e){}},15000);setTimeout(function(){try{gpsRevisa()}catch(e){}},3000);
+
+/* ===================== v6.1 · Diseño: separación, tarjetas pintadas, menú que se desliza, Ajustes ordenado,
+   fotos de personal (cámara o galería, frente y reverso), guía para empezar y avisos juntos ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ /* una sola animación al abrir (antes eran dos y parpadeaba) */
+ 'details.opening>*:not(summary){animation:none!important}',
+ /* separación entre tarjetas en toda la app */
+ 'html body .card+.card,html body .card+details.card,html body details.card+.card,html body details.card+details.card,html body .card+button.card,html body button.card+.card{margin-top:12px}',
+ '#dfov .fiw>.card,#crov .fiw>.card,#ubov .card,#cxov .card,#fnov .card{margin-top:12px}',
+ /* avisos y encargado: pintados completos */
+ '.avl{border-left:0!important;background:color-mix(in srgb, var(--info) 13%, var(--surface))!important}.avl.r{background:color-mix(in srgb, var(--danger) 13%, var(--surface))!important}.avl.o{background:color-mix(in srgb, var(--orange) 14%, var(--surface))!important}.enc{border-left:0!important;background:color-mix(in srgb, var(--muted) 12%, var(--surface))!important}',
+ /* menú de la izquierda: entra y sale deslizándose */
+ '@keyframes drIn{from{transform:translateX(-104%)}to{transform:none}}@keyframes drOut{from{transform:none}to{transform:translateX(-104%)}}@keyframes drBgIn{from{background-color:rgba(0,0,0,0)}}@keyframes drBgOut{to{background-color:rgba(0,0,0,0)}}',
+ '.drawer>nav{animation:drIn .26s cubic-bezier(.2,.8,.2,1) both}.drawer{animation:drBgIn .26s ease both}',
+ '.drawer.cerrando>nav{animation:drOut .22s ease both}.drawer.cerrando{animation:drBgOut .22s ease both;pointer-events:none}',
+ /* Ajustes: tarjetas compactas */
+ '#ajov details[data-k="ajcredd"] .field,#ajov details[data-k="ajmind"] .field{padding:6px 0}#ajov details[data-k="ajcredd"] .field label,#ajov details[data-k="ajmind"] .field label{font-size:14px;line-height:1.25}',
+ '#ajov details[data-k="ajcredd"] input,#ajov details[data-k="ajmind"] input{width:96px}',
+ /* fotos de personal */
+ '.chfotos{flex-wrap:wrap}.chfotos>div{flex:1 1 30%;min-width:96px}.chfbtn{display:flex;gap:4px;margin-top:4px}.chfbtn label{flex:1;font-size:12px!important;padding:0 4px!important;min-height:36px}',
+ /* guía para empezar */
+ '.guia .paso{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;color:inherit;font-size:16px;cursor:pointer}.guia .paso:first-of-type{border-top:0}.guia .ck{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;font-weight:800}.guia .paso.hecho .ck{background:var(--accent);border-color:var(--accent);color:#fff}.guia .paso.hecho .t{text-decoration:line-through;color:var(--muted)}'
+].join('\n');document.head.appendChild(st)})();
+/* ---------- tarjetas pintadas completas (en vez de la orilla de color) ---------- */
+function pintaTarjetas(){Array.prototype.forEach.call(document.querySelectorAll('[style*="border-left:"]'),function(el){var s=el.getAttribute('style')||'',m=/border-left:\s*([3-8])px solid ([^;"]+)/.exec(s);if(!m||el.dataset.pint===s)return;var col=m[2].trim();
+ el.style.borderLeft='0';el.style.background='color-mix(in srgb, '+col+' 14%, var(--surface))';el.dataset.pint=el.getAttribute('style')})}
+var _r35=render;render=function(){var r=_r35.apply(this,arguments);try{pintaTarjetas()}catch(e){}return r};
+/* ---------- menú: se mete deslizándose al cerrarlo ---------- */
+var _drCerrando=false;
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="menux"],[data-act="usrx"]');if(!b||_drCerrando)return;var d=b.closest('.drawer')||document.querySelector('.drawer');if(!d)return;if(b.classList.contains('drawer')&&e.target.closest('nav'))return;
+ e.stopImmediatePropagation();e.preventDefault();_drCerrando=true;d.classList.add('cerrando');setTimeout(function(){_drCerrando=false;if(b.dataset.act==='usrx')S.usrSel=false;else S.menu=false;render()},210)},true);
+/* ---------- Ajustes: crédito y "poca fruta" se abren como las demás secciones ---------- */
+function ajPliega(h,key,k,tit,sub){var w=document.createElement('div');w.innerHTML=h;var c=w.querySelector('[data-key="'+key+'"]');if(!c)return h;var d=document.createElement('details');d.className='card';d.setAttribute('data-k',k);if(S.dOpen[k])d.setAttribute('open','');
+ var sm=document.createElement('summary');sm.innerHTML='<b>'+tit+'</b><span class="lbl">'+sub+'</span>';d.appendChild(sm);var b0=c.querySelector(':scope > b');if(b0)b0.remove();while(c.firstChild)d.appendChild(c.firstChild);c.replaceWith(d);return w.innerHTML}
+var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;try{h=ajPliega(h,'ajcred','ajcredd','Crédito y mayoreo','límites, buró y mayoreo');h=ajPliega(h,'mincard','ajmind','Aviso de poca fruta','cuándo te aviso')}catch(e){}return h};
+/* ---------- fotos de personal: tomar o subir, y frente/reverso de INE y licencia ---------- */
+var _chI35=chImg;chImg=function(c,k,l){var h=_chI35.apply(this,arguments),id='chi_'+c.id+k;
+ return h.replace(/<label class="btn sec sm" for="chi_[^"]*"[^>]*>[^<]*<\/label>/,'<div class="chfbtn"><label class="btn sec sm" for="'+id+'c" style="display:flex;align-items:center;justify-content:center;cursor:pointer">📷 Tomar</label><label class="btn sec sm" for="'+id+'" style="display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️ Galería</label></div>')
+  .replace(/<\/div>$/,'<input id="'+id+'c" type="file" accept="image/*" capture="environment" data-chimg="'+c.id+':'+k+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>')};
+var _fiE35=fiEmp;fiEmp=function(f){var h=_fiE35.apply(this,arguments),c=S.choferes.filter(function(x){return x.id===f.id})[0];if(!c||esAdm(c))return h;try{
+ h=h.replace(chImg(c,'ine','INE'),chImg(c,'ine','INE (frente)')+chImg(c,'ineR','INE (reverso)')).replace(chImg(c,'lic','Licencia'),chImg(c,'lic','Licencia (frente)')+chImg(c,'licR','Licencia (reverso)'));
+ h=h.replace(chView(c,'ine','INE'),chView(c,'ine','INE (frente)')+chView(c,'ineR','INE (reverso)')).replace(chView(c,'lic','Licencia de conducir'),chView(c,'lic','Licencia (frente)')+chView(c,'licR','Licencia (reverso)'));
+ h=h.replace('<div style="display:flex;gap:10px;margin:8px 0">','<div class="chfotos" style="display:flex;gap:10px;margin:8px 0">').replace('<div style="display:flex;gap:10px;margin:4px 0 8px">','<div class="chfotos" style="display:flex;gap:10px;margin:4px 0 8px">')}catch(e){}return h};
+/* ---------- guía para empezar (admin con la app casi vacía) ---------- */
+function guiaPasos(){var hayCh=(S.choferes||[]).some(function(c){return !c.baja&&!esAdm(c)});var acc=typeof NB!=='undefined'&&NB.on?Object.keys(NB.usuarios||{}).some(function(u){var p=NB.usuarios[u];return p&&p.activo&&p.rol==='chofer'}):hayCh;
+ return [['Agrega tus clientes','Con su dirección y el día que se les visita','clientes',(S.cli||[]).some(function(c){return !c.oculto&&!c.rapida})],
+  ['Agrega a tus proveedores','A quién le compras la fruta','cargas',Object.keys(S.provDir||{}).length>0],
+  ['Dale acceso a tu chofer','En Personal → "Accesos a la app"','personal',acc],
+  ['Registra tu primera carga','La fruta que compraste','cargas',(S.cargas||[]).length>0],
+  ['Pon el precio de hoy','Lo que cobras por caja y por kilo','inicio',!!(S.precio&&num(S.precio.R)>0)],
+  ['Haz una ruta de prueba','Entra como chofer y registra una entrega','ruta',(S.rutasHist||[]).length>0||(S.log||[]).length>0]]}
+function guiaHTML(){if(S.role!=='admin'||S.guiaOff||!REAL)return '';var P=guiaPasos(),n=P.filter(function(x){return x[3]}).length;if(n===P.length)return '';
+ return '<div class="card guia" data-key="guia"><div style="display:flex;align-items:center;gap:8px"><b class="grow" style="font-size:18px">Para empezar</b><span class="pill">'+n+' de '+P.length+'</span></div><div class="lbl">Ve llenando esto y la app empieza a ayudarte con los números, las rutas y los avisos.</div>'
+  +P.map(function(x){return '<button class="paso'+(x[3]?' hecho':'')+'" data-act="'+(x[2]==='ruta'?'guiaruta':'tab')+'" data-t="'+x[2]+'"><span class="ck">'+(x[3]?'✓':'')+'</span><span class="grow"><span class="t">'+x[0]+'</span><br><span class="lbl">'+x[1]+'</span></span><span class="lbl">›</span></button>'}).join('')
+  +'<button class="link" style="margin-top:6px" data-act="guiaoff">Ya no mostrar</button></div>'}
+var _ini35=inicio;inicio=function(){var h=_ini35.apply(this,arguments),g=guiaHTML();if(!g)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+g+h.slice(i+5):g+h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guiaoff"],[data-act="guiaruta"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='guiaoff'){S.guiaOff=true;render();return}S.menu=false;S.usrSel=true;render()},true);
+/* ---------- avisos al abrir: uno solo que te lleva a Avisos ---------- */
+var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.length>1&&!avisoBloq()){var n=_toastQ.length;_toastQ.length=0;setTimeout(function(){toast('Tienes '+n+' avisos nuevos. Míralos en Inicio → Avisos.')},400)}return _r35b.apply(this,arguments)};
 
 
 /* ---------- Estructura ---------- */

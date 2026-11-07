@@ -41,6 +41,12 @@ jobs:
           npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2020 --outfile=www/firebase.js
           ls -la www/firebase.js
 
+      - name: Mapas (Leaflet)
+        run: |
+          mkdir -p www/leaflet
+          cp node_modules/leaflet/dist/leaflet.js node_modules/leaflet/dist/leaflet.css www/leaflet/
+          ls -la www/leaflet
+
       - name: Crear el proyecto de Android
         run: npx cap add android
 

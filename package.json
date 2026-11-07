@@ -7,10 +7,12 @@
     "@capacitor/android": "^7.0.0",
     "@capacitor/core": "^7.0.0",
     "@capacitor/status-bar": "^7.0.0",
-    "@capacitor/haptics": "^7.0.0"
+    "@capacitor/haptics": "^7.0.0",
+    "firebase": ">=12.0.0"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^7.0.0"
+    "@capacitor/cli": "^7.0.0",
+    "esbuild": "^0.24.0"
   }
 }

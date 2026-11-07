@@ -36,6 +36,11 @@ jobs:
       - name: Instalar Capacitor
         run: npm install --no-audit --no-fund
 
+      - name: Empaquetar la conexión con la nube (Firebase)
+        run: |
+          npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2019 --outfile=www/firebase.js
+          ls -la www/firebase.js
+
       - name: Crear el proyecto de Android
         run: npx cap add android
 

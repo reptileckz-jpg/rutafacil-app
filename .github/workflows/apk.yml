@@ -39,6 +39,12 @@ jobs:
       - name: Crear el proyecto de Android
         run: npx cap add android
 
+      - name: Permiso de ubicación (GPS)
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-feature android:name="android.hardware.location.gps" android:required="false" />\n</manifest>#' $M
+          grep -n "LOCATION" $M
+
       - name: Íconos y pantalla de inicio
         run: npx @capacitor/assets generate --android --iconBackgroundColor '#2F7D32' --iconBackgroundColorDark '#2F7D32' --splashBackgroundColor '#F6F1E3' --splashBackgroundColorDark '#1E2A1A'
 

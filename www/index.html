@@ -125,7 +125,7 @@ summary .lbl{flex:1}
 
 <script>
 var PRICE={R:260,M:18};
-var TODAY=new Date('2026-10-28T12:00:00');
+var TODAY=(window.PN_MODO==='vacio')?(function(){var d=new Date();d.setHours(12,0,0,0);return d})():new Date('2026-10-28T12:00:00');
 var S,tm;
 function fresh(){var o={
  role:'admin',tab:{admin:'inicio',rep:'ruta',local:'local',cont:'cres'},toast:'',
@@ -1201,7 +1201,7 @@ function vwBody(k){var v=S.vw,a=vwEsAdm(),h='',L=vwSteps(),i=L.indexOf(k),back=v
     +(c.foto?'<img src="'+c.foto+'" alt="Ticket" style="width:100%;height:110px;object-fit:cover;border-radius:10px;margin-top:6px">':'')+'<label class="btn sm sec" for="vcf" style="display:inline-flex;align-items:center;cursor:pointer;margin-top:6px">'+(c.foto?'Cambiar foto del ticket':'Foto del ticket'+(a||!FOTOS_OBLIGATORIAS?' (opcional'+(FOTOS_OBLIGATORIAS?'':' en la demo')+')':' (obligatoria)'))+'</label><input id="vcf" type="file" accept="image/*" capture="environment" data-vwfoto="comb" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"><div class="lbl" style="margin-top:6px">¿Todavía no cargas? Deja los datos vacíos y sigue: queda pendiente y lo completas con el botón Combustible cuando cargues.</div>';
    h+=vwNav(back,null,!c.q)}
  else if(k==='vacias'){var plR=vwVacPlan(v);h=(v.asignado&&plR?'<div class="card note" style="padding:12px"><b style="font-size:18px">Debes llevar '+plR+' cajas vacías para este viaje</b>'+(vwTarasUsa(v)?'<div class="lbl">El proveedor ya tiene '+vwTarasUsa(v)+' cajas tuyas.</div>':'')+'</div>':'')+q('¿Cuántas cajas vacías llevas?',v.asignado?'Si llevas otra cantidad, escríbela y se le avisa al administrador.':'')+big('vw.vacias',v.vacias,'Cajas vacías',1)+'<div class="lbl" style="text-align:center">En bodega hay '+S.inv.vacias+'.</div>'+capAviso(v)+vwNav(back)}
- else if(k==='lista'){var hm=v.par.some(function(p){return p.t==='M'}),it=[['efe','Recibí '+money(num(v.efe))+' para gastos']].concat(v.par.some(function(p){return p.t==='M'})?[['mantas','Llevo mantas para tapar el macho'+mantasTxt()]]:[]);v.chk=v.chk||{};
+ else if(k==='lista'){var hm=v.par.some(function(p){return p.t==='M'}),it=[['efe','Recibí '+money(num(v.efe))+' para gastos']].concat(v.par.some(function(p){return p.t==='M'&&(num(p.plan)>0||!v.asignado)})?[['mantas','Llevo mantas para tapar el macho'+mantasTxt()]]:[]);v.chk=v.chk||{};
   h=q('Antes de salir','Palomea cada punto.')+it.map(function(x){var ok=!!v.chk[x[0]];return '<button class="qa" data-act="vwchk" data-k="'+x[0]+'" aria-pressed="'+ok+'" style="margin-top:8px;'+(ok?'border:2px solid var(--accent)':'')+'"><span style="width:28px;height:28px;border-radius:8px;border:2px solid '+(ok?'var(--accent)':'var(--line)')+';background:'+(ok?'var(--accent)':'transparent')+';color:#fff;display:flex;align-items:center;justify-content:center;flex:none">'+(ok?icon('entrega',18):'')+'</span><span style="font-weight:500">'+esc(x[1])+'</span></button>'}).join('')+vwNav(back,null,it.some(function(x){return !v.chk[x[0]]}))}
  else if(k==='fotos'){var fl=FOTOS.filter(function(f){return v.fs[f[0]]}).length;h=q('Fotos del vehículo al salir','Frente, atrás y los dos lados, solo con la cámara'+(FOTOS_OBLIGATORIAS?'':' (en la demo son opcionales)')+'.')+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+FOTOS.map(function(f){return vwFotoTile('fs',f)}).join('')+'</div>'+vwNav(back,'Salir al viaje')}
  else if(k==='camino'||k==='vuelta'||/^[vyz]\d$/.test(k)){h=vwTramoHTML(k)}
@@ -1277,7 +1277,7 @@ function vwAvanzar(){var v=S.vw,k=v.k,L=vwSteps(),i=L.indexOf(k),c;if(v.bWait){t
  if(k==='comb'&&v.comb.q==='si'){if(FOTOS_OBLIGATORIAS&&!vwEsAdm()&&!v.comb.foto&&num(v.comb.total)){toast('Toma la foto del ticket');return false}}
  if(k==='plan')v.par.forEach(function(p){provSubio(p,null)});
  if(k==='listo'){if(v.efe==='')v.efe=String(vwGastoEst());if(vwCajPars(v).length)v.vacias=vwVacPlan(v);vwCrearCarga();v.asignado=true;S.vjEfeOut=(S.vjEfeOut||0)+num(v.efe);S.avPrecio.push('Viaje asignado a '+chofN(v.quien)+': '+v.par.map(function(p){return vwParLbl(p)+' en '+p.prov}).join(' y '));toast('Viaje asignado a '+chofN(v.quien));v.k='seguir';v.open=false;return false}
- if(k==='fotos'){vwCrearCarga();v.started=true;S.inv.vacias-=Math.min(S.inv.vacias,num(v.vacias));toast('Buen viaje')}
+ if(k==='fotos'){vwCrearCarga();v.started=true;var _sv=Math.min(S.inv.vacias,num(v.vacias));S.inv.vacias-=_sv;var _cg=cargaById(v.cid);if(_cg)_cg.vacEnv=num(_cg.vacEnv)+_sv;toast('Buen viaje')}
  if(k==='comb'){v.recs=(v.recs||[]).filter(function(r){return r.fase!=='salida'});if(v.comb.q==='si'&&num(v.comb.total)){v.recs.push({fase:'salida',precio:num(v.comb.precio),litros:num(v.comb.litros),total:num(v.comb.total),foto:v.comb.foto,hora:hhmm()});v.combPend=false;var vhc=vehById(v.veh);if(vhc&&num(v.comb.precio))vhc.precio=num(v.comb.precio)}else v.combPend=v.comb.q==='si'}
  if(/^b\d$/.test(k)&&v.par[+k[1]].tara===''){toast('Escribe el peso vacío');return false}
  if(/^p\d$/.test(k)){var p=v.par[+k[1]];if(!(vwKg(p)>0)){toast('Revisa los pesos');return false}}
@@ -1288,7 +1288,7 @@ function vwAvanzar(){var v=S.vw,k=v.k,L=vwSteps(),i=L.indexOf(k),c;if(v.bWait){t
  if(k==='reg'){var vhx=S.veh.filter(function(x){return x.id===+v.veh})[0]||vehHoy(),kmx=vwKmEst(v),rx=rendInfo(vhx).rend,esp=rx?kmx/rx:0,usa=(TANK[v.tank||'Lleno']-TANK[v.tankReg||v.tank||'Lleno'])*num(vhx.capL)+vwRecL(v);if(esp&&num(vhx.capL)<=150&&usa>esp*1.2&&usa-esp>num(vhx.capL)/4)S.avPrecio.push('Consumo alto en el viaje de '+chofN(v.quien)+': ~'+usa.toFixed(0)+' L contra ~'+esp.toFixed(0)+' L esperados');
   c=vwCarga();c.t.comida=num(c.t.comida)+num(v.comida);(v.gx||[]).forEach(function(x){c.extras.push({c:x.t+' (viaje)',m:x.m})});var R=vwCajPars(v)[0],ll=sum(vwCajPars(v),function(p){return num(p.cajas)}),tu=vwTarasUsa(v),vr=v.vacReg===''?Math.max(0,num(v.vacias)+tu-ll):num(v.vacReg);S.tarasProv=S.tarasProv||{};v.par.forEach(function(p){if(num(p.tarasUsa))S.tarasProv[p.prov]=Math.max(0,num(S.tarasProv[p.prov])-num(p.tarasUsa))});
   c.t.diesel=num(c.t.diesel)+vwRecTot(v);c.est='Recibida';c.vacEnv=0;S.inv.verdes+=c.cajas;S.inv.kgVerde=r2(S.inv.kgVerde+c.kgM);recibirOtros(c);S.inv.vacias+=vr;
-  var falt=num(v.vacias)+tu-ll-vr;if(falt>0&&v.tarasCon&&v.tarasCon!=='otro'){S.tarasProv[v.tarasCon]=num(S.tarasProv[v.tarasCon])+falt;S.avPrecio.push(falt+' cajas vacías se quedaron con '+v.tarasCon)}if(falt)S.cajasMov.push({t:'Viaje: '+(v.motivo||'diferencia'),f:iso(TODAY),n:-falt});
+  var falt=num(v.vacias)+tu-ll-vr;if(falt>0&&v.tarasCon&&v.tarasCon!=='otro'){S.tarasProv[v.tarasCon]=num(S.tarasProv[v.tarasCon])+falt;S.avPrecio.push(falt+' cajas vacías se quedaron con '+v.tarasCon)}if(falt)S.cajasMov.push({t:'Viaje: '+(v.motivo||'diferencia'),f:iso(TODAY),n:-falt});if(tu)S.cajasMov.push({t:'Viaje: regresaron cajas que estaban con el proveedor',f:iso(TODAY),n:tu});
   if(!vwYo()){c.trBase=trTot(c);S.vjEfeBack=(S.vjEfeBack||0)+num(v.regEfe);var deb=num(v.efe)-vwGastos();if(num(v.regEfe)<deb-0.005)S.faltantes.push({ch:v.quien,m:r2(deb-num(v.regEfe)),fecha:iso(TODAY),desc:true,pend:true})}
   var mins=Math.max(1,Math.round((Date.now()-(v.t0||Date.now()))/60000));v.hist={f:iso(TODAY),quien:chofN(v.quien),veh:vhx.n,par:v.par.map(function(p){return vwParLbl(p)+' en '+p.prov}).join(' · '),cajas:c.cajas,kgR:c.kgR,kgM:c.kgM,comb:vwRecTot(v),bas:sum(v.par,function(p){return p.met==='pesadas'?0:num(p.bas)}),comida:num(v.comida),dur:mins<60?mins+' min':Math.floor(mins/60)+' h '+(mins%60)+' min',fotos:Object.keys(v.fs).length+Object.keys(v.fr).length};S.vjHist.unshift(v.hist);v.hist.cid=c.id;c.vjd={veh:+v.veh,quien:v.quien,tank:v.tank||'Lleno',tankReg:v.tankReg||v.tank||'Lleno',recL:vwRecL(v),recP:vwRecP(v),odoIni:num(v.odoIni),odoFin:num(v.odoFin),kmEst:vwKmEst(v)};if(num(v.odoFin)>num(vhx.odo))vhx.odo=num(v.odoFin);
   S.avPrecio.push('Llegó la carga de '+c.prov+': '+c.cajas+' cajas'+(c.kgM?' y '+c.kgM+' kg de macho':'')+'. Revisa y fija el precio del lote.');S.openCarga=c.id;toast('Carga recibida en bodega')}
@@ -4100,7 +4100,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='tutsig'){e.stopImmediatePropagation();S.tut.i++;if(S.tut.i>=TUT[S.tut.k].length){tutTerminar();return}render();return}
  if(a==='tutfin'){e.stopImmediatePropagation();tutTerminar();return}
  if(a==='tutver'){e.stopImmediatePropagation();S.aj=false;S.menu=false;tutIniciar(S.role==='rep'?'rep':'admin');return}
- if(a==='role'&&b.dataset.r==='rep'&&MODO==='vacio'&&!S.tutVisto.rep)setTimeout(function(){tutIniciar('rep')},350)},true);
+},true);
 var _rL7=render;render=function(){if(S.tut){var el0=null}_rL7.apply(this,arguments);try{var root=$('root');var su=setupHTML();if(su){var w=document.createElement('div');w.innerHTML=su;root.appendChild(w.firstElementChild)}
  if(S.tut){var t0=TUT[S.tut.k][S.tut.i];if(t0){var tg=null;t0[0].split(',').some(function(sel){var x=document.querySelector(sel.trim());if(x){tg=x;return true}return false});if(tg){var rr=tg.getBoundingClientRect();if(rr.top<0||rr.bottom>window.innerHeight)tg.scrollIntoView({block:'center'})}}
   var th=tutHTML();if(th){var w2=document.createElement('div');w2.innerHTML=th;root.appendChild(w2.firstElementChild)}}
@@ -5118,7 +5118,7 @@ var _tst19=toast;toast=function(t){if(typeof t==='string'&&/no se le da mayoreo 
 /* regla del chofer: rechazos en los mismos días (antes 30) */
 mayRech30=function(ch){var lim=iso(new Date(TODAY.getTime()-num(crCfg().mayD)*864e5));return mayRechL().filter(function(x){return x.ch===+ch&&x.f>lim}).length};
 /* Ajustes */
-var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
+var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
  var x='<div class="card" data-key="ajcred"><b>Control de crédito y mayoreo</b>'+f('crCli','Máximo de crédito por cliente $')+f('crCh','Lo que pueden deber todos los clientes de un chofer $')
   +'<div class="lbl" style="margin-top:10px"><b>Buró: si tarda en pagar, baja su límite</b></div>'+f('bD1','Bueno: paga en máximo (días)')+f('bD2','Regular hasta (días)')+f('bL2','Límite de Regular $')+f('bD3','Malo hasta (días); después, bloqueado')+f('bL3','Límite de Malo $')
   +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
@@ -5186,7 +5186,7 @@ var _idb=null;
 function idbAbrir(cb){if(_idb)return cb(_idb);try{var rq=indexedDB.open('platanos',1);rq.onupgradeneeded=function(){rq.result.createObjectStore('kv')};rq.onsuccess=function(){_idb=rq.result;cb(_idb)};rq.onerror=function(){cb(null)}}catch(e){cb(null)}}
 function idbGet(k,cb){idbAbrir(function(db){if(!db)return cb(null);try{var t=db.transaction('kv','readonly').objectStore('kv').get(k);t.onsuccess=function(){cb(t.result==null?null:t.result)};t.onerror=function(){cb(null)}}catch(e){cb(null)}})}
 function idbPut(k,v,cb){idbAbrir(function(db){if(!db)return cb&&cb(false);try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=function(){cb&&cb(true)};tx.onerror=function(){cb&&cb(false)}}catch(e){cb&&cb(false)}})}
-var PN_TRANS=['toast','modal','confirm','undo','np','dfOpen','aj','menu'];
+var PN_TRANS=['toast','modal','confirm','undo','np','dfOpen','aj','menu','pinOk','usrSel'];
 function estadoTxt(){var o={};Object.keys(S).forEach(function(k){if(PN_TRANS.indexOf(k)<0)o[k]=S[k]});o._dia=iso(TODAY);o._guardado=Date.now();return JSON.stringify(o)}
 var _gT=null,_gUlt='',_cargado=!PN_GUARDA;
 function guardarYa(){if(!PN_GUARDA||!_cargado)return;try{var t=estadoTxt();if(t===_gUlt)return;_gUlt=t;idbPut('S',t)}catch(e){console.error('guardar',e)}}
@@ -5203,7 +5203,7 @@ function cambioDeDia(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return;S.r
  if(S.arSt&&archiva(S.arSt,S.arSt.chofHoy))S.arSt=null;
  S.recep=null;S.cierreReg=null;S.cierreRec='';S.rutasHist=S.rutasHist.slice(-400);
  if(pend.length)S.avPrecio.push('URGENTE: '+pend.join(', ')+' no envió su cierre de ayer ('+fmtF(viejo)+'). Pídele que lo envíe.')}
-if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viejo=o._dia;delete o._dia;delete o._guardado;Object.keys(f).forEach(function(k){if(!(k in o))o[k]=f[k]});S=o;cambioDeDia(viejo);_gUlt='';render()}}catch(e){console.error('cargar',e)}_cargado=true;guardarLuego()});
+if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viejo=o._dia;delete o._dia;delete o._guardado;Object.keys(f).forEach(function(k){if(!(k in o))o[k]=f[k]});S=o;cambioDeDia(viejo);S.pinOk={};S.usrSel=false;S.menu=false;if(!(S.setup&&!S.setup.fin))pinEntrar();_gUlt='';render()}}catch(e){console.error('cargar',e)}_cargado=true;guardarLuego()});
 /* ---- el admin ve la ruta de cada chofer ---- */
 function rutasDeHoy(){var L=[];var a={ch:+S.chofHoy,o:null,act:true};L.push(a);Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&!rutaVacia(S.chSt[id]))L.push({ch:+id,o:S.chSt[id]})});return L}
 function rutaSelHTML(){var L=rutasDeHoy();if(L.length<2||S.role!=='admin')return '';
@@ -5216,6 +5216,449 @@ function borrarTodoLocal(cb){idbPut('S','',function(){cb&&cb()})}
 var _cT21=cierreTop;cierreTop=function(){var h=_cT21.apply(this,arguments);if(S.role!=='admin')return h;
  Object.keys(S.chSt||{}).forEach(function(id){if(+id===+S.chofHoy)return;var o=S.chSt[id];if(!(o&&o.cierre&&o.cierre.sent&&!o.cierreReg))return;var r=o.cierre.res||{};
   h+='<button class="card alert" data-act="verruta" data-id="'+id+'" data-ir="cierreadm" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('cierre',20)+'</span><span class="grow"><b style="font-size:17px">'+esc(chofN(+id))+' mandó su cierre</b><br><span class="lbl">Debe entregar '+money(r.efectivo||0)+'. Recíbelo.</span></span><span style="font-size:22px">›</span></button>'});return h};
+
+/* ===================== v5.1 · Arreglos de la prueba en celulares ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ /* el "+" se iba a media pantalla: la animación de cambio de pantalla dejaba un transform puesto */
+ '.scr-in,main.scr-in{animation-fill-mode:backwards!important}',
+ '.fab{position:fixed!important;right:max(16px,env(safe-area-inset-right,0px))!important;left:auto!important}',
+ /* la burbuja de datos que faltan queda pegada debajo del encabezado (no se esconde detrás) */
+ '.dfbub{position:sticky;top:calc(var(--hdrH,72px) + 6px);z-index:7}',
+ '.dfmini{position:sticky;top:calc(var(--hdrH,72px) + 6px);z-index:7}',
+ /* Bodega: la tarjeta de existencias usa todo el ancho en pantallas anchas */
+ '.card.exist{column-span:all;-webkit-column-span:all;grid-column:1/-1}',
+ /* bienvenida legible aunque el celular esté en modo oscuro */
+ '#bienv{background:#F6F1E3!important;color:#1E2A1A!important}#bienv p,#bienv .lbl{color:#3D4A38!important;font-size:17px}#bienv h1{color:#1E2A1A!important}'
+].join('\n');document.head.appendChild(st);
+ if(!document.querySelector('meta[name="color-scheme"]')){var m=document.createElement('meta');m.name='color-scheme';m.content='light dark';document.head.appendChild(m)}})();
+function hdrMedir(){var h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hdrH',Math.round(h.getBoundingClientRect().height)+'px')}
+window.addEventListener('resize',hdrMedir);
+var _r22=render;render=function(){var r=_r22.apply(this,arguments);try{hdrMedir()}catch(e){}return r};
+/* minimizada también se queda arriba */
+var _dfB22=dfBurbuja;dfBurbuja=function(){return _dfB22.apply(this,arguments).replace('<div style="display:flex;justify-content:flex-end;margin-bottom:8px">','<div class="dfmini" style="display:flex;justify-content:flex-end;margin-bottom:8px">')};
+/* Bodega */
+var _bod22=bodega;bodega=function(){return _bod22.apply(this,arguments).replace('<div class="card"><div class="lbl">Existencias de ','<div class="card exist"><div class="lbl">Existencias de ')};
+if(typeof VIEWS!=='undefined')VIEWS.bodega=bodega;
+
+/* ===================== Versión real: sin "demo" en el menú ===================== */
+var REAL=(typeof MODO!=='undefined'&&MODO==='vacio');
+function personasEntrar(){var L=[];(S.admins||[]).forEach(function(a){L.push({k:'a:'+a.k,n:a.n,p:'Administrador',go:{role:'admin',adm:a.k}})});
+ S.choferes.forEach(function(c){if(c.baja||c.arch)return;if(typeof esAdm==='function'&&esAdm(c))return;var pu=c.puesto||'chofer';if(pu==='chofer')L.push({k:'c:'+c.id,n:c.n,p:'Chofer',go:{role:'rep',ch:c.id}});else if(pu==='local')L.push({k:'local',n:c.n,p:'Venta local',go:{role:'local'}})});
+ if(S.cfg.contador||S.pins.cont)L.push({k:'cont',n:'Contador',p:'Contador',go:{role:'cont'}});return L}
+var _menu22=menuHTML;menuHTML=function(r){var h=_menu22.apply(this,arguments);if(!REAL)return h;
+ h=h.replace(/<div class="lbl" style="margin-top:6px">Demo: ¿qué chofer\?<\/div><div class="chips" style="margin:4px 0">[\s\S]*?<\/div>/,'');
+ h=h.replace(/<div class="lbl" style="margin-top:8px"><b>Ver como \(solo en la demo\)<\/b><\/div><div class="chips" style="margin-top:4px">[\s\S]*?<\/div>/,'');
+ h=h.replace(/<div class="lbl" style="margin-top:6px">Demo: ¿quién eres\?<\/div><div class="chips" style="margin:4px 0">[\s\S]*?<\/div>/,'');
+ h=h.replace(/<div class="lbl" style="margin-top:8px">Miércoles 28 de octubre · datos de ejemplo\. Prototipo: lo que haces se guarda solo mientras la página está abierta\.<\/div><button class="link" data-act="reset">Reiniciar demo<\/button>/,'');
+ var yo=r==='admin'?adminNom(S.adminYo)+' (Administrador)':(r==='rep'?chofN(S.chofHoy)+' (Chofer)':(r==='local'?'Venta local':'Contador'));
+ h=h.replace(/Entraste como: <b>[^<]*<\/b>/,'Entraste como: <b>'+esc(yo)+'</b>');
+ return h.replace('</nav></div>','<button class="btn sec" style="margin-top:12px" data-act="usrcambia">Cambiar de usuario</button><button class="btn sec" style="margin-top:8px" data-act="usrsalir">Cerrar sesión</button><div class="lbl" style="margin-top:10px;text-align:center">'+esc(S.cfg.nombre||'')+' · Ruta Fácil</div></nav></div>')};
+var _bienv22=typeof bienvHTML==='function'?bienvHTML:null;
+/* pie de página de "prototipo" */
+var _rFoot22=render;render=function(){var r=_rFoot22.apply(this,arguments);if(REAL){var f=document.querySelector('main .foot');if(f&&f.style.display!=='none')f.style.display='none'}return r};
+function usrHTML(){if(!S.usrSel)return '';var L=personasEntrar();
+ return '<div class="drawer" style="z-index:86" data-act="usrx"><nav role="dialog" aria-label="Cambiar de usuario" style="max-width:420px"><div style="display:flex;align-items:center"><b style="font-size:18px">¿Quién va a usar el celular?</b><button class="helpb" style="margin-left:auto" data-act="usrx" aria-label="Cerrar">×</button></div><div class="lbl">Te va a pedir el PIN de esa persona.</div>'+L.map(function(x,i){return '<button class="qa" style="margin-top:8px;width:100%;text-align:left" data-act="usrpick" data-i="'+i+'"><span class="grow"><b>'+esc(x.n)+'</b><br><span class="lbl">'+x.p+'</span></span><span style="font-size:20px">›</span></button>'}).join('')+'</nav></div>'}
+var _suH22=setupHTML;setupHTML=function(){var h=_suH22.apply(this,arguments);return h||usrHTML()};
+function entrarComo(x){var g=x.go;S.menu=false;S.usrSel=false;if(g.role==='rep'){if(+S.chofHoy!==+g.ch)chCambiar(+g.ch);S.arOn=false}if(g.role==='admin'){S.adminYo=g.adm;S.encOn=false}S.role=g.role;S.pinOk={};S.toast='';pinEntrar();render();window.scrollTo(0,0)}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='usrcambia'){e.stopImmediatePropagation();S.menu=false;S.usrSel=true;render();return}
+ if(a==='usrx'){if(e.target.closest('nav')&&b.tagName!=='BUTTON')return;e.stopImmediatePropagation();S.usrSel=false;render();return}
+ if(a==='usrpick'){e.stopImmediatePropagation();var x=personasEntrar()[+b.dataset.i];if(x)entrarComo(x);return}
+ if(a==='usrsalir'){e.stopImmediatePropagation();S.menu=false;S.pinOk={};S.toast='';pinEntrar();render();return}},true);
+
+/* ===================== PIN: crear el propio, cambiarlo, reiniciarlo, bloqueo por intentos ===================== */
+/* nadie entra con 1234: si no tiene PIN, lo crea al entrar */
+function pinTiene(k){return !!S.pins[k]}
+var _pd22=pinDe;pinDe=function(k){if(REAL&&!S.pins[k])return '\u0000';return _pd22.apply(this,arguments)};
+var _pnew={k:null,v:'',v1:null};
+var _pinH22=pinHTML;pinHTML=function(){if(!_pin.modo)return '';var k=_pin.k;
+ if(REAL&&!pinTiene(k)){if(_pnew.k!==k)_pnew={k:k,v:'',v1:null};var p2=_pnew.v1!=null;
+  return '<div id="pinov" role="dialog" aria-label="Crea tu PIN"><div class="pw"><b style="font-size:20px">Hola, '+esc(pinNom(k))+'</b><div class="lbl">'+(p2?'Escríbelo otra vez para confirmar':'Crea tu PIN de 4 números. Con él vas a entrar a la app. No uses 1234 ni tu fecha de nacimiento.')+'</div>'
+   +'<div class="dots">'+[0,1,2,3].map(function(i){return '<i class="'+(i<_pnew.v.length?'on':'')+'"></i>'}).join('')+'</div>'
+   +'<div class="kp">'+[1,2,3,4,5,6,7,8,9].map(function(n){return '<button data-act="pnd" data-v="'+n+'">'+n+'</button>'}).join('')+'<button data-act="pnx" style="font-size:15px">'+(p2?'Volver':'')+'</button><button data-act="pnd" data-v="0">0</button><button data-act="pnb" aria-label="Borrar" style="font-size:20px">⌫</button></div>'+(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1?'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button>':'')+'</div></div>'}
+ var bl=pinBloqueo(k),h=_pinH22.apply(this,arguments);
+ if(bl)h=h.replace(/<div class="dots">/,'<div class="neg" style="font-weight:700;margin:6px 0">Demasiados intentos. Espera '+bl+'.</div><div class="dots">');
+ if(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1)h=h.replace(/<\/div><\/div>$/,'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button></div></div>');
+ return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd"],[data-act="pnb"],[data-act="pnx"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;
+ if(a==='pnb'){_pnew.v=_pnew.v.slice(0,-1);render();return}
+ if(a==='pnx'){if(_pnew.v1!=null){_pnew.v1=null;_pnew.v=''}render();return}
+ if(_pnew.v.length<4)_pnew.v+=b.dataset.v;if(_pnew.v.length<4){render();return}
+ if(_pnew.v1==null){if(_pnew.v==='1234'||/^(\d)\1{3}$/.test(_pnew.v)){_pnew.v='';toast('Ese PIN es muy fácil de adivinar. Escoge otro');render();return}_pnew.v1=_pnew.v;_pnew.v='';render();return}
+ if(_pnew.v!==_pnew.v1){_pnew={k:_pnew.k,v:'',v1:null};toast('No coinciden. Vuelve a crearlo');render();return}
+ var k=_pnew.k;S.pins[k]=_pnew.v;S.pinOk[k]=true;_pnew={k:null,v:'',v1:null};var cb=_pin.cb,m=_pin.modo;_pin={v:'',modo:null};_pinAct=Date.now();S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:pinNom(k),x:'Creó su PIN'});toast('PIN creado');render();if(m!=='entrar'&&cb)setTimeout(cb,0)},true);
+/* bloqueo por intentos: 5 equivocados → 1 min, luego 5, luego 15; aviso al admin */
+var PIN_ESP=[1,5,15];
+function pinFallas(k){S.pinF=S.pinF||{};return S.pinF[k]||(S.pinF[k]={n:0,nivel:0,hasta:0})}
+function pinBloqueo(k){var f=pinFallas(k),r=f.hasta-Date.now();if(r<=0)return '';var s=Math.ceil(r/1000);return s>=60?Math.ceil(s/60)+' min':s+' s'}
+var _pd22b=pinDe;pinDe=function(k){var real=_pd22b.apply(this,arguments);if(!_pin||_pin.v.length!==4||_pin.k!==k)return real;
+ if(pinBloqueo(k))return '\u0001';
+ var f=pinFallas(k);if(_pin.v===real){f.n=0;return real}
+ f.n++;if(f.n>=5){var min=PIN_ESP[Math.min(f.nivel,PIN_ESP.length-1)];f.hasta=Date.now()+min*60000;f.nivel++;f.n=0;
+  S.avPrecio.push('URGENTE: alguien escribió mal 5 veces el PIN de '+pinNom(k)+' ('+hhmm()+'). Se bloqueó '+min+' min.');setTimeout(render,50)}
+ return real};
+setInterval(function(){if(_pin&&_pin.modo&&_pin.k&&S.pinF&&S.pinF[_pin.k]&&S.pinF[_pin.k].hasta>Date.now()-1500)render()},1000);
+/* "Cambiar" mi PIN pide el actual; el admin puede reiniciar el de otros */
+var _pinRow22=pinRow;pinRow=function(k){var h=_pinRow22.apply(this,arguments).replace('el de inicio (1234)',REAL?'todavía no lo crea (lo crea al entrar)':'el de inicio (1234)');
+ if(S.role==='admin'&&!S.encOn&&k!==pinKey()&&pinTiene(k))h=h.replace('</button></div>','</button><button class="btn sm sec" style="width:auto;margin-left:6px" data-act="pinreset" data-k="'+k+'">Reiniciar</button></div>');return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,k=b.dataset.k;
+ if(a==='pincambia'&&k===pinKey()&&pinTiene(k)&&!b.dataset.ok){e.stopImmediatePropagation();_pin={v:'',modo:'conf',k:k,motivo:'Escribe tu PIN actual',cb:function(){var x=document.createElement('button');x.dataset.act='pincambia';x.dataset.k=k;x.dataset.ok='1';x.style.display='none';document.body.appendChild(x);x.click();x.remove()}};render();return}
+ if(a==='pinreset'){e.stopImmediatePropagation();delete S.pins[k];if(S.pinF)delete S.pinF[k];S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Reinició el PIN de '+pinNom(k)});toast('Listo: '+pinNom(k)+' va a crear un PIN nuevo la próxima vez que entre');render();return}},true);
+/* ya no hay "todavía es 1234" en los datos que faltan */
+var _dfL22=dfLista;dfLista=function(){return _dfL22.apply(this,arguments).filter(function(x){return !/PIN propio/.test(x.txt)})};
+
+/* ===================== Vehículo: marca, modelo, año, color, serie, capacidad, motor, llantas ===================== */
+var VEH_X=[['marca','Marca','text','ej. Nissan'],['modelo','Modelo','text','ej. NP300'],['anio','Año','number',''],['color','Color','text',''],['vin','Número de serie (VIN)','text',''],['capC','Capacidad de carga (cajas)','number',''],['capK','Capacidad de carga (kg)','number',''],['motor','Motor','text','ej. 2.5 L diésel'],['llanta','Medida de llanta','text','ej. 195/R15']];
+var _vF22=vForm;vForm=function(){var h=_vF22.apply(this,arguments),f=S.vf;['marca','modelo','motor','llanta','capK'].forEach(function(k){if(f[k]==null)f[k]=''});
+ h=h.replace(vff('n','Nombre o modelo'),vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'));
+ h=h.replace(vff('color','Color'),vff('color','Color')+vff('motor','Motor','text','ej. 2.5 L diésel')+vff('llanta','Medida de llanta','text','ej. 195/R15')+(h.indexOf('vf_capC')<0?vff('capC','Capacidad de carga (cajas)','number'):'')+vff('capK','Capacidad de carga (kg)','number'));
+ return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='vsave'&&S.vf){var f=JSON.parse(JSON.stringify(S.vf)),id=S.vfId,n0=S.veh.length;setTimeout(function(){var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(!v)return;['marca','modelo','motor','llanta'].forEach(function(k){if(f[k]!=null)v[k]=String(f[k]).trim()});if(num(f.capK)>0)v.capK=num(f.capK);render()},0)}
+ if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
+/* en la configuración inicial */
+var _suH22b=setupHTML;setupHTML=function(){var h=_suH22b.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==2)return h;var f=S.setup.vf||{};
+ var x='<div class="lbl" style="margin-top:12px"><b>Datos del vehículo</b></div>'+VEH_X.map(function(d){return suX('setup.vf.'+d[0],d[1],f[d[0]],d[2],d[3])}).join('');
+ return h.replace('<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>',x+'<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>')};
+var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
+/* faltantes del vehículo */
+var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
+
+/* ===================== Avisos de poca fruta (desde la configuración inicial) ===================== */
+var MIN_K=[['minV','Cajas verdes de roatán','cajas','verdes','Pide carga'],['minMad','Cajas maduras de roatán','cajas','maduras','Saca a madurar'],['minKV','Kilos de macho verde','kg','kgVerde','Pide carga'],['minKMad','Kilos de macho maduro','kg','kgMaduro','Saca a madurar']];
+function minCampos(pref){return '<div class="card" data-key="mincard"><b>¿Cuándo te aviso que hay poca fruta?</b><div class="lbl">Te aviso cuando quede esto o menos. Déjalo vacío si no quieres aviso.</div>'+MIN_K.map(function(m){return '<div class="field"><label for="'+pref+m[0]+'">'+m[1]+' ('+m[2]+')</label><input id="'+pref+m[0]+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+m[0]+'" value="'+esc(S.cfg[m[0]]==null?'':S.cfg[m[0]])+'"></div>'}).join('')+'</div>'}
+var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
+var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
+function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(lim==null||lim==='')return;lim=num(lim);var hay=num(S.inv[m[3]]);if(hay<=lim)a.push('URGENTE: '+(m[2]==='kg'?'quedan pocos ':'quedan pocas ')+m[1].toLowerCase()+': '+(m[2]==='kg'?(Math.round(hay*10)/10).toLocaleString('es-MX')+' kg':hay+' cajas')+' (te aviso con '+lim+'). '+m[4]+'.')});return a}
+var _av22=avisos;avisos=function(){var a=_av22.apply(this,arguments);try{return minAvisos().concat(a)}catch(e){return a}};
+
+/* ===================== Versión real: sin rastros de demo, fecha y hora de verdad ===================== */
+if(REAL){document.documentElement.classList.add('real');(function(){var st=document.createElement('style');st.textContent='html.real main .foot,html.real [data-act="reset"]{display:none!important}.bvhola>:first-child{margin-left:auto!important;margin-right:auto!important}';document.head.appendChild(st)})()}
+function relojReal(){var d=new Date();return d.getHours()*60+d.getMinutes()}
+if(REAL){S.reloj=relojReal();var _rClk22=render;render=function(){S.reloj=relojReal();return _rClk22.apply(this,arguments)};
+ /* si la app se queda abierta y cambia el día, se recarga (lo guardado pasa al día nuevo) */
+ var _diaAbierto=iso(TODAY);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){var d=new Date();d.setHours(12,0,0,0);if(iso(d)!==_diaAbierto){try{guardarYa()}catch(e){}setTimeout(function(){location.reload()},300)}}})}
+var _bvH22=bienvHTML;bienvHTML=function(){return _bvH22.apply(this,arguments).replace('<div style="text-align:center;padding:16px 4px 8px">','<div class="bvhola" style="text-align:center;padding:24px 4px 8px">')};
+
+/* ===================== Botón o gesto de "atrás" =====================
+   Atrás = cierra la ventana que está abierta o regresa a la pantalla anterior; si ya no hay, va a la
+   pantalla principal (Inicio del admin / Ruta del chofer). Estando en la principal, hay que hacerlo
+   dos veces seguidas para salir. */
+var NAV_CASA={admin:'inicio',rep:'ruta',local:'local',cont:'cres'};
+var _navPila=[],_navUlt=null,_navAtras=false,_navSalir=0,_navGuard=false;
+function navLlave(){return S.role+':'+(S.tab&&S.tab[S.role])}
+function navGuardia(){if(_navGuard)return;try{history.pushState({pn:1},'');_navGuard=true}catch(e){}}
+try{history.replaceState({pn:0},'')}catch(e){}
+setTimeout(navGuardia,300);
+var _rNav22=render;render=function(){var r=_rNav22.apply(this,arguments);try{var k=navLlave();if(_navUlt&&k!==_navUlt&&!_navAtras&&_navUlt.split(':')[0]===S.role){_navPila.push(_navUlt);if(_navPila.length>30)_navPila.shift()}if(_navUlt&&_navUlt.split(':')[0]!==S.role)_navPila=[];_navUlt=k;_navAtras=false}catch(e){}return r};
+function navVentana(){/* la ventana de más arriba que tenga botón para cerrar/regresar */
+ var D=[].slice.call(document.querySelectorAll('[role="dialog"],.drawer,#fiov,#ajov,#npov,#dfov,#setov,.gxsheet')).filter(function(d){if(!d.isConnected||d.id==='pinov'||d.id==='bienv'||d.id==='setov'||d.id==='cajov')return false;var cs=getComputedStyle(d);return cs.display!=='none'&&cs.visibility!=='hidden'&&d.getBoundingClientRect().height>0});
+ if(!D.length)return null;D.sort(function(a,b){return (+getComputedStyle(b).zIndex||0)-(+getComputedStyle(a).zIndex||0)});
+ for(var i=0;i<D.length;i++){var d=D[i],c=d.querySelector('[aria-label="Regresar"],[aria-label="Cerrar"],[aria-label="Cerrar menú"],[aria-label="Cancelar"],.fiback,[data-act$="x"],[data-act="modalx"],[data-act="menux"]');if(!c&&d.classList.contains('drawer'))c=d;if(c)return c}return null}
+function navAtras(){
+ if(_pin&&_pin.modo){if(_pin.modo!=='entrar'){_pin={v:'',modo:null};render()}return true}
+ if(S.modal){S.modal=null;render();return true}
+ if(S.confirm){S.confirm=null;render();return true}
+ var c=navVentana();if(c){c.click();return true}
+ var casa=NAV_CASA[S.role]||S.tab[S.role];
+ while(_navPila.length){var p=_navPila.pop();if(p!==navLlave()&&p.split(':')[0]===S.role){_navAtras=true;S.tab[S.role]=p.split(':')[1];render();window.scrollTo(0,0);return true}}
+ if(S.tab[S.role]!==casa){_navAtras=true;S.tab[S.role]=casa;render();window.scrollTo(0,0);return true}
+ return false}
+window.addEventListener('popstate',function(){_navGuard=false;
+ if(navAtras()){_navSalir=0;navGuardia();return}
+ /* ya está en la principal: la primera vez avisa, la segunda sale */
+ var now=Date.now();if(now-_navSalir<2500){_navSalir=0;try{history.back()}catch(e){}return}
+ _navSalir=now;toast('Vuelve a deslizar hacia atrás para salir');setTimeout(function(){if(!_navGuard&&Date.now()-_navSalir>=2400)navGuardia()},2500);
+ /* si sigue usando la app, se vuelve a poner la guardia */
+ var g=function(){navGuardia();document.removeEventListener('pointerdown',g,true)};document.addEventListener('pointerdown',g,true)});
+
+/* ===================== Barra de estado del teléfono =====================
+   En la app de Android la pantalla empezaba debajo de la hora y los íconos. Ahora se respeta ese espacio
+   (también en las ventanas que cubren toda la pantalla). */
+(function(){var mv=document.querySelector('meta[name="viewport"]');if(mv&&mv.content.indexOf('viewport-fit')<0)mv.content+=',viewport-fit=cover';
+ var esApp=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());if(esApp)document.documentElement.classList.add('app-nativa');
+ var st=document.createElement('style');st.textContent=[
+  ':root{--sbar:env(safe-area-inset-top,0px)}',
+  'header{padding-top:calc(12px + var(--sbar))!important}',
+  '#setov,#ajov,#pinov,#cajov,#bienv,.drawer nav{padding-top:calc(10px + var(--sbar))!important}',
+  '#fiov .fihd,#npov .fihd,#dfov .fihd{padding-top:calc(10px + var(--sbar))!important}',
+  '#fiov .fitabs{top:calc(62px + var(--sbar))!important}'
+ ].join('\n');document.head.appendChild(st)})();
+
+/* el vehículo al asignar un viaje: la etiqueta de combustible ya no se sale */
+(function(){var st=document.createElement('style');st.textContent='[data-act="vwveh"]{height:auto!important;min-height:76px;padding-top:10px!important;padding-bottom:10px!important;align-items:center}';document.head.appendChild(st)})();
+/* tutorial del chofer: solo cuando ya entró con su PIN y ya está en su ruta (no encima de la bienvenida) */
+var _tutRepT=null;
+var _rTut22=render;render=function(){var r=_rTut22.apply(this,arguments);try{if(REAL&&S.role==='rep'&&!(S.tutVisto&&S.tutVisto.rep)&&!S.tut&&!(_pin&&_pin.modo)&&!(typeof bienvOn==='function'&&bienvOn())&&!document.getElementById('bienv')&&!S.modal&&!_tutRepT){_tutRepT=setTimeout(function(){_tutRepT=null;if(S.role==='rep'&&!S.tut&&!(S.tutVisto&&S.tutVisto.rep)&&!(_pin&&_pin.modo)&&!bienvOn())tutIniciar('rep')},700)}}catch(e){}return r};
+
+/* las animaciones de entrada ya no dejan "movidas" las barras fijas (la de abajo del viaje se iba a un lado) */
+(function(){var st=document.createElement('style');st.textContent='.ov-in,.ov-fade,.d-in,.popin,.slideup,.fadein,.app,main,main>*{animation-fill-mode:backwards!important}';document.head.appendChild(st)})();
+
+/* ===================== Vibración ===================== */
+function vibrar(p){try{var H=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics;if(H){if(Array.isArray(p)){H.vibrate({duration:Math.min(1500,p.reduce(function(a,b){return a+b},0))})}else if(p>=200)H.vibrate({duration:p});else H.impact({style:p>=40?'MEDIUM':'LIGHT'});return}}catch(e){}try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+var _vb22=velBeep;velBeep=function(){_vb22.apply(this,arguments);vibrar([300,150,300,150,300])};
+if(typeof fxErr==='function'){var _fe22=fxErr;fxErr=function(){try{_fe22.apply(this,arguments)}catch(e){}vibrar(250)}}
+
+/* ===================== Teclado del PIN: responde aunque se teclee rápido ===================== */
+(function(){var st=document.createElement('style');st.textContent='#pinov .kp button{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}';document.head.appendChild(st)})();
+var _kpUlt=0;
+document.addEventListener('pointerdown',function(e){var b=e.target.closest&&e.target.closest('#pinov .kp button[data-act]');if(!b)return;e.preventDefault();_kpUlt=Date.now();vibrar(15);
+ var a=b.dataset.act,v=b.dataset.v;setTimeout(function(){var x=document.createElement('button');x.dataset.act=a;if(v!=null)x.dataset.v=v;x.dataset.kp='1';x.style.display='none';document.body.appendChild(x);x.click();x.remove()},0)},true);
+window.addEventListener('click',function(e){if(e.target&&e.target.dataset&&e.target.dataset.kp)return;var b=e.target.closest&&e.target.closest('#pinov .kp button[data-act]');if(b&&Date.now()-_kpUlt<800){e.stopImmediatePropagation();e.preventDefault()}},true);
+
+/* ===================== Aviso de velocidad: se quita solo al bajar =====================
+   Muestra la velocidad de ese momento; cuando baja del límite por unos segundos, se cierra solo.
+   En la app usa el GPS del celular; en la demo se simula que va bajando. */
+var _velW=null,_velBajo=0,_velSin=0;
+function velMedir(){var a=S.velAl;if(!a)return;
+ if(navigator.geolocation&&!_velW&&!DEMO){try{_velW=navigator.geolocation.watchPosition(function(p){var s=p.coords&&p.coords.speed;if(s==null||!S.velAl)return;S.velAl.cur=Math.round(s*3.6);velRevisar()},function(){},{enableHighAccuracy:true,maximumAge:1000})}catch(e){}}}
+function velRevisar(){var a=S.velAl;if(!a)return;var cur=a.cur==null?a.vel:a.cur;if(cur<=a.lim){_velBajo++;if(_velBajo>=2){velCerrar(true);return}}else _velBajo=0;render()}
+function velCerrar(auto){S.velAl=null;_velBajo=0;_velSin=0;if(_velW!=null){try{navigator.geolocation.clearWatch(_velW)}catch(e){}_velW=null}if(auto)toast('Gracias, ya vas a buena velocidad');render()}
+setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20)render()},1000);
+var _vaH22=velAlertaHTML;velAlertaHTML=function(){var a=S.velAl;if(!a)return '';var h=_vaH22.apply(this,arguments),cur=a.cur==null?a.vel:a.cur;
+ h=h.replace(/<div style="font-size:56px;font-weight:900;line-height:1\.1;margin:10px 0">[^<]*<\/div>/,'<div style="font-size:56px;font-weight:900;line-height:1.1;margin:10px 0">'+cur+' km/h</div>');
+ var sinGps=!DEMO&&a.cur==null&&_velSin>20;
+ return h.replace('<button class="btn" style="margin-top:20px;background:#fff;color:#B3261E;min-height:60px;font-size:20px" data-act="velok">Ya bajé la velocidad</button>','<div style="font-size:16px;margin-top:16px;font-weight:700">Se quita solo cuando bajes de '+a.lim+' km/h.</div>'+(sinGps?'<button class="btn sm" style="margin-top:12px;background:#fff;color:#B3261E;width:auto" data-act="velok">Entendido</button>':''))};
+
+/* ===================== v5.1 · Ficha del cliente: foto de la fachada y crédito desde el buró ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ '.fihero.confoto{padding-top:0;overflow:hidden}',
+ '.clifoto{position:relative;width:calc(100% + 28px);margin:0 -14px;height:170px;background:#DDE3D8 center/cover no-repeat}',
+ '.clifoto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.35))}',
+ '.clifoto .clicam{position:absolute;right:10px;bottom:10px;z-index:1;background:rgba(255,255,255,.92);color:#1E2A1A;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}',
+ '.fihero.confoto .avt{margin-top:-44px;border:4px solid var(--surface);position:relative;z-index:1}',
+ '.buroc{cursor:pointer}.buroc .ir{float:right;font-size:20px;line-height:1}',
+ '#crov{position:fixed;inset:0;z-index:84;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}#crov .fiw{max-width:560px;margin:0 auto;padding:0 16px 48px}',
+ '#crov .fihd{position:sticky;top:0;z-index:3;background:var(--bg);padding:calc(10px + var(--sbar,0px)) 0 8px;display:flex;align-items:center;gap:10px}',
+ '#crov .fiback{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:22px;color:var(--fg);flex:none}',
+ '#crov .acc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}'
+].join('\n');document.head.appendChild(st)})();
+/* foto de la fachada como portada */
+var _fiCli23=fiCli;fiCli=function(f){var h=_fiCli23.apply(this,arguments),c=cl(f.id);if(!c)return h;
+ var foto=c.foto,inp='<input id="fhx'+c.id+'" type="file" accept="image/*" capture="environment" data-fach="'+c.id+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">';
+ if(foto)h=h.replace('<div class="fihero"><span class="avt"','<div class="fihero confoto"><div class="clifoto" style="background-image:url(\''+foto+'\')"><label class="clicam" for="fhx'+c.id+'">📷 Cambiar foto</label>'+inp+'</div><span class="avt"');
+ else h=h.replace(/(<div class="fihero"><span class="avt"[^>]*>[^<]*<\/span>)/,'$1<label class="btn sm sec" for="fhx'+c.id+'" style="display:inline-flex;align-items:center;cursor:pointer;width:auto">📷 Foto de la fachada</label>'+inp);
+ return h};
+/* "excepción tuya" solo si de verdad es distinta al máximo general */
+var _limB23=limBase;limBase=function(c){if(c.limMan!=null&&c.limMan!==''&&num(c.limMan)===num(crCfg().crCli))c.limMan=null;return _limB23.apply(this,arguments)};
+/* la tarjeta del buró se puede tocar */
+var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
+ return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
+/* congelar: no se le fía, pero puede pagar */
+var _cb23=credBloq;credBloq=function(c){if(c&&c.credFrz&&!((S.permOk||{})[c.id]===iso(TODAY)))return 'tiene el crédito congelado';return _cb23.apply(this,arguments)};
+/* ---- la pantalla para manejar su crédito ---- */
+function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=cl(id);if(!c){S.crCli=null;return ''}var b=buroDe(c),cf=crCfg(),lim=limEf(c),pagos=S.cobros.filter(function(x){return x.c===c.id}).slice(-5).reverse(),edad=c.cred>0?credAge(c):0;
+ var est=!c.credOk?'<span class="pill warn">Solo contado (crédito cancelado)</span>':(c.credFrz?'<span class="pill wait">Crédito congelado</span>':buroPill(c));
+ var msg='Hola'+(c.recibe?' '+c.recibe:'')+', le saludamos de '+(S.cfg.nombre||'')+'. Le recordamos que tiene un saldo pendiente de '+money(c.cred)+'. ¿Cuándo podemos pasar a cobrarlo? Gracias.';
+ return '<div id="crov" role="dialog" aria-label="Crédito de '+esc(c.n)+'"><div class="fiw"><div class="fihd"><button class="fiback" data-act="crx" aria-label="Regresar">←</button><span class="grow"><b style="font-size:19px">Crédito de '+esc(c.n)+'</b><br>'+est+'</span></div>'
+  +'<div class="card">'+rw('Te debe',c.cred>0?'<b class="neg">'+money(c.cred)+'</b>':'<b style="color:var(--accent)">Nada</b>')+(c.cred>0?rw('Desde hace',edad+' días'):'')+rw('Límite que puede deber',money(lim)+(c.limMan!=null?' (excepción tuya)':''))+rw('Buró',BURO[b.n][0]+' '+BURO[b.n][1]+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es)':''))+'</div>'
+  +(c.cred>0?'<div class="card"><b>Cobrarle</b><div class="field"><label for="abc_'+c.id+'">¿Cuánto te pagó? $</label><input id="abc_'+c.id+'" type="number" inputmode="decimal" min="0" step="any"></div><div class="acc"><button class="btn sm" data-act="cobrar" data-id="'+c.id+'">Registrar pago</button><button class="btn sm sec" data-act="cobrartodo" data-id="'+c.id+'">Pagó todo ('+money(c.cred)+')</button></div>'
+   +(c.tel?'<a class="btn sm sec" style="margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" data-act="crrec" data-id="'+c.id+'" href="'+waLink(c,msg)+'">📲 Recordarle por WhatsApp</a>':'<div class="lbl" style="margin-top:6px">Agrega su teléfono para recordarle por WhatsApp.</div>')+(c.recUlt?'<div class="lbl" style="margin-top:4px">Último recordatorio: '+esc(c.recUlt)+'</div>':'')+'</div>':'')
+  +'<div class="card"><b>Su límite</b><div class="lbl">El máximo general es '+money(num(cf.crCli))+'. Si le pones otro, queda como excepción tuya (y el buró lo baja igual si se atrasa).</div><div class="acc"><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="-500">Bajar $500</button><button class="btn sm sec" data-act="crlim" data-id="'+c.id+'" data-d="500">Subir $500</button></div>'
+   +'<div class="field" style="margin-top:8px"><label for="crlv">Ponerle exactamente $</label><input id="crlv" type="number" inputmode="decimal" min="0" data-bind="crLimV" value="'+esc(S.crLimV==null?limBase(c):S.crLimV)+'"></div><div class="acc"><button class="btn sm" data-act="crlimset" data-id="'+c.id+'">Guardar límite</button>'+(c.limMan!=null?'<button class="btn sm sec" data-act="crlimdef" data-id="'+c.id+'">Quitar excepción</button>':'')+'</div></div>'
+  +'<div class="card"><b>Buró</b><div class="acc">'+(b.n?'<button class="btn sm sec" data-act="buroreset" data-id="'+c.id+'">Perdonar: regresar a Bueno</button>':'')+(b.n<3?'<button class="btn sm sec" data-act="crbaja" data-id="'+c.id+'">Bajarlo un nivel</button>':'')+'</div></div>'
+  +'<div class="card"><b>Fiarle o no</b><div class="lbl">Congelar: por ahora no se le fía, pero puede pagar lo que debe. Cancelar: queda solo de contado hasta que lo reactives.</div><div class="acc">'
+   +(c.credOk?(c.credFrz?'<button class="btn sm" data-act="crfrz" data-id="'+c.id+'" data-v="0">Descongelar</button>':'<button class="btn sm sec" data-act="crfrz" data-id="'+c.id+'" data-v="1">Congelar crédito</button>')+'<button class="btn sm sec" style="color:var(--danger)" data-act="crcan" data-id="'+c.id+'" data-v="1">Cancelar crédito</button>':'<button class="btn sm" data-act="crcan" data-id="'+c.id+'" data-v="0">Reactivar crédito</button>')+'</div></div>'
+  +'<div class="card"><b>Últimos pagos</b>'+(pagos.length?pagos.map(function(x){return rw(fmtF(x.f||x.fecha||iso(TODAY))+(x.q?' · '+esc(x.q):''),money(num(x.m||x.monto)))}).join(''):'<div class="lbl">Todavía no hay pagos registrados.</div>')+'</div></div></div>'}
+var _suH23=setupHTML;setupHTML=function(){var h=_suH23.apply(this,arguments);return h||crHTML()};
+function crHist(c,x){S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:c.n+': '+x})}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
+ if(a==='cropen'){e.stopImmediatePropagation();S.crCli=+b.dataset.id;S.crLimV=null;render();var o=document.getElementById('crov');if(o)o.scrollTop=0;return}
+ if(a==='crx'){e.stopImmediatePropagation();S.crCli=null;render();return}
+ if(a==='crlim'){e.stopImmediatePropagation();var v=Math.max(0,limBase(c)+num(b.dataset.d));c.limMan=v===num(crCfg().crCli)?null:v;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v));toast('Límite de '+c.n+': '+money(limEf(c)));render();return}
+ if(a==='crlimset'){e.stopImmediatePropagation();var v2=num(S.crLimV==null?limBase(c):S.crLimV);c.limMan=v2===num(crCfg().crCli)?null:v2;c.limRev=false;S.crLimV=null;crHist(c,'límite a '+money(v2));toast('Límite guardado: '+money(limEf(c)));render();return}
+ if(a==='crlimdef'){e.stopImmediatePropagation();c.limMan=null;S.crLimV=null;crHist(c,'quitó la excepción de límite');toast('Regresó al máximo general');render();return}
+ if(a==='crbaja'){e.stopImmediatePropagation();var bb=buroDe(c);bb.n=Math.min(3,bb.n+1);bb.ok=0;bb.porque='Lo bajó el administrador';crHist(c,'buró bajado a '+BURO[bb.n][1]);toast(c.n+': '+BURO[bb.n][1]);render();return}
+ if(a==='crfrz'){e.stopImmediatePropagation();c.credFrz=b.dataset.v==='1';crHist(c,c.credFrz?'congeló su crédito':'descongeló su crédito');toast(c.credFrz?'Crédito congelado: solo puede pagar':'Crédito activo otra vez');render();return}
+ if(a==='crcan'){e.stopImmediatePropagation();c.credOk=b.dataset.v!=='1';if(c.credOk)c.credFrz=false;crHist(c,c.credOk?'reactivó su crédito':'canceló su crédito');toast(c.credOk?'Crédito reactivado':'Crédito cancelado: solo de contado');render();return}
+ if(a==='crrec'){c.recUlt=fmtF(iso(TODAY))+' '+hhmm();crHist(c,'le mandó recordatorio de pago');setTimeout(render,50)}},true);
+
+/* ===================== v5.1 · Ver la foto antes de reemplazarla =====================
+   Antes, al tocar una foto ya tomada (ticket, fachada, licencia, fruta mala, carga…) se abría la cámara otra vez.
+   Ahora se abre la foto en grande (se puede acercar con dos dedos) con "Tomar otra para reemplazarla". */
+(function(){var st=document.createElement('style');st.textContent='#fotov .fvx.fvotra{position:absolute!important;top:auto!important;right:auto!important;width:auto!important;height:auto!important;left:50%!important;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:3;min-height:52px;padding:0 22px;border-radius:999px;border:0;background:#2F7D32;color:#fff;font-weight:800;font-size:16px;box-shadow:0 6px 18px rgba(0,0,0,.35)}';document.head.appendChild(st)})();
+var _fvImg=null;
+window.addEventListener('pointerdown',function(e){if(e.target&&e.target.tagName==='IMG')_fvImg=e.target},true);
+function fvInput(img){if(!img)return null;var lb=img.closest('label[for]');if(lb){var i=document.getElementById(lb.getAttribute('for'));if(i&&i.type==='file')return i}
+ var box=img.parentElement;for(var n=0;n<4&&box;n++){var q=box.querySelector('input[type="file"]');if(q)return q;box=box.parentElement}return null}
+var _fa24=fotoAbrir;fotoAbrir=function(src){var img=_fvImg,r=_fa24.apply(this,arguments);try{var inp=img&&(img.currentSrc||img.src)===src?fvInput(img):null,o=document.getElementById('fotov');
+ if(inp&&o){var b=document.createElement('button');b.className='fvx fvotra';b.textContent='📷 Tomar otra para reemplazarla';b.addEventListener('click',function(e){e.stopPropagation();inp.click();o.remove()});o.appendChild(b)}}catch(e){}return r};
+/* fotos dentro de la etiqueta de "tomar foto": antes abrían la cámara; ahora se ven */
+document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;var lb=t.closest('label[for]');if(!lb)return;var i=document.getElementById(lb.getAttribute('for'));if(!i||i.type!=='file')return;
+ var src=t.currentSrc||t.getAttribute('src')||'';if(!src)return;e.preventDefault();e.stopImmediatePropagation();_fvImg=t;fotoAbrir(src)},true);
+/* atrás cierra la foto */
+var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');if(o){o.remove();return true}return _navA24.apply(this,arguments)};
+
+/* ===================== v5.1 · Viaje sin báscula, barra, burbujas minimizadas y avisos al abrir ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ /* durante el viaje no se ve la barra de secciones */
+ 'html.vwab nav.tabs{display:none!important}',
+ /* la barra siempre hasta abajo aunque la pantalla tenga poco contenido */
+ '@media (max-width:999px){main{min-height:calc(100vh - var(--hdrH,72px) - 96px);min-height:calc(100dvh - var(--hdrH,72px) - 96px)}}',
+ /* burbujas minimizadas: flotan a la derecha y no ocupan lugar */
+ '.mindock{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:calc(var(--hdrH,72px) + 8px);z-index:12;display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:none}',
+ '.mindock>button{pointer-events:auto;padding:7px 12px!important;font-size:14px!important;min-height:38px}'
+].join('\n');document.head.appendChild(st)})();
+/* si no hay báscula registrada (o no tiene ubicación) el viaje sigue: antes la pantalla se quedaba en blanco */
+var _vb25=vwBasc;vwBasc=function(p){var b=_vb25.apply(this,arguments);if(b||vwPes(p))return b;return {id:null,n:'Báscula',lat:null,lng:null}};
+var _vn25=vwNodos;vwNodos=function(v){var N=_vn25.apply(this,arguments);
+ N.forEach(function(x,i){if(x.lat==null||x.lng==null||isNaN(x.lat)||isNaN(x.lng)){var pr=N.filter(function(y){return y.t==='prov'&&y.i===x.i})[0];x.lat=pr&&pr.lat!=null?pr.lat-.02:BOD.lat+.28;x.lng=pr&&pr.lng!=null?pr.lng-.02:BOD.lng+.28}});return N};
+/* barra escondida durante el viaje */
+var _r25=render;render=function(){var vo=!!(S.vw&&S.vw.open);document.documentElement.classList.toggle('vwab',vo);return _r25.apply(this,arguments)};
+/* burbujas minimizadas juntas en una esquina */
+var _vwB25=vwBurbuja;vwBurbuja=function(){var h=_vwB25.apply(this,arguments),ch=[];
+ h=h.replace(/<div class="dfmini"[^>]*>(<button[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
+ h=h.replace(/<div style="display:flex;justify-content:flex-end">(<button class="popin[^"]*" data-act="bubmax"[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
+ return h+(ch.length?'<div class="mindock">'+ch.join('')+'</div>':'')};
+/* avisos: no salen antes de entrar (pantalla de carga, PIN o elegir usuario); el de "no cuadra" solo al admin y al contador */
+var _toastQ=[];
+function avisoBloq(t){if(typeof _cargado!=='undefined'&&!_cargado)return true;var auto=t==null||/^⚠|URGENTE|no cuadra/.test(t);return auto&&((typeof _pin!=='undefined'&&_pin.modo==='entrar')||!!S.usrSel)}
+var _t25=toast;toast=function(t){if(/no cuadra/.test(t||'')&&['admin','cont'].indexOf(S.role)<0)return;if(avisoBloq(t)){if(t&&_toastQ.indexOf(t)<0)_toastQ.push(t);return}return _t25.apply(this,arguments)};
+var _r25b=render;render=function(){var r=_r25b.apply(this,arguments);if(_toastQ.length&&!avisoBloq()){var q=_toastQ.slice();_toastQ=[];setTimeout(function(){q.forEach(function(t,i){setTimeout(function(){toast(t)},i*2400)})},400)}return r};
+/* el aviso de cajas en palabras claras */
+var _cr25=cuentasRevisar;cuentasRevisar=function(){var R=_cr25.apply(this,arguments);R.forEach(function(x){if(x.n==='Ninguna caja se pierde sin registrarse'){x.n='Todas las cajas están contadas';if(!x.ok){var m=/hay (-?\d+) y deberían ser (-?\d+)/.exec(x.det||'');if(m){var d=+m[2]-+m[1];x.det=(d>0?'Faltan '+d:'Sobran '+(-d))+' cajas: deberían ser '+m[2]+' y la app cuenta '+m[1]}}}});return R};
+var _tq25=toast;toast=function(t){var m=/^⚠ Algo no cuadra: Todas las cajas están contadas/.test(t||'');if(m){try{var x=cuentasRevisar().filter(function(y){return y.n==='Todas las cajas están contadas'})[0];if(x&&x.det)t='⚠ Las cajas no cuadran. '+x.det+'. Revísalo en Estadísticas.'}catch(e){}}return _tq25.call(this,t)};
+
+/* ===================== v5.1 · Guardar ubicaciones: básculas, proveedores y clientes =====================
+   - El admin, al programar el viaje, puede elegir "Báscula nueva" y poner la ubicación (link de Maps o coordenadas)
+     o pedirle al chofer que la guarde.
+   - Al llegar a una báscula o proveedor sin ubicación ("Ya llegué"), el chofer la guarda con el GPS (obligatorio,
+     con confirmación "¿seguro que ya estás ahí?"), el nombre y una foto (recomendada).
+   - Si la foto se tomó de noche y ahora hay luz, se le sugiere actualizarla.
+   - En reparto: cada cliente sin ubicación la pide (obligatoria) al entregarle; luego se le piden foto de la
+     fachada y teléfono hasta que esté completo. Los clientes nuevos que da de alta el chofer le avisan al admin. */
+(function(){var st=document.createElement('style');st.textContent=[
+ '#ubov{position:fixed;inset:0;z-index:90;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}',
+ '#ubov .ubw{max-width:520px;margin:0 auto;padding:calc(14px + var(--sbar,0px)) 16px 40px}',
+ '#ubov .ubgps{width:100%;min-height:64px;font-size:18px}',
+ '#ubov .ubfoto{display:flex;align-items:center;justify-content:center;gap:8px;min-height:120px;border:2px dashed var(--line);border-radius:14px;cursor:pointer;color:var(--muted);text-align:center;padding:10px;position:relative;overflow:hidden}',
+ '#ubov .ubfoto img{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:block}',
+ '.ubcard .btn{margin-top:8px}'
+].join('\n');document.head.appendChild(st)})();
+function ubTiene(o){return !!(o&&o.lat!=null&&o.lng!=null&&o.lat!==''&&!isNaN(+o.lat)&&!isNaN(+o.lng))}
+function ubNoche(ts){if(!ts)return false;var h=new Date(ts).getHours();return h<7||h>=19}
+function ubHayLuz(){var h=new Date().getHours();return h>=8&&h<18}
+function ubFotoSug(o){return !!o&&(!o.foto||(ubNoche(o.fotoH)&&ubHayLuz()))}
+var UB_LEGADO=function(){return !!window.__pnTest&&!window.__ubTest};
+/* ---- báscula nueva elegida por el admin ---- */
+var _vb26=vwBasc;vwBasc=function(p){if(p&&!vwPes(p)&&p.basId==='__nueva')return {id:null,n:String(p.nbn||'').trim()||'Báscula nueva',lat:null,lng:null,nueva:true};return _vb26.apply(this,arguments)};
+/* coordenadas a partir de un link de Google Maps o de "19.54, -96.92" */
+function ubParse(s){s=String(s||'');var m=/@(-?\d+\.\d+),(-?\d+\.\d+)/.exec(s)||/[?&](?:q|query|destination|ll)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/.exec(s)||/(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})/.exec(s);if(!m)return null;var la=+m[1],ln=+m[2];if(Math.abs(la)>90||Math.abs(ln)>180)return null;return {lat:la,lng:ln}}
+/* ---- lo que ve el admin al programar el viaje ---- */
+var _pc26=vwParCfg;vwParCfg=function(p,ix){var h=_pc26.apply(this,arguments),v=S.vw;
+ if(!vwPes(p)){h=h.replace(/(<select id="vwbs\d+"[\s\S]*?)<\/select>/,function(m,a){return a+'<option value="__nueva"'+(p.basId==='__nueva'?' selected':'')+'>+ Báscula nueva (el chofer la registra)</option></select>'});
+  if(p.t==='R')h='<div class="lbl" style="margin-top:6px">El roatán siempre pasa a pesar a la báscula.</div>'+h;
+  if(p.basId==='__nueva')h+='<div class="field"><label for="vwnb'+ix+'">¿Cómo se llama la báscula?</label><input id="vwnb'+ix+'" type="text" data-bind="vw.par.'+ix+'.nbn" value="'+esc(p.nbn||'')+'" placeholder="Ej. Báscula El Molo" style="width:170px;text-align:left"></div><div class="lbl">Si no sabes el nombre, déjalo vacío: el chofer lo escribe.</div>'}
+ var falta=[];if(!vwPes(p)){var bs=vwBasc(p);if(bs&&!ubTiene(bs))falta.push(['bas',bs])}
+ if(p.prov&&p.prov!=='__nuevo'&&!ubTiene(provD(p.prov)))falta.push(['prov',{n:p.prov}]);else if(p.prov==='__nuevo')falta.push(['provn',{n:p.np||'el proveedor nuevo'}]);
+ if(!falta.length)return h;
+ h+='<div class="card note" style="padding:10px 12px;margin-top:10px"><b>📍 Sin ubicación</b>';
+ falta.forEach(function(f){var nm=f[1].n||'';h+='<div style="margin-top:6px">'+(f[0]==='bas'&&f[1].nueva&&!String(p.nbn||'').trim()?'La báscula nueva':esc(nm)+(f[0]==='bas'?' (báscula)':' (proveedor)'))+'</div>';
+  if((f[0]==='bas'&&f[1].id!=null)||f[0]==='prov')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubp'+ix+f[0]+'" style="font-size:14px">Pégala aquí (link de Google Maps o coordenadas)</label><input id="ubp'+ix+f[0]+'" type="text" data-ubpega="'+f[0]+':'+(f[0]==='bas'?f[1].id:esc(nm))+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>'});
+ var qn=v&&v.quien!==2?chofN(v.quien):'el chofer';
+ h+='<div class="chips" role="group" aria-label="Pedirle al chofer" style="margin-top:8px"><button data-act="ubpide" data-i="'+ix+'" data-v="1" aria-pressed="'+!p.noUb+'">Que '+esc(qn)+' la guarde al llegar</button><button data-act="ubpide" data-i="'+ix+'" data-v="0" aria-pressed="'+!!p.noUb+'">No pedirla</button></div>'
+  +'<div class="lbl" style="margin-top:4px">Al llegar, la app toma la ubicación del GPS, el nombre y una foto del lugar.</div></div>';return h};
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ubpega)return;var pr=t.dataset.ubpega.split(':'),c=ubParse(t.value);
+ if(!c){toast(/goo\.gl|maps\.app/.test(t.value)?'Ese link corto no trae la ubicación. En Google Maps deja presionado el lugar y copia los números':'No encontré la ubicación en ese texto');return}
+ var o=pr[0]==='bas'?S.basc.filter(function(b){return b.id===+pr[1]})[0]:provD(pr.slice(1).join(':'));if(!o)return;o.lat=c.lat;o.lng=c.lng;toast('Ubicación guardada');render()},true);
+/* ---- qué lugar del viaje toca y si le falta algo ---- */
+function ubDeNodo(v,a){if(!a||a.t==='bod')return null;var p=v.par[a.i]||{};
+ if(a.t==='bas'){var bs=a.bid!=null?S.basc.filter(function(b){return b.id===a.bid})[0]:null;return {k:'bas',bid:bs?bs.id:null,pi:a.i,n:bs?bs.n:String(p.nbn||'').trim(),key:'b'+(bs?bs.id:'n'+a.i),need:!bs||!ubTiene(bs),obj:bs,noUb:!!p.noUb}}
+ var d=provD(a.n);return {k:'prov',n:a.n,pi:a.i,key:'p'+a.n,need:!ubTiene(d),obj:d,noUb:!!p.noUb}}
+function ubFaltanViaje(v){var N=vwNodos(v),L=[],vis={};N.forEach(function(a){var r=ubDeNodo(v,a);if(r&&r.need&&!r.noUb&&!vis[r.key]){vis[r.key]=1;L.push(r.n||'la báscula nueva')}});return L}
+/* aviso al empezar el viaje */
+var _vB26=vwBody;vwBody=function(k){var h=_vB26.apply(this,arguments),v=S.vw;if(!v||(vwEsAdm()&&!vwYo())||['ruta','camino'].indexOf(k)<0)return h;var L=ubFaltanViaje(v);if(!L.length)return h;
+ return '<div class="card note ubcard" style="padding:10px 12px;margin-top:8px"><b>📍 Hoy vas a '+(L.length===1?'un lugar que no tiene':'lugares que no tienen')+' ubicación</b><div style="font-size:15px;margin-top:4px">'+esc(L.join(', '))+'</div><div class="lbl" style="margin-top:4px">Cuando llegues y toques "Ya llegué", te pido guardarla: un toque al GPS, el nombre y una foto.</div></div>'+h};
+/* ---- la pantalla para guardar el lugar ---- */
+function ubAbrir(r,o){o=o||{};var obj=r.obj||{};
+ S.ub={k:r.k,bid:r.bid,pi:r.pi,id:r.id,n:r.n||'',key:r.key,modo:o.modo||'gps',sigue:!!o.sigue,est:'',fallos:0,lat:null,lng:null,acc:null,foto:null,fotoH:null,tel:r.k==='cli'?(obj.tel||''):'',recibe:r.k==='cli'?(obj.recibe||''):'',fotoVieja:obj.foto||null,fotoViejaH:obj.fotoH||null,gpsYa:ubTiene(obj)};
+ if(S.vw&&r.key){S.vw.ubFoto=S.vw.ubFoto||{};S.vw.ubFoto[r.key]=1}render();var ov=document.getElementById('ubov');if(ov)ov.scrollTop=0}
+function ubNom(){var u=S.ub;return u.k==='cli'?(u.n||'este cliente'):(u.n||(u.k==='bas'?'la báscula':'el proveedor'))}
+function ubHTML(){var u=S.ub;if(!u)return '';var foto=u.modo==='foto',datos=u.modo==='datos',nm=esc(ubNom());
+ var tit=foto?'Foto de '+nm:(datos?'Datos de '+nm:(u.k==='bas'?'Guarda esta báscula':(u.k==='prov'?'Guarda este proveedor':'Guarda la ubicación del cliente')));
+ var sub=foto?(u.fotoVieja&&ubNoche(u.fotoViejaH)&&ubHayLuz()?'La foto que hay se tomó de noche. Ya hay luz: tómala otra vez para que se vea bien.':'Todavía no tiene foto. Ayuda a que el siguiente chofer reconozca el lugar.'):(datos?'Faltan algunos datos. Llena los que puedas.':'Así se van planeando las rutas. Hazlo estando ya en el lugar.');
+ var h='<div id="ubov" role="dialog" aria-label="'+tit+'"><div class="ubw"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">'+tit+'</b><div class="lbl">'+sub+'</div></span><button class="helpb" style="margin:0" data-act="ubx" aria-label="Cerrar">×</button></div>';
+ if(!foto&&!datos&&u.k==='bas')h+='<div class="field"><label for="ubn">¿Cómo se llama?</label><input id="ubn" type="text" data-bind="ub.n" value="'+esc(u.n)+'" placeholder="Ej. Báscula El Molo" style="width:180px;text-align:left"></div>';
+ else if(!foto&&!datos)h+='<div class="card" style="padding:10px 12px;margin-top:10px"><b>'+nm+'</b></div>';
+ if(!foto&&!datos){h+='<div class="card" style="padding:12px;margin-top:10px"><b>Ubicación (obligatoria)</b>';
+  if(u.est===''||u.est==='err')h+=(u.est==='err'?'<div class="neg" style="margin-top:6px">'+esc(u.err||'No se pudo tomar la ubicación')+'</div>':'')+'<button class="btn ubgps" style="margin-top:8px" data-act="ubgps">📍 '+(u.est==='err'?'Intentar otra vez':'Tomar mi ubicación aquí')+'</button>'+(u.est==='err'&&u.fallos>=2?'<button class="btn sm sec" style="margin-top:8px" data-act="ubskip">Seguir sin ubicación (le aviso al administrador)</button>':'')+'<div class="lbl" style="margin-top:6px">Usa el GPS del teléfono. Si te pide permiso de ubicación, dale "Permitir".</div>';
+  else if(u.est==='buscando')h+='<div style="font-size:17px;margin-top:8px">Buscando tu ubicación…</div><div class="lbl">Sal a cielo abierto si tarda.</div>';
+  else if(u.est==='conf')h+='<div style="font-size:17px;margin-top:8px"><b>¿Seguro que ya estás en '+nm+'?</b></div><div class="lbl">Guárdala solo si de verdad estás ahí. Precisión: ±'+Math.round(u.acc||0)+' m</div>'+(u.acc>100?'<div class="neg" style="font-size:14px;margin-top:4px">La señal está débil. Si puedes, espera unos segundos y vuelve a tomarla.</div>':'')+'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:2" data-act="ubsi">Sí, estoy aquí</button><button class="btn sec" style="flex:1" data-act="ubotra">Todavía no</button></div>';
+  else if(u.est==='ok')h+='<div style="font-size:17px;margin-top:8px;color:var(--accent)"><b>✓ Ubicación lista</b></div><div class="lbl">±'+Math.round(u.acc||0)+' m · <button class="link" data-act="ubotra">Volver a tomarla</button></div>';
+  h+='</div>'}
+ var ft=u.foto;h+='<div class="card" style="padding:12px;margin-top:10px"><b>'+(u.k==='cli'?'Foto de la fachada':'Foto del lugar')+(foto?'':' (recomendada)')+'</b><label class="ubfoto" for="ubF" style="margin-top:8px">'+(ft?'<img src="'+ft+'" alt="Foto del lugar">':'📷 Tomar foto')+'</label><input id="ubF" type="file" accept="image/*" capture="environment" data-ubf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'+(ft&&ubNoche(u.fotoH)?'<div class="lbl" style="margin-top:6px">Está oscuro: cuando vuelvas de día te pido actualizarla.</div>':'')+'</div>';
+ if(u.k==='cli'&&!foto)h+='<div class="card" style="padding:4px 12px;margin-top:10px"><div class="field"><label for="ubtel">Teléfono</label><input id="ubtel" type="tel" data-bind="ub.tel" value="'+esc(u.tel)+'" placeholder="228 000 0000" style="width:170px;text-align:left"></div><div class="field"><label for="ubrec">¿Quién recibe?</label><input id="ubrec" type="text" data-bind="ub.recibe" value="'+esc(u.recibe)+'" style="width:170px;text-align:left"></div></div>';
+ var listo=foto?!!u.foto:(datos?true:u.est==='ok');
+ h+='<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"'+(listo?'':' disabled')+'>'+(foto?'Guardar foto':'Guardar')+'</button>'+(foto?'<button class="btn sec" style="margin-top:8px" data-act="ubx">Ahora no</button>':'');
+ return h+'</div></div>'}
+var _suH26=setupHTML;setupHTML=function(){return ubHTML()||_suH26.apply(this,arguments)};
+/* GPS: en la demo (o en pruebas) se simula */
+function ubGps(){var u=S.ub;if(!u)return;u.est='buscando';render();
+ var ok=function(la,ln,ac){if(!S.ub)return;S.ub.lat=+la.toFixed(6);S.ub.lng=+ln.toFixed(6);S.ub.acc=ac;S.ub.est='conf';vibrarSi();render()},
+  mal=function(m){if(!S.ub)return;S.ub.fallos++;S.ub.est='err';S.ub.err=m;render()};
+ if(!REAL||window.__pnTest){setTimeout(function(){var b=u.k==='cli'?{lat:BOD.lat+.02,lng:BOD.lng+.02}:{lat:BOD.lat+.3,lng:BOD.lng+.3};ok(b.lat+(Math.random()-.5)*.02,b.lng+(Math.random()-.5)*.02,12)},window.__pnTest?50:700);return}
+ if(!navigator.geolocation){mal('Este teléfono no deja usar el GPS');return}
+ navigator.geolocation.getCurrentPosition(function(p){ok(p.coords.latitude,p.coords.longitude,p.coords.accuracy)},function(er){mal(er&&er.code===1?'No diste permiso de ubicación. Actívalo en Ajustes del teléfono → Apps → Ruta Fácil → Permisos → Ubicación':(er&&er.code===3?'Tardó mucho en encontrarte. Intenta otra vez a cielo abierto':'No se pudo tomar la ubicación. Revisa que el GPS esté prendido'))},{enableHighAccuracy:true,timeout:20000,maximumAge:0})}
+function vibrarSi(){try{if(typeof vibrar==='function')vibrar(30)}catch(e){}}
+function ubQuien(){return S.role==='admin'?'Tú':chofN(+S.chofHoy)}
+function ubGuardar(){var u=S.ub;if(!u)return;var o=null,nm=ubNom();
+ if(u.k==='bas'){var p=S.vw&&S.vw.par[u.pi];if(u.modo!=='foto'&&!String(u.n||'').trim()){toast('Escribe cómo se llama la báscula');return false}
+  o=u.bid!=null?S.basc.filter(function(b){return b.id===u.bid})[0]:null;
+  if(!o){var id=S.basc.reduce(function(m,b){return Math.max(m,+b.id||0)},0)+1;o={id:id,n:String(u.n).trim(),cobro:'',dir:'',ab:'',ci:'',nota:'',nuevaPor:ubQuien()};S.basc.push(o);if(p){p.basId=String(id);if(p.prov)provD(p.prov).bas=id}S.avPrecio.push(ubQuien()+' registró una báscula nueva: '+o.n+'. Ponle cuánto cobra en Proveedores → Básculas.')}
+  else if(u.modo!=='foto'&&String(u.n||'').trim())o.n=String(u.n).trim();nm=o.n}
+ else if(u.k==='prov')o=provD(u.n);
+ else if(u.k==='cli'){o=cl(u.id);if(!o)return;if(u.modo!=='foto'){o.tel=u.tel||o.tel||'';o.recibe=u.recibe||o.recibe||'';if(o.rapida&&S.d){S.d.rtel=S.d.rtel||u.tel;S.d.gps=true}}}
+ if(!o)return;
+ if(u.est==='ok'){o.lat=u.lat;o.lng=u.lng;o.ubPor=ubQuien();o.ubF=iso(TODAY);if(u.k!=='cli'||!o.rapida)S.avPrecio.push(ubQuien()+' guardó la ubicación de '+nm+(u.foto?' (con foto)':''))}
+ if(u.foto){o.foto=u.foto;o.fotoH=u.fotoH||Date.now()}
+ var sigue=u.sigue;S.ub=null;toast(u.modo==='foto'?'Foto guardada':'Guardado: '+nm);render();if(sigue)ubSeguir();return true}
+var _ubPasa=false;
+function ubSeguir(){setTimeout(function(){var b=document.querySelector('#vwov [data-act="vwnext"]');if(b){_ubPasa=true;b.click();_ubPasa=false}},60)}
+/* ---- al tocar "Ya llegué" en el viaje ---- */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vwnext"]');if(!b||!b.closest('#vwov')||_ubPasa||UB_LEGADO())return;var v=S.vw;if(!v||v.side||(vwEsAdm()&&!vwYo()))return;
+ var T=vwTramo(v);if(!T)return;var r=ubDeNodo(v,T.a);if(!r)return;v.ubSkip=v.ubSkip||{};v.ubFoto=v.ubFoto||{};
+ if(r.need){if(r.noUb||v.ubSkip[r.key])return;e.preventDefault();e.stopImmediatePropagation();ubAbrir(r,{sigue:true});return}
+ if(!v.ubFoto[r.key]&&ubFotoSug(r.obj)){e.preventDefault();e.stopImmediatePropagation();ubAbrir(r,{sigue:true,modo:'foto'})}},true);
+/* ---- botones ---- */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
+ if(a==='ubpide'){e.stopImmediatePropagation();var p=S.vw&&S.vw.par[+b.dataset.i];if(p){p.noUb=b.dataset.v==='0';render()}return}
+ if(a==='ubcli'){e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c)return;if(c.rapida)c.porCh=+S.chofHoy;var nm=c.rapida?String((S.d&&S.d.rn)||'').trim():c.n;ubAbrir({k:'cli',id:c.id,n:nm,key:'c'+c.id,obj:c},{modo:b.dataset.m||'gps'});return}
+ if(a==='gps'&&S.role==='rep'||a==='gps'&&S.role==='admin'){var k=entregaCalc();if(k&&k.c){e.stopImmediatePropagation();var c2=k.c;if(c2.rapida)c2.porCh=+S.chofHoy;ubAbrir({k:'cli',id:c2.id,n:c2.rapida?String(S.d.rn||'').trim():c2.n,key:'c'+c2.id,obj:c2},{});return}}
+ if(!S.ub)return;
+ if(a==='ubgps'){e.stopImmediatePropagation();ubGps();return}
+ if(a==='ubsi'){e.stopImmediatePropagation();S.ub.est='ok';render();return}
+ if(a==='ubotra'){e.stopImmediatePropagation();S.ub.est='';S.ub.lat=S.ub.lng=null;render();return}
+ if(a==='ubsave'){e.stopImmediatePropagation();ubGuardar();return}
+ if(a==='ubskip'){e.stopImmediatePropagation();var u=S.ub,nm2=ubNom();if(u.k==='cli'){var c3=cl(u.id);if(c3)c3.ubSkip=iso(TODAY)}else if(S.vw){S.vw.ubSkip=S.vw.ubSkip||{};S.vw.ubSkip[u.key]=1}
+  S.avPrecio.push(ubQuien()+' no pudo guardar la ubicación de '+nm2+' (el GPS no funcionó)');var sg=u.sigue;S.ub=null;render();if(sg)ubSeguir();return}
+ if(a==='ubx'){e.stopImmediatePropagation();var sg2=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg2)ubSeguir();return}},true);
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||t.dataset.ubf!=='1'||!t.files||!t.files[0]||!S.ub)return;fotoLeer(t.files[0],function(u){if(!S.ub)return;S.ub.foto=u;S.ub.fotoH=Date.now();render()})},true);
+var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('fotov')){var sg=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg)ubSeguir();return true}return _navA26.apply(this,arguments)};
+/* ---- reparto: la ubicación del cliente es obligatoria; luego se completan sus datos ---- */
+function ubCliAplica(c){return !!c&&!(c.rapida&&!(S.d&&S.d.reg))&&!UB_LEGADO()}
+function ubCliFalta(c){var f=[];if(!c.foto)f.push('foto de la fachada');if(!String(c.tel||'').trim()&&!(c.rapida&&S.d&&String(S.d.rtel||'').trim()))f.push('teléfono');return f}
+var _ev26=entValida;entValida=function(){var r=_ev26.apply(this,arguments);if(r)return r;var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c)||ubTiene(c)||c.ubSkip===iso(TODAY))return null;
+ return ['CH:[data-act="ubcli"]','Primero guarda la ubicación de '+(c.rapida?'este cliente':c.n)+' (botón 📍)']};
+var _ent26=entrega;entrega=function(){var h=_ent26.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c))return h;var nm=c.rapida?'este cliente':esc(c.n),card='';
+ if(!ubTiene(c)&&c.ubSkip!==iso(TODAY))card='<div class="card alert ubcard"><b>📍 Guarda la ubicación de '+nm+'</b><div class="lbl">Es obligatorio la primera vez: así se van planeando las rutas. Hazlo ya estando en su negocio.</div><button class="btn" data-act="ubcli" data-id="'+c.id+'">📍 Guardar ubicación aquí</button></div>';
+ else if(!c.rapida){var f=ubCliFalta(c),noche=c.foto&&ubNoche(c.fotoH)&&ubHayLuz();if(noche)card='<div class="card note ubcard"><b>Ya hay luz: actualiza la foto de la fachada</b><div class="lbl">La que hay se tomó de noche.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="foto">📷 Tomar otra foto</button></div>';
+  else if(f.length)card='<div class="card note ubcard"><b>Completa los datos de '+nm+'</b><div class="lbl">Falta: '+esc(f.join(' y '))+'.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="datos">Completar ahora</button></div>'}
+ if(!card)return h;var an='<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas?</b>';return h.indexOf(an)>-1?h.replace(an,card+an):card+h}catch(er){return h}};
+if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
+/* el botón de GPS del cliente nuevo dice si ya se guardó de verdad */
+var _ent26b=entrega;entrega=function(){var h=_ent26b.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(c&&c.rapida)h=h.replace(/<button class="btn sm sec" data-act="gps"([^>]*)>(Ubicación guardada|Guardar ubicación GPS aquí)<\/button>/,'<button class="btn sm sec" data-act="gps"$1>'+(ubTiene(c)?'✓ Ubicación guardada':'📍 Guardar ubicación GPS aquí (obligatorio)')+'</button>')}catch(er){}return h};
+if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
+/* aviso al admin: cliente nuevo dado de alta por el chofer */
+var _r26=render;render=function(){try{(S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&!c.oculto&&!c.avAlta){c.avAlta=true;S.avPrecio.push(chofN(c.porCh)+' dio de alta un cliente nuevo: '+c.n+(ubTiene(c)?' (con ubicación)':' (sin ubicación)')+(c.tel?' · tel. '+c.tel:'')+'. Revísalo en Clientes.')}})}catch(e){}return _r26.apply(this,arguments)};
+/* el número del siguiente cliente nunca repite uno que ya existe (en la demo se repetía y el cliente nuevo tomaba los datos de otro) */
+function cliIdFix(){try{var mx=(S.cli||[]).reduce(function(m,c){return Math.max(m,+c.id||0)},0);if(!(+S.nextCli>mx))S.nextCli=mx+1}catch(e){}}
+cliIdFix();var _r26c=render;render=function(){cliIdFix();return _r26c.apply(this,arguments)};
+
+/* "Ir con Google Maps" a un lugar sin ubicación: busca por nombre y dirección en vez de mandar a un punto inventado */
+var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),v=S.vw;try{var T=vwTramo(v);if(!T)return h;var r=ubDeNodo(v,T.a);if(!r||!r.need)return h;
+ var pv=provD((v.par[T.a.i]||{}).prov||''),q=r.k==='bas'?((r.obj&&r.obj.dir)||((r.n||'báscula')+' '+(pv.dir||''))):((r.obj&&r.obj.dir)||r.n);
+ h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
+ return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
 
 
 /* ---------- Estructura ---------- */

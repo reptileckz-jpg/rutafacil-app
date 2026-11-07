@@ -38,7 +38,7 @@ jobs:
 
       - name: Empaquetar la conexión con la nube (Firebase)
         run: |
-          npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2019 --outfile=www/firebase.js
+          npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2020 --outfile=www/firebase.js
           ls -la www/firebase.js
 
       - name: Crear el proyecto de Android

@@ -1385,3 +1385,9 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Si todavía no se puede: mensaje claro y el renglón lo dice ("Aún no hay cierres. Te aviso cuando un chofer mande el suyo." / "El resumen se puede mandar cuando recibas los cierres del día (faltan 2: Danu, Rafa)").
     - Mostrar el estado en el mismo renglón (ej. "Recibir los cierres · 0 de 3 mandados"). Revisar también los demás renglones (precio, viajes, choferes en ruta) y "Ahora sigue" del chofer.
 23. (00:45) "Así se hace": al escoger un tema sale una lista con CADA cliente y CADA proveedor uno por uno (con 50 clientes y 20 proveedores sería larguísima). Arreglo: agrupar ("Faltan datos de 12 clientes · 3 proveedores") y al tocar se abre la TARJETA DE PANTALLA COMPLETA paso a paso (como el simulador): uno por uno con "Siguiente / Saltar", buscador y contador "3 de 12". Recordatorio del usuario: la interfaz de pantalla completa se iba a usar en TODO lo que se pudiera y no se ha hecho en todo → revisar la app completa (listas largas, formularios, pasos guiados) junto con el punto 13. Pedir captura si hace falta ubicar exacto "Así se hace".
+    → 23 CORREGIDO (00:46): "Así se hace" son las NOTAS DEL DUEÑO para el encargado y los choferes (cada nota sale sola en su cliente, proveedor o paso). El problema: el selector "Tema" trae una opción por CADA cliente y CADA proveedor → lista larguísima. Rehacer "Nueva nota" como tarjeta de pantalla completa paso a paso:
+       1) ¿Para qué es? (Un cliente · Un proveedor · Un paso de la ruta/cierre/carga · General) — botones grandes;
+       2) si es cliente/proveedor → buscador + lista (o "Todos los clientes");
+       3) escribir la nota (con dictado);
+       4) ¿Quién la ve? (choferes · encargado · todos) → Guardar con ¿Seguro?.
+       Las notas guardadas: agrupadas por tema con buscador, no todas desplegadas.

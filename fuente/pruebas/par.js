@@ -1,0 +1,20 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.tab.admin='personal';render()});await W(200);
+await p.click('[data-act="npopen"]');await W(300);
+let r=await ev(()=>[...document.querySelectorAll('[data-t="np:r1p"]')].map(x=>x.innerText));ok(r.join('|')==='Papá o mamá|Hermano(a)|Amigo(a)|Pareja|Otro…','referencia 1: menú con lo básico y "Otro…"',r);
+await p.fill('#np_r1n','María');await p.click('[data-act="parset"][data-t="np:r1p"][data-v="Hermano(a)"]');await W(150);
+r=await ev(()=>({v:S.np.r1p,n:document.getElementById('np_r1n').value}));ok(r.v==='Hermano(a)'&&r.n==='María','al tocar se escoge (y no se borra lo escrito)',r);
+await p.click('[data-act="parotro"][data-t="np:r2p"]');await W(150);r=await ev(()=>[...document.querySelectorAll('.paro [data-t="np:r2p"]')].length);ok(r>=10,'"Otro…" abre más opciones',r);
+await p.screenshot({path:'v50/par1.png'});
+await p.click('[data-act="parset"][data-t="np:r2p"][data-v="Compadre / comadre"]');await W(150);ok(await ev(()=>S.np.r2p)==='Compadre / comadre','escoge de las otras');
+await p.click('[data-act="parotro"][data-t="np:emp"]');await W(150);await p.fill('#parl_np_emp','Padrastro');await W(100);ok(await ev(()=>S.np.emp)==='Padrastro','o lo escribe');
+await p.fill('#np_n','Pedro Ruiz');await p.click('[data-act="npsave"]');await W(300);
+r=await ev(()=>{var c=S.choferes[S.choferes.length-1];return [c.r1p,c.r2p,c.emp]});ok(r.join('|')==='Hermano(a)|Compadre / comadre|Padrastro','se guarda',r);
+// editar uno que ya existe
+await ev(()=>{S.openCh=1;S.chEdit=1;render()});await W(300);
+r=await ev(()=>({n:document.querySelectorAll('#fiov .parsel').length,dl:!!document.querySelector('#fiov input[list="pn-parent"]')}));ok(r.n===3&&!r.dl,'al editar también sale el menú (3 parentescos)',r);
+await ev(()=>document.querySelector('#fiov [data-act="parset"][data-t="ch:1:r1p"][data-v="Pareja"]').click());await W(150);ok(await ev(()=>S.choferes.filter(function(x){return x.id===1})[0].r1p)==='Pareja','y se guarda en la persona');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

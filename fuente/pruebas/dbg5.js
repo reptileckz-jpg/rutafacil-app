@@ -1,0 +1,7 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});p.on('console',m=>console.log('C',m.text()));p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f)=>p.evaluate(f);
+console.log(await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='rep';S.salida.ok=true;var i=curStop();S.cur=i;resetDraft(cl(S.stops[i].c));S.d.R=2;S.tab.rep='entrega';chofById(S.chofHoy).mayPerm=true;S.d.may=true;S.d.pRm='300';render();var bt=document.querySelectorAll('[data-act="maypide"]');console.log('btns',bt.length,S.toast);bt[0].click();console.log('len',mayPideL().length,S.toast);if(!mayPideL().length)return 'nada';mayPideL()[0].t=Date.now()-400000;mayVencer();render();
+ return JSON.stringify({nota:mayNotaHTML(),may:S.d.may,inH:document.querySelector('main').innerHTML.indexOf('maynota'),ent:entrega().indexOf('maynota'),anchor:entrega().indexOf('Mayoreo a mano</button></div>')})}));
+console.log(await ev(()=>{S.role='admin';S.tab.admin='personal';S.szOpen=S.chofHoy;render();var h=sueldos();return JSON.stringify({adl:h.indexOf('adl_'),mp:h.indexOf('mayperm'),dom:!!document.querySelector('[id^="adl_"]'),snip:h.slice(h.indexOf('adl_')-120,h.indexOf('adl_')+20)})}));
+await b.close()})();

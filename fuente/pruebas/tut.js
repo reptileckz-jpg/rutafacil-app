@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:400,height:880}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(800);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+await ev(()=>{_pin={v:'',modo:null,cb:null,k:null};Object.keys(S.pinOk).forEach(function(k){S.pinOk[k]=true});S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);var bv=document.getElementById('bienv');if(bv)bv.remove();render();tutIniciar('admin')});await W(500);
+let r=await ev(()=>({tut:!!S.tut,i:S.tut&&S.tut.i,ov:!!document.querySelector('#tutov')}));ok(r.tut&&r.ov,'tutorial abierto',r);
+await ev(()=>{S.tut.i=1;render()});await W(300);
+await p.mouse.click(...await ev(()=>{var r=document.querySelector('nav.tabs button[data-t="bodega"]').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]}));await W(400);
+r=await ev(()=>({tab:S.tab.admin,i:S.tut&&S.tut.i,ov:!!document.querySelector('#tutov')}));ok(r.tab==='inicio'&&r.i===1&&r.ov,'tocar una sección durante el tutorial no cambia de pantalla',r);
+await p.screenshot({path:'v50/tut1.png'});
+await ev(()=>{S.tab.admin='clientes';render()});await W(200);ok(await ev(()=>S.tab.admin)==='inicio','aunque algo cambie la pantalla (deslizar), regresa a la del tutorial');
+await ev(()=>document.querySelector('[data-act="tutsig"]').click());await W(300);ok(await ev(()=>S.tut&&S.tut.i===2),'Siguiente sí funciona');
+await ev(()=>document.querySelector('[data-act="tutfin"]').click());await W(300);
+await ev(()=>document.querySelector('nav.tabs button[data-t="bodega"]').click());await W(300);ok(await ev(()=>!S.tut&&S.tab.admin==='bodega'),'al terminar, las secciones funcionan normal');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

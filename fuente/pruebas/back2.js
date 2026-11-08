@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1;window.Capacitor={Plugins:{App:{addListener:function(ev,cb){if(ev==='backButton')window.__back=cb},minimizeApp:function(){window.__min=(window.__min||0)+1}}}}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=f=>p.evaluate(f),W=ms=>p.waitForTimeout(ms);
+ok(await ev(()=>typeof window.__back==='function'),'el APK escucha el botón de atrás');
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.tab.admin='inicio';render();S.tab.admin='clientes';render();S.tab.admin='gastos';render()});
+await ev(()=>window.__back());await W(100);ok(await ev(()=>S.tab.admin)==='clientes','atrás: regresa a la pantalla anterior');
+await ev(()=>window.__back());await W(100);ok(await ev(()=>S.tab.admin)==='inicio','atrás: luego a Inicio');
+await ev(()=>{S.tab.admin='clientes';render();S.openCli=S.cli[0].id;render()});await W(150);await ev(()=>window.__back());await W(150);ok(await ev(()=>!S.openCli&&!document.getElementById('fiov')),'atrás: cierra la ficha abierta');await ev(()=>window.__back());await W(100);
+await ev(()=>window.__back());await W(100);r=await ev(()=>({min:window.__min||0,t:S.toast}));ok(!r.min&&/otra vez/.test(r.t),'en Inicio: la primera vez solo avisa',r);
+await ev(()=>window.__back());await W(100);ok(await ev(()=>window.__min)===1,'la segunda vez se minimiza (no se cierra de golpe)');
+await ev(()=>{S.role='rep';S.salida.ok=true;vwNuevo(null);S.vw.started=true;S.vw.ftSal='x';S.vw.k='camino';render()});await W(200);await ev(()=>window.__back());await W(150);ok(await ev(()=>!document.getElementById('vwov')),'en un viaje: atrás minimiza el viaje (no cierra la app)');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

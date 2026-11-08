@@ -1,0 +1,34 @@
+/* ===================== v6.0 · Pedidos: siempre responde, cliente nuevo y a quién se lo das ===================== */
+function pedChoferes(){return (S.choferes||[]).filter(function(c){return c&&!c.baja&&!c.arch&&esCh(c)})}
+function pedPos(id){var st=nbRGet(id,'stops')||[],pos=null;st.forEach(function(s){if(s.done){var c=cl(s.c);if(c&&c.lat!=null)pos=c}});var sal=nbRGet(id,'salida');return {pos:pos||BOD,activo:!!(sal&&sal.ok)}}
+function pedSugerido(c){if(!c)return null;var L=pedChoferes(),mejor=null,dm=1e9;if(c.lat!=null)L.forEach(function(ch){var p=pedPos(ch.id);if(!p.activo)return;var d=kmE(p.pos,c);if(d!=null&&d<dm){dm=d;mejor=ch.id}});return mejor!=null?mejor:(c.chofer!=null?+c.chofer:(L[0]?L[0].id:null))}
+function pedAsigna(c,chId,cuando,tx){var cu=cuando||'hoy';if(cu==='hoy'){var st=nbRGet(chId,'stops');if(!st){nbRSet(chId,'stops',[]);st=nbRGet(chId,'stops')}if(!st.some(function(x){return x.c===c.id&&!x.done}))st.push({c:c.id,ped:true})}else{if(S.rutaAdd.indexOf(c.id)<0)S.rutaAdd.push(c.id)}
+ try{rutaAviso(chId,'Pedido para '+cu+': '+tx)}catch(e){S.avPrecio.push('Pedido para '+chofN(chId)+' ('+cu+'): '+tx)}}
+function pedNuevoCli(n,tel,ch){var id=S.nextCli++;S.cli.push({id:id,n:n,ap:'',a:'',vac:0,cred:0,f:7,km:1,min:5,tel:tel||'',dias:[],chofer:ch!=null?+ch:+S.chofHoy,lim:1500,dp:null,tag:'',credOk:false,compras:0,tipo:'',recibe:'',lat:null,lng:null,porCh:S.role==='rep'?+S.chofHoy:null,altaPed:true});return cl(id)}
+/* ---- admin: "Pedido por WhatsApp" ---- */
+var _pc31=pedidoCard;pedidoCard=function(){var p=S.pf=S.pf||{cli:'',R:'',M:'',cuando:'hoy',nota:''},cs=S.cli.filter(function(c){return !c.oculto});if(p.cli!=='__nuevo'&&!cl(+p.cli))p.cli=cs[0]?String(cs[0].id):'__nuevo';
+ var h=_pc31.apply(this,arguments),c=cl(+p.cli),sug=p.cli==='__nuevo'?((pedChoferes().filter(function(x){return !esAdm(x)})[0]||pedChoferes()[0]||{}).id):pedSugerido(c);if(p.ch==null||p.chCli!==p.cli){p.ch=sug;p.chCli=p.cli}
+ h=h.replace(/(<select id="pfc"[^>]*>)([\s\S]*?)(<\/select>)/,function(m,a,o,z){return a+o.replace(' selected','')+'<option value="__nuevo"'+(p.cli==='__nuevo'?' selected':'')+'>+ Cliente nuevo</option>'+z});
+ if(p.cli!=='__nuevo')h=h.replace(/(<option value="[^"]*")(>[^<]*<\/option>)/g,function(m,a,b){return a.replace(/ selected/,'')+(a.indexOf('value="'+p.cli+'"')>-1?' selected':'')+b});
+ var extra=(p.cli==='__nuevo'?'<div class="field"><label for="pfnn">Nombre del cliente</label><input id="pfnn" type="text" data-bind="pf.nn" value="'+esc(p.nn||'')+'" style="width:190px;text-align:left"></div><div class="field"><label for="pfnt">Teléfono</label><input id="pfnt" type="tel" data-bind="pf.nt" value="'+esc(p.nt||'')+'" style="width:190px;text-align:left"></div><div class="lbl">El chofer guarda su ubicación cuando le entregue.</div>':'')
+  +'<div class="lbl" style="margin-top:8px"><b>¿Quién lo entrega?</b></div><div class="chips" role="group" aria-label="Quién lo entrega" style="margin:4px 0">'+pedChoferes().map(function(ch){var pp=pedPos(ch.id);return '<button data-act="pfch" data-id="'+ch.id+'" aria-pressed="'+(+p.ch===+ch.id)+'">'+esc(esAdm(ch)?chofN(2)+' (tú)':ch.n)+(sug!=null&&+sug===+ch.id?' · le queda cerca':'')+(pp.activo?'':' · sin salir')+'</button>'}).join('')+'</div>'
+  +(p.err?'<div class="neg" role="alert" style="font-weight:700;margin:6px 0">'+esc(p.err)+'</div>':'')+(p.ok?'<div style="color:var(--accent);font-weight:700;margin:6px 0">'+esc(p.ok)+'</div>':'');
+ return h.replace('<button class="btn" data-act="pedido">Registrar pedido</button>',extra+'<button class="btn" data-act="pedido">Registrar pedido</button>')};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pedido"],[data-act="pfch"]');if(!b)return;e.stopImmediatePropagation();var p=S.pf;p.err='';p.ok='';
+ if(b.dataset.act==='pfch'){p.ch=+b.dataset.id;p.chCli=p.cli;render();return}
+ var R=Math.round(num(p.R)),M=r2(num(p.M)),c;
+ if(p.cli==='__nuevo'){if(!String(p.nn||'').trim()){p.err='Escribe el nombre del cliente nuevo';render();return}}else{c=cl(+p.cli);if(!c){p.err='Elige el cliente';render();return}}
+ if(R<=0&&M<=0){p.err='Escribe cuántas cajas o kilos pidió';render();return}if(p.ch==null||!pedChoferes().some(function(x){return +x.id===+p.ch})){p.err='Elige quién lo entrega';render();return}
+ if(!c){c=pedNuevoCli(String(p.nn).trim(),String(p.nt||'').trim(),p.ch);S.avPrecio.push('Cliente nuevo por pedido: '+c.n+(c.tel?' · tel. '+c.tel:''))}
+ c.ped={R:R,M:M,cuando:p.cuando||'hoy',nota:p.nota||''};var tx=c.n+' ('+R+' cajas, '+M+' kg)';pedAsigna(c,+p.ch,p.cuando,tx);
+ S.pf={cli:String(c.id),R:'',M:'',cuando:p.cuando,nota:'',ok:'Listo: pedido de '+tx+' para '+(p.cuando||'hoy')+'. Se le avisó a '+chofN(+p.ch)+'.'};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Registró pedido de '+tx+' para '+chofN(+p.ch)});toast('Pedido registrado');render()},true);
+/* ---- chofer: "+ Pedido de un cliente" ---- */
+var _rpF31=rpForm;rpForm=function(){var p=S.rp,cs=S.cli.filter(function(c){return !c.oculto});if(p.cli!=='__nuevo'&&!cl(+p.cli))p.cli=cs[0]?String(cs[0].id):'__nuevo';var h=_rpF31.apply(this,arguments);
+ h=h.replace(/(<select id="rpc"[^>]*>)([\s\S]*?)(<\/select>)/,function(m,a,o,z){return a+o+'<option value="__nuevo"'+(p.cli==='__nuevo'?' selected':'')+'>+ Cliente nuevo</option>'+z});
+ var extra=(p.cli==='__nuevo'?'<div class="field"><label for="rpnn">Nombre del cliente</label><input id="rpnn" type="text" data-bind="rp.nn" value="'+esc(p.nn||'')+'" style="width:190px;text-align:left"></div><div class="field"><label for="rpnt">Teléfono</label><input id="rpnt" type="tel" data-bind="rp.nt" value="'+esc(p.nt||'')+'" style="width:190px;text-align:left"></div>':'')+(p.err?'<div class="neg" role="alert" style="font-weight:700;margin:6px 0">'+esc(p.err)+'</div>':'');
+ return h.replace('<div style="display:flex;gap:8px"><button class="btn" style="flex:2" data-act="rpsave">',extra+'<div style="display:flex;gap:8px"><button class="btn" style="flex:2" data-act="rpsave">')};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rpsave"]');if(!b||!S.rp)return;var p=S.rp;p.err='';
+ if(p.cli==='__nuevo'){if(!String(p.nn||'').trim()){e.stopImmediatePropagation();p.err='Escribe el nombre del cliente nuevo';render();return}if(!(num(p.R)>0||num(p.M)>0)){e.stopImmediatePropagation();p.err='Escribe cuántas cajas o kilos pidió';render();return}
+  var c=pedNuevoCli(String(p.nn).trim(),String(p.nt||'').trim(),+S.chofHoy);p.cli=String(c.id);S.avPrecio.push(chofN(+S.chofHoy)+' registró un cliente nuevo por pedido: '+c.n+(c.tel?' · tel. '+c.tel:''));return}
+ if(!cl(+p.cli)){e.stopImmediatePropagation();p.err='Elige el cliente';render();return}
+ if(!(num(p.R)>0||num(p.M)>0)){e.stopImmediatePropagation();p.err='Escribe cuántas cajas o kilos pidió';render();return}},true);

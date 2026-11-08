@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:800}});await p.addInitScript(()=>{window.__pnTest=1});p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(500);
+await p.evaluate(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='admin';S.tab.admin='bodega';render()});await p.waitForTimeout(300);
+const vis=async()=>p.evaluate(()=>{var d=document.querySelector('nav.tabs [data-t="inicio"] .tdot');return d?getComputedStyle(d).display:'sin punto'});
+console.log('punto antes',await vis());
+await p.click('nav.tabs [data-act="tab"][data-t="inicio"]');await p.waitForTimeout(900);
+console.log(await p.evaluate(()=>{var c=avisosCard();var r=c.getBoundingClientRect();return 'tab '+S.tab.admin+' avisos top '+Math.round(r.top)+' scrollY '+Math.round(scrollY)}),'punto después',await vis());
+await p.evaluate(()=>{S.tab.admin='bodega';render()});console.log('en bodega punto',await vis());
+await b.close()})();

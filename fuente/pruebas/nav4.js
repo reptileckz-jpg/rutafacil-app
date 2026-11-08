@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:800}});await p.addInitScript(()=>{window.__pnTest=1});p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(500);
+await p.evaluate(()=>{var o=avisos;window.__urg=true;avisos=function(){var a=o.apply(this,arguments);if(window.__urg)a.unshift('URGENTE: faltaron $300 en el cierre de Rafa');return a};S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='admin';S.tab.admin='bodega';render()});await p.waitForTimeout(300);
+const vis=async()=>p.evaluate(()=>{var d=document.querySelector('nav.tabs [data-t="inicio"] .tdot');return d?getComputedStyle(d).display:'sin punto'});
+console.log('1 punto en bodega:',await vis());
+await p.click('nav.tabs [data-act="tab"][data-t="inicio"]');await p.waitForTimeout(1000);
+console.log('2 un toque →',await p.evaluate(()=>{var c=avisosCard();var r=c.getBoundingClientRect();return 'tab '+S.tab.admin+' avisos top '+Math.round(r.top)+' scrollY '+Math.round(scrollY)+' flash '+c.classList.contains('flashsc')}),'punto:',await vis());
+await p.evaluate(()=>{S.tab.admin='bodega';render()});await p.waitForTimeout(200);console.log('3 de vuelta en bodega punto:',await vis());
+await p.evaluate(()=>{var o=avisos;avisos=function(){var a=o.apply(this,arguments);a.unshift('URGENTE: Problema en el viaje de Josue');return a};render()});await p.waitForTimeout(200);console.log('4 aviso urgente nuevo punto:',await vis());
+await p.evaluate(()=>{scrollTo(0,0);S.tab.admin="bodega";render()});await p.mouse.wheel(0,-300);await p.waitForTimeout(500);
+await p.click('nav.tabs [data-act="tab"][data-t="inicio"]');await p.waitForTimeout(1000);
+console.log('5 toque desde bodega otra vez:',await p.evaluate(()=>'tab '+S.tab.admin+' scrollY '+Math.round(scrollY)));
+await p.screenshot({path:'v50/nav4.png'});
+await b.close()})();

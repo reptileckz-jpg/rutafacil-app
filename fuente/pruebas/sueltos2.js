@@ -1,0 +1,9 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1;window.open=()=>null});
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);const ev=(f,a)=>p.evaluate(f,a);
+await ev(()=>{window.__suelto=function(root){var res=[],bodyBg=getComputedStyle(document.body).backgroundColor;function fondo(el){for(var p=el;p&&p!==document.documentElement;p=p.parentElement){var cs=getComputedStyle(p),bg=cs.backgroundColor;if(p===root)return 'app';if(bg&&bg!=='rgba(0, 0, 0, 0)'&&bg!=='transparent'){return bg===bodyBg?'app':'tarjeta'}}return 'app'}
+ var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;while(n=w.nextNode()){var t=n.nodeValue.trim();if(t.length<3)continue;var el=n.parentElement;if(!el||!el.getClientRects().length||el.closest('script,style,h1,h2,button,label.btn,a.btn,.fihd,.wz-hd,[class*="nav"]'))continue;if(parseFloat(getComputedStyle(el).fontSize)>=22)continue;if(fondo(el)==='app'){var tx=(el.closest('.lbl,.row,.field,div')||el).innerText.replace(/\s+/g,' ').trim().slice(0,60);if(res.indexOf(tx)<0)res.push(tx)}}return res}});
+const out=await ev(()=>{var R=[];S.role='admin';S.encOn=false;S.pinOk[pinKey()]=true;_pin={v:'',modo:null};S.popVisto={admin:iso(TODAY)};S.tutVisto={rep:true,admin:true};vwNuevo(null);S.vw.open=true;S.vw.started=true;var L=vwSteps();
+ L.forEach(function(k){S.vw.k=k;try{render()}catch(e){R.push('['+k+'] (no se pudo abrir sin datos)');return}var o=document.getElementById('vwov');if(o){var r=__suelto(o);if(r.length)R.push('[viaje/'+k+'] '+r.join(' ‖ '))}});S.vw.open=false;render();
+ S.ub={k:'bas',modo:'nueva',n:'',pi:0};render();var u=document.getElementById('ubov');if(u){var r2=__suelto(u);if(r2.length)R.push('[ubov] '+r2.join(' ‖ '))}else R.push('(sin ubov)');return R});
+console.log(out.join('\n')||'nada suelto');await b.close()})();

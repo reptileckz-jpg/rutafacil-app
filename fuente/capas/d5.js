@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});
+const errs=[];p.on('pageerror',e=>errs.push(e.message+' | '+(e.stack||'').split('\n').slice(1,3).join(' ')));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(400);
+const cl=async s=>{await p.click(s);await p.waitForTimeout(80)};const ev=f=>p.evaluate(f);
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='admin';S.tab.admin='cargas';render()});await cl('button[data-act="newcarga"]');
+const sig=()=>cl('button[data-act="cmsig"]');
+await cl('button[data-act="cmtog"][data-k="R"]');await cl('button[data-act="cmtog"][data-k="M"]');await sig();
+await cl('button[data-act="cmset"][data-k="quien"][data-v="1"]');await cl('button[data-act="cmset"][data-k="veh"][data-v="2"]');await sig();
+console.log('paso',await ev(()=>cmPasos()[S.cm.paso]));
+await p.fill('[data-bind="cm.kgR"]','6800');await p.fill('[data-bind="cm.cajas"]','380');await p.waitForTimeout(200);
+console.log(await ev(()=>[S.cm.kgR,S.cm.cajas,!!document.getElementById('cmkc'),document.getElementById('cmkc')&&document.getElementById('cmkc').outerHTML.slice(0,200),document.querySelectorAll('#cmov').length]));
+console.log(errs);await b.close()})();

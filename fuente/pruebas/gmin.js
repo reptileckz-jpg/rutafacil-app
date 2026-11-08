@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
+const p=await b.newPage({viewport:{width:400,height:880}});
+await p.addInitScript(()=>{window.__pnTest=1;window.PN_GMAPS=true;window.__gm={made:0,destroyed:0,mk:0,pl:0,fail:false};window.Capacitor={isNativePlatform:()=>true,Plugins:{}};
+ window.GMAPA={create:o=>window.__gm.fail?Promise.reject(new Error('x')):(window.__gm.made++,Promise.resolve({addMarkers:L=>{window.__gm.mk+=L.length;return Promise.resolve(L.map((x,i)=>String(i)))},addPolylines:L=>{window.__gm.pl+=L.length;return Promise.resolve(['p'])},removeMarkers:()=>Promise.resolve(),removePolylines:()=>Promise.resolve(),setCamera:()=>Promise.resolve(),enableCurrentLocation:()=>Promise.resolve(),updateMapBounds:()=>{},destroy:()=>{window.__gm.destroyed++;return Promise.resolve()}}))};
+ window.L={map:function(){return {remove(){},invalidateSize(){},fitBounds(){},setView(){}}},layerGroup:()=>({addTo(){return this},clearLayers(){},addLayer(){}}),tileLayer:()=>({on(){},addTo(){}}),marker:()=>({bindTooltip(){return this}}),polyline:()=>({}),divIcon:()=>({})}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};S.tab.admin='personal';render();window.scrollTo(0,0)});await W(600);
+let r=await ev(()=>({n:GMI.length,made:__gm.made,mk:__gm.mk,cls:document.documentElement.classList.contains('gmin'),hole:!!document.querySelector('body>.gmhole'),clip:(document.querySelector('body>.gmhole')||{style:{}}).style.clipPath,mainBg:document.querySelector('main').style.background,tag:!!document.querySelector('.mapviv capacitor-google-map')}));
+ok(r.n>=1&&r.made>=1&&r.mk>0&&r.cls&&r.hole&&/evenodd/.test(r.clip||'')&&r.tag,'mapa de Google dentro de la pantalla (hueco y marcadores)',r);
+ok(/transparent/.test(r.mainBg),'lo de alrededor transparente');
+await ev(()=>window.scrollBy(0,200));await W(150);let c2=await ev(()=>document.querySelector('body>.gmhole').style.clipPath);ok(c2!==r.clip,'al hacer scroll el hueco se mueve');
+await ev(()=>{S.tab.admin='bodega';render()});await W(300);r=await ev(()=>({n:GMI.length,d:__gm.destroyed,hole:!!document.querySelector('.gmhole'),cls:document.documentElement.classList.contains('gmin'),mainBg:document.querySelector('main').style.background}));
+ok(r.n===0&&r.d>=1&&!r.hole&&!r.cls&&!/transparent/.test(r.mainBg),'al salir se quita el mapa y la app vuelve a su color',r);
+await ev(()=>{__gm.fail=true;S.tab.admin='personal';render()});await W(500);r=await ev(()=>({n:GMI.length,fail:[...document.querySelectorAll('[data-vivo]')].some(e=>e._gmFail)}));ok(r.n===0&&r.fail,'si Google Maps falla, se usa el mapa de antes',r);
+await ev(()=>{__gm.fail=false;localStorage.setItem('gmapsNo','1');S.tab.admin='bodega';render();S.tab.admin='personal';render()});await W(500);ok(await ev(()=>GMI.length===0),'apagado en Ajustes: mapa de antes');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});
+await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(700);
+console.log(await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();suAplicar();_pin.modo=null;S.role='rep';S.chofHoy=S.choferes.filter(c=>!esAdm(c))[0].id;S.pinOk[pinKey()]=true;S.bienv=S.bienv||{};S.salida.ok=false;S.tab.rep='ruta';render();var a='BIENV:\n'+(document.getElementById('bienv')?document.getElementById('bienv').innerText:'(no)')+'\n'+[...document.querySelectorAll('#bienv [data-act]')].map(x=>x.dataset.act).join(',');S.bienv[S.chofHoy]=1;S.salida.ok=true;S.cierre.sent=true;S.cierre.res=cierreRes();S.tab.rep='ruta';render();return a+'\n\nRUTA TRAS CIERRE:\n'+document.querySelector('main').innerText.slice(0,1200)+'\n'+[...document.querySelectorAll('main [data-act]')].filter(x=>x.getClientRects().length).map(x=>x.dataset.act+'|'+x.textContent.trim().slice(0,22)).join(' ; ')}));
+await b.close()})();

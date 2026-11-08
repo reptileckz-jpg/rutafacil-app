@@ -1,0 +1,6 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1});p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);
+await p.evaluate(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='rep';S.salida.ok=true;S.tab.rep='ruta';S.gxSheet=true;S.gxFuel=true;S.rc=S.rc||{};S.rc.foto='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';render()});await p.waitForTimeout(300);
+console.log(await p.evaluate(()=>{var i=document.querySelector('img[alt="Ticket de gasolina"]');if(!i)return 'no img';var ch=[];var x=i;while(x&&x!==document.body){ch.push(x.tagName+(x.id?'#'+x.id:'')+(x.dataset&&x.dataset.act?'['+x.dataset.act+']':'')+(x.getAttribute('role')?'{'+x.getAttribute('role')+'}':''));x=x.parentElement}var r=i.getBoundingClientRect();var top=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return ch.join(' < ')+' | top:'+(top&&top.tagName+(top.className?'.'+top.className:''))}));
+await b.close()})();

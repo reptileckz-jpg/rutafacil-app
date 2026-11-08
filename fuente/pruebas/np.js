@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.tab.admin='personal';render()});await W(200);
+let r=await ev(()=>({card:!!document.querySelector('[data-act="npopen"]'),viejo:!!document.getElementById('chNew')}));ok(r.card&&!r.viejo,'en Personal solo está la tarjeta "Agregar a alguien nuevo"',r);
+await p.click('[data-act="npopen"]');await W(300);ok(await ev(()=>!!document.getElementById('npov')),'al tocarla se abre su pantalla');
+await p.screenshot({path:'v50/np1.png'});
+await p.click('[data-act="npsave"]');await W(150);ok(/nombre/.test(await ev(()=>S.toast)),'sin nombre no guarda');
+await p.fill('#np_n','Juan Pérez López');await p.fill('#np_tel','228 555 1234');await p.click('[data-act="nppuesto"][data-v="ayudante"]');await W(150);
+r=await ev(()=>({n:document.getElementById('np_n').value,lic:!!document.getElementById('npf_lic')}));ok(r.n==='Juan Pérez López'&&!r.lic,'al cambiar el puesto no se borra lo escrito; sin licencia si no es chofer',r);
+await p.setInputFiles('#npf_foto',{name:'f.png',mimeType:'image/png',buffer:require('fs').readFileSync('v50/n0.png')});await W(700);
+await p.fill('#np_sueldo','2500');await p.fill('#np_r1n','María López');
+let n0=await ev(()=>S.choferes.length);await p.click('[data-act="npsave"]');await W(300);
+r=await ev(()=>{var c=S.choferes[S.choferes.length-1];return {n:S.choferes.length,nom:c.n,pu:c.puesto,tel:c.tel,foto:!!c.foto,sz:c.sz.monto,r1:c.r1n,ov:!!document.getElementById('npov'),tab:S.tab.admin,open:S.openCh,edit:S.chEdit}});
+ok(r.n===n0+1&&r.nom==='Juan Pérez López'&&r.pu==='ayudante'&&r.foto&&r.sz==='2500'&&r.r1==='María López','se guarda con todos sus datos',r);ok(!r.ov&&r.tab==='personal'&&!r.edit,'regresa a Personal (no te manda a las pestañas)',r);
+ok(await ev(()=>document.querySelector('main').innerText.indexOf('Juan Pérez López')>-1),'ya sale en la lista');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

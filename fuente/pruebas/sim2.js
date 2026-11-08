@@ -1,0 +1,34 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
+const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+const T=()=>ev(()=>document.getElementById('wzov')?document.getElementById('wzov').innerText:'');const clk=s=>ev(s=>{var e=document.querySelector(s);if(!e)return false;e.click();return true},s);
+const inp=(id,v)=>ev(([id,v])=>{var i=document.getElementById(id);i.value=v;i.dispatchEvent(new Event('input',{bubbles:true}))},[id,v]);
+await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};S.precio.conf=iso(TODAY);S.tab.admin='cargas';S.provDir['Don Chuy']={tel:'',dir:'',tipo:'Ambos'};S.provDir['Roatanero']={tel:'',dir:'',tipo:'Roatán'};render();wzAbre('sim',{provs:[],dias:'1',com:'300',merma:'3',fecha:iso(TODAY),hora:'06:00'})});await W(150);
+/* 94: proveedor nuevo ahí mismo */
+await clk('[data-act="svnuevoab"][data-k="p"]');await W(80);await inp('wz_nnp','Prov Nuevo');await clk('[data-act="wzop"][data-k="ntp"][data-v="Macho"]');await W(50);await clk('[data-act="svnuevo"][data-k="p"]');await W(80);
+let r=await ev(()=>({provs:S.wz.d.provs,t:S.provDir['Prov Nuevo']&&S.provDir['Prov Nuevo'].tipo}));ok(r.provs.indexOf('Prov Nuevo')>-1&&r.t==='Macho','"+ Otro proveedor" lo agrega y lo escoge',r);
+await ev(()=>{S.wz.d.provs=['Roatanero','Don Chuy'];render()});await clk('[data-act="wzsig"]');await W(80);
+r=await T();ok(/Qué vende cada uno/.test(r)&&/Don Chuy/.test(r)&&!/Roatanero/.test(r),'pregunta qué vende solo al que no se sabe',r.slice(0,150));
+await clk('[data-act="svtipo"][data-n="Don Chuy"][data-v="Macho"]');await W(50);await clk('[data-act="wzsig"]');await W(80);
+r=await T();ok(/báscula/.test(r)&&/Otra báscula/.test(r),'báscula: trae "+ Otra báscula"');
+await clk('[data-act="svnuevoab"][data-k="b"]');await W(60);await inp('wz_nnb','Báscula Sierra');await clk('[data-act="svnuevo"][data-k="b"]');await W(80);
+r=await ev(()=>({b:S.wz.d.basc,n:(S.basc.find(x=>String(x.id)===S.wz.d.basc)||{}).n}));ok(r.n==='Báscula Sierra','báscula nueva agregada y escogida',r);
+await clk('[data-act="wzsig"]');await W(60);await ev(()=>{var s=document.querySelector('#wzov select');s.value=s.options[1].value;s.dispatchEvent(new Event('change',{bubbles:true}))});await W(60);await clk('[data-act="wzsig"]');await W(60);
+await ev(()=>{var i=document.getElementById('wz_km');if(i&&!i.value){i.value='300';i.dispatchEvent(new Event('input',{bubbles:true}))}});await clk('[data-act="wzsig"]');await W(80);
+r=await T();ok(/Roatanero/.test(r)&&/Cajas de roatán/.test(r)&&/Precio por kilo del roatán/.test(r)&&/Don Chuy/.test(r),'carga por proveedor',r.slice(0,400));
+r=await ev(()=>{var t=document.getElementById('wzov').innerText;var dc=t.split('Don Chuy')[1]||'';return {mR:/Cajas de roatán/.test(dc),mM:/Kilos de macho/.test(dc),rM:/Kilos de macho/.test(t.split('Don Chuy')[0])}});ok(!r.mR&&r.mM&&!r.rM,'al que vende roatán no le pide macho y viceversa',r);
+await inp('wz_c0','100');await clk('[data-act="wzsig"]');await W(60);ok(/precio por kilo del roatán/.test(await ev(()=>S.wz.err)),'falta precio por kilo: avisa');
+await inp('wz_pr0','12');await inp('wz_k1','500');await inp('wz_pm1','9');await clk('[data-act="wzsig"]');await W(60);await clk('[data-act="wzsig"]');await W(80);
+r=await ev(()=>({t:document.getElementById('wzov').innerText,d:[S.wz.d.cajas,S.wz.d.pCaja,S.wz.d.kgM,S.wz.d.pKg]}));ok(/Este viaje deja/.test(r.t)&&+r.d[1]===240&&+r.d[2]===500,'resultado: el precio por caja sale del precio por kilo (12 × 20 kg = $240)',r.d);
+await clk('[data-act="wzsig"]');await W(60);r=await T();ok(/Quién va/.test(r),'sigue en la misma tarjeta: ¿Quién va?');
+await clk('#wzov [data-act="wzop"][data-k="chofer"]');await W(60);r=await T();ok(/Qué día/.test(r),'día y hora');await clk('[data-act="wzsig"]');await W(60);
+r=await T();ok(/Cuánto efectivo/.test(r),'pregunta el efectivo');await clk('[data-act="wzsig"]');await W(60);r=await T();ok(/Revisa el viaje/.test(r),'revisar');await clk('[data-act="wzfin"]');await W(80);
+r=await ev(()=>({m:S.modal&&S.modal.t,wz:!!S.wz}));ok(r.m==='¿Seguro?'&&r.wz,'pide ¿Seguro? antes de programar',r);
+let n0=await ev(()=>S.cargas.length);await clk('[data-act="svprogsi"]');await W(150);
+r=await ev(()=>({n:S.cargas.length,wz:!!S.wz,t:S.toast,c:S.cargas.slice(-2).map(c=>[c.prov,c.cajas,c.kgM,c.prog,c.viaje&&c.viaje.chofer])}));ok(r.n===n0+2&&!r.wz&&/Viaje programado/.test(r.t),'programa un viaje por proveedor',r);
+/* cancelar */
+var cid=await ev(()=>S.cargas[S.cargas.length-1].id);await ev(id=>{S.openCarga=id;render()},cid);await W(100);
+ok(await clk('[data-act="progcancel"]'),'botón "Cancelar este viaje"');await W(80);ok(await ev(()=>!!S.confirm),'pide confirmación');await clk('[data-act="confok"]');await W(100);
+ok(await ev(id=>!S.cargas.some(c=>c.id===id),cid),'viaje cancelado');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

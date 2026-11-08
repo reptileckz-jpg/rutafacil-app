@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const fs=require('fs');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
+const src=fs.readFileSync('/mnt/user-data/outputs/prototipo-platanos.html','utf8');const st=(src.match(/Tú (registró|guardó|no pudo|recibió|entregó|cambió|mandó|pagó|agregó|borró|marcó|asignó|canceló)/g)||[]);ok(!st.length,'el código no tiene "Tú" + verbo en tercera persona',st);
+const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+let r=await ev(()=>{S.role='admin';S.encOn=false;S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};var yo=quien();return [avYo(yo+' registró una báscula nueva: X'),avYo('URGENTE: '+yo+' guardó la ubicación de Y'),avYo('Danu registró una báscula nueva: Z'),avYo('Tú registró algo')]});
+ok(r[0]==='Registraste una báscula nueva: X'&&r[1]==='URGENTE: Guardaste la ubicación de Y'&&r[2]==='Danu registró una báscula nueva: Z'&&r[3]==='Registraste algo','segunda persona si fuiste tú; nombre si fue otro',r);
+await ev(()=>{S.avPrecio.push(quien()+' registró una báscula nueva: Prueba');S.avPrecio.push('Tú guardó la ubicación de Z');S.tab.admin='inicio';render()});await W(150);
+r=await ev(()=>{var t=document.body.innerText;return {mal:(t.match(/Tú [a-záéíóú]+ó\b/g)||[]),bien:/Registraste una báscula nueva: Prueba/.test(t)}});ok(!r.mal.length&&r.bien,'en pantalla: "Registraste…", nunca "Tú registró"',r);
+r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk[pinKey()]=true;return avYo('Danu guardó la ubicación de X')});ok(r==='Guardaste la ubicación de X','el chofer ve "Guardaste…" de lo suyo',r);
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

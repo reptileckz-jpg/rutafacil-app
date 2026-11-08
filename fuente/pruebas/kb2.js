@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:390,height:844}});await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);
+const prueba=async(nombre,prep)=>{await p.setViewportSize({width:390,height:844});await p.evaluate(prep);await p.waitForTimeout(300);
+ const sel=await p.evaluate(()=>{var L=[...document.querySelectorAll('input[type=text],input[type=number],input:not([type]),textarea')].filter(x=>x.offsetParent);var el=L[L.length-1];el.id=el.id||'kbx';return '#'+el.id});
+ await p.setViewportSize({width:390,height:470});await p.focus(sel);await p.waitForTimeout(700);
+ const r=await p.evaluate(s=>{var r=document.querySelector(s).getBoundingClientRect();return {top:Math.round(r.top),bot:Math.round(r.bottom),vh:innerHeight}},sel);
+ ok(r.top>=40&&r.bot<=r.vh,nombre+': el campo se ve completo, sin subirse de más',r);await p.evaluate(()=>document.activeElement.blur())};
+await prueba('Ajustes (último campo)',()=>{S.role='admin';S.pinOk={};S.pinOk[pinKey()]=true;_pin={v:'',modo:null};S.aj=true;render()});
+await prueba('Nuevo cliente',()=>{S.aj=false;S.tab.admin='clientes';render();var b=document.querySelector('[data-act="clinew"],[data-act="newcli"]');if(b)b.click()});
+await prueba('Carga extra',()=>{S.role='rep';S.pinOk[pinKey()]=true;S.cx={};render()});
+console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

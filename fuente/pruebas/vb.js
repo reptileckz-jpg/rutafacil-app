@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();
+const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message+' '+e.stack));p.on('console',m=>{if(m.type()==='error')errs.push('console '+m.text())});
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f,a)=>p.evaluate(f,a),W=ms=>p.waitForTimeout(ms);
+const img=require('fs').readFileSync('v50/n0.png');
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='rep';S.tab.rep='ruta';render();vwNuevo(null);var v=S.vw;v.started=true;v.ftSal='x';v.k='b0';render()});await W(500);
+let r=await ev(()=>{var o=document.getElementById('vwov');var n=document.querySelector('nav.tabs');var nr=n&&n.getBoundingClientRect();return {ov:!!o,inMain:!!(o&&o.closest('main')),txt:o&&o.innerText.slice(0,200),nav:n?{vis:getComputedStyle(n).display,top:nr.top,h:nr.height,z:getComputedStyle(n).zIndex}:null,files:[...document.querySelectorAll('#vwov input[type=file]')].map(i=>i.id)}});console.log(JSON.stringify(r,null,1));
+await p.screenshot({path:'v50/vb1.png'});
+await p.setInputFiles('#vwov input[type=file]',{name:'t.png',mimeType:'image/png',buffer:img});await W(900);
+await p.screenshot({path:'v50/vb2.png'});
+r=await ev(()=>{var o=document.getElementById('vwov');return {k:S.vw&&S.vw.k,txt:o&&o.innerText.slice(0,300),ftB0:!!(S.vw&&S.vw.ftB0)}});console.log(JSON.stringify(r,null,1));
+await ev(()=>{var t=document.querySelector('#vwov [data-act="vwnext"]');console.log('next?',!!t);t&&t.click()});await W(700);
+r=await ev(()=>{var o=document.getElementById('vwov');return {k:S.vw&&S.vw.k,txt:o&&o.innerText.slice(0,300),h:o&&o.scrollHeight}});console.log(JSON.stringify(r,null,1));
+await p.screenshot({path:'v50/vb3.png'});
+console.log(errs);await b.close()})();

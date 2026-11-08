@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});p.on('pageerror',e=>console.log('ERR',e.message));p.on('console',m=>console.log('C',m.text()));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);const ev=(f)=>p.evaluate(f),W=ms=>p.waitForTimeout(ms);
+await ev(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='rep';S.salida.ok=true;S.cierre.salioR=sum(S.log,function(l){return l.R})+5;S.cierre.salioM=r2(sum(S.log,function(l){return l.M})+12);S.cierre.gxConf=true;S.tab.rep='cierre';S.cierreP=3;render()});
+await ev(()=>document.querySelector('[data-act="enviar"]').click());await W(300);
+console.log(await ev(()=>JSON.stringify({cf:S.confirm&&S.confirm.t,t:S.toast})));
+await ev(()=>{S.cierre.fotoReg='data:image/png;base64,AA';S.cierreP=3;render();
+ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(b&&b.dataset.act==='enviar')console.log('cap-first ok='+b.dataset.ok)},true);
+ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(b&&b.dataset.act==='enviar')console.log('window-cap')},true);
+ document.querySelector('[data-act="enviar"]').click()});await W(300);
+console.log(await ev(()=>JSON.stringify({cf:S.confirm&&S.confirm.t,t:S.toast})));
+await ev(()=>document.querySelector('[data-act="confok"]').click());await W(300);
+console.log(await ev(()=>JSON.stringify({s:S.cierre.sent,t:S.toast})));
+await b.close()})();

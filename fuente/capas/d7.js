@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});
+await p.goto('file://'+process.argv[2]);await p.waitForTimeout(400);
+console.log(await p.evaluate(async()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.tab.admin='clientes';S.openCli=1;render();var W=ms=>new Promise(r=>setTimeout(r,ms));var i=document.getElementById('abc_1');i.value='500';var bt=document.querySelector('[data-act="cobrar"][data-id="1"]');bt.click();await W(50);var r=[cl(1).cred,cajaEsp()];
+ var bt2=document.createElement('button');bt2.dataset.act='cobrar';bt2.dataset.id='1';document.getElementById('abc_1').value='100';document.body.appendChild(bt2);bt2.click();await W(50);r.push(cl(1).cred);
+ var bt3=document.createElement('button');bt3.dataset.act='cobrar';bt3.dataset.id='1';document.getElementById('abc_1').value='100';document.querySelector('main').appendChild(bt3);bt3.click();await W(50);r.push(cl(1).cred);return r}));await b.close()})();

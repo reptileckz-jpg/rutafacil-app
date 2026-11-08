@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(400);
+const r=await p.evaluate(async()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='admin';S.tab.admin='cargas';S.openProv='Roly';var n=0,_r=render;render=function(){n++;return _r.apply(this,arguments)};render();await new Promise(z=>setTimeout(z,2000));var el=document.querySelector('[data-act="pdnuevo"]');var a=el.getBoundingClientRect().top;await new Promise(z=>setTimeout(z,300));var b2=el.isConnected?el.getBoundingClientRect().top:'gone';return [n,a,b2,!!document.querySelector('#fiov'),getComputedStyle(el).animationName,getComputedStyle(el.closest('.card')||el).animationName]});
+console.log(r,errs);await b.close()})();

@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:390,height:844}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(700);
+await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();suAplicar();S.role='rep';S.chofHoy=S.choferes.filter(c=>!esAdm(c))[0].id;delete S.pins['c:'+S.chofHoy];S.pinOk={};pinEntrar();render()});await p.waitForTimeout(300);
+const tap=async d=>{for(const x of d){await p.evaluate(x=>document.querySelector('#pinov [data-act="pnd"][data-v="'+x+'"]').click(),x);await p.waitForTimeout(60)}};
+ok(await p.evaluate(()=>/Crea tu PIN/.test(document.getElementById('pinov').innerText)),'chofer sin PIN: le pide crearlo');
+await tap('1234');let t=await p.evaluate(()=>document.getElementById('pinov').innerText);ok(/muy fácil/.test(t),'1234: sale el error dentro de la pantalla del PIN',t.slice(0,160));
+await tap('4');t=await p.evaluate(()=>document.getElementById('pinov').innerText);ok(!/muy fácil/.test(t),'al volver a escribir se quita el error');
+await tap('821');await tap('4822');t=await p.evaluate(()=>document.getElementById('pinov').innerText);ok(/No fue el mismo PIN/.test(t),'si no coinciden, lo dice');
+await tap('4821');await tap('4821');ok(await p.evaluate(()=>!document.getElementById('pinov')&&S.pins[pinKey()]==='4821'),'PIN creado');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

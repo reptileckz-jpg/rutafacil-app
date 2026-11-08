@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(400);
+await p.evaluate(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.precio.conf=iso(TODAY);S.role='admin';S.tab.admin='clientes';S.openCli=S.cli[0].id;render()});
+await p.evaluate(()=>{var b=document.querySelector('[data-act="ceedit"]');b.scrollIntoView();b.click()});await p.waitForTimeout(300);
+await p.evaluate(()=>{var f=document.querySelector('[data-act="ceedit"]')||document.querySelector('input[data-bind^="ce."]');if(f)f.scrollIntoView({block:'start'})});
+await p.screenshot({path:'v39/forms/clieditar.png',fullPage:true});
+await p.evaluate(()=>{S.role='rep';S.salida.ok=true;S.tab.rep='ruta';render();var b=document.querySelector('[data-act="clinuevo"],[data-act="nuevo"]');if(b)b.click()});await p.waitForTimeout(300);
+await p.screenshot({path:'v39/forms/clinuevo.png',fullPage:true});
+console.log('errs',errs);await b.close()})();

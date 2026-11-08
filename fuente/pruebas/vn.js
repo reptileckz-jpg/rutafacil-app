@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:390,height:844}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(600);
+let r=await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();S.setup.bienv=true;_pin.modo=null;S.setup.p=2;render();var o=document.getElementById('setov');if(!o)return 'sin setov';var t=o.innerText;return {nombre:/Nombre o modelo/.test(t),marca:!!o.querySelector('[data-bind="setup.vf.marca"]'),anio:o.querySelectorAll('[data-bind="setup.vf.anio"]').length,modelo:o.querySelectorAll('[data-bind="setup.vf.modelo"]').length}});
+ok(r.marca&&!r.nombre&&r.anio===1&&r.modelo===1,'configuración: marca, modelo y año (sin "nombre", sin repetir)',r);
+await p.fill('[data-bind="setup.vf.marca"]','Nissan');await p.fill('[data-bind="setup.vf.modelo"]','NP300');await p.fill('[data-bind="setup.vf.anio"]','2020');await p.waitForTimeout(200);
+r=await p.evaluate(()=>{S.setup.vf.comb='Gasolina Premium';var b=document.querySelector('[data-act="suadd"][data-k="veh"]');b.click();return S.setup.veh.map(v=>v.n)});ok(r.indexOf('Nissan NP300 2020')>-1,'el vehículo se llama "Nissan NP300 2020"',r);
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(600);
+r=await p.evaluate(()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.tab.admin='vehiculos';render();var b=document.createElement('button');b.dataset.act='vnew';document.body.appendChild(b);b.click();b.remove();var P=S.wz?wzPasos().map(function(x){return typeof x.q==='function'?'':x.q}).join(' | '):'';return {vf:!!S.wz,h:P}});
+ok(r.vf&&!/[Nn]ombre/.test(r.h)&&/marca/.test(r.h)&&/modelo/.test(r.h),'Vehículos: por pasos, sin "nombre", con marca y modelo',r);await p.evaluate(()=>{S.wz=null;render()});
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

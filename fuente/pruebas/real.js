@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x):''))};
+const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(900);
+let r=await p.evaluate(()=>{var d=new Date();return {today:iso(TODAY),hoy:iso(d),reloj:S.reloj,ahora:d.getHours()*60+d.getMinutes()}});ok(r.today===r.hoy&&Math.abs(r.reloj-r.ahora)<=1,'la versión real usa la fecha y la hora de verdad',r);
+await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();S.setup.fin=true;S.setup.bienv=true;var c=nuevoEmp({n:'Chofer 1',puesto:'chofer'});S.choferes.push(c);chCambiar(c.id);S.role='rep';S.tab.rep='ruta';render()});await p.waitForTimeout(400);
+r=await p.evaluate(()=>{var t=document.body.innerText;var a=document.querySelector('.bvhola>:first-child');var ra=a&&a.getBoundingClientRect();return {proto:/Prototipo|Reiniciar demo/.test(t),centro:ra?Math.round(ra.left+ra.width/2-innerWidth/2):null,fecha:/28 de octubre/.test(t)}});ok(!r.proto,'sin "Prototipo" ni "Reiniciar demo"',r);ok(Math.abs(r.centro)<=3,'el avatar está centrado',r);ok(!r.fecha,'no sale la fecha de la demo',r);
+await p.screenshot({path:'v50/real1.png'});
+const q=await b.newPage();await q.addInitScript(()=>{window.__pnTest=1});await q.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await q.waitForTimeout(600);ok(await q.evaluate(()=>iso(TODAY))==='2026-10-28','la demo sigue en su día de ejemplo');
+ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

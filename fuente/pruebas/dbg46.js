@@ -1,0 +1,6 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});await p.addInitScript(()=>{window.__pnTest=1});
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);const ev=f=>p.evaluate(f);
+console.log(await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;_pin={v:'',modo:null};S.popVisto={admin:iso(TODAY)};var v=S.veh[0];S.tab.admin='vehiculos';S.vehOpen=v.id;S.fiTab['veh:'+v.id]='gas';render();var o=document.getElementById('fiov');function d(e,l){if(l>4)return '';return [].map.call(e.children,function(k){return '  '.repeat(l)+k.tagName+'.'+String(k.className).slice(0,30)+(k.id?'#'+k.id:'')+' :: '+(k.innerText||'').replace(/\s+/g,' ').slice(0,40)+'\n'+(k.children.length<15?d(k,l+1):'')}).join('')}return d(o,0)}));
+console.log(await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk[pinKey()]=true;S.tab.rep='ruta';S.vehOpen=null;render();var e=[...document.querySelectorAll('*')].find(x=>x.children.length===0&&/Mientras trabajas/.test(x.textContent));return e.parentElement.outerHTML.slice(0,300)+' || parent: '+e.parentElement.parentElement.tagName+'.'+e.parentElement.parentElement.className}));
+await b.close()})();

@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:400,height:880}});await p.addInitScript(()=>{window.__pnTest=1});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(400);
+console.log(await p.evaluate(async()=>{S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};var W=ms=>new Promise(r=>setTimeout(r,ms));
+ window.act=function(a,ds){var b=document.createElement('button');b.dataset.act=a;Object.keys(ds||{}).forEach(function(k){b.dataset[k]=ds[k]});document.body.appendChild(b);b.click();b.remove();if(S.confirm){var o=document.querySelector('[data-act="confok"]');if(o)o.click()}};
+ S.role='admin';S.pdF={n:'Roly',m:'5000',c:'Fruta',o:'',f:iso(TODAY),v:{t:'sin'}};act('pdsave');await W(30);S.tab.admin='cargas';S.openProv='Roly';render();
+ var e=document.getElementById('abp');var r=['abp '+(e?(e.closest('#fiov')?'fiov':'main'):'none'),provSaldo('Roly'),cajaEsp()];
+ if(!e){e=document.createElement('input');e.id='abp';document.body.appendChild(e)}e.value='2000';
+ var b=document.createElement('button');b.dataset.act='abonoprov';b.dataset.n=encodeURIComponent('Roly');document.body.appendChild(b);b.click();b.remove();r.push('confirm:'+JSON.stringify(S.confirm&&S.confirm.m));
+ var o=document.querySelector('[data-act="confok"]');if(o)o.click();await W(50);r.push(provSaldo('Roly'),cajaEsp(),S.toast);return r}));console.log(errs);await b.close()})();

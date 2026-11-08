@@ -1,0 +1,68 @@
+/* ===================== v5 · Control de crédito y mayoreo ("buró") =====================
+   - Mayoreo por cliente: 2 mayoreos a mano en 10 días → aviso y se bloquea "en revisión" hasta que decidas.
+   - Crédito: máximo $1,500 por cliente (excepciones solo tú) y lo que deben todos los clientes de un chofer
+     no pasa de $5,000.
+   - Buró: el límite baja solo si el cliente tarda en pagar; sube un nivel al liquidar 3 veces a tiempo.
+   Todos los números se cambian en Ajustes. */
+var CR_DEF={crCli:'1500',crCh:'5000',mayD:'10',mayN:'2',bD1:'7',bD2:'15',bD3:'30',bL2:'1000',bL3:'500'};
+function crCfg(){S.cfg=S.cfg||{};Object.keys(CR_DEF).forEach(function(k){if(S.cfg[k]==null||S.cfg[k]==='')S.cfg[k]=CR_DEF[k]});return S.cfg}
+var BURO=[['🟢','Bueno'],['🟡','Regular'],['🟠','Malo'],['🔴','Bloqueado']];
+function buroTierEdad(d){var c=crCfg();return d<=num(c.bD1)?0:(d<=num(c.bD2)?1:(d<=num(c.bD3)?2:3))}
+function buroDe(c){c.buro=c.buro||{n:0,ok:0};return c.buro}
+function limBase(c){return c.limMan!=null&&c.limMan!==''?num(c.limMan):num(crCfg().crCli)}
+function limEf(c){var b=buroDe(c),cf=crCfg(),base=limBase(c),k=[1,num(cf.bL2)/num(cf.crCli),num(cf.bL3)/num(cf.crCli),0][b.n];return b.n===0?base:Math.round(base*Math.min(1,k))}
+/* se actualiza el nivel: baja en cuanto tarda; sube al liquidar a tiempo 3 veces */
+function buroSync(){crCfg();S.cli.forEach(function(c){if(c.rapida&&!c.reg)return;var b=buroDe(c),edad=credAge(c);
+ if(c.cred>0.5){var t=buroTierEdad(edad);if(t>b.n){b.n=t;b.ok=0;b.baja=iso(TODAY);b.porque='Tardó '+edad+' días en pagar'}c._edad=edad}
+ else if(c._credAnt>0.5){/* acaba de liquidar */var e=c._edad||0;if(b.n===3){b.n=2;b.ok=0;b.sube=iso(TODAY)}else if(e<=num(crCfg().bD1)){b.ok++;if(b.ok>=3&&b.n>0){b.n--;b.ok=0;b.sube=iso(TODAY)}}else b.ok=0;c._edad=0}
+ c._credAnt=c.cred;c.lim=limEf(c)})}
+/* clientes que ya tenían más de $1,500: bajan y tú decides la excepción */
+(function(){try{crCfg();S.cli.forEach(function(c){if(c.limRevVisto)return;c.limRevVisto=1;if(num(c.lim)>num(S.cfg.crCli)&&c.limMan==null){c.limOld=num(c.lim);c.limRev=true}});buroSync()}catch(e){}})();
+var _rBu19=render;render=function(){try{buroSync()}catch(e){}return _rBu19.apply(this,arguments)};
+/* el admin edita el límite: eso es su excepción */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cesave"]');if(!b||!S.ce)return;var id=S.cliEdit,v=num(S.ce.lim);
+ setTimeout(function(){var c=cl(id);if(!c)return;c.limMan=v>0&&v!==num(crCfg().crCli)?v:null;c.limRev=false;buroSync();render()},0)},true);
+var _ceedit19=null;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ceedit"]');if(!b)return;setTimeout(function(){var c=cl(+b.dataset.id);if(S.ce&&c)S.ce.lim=String(limBase(c));render()},0)},true);
+/* bloqueos */
+var _cb19=credBloq;credBloq=function(c){var r=_cb19.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!S.d.reg))return r;var b=buroDe(c);if((S.permOk||{})[c.id]===iso(TODAY))return '';
+ if(b.n===3)return 'está bloqueado en el buró: debe desde hace '+credAge(c)+' días';if(limEf(c)<=0)return 'no tiene crédito';return ''};
+function chDeuda(ch,excepto){return r2(sum(S.cli.filter(function(c){return !c.oculto&&+c.chofer===+ch&&c.id!==excepto}),function(c){return num(c.cred)}))}
+var _ev19=entValida;entValida=function(){var r=_ev19.apply(this,arguments);if(r)return r;var k=entregaCalc();if(!k.c||!(k.quedaEntrega>0.005))return null;var c=k.c;
+ if(k.deuda>limEf(c)+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Su límite es '+money(limEf(c))+' ('+BURO[buroDe(c).n][1]+'): cóbrale más de contado'];
+ var tot=chDeuda(S.chofHoy,c.id)+k.deuda,mx=num(crCfg().crCh);if(tot>mx+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Tus clientes ya te deben '+money(chDeuda(S.chofHoy,c.id)+c.cred)+'. Tu tope es '+money(mx)+': cobra antes de fiar'];
+ return null};
+function buroPill(c){var b=buroDe(c),x=BURO[b.n];return '<span class="pill" style="background:'+['rgba(47,125,50,.14)','rgba(242,194,48,.25)','rgba(230,126,34,.2)','rgba(192,57,43,.18)'][b.n]+';color:inherit">'+x[0]+' '+x[1]+'</span>'}
+/* en la entrega: su calificación, su límite y cuánto le queda al chofer */
+var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
+ var x='<div class="lbl" style="margin:6px 0;line-height:1.6">Buró: '+buroPill(c)+' · límite '+money(lim)+(c.cred>0?' · debe '+money(c.cred):'')+'<br>Tus clientes te deben <b>'+money(dch)+'</b> de '+money(mx)+(dch>=mx?' · <b class="neg">ya no puedes fiar</b>':'')+'</div>';
+ return h.replace('<div id="calc"',x+'<div id="calc"')};
+/* en la ficha del cliente (admin) */
+var _mh19=mayHistHTML;mayHistHTML=function(c){var h=_mh19.apply(this,arguments);if(!c||c.oculto)return h;var b=buroDe(c),cf=crCfg();
+ return '<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b> '+buroPill(c)+'<div class="lbl" style="margin-top:4px">Límite '+money(limEf(c))+(c.limMan!=null?' · excepción tuya: '+money(limBase(c)):'')+(b.porque&&b.n?' · '+esc(b.porque):'')+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es) más':'')+(b.n===3?' · sin crédito hasta que pague todo':'')+'</div>'+(S.role==='admin'&&b.n?'<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>':'')+'</div>'+h};
+/* mayoreo por cliente: 2 veces en 10 días → en revisión */
+function mayAM(c){var cf=crCfg(),lim=iso(new Date(TODAY.getTime()-num(cf.mayD)*864e5));return (c.mayAM||[]).filter(function(f){return f>lim})}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guardar"]');if(!b||S.role!=='rep')return;var c=curCli(),n0=S.log.length;if(!c)return;
+ setTimeout(function(){if(S.log.length<=n0)return;var l=S.log[S.log.length-1];if(!(l.mayT==='chofer'||l.mayEl)||c.mayoreo)return;c.mayAM=(c.mayAM||[]).concat([iso(TODAY)]);var cf=crCfg();
+  if(mayAM(c).length>=num(cf.mayN)&&!c.mayRev){c.mayRev=true;c.mayNo=true;S.avPrecio.push('URGENTE: a '+c.n+' se le dio mayoreo '+mayAM(c).length+' veces en '+cf.mayD+' días. Se bloqueó hasta que lo revises');render()}},60)},true);
+function mayRevHTML(){var L=S.cli.filter(function(c){return c.mayRev&&!c.oculto});if(!L.length||S.role!=='admin')return '';
+ return '<div class="card alert" data-key="mayrev" style="padding:10px 12px;border-width:2px"><b class="neg">Mayoreo en revisión</b><div class="lbl">Se les dio mayoreo a mano '+crCfg().mayN+' veces o más en '+crCfg().mayD+' días. Revisa si su consumo lo justifica.</div>'+L.map(function(c){var H=(c.mayHist||[]).slice(-3);return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(c.n)+'</b><div class="lbl">'+H.map(function(x){return fmtF(x.f)+(x.pr?' · caja '+money(x.pr):'')+(x.pm?' · kg '+f2(x.pm):'')+(x.q?' ('+esc(x.q)+')':'')}).join('<br>')+'<br>Compra en 30 días: '+money(num(c.c30))+'</div><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn sm" style="flex:1" data-act="mayrevsi" data-id="'+c.id+'">Lo justifica: cliente de mayoreo</button><button class="btn sm sec" style="flex:1" data-act="mayrevno" data-id="'+c.id+'">No darle mayoreo</button><button class="btn sm sec" style="flex:1" data-act="mayrevdes" data-id="'+c.id+'">Desbloquear</button></div></div>'}).join('')+'</div>'}
+function limRevHTML(){var L=S.cli.filter(function(c){return c.limRev&&!c.oculto});if(!L.length||S.role!=='admin')return '';
+ return '<details class="card note" data-key="limrev" style="padding:10px 12px"><summary><b>Límites de crédito por decidir</b><span class="lbl">'+L.length+' cliente'+(L.length>1?'s':'')+' tenían más de '+money(num(crCfg().crCli))+'</span></summary>'+L.map(function(c){return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(c.n)+'</b> <span class="lbl">tenía '+money(c.limOld)+' · ahora '+money(limEf(c))+'</span><div style="display:flex;gap:6px;margin-top:6px"><button class="btn sm sec" style="flex:1" data-act="limexc" data-id="'+c.id+'">Dejarle '+money(c.limOld)+'</button><button class="btn sm sec" style="flex:1" data-act="limok" data-id="'+c.id+'">Que quede en '+money(num(crCfg().crCli))+'</button></div></div>'}).join('')+'</details>'}
+var _perms19=permsHTML;permsHTML=function(){return _perms19.apply(this,arguments)+mayRevHTML()+limRevHTML()};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
+ if(a==='mayrevsi'){e.stopImmediatePropagation();c.mayRev=false;c.mayNo=false;c.mayoreo=true;c.mayAM=[];toast(c.n+' ya es cliente de mayoreo');render();return}
+ if(a==='mayrevno'){e.stopImmediatePropagation();c.mayRev=false;c.mayNo=true;toast('A '+c.n+' ya no se le da mayoreo');render();return}
+ if(a==='mayrevdes'){e.stopImmediatePropagation();c.mayRev=false;c.mayNo=false;c.mayAM=[];toast('Desbloqueado: a '+c.n+' se le puede volver a dar mayoreo');render();return}
+ if(a==='limexc'){e.stopImmediatePropagation();c.limMan=c.limOld;c.limRev=false;buroSync();toast(c.n+': límite de '+money(c.limOld)+' (excepción)');render();return}
+ if(a==='limok'){e.stopImmediatePropagation();c.limMan=null;c.limRev=false;buroSync();toast(c.n+': límite de '+money(num(crCfg().crCli)));render();return}
+ if(a==='buroreset'){e.stopImmediatePropagation();var bb=buroDe(c);bb.n=0;bb.ok=0;bb.porque='';c._edad=0;toast(c.n+' regresó a Bueno');render();return}},true);
+/* los mensajes del chofer cuando está en revisión */
+var _tst19=toast;toast=function(t){if(typeof t==='string'&&/no se le da mayoreo \(lo decidió el administrador\)/.test(t)){var c=curCli();if(c&&c.mayRev)t='A '+c.n+' no se le puede dar mayoreo: está en revisión del administrador'}return _tst19.call(this,t)};
+/* regla del chofer: rechazos en los mismos días (antes 30) */
+mayRech30=function(ch){var lim=iso(new Date(TODAY.getTime()-num(crCfg().mayD)*864e5));return mayRechL().filter(function(x){return x.ch===+ch&&x.f>lim}).length};
+/* Ajustes */
+var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
+ var x='<div class="card" data-key="ajcred"><b>Control de crédito y mayoreo</b>'+f('crCli','Máximo de crédito por cliente $')+f('crCh','Lo que pueden deber todos los clientes de un chofer $')
+  +'<div class="lbl" style="margin-top:10px"><b>Buró: si tarda en pagar, baja su límite</b></div>'+f('bD1','Bueno: paga en máximo (días)')+f('bD2','Regular hasta (días)')+f('bL2','Límite de Regular $')+f('bD3','Malo hasta (días); después, bloqueado')+f('bL3','Límite de Malo $')
+  +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
+ var i=h.indexOf('data-bind="cfg.cbBl"');if(i<0)i=h.indexOf('data-act="tutver"');var j=i>-1?h.lastIndexOf('<div class="card"',i):-1;if(j<0){var e=h.lastIndexOf('</div>');return h.slice(0,e)+x+h.slice(e)}return h.slice(0,j)+x+h.slice(j)};

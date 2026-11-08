@@ -56,7 +56,8 @@ import java.util.concurrent.Executor;
         @Permission(alias = "bt", strings = { Manifest.permission.BLUETOOTH_CONNECT }),
         @Permission(alias = "camara", strings = { Manifest.permission.CAMERA }),
         @Permission(alias = "ubicacion", strings = { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }),
-        @Permission(alias = "notif", strings = { Manifest.permission.POST_NOTIFICATIONS })
+        @Permission(alias = "notif", strings = { Manifest.permission.POST_NOTIFICATIONS }),
+        @Permission(alias = "fondo", strings = { Manifest.permission.ACCESS_BACKGROUND_LOCATION })
     }
 )
 public class RutaNativa extends Plugin {
@@ -481,6 +482,117 @@ public class RutaNativa extends Plugin {
             for (String k : new String[] { "instalar", "desinstalar", "restablecer", "ubicacion", "cuentas" }) dpm().clearUserRestriction(adminCmp(), restriccion(k));
             dpm().setUninstallBlocked(adminCmp(), getContext().getPackageName(), false);
             dpm().clearDeviceOwnerApp(getContext().getPackageName());
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    /* ---------------- escáner de QR (el de Google, no el del navegador: ese cerraba la app) ---------------- */
+    @PluginMethod
+    public void escanear(final PluginCall call) {
+        try {
+            int ok = com.google.android.gms.common.GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+            if (ok != com.google.android.gms.common.ConnectionResult.SUCCESS) { call.reject("sin_play"); return; }
+            com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions op = new com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions.Builder()
+                .setBarcodeFormats(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE)
+                .build();
+            com.google.mlkit.vision.codescanner.GmsBarcodeScanning.getClient(getActivity(), op).startScan()
+                .addOnSuccessListener(b -> { JSObject o = new JSObject(); o.put("texto", b.getRawValue()); call.resolve(o); })
+                .addOnCanceledListener(() -> { JSObject o = new JSObject(); o.put("cancelado", true); call.resolve(o); })
+                .addOnFailureListener(e -> call.reject("fallo: " + e.getMessage()));
+        } catch (Throwable e) { call.reject("fallo: " + e.getMessage()); }
+    }
+
+    /* ---------------- ubicación siempre prendida del celular del negocio ---------------- */
+    @PluginMethod
+    public void gpsConfig(PluginCall call) {
+        try {
+            android.content.SharedPreferences.Editor e = RutaGps.pr(getContext()).edit();
+            String rt = call.getString("refresh", "");
+            if (!rt.isEmpty() && !rt.equals(RutaGps.pr(getContext()).getString("refresh", ""))) e.putString("refresh", rt).remove("idTok");
+            e.putString("apiKey", call.getString("apiKey", ""));
+            e.putString("proyecto", call.getString("proyecto", ""));
+            e.putString("base", call.getString("base", ""));
+            e.putString("nom", call.getString("nom", ""));
+            e.putString("ch", call.getString("ch", ""));
+            String dev = RutaGps.pr(getContext()).getString("dev", "");
+            if (dev.isEmpty()) {
+                dev = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                if (dev == null || dev.isEmpty()) dev = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+                e.putString("dev", dev);
+            }
+            e.apply();
+            RutaGps.arrancar(getContext());
+            JSObject o = new JSObject();
+            o.put("dev", dev);
+            call.resolve(o);
+        } catch (Throwable e) { call.reject(String.valueOf(e.getMessage())); }
+    }
+
+    @PluginMethod
+    public void gpsModo(PluginCall call) {
+        RutaGps.pr(getContext()).edit().putBoolean("ruta", call.getBoolean("ruta", false)).apply();
+        if (call.getString("ch") != null) RutaGps.pr(getContext()).edit().putString("ch", call.getString("ch")).putString("nom", call.getString("nom", "")).apply();
+        call.resolve();
+    }
+
+    @PluginMethod
+    public void gpsEvento(PluginCall call) {
+        RutaGps.evento(getContext(), call.getString("e", "evento"));
+        new Thread(() -> { try { RutaGps.subirAhora(getContext(), -1, false, RutaGps.pr(getContext()).getBoolean("ruta", false)); } catch (Throwable e) { } }).start();
+        call.resolve();
+    }
+
+    @PluginMethod
+    public void gpsEstado(PluginCall call) {
+        JSObject o = new JSObject();
+        android.content.SharedPreferences p = RutaGps.pr(getContext());
+        o.put("dev", p.getString("dev", ""));
+        o.put("config", !p.getString("refresh", "").isEmpty());
+        o.put("ruta", p.getBoolean("ruta", false));
+        o.put("fondo", Build.VERSION.SDK_INT < 29 || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        o.put("ult", p.getString("ult", ""));
+        call.resolve(o);
+    }
+
+    /* "Permitir todo el tiempo": en Android 11+ solo se puede escoger en Ajustes */
+    @PluginMethod
+    public void gpsFondo(PluginCall call) {
+        if (Build.VERSION.SDK_INT < 29 || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            JSObject o = new JSObject(); o.put("ok", true); call.resolve(o); return;
+        }
+        if (esDuenio()) {
+            try {
+                dpm().setPermissionGrantState(adminCmp(), getContext().getPackageName(), Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+                dpm().setPermissionGrantState(adminCmp(), getContext().getPackageName(), Manifest.permission.ACCESS_BACKGROUND_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+                JSObject o = new JSObject(); o.put("ok", true); call.resolve(o); return;
+            } catch (Exception e) { }
+        }
+        if (Build.VERSION.SDK_INT == 29) { requestPermissionForAlias("fondo", call, "fondoListo"); return; }
+        try {
+            Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getContext().getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(i);
+        } catch (Exception e) { }
+        JSObject o = new JSObject(); o.put("ok", false); o.put("ajustes", true); call.resolve(o);
+    }
+
+    @PermissionCallback
+    private void fondoListo(PluginCall call) {
+        JSObject o = new JSObject(); o.put("ok", getPermissionState("fondo") == PermissionState.GRANTED); call.resolve(o);
+    }
+
+    /* celular administrado: la ubicación queda prendida y no se puede quitar el permiso */
+    @PluginMethod
+    public void celGpsFijo(PluginCall call) {
+        if (!esDuenio()) { call.reject("La app no administra este celular"); return; }
+        try {
+            String pkg = getContext().getPackageName();
+            dpm().setPermissionGrantState(adminCmp(), pkg, Manifest.permission.ACCESS_FINE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+            dpm().setPermissionGrantState(adminCmp(), pkg, Manifest.permission.ACCESS_COARSE_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+            if (Build.VERSION.SDK_INT >= 29) dpm().setPermissionGrantState(adminCmp(), pkg, Manifest.permission.ACCESS_BACKGROUND_LOCATION, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);
+            if (Build.VERSION.SDK_INT >= 30) dpm().setLocationEnabled(adminCmp(), true);
+            dpm().addUserRestriction(adminCmp(), UserManager.DISALLOW_CONFIG_LOCATION);
+            dpm().setUninstallBlocked(adminCmp(), pkg, true);
             call.resolve();
         } catch (Exception e) { call.reject(e.getMessage()); }
     }

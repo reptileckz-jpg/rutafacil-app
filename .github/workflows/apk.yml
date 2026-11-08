@@ -41,6 +41,14 @@ jobs:
           npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2020 --outfile=www/firebase.js
           ls -la www/firebase.js
 
+      - name: Google Maps (si existe la llave MAPS_KEY)
+        env:
+          MAPS_KEY: ${{ secrets.MAPS_KEY }}
+        run: |
+          npx esbuild nube/mapas.js --bundle --minify --format=iife --target=es2020 --outfile=www/mapas.js
+          if [ -n "$MAPS_KEY" ]; then echo "window.PN_GMAPS=true" > www/mapas-cfg.js; else echo "window.PN_GMAPS=false" > www/mapas-cfg.js; echo "::warning::No hay llave MAPS_KEY: la app usa los mapas de siempre."; fi
+          ls -la www/mapas.js www/mapas-cfg.js
+
       - name: Mapas (Leaflet)
         run: |
           mkdir -p www/leaflet
@@ -56,18 +64,22 @@ jobs:
           sed -i 's#</manifest>#    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-feature android:name="android.hardware.location.gps" android:required="false" />\n</manifest>#' $M
           grep -n "LOCATION" $M
 
-      - name: Partes nativas (huella, WhatsApp, impresora Bluetooth, Descargas)
+      - name: Partes nativas (huella, WhatsApp, impresora Bluetooth, Descargas, escáner, GPS)
+        env:
+          MAPS_KEY: ${{ secrets.MAPS_KEY }}
         run: |
           D=android/app/src/main/java/com/rutafacil/app
-          cp nativo/RutaNativa.java nativo/MainActivity.java nativo/RutaAdmin.java $D/
+          cp nativo/RutaNativa.java nativo/MainActivity.java nativo/RutaAdmin.java nativo/RutaGps.java nativo/RutaArranque.java $D/
           mkdir -p android/app/src/main/res/xml && cp nativo/ruta_admin.xml android/app/src/main/res/xml/
           G=android/app/build.gradle
-          sed -i '0,/dependencies {/s//dependencies {\n    implementation "androidx.biometric:biometric:1.1.0"/' $G
-          grep -n "biometric" $G
+          sed -i '0,/dependencies {/s//dependencies {\n    implementation "androidx.biometric:biometric:1.1.0"\n    implementation "com.google.android.gms:play-services-code-scanner:16.1.0"\n    implementation "com.google.android.gms:play-services-location:21.3.0"/' $G
+          grep -n "biometric\|code-scanner\|play-services-location" $G
           M=android/app/src/main/AndroidManifest.xml
-          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />\n    <uses-permission android:name="android.permission.USE_BIOMETRIC" />\n    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />\n    <queries><package android:name="com.whatsapp" /><package android:name="com.whatsapp.w4b" /><intent><action android:name="android.media.action.IMAGE_CAPTURE" /></intent><intent><action android:name="android.intent.action.MAIN" /></intent></queries>\n</manifest>#' $M
-          sed -i 's#</application>#    <receiver android:name=".RutaAdmin" android:exported="true" android:permission="android.permission.BIND_DEVICE_ADMIN"><meta-data android:name="android.app.device_admin" android:resource="@xml/ruta_admin" /><intent-filter><action android:name="android.app.action.DEVICE_ADMIN_ENABLED" /></intent-filter></receiver>\n    </application>#' $M
-          grep -n "BLUETOOTH\|queries\|CAMERA\|NOTIF\|RutaAdmin" $M
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />\n    <uses-permission android:name="android.permission.USE_BIOMETRIC" />\n    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />\n    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />\n    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />\n    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />\n    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />\n    <queries><package android:name="com.whatsapp" /><package android:name="com.whatsapp.w4b" /><intent><action android:name="android.media.action.IMAGE_CAPTURE" /></intent><intent><action android:name="android.intent.action.MAIN" /></intent></queries>\n</manifest>#' $M
+          sed -i 's#</application>#    <receiver android:name=".RutaAdmin" android:exported="true" android:permission="android.permission.BIND_DEVICE_ADMIN"><meta-data android:name="android.app.device_admin" android:resource="@xml/ruta_admin" /><intent-filter><action android:name="android.app.action.DEVICE_ADMIN_ENABLED" /></intent-filter></receiver>\n    <service android:name=".RutaGps" android:exported="false" android:foregroundServiceType="location" />\n    <receiver android:name=".RutaArranque" android:exported="true"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /><action android:name="android.intent.action.QUICKBOOT_POWERON" /><action android:name="android.intent.action.MY_PACKAGE_REPLACED" /><action android:name="android.intent.action.ACTION_SHUTDOWN" /><action android:name="android.intent.action.QUICKBOOT_POWEROFF" /></intent-filter></receiver>\n    <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui" />\n    </application>#' $M
+          if [ -n "$MAPS_KEY" ]; then sed -i "s#</application>#    <meta-data android:name=\"com.google.android.geo.API_KEY\" android:value=\"$MAPS_KEY\" />\n    </application>#" $M; fi
+          grep -n "BLUETOOTH\|queries\|CAMERA\|NOTIF\|RutaAdmin\|RutaGps\|RutaArranque\|BACKGROUND\|mlkit" $M
+          grep -c "geo.API_KEY" $M || true
 
       - name: Íconos y pantalla de inicio
         run: npx @capacitor/assets generate --android --iconBackgroundColor '#2F7D32' --iconBackgroundColorDark '#2F7D32' --splashBackgroundColor '#F6F1E3' --splashBackgroundColorDark '#1E2A1A'

@@ -79,6 +79,20 @@ service cloud.firestore {
       allow delete: if mandaComoAdmin();
     }
 
+    // ubicación de los celulares del negocio (la sube el celular solo, aunque nadie tenga la sesión abierta)
+    // la lee el administrador; el celular escribe aunque el chofer ya no esté activo (para no perder el rastro)
+    match /n/{neg}/gps/{dev} {
+      allow read: if mandaComoAdmin();
+      allow create, update: if existePerfil() && request.resource.data.dev == dev;
+      allow delete: if mandaComoAdmin();
+    }
+    match /n/{neg}/gpsp/{id} {
+      allow read: if mandaComoAdmin();
+      allow create, update: if existePerfil() && id.matches(request.resource.data.dev + '_[0-9]+')
+                            && request.resource.data.keys().hasOnly(['dev', 't', 'v']);
+      allow delete: if mandaComoAdmin();
+    }
+
     // todo lo demás, cerrado
     match /{todo=**} {
       allow read, write: if false;

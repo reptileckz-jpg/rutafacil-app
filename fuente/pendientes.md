@@ -1407,3 +1407,6 @@ El dueño sigue: negociar con proveedores y programar viajes.
 - 14: QUITAR la pantalla de Comenzar; entra directo y el tutorial sale después de los avisos urgentes (orden del 15).
 - 1/2: arreglar Google Maps dentro de las pantallas, pero dejarlo APAGADO por defecto hasta que Google active la facturación; el usuario lo prende en Ajustes para probar.
 - 24: bloqueo igual que hoy (chofer 40 min, admin 5 min).
+27. (00:53) LISTA DE PRUEBA con cada versión: corta, por número de punto, qué tocar en el celular y qué debe pasar; el usuario responde qué falló por número. (Debió hacerse desde el principio.)
+28. (00:53) Avisos del CHOFER: misma regla del 21 (solo lo que le pide hacer algo; lo demás a su actividad/historial; agrupado; sin repetidos).
+29. (00:53) RESPALDO AUTOMÁTICO DIARIO en el celular del ADMINISTRADOR: un archivo por día en una carpeta (Descargas/RutaFacil/Respaldos), sin zip; se guardan solo los últimos 30 días (borra los más viejos que la app creó). Se hace solo la primera vez que se abre la app cada día (y si es posible también en segundo plano). En Ajustes: dónde están, cuándo fue el último, "Respaldar ahora" y "Restaurar". Aviso si lleva más de 2 días sin respaldo.

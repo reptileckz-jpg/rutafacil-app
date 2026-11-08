@@ -7666,7 +7666,7 @@ function gpsRutaHTML(c){if(!esCh(c)||esAdm(c))return '';var V=S.gpsVer=S.gpsVer|
  h+=mapaVivoHTML('gps'+c.id+dia.replace(/-/g,''),{pts:A.E.filter(function(e){return e.cli||(!e.bod&&e.t1-e.t0>=15*60000)}).map(function(e,i){return {lat:e.lat,lng:e.lng,t:String(i+1),n:e.cli?e.cli.n:'Parada sin cliente',col:e.cli?'var(--accent)':'var(--danger)'}}),line:A.line,marks:[]},240);
  h+='<div class="row"><span>Tiempo en la calle</span><b>'+(A.t0?hmDe(A.t0)+' a '+hmDe(A.t1)+' · '+minTxt(A.t1-A.t0):'—')+'</b></div><div class="row"><span>Recorrió</span><b>'+A.km+' km</b></div>'
   +(cs.length?'<div class="row"><span>Promedio por cliente</span><b>'+minTxt(cs.reduce(function(s,e){return s+(e.t1-e.t0)},0)/cs.length)+'</b></div>':'');
- h+='<div style="margin-top:8px">'+A.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000}).map(function(e){var raro=!e.cli&&!e.bod;return '<div class="gpsst'+(raro?' raro':'')+'">'+(raro?'⚠️ Parada sin cliente':(e.bod?'Bodega':esc(e.cli.n)))+' · '+hmDe(e.t0)+' a '+hmDe(e.t1)+' · <b>'+minTxt(e.t1-e.t0)+'</b>'+(raro?' <a class="link" href="https://www.google.com/maps?q='+e.lat+','+e.lng+'" target="_blank" rel="noopener">Ver dónde</a>':'')+'</div>'}).join('')+'</div>';
+ var VE=A.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000});h+='<div style="margin-top:8px">'+VE.map(function(e,ix){var raro=!e.cli&&!e.bod,man=ix>0?'<div class="lbl" style="padding:2px 0 0 12px">🚚 manejó '+minTxt(e.t0-VE[ix-1].t1)+'</div>':'';return man+'<div class="gpsst'+(raro?' raro':'')+'">'+(raro?'⚠️ Parada sin cliente':(e.bod?'Bodega':esc(e.cli.n)))+' · '+hmDe(e.t0)+' a '+hmDe(e.t1)+' · <b>'+minTxt(e.t1-e.t0)+'</b>'+(raro?' <a class="link" href="https://www.google.com/maps?q='+e.lat+','+e.lng+'" target="_blank" rel="noopener">Ver dónde</a>':'')+'</div>'}).join('')+'</div>';
  if(raras.length)h+='<div class="lbl neg" style="margin-top:6px">'+raras.length+' parada'+(raras.length>1?'s':'')+' de más de 15 min donde no hay cliente.</div>';
  return h+'</div>'}
 var _pers52=personal;personal=function(){var h=_pers52.apply(this,arguments);if(S.openCh==null)return h;var c=(S.choferes||[]).filter(function(x){return x.id===S.openCh})[0];if(!c)return h;var g=gpsRutaHTML(c);if(!g)return h;
@@ -7834,6 +7834,11 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="wz55si"]');if(!b)return;e.stopImmediatePropagation();S.modal=null;var w=S.wz;if(!w)return;var d=w.d;S.wz=null;render();
  var id=w.k==='abc'?'abc_'+d.id:'abp',i=document.getElementById(id),tmp=null;if(!i){tmp=i=document.createElement('input');i.id=id;i.style.display='none';document.body.appendChild(i)}i.value=String(num(d.m));
  var bb=document.createElement('button');bb.dataset.act=w.k==='abc'?'cobrar':'abonoprov';if(w.k==='abc')bb.dataset.id=String(d.id);else bb.dataset.n=d.enc;bb.dataset.ok='1';bb.style.display='none';document.body.appendChild(bb);try{bb.click()}finally{bb.remove();if(tmp)tmp.remove()}render()},true);
+/* pedido del chofer, incidente y corrección de una entrega: también en pantalla completa (con su × para salir) */
+function fsDe(h,lbl){return h.replace(/^<div class="card( [a-z]+)?"/,function(m,c){return '<div class="card fsform'+(c||'')+'" role="dialog" aria-label="'+lbl+'"'})}
+var _rpF55=rpForm;rpForm=function(){return fsDe(_rpF55.apply(this,arguments),'Pedido')};
+var _incF55=incForm;incForm=function(){return fsDe(_incF55.apply(this,arguments),'Incidente')};
+var _corF55=corrForm;corrForm=function(){return fsDe(_corF55.apply(this,arguments),'Corrección')};
 
 /* ===================== v7.0 · 93: que una persona nueva la pueda usar sola:
    tutorial desde el primer día (admin y chofer), "Hoy te toca" / "Ahora sigue", "Aprende la app" arriba,

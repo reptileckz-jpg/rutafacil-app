@@ -52,6 +52,19 @@ await prueba('admin (no dueño): NO reemplaza al dueño', () => assertFails(setD
 await prueba('admin: cierra la sesión de otro admin en sus celulares', () => assertSucceeds(setDoc(doc(db('admin2'), 'usuarios_app/admin3b'), { corte: Date.now() }, { merge: true })));
 await prueba('nadie toma el lugar del dueño', () => assertFails(setDoc(doc(db('admin2'), 'meta/duenio'), { uid: 'admin2' })));
 await prueba('fotos: el chofer sube, el admin borra', async () => { await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/f/1'), { d: 'x' })); await assertFails(deleteDoc(doc(db('pepe'), 'n/pn/f/1'))); await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/f/1'))); });
+await prueba('GPS: el celular del chofer sube su ubicación; el chofer NO la lee', async () => {
+  await assertSucceeds(setDoc(doc(db('rafa'), 'n/pn/gps/cel1'), { dev: 'cel1', t: 1, ult: '{}' }));
+  await assertSucceeds(setDoc(doc(db('rafa'), 'n/pn/gpsp/cel1_0000000000001'), { dev: 'cel1', t: 1, v: '[]' }));
+  await assertFails(setDoc(doc(db('rafa'), 'n/pn/gpsp/otro_0000000000001'), { dev: 'cel1', t: 1, v: '[]' }));
+  await assertFails(getDoc(doc(db('pepe'), 'n/pn/gps/cel1')));
+  await assertFails(deleteDoc(doc(db('pepe'), 'n/pn/gpsp/cel1_0000000000001')));
+});
+await prueba('GPS: aunque el chofer esté dado de baja, su celular sigue mandando', () => assertSucceeds(setDoc(doc(db('baja'), 'n/pn/gps/cel2'), { dev: 'cel2', t: 1 })));
+await prueba('GPS: el admin lee y borra lo viejo; sin sesión nada', async () => {
+  await assertSucceeds(getDoc(doc(db('duenio'), 'n/pn/gps/cel1')));
+  await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/gpsp/cel1_0000000000001')));
+  await assertFails(setDoc(doc(db(null), 'n/pn/gps/cel9'), { dev: 'cel9' }));
+});
 await prueba('cuenta nueva del negocio: el dueño crea su perfil', async () => {
   await env.clearFirestore();
   const d = db('nuevoDuenio');

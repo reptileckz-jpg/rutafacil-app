@@ -2,7 +2,7 @@
 // La app solo usa window.NUBE_AD: si este archivo no está (p. ej. en la página de prueba), la app funciona sin nube.
 import {initializeApp} from 'firebase/app';
 import {initializeAuth, indexedDBLocalPersistence, inMemoryPersistence, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail} from 'firebase/auth';
-import {initializeFirestore, persistentLocalCache, persistentSingleTabManager, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, deleteField, increment, query, where, limit, getDocs} from 'firebase/firestore';
+import {initializeFirestore, persistentLocalCache, persistentSingleTabManager, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, deleteField, increment, query, where, limit, getDocs, documentId, orderBy} from 'firebase/firestore';
 
 let cfg, app, auth, db, app2, auth2;
 window.NUBE_AD = {
@@ -35,6 +35,16 @@ window.NUBE_AD = {
   },
   del() { return deleteField(); },
   inc(n) { return increment(n); },
+  // para que el celular suba su ubicación por su cuenta (servicio nativo)
+  token() {
+    const u = auth.currentUser;
+    return u ? {refresh: u.refreshToken, uid: u.uid, apiKey: cfg.apiKey, proyecto: cfg.projectId} : null;
+  },
+  // documentos cuyo nombre está entre "desde" y "hasta" (p. ej. puntos de GPS de un día)
+  rango(colPath, desde, hasta, max) {
+    return getDocs(query(collection(db, colPath), where(documentId(), '>=', desde), where(documentId(), '<', hasta), orderBy(documentId()), limit(max || 500)))
+      .then(s => s.docs.map(d => ({id: d.id, data: d.data()})));
+  },
   viejas(colPath, campo, menorQue, max) {
     return getDocs(query(collection(db, colPath), where(campo, '<', menorQue), limit(max || 200))).then(s => s.docs.map(d => d.id));
   }

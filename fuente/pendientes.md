@@ -1380,3 +1380,7 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Arriba: "Por atender (N)" y abajo "Informativos" plegado; botón "Marcar todo como visto".
     - Revisar cada aviso que crea la app y decidir: urgente / por atender / informativo / solo historial.
     → 21 (00:41) Idea del usuario (aceptada): lo que pasó en la ruta (volvió a cargar, reabrió su ruta, clientes nuevos, ventas, gastos, "No estaba", cambios) NO va a avisos: se muestra en un RESUMEN DEL DÍA dentro de la recepción del cierre ("Lo que pasó hoy en su ruta") antes de confirmar el efectivo — sirve para revisar los números. También queda en la ficha del chofer (Ruta y metas → por día) y en Actividad del día. Excepción: si algo necesita permiso o es raro (reabrir ruta sin permiso, carga extra grande, venta a crédito arriba del límite) → sí aviso "por atender".
+22. (00:43) "Hoy te toca": el 4 "Recibir los cierres" y el 5 "Mandarte el resumen del día" NO hacen nada al tocarlos. Regla: ningún renglón/botón puede quedarse sin respuesta.
+    - Si se puede: lleva directo a hacerlo (recibir cierre → tarjeta de recepción; resumen → manda el resumen por WhatsApp).
+    - Si todavía no se puede: mensaje claro y el renglón lo dice ("Aún no hay cierres. Te aviso cuando un chofer mande el suyo." / "El resumen se puede mandar cuando recibas los cierres del día (faltan 2: Danu, Rafa)").
+    - Mostrar el estado en el mismo renglón (ej. "Recibir los cierres · 0 de 3 mandados"). Revisar también los demás renglones (precio, viajes, choferes en ruta) y "Ahora sigue" del chofer.

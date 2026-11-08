@@ -1391,3 +1391,5 @@ El dueño sigue: negociar con proveedores y programar viajes.
        3) escribir la nota (con dictado);
        4) ¿Quién la ve? (choferes · encargado · todos) → Guardar con ¿Seguro?.
        Las notas guardadas: agrupadas por tema con buscador, no todas desplegadas.
+24. (00:48) Al desbloquear la app (huella/PIN, después de que se bloqueó o se cerró) debe REGRESAR SIEMPRE A INICIO (hoy se queda en la pantalla donde estaba, ej. Clientes). Para el chofer: a su Ruta. Excepción a pensar: si estaba a la mitad de algo (cierre, entrega, formulario), avisar "Tenías algo a medias: Continuar / Ir a inicio" para no perder lo escrito.
+25. (00:48) Avisos en la BARRA DE ABAJO por sección (como el de Inicio): Bodega (falta precio de una carga…), Clientes (falta información…), Cargas, Gastos, etc. Cada pestaña con un numerito de pendientes, pero SOLO UNA PARPADEA a la vez: la más importante / la que sigue (orden de prioridad), para que no parpadee todo. Al entrar a la pestaña, el pendiente se resalta (como "Muéstrame"). También en el menú de "Más" si la sección está ahí.

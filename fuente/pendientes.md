@@ -1401,3 +1401,9 @@ El dueño sigue: negociar con proveedores y programar viajes.
     5) ¿Te sigo mandando algo? (resumen diario por WhatsApp sí/no; solo urgentes)
     6) Revisar → ¿Seguro? → se avisa al encargado y a los choferes.
     Al terminar las fechas regresa solo (o botón "Ya regresé"), quita los permisos del encargado y muestra el resumen de lo que pasó en esos días.
+
+### Decisiones (00:51)
+- Todo sale en UNA SOLA versión (puntos 1–26).
+- 14: QUITAR la pantalla de Comenzar; entra directo y el tutorial sale después de los avisos urgentes (orden del 15).
+- 1/2: arreglar Google Maps dentro de las pantallas, pero dejarlo APAGADO por defecto hasta que Google active la facturación; el usuario lo prende en Ajustes para probar.
+- 24: bloqueo igual que hoy (chofer 40 min, admin 5 min).

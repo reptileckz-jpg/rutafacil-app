@@ -42,6 +42,15 @@ import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.Signature;
+import android.database.Cursor;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Set;
@@ -595,5 +604,145 @@ public class RutaNativa extends Plugin {
             dpm().setUninstallBlocked(adminCmp(), pkg, true);
             call.resolve();
         } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    /* ---------------- 11 · ordenar la ruta con tráfico (Google Routes API) ----------------
+       La llave está restringida a esta app de Android: por eso la llamada sale de aquí, con el paquete y la huella del certificado. */
+    private String llaveMapas() {
+        try {
+            ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData != null ? ai.metaData.getString("com.google.android.geo.API_KEY") : null;
+        } catch (Exception e) { return null; }
+    }
+
+    private String huellaCert() {
+        try {
+            PackageManager pm = getContext().getPackageManager();
+            String pkg = getContext().getPackageName();
+            Signature[] sigs;
+            if (Build.VERSION.SDK_INT >= 28) {
+                PackageInfo pi = pm.getPackageInfo(pkg, PackageManager.GET_SIGNING_CERTIFICATES);
+                sigs = pi.signingInfo.hasMultipleSigners() ? pi.signingInfo.getApkContentsSigners() : pi.signingInfo.getSigningCertificateHistory();
+            } else {
+                PackageInfo pi = pm.getPackageInfo(pkg, PackageManager.GET_SIGNATURES);
+                sigs = pi.signatures;
+            }
+            byte[] d = MessageDigest.getInstance("SHA-1").digest(sigs[0].toByteArray());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : d) sb.append(String.format("%02X", b));
+            return sb.toString();
+        } catch (Exception e) { return ""; }
+    }
+
+    @PluginMethod
+    public void rutasGoogle(PluginCall call) {
+        final String cuerpo = call.getString("cuerpo", "{}");
+        final String campos = call.getString("campos", "routes.optimizedIntermediateWaypointIndex,routes.legs.duration,routes.legs.distanceMeters,routes.duration,routes.distanceMeters");
+        final String llave = llaveMapas();
+        if (llave == null || llave.isEmpty()) { call.reject("Esta app no trae la llave de Google Maps"); return; }
+        new Thread(() -> {
+            HttpURLConnection c = null;
+            try {
+                c = (HttpURLConnection) new URL("https://routes.googleapis.com/directions/v2:computeRoutes").openConnection();
+                c.setRequestMethod("POST");
+                c.setConnectTimeout(15000);
+                c.setReadTimeout(20000);
+                c.setDoOutput(true);
+                c.setRequestProperty("Content-Type", "application/json");
+                c.setRequestProperty("X-Goog-Api-Key", llave);
+                c.setRequestProperty("X-Goog-FieldMask", campos);
+                c.setRequestProperty("X-Android-Package", getContext().getPackageName());
+                c.setRequestProperty("X-Android-Cert", huellaCert());
+                OutputStream os = c.getOutputStream();
+                os.write(cuerpo.getBytes("UTF-8"));
+                os.close();
+                int st = c.getResponseCode();
+                InputStream is = st >= 400 ? c.getErrorStream() : c.getInputStream();
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                if (is != null) { byte[] buf = new byte[8192]; int n; while ((n = is.read(buf)) > 0) bo.write(buf, 0, n); is.close(); }
+                JSObject o = new JSObject();
+                o.put("status", st);
+                o.put("json", bo.toString("UTF-8"));
+                call.resolve(o);
+            } catch (Exception e) {
+                call.reject("Sin conexión con Google: " + e.getMessage());
+            } finally { if (c != null) c.disconnect(); }
+        }).start();
+    }
+
+    /* ---------------- 29 · respaldo diario en Descargas/Ruta Facil/Respaldos ---------------- */
+    @PluginMethod
+    public void respaldoGuardar(PluginCall call) {
+        try {
+            String txt = call.getString("texto", "");
+            String nombre = call.getString("nombre", "respaldo.json");
+            byte[] datos = txt.getBytes("UTF-8");
+            JSObject o = new JSObject();
+            if (Build.VERSION.SDK_INT >= 29) {
+                /* si ya hay uno con ese nombre (mismo día), se reemplaza */
+                borrarRespaldo(nombre);
+                ContentValues cv = new ContentValues();
+                cv.put(MediaStore.Downloads.DISPLAY_NAME, nombre);
+                cv.put(MediaStore.Downloads.MIME_TYPE, "application/json");
+                cv.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Ruta Facil/Respaldos");
+                Uri u = getContext().getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cv);
+                OutputStream os = getContext().getContentResolver().openOutputStream(u);
+                os.write(datos);
+                os.close();
+                o.put("donde", "Descargas/Ruta Facil/Respaldos/" + nombre);
+            } else {
+                File dir = new File(getContext().getExternalFilesDir(null), "Ruta Facil/Respaldos");
+                dir.mkdirs();
+                FileOutputStream os = new FileOutputStream(new File(dir, nombre));
+                os.write(datos);
+                os.close();
+                o.put("donde", dir.getAbsolutePath() + "/" + nombre);
+            }
+            call.resolve(o);
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    private int borrarRespaldo(String nombre) {
+        if (Build.VERSION.SDK_INT < 29) return 0;
+        try {
+            return getContext().getContentResolver().delete(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                MediaStore.Downloads.DISPLAY_NAME + "=? AND " + MediaStore.Downloads.RELATIVE_PATH + " LIKE ?",
+                new String[] { nombre, "%Ruta Facil/Respaldos%" });
+        } catch (Exception e) { return 0; }
+    }
+
+    /* lista de respaldos que hizo la app; borra los que no estén en "quedan" */
+    @PluginMethod
+    public void respaldoLimpia(PluginCall call) {
+        JSArray quedan = call.getArray("quedan", new JSArray());
+        java.util.HashSet<String> q = new java.util.HashSet<>();
+        try { for (int i = 0; i < quedan.length(); i++) q.add(quedan.getString(i)); } catch (Exception e) { }
+        JSArray lista = new JSArray();
+        int borrados = 0;
+        try {
+            if (Build.VERSION.SDK_INT >= 29) {
+                Cursor cu = getContext().getContentResolver().query(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                    new String[] { MediaStore.Downloads.DISPLAY_NAME },
+                    MediaStore.Downloads.RELATIVE_PATH + " LIKE ?", new String[] { "%Ruta Facil/Respaldos%" }, null);
+                java.util.ArrayList<String> nombres = new java.util.ArrayList<>();
+                if (cu != null) { while (cu.moveToNext()) nombres.add(cu.getString(0)); cu.close(); }
+                for (String n : nombres) {
+                    if (n != null && n.startsWith("respaldo-") && !q.isEmpty() && !q.contains(n)) borrados += borrarRespaldo(n);
+                    else lista.put(n);
+                }
+            } else {
+                File dir = new File(getContext().getExternalFilesDir(null), "Ruta Facil/Respaldos");
+                File[] fs = dir.listFiles();
+                if (fs != null) for (File f : fs) {
+                    String n = f.getName();
+                    if (n.startsWith("respaldo-") && !q.isEmpty() && !q.contains(n)) { if (f.delete()) borrados++; }
+                    else lista.put(n);
+                }
+            }
+        } catch (Exception e) { }
+        JSObject o = new JSObject();
+        o.put("lista", lista);
+        o.put("borrados", borrados);
+        call.resolve(o);
     }
 }

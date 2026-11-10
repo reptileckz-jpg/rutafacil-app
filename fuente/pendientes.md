@@ -1551,4 +1551,4 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Placa dibujada como placa real con su estado (Veracruz blanca, Guerrero con franja roja) usando las placas y el estado que ya están guardados.
     - Combustible con ícono de bomba (Gasolina Premium / Diésel). En la imagen el Camaro dice "Negro" ahí: es el color, no va en ese lugar.
     - Franja de abajo con el aviso más importante (Afinación próxima azul, Tarjeta por vencer amarilla, vencido rojo) y botón redondo › que abre la ficha.
-    - Propuestas para añadir (esperando OK de Ricardo): (a) quién lo trae hoy (chofer) o "En bodega"; (b) barra de km para el próximo cambio de aceite ("faltan 1,200 km"); (c) rendimiento km/L de la semana; (d) si hay varios avisos, "+2 más" en la franja.
+    - AÑADIR (Ricardo dijo que sí a las 4): (a) quién lo trae hoy (chofer) o "En bodega"; (b) barra de km para el próximo cambio de aceite ("faltan 1,200 km"); (c) rendimiento km/L de la semana; (d) si hay varios avisos, "+2 más" en la franja.

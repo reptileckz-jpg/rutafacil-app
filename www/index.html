@@ -8352,6 +8352,62 @@ function tabBadges(){var nv=document.querySelector('nav.tabs');if(!nv)return;Arr
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('nav.tabs button[data-t]');if(!b||S.role!=='admin'||!b.querySelector('.tbadge'))return;var t=b.dataset.t;if(t==='mas'||t==='inicio')return;
  setTimeout(function(){try{var d=avSinEfecto(function(){var x=avisos().filter(function(y){var d=avDestino(y);return d&&d.t===t})[0];return x?avDestino(x):null});if(d&&d.sel)avFoco(d.sel);else if(d&&d.cli!=null)avFoco('[data-id="'+d.cli+'"]')}catch(er){}},120)},true);
 
+/* ===================== v7.2 · parte 4: que los números siempre cuadren
+   30 saldo y cajas de cada cliente (y cajas de cada proveedor) con sumas y restas: dos celulares ya no se borran el movimiento
+   32 cambio de día aunque la app se quede abierta · 34 centavos redondeados al guardar · 35 doble toque = un solo registro ===================== */
+
+/* ---------- 30 · saldos con sumas y restas ----------
+   Antes: el saldo (c.cred) se guardaba como número final y el último celular que escribía ganaba.
+   Ahora: saldo = lo que había al migrar (cliBase, igual en todos) + suma de movimientos (cliCnt, se suma en la nube). */
+try{if(NB_SH.indexOf('cliBase')<0)NB_SH.push('cliBase');if(NB_SH.indexOf('cliCnt')<0)NB_SH.push('cliCnt');NB_CONT.cliCnt=1}catch(e){}
+function salMig(){return (S.cfg&&S.cfg.saldoMig)||null}
+function salListo(){var m=salMig();return !!(m&&S.cliBase&&S.cliBase.__mig===m)}
+function salCampos(){var L=[],vis={};(S.cli||[]).forEach(function(c){if(!c||c.id==null)return;L.push({k:c.id+'|cred',o:c,p:'cred'});L.push({k:c.id+'|vac',o:c,p:'vac'})});
+ S.tarasProv=S.tarasProv||{};Object.keys(S.tarasProv).forEach(function(n){vis[n]=1;L.push({k:'p:'+n+'|tar',o:S.tarasProv,p:n})});
+ /* proveedores que solo existen en la nube */
+ [S.cliBase||{},S.cliCnt||{}].forEach(function(M){Object.keys(M).forEach(function(k){var m=/^p:(.*)\|tar$/.exec(k);if(m&&!vis[m[1]]){vis[m[1]]=1;L.push({k:k,o:S.tarasProv,p:m[1]})}})});return L}
+function salEsp(k){return Math.round((num((S.cliBase||{})[k])+num((S.cliCnt||{})[k]))*100)/100}
+/* lo que cambió en este celular se vuelve suma/resta */
+function salPuente(){if(!salListo())return false;S.cliCnt=S.cliCnt||{};var cam=false;salCampos().forEach(function(f){var v=num(f.o[f.p]),e=salEsp(f.k);if(Math.abs(v-e)>0.004){S.cliCnt[f.k]=Math.round((num(S.cliCnt[f.k])+(v-e))*100)/100;cam=true}});return cam}
+/* lo que llegó de la nube se pone en cada cliente */
+function salAplica(){if(!salListo())return;salCampos().forEach(function(f){var e=salEsp(f.k),v=f.o[f.p];if(v===undefined&&e===0&&f.p==='vac')return;if(num(v)!==e||v==null&&e!==0)f.o[f.p]=e})}
+/* migración: una sola vez, la hace el dueño ya con la nube cargada */
+function salMigra(){if(salMig()||!(typeof NB!=='undefined'&&NB.on&&NB.listo)||!(S.role==='admin'&&!S.encOn&&NB.perfil&&NB.perfil.rol==='admin'))return false;
+ var t=Date.now(),B={__mig:t};salCampos().forEach(function(f){B[f.k]=num(f.o[f.p])});S.cliBase=B;S.cliCnt=S.cliCnt||{};Object.keys(S.cliCnt).forEach(function(k){S.cliCnt[k]=num(S.cliCnt[k])});S.cfg.saldoMig=t;
+ try{localStorage.setItem('salIni',String(t))}catch(e){}return true}
+/* en un celular que recién ve la migración: primero toma lo de la nube (no manda nada) */
+function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null;try{ya=localStorage.getItem('salIni')}catch(e){}if(ya===String(m))return false;salAplica();try{localStorage.setItem('salIni',String(m))}catch(e){}return true}
+/* la nube ya no sube c.cred / c.vac ni tarasProv como número final */
+var _nbCod61=nbCodifica;nbCodifica=function(u,v){if(salListo()){if(u.k==='tarasProv')return null;
+  if(u.k==='cli'&&Array.isArray(v)){v=v.map(function(c){if(!nbEsObj(c))return c;var o={};Object.keys(c).forEach(function(p){if(p!=='cred'&&p!=='vac')o[p]=c[p]});return o})}}return _nbCod61.call(this,u,v)};
+var _nbEmp61=nbEmpuja;nbEmpuja=function(){try{salMigra();if(!salPrimera())salPuente()}catch(e){console.error('saldos',e)}return _nbEmp61.apply(this,arguments)};
+var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
+var _rd61a=render;render=function(){try{if(!salPrimera())salPuente()}catch(e){}return _rd61a.apply(this,arguments)};
+
+/* ---------- 32 · cambio de día aunque la app nunca se vaya al fondo ---------- */
+var _dia61=null;
+setInterval(function(){try{if(window.__pnTest&&!window.__diaTest)return;if(!(typeof REAL!=='undefined'&&REAL)&&!window.__diaTest)return;
+ var d=new Date();d.setHours(12,0,0,0);var hoy=iso(d);if(_dia61==null){_dia61=iso(TODAY);return}if(hoy===_dia61)return;
+ /* si está a la mitad de algo, espera a que termine */
+ var a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return;if(typeof pnAMedias==='function'&&pnAMedias())return;if(_pin&&_pin.modo&&_pin.modo!=='entrar')return;
+ _dia61=hoy;try{guardarYa()}catch(e){}if(window.__diaTest){window.__diaCambio=(window.__diaCambio||0)+1;return}setTimeout(function(){location.reload()},300)}catch(e){}},60000);
+
+/* ---------- 34 · centavos: cada venta, cobro, abono, gasto y pesada se guarda con 2 decimales ---------- */
+var RED_LISTAS=['log','cobros','gastos','aportes','pagosSueldo','adelantos','gch','extras','mermas','cajasMov','faltantes','tiradas','cajaCierres','abonos','pagosProv','porPagar','bonos','fijosPag','recargas','cambios','cancels'];
+var RED_NO=/^(id|_k|t|ts|lat|lng|acc|c|ch|cid|veh|hora|f|fecha|i|n)$/;
+function redN(v){if(typeof v==='number'){if(!isFinite(v)||Math.round(v)===v)return v;return Math.round(v*100)/100}
+ if(typeof v==='string'&&/^-?\d+\.\d{3,}$/.test(v)){return String(Math.round(parseFloat(v)*100)/100)}return v}
+function redObj(o,prof){if(!o||typeof o!=='object'||prof>2)return;Object.keys(o).forEach(function(k){if(RED_NO.test(k))return;var v=o[k];if(v&&typeof v==='object'){if(!Array.isArray(v))redObj(v,prof+1);return}var r=redN(v);if(r!==v)o[k]=r})}
+function redondea(){RED_LISTAS.forEach(function(k){var L=S[k];if(!Array.isArray(L))return;for(var i=Math.max(0,L.length-400);i<L.length;i++)redObj(L[i],0)});
+ (S.cargas||[]).forEach(function(c){redObj(c,0);(c.pagos||[]).forEach(function(p){redObj(p,0)})});(S.cli||[]).forEach(function(c){var r=redN(c.cred);if(r!==c.cred)c.cred=r})}
+var _redT=0;var _rd61b=render;render=function(){try{if(Date.now()-_redT>1500){_redT=Date.now();redondea()}}catch(e){}return _rd61b.apply(this,arguments)};
+
+/* ---------- 35 · doble toque: el mismo botón no se ejecuta dos veces en menos de 1 segundo ---------- */
+var DOBLE_RE=/^(entregar|cobrar|cobrarcajas|cobrartodo|enviar|guardar|gsave|gxsave|credpag|fijopag|pagarsz|porpagar|rcfin|rctodo|rceqok|recibir|regcierre|vlvender|vtliq|vtgasto|vtfin|abonoprov|tirar|fasi|vwfpago|vwcomb|vfcomb|savecarga|newcarga|cxsave|ventaok|pagook|extracarga|recargar|registrarcnt|cajacierre|clialta|provalta|cesave|vsave|npsave|ubsave|bfsave|fnsave|eqsave|eqok|wzok|wzsig|abono|abonar|gasto|gastar|combustible|pagar|pago|cobro)$/;
+var _dobleU={};
+window.addEventListener('click',function(e){if(!e.isTrusted&&!window.__dobleTest)return;var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!DOBLE_RE.test(a))return;
+ var k=a+'|'+JSON.stringify(b.dataset),t=Date.now();if(_dobleU[k]&&t-_dobleU[k]<1000){e.preventDefault();e.stopImmediatePropagation();return}_dobleU[k]=t},true);
+
 
 /* ---------- Estructura ---------- */
 var HELP={inicio:['Inicio','Aquí ves cómo va el día: lo vendido, lo cobrado, el efectivo y quién debe. Arriba están los avisos: tócalos para ir a ese apartado. El botón verde + abre las acciones más comunes.'],bodega:['Bodega','Cuánto hay de cada cosa. El roatán se cuenta en cajas y el macho en kilos. Abajo metes fruta a madurar y ves cuánto le falta a cada lote.'],cargas:['Cargas','Lo que compras al proveedor. Cada carga te dice cuánto pagaste, cuánto te cuesta cada caja y cuánto ganas. Abajo están tus proveedores.'],clientes:['Clientes','Toca un cliente para ver lo que debe, llamarle o mandarle WhatsApp. Para cambiar sus datos usa el botón Editar.'],gastos:['Gastos','Registra lo que se gasta. En Sueldos pagas a los choferes y en Fijos llevas luz, agua, teléfono y seguros.'],vehiculos:['Vehículos','Cada camioneta con su aceite, seguro, documentos y gastos de taller.'],personal:['Personal','Dónde va cada chofer, sus clientes y su ruta de mañana.'],estadisticas:['Estadísticas','Cómo le fue al negocio por día, mes o año.'],mas:['Más','Las demás secciones de la app.'],ruta:['Ruta','Tu ruta de hoy. La tarjeta verde es tu siguiente parada: toca Ir para que Google Maps te lleve y Entregar al llegar.'],entrega:['Entrega','Pon cuántas cajas y kilos dejaste y cuánto te pagaron. Abajo aparece cuánto efectivo debes recibir.'],cierre:['Cierre','Al terminar el día revisa lo que vendiste y el efectivo que entregas, y manda el cierre.'],viaje:['Viaje','Los viajes para ir por fruta al proveedor.'],local:['Venta local','Elige el producto, pesa y escribe los kilos. La app calcula el total.'],corte:['Corte','Al final del día manda el corte con lo vendido y el efectivo.']};

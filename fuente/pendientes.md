@@ -1530,4 +1530,5 @@ El dueño sigue: negociar con proveedores y programar viajes.
 40. Tarjeta "PEDIDOS POR WHATSAPP" (admin): conservar este estilo casi igual. Foto: fotos/p40-pedidos-whatsapp.png.
     - Fondo verde muy oscuro (tipo WhatsApp) que baja a azul marino; cuadrito con logo de WhatsApp; título "Pedidos por WhatsApp" + "Mensajes listos para surtir"; pastilla "1 Pendiente" a la derecha.
     - Cada pedido en un recuadro: nombre y apodo grande ("Renata “La güera”"), "Hoy · 09:15" a la derecha; dos pastillas: roatán (amarilla, con ícono de plátano) y macho en kg (verde, con báscula); botón verde grande "＋ Registrar este pedido".
-    - Palabras: en la imagen dice "2 Taras Roatán" → poner "2 cajas de roatán" (caja = llena, tara = vacía). Si el pedido no trae macho, quizá no enseñar "0 kg" (preguntar).
+    - Palabras: en la imagen dice "2 Taras Roatán" → poner "2 cajas de roatán" (caja = llena, tara = vacía). DECIDIDO: si el pedido no trae macho (o roatán), esa pastilla no sale.
+    → (Decisión general) La información se maneja como hasta ahora (mismas palabras y datos: caja = llena, tara = vacía); solo se adoptan los diseños nuevos.

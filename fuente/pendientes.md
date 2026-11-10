@@ -1496,3 +1496,6 @@ El dueño sigue: negociar con proveedores y programar viajes.
 31. Chofer sin permiso de comida: no sale "Comida"; caseta sin foto no se guarda. Al recibir el cierre: "Entregó sus N tickets".
 36. Como chofer → Ajustes: no hay "Logo del negocio".
 37. Abre el mapa de Google en pantalla completa, bloquea el celular 5+ min, regresa: solo se ve el PIN y nada responde detrás.
+
+## 2026-11-10 · PUBLICADA la versión 7.2 (puntos 1–37) en main
+- El usuario dijo "Sí, publícalo" y que YA habilitó "Routes API" en la llave → "Ordenar con tráfico" debe funcionar.

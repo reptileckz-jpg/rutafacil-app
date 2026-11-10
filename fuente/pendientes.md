@@ -1545,3 +1545,10 @@ El dueño sigue: negociar con proveedores y programar viajes.
 42. PANTALLA DEL PIN nueva (diseño: disenos/p42-pin.html): fondo claro con degradado verde suave arriba; logo; pastilla "Sesión activa"; "Hola, Ricardo Nieto" grande; texto "Pasaron 5 minutos…"; 4 puntos que se ponen verdes al teclear y tiemblan si el PIN está mal ("PIN incorrecto. Intenta de nuevo"); teclado 3×4 de botones blancos redondeados grandes; la tecla de abajo a la izquierda es la HUELLA (verde) y la de la derecha Borrar; botón "Entrar con mi huella o cara"; abajo "Olvidé mi PIN" y "No soy Ricardo Nieto · Cambiar de usuario".
     - Conservar lo que ya hace: pista y aviso al admin en "Olvidé mi PIN" (NO "código al teléfono" como dice el ejemplo), bloqueo tras 5 intentos, huella sola al abrir, teclado rápido sin teclas perdidas, siempre hasta arriba (punto 37).
     - Solo mostrar la tecla/botón de huella si el celular tiene huella activada en la app; si no, esa tecla queda vacía.
+43. TARJETAS DE VEHÍCULOS (Vehículos): conservar este diseño tal cual. Foto: fotos/p43-tarjetas-vehiculos.png.
+    - Izquierda: la FOTO del vehículo (la que ya tiene en su ficha) cortada en diagonal con franja azul (o roja si está fuera de servicio).
+    - Derecha: marca y modelo grande + año; pastilla de estado arriba a la derecha: "✓ Activo" (verde), "En servicio/en taller" (amarilla), "⚠ Fuera de servicio" (roja).
+    - Placa dibujada como placa real con su estado (Veracruz blanca, Guerrero con franja roja) usando las placas y el estado que ya están guardados.
+    - Combustible con ícono de bomba (Gasolina Premium / Diésel). En la imagen el Camaro dice "Negro" ahí: es el color, no va en ese lugar.
+    - Franja de abajo con el aviso más importante (Afinación próxima azul, Tarjeta por vencer amarilla, vencido rojo) y botón redondo › que abre la ficha.
+    - Propuestas para añadir (esperando OK de Ricardo): (a) quién lo trae hoy (chofer) o "En bodega"; (b) barra de km para el próximo cambio de aceite ("faltan 1,200 km"); (c) rendimiento km/L de la semana; (d) si hay varios avisos, "+2 más" en la franja.

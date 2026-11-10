@@ -1509,3 +1509,4 @@ El dueño sigue: negociar con proveedores y programar viajes.
 ## 2026-11-10 · Entró con la cuenta del administrador y le abrió como CHOFER
 - CAUSA: nbForzarRol ponía el puesto para chofer, contador, venta local y encargado, pero NO para administrador; ese celular estaba guardado como chofer y se quedó así.
 - HECHO (l64): al entrar con la cuenta del administrador (cada vez que se abre la app), abre como administrador en Inicio y pide su PIN. Desde el menú todavía puede "entrar como" otro. La cuenta de un chofer siempre abre como chofer (no puede entrar como admin). Prueba t64.js (8 OK).
+- (21:10) Reglas: s~cliBase (saldo base de la migración) y s~vacPlan ahora solo los escribe el administrador/encargado (antes un chofer podía). Prueba en pruebas-reglas. PENDIENTE DEL USUARIO: pegar firestore.rules en la consola y Publicar.

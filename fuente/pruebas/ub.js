@@ -18,7 +18,7 @@ ok(await ev(()=>document.querySelector('[data-act="ubsave"]').disabled),'Guardar
 await click('[data-act="ubgps"]');await W(200);ok(/Seguro que ya estás/.test(await ev(()=>document.getElementById('ubov').innerText)),'pregunta si de verdad está ahí');
 await click('[data-act="ubsi"]');await p.setInputFiles('#ubF',{name:'b.png',mimeType:'image/png',buffer:img});await W(700);
 await click('[data-act="ubsave"]');await W(300);
-r=await ev(()=>({lat:S.basc[0].lat,foto:!!S.basc[0].foto,k:S.vw.k,ov:!!document.getElementById('ubov'),av:S.avPrecio.slice(-1)[0]}));ok(r.lat!=null&&r.foto&&r.k==='b0'&&!r.ov&&/guardó la ubicación/.test(r.av),'guarda báscula con foto, avisa y sigue el viaje',r);
+r=await ev(()=>({lat:S.basc[0].lat,foto:!!S.basc[0].foto,k:S.vw.k,ov:!!document.getElementById('ubov'),av:(S.avPrecio.slice(-1)[0]||'')+' | '+(((S.actDia||[]).slice(-1)[0]||{}).x||'')}));ok(r.lat!=null&&r.foto&&r.k==='b0'&&!r.ov&&/guardó la ubicación/.test(r.av),'guarda báscula con foto, avisa y sigue el viaje',r);
 // proveedor con ubicación pero sin foto: sugiere foto, "Ahora no" sigue
 await ev(()=>{var v=S.vw;v.par[0].tara=4000;v.k='y0';var d=provD(v.par[0].prov);d.lat=19.6;d.lng=-96.9;d.foto=null;render()});await W(200);
 await click('#vwov [data-act="vwnext"]');ok(await ev(()=>!!S.ub&&S.ub.modo==='foto'),'al llegar con el proveedor sin foto: sugiere tomarla');

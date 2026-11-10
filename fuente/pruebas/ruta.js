@@ -15,7 +15,7 @@ await p.screenshot({path:'v50/r1.png'});
 await click('.modal [data-act="cancelent"], [data-act="cancelent"][data-ok="1"]');await W(150);
 r=await ev(()=>({t:S.toast,rep:S.inv.reparto,m:!!S.modal}));ok(/Escribe por qué/.test(r.t)&&r.rep===17&&r.m,'sin motivo no cancela',r);
 await p.fill('#cmot','me equivoqué de cliente');await click('[data-act="cancelent"][data-ok="1"]');await W(200);
-r=await ev(()=>({rep:S.inv.reparto,c:S.cancels,av:S.avPrecio.slice(-1)[0],m:!!S.modal}));ok(r.rep===20&&r.c&&r.c.length===1&&r.c[0].mot==='me equivoqué de cliente'&&/motivo: me equivoqué/.test(r.av)&&!r.m,'cancelada: las cajas regresan al camión y el motivo se guarda',{rep:r.rep,av:r.av});
+r=await ev(()=>({rep:S.inv.reparto,c:S.cancels,av:(S.avPrecio.slice(-1)[0]||'')+' | '+(((S.actDia||[]).slice(-1)[0]||{}).x||''),m:!!S.modal}));ok(r.rep===20&&r.c&&r.c.length===1&&r.c[0].mot==='me equivoqué de cliente'&&/motivo: me equivoqué/.test(r.av)&&!r.m,'cancelada: las cajas regresan al camión y el motivo se guarda',{rep:r.rep,av:r.av});
 await ev(()=>{S.tab.rep='cierre';S.cierreP=3;render()});await W(150);
 r=await ev(()=>{var c=document.querySelector('[data-key="cancels"]');return c&&c.offsetParent!==null?c.innerText:null});ok(r&&/me equivoqué/.test(r),'sale en el cierre del chofer (paso Cajas)',r);
 // --- gasto sin ticket
@@ -45,5 +45,5 @@ await ev(()=>{S=JSON.parse(window.__snap);S.role='rep';S.salida.ok=true;S.inv.re
 r=await ev(()=>{var l=document.querySelector('label[for="cbF"]');return l?l.innerText:null});ok(/obligatoria/.test(r),'cambio: dice que la foto es obligatoria',r);
 await click('[data-act="cambio"]');await W(100);r=await ev(()=>({c:S.cambios.length,t:S.toast}));ok(r.c===0&&/foto/.test(r.t),'sin foto no se registra el cambio',r);
 await ev(()=>{S.cbx.foto='data:image/jpeg;base64,AA';render()});await click('[data-act="cambio"]');await W(150);
-r=await ev(()=>({c:S.cambios.length,av:S.avPrecio.slice(-1)[0]}));ok(r.c===1&&/cambió fruta/.test(r.av),'con foto se registra y le llega aviso al admin',r);
+r=await ev(()=>({c:S.cambios.length,av:(S.avPrecio.slice(-1)[0]||'')+' | '+(((S.actDia||[]).slice(-1)[0]||{}).x||'')}));ok(r.c===1&&/cambió fruta/.test(r.av),'con foto se registra y le llega aviso al admin',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

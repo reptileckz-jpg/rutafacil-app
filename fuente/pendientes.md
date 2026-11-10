@@ -1499,3 +1499,9 @@ El dueño sigue: negociar con proveedores y programar viajes.
 
 ## 2026-11-10 · PUBLICADA la versión 7.2 (puntos 1–37) en main
 - El usuario dijo "Sí, publícalo" y que YA habilitó "Routes API" en la llave → "Ordenar con tráfico" debe funcionar.
+
+## 2026-11-10 · Prueba en otro celular (sin el del administrador): no lo dejaba entrar
+- Capturas: "Crear la cuenta del negocio" → "Sin permiso. Revisa las reglas" y en "Entrar" sale "No pude revisar la nube: faltan las reglas en Firestore".
+- CAUSA: (a) sin sesión, las reglas no dejan leer meta/duenio, así que la app no sabe si el negocio ya tiene dueño y enseñaba un error rojo engañoso. (b) "Crear la cuenta del negocio" cuando YA existe: se creaba la cuenta de correo en Firebase y luego las reglas (bien) rechazaban hacerla dueña → quedaba una cuenta suelta sin acceso. (c) "Olvidé mi contraseña" con usuario (sin @) solo decía "pídele al administrador".
+- HECHO (capa l64 + nube/entrada.js borrarYo): ya no sale el error rojo; "Crear la cuenta" avisa que es solo la primera vez; si ya existe, se borra la cuenta suelta y explica cómo entrar; "Olvidé mi contraseña" con usuario de administrador manda el correo a su correo real. Prueba t64.js (5 OK).
+- PENDIENTE: la cuenta suelta que ya se creó con el correo del usuario en Firebase (Authentication) se puede borrar a mano en la consola (Authentication → Usuarios) si no es la del dueño.

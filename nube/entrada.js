@@ -1,7 +1,7 @@
 // Conexión real con Firebase. GitHub Actions la empaqueta en www/firebase.js (con esbuild).
 // La app solo usa window.NUBE_AD: si este archivo no está (p. ej. en la página de prueba), la app funciona sin nube.
 import {initializeApp} from 'firebase/app';
-import {initializeAuth, indexedDBLocalPersistence, inMemoryPersistence, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail} from 'firebase/auth';
+import {initializeAuth, indexedDBLocalPersistence, inMemoryPersistence, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, deleteUser} from 'firebase/auth';
 import {initializeFirestore, persistentLocalCache, persistentSingleTabManager, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, deleteField, increment, query, where, limit, getDocs, documentId, orderBy} from 'firebase/firestore';
 
 let cfg, app, auth, db, app2, auth2;
@@ -21,6 +21,8 @@ window.NUBE_AD = {
     return createUserWithEmailAndPassword(auth2, email, pw).then(c => { const uid = c.user.uid; return signOut(auth2).then(() => uid); });
   },
   salir() { return signOut(auth); },
+  // borra la cuenta con la que se acaba de entrar (cuando se creó por error)
+  borrarYo() { const u = auth.currentUser; return u ? deleteUser(u) : Promise.resolve(); },
   reset(email) { return sendPasswordResetEmail(auth, email); },
   get(path) { return getDoc(doc(db, path)).then(s => s.exists() ? s.data() : null); },
   set(path, obj, merge) { return setDoc(doc(db, path), obj, {merge: !!merge}); },

@@ -1523,3 +1523,7 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Abajo una franja verde con ícono de ubicación: "Ya no quedan paradas pendientes." (o cuántas paradas faltan si todavía hay).
     - Fondo verde claro con hojas suaves; números en verde oscuro, muy grandes.
     - Los dibujos (cajas, báscula) van como imágenes dentro del APK (sin internet).
+39. Tarjeta "DATOS PENDIENTES" (burbuja flotante de arriba del ADMINISTRADOR, la que hoy dice "Datos que faltan · N por llenar"). Foto: fotos/p39-datos-pendientes.png.
+    - Fondo oscuro (azul marino) que se va a café/naranja a la derecha; orilla redondeada; cuadrito con ícono ⚠️ amarillo a la izquierda.
+    - Arriba en amarillo "DATOS PENDIENTES" + pastilla "11 por llenar"; abajo en blanco grande el dato que falta ("Dirección de Juan"); flecha › a la derecha; barra de avance amarilla abajo.
+    - Ricardo: le gusta mucho, pero que los colores sean un poco MÁS LLAMATIVOS para que se note que es alerta (que faltan datos). Idea: el lado derecho más naranja/rojizo intenso y el amarillo más brillante; que siga leyéndose bien.

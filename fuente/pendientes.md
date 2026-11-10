@@ -1542,3 +1542,6 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Pie fijo blanco: "Atrás" (blanco con borde) y "Siguiente" verde grande (en el último: "Empezar ruta"/"Finalizar").
     - Se conserva: letra y botones grandes, ¿Seguro? en lo que no se puede deshacer, caja = llena / tara = vacía, sin internet.
 - Diseños de referencia guardados en fuente/disenos/ (inicio.html, bodega.html).
+42. PANTALLA DEL PIN nueva (diseño: disenos/p42-pin.html): fondo claro con degradado verde suave arriba; logo; pastilla "Sesión activa"; "Hola, Ricardo Nieto" grande; texto "Pasaron 5 minutos…"; 4 puntos que se ponen verdes al teclear y tiemblan si el PIN está mal ("PIN incorrecto. Intenta de nuevo"); teclado 3×4 de botones blancos redondeados grandes; la tecla de abajo a la izquierda es la HUELLA (verde) y la de la derecha Borrar; botón "Entrar con mi huella o cara"; abajo "Olvidé mi PIN" y "No soy Ricardo Nieto · Cambiar de usuario".
+    - Conservar lo que ya hace: pista y aviso al admin en "Olvidé mi PIN" (NO "código al teléfono" como dice el ejemplo), bloqueo tras 5 intentos, huella sola al abrir, teclado rápido sin teclas perdidas, siempre hasta arriba (punto 37).
+    - Solo mostrar la tecla/botón de huella si el celular tiene huella activada en la app; si no, esa tecla queda vacía.

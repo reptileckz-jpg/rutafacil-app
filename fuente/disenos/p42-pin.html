@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desbloqueo PIN - Plátanos Nietos v4.0</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        },
+                        banana: {
+                            100: '#fef9c3',
+                            400: '#facc15',
+                            500: '#eab308',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #cbd5e1;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .app-container {
+            max-width: 440px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
+        }
+        /* Custom key press effect */
+        .key-btn {
+            transition: all 0.12s ease;
+        }
+        .key-btn:active {
+            transform: scale(0.92);
+            background-color: #e2e8f0;
+        }
+        /* Dot fill animation */
+        .pin-dot {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .pin-dot.filled {
+            background-color: #16a34a;
+            border-color: #16a34a;
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(22, 163, 74, 0.4);
+        }
+        /* Shake animation on wrong PIN */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-start min-h-screen bg-slate-300 p-0 sm:p-4">
+
+    <!-- Wrapper pantalla móvil -->
+    <div class="app-container w-full min-h-screen sm:min-h-[900px] sm:rounded-[38px] overflow-hidden flex flex-col justify-between border-0 sm:border-8 border-slate-900 relative">
+        
+        <!-- FONDO CON DETALLES ORGÁNICOS SUTILES -->
+        <div class="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-emerald-50/80 to-transparent pointer-events-none"></div>
+        <div class="absolute -top-12 -right-12 w-40 h-40 bg-amber-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- ENCABEZADO Y AVATAR DEL USUARIO -->
+        <div class="relative z-10 pt-10 px-6 text-center flex flex-col items-center">
+            
+            <!-- Logo Plátanos Nietos -->
+            <div class="w-16 h-16 rounded-3xl bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/20 mb-3 border-2 border-white">
+                <span class="text-3xl drop-shadow">🍌</span>
+            </div>
+
+            <!-- Nombre de Usuario y Saludo -->
+            <div class="flex items-center gap-2 bg-emerald-100/70 text-emerald-800 px-3 py-1 rounded-full text-xs font-extrabold mb-1.5 border border-emerald-200/60">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Sesión activa</span>
+            </div>
+
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Hola, Ricardo Nieto</h1>
+            <p class="text-xs font-medium text-slate-500 max-w-[260px] mt-1.5 leading-relaxed">
+                Pasaron 5 minutos sin usar la app. Escribe tu PIN para seguir donde ibas.
+            </p>
+
+            <!-- INDICADORES DE PIN (4 PUNTOS) -->
+            <div class="flex items-center justify-center gap-4 mt-6 mb-2" id="pinDotsContainer">
+                <div class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-white"></div>
+                <div class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-white"></div>
+                <div class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-white"></div>
+                <div class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-white"></div>
+            </div>
+
+            <!-- MENSAJE DE ESTADO / ERROR -->
+            <div id="statusMessage" class="h-5 text-[11px] font-bold text-slate-400 mt-1">
+                Ingresa tu PIN de 4 dígitos
+            </div>
+
+        </div>
+
+        <!-- TECLADO NUMÉRICO ESTILO PLÁTANOS NIETOS -->
+        <div class="relative z-10 px-8 pb-8 space-y-6">
+            
+            <!-- GRID DE BOTONES -->
+            <div class="grid grid-cols-3 gap-3 max-w-[320px] mx-auto">
+                <button onclick="pressKey('1')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">1</button>
+                <button onclick="pressKey('2')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">2</button>
+                <button onclick="pressKey('3')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">3</button>
+                
+                <button onclick="pressKey('4')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">4</button>
+                <button onclick="pressKey('5')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">5</button>
+                <button onclick="pressKey('6')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">6</button>
+                
+                <button onclick="pressKey('7')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">7</button>
+                <button onclick="pressKey('8')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">8</button>
+                <button onclick="pressKey('9')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">9</button>
+                
+                <!-- Acceso biométrico directo en teclado -->
+                <button onclick="biometricUnlock()" class="key-btn bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/60 rounded-2xl h-16 flex items-center justify-center text-emerald-700 shadow-2xs" title="Usar huella">
+                    <i class="fa-solid fa-fingerprint text-2xl"></i>
+                </button>
+                
+                <button onclick="pressKey('0')" class="key-btn bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl h-16 flex items-center justify-center text-2xl font-black text-slate-800 shadow-2xs">0</button>
+                
+                <!-- Botón Borrar -->
+                <button onclick="deleteKey()" class="key-btn bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-2xl h-16 flex items-center justify-center text-slate-600 shadow-2xs">
+                    <i class="fa-solid fa-delete-left text-xl"></i>
+                </button>
+            </div>
+
+            <!-- BOTÓN PRINCIPAL DE BIOMETRÍA (HUELLA O CARA) -->
+            <button onclick="biometricUnlock()" class="w-full max-w-[320px] mx-auto bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl py-3 px-4 flex items-center justify-center gap-2.5 shadow-sm text-slate-800 font-extrabold text-xs transition active:scale-95">
+                <div class="w-7 h-7 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <i class="fa-solid fa-fingerprint text-base"></i>
+                </div>
+                <span>Entrar con mi huella o cara</span>
+            </button>
+
+            <!-- ENLACES SECUNDARIOS DE AYUDA -->
+            <div class="space-y-2 text-center pt-1">
+                <div>
+                    <button onclick="forgotPin()" class="text-xs font-bold text-slate-600 hover:text-emerald-700 transition">
+                        Olvidé mi PIN
+                    </button>
+                </div>
+                <div>
+                    <button onclick="switchUser()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 transition">
+                        No soy Ricardo Nieto · Cambiar de usuario
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- NOTIFICACIÓN TOAST -->
+        <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-2xl shadow-xl z-50 flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-sm" id="toastIcon"></i>
+            <span id="toastMessage">Acción completada</span>
+        </div>
+
+    </div>
+
+    <!-- LÓGICA DE TECLADO Y ACCIONES -->
+    <script>
+        let currentPin = '';
+        const correctPin = '1234'; // PIN de prueba simulado
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.pin-dot');
+            dots.forEach((dot, index) => {
+                if (index < currentPin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function pressKey(num) {
+            if (currentPin.length < 4) {
+                currentPin += num;
+                updateDots();
+                
+                if (currentPin.length === 4) {
+                    setTimeout(verifyPin, 150);
+                }
+            }
+        }
+
+        function deleteKey() {
+            if (currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updateDots();
+                resetStatus();
+            }
+        }
+
+        function resetStatus() {
+            const status = document.getElementById('statusMessage');
+            status.innerText = 'Ingresa tu PIN de 4 dígitos';
+            status.className = 'h-5 text-[11px] font-bold text-slate-400 mt-1';
+        }
+
+        function verifyPin() {
+            const status = document.getElementById('statusMessage');
+            const container = document.getElementById('pinDotsContainer');
+
+            if (currentPin === correctPin) {
+                status.innerText = '¡PIN Correcto! Entrando...';
+                status.className = 'h-5 text-[11px] font-extrabold text-emerald-600 mt-1';
+                showToast('Acceso concedido. Bienvenido Ricardo.', true);
+                setTimeout(() => {
+                    currentPin = '';
+                    updateDots();
+                    resetStatus();
+                }, 2000);
+            } else {
+                status.innerText = 'PIN incorrecto. Intenta de nuevo.';
+                status.className = 'h-5 text-[11px] font-extrabold text-red-500 mt-1';
+                container.classList.add('shake');
+                
+                setTimeout(() => {
+                    container.classList.remove('shake');
+                    currentPin = '';
+                    updateDots();
+                }, 500);
+            }
+        }
+
+        function biometricUnlock() {
+            showToast('Verificando huella dactilar...', true);
+            setTimeout(() => {
+                currentPin = '1234';
+                updateDots();
+                verifyPin();
+            }, 1000);
+        }
+
+        function forgotPin() {
+            showToast('Se envió un código de recuperación a tu teléfono.');
+        }
+
+        function switchUser() {
+            showToast('Cambiando de usuario...');
+        }
+
+        function showToast(message, success = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            toastMessage.innerText = message;
+            toastIcon.className = success ? 'fa-solid fa-circle-check text-emerald-400 text-sm' : 'fa-solid fa-info-circle text-amber-400 text-sm';
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

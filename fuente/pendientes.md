@@ -1527,3 +1527,7 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Fondo oscuro (azul marino) que se va a café/naranja a la derecha; orilla redondeada; cuadrito con ícono ⚠️ amarillo a la izquierda.
     - Arriba en amarillo "DATOS PENDIENTES" + pastilla "11 por llenar"; abajo en blanco grande el dato que falta ("Dirección de Juan"); flecha › a la derecha; barra de avance amarilla abajo.
     - Ricardo: le gusta mucho, pero que los colores sean un poco MÁS LLAMATIVOS para que se note que es alerta (que faltan datos). Idea: el lado derecho más naranja/rojizo intenso y el amarillo más brillante; que siga leyéndose bien.
+40. Tarjeta "PEDIDOS POR WHATSAPP" (admin): conservar este estilo casi igual. Foto: fotos/p40-pedidos-whatsapp.png.
+    - Fondo verde muy oscuro (tipo WhatsApp) que baja a azul marino; cuadrito con logo de WhatsApp; título "Pedidos por WhatsApp" + "Mensajes listos para surtir"; pastilla "1 Pendiente" a la derecha.
+    - Cada pedido en un recuadro: nombre y apodo grande ("Renata “La güera”"), "Hoy · 09:15" a la derecha; dos pastillas: roatán (amarilla, con ícono de plátano) y macho en kg (verde, con báscula); botón verde grande "＋ Registrar este pedido".
+    - Palabras: en la imagen dice "2 Taras Roatán" → poner "2 cajas de roatán" (caja = llena, tara = vacía). Si el pedido no trae macho, quizá no enseñar "0 kg" (preguntar).

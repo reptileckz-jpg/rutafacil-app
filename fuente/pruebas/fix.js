@@ -45,6 +45,6 @@ r=await p.evaluate(()=>{var b=document.querySelector('.dfbub'),h=document.queryS
 await p.screenshot({path:'v50/f_bub.png'});
 // FAB y bodega en pantalla ancha
 const q=await abrir({width:904,height:1100});await q.evaluate(()=>{S.pinOk={};S.pinOk['a:'+S.adminYo]=true;_pin={v:'',modo:null};S.role='admin';S.tab.admin='inicio';render()});await q.waitForTimeout(600);var fabR=await q.evaluate(()=>{var f=document.querySelector('.fab');return f?Math.round(innerWidth-f.getBoundingClientRect().right):null});await q.evaluate(()=>{S.tab.admin='bodega';render()});await q.waitForTimeout(400);
-r=await q.evaluate(()=>{var f=document.querySelector('.fab'),c=document.querySelector('.card.exist');return {fab:f?Math.round(innerWidth-f.getBoundingClientRect().right):null,exist:c?Math.round(c.getBoundingClientRect().width):null,w:innerWidth}});r.fab=fabR;ok(r.fab!==null&&r.fab<=30,'el "+" va pegado a la orilla en pantalla ancha',r);ok(r.exist>r.w*0.8,'Existencias usa todo el ancho',r);
+r=await q.evaluate(()=>{var f=document.querySelector('.fab'),c=document.querySelector('[data-x="exist65"]')||document.querySelector('.card.exist');return {fab:f?Math.round(innerWidth-f.getBoundingClientRect().right):null,exist:c?Math.round(c.getBoundingClientRect().width):null,w:innerWidth}});r.fab=fabR;ok(r.fab!==null&&r.fab<=30,'el "+" va pegado a la orilla en pantalla ancha',r);ok(r.exist>r.w*0.8,'Existencias usa todo el ancho',r);
 await q.screenshot({path:'v50/f_bod.png'});
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

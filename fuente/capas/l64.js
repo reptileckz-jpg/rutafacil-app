@@ -20,3 +20,11 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
    return ad.set('meta/duenio',{uid:uid,email:em,t:Date.now()},false).then(function(){return ad.set('usuarios_app/'+uid,{rol:'admin',activo:true,nombre:n,email:em,adm:adm,chId:2,duenio:true,idBase:0,t:Date.now()},false)}).then(function(){return uid})})})
  .then(function(uid){if(!uid)return;NBF.ocupado=false;NB.creando=false;try{var A=(S.admins||[]).filter(function(x){return x.k===adm})[0];if(A)A.n=n}catch(x){}return ad.get('usuarios_app/'+uid).then(function(p){NB.perfil=p;nbEmpezarSync()})},
   function(er){if(nbEsPermiso(er&&(er.code||er.message))){yaHay();return}NBF.ocupado=false;NB.creando=false;NBF.err=/email-already/.test(String(er&&er.code))?'Ese correo ya tiene cuenta: toca "Ya tengo cuenta: entrar" y entra con él.':nbErrTxt(er);nbPantalla()})},true);
+/* ---------- cada cuenta abre con su puesto: si entra la cuenta del administrador, el celular abre como administrador
+   (antes, si ese celular estaba guardado como chofer, se quedaba como chofer). El admin todavía puede "entrar como" otro desde el menú. ---------- */
+var _rolUid64=null;
+var _nfr64=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;
+ try{if(p&&NB.listo&&p.rol==='admin'&&NB.user&&_rolUid64!==NB.user.uid){_rolUid64=NB.user.uid;
+   if(p.adm&&(S.admins||[]).some(function(a){return a.k===p.adm}))S.adminYo=p.adm;
+   if(S.role!=='admin'||S.encOn){S.role='admin';S.encOn=false;S.tab.admin='inicio';S.pinOk={};try{pinEntrar()}catch(e){}}}}catch(e){console.error(e)}
+ return _nfr64.apply(this,arguments)};

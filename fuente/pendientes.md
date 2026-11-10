@@ -1505,3 +1505,7 @@ El dueño sigue: negociar con proveedores y programar viajes.
 - CAUSA: (a) sin sesión, las reglas no dejan leer meta/duenio, así que la app no sabe si el negocio ya tiene dueño y enseñaba un error rojo engañoso. (b) "Crear la cuenta del negocio" cuando YA existe: se creaba la cuenta de correo en Firebase y luego las reglas (bien) rechazaban hacerla dueña → quedaba una cuenta suelta sin acceso. (c) "Olvidé mi contraseña" con usuario (sin @) solo decía "pídele al administrador".
 - HECHO (capa l64 + nube/entrada.js borrarYo): ya no sale el error rojo; "Crear la cuenta" avisa que es solo la primera vez; si ya existe, se borra la cuenta suelta y explica cómo entrar; "Olvidé mi contraseña" con usuario de administrador manda el correo a su correo real. Prueba t64.js (5 OK).
 - PENDIENTE: la cuenta suelta que ya se creó con el correo del usuario en Firebase (Authentication) se puede borrar a mano en la consola (Authentication → Usuarios) si no es la del dueño.
+
+## 2026-11-10 · Entró con la cuenta del administrador y le abrió como CHOFER
+- CAUSA: nbForzarRol ponía el puesto para chofer, contador, venta local y encargado, pero NO para administrador; ese celular estaba guardado como chofer y se quedó así.
+- HECHO (l64): al entrar con la cuenta del administrador (cada vez que se abre la app), abre como administrador en Inicio y pide su PIN. Desde el menú todavía puede "entrar como" otro. La cuenta de un chofer siempre abre como chofer (no puede entrar como admin). Prueba t64.js (8 OK).

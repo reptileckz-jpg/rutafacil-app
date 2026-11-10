@@ -19,4 +19,11 @@ const hay=await ev(()=>!!document.getElementById('nbe'));
 await ev(()=>{const s=(id,v)=>{const i=document.getElementById(id);if(i)i.value=v};s('nbn','Juan');s('nbe','x@gmail.com');s('nbp','123456');s('nbp2','123456');document.querySelector('#nbov [data-nb="crear"]').click()});await W(200);
 r=await ev(()=>({borra:__c.borra,salir:__c.salir,sets:__c.sets,err:NBF.err,modo:NBF.modo}));
 ok(hay&&r.borra===1&&r.salir===1&&r.sets.length===0&&/ya tiene su cuenta/.test(r.err)&&r.modo==='entrar','crear la cuenta del negocio cuando ya existe: no se crea otra, se borra la cuenta suelta y explica cómo entrar',r);
+
+/* cada cuenta abre con su puesto */
+const q=await b.newPage();q.on('pageerror',e=>errs.push(e.message));await q.addInitScript(()=>{window.__pnTest=1});await q.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await q.waitForTimeout(700);
+r=await q.evaluate(()=>{S.role='rep';S.chofHoy=1;render();NB.on=true;NB.listo=true;NB.ad=null;NB.user={uid:'adm1'};NB.perfil={rol:'admin',adm:S.admins[0].k,activo:true};nbForzarRol();render();return {rol:S.role,tab:S.tab.admin}});
+ok(r.rol==='admin'&&r.tab==='inicio','la cuenta del administrador abre como administrador aunque el celular estaba como chofer',r);
+r=await q.evaluate(()=>{S.role='rep';render();return S.role});ok(r==='rep','y el administrador todavía puede entrar como chofer desde el menú (no lo regresa a cada rato)',r);
+r=await q.evaluate(()=>{NB.user={uid:'ch1'};NB.perfil={rol:'chofer',chId:1,activo:true};S.role='admin';render();return S.role});ok(r==='rep','la cuenta de un chofer siempre abre como chofer',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

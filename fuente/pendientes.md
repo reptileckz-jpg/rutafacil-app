@@ -1532,3 +1532,13 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Cada pedido en un recuadro: nombre y apodo grande ("Renata “La güera”"), "Hoy · 09:15" a la derecha; dos pastillas: roatán (amarilla, con ícono de plátano) y macho en kg (verde, con báscula); botón verde grande "＋ Registrar este pedido".
     - Palabras: en la imagen dice "2 Taras Roatán" → poner "2 cajas de roatán" (caja = llena, tara = vacía). DECIDIDO: si el pedido no trae macho (o roatán), esa pastilla no sale.
     → (Decisión general) La información se maneja como hasta ahora (mismas palabras y datos: caja = llena, tara = vacía); solo se adoptan los diseños nuevos.
+41. TARJETAS PASO A PASO con el estilo del "Viaje de carga" (código de ejemplo: disenos/p41-viaje-de-carga-wizard.jsx). Aplicarlo en TODA la app donde se captura información por pasos (las tarjetas de pantalla completa: wzov, cmov, cxov, rcov, cierre, simulador, etc.):
+    - Encabezado fijo blanco: título grande ("Viaje de carga"), debajo "Antes de salir · paso 3 de 11 · Qué cargas primero", botón × redondo gris; barra de avance verde delgada.
+    - Cada paso: tarjeta blanca con la pregunta grande ("¿Qué vas a cargar?") y una ayuda corta gris.
+    - Opciones como tarjetas grandes con casilla (borde verde y fondo verde claro al escoger); selects grandes grises; selector de dos opciones tipo "Camión completo / Por pasadas".
+    - Ordenar paradas arrastrando (con agarradera ⋮⋮); "Tu ruta de hoy" con mapa y línea de tiempo de paradas numeradas con hora.
+    - Vehículos como tarjetas con foto/ícono, placas y pastilla del combustible (Premium roja, Diésel negra/amarilla).
+    - Inspección: recuadro verde "Este vehículo ya se revisó hoy" + "Todo bien / Reportar algo".
+    - Pie fijo blanco: "Atrás" (blanco con borde) y "Siguiente" verde grande (en el último: "Empezar ruta"/"Finalizar").
+    - Se conserva: letra y botones grandes, ¿Seguro? en lo que no se puede deshacer, caja = llena / tara = vacía, sin internet.
+- Diseños de referencia guardados en fuente/disenos/ (inicio.html, bodega.html).

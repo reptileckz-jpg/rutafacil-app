@@ -7,7 +7,7 @@ await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();
 for(const d of '4862'){const bx=await p.evaluate(d=>{var r=document.querySelector('#pinov [data-act="pind"][data-v="'+d+'"]').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]},d);await p.touchscreen.tap(bx[0],bx[1])}
 await p.waitForTimeout(400);let r=await p.evaluate(()=>({ov:!!document.getElementById('pinov'),ok:S.pinOk['a:'+S.adminYo]}));ok(!r.ov&&r.ok,'PIN tecleado muy rápido sí entra (sin teclas perdidas ni dobles)',r);
 // con mouse (clic normal) no se duplica
-await p.evaluate(()=>{S.pinOk={};pinEntrar();render()});await p.waitForTimeout(200);
+await p.evaluate(()=>{if(typeof _pinAuth!=='undefined')_pinAuth={};S.pinOk={};pinEntrar();render()});await p.waitForTimeout(200);
 for(const d of '48'){await p.click('#pinov [data-act="pind"][data-v="'+d+'"]');await p.waitForTimeout(60)}
 r=await p.evaluate(()=>_pin.v);ok(r==='48','con clic normal cada tecla cuenta una vez',r);
 // velocidad: en la demo

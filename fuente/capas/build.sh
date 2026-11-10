@@ -4,7 +4,7 @@ import json
 D='./'
 im=json.load(open(D+'imgs.json'))
 src=''
-for f in ['l1.js','l2.js','l3.js','l4.js','l5.js','l6.js','l6b.js','l7.js','l8.js','l9.js','l10.js','l11.js','l12.js','l13.js','l14.js','l15.js','l16.js','l17.js','l18.js','l19.js','l20.js','l21.js','l22.js','l23.js','l24.js','l25.js','l26.js','l27.js','l28.js','l29.js','l30.js','l31.js','l32.js','l33.js','l34.js','l35.js','l36.js','l37.js','l38.js','l39.js','l40.js','l41.js','l42.js','l43.js','l44.js','l45.js','l46.js','l47.js','l48.js','l49.js','l50.js','l51.js','l52.js','l53.js','l54.js','l55.js','l56.js','l57.js']:src+=open(D+f,encoding='utf-8').read()+'\n'
+for f in ['l1.js','l2.js','l3.js','l4.js','l5.js','l6.js','l6b.js','l7.js','l8.js','l9.js','l10.js','l11.js','l12.js','l13.js','l14.js','l15.js','l16.js','l17.js','l18.js','l19.js','l20.js','l21.js','l22.js','l23.js','l24.js','l25.js','l26.js','l27.js','l28.js','l29.js','l30.js','l31.js','l32.js','l33.js','l34.js','l35.js','l36.js','l37.js','l38.js','l39.js','l40.js','l41.js','l42.js','l43.js','l44.js','l45.js','l46.js','l47.js','l48.js','l49.js','l50.js','l51.js','l52.js','l53.js','l54.js','l55.js','l56.js','l57.js','l58.js','l59.js']:src+=open(D+f,encoding='utf-8').read()+'\n'
 for k,v in im.items():src=src.replace('__IMG_'+k+'__',v)
 open(D+'libl.js','w',encoding='utf-8').write(src)
 PY

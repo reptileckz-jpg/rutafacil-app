@@ -1515,3 +1515,11 @@ El dueño sigue: negociar con proveedores y programar viajes.
 - Palabras: "caja" = llena, "tara" = vacía (como siempre). Letra y botones GRANDES (estilo del diseño pero no la letra chiquita). Primero Inicio y Bodega; si le gustan, se adaptan las demás. Barra de abajo: las mismas secciones, con el estilo nuevo.
 - HECHO (l65): estilo general (fondo gris claro, tarjetas blancas muy redondeadas, encabezado blanco con botones redondos, sección activa en pastilla de su color). Inicio: "Precio de hoy" (caja de roatán / kilo de macho con costo y mayoreo, botones de siempre), "Inventario de bodega" (roatán: cajas llenas, taras vacías, verdes/madurando/maduras/reparto y cuántos días alcanza; macho igual en kg) y "Por atender" justo abajo. Bodega: título con chip de la bodega, "Existencias en bodega" (verdes/maduras de roatán y macho), "Fruta madura por antigüedad" (más vieja primero; Pasada de tiempo / Sale mañana / Lista para salir) y la sugerencia de maduración en verde. Todo sin internet (sin Tailwind ni íconos de afuera).
 - No se puso el botón "Despachar" del diseño porque la app no tiene esa acción (ningún botón puede quedarse sin hacer nada).
+
+## 2026-11-10 · Ideas de diseño de Ricardo — SOLO ANOTAR (pidió no hacer cambios hasta que diga)
+38. "TARJETA REPARTO 1" (chofer, pantalla Ruta): reemplazar el aviso de lo que le queda en el camión por esta tarjeta. Foto: fotos/p38-tarjeta-reparto-1.jpg.
+    - Arriba: ícono de camión + "Te quedan en el camión".
+    - Dos cuadros blancos grandes: izquierda dibujo de cajas con plátano + número grande "26" + "cajas de roatán" (en la imagen dice "TARAS", pero se decidió: caja = llena, tara = vacía); derecha dibujo de báscula con plátano macho + "80 KG" + "de plátano macho".
+    - Abajo una franja verde con ícono de ubicación: "Ya no quedan paradas pendientes." (o cuántas paradas faltan si todavía hay).
+    - Fondo verde claro con hojas suaves; números en verde oscuro, muy grandes.
+    - Los dibujos (cajas, báscula) van como imágenes dentro del APK (sin internet).

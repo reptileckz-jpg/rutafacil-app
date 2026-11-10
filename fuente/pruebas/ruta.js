@@ -18,8 +18,8 @@ await p.fill('#cmot','me equivoqué de cliente');await click('[data-act="cancele
 r=await ev(()=>({rep:S.inv.reparto,c:S.cancels,av:(S.avPrecio.slice(-1)[0]||'')+' | '+(((S.actDia||[]).slice(-1)[0]||{}).x||''),m:!!S.modal}));ok(r.rep===20&&r.c&&r.c.length===1&&r.c[0].mot==='me equivoqué de cliente'&&/motivo: me equivoqué/.test(r.av)&&!r.m,'cancelada: las cajas regresan al camión y el motivo se guarda',{rep:r.rep,av:r.av});
 await ev(()=>{S.tab.rep='cierre';S.cierreP=3;render()});await W(150);
 r=await ev(()=>{var c=document.querySelector('[data-key="cancels"]');return c&&c.offsetParent!==null?c.innerText:null});ok(r&&/me equivoqué/.test(r),'sale en el cierre del chofer (paso Cajas)',r);
-// --- gasto sin ticket
-await ev(()=>{S.gx={tipo:'Comida o viáticos',monto:'150',nota:'',foto:null};render();var b=document.createElement('button');b.dataset.act='gxsave';document.body.appendChild(b);b.click();b.remove()});await W(150);
+// --- gasto sin ticket (flujo de antes; desde la 7.2 el ticket es obligatorio: ver t63.js)
+await ev(()=>{window.__ticketLibre=1;const c=(S.choferes||[]).filter(x=>+x.id===+S.chofHoy)[0];if(c)c.comida=true;S.gx={tipo:'Comida o viáticos',monto:'150',nota:'',foto:null};render();var b=document.createElement('button');b.dataset.act='gxsave';document.body.appendChild(b);b.click();b.remove()});await W(150);
 r=await ev(()=>({gch:S.gch.length,rev:(S.gchRev||[]).length,tot:gchTot(),t:S.toast}));ok(r.gch===0&&r.rev===1&&r.tot===0&&/por revisar/.test(r.t),'gasto sin ticket: queda por revisar y no se descuenta',r);
 // gasto con ticket
 await ev(()=>{S.gx={tipo:'Caseta',monto:'80',nota:'',foto:'data:image/jpeg;base64,AA'};var b=document.createElement('button');b.dataset.act='gxsave';document.body.appendChild(b);b.click();b.remove()});await W(150);

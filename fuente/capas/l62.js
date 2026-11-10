@@ -16,12 +16,12 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 
 /* ---------- 8 · "Su recorrido" con historial navegable ---------- */
 function gpsAhora(ch){var best=null;try{Object.keys(GPS.devs||{}).forEach(function(dev){var d=GPS.devs[dev];if(+d.ch!==+ch)return;var u=gpsUlt(d);if(u.lat==null)return;if(!best||num(u.t)>num(best.u.t))best={u:u,d:d}})}catch(e){}return best}
-function haceTxt(t){var m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?'ahorita':(m<60?'hace '+m+' min':'hace '+minTxt(m*60000))}
+function haceTxt62(t){var m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?'ahorita':(m<60?'hace '+m+' min':'hace '+minTxt(m*60000))}
 function irLink(lat,lng){return 'https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng}
 var _gpsR62=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR62.apply(this,arguments);try{if(!h||!esCh(c)||esAdm(c))return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),mid='gps'+c.id+dia.replace(/-/g,''),extra='';
  /* a) dónde está ahora */
  var A0=gpsAhora(c.id);if(A0&&dia===iso(TODAY)){var u=A0.u,bat=A0.d.bat!=null&&num(A0.d.bat)>=0?' · batería '+A0.d.bat+'%':'';
-  extra+='<div class="gpsahora"><b>📍 Dónde está ahora</b><div class="lbl">Última ubicación: '+hmDe(u.t)+' ('+haceTxt(num(u.t))+')'+bat+'</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
+  extra+='<div class="gpsahora"><b>📍 Dónde está ahora</b><div class="lbl">Última ubicación: '+hmDe(u.t)+' ('+haceTxt62(num(u.t))+')'+bat+'</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
    +'<button class="btn sm sec" style="width:auto" data-act="gpsir" data-map="'+mid+'" data-lat="'+u.lat+'" data-lng="'+u.lng+'">Ver en el mapa</button><a class="btn sm" style="width:auto;display:inline-flex;align-items:center" href="'+irLink(u.lat,u.lng)+'" target="_blank" rel="noopener">🚗 Cómo llegar</a></div></div>'}
  var G=GPS.dia&&GPS.dia[c.id+'|'+dia];if(G&&G.est==='ok'&&G.pts.length){var An=gpsAnaliza(G.pts),VE=An.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000}),k=0;
   /* b) cada parada se puede tocar: centra el mapa; con botón "Ir" */

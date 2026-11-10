@@ -1430,3 +1430,69 @@ El dueño sigue: negociar con proveedores y programar viajes.
 (20:52) Nota sobre el 32 (fecha del día): YA existe en parte → al volver al frente, si cambió el día, guarda y recarga la app (visibilitychange en la versión armada). Revisar que también pase si el celular nunca manda la app al fondo (app abierta toda la noche con pantalla prendida) → revisar el día cada minuto.
     → 37 (20:54) Confirmado por el usuario: estaba en el mapa de Google en pantalla completa (#gmov, z-index 9999) → al desbloquear el celular pidió huella pero se veía el mapa. Coincide con la causa. Además el mapa nativo de Google se dibuja por Android, no solo con HTML → al bloquear hay que OCULTAR/cerrar el mapa nativo, no basta con el z-index. Falta probar si responde a los toques (por el código, sí respondería).
     → 1 (20:54) Google Maps aún NO carga calles (usuario ya configuró pagos). Revisar: que la cuenta de facturación esté VINCULADA a "My First Project" (el de la llave), que "Maps SDK for Android" esté habilitada en ese proyecto, y esperar hasta 24 h.
+
+## 2026-11-10 · Usuario: "Haz todo, haz prueba y error, la facturación ya está arreglada"
+- Facturación de Google Maps: el usuario dice que ya quedó → los mapas de Google siguen PRENDIDOS por defecto (se pueden apagar por celular en Ajustes).
+
+### HECHO (10 nov) · versión 7.2 · capas l58–l63 + nativo (rutasGoogle, respaldoGuardar, respaldoLimpia) · puntos 1–37 de la lista nueva
+- l58 · 37 bloqueo: la pantalla del PIN queda hasta arriba de todo (z-index máximo), mientras está bloqueada ningún toque llega a la app, se cierran los mapas de Google (pantalla completa y dentro de pantallas) y al irse al fondo se tapa la pantalla con el logo. Cancelar la huella deja en el teclado del PIN.
+- l58 · 18 huella dos veces: CAUSA = al terminar de cargar lo guardado (IndexedDB) o la nube se borraba S.pinOk y se volvía a pedir. Ahora, si entró con PIN/huella en los últimos 2 min al abrir la app, no se vuelve a pedir. Salir/cambiar de usuario/mandar cierre sí la vuelven a pedir.
+- l58 · 24 al desbloquear (por tiempo) regresa a Inicio (admin) o a su Ruta (chofer); si tenía algo a medias pregunta "Seguir donde iba / Ir a Inicio". Al abrir la app en frío también empieza en Inicio/Ruta.
+- l58 · 36 Ajustes por puesto: chofer, encargado, contador y venta local ya no ven "Logo del negocio" ni ajustes del negocio (crédito, poca fruta); y aunque toquen algo, la app lo frena y dice por qué. Tema (claro/oscuro) y letra grande ahora son de cada celular (antes se cambiaban para todos).
+- l58 · 4 y 9 campos oscuros: la app le dice al navegador si está en claro u oscuro (color-scheme) y todos los campos (número, fecha, select, textarea) tienen fondo y letra explícitos.
+- l58 · 1 Google Maps en blanco: CAUSA ENCONTRADA = cuando el mapa está dentro de una ficha o tarjeta encima (ej. "Su recorrido"), lo de abajo tapaba el hueco → blanco. Ahora se ocultan las capas de abajo mientras se ve ese mapa. Probado con captura de píxel (transparente donde va el mapa).
+- l58 · 2 no se desliza: el plugin de Google "agarra" los toques en el rectángulo de cada mapa vivo. Ahora: (a) un mapa tapado por otra ventana deja de recibir toques (disableTouch), (b) todo mapa que se pidió y ya no está en pantalla se destruye aunque haya fallado al crearse.
+- l59 · 3 billetes: el desplegable se queda abierto/cerrado como lo dejó el chofer. · 5 un solo "?" (enseña "¿Qué sigue?" con Muéstrame). · 6 la burbuja no sale en entrega/cierre, ni escribiendo, ni en tarjetas paso a paso; sale ARRIBA (no tapa Atrás/Siguiente) y se quita si empieza a escribir o deslizar. · 7 toda foto (jpg/https) en miniatura se abre en grande, también las del cierre que recibe el admin. · 14 se quitó la pantalla de "Comenzar". · 15 orden al abrir: logo → PIN/huella → tarjetas urgentes → hasta entonces tutorial/¿Qué sigue?. · 17 "Atender": lleva a donde se resuelve y la siguiente tarjeta sale hasta que regresa a Inicio (antes salía encima y parecía que no hacía nada; además se brincaba una).
+- l60 · 16 ubicación: UNA tarjeta por celular que se actualiza (15 → 45 min URGENTE); al reconectarse se quita sola y queda "Celular de X estuvo sin señal de 10:12 a 11:05 (53 min)"; apagado/prendido igual ("se apagó de 22:10 a 06:30"). Se limpiaron las repetidas. En ninguna tarjeta se ven coordenadas ni [tel:]: botones 📍 Ver dónde y 📞 Llamar.
+- l60 · 17 a dónde lleva cada aviso: ubicación → ficha del chofer en "Su recorrido"; faltante → recepción del cierre; equipo → bienes.
+- l60 · 20 "el efectivo no coincide" abre la tarjeta del faltante (dijo / se contó / falta, Descontar · Ya lo pagó · No descontar con ¿Seguro?). Si ya se decidió al recibir el cierre, el aviso se quita solo y queda en la actividad.
+- l60 · 21 Avisos = "Por atender (N)" arriba; lo informativo (gastos, volvió a cargar, clientes nuevos, correcciones, viajes…) va a la ACTIVIDAD DEL DÍA (S.actDia, se sincroniza): en Avisos sale plegado "Informativos" agrupado por chofer en una línea + "Marcar todo como visto"; en la recepción del cierre sale "Lo que pasó hoy en su ruta"; en la ficha del chofer "Lo que pasó ese día".
+- l60 · 22 "Hoy te toca": "Recibir los cierres · 1 de 3 mandados" lleva a recibir o dice quién falta; "Mandarte el resumen" dice cuántos cierres faltan o lo manda. "Muéstrame dónde" dice por qué si todavía no hay nada que tocar.
+- l60 · 25 numerito por sección en la barra de abajo (las que no están en la barra suman en "Más"); solo parpadea uno (el de urgente o el primero). Al entrar se resalta el pendiente.
+- l60 · 28 avisos del chofer sin repetidos; "se quitó / se regresó" del mismo cliente se cancelan.
+- l61 · 30 SALDOS: c.cred y c.vac de cada cliente y las cajas de cada proveedor (tarasProv) ya no se guardan como número final: saldo = lo que había al migrar (s~cliBase, igual en todos) + suma de movimientos (s~cliCnt, contador que la nube suma con increment). La migración la hace UNA vez el dueño (marca S.cfg.saldoMig) y cada celular la toma de la nube antes de mandar nada. Probado con dos celulares y una nube de prueba: chofer sin señal −50 y admin +100 → los dos quedan con +50.
+- l61 · 32 si la app se queda abierta y cambia el día (aunque nunca se vaya al fondo), se guarda y se recarga (espera si estás escribiendo o a la mitad de algo). · 34 centavos: cada venta, cobro, gasto, aporte, etc. se redondea a 2 decimales al guardar (300 movimientos con centavos cuadran exacto). · 35 doble toque: el mismo botón de guardar/cobrar/entregar/pagar no corre dos veces en menos de 1 s.
+- t62xss · 33 textos peligrosos: se metieron textos con <img onerror>, <svg onload>, comillas y símbolos en clientes, choferes, proveedores, básculas, gastos, avisos, notas, motivos e historial y se recorrieron todas las pantallas, fichas, Ajustes, menú y tarjetas urgentes: nada se ejecuta ni se rompe.
+- l62 · 8 "Su recorrido": "Dónde está ahora" (hora, hace cuánto, batería, Ver en el mapa, 🚗 Cómo llegar); cada parada se puede tocar (centra el mapa) y tiene "Ir"; "¿Dónde estuvo a tal hora?" por horas → minuto → el mapa se va ahí.
+- l62 · 10 bodega: Ajustes y Bodega → "Cambiar ubicación" (tarjeta: "Estoy en la bodega" con GPS, o pegar link/coordenadas → ¿Seguro?). La principal mueve todos los mapas, km y rutas. El mapa del recorrido ya no mete la bodega si está lejos (ej. pruebas en Tijuana).
+- l62 · 11 "🚦 Ordenar con tráfico" en la ruta del chofer: UNA llamada a Google Routes (computeRoutes, TRAFFIC_AWARE, optimizeWaypointOrder, máx. 25 paradas) desde la pieza nativa (RutaNativa.rutasGoogle, manda la llave del manifest + X-Android-Package + X-Android-Cert). Reacomoda la ruta y da hora estimada por cliente y de regreso. Si falla o no hay señal → orden de siempre (y si falta habilitar la API, lo dice).
+- l62 · 12 aprender: por cada tramo (cliente A → B, por franja de hora) y por cliente (tiempo atendiéndolo) se guarda lo real (S.aprT / S.aprA, se sincronizan). Con 3+ viajes usa lo aprendido; si sabe todos los tramos, ordena sola SIN pedir a Google. Hora estimada = manejo + atención. En la ficha del chofer: "Estimado contra real".
+- l63 · 13 tarjetas paso a paso: "No estaba" (motivo → revisa → ¿Seguro?), pedir permiso para fiar, cerrar el mes. (Carga nueva y carga extra ya eran de pantalla completa; vjForm ya no se usaba.) ERROR ENCONTRADO: "Pedir permiso para fiarle" no hacía nada porque se llamaba igual (permpide) que el botón de permisos del celular; ahora lo registra la tarjeta.
+- l63 · 23 "Así se hace": "+ Nueva nota" por pasos (¿para qué? → cliente/proveedor con buscador o paso → texto con dictado → ¿quién la ve? → revisa → ¿Seguro?); notas agrupadas por tema (plegadas) con buscador; cada nota sale solo a quien debe verla; "todos los clientes/proveedores" sale en cada uno.
+- l63 · 26 "Me voy de vacaciones" por pasos: fechas → quién se queda → qué puede (precio, cierres, pagos hasta $X, fiados, viajes) → qué dejas (precio base, efectivo) → ¿te mando algo? → revisa → ¿Seguro?. Avisa al encargado y a los choferes. Lo que no le diste, la app no lo deja hacer y dice por qué. Al pasar la fecha (o "Ya regresé") quita permisos y enseña lo que pasó.
+- l63 · 31 gastos del chofer: "Puede agregar comida" sí/no en la ficha del chofer (si no, no sale la opción). Lo demás (casetas, combustible, etc.): foto del ticket OBLIGATORIA. En la recepción del cierre: "Entregó sus N tickets" (queda en historial y actividad).
+- l63 · 19 textos del tutorial y de "¿Qué sigue?" al día (recepción del cierre, billetes +/−, gastos con ticket, No estaba, vacaciones, respaldo, recorrido, ordenar con tráfico).
+- l63 · 29 respaldo automático: en el celular del admin, la primera vez que se abre cada día, se guarda Descargas/Ruta Facil/Respaldos/respaldo-AAAA-MM-DD.json (nativo; se borran los de más de 30 días que hizo la app). Ajustes → "Respaldo automático": último, dónde, Respaldar ahora, Restaurar (con ¿Seguro?). Aviso si lleva más de 2 días sin respaldo.
+- 27 lista de prueba: va con cada versión (abajo).
+- Pruebas: todas las anteriores siguen bien + t58 (22) · t59 (18) · t60 (24) · t61 (11) · t62 (22) · t62xss (5) · t63 (33). Única falla: fix.js "Reiniciar en el PIN del chofer", que ya fallaba ANTES de estos cambios (es de la prueba: en la app el botón sí sale).
+- APK de prueba armado desde la rama de trabajo (Actions, manual): la parte nativa nueva compila.
+- PENDIENTE DEL USUARIO: (1) en Google Cloud, en la llave "Maps Platform API Key", agregar "Routes API" a las APIs permitidas (para "Ordenar con tráfico"); (2) probar Google Maps con calles ya con la facturación activa.
+
+### Lista de prueba 7.2 (por número de punto)
+1. Personal → chofer → Ruta y metas: el mapa de "Su recorrido" se ve con calles (no blanco). "⤢ Ver más grande" también.
+2. Abre un mapa, luego el cierre del chofer: la pantalla sí se desliza.
+3. Cierre → Efectivo → "Contar por billetes": toca + y − varias veces; no se cierra.
+4/9. Celular en modo oscuro y app en claro: los cuadritos de billetes y la fecha de "Su recorrido" se leen bien.
+5. Solo hay un "?" arriba.
+6. En el cierre del chofer no sale la burbuja "¿Qué sigue?"; cuando sale, está arriba.
+7. Admin → cierre recibido: toca una foto del vehículo → se abre en grande.
+8. Su recorrido: "Dónde está ahora", tocar una parada o una hora mueve el mapa; "Ir" abre Google Maps.
+10. Ajustes → Ubicación de la bodega → Cambiar → pega un link → ¿Seguro? → Sí.
+11. Chofer con 2+ clientes con ubicación: "🚦 Ordenar con tráfico" (necesita Routes API habilitada).
+13. Entrega → "No estaba" → motivo → Registrar → ¿Seguro?. Pedir permiso para fiar → le llega al admin.
+14/15. Abre la app: no sale "Comenzar"; primero PIN, luego urgentes, luego el tutorial.
+16. Apaga los datos de un celular de chofer 20 min: una sola tarjeta que se actualiza; al prender, se quita sola.
+17. En una tarjeta urgente toca "Atender": te lleva y la siguiente sale al regresar a Inicio.
+18. Abre la app en frío con huella: la pide una sola vez.
+20. Un efectivo que no coincide ya decidido al recibir: el aviso no aparece.
+21. Registra gastos y vuelve a cargar: no llenan Avisos; salen en "Informativos" y en la recepción del cierre.
+22. "Hoy te toca": toca "Recibir los cierres" y "Mandarte el resumen": siempre hacen algo o dicen por qué.
+23. Así se hace → + Nueva nota → cliente (buscador) → nota → quién la ve.
+24. Deja la app 5 min (admin) en Clientes; al desbloquear regresa a Inicio.
+25. Barra de abajo: numeritos; solo uno parpadea.
+26. Menú → Me voy de vacaciones (pasos) → ¿Seguro?; luego "Ya regresé".
+29. Ajustes → Respaldo automático → Respaldar ahora → revisa Descargas/Ruta Facil/Respaldos.
+30. Dos celulares, uno sin datos: abono en uno y venta a crédito en otro al mismo cliente → al volver la señal, el saldo tiene los dos.
+31. Chofer sin permiso de comida: no sale "Comida"; caseta sin foto no se guarda. Al recibir el cierre: "Entregó sus N tickets".
+36. Como chofer → Ajustes: no hay "Logo del negocio".
+37. Abre el mapa de Google en pantalla completa, bloquea el celular 5+ min, regresa: solo se ve el PIN y nada responde detrás.

@@ -1661,3 +1661,17 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - Minimizar: los pedidos que ya tienen chofer o ya salieron se ven chiquitos en un renglón (nombre · chofer · estado) y se pueden abrir con un toque; también un "Ver todos / Ocultar los ya asignados". A la vista grande quedan solo los que falta asignar, y siempre el botón "＋ Registrar un pedido".
     - Pregunta pendiente: el pedido que todavía no tiene chofer, ¿debe tener un botón "Asignar chofer" ahí mismo?
     → 57 DECIDIDO (11 nov): SÍ botón "Asignar chofer" ahí mismo en cada pedido sin chofer: abre una tarjeta con los choferes de ese día (botones grandes) → mete al cliente en la ruta de ese chofer (al final, o donde le toque por ubicación) → el pedido pasa solo a "Chofer asignado". Si ese chofer ya salió, le avisa al chofer que tiene una parada nueva. Que se pueda cambiar de chofer después (con ¿Seguro?).
+58. (11 nov) DECISIONES ANTES DE ARMAR LA VERSIÓN NUEVA (Ricardo contestó las preguntas; todavía NO armar: va a mandar más cosas antes):
+    - Se mete TODO (49 al 57 y lo de aquí) en una sola versión, con pruebas completas.
+    - Borrar todo / empezar de cero: NO habrá botón en la app (peligroso). Cuando el APK esté terminado, explicarle paso a paso cómo borrar los datos y las cuentas en la consola de Firebase y los datos de la app en cada celular.
+    - Ubicaciones (bodega en la primera vez, proveedores —El Pital, Nautla, Coacoatzintla—, clientes y todo lo que tenga ubicación): tres formas: "Estoy aquí (GPS)", "Pegar link de Google Maps" y BUSCAR como en Uber (escribe el nombre o la dirección → sale la lista de lugares de Google → escoge → mapa con PIN que se arrastra para dejarlo exacto → ¿Seguro?).
+      · Además: botón "Confirmar la ubicación aquí" para el chofer cuando está en el lugar (en la ruta con un cliente, o en el viaje de carga con el proveedor): guarda las coordenadas exactas de su GPS (queda en historial quién y cuándo; si ya tenía, pregunta ¿Seguro? y avisa al admin).
+      · PENDIENTE DEL USUARIO (se le dirá al armar): habilitar "Places API (New)" en la llave de Google para el buscador.
+    - Desgaste por km: se queda $0.60 por km por defecto si no hay registros. Con el uso, la app lo AJUSTA SOLA para cada vehículo (lo que de verdad se gastó en servicios y reparaciones ÷ km recorridos; hoy solo lo sugiere). Que avise cuando lo cambió y cuánto.
+    - Costo de reparto: el roatán se compra por kilo pero se vende por CAJA → su costo de reparto va POR CAJA; el macho POR KILO. (Para dividir el gasto del día entre los dos: por el peso de lo entregado; luego se muestra como $ por caja de roatán y $ por kilo de macho.)
+    - Meta de ganancia: una para roatán y otra para macho, con la opción "Usar la misma para los dos".
+    - 56 Reportar un problema: SÍ, como se propuso. Todo lo que se pueda se llena SOLO; lo que no, a mano.
+    - Simulación: el GPS manda la ubicación real (va a probar con ubicaciones reales en Tijuana).
+    - Contra errores de dedo: SÍ. Si un número sale muy fuera de lo normal (kilos, precio, litros, gastos, cajas), pregunta "¿Seguro? Es mucho más de lo normal (normalmente X)" antes de guardar.
+    - Publicar: DIRECTO a main (APK final), sin APK de prueba aparte; mandar la lista de prueba por número de punto para verificar.
+    - Sin contestar todavía: la tarjeta "¿Cuadra todo?" (punto 8 de las sugerencias).

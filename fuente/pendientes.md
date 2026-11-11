@@ -1619,3 +1619,7 @@ El dueño sigue: negociar con proveedores y programar viajes.
       3) "Ya no está" → pregunta "¿Alguien se la llevó o la vendió?": un chofer (se le suma a lo que lleva para que su cierre cuadre) / se vendió en bodega (cuánto y a cuánto) / no sé (ajuste que queda en el historial con quién y cuándo).
       4) "Estaba buena y salió a la venta" → misma pregunta: ¿qué chofer se la llevó, o se vendió en bodega?
       Sin opción de "marcar revisada sin mover números" (se cambió por la 4). Deslizar = abre estas mismas opciones.
+    → 53 CORRECCIÓN (11 nov) a la opción 4 "Estaba buena y salió a la venta": NO se le suma al chofer ni se descuenta del inventario (eso ya pasó cuando se registró la carga del chofer). Ejemplo de Ricardo: hay 30 cajas maduras, 15 son las más viejas; el chofer carga 20 → se llevó las 15 viejas y 5 de las otras.
+      - La app ya descuenta así al cargar (madSync quita primero los lotes más viejos), por eso normalmente esa tarjeta se va sola.
+      - Si aun así sale una tarjeta vieja y Ricardo dice "salió a la venta": solo se corrige CUÁLES quedan (las que quedan en bodega son las más nuevas: ese lote se pasa a la fecha del siguiente más nuevo, o a hoy). NO cambia ningún número (inventario, cajas del chofer ni dinero). Queda en el historial.
+      - Las opciones 1 "Se tiró" y 2 "Se remató" sí descuentan. La 3 "Ya no está": sí descuenta, preguntando si se vendió en bodega o "no sé" (se quita lo de "un chofer": lo que se lleva un chofer siempre entra por su carga).

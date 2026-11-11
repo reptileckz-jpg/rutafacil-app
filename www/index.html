@@ -8969,6 +8969,583 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(t==='inicio'){var pa=Array.prototype.filter.call(document.querySelectorAll('main > .card'),function(c){var x=c.querySelector('.tt');return x&&/^Por atender/.test(x.textContent)})[0];if(pa){try{pa.scrollIntoView({block:'start',behavior:'smooth'})}catch(er){}pa.classList.remove('avfoco');void pa.offsetWidth;pa.classList.add('avfoco');setTimeout(function(){pa.classList.remove('avfoco')},3000)}return}
  var x=tabPend48(t);if(!x){toast('Ya no hay pendientes aquí');return}var g=document.createElement('button');g.dataset.act='avgo';g.dataset.k=encodeURIComponent(x);g.style.display='none';(document.querySelector('main')||document.body).appendChild(g);try{g.click()}finally{g.remove()}},true);
 
+/* ===================== v7.5 · diseño (11 nov)
+   49 Inicio: inventario en dos tarjetas (roatán y macho) con encabezado de color, barra de colores y "Te alcanza para N días" con color
+   50 "Por atender": cada aviso en tarjeta de color según urgencia, con ícono, letra grande y flecha ›
+   52 PIN en modo oscuro
+   61 ventana de aviso urgente nueva (título claro, ícono y color según el aviso, sin ×, "Atender ›") ===================== */
+function dk68(L){return L.map(function(r){return 'html[data-theme="dark"] '+r}).join('\n')+'\n@media (prefers-color-scheme: dark){'+L.map(function(r){return 'html:not([data-theme]) '+r}).join('\n')+'}'}
+var IC68={
+ campana:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8a2.5 2.5 0 0 0 2.4 2zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>',
+ camion:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h11v10H3zM15 8h3.5L21 11.5V15h-6zM6.5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>',
+ dinero:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>',
+ engrane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5zM8 13v2h8v-2zm0 4v2h5v-2z"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8.5 15.5l2 2 4-4"/></svg>',
+ gps:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>',
+ persona:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>',
+ cuadre:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7h14M5 7l-3 7a3.5 3.5 0 0 0 6 0zM19 7l-3 7a3.5 3.5 0 0 0 6 0zM8 21h8"/></svg>',
+ fruta:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 5c.5 1.5.3 3.4-.6 5.4C17.6 14.6 13 18 8 18.5c-2 .2-3.6-.2-4.7-1 4.5-.3 8.5-2.8 11-6.5 1.2-1.8 2-3.7 2.3-5.6z"/><path d="M19 3.5l1.6-1.2.9 1.2-1.4 1.2z"/></svg>'};
+/* qué es cada aviso: color, ícono, título y detalle (en palabras de todos los días) */
+var AV68_VEH=/DEF|aceite|afinaci|llanta|veh[ií]culo|Freightliner|NP300|Nissan|cami[oó]n|camioneta|seguro de|tarjeta de circulaci|verificaci|placas|mensualidad|inspecci|servicio|fuera de servicio|km/i;
+function avInfo68(x){var t=String(x||'').replace(/^URGENTE:\s*/i,'').replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'');try{if(typeof avYo==='function')t=avYo(t)}catch(e){}
+ var urg=AV_URG.test(x)||AV_ROJO.test(x)||/se pasaron de tiempo|no cuadra/i.test(x);
+ var ic=/no cuadra/i.test(t)?'cuadre':(/ubicaci|celular|se[nñ]al|gps|apag[oó]/i.test(t)?'gps':(/roat[aá]n|cajas? (de|madur|verde)/i.test(t)&&/madur|pasa|verde|merma|lote/i.test(t)?'caja':(/macho|kg/i.test(t)&&/madur|pasa|verde|merma|lote/i.test(t)?'kilo':(/precio/i.test(t)?'dinero':(AV68_VEH.test(t)?(/afinaci|vence|mensualidad|seguro|tarjeta/i.test(t)?'cal':'camion'):(/efectivo|faltante|debes|deuda|pag|cobr|\$/i.test(t)?'dinero':(/b[aá]scula|ajuste|Ponle/i.test(t)?'engrane':(/viaje|carga|pactado|proveedor/i.test(t)?'doc':(/cliente|direcci/i.test(t)?'persona':'campana')))))))));
+ var veh=ic==='camion'||ic==='cal',col=urg?'r':(AV_NAR.test(t)&&!veh?'o':(veh?'v':(/Falta|Ponle|Registraste|sin precio|sin direcci|Captura|Completa|por llenar|Precio de hoy/i.test(t)?'g':(AV_INFO.test(t)?'n':'o'))));
+ if(veh&&!urg&&/en \d+ d[ií]as|en [\d,]+ km/.test(t)&&!/en [0-7] d[ií]as/.test(t))col='n';
+ var tit=t,det='',m=/^no cuadra\s*·\s*(.*?)\s*(?:\((.*)\))?$/.exec(t);if(m){tit=m[1];det=m[2]||''}else{var i=t.indexOf(': ');if(i>8&&i<70){tit=t.slice(0,i);det=t.slice(i+2);det=det.charAt(0).toUpperCase()+det.slice(1)}}
+ return {col:col,ic:ic,tit:tit,det:det,txt:t}}
+function ic68(k){return k==='caja'?IC65.caja:(k==='kilo'?IC65.kilo:(IC68[k]||IC68.campana))}
+var COL68={r:'#DC2626',o:'#EA580C',v:'#2563EB',g:'#16A34A',n:'#64748B'},NIV68={r:'Urgente',o:'Pronto',v:'Vehículo',g:'Falta un dato',n:'Para saber'};
+(function(){var st=document.createElement('style');st.textContent=[
+ /* 49 inventario */
+ '.inv68{display:flex;flex-direction:column;gap:12px;column-span:all;-webkit-column-span:all;grid-column:1/-1;margin-top:12px}',
+ '.inv68 .ban{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;margin:0!important}.inv68 .ban .ic{width:44px;height:44px;border-radius:14px;background:color-mix(in srgb,#16A34A 14%,var(--surface));color:#15803D;display:flex;align-items:center;justify-content:center;flex:none}.inv68 .ban .ic svg{width:24px;height:24px}',
+ '.inv68 .ban .tt{font-size:19px;font-weight:800;line-height:1.2}.inv68 .ban .st{font-size:14px;color:var(--muted)}',
+ '.inv68 .pc{padding:0!important;overflow:hidden;cursor:pointer;margin:0!important}',
+ '.inv68 .pc .hd{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:14px 16px;color:#fff}.inv68 .pc.r .hd{background:#D97706}.inv68 .pc.m .hd{background:#15803D}',
+ '.inv68 .pc .hd .ic{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;flex:none}.inv68 .pc .hd .ic svg{width:26px;height:26px}',
+ '.inv68 .pc .hd .lb{font-size:14px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;opacity:.95}.inv68 .pc .hd .nb{font-size:34px;font-weight:900;line-height:1.05}.inv68 .pc .hd .u{font-size:16px;font-weight:700;margin-left:6px;opacity:.95;white-space:nowrap}',
+ '.inv68 .pc .hd .chip{margin-left:auto;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);color:#fff;font-size:14px;font-weight:800;padding:6px 12px;border-radius:999px;white-space:nowrap}',
+ '.inv68 .pc .bd{padding:14px 16px 16px}',
+ '.inv68 .bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--bg);border:1px solid var(--line);gap:2px}.inv68 .bar i{display:block;height:100%}',
+ '.inv68 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.inv68 .mi{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:8px 2px;text-align:center}',
+ '.inv68 .mi{border-top:4px solid var(--mc)!important;min-width:0}.inv68 .mi .k{font-size:12.5px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mc)}.inv68 .mi b{display:block;font-size:20px;font-weight:900;margin-top:2px}.inv68 .dot{width:10px;height:10px;border-radius:50%;flex:none}',
+ '.inv68 .alc{margin-top:12px;font-size:16px;padding:10px 12px;border-radius:14px;display:flex;align-items:center;gap:10px;line-height:1.35;border:1.5px solid}',
+ '.inv68 .alc.v{background:color-mix(in srgb,#16A34A 12%,var(--surface));border-color:color-mix(in srgb,#16A34A 40%,transparent)}.inv68 .alc.v b{color:#15803D}',
+ '.inv68 .alc.a{background:color-mix(in srgb,#EAB308 16%,var(--surface));border-color:color-mix(in srgb,#CA8A04 45%,transparent)}.inv68 .alc.a b{color:#A16207}',
+ '.inv68 .alc.r{background:color-mix(in srgb,#DC2626 12%,var(--surface));border-color:color-mix(in srgb,#DC2626 45%,transparent)}.inv68 .alc.r b{color:#B91C1C}',
+ /* 50 avisos */
+ '.av.av68{display:flex!important;align-items:center;gap:12px!important;padding:14px 12px!important;border-radius:18px!important;border:1.5px solid color-mix(in srgb,var(--c68) 38%,transparent)!important;background:color-mix(in srgb,var(--c68) 11%,var(--surface))!important;font-size:17px!important;line-height:1.35;margin-top:10px!important;box-shadow:0 2px 6px rgba(15,23,42,.06)}',
+ '.av68 .ic68{width:42px;height:42px;flex:none;color:var(--c68);display:flex;align-items:center;justify-content:center}.av68 .ic68 svg{width:36px;height:36px}',
+ '.av68>.lbl[aria-hidden]{font-size:34px!important;font-weight:900;color:var(--c68)!important;line-height:1;padding:0 2px}',
+ '.av68 .avlv{display:none!important}.av68 .pos68{font-size:13px!important;min-height:30px!important;color:var(--muted)!important;padding:0!important;margin-top:2px}',
+ 'main{padding-bottom:calc(var(--navh,80px) + 96px)!important}',
+ /* 61 ventana de aviso */
+ '.pop68{background:var(--surface);border-radius:26px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}',
+ '.pop68 .fr{display:flex;align-items:center;gap:10px;padding:12px 16px;color:#fff;background:linear-gradient(110deg,var(--c68) 0%,var(--c68) 60%,color-mix(in srgb,var(--c68) 55%,#fff) 60%,color-mix(in srgb,var(--c68) 55%,#fff) 66%,var(--c68) 66%)}',
+ '.pop68 .fr svg{width:26px;height:26px}.pop68 .fr b{font-size:22px;font-weight:900;flex:1}.pop68 .fr .n{background:rgba(255,255,255,.92);color:var(--c68);font-weight:900;font-size:16px;padding:5px 12px;border-radius:999px}',
+ '.pop68 .cu{display:flex;gap:14px;align-items:flex-start;padding:16px}.pop68 .cu .ic{width:72px;height:72px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--c68) 14%,var(--surface));color:var(--c68)}.pop68 .cu .ic svg{width:40px;height:40px}',
+ '.pop68 .cu .t{font-size:22px;font-weight:900;line-height:1.2}.pop68 .cu .m{font-size:17px;margin-top:6px;line-height:1.4}',
+ '.pop68 .bt{display:flex;flex-direction:column;gap:10px;padding:0 16px 16px}.pop68 .bt .btn{min-height:58px;font-size:19px;font-weight:900;border-radius:18px}',
+ '.pop68 .bt .btn.p{background:var(--c68)!important;color:#fff!important;border:0!important;display:flex;align-items:center;justify-content:center;gap:10px}.pop68 .bt .btn.p span{font-size:28px;line-height:1}',
+ /* 52 PIN en modo oscuro */
+ dk68(['#pinov{background:linear-gradient(180deg,#0B2A1E 0%,#0F172A 32%,#0B1120 100%)!important}',
+  '#pinov .pw>b{color:#F1F5F9}','#pinov .pw{color:#E2E8F0}','#pinov .pw .lbl{color:#CBD5E1!important}',
+  '#pinov .ses{background:#064E3B;color:#A7F3D0;border-color:#065F46}',
+  '#pinov .dots i{background:#1E293B;border-color:#475569!important}',
+  '#pinov .kp button{background:#1E293B!important;border-color:#334155!important;color:#F1F5F9!important}',
+  '#pinov .kp button:active{background:#334155!important}','#pinov .kp button[data-act="pinb"]{background:#111827!important}',
+  '#pinov .kp button.bio42{background:#064E3B!important;border-color:#047857!important;color:#6EE7B7!important}',
+  '#pinov .huella{background:#1E293B!important;border-color:#334155!important;color:#F1F5F9!important}',
+  '#pinov .pinmas .link{color:#93C5FD!important}','#pinov .pinmas .link+.link{color:#6EE7B7!important}',
+  '#pinov .pw>img{border-color:#1E293B}'])
+ ].join('\n');document.head.appendChild(st)})();
+
+/* ---------- 49 · inventario ---------- */
+function alc68(d,que){if(d==null||!isFinite(d))return '';var n=Math.floor(num(d)),c=d>=5?'v':(d>=2?'a':'r'),txt=d>=99?'muchos días':(n<1?'menos de 1 día':n+' día'+(n===1?'':'s'));
+ return '<div class="alc '+c+'"><span style="font-size:20px">'+(c==='r'?'⚠️':'⏳')+'</span><span>Te alcanza para <b>'+txt+'</b> de '+que+'.'+(c==='r'?' <b>Programa el viaje.</b>':'')+'</span></div>'}
+function bar68(L){var t=sum(L,function(x){return Math.max(0,num(x[1]))});if(!t)return '<div class="bar"></div>';return '<div class="bar" aria-hidden="true">'+L.filter(function(x){return num(x[1])>0}).map(function(x){return '<i style="width:'+(num(x[1])/t*100).toFixed(2)+'%;background:'+x[2]+'"></i>'}).join('')+'</div>'}
+function mi68(k,v,c){return '<div class="mi" style="--mc:'+c+'"><div class="k">'+k+'</div><b>'+v+'</b></div>'}
+inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=diasAlcanza()||{}}catch(e){}var mk=madKg65(),
+  R=[['Verdes',num(I.verdes),'#16A34A'],['Madurando',mr,'#F59E0B'],['Maduras',num(I.maduras),'#CA8A04'],['Reparto',num(I.reparto),'#2563EB']],
+  M=[['Verdes',num(I.kgVerde),'#16A34A'],['Madurando',mk,'#F59E0B'],['Maduras',num(I.kgMaduro),'#CA8A04'],['Reparto',num(I.repartoKg),'#2563EB']],
+  tot=sum(R,function(x){return x[1]}),totK=sum(M,function(x){return x[1]}),at=' role="button" tabindex="0" data-act="tab" data-t="bodega"';
+ var d=document.createElement('div');d.className='inv68';d.dataset.x='inv65';
+ d.innerHTML='<div class="card ban"'+at+'><span class="ic">'+IC65.bodega+'</span><span class="grow"><div class="tt">Inventario de bodega</div><div class="st">Toca para ver la bodega</div></span><span style="font-size:26px;color:var(--muted)">›</span></div>'
+  +'<div class="card pc r" data-x="invR"'+at+'><div class="hd"><span class="ic">'+IC65.caja+'</span><span><div class="lb">Roatán</div><div><span class="nb">'+n65(tot)+'</span><span class="u">cajas llenas</span></div></span><span class="chip">'+n65(I.vacias)+' taras vacías</span></div>'
+  +'<div class="bd">'+bar68(R)+'<div class="g4">'+R.map(function(x){return mi68(x[0],n65(x[1]),x[2])}).join('')+'</div>'+alc68(da.R,'roatán')+'</div></div>'
+  +'<div class="card pc m" data-x="invM"'+at+'><div class="hd"><span class="ic">'+IC65.kilo+'</span><span><div class="lb">Macho</div><div><span class="nb">'+n65(totK)+'</span><span class="u">kg</span></div></span></div>'
+  +'<div class="bd">'+bar68(M)+'<div class="g4">'+M.map(function(x){return mi68(x[0],n65(x[1]),x[2])}).join('')+'</div>'+alc68(da.M,'macho')+'</div></div>';
+ return d};
+
+/* ---------- 50 · "Por atender": tarjetas de color con ícono ---------- */
+var _avRow68=avRow;avRow=function(x,u){var h=_avRow68.apply(this,arguments);try{var I=avInfo68(x);
+  h=h.replace('class="av"','class="av av68" style="--c68:'+COL68[I.col]+'"').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
+  /* la marca de "Urgente/Pronto" la da el color; el borde izquierdo de antes ya no */
+  h=h.replace(/;border-left:5px solid var\(--danger\);font-weight:700/,';font-weight:700');
+  var m=/<button class="link"[^>]*data-act="avpos"[^>]*>[^<]*<\/button>/.exec(h);if(m){h=h.replace(m[0],'');h=h.replace(/(<span class="grow">)([\s\S]*?)(<\/span>)/,'$1$2<br>'+m[0].replace('class="link"','class="link pos68"')+'$3')}}catch(e){}return h};
+
+/* ---------- 61 · ventana de aviso urgente ---------- */
+var _popH68=popHTML;popHTML=function(){var h=_popH68.apply(this,arguments);if(!h)return h;try{var L=popItems(),i=S.popI||0,x=L[i];if(!x)return h;
+  var raw=(x.b&&x.b[0]&&x.b[0][1]==='avgo')?decodeURIComponent((/data-k="([^"]*)"/.exec(x.b[0][2])||[])[1]||''):'',
+   I=raw?avInfo68(raw):avInfo68(String(x.t||'')+': '+String(x.m||'').replace(/<[^>]*>/g,'')),col=raw?I.col:(/vencid|falla|faltante|fuera de servicio|Le debes|Falta el costo/i.test(x.t)?'r':(/Precio de hoy/i.test(x.t)?'o':I.col)),
+   tit=raw?I.tit:esc(x.t),msg=raw?esc(I.det):x.m;if(raw)tit=esc(tit);
+  var bs=(x.b||[]).map(function(b,j){var lab=j===0&&b[1]==='avgo'?'Atender':b[0];return '<button class="btn'+(j?' sec':' p')+'" data-act="'+b[1]+'"'+b[2]+' data-pop="1">'+lab+(j?'':'<span aria-hidden="true">›</span>')+'</button>'}).join('');
+  return '<div style="position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px" class="fadein"><div class="popin pop68" role="dialog" aria-label="Aviso urgente" style="--c68:'+COL68[col]+'">'
+   +'<div class="fr">'+'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22zm-1 7h2v6h-2zm0 8h2v2h-2z"/></svg><b>'+NIV68[col]+'</b><span class="n">'+(i+1)+' de '+L.length+'</span></div>'
+   +'<div class="cu"><span class="ic">'+ic68(I.ic)+'</span><div><div class="t">'+tit+'</div>'+(msg?'<div class="m">'+msg+'</div>':'')+'</div></div>'
+   +'<div class="bt">'+bs+'<button class="btn sec" data-act="popdesp">🕒 Después</button></div></div></div>'}catch(e){console.error('aviso 61',e);return h}};
+
+/* ---------- 51 · "Mostrar/Ocultar" Finanzas ya no brinca: el navegador movía la pantalla al volver a dibujarla (anclaje del scroll) ---------- */
+(function(){var st=document.createElement('style');st.textContent='html,body{overflow-anchor:none}';document.head.appendChild(st)})();
+
+/* ---------- 59 · el mapa chico ya no se corre completo al arrastrarlo:
+   tenía la marca de "deslizar para posponer aviso" (data-swipe) y ese gesto movía todo el cuadro ---------- */
+(function(){var st=document.createElement('style');st.textContent='.leaflet-container,[data-vivo]{transform:none!important;opacity:1!important}';document.head.appendChild(st)})();
+function mapSw68(){try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container[data-swipe],[data-vivo][data-swipe],[data-mapa][data-swipe]'),function(el){if(el.getAttribute('data-swipe')==='mapa'){el.removeAttribute('data-swipe');el.setAttribute('data-noswipe','1')}})}catch(e){}}
+var _rd68m=render;render=function(){var r=_rd68m.apply(this,arguments);mapSw68();return r};
+
+/* ---------- 62a · el menú lateral: "Sugerencias" se veía verde (parecía seleccionado); ahora todos los botones del menú iguales ---------- */
+/* ---------- 62b · la barra de abajo nunca se queda escondida al cambiar de pantalla o al desbloquear ---------- */
+var _t68=null,_pin68=false;
+var _rd68n=render;render=function(){var r=_rd68n.apply(this,arguments);try{
+  Array.prototype.forEach.call(document.querySelectorAll('.drawer nav button.btn:not(.sec)'),function(b){b.classList.add('sec')});
+  var t=S.role+':'+S.tab[S.role],pin=!!document.getElementById('pinov');
+  if(t!==_t68||(_pin68&&!pin)||window.scrollY<=30){navHid=false;document.documentElement.classList.remove('navhid');var nv=document.querySelector('nav.tabs');if(nv)nv.classList.remove('hid')}
+  _t68=t;_pin68=pin}catch(e){}return r};
+
+/* ---------- 62c · numerito de la barra, 2º toque: va al pendiente EXACTO (baja y lo marca); si hay varios, cada toque pasa al siguiente ("1 de 4: …") ---------- */
+var _avD68=avDestino;avDestino=function(x){var r=_avD68.apply(this,arguments)||{t:'inicio',cli:null};try{
+  if(/(roat[aá]n|macho).*(madur|se pasa|pas[oó] su tiempo|pasaron de tiempo)|Lote de (roat[aá]n|macho)/i.test(x)&&!r.sel){var R=/roat[aá]n/i.test(x);r.t='bodega';r.cli=null;r.sel='[data-x="antig65"] .lote[data-p="'+(R?'R':'M')+'"],[data-x="antig65"]';r.lote68=R?'R':'M'}
+ }catch(e){}return r};
+var _np68={};
+tabPend48=function(t){var cas=['inicio','bodega','cargas','clientes','gastos','mas'],nv=document.querySelector('nav.tabs'),enBarra={};if(nv)Array.prototype.forEach.call(nv.querySelectorAll('button[data-t]'),function(b){enBarra[b.dataset.t]=1});
+ var L=avSinEfecto(function(){var A=[];try{A=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}
+  return A.map(function(x){var d=null;try{d=avDestino(x)}catch(e){}return {x:x,t:(d&&d.t)||'inicio',u:AV_URG.test(x)||AV_ROJO.test(x)?1:0}}).filter(function(o){return t==='mas'?!enBarra[o.t]:o.t===t})});
+ L.sort(function(a,b){return b.u-a.u});if(!L.length)return null;
+ var k=_np68[t]||{i:-1,n:0};k.i=(k.i+1)%L.length;_np68[t]=k;var x=L[k.i].x;
+ setTimeout(function(){try{var I=avInfo68(x);toast((L.length>1?(k.i+1)+' de '+L.length+': ':'')+I.tit)}catch(e){}},250);
+ return x};
+
+/* ===================== v7.5 · el dinero (11 nov) · "que no se pase nada"
+   54 al registrar una carga: al final del desglose, "¿Sumar el desgaste del vehículo?" y "¿Se le asignó un sueldo por este viaje?";
+      el desglose trae TODOS los gastos renglón por renglón; "Costo del viaje más exacto" a la vista
+   55 costo de repartir (real, de las rutas cerradas) por caja y por kilo; precio sugerido = (puesta en bodega + repartirla) × meta;
+      meta de ganancia de roatán y de macho (o la misma); imprevistos: hasta $500 al viaje/ruta, más al mantenimiento;
+      comida autorizada antes (viaje: sí/no y máximo; ruta: presupuesto diario); en el reparto no hay casetas;
+      el desgaste por km se ajusta solo con lo que de verdad se gasta en cada vehículo
+   58 contra errores de dedo: "¿Seguro? Es mucho más de lo normal"
+   60 avisos de "no cuadra" en palabras claras + ningún número vacío rompe las cuentas ===================== */
+
+/* ---------- ayudas ---------- */
+function tope68(){var t=num(S.cfg&&S.cfg.topeImp);return t>0?t:500}
+function esImp68(n){return /imprevist|reparaci|ponchadura|talacha|gr[uú]a|refacci|mec[aá]nic|llanta|falla/i.test(String(n||''))}
+function tasa68(vh){return vh&&vh.desg!=null&&vh.desg!==''&&isFinite(+vh.desg)?num(vh.desg):0.6}
+function suelDia68(ch){if(!ch||ch.id===2||!ch.sz)return {s:0,c:0};var z=ch.sz,s=z.tipo==='semana'?num(z.monto)/7:(z.tipo==='dia'?num(z.porDia):(z.tipo==='base'?num(z.base)/7:0));return {s:Math.round(s),c:num(z.comViaje)}}
+function mgM68(c){return (S.cfg.mgIgual===false&&c&&c.mgM!=null&&c.mgM!=='')?num(c.mgM):num(c&&c.mg||30)}
+function mgR68(c){return num(c&&c.mg||30)}
+function kmProvs68(P){var km=0;(P||[]).forEach(function(p){var d=null;try{d=provD(p)}catch(e){}km=Math.max(km,num(d&&d.km)||150)});return Math.round(km*2+40*Math.max(0,(P||[]).length-1))}
+/* registro de problemas (lo usa el 56; aquí se anotan solos los errores de la app) */
+function apErr(tipo,txt,donde){try{S.probs=S.probs||[];var k=tipo+'|'+txt;if(S.probs.some(function(p){return p.auto&&p.k===k&&p.f===iso(TODAY)}))return;S.probs.push({id:Date.now()+Math.random().toString(36).slice(2,6),k:k,auto:true,f:iso(TODAY),h:hhmm(),q:(function(){try{return quien()}catch(e){return ''}})(),donde:donde||'',g:'App',txt:txt,v:(typeof PN_VER!=='undefined'?PN_VER:'')});if(S.probs.length>300)S.probs=S.probs.slice(-300)}catch(e){}}
+
+/* ---------- 54 · registrar carga: desgaste, sueldo e imprevisto ---------- */
+var _cmN69=cmNuevo;cmNuevo=function(){var r=_cmN69.apply(this,arguments);if(S.cm)S.cm.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',impOn:'',impT:'Ponchadura',impM:''};return r};
+function cmX68(){var m=S.cm;if(!m.x68)m.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',impOn:'',impT:'Ponchadura',impM:''};var x=m.x68;
+ if(x.km===''){x.km=String(kmProvs68(cmProvs().map(function(p){return p[0]})))}
+ if(x.tasa===''){x.tasa=String(tasa68(vehById(+m.veh)))}
+ if(x.sm===''){var ch=m.quien==='yo'?null:cl0(+m.quien),z=suelDia68(ch);x.sm=String(z.s+z.c||'')}
+ return x}
+function ch68(act,k,opts,cur,extra){return '<div class="chips" style="margin:6px 0" role="group">'+opts.map(function(o){return '<button data-act="'+act+'" data-k="'+k+'" data-v="'+o[0]+'"'+(extra||'')+' aria-pressed="'+(cur===o[0])+'" style="min-height:56px;font-size:17px">'+o[1]+'</button>'}).join('')+'</div>'}
+function inp68(id,bind,val,lbl){return '<div class="field"><label for="'+id+'">'+lbl+'</label><input id="'+id+'" type="number" inputmode="decimal" step="any" min="0" data-bind="'+bind+'" value="'+esc(val)+'"></div>'}
+function cmCostCards68(){var m=S.cm,x=cmX68(),vh=vehById(+m.veh)||{n:'el vehículo'},quienN=m.quien==='yo'?'Tú ('+quien()+')':chofN(+m.quien),dm=Math.round(num(x.km)*num(x.tasa));
+ return '<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div>'
+  +'<div class="lbl" style="margin:4px 0 6px">Lo que se gasta el vehículo (llantas, aceite, reparaciones) por cada kilómetro. Entra al costo de la caja.</div>'
+  +'<div class="row"><span>'+esc(vh.n)+'</span><b>'+num(x.km).toLocaleString('es-MX')+' km × '+f2(num(x.tasa))+' = '+money(dm)+'</b></div>'
+  +ch68('cm68','dOn',[['si','Sí, súmalo'],['no','No']],x.dOn)+(x.dOn==='si'?inp68('cm68km','cm.x68.km',x.km,'Kilómetros del viaje (ida y vuelta)')+'<div class="lbl">'+(num(vh.desg)?'':'Todavía no hay gastos de este vehículo: se usa $0.60 por km. ')+'Se ajusta solo con el uso.</div>':'')+'</div>'
+  +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div>'
+  +'<div class="lbl" style="margin:4px 0 6px">Fue: <b>'+esc(quienN)+'</b>. Si se le paga algo por ir, entra al costo de la caja.</div>'
+  +ch68('cm68','sOn',[['si','Sí'],['no','No']],x.sOn)+(x.sOn==='si'?inp68('cm68sm','cm.x68.sm',x.sm,'¿Cuánto por este viaje? $'):'')+'</div>'}
+function cmImpCard68(){var x=cmX68(),t=tope68();
+ return '<div style="border-top:1px solid var(--line);padding:8px 0;margin-top:4px"><div style="font-weight:800">¿Hubo algún imprevisto en el camino?</div><div class="lbl">Ponchadura, talacha, grúa, refacción, mecánico…</div>'
+  +ch68('cm68','impOn',[['no','No'],['si','Sí']],x.impOn)
+  +(x.impOn==='si'?ch68('cm68','impT',[['Ponchadura','Ponchadura o talacha'],['Grúa','Grúa'],['Refacción','Refacción'],['Mecánico','Mecánico'],['Otro','Otro']],x.impT)+inp68('cm68im','cm.x68.impM',x.impM,'¿Cuánto costó? $')
+   +(num(x.impM)>t?'<div class="card note" style="padding:8px 12px"><b>Es más de '+money(t)+'</b><div style="font-size:14px">Se carga al <b>mantenimiento del vehículo</b>, no al costo de esta fruta (si no, saldría carísima).</div></div>':(num(x.impM)?'<div class="lbl">Hasta '+money(t)+': entra al costo de este viaje.</div>':'')):'')+'</div>'}
+var _cmH69=cmHTML;cmHTML=function(){var h=_cmH69.apply(this,arguments);try{if(!h||!S.cm)return h;var P=cmPasos(),k=P[Math.min(S.cm.paso,P.length-1)];
+  if(k==='res'&&cmChof()){var i=h.indexOf('<div class="card" style="padding:10px 12px">');if(i>-1)h=h.slice(0,i)+cmCostCards68()+h.slice(i)}
+  if(k==='gastos'){var j=h.lastIndexOf('<div style="display:flex;gap:8px;margin-top:14px">');if(j>-1)h=h.slice(0,j)+cmImpCard68()+h.slice(j)}
+ }catch(e){console.error('cm69',e)}return h};
+var _cmO69=cmObj;cmObj=function(){var o=_cmO69.apply(this,arguments);try{var m=S.cm,x=m&&m.x68;if(!x)return o;
+  if(x.impOn==='si'&&num(x.impM)>0){var big=num(x.impM)>tope68();o.extras=(o.extras||[]).concat([{c:'Imprevisto: '+x.impT,m:num(x.impM),imp68:true,mant:big}])}
+  if(cmChof()){var vh=vehById(+m.veh);o.dsgOn=x.dOn==='si';o.dsgKm=num(x.km);o.dsgTasa=num(x.tasa);o.dsgM=o.dsgOn?Math.round(o.dsgKm*o.dsgTasa):0;o.suelOn=x.sOn==='si';o.suelM=o.suelOn?num(x.sm):0;o.suelQ=m.quien==='yo'?quien():chofN(+m.quien);if(vh)o.veh=vh.id}
+ }catch(e){}return o};
+var _cmV69=cmValida;cmValida=function(k){var e=_cmV69.apply(this,arguments);if(e)return e;var m=S.cm,x=m&&m.x68;if(!x)return '';
+ if(k==='gastos'){if(!x.impOn)return 'Contesta si hubo algún imprevisto en el camino';if(x.impOn==='si'&&num(x.impM)<=0)return 'Escribe cuánto costó el imprevisto'}
+ if(k==='res'&&cmChof()){cmX68();if(!x.dOn)return 'Contesta si sumas el desgaste del vehículo';if(x.dOn==='si'&&num(x.km)<=0)return 'Escribe los kilómetros del viaje';if(!x.sOn)return 'Contesta si se le asignó un sueldo por este viaje';if(x.sOn==='si'&&num(x.sm)<=0)return 'Escribe cuánto se le paga por el viaje'}
+ return ''};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cm68"]');if(!b||!S.cm)return;e.stopImmediatePropagation();var x=cmX68();x[b.dataset.k]=b.dataset.v;var o=$('cmov'),st=o?o.scrollTop:0;render();o=$('cmov');if(o)o.scrollTop=st},true);
+/* el viaje queda en el historial con su desgaste y su sueldo (para comparar proveedores) */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cmguardar"],[data-act="cmpvok"]');if(!b||!S.cm)return;var n0=S.cargas.length;
+ setTimeout(function(){try{if(S.cargas.length<=n0)return;var c=S.cargas[S.cargas.length-1],v=(S.vjHist||[]).filter(function(x){return x.cid===c.id})[0];if(v){v.km=num(c.dsgKm);v.desg=num(c.dsgM);v.sueldo=num(c.suelM);v.otros=sum((c.extras||[]).filter(function(x){return x.imp68&&!x.mant}),function(x){return x.m})}}catch(er){}},0)},true);
+
+/* ---------- el costo del viaje (para el costo de la caja) ---------- */
+function impBig68(c){return (c.extras||[]).filter(function(x){return (x.imp68||esImp68(x.c))&&(x.mant||num(x.m)>tope68())})}
+var _trC69=trCost;trCost=function(c){var r=_trC69.apply(this,arguments);try{if(!(c.cv&&c.cv.ok))r+=num(c.dsgM)+num(c.suelM);r-=sum(impBig68(c),function(x){return num(x.m)})}catch(e){}return r};
+/* "Costo del viaje más exacto": respeta lo que se contestó de desgaste y sueldo */
+var _cvD69=cvDef;cvDef=function(c){var D=_cvD69.apply(this,arguments);try{if(c.dsgOn===false)D.desgKm=0;if(c.suelOn===false){D.sueldo=0;D.com=0}else if(c.suelOn===true){D.sueldo=num(c.suelM);D.com=0}}catch(e){}return D};
+var _cvP69=cvPasoHTML;cvPasoHTML=function(c,P,wiz){var h=_cvP69.apply(this,arguments);if(P!=='costo')return h;try{var D=cvDef(c),vh=D.vh||{n:'el vehículo'},km=Math.round(num(cvCalc(c).km)),tasa=tasa68(vh),z=suelDia68(D.ch),sd=c.suelM!=null&&c.suelM!==''?c.suelM:String(z.s+z.c||''),nom=D.ch&&D.ch.id!==2?D.ch.n:'Tú';
+  var dOn=c.dsgOn===true?'si':(c.dsgOn===false?'no':''),sOn=c.suelOn===true?'si':(c.suelOn===false?'no':''),at=' data-id="'+c.id+'"';
+  h+='<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div><div class="row"><span>'+esc(vh.n)+'</span><b>'+km.toLocaleString('es-MX')+' km × '+f2(tasa)+' = '+money(Math.round(km*tasa))+'</b></div>'+ch68('cv68','dOn',[['si','Sí, súmalo'],['no','No']],dOn,at)+'</div>'
+   +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div><div class="lbl">Fue: <b>'+esc(nom)+'</b></div>'+ch68('cv68','sOn',[['si','Sí'],['no','No']],sOn,at)
+   +(sOn==='si'?'<div class="field"><label for="cv68s">¿Cuánto por este viaje? $</label><input id="cv68s" type="number" inputmode="decimal" step="any" min="0" data-cf="'+c.id+':suelM" value="'+esc(sd)+'"></div>':'')+'</div>'}catch(e){console.error('cv69',e)}return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cv68"]');if(!b)return;e.stopImmediatePropagation();var c=S.cargas.filter(function(x){return x.id===+b.dataset.id})[0];if(!c)return;var on=b.dataset.v==='si';
+ if(b.dataset.k==='dOn')c.dsgOn=on;else{c.suelOn=on;if(on&&(c.suelM==null||c.suelM==='')){var z=suelDia68(cvDef(c).ch);c.suelM=z.s+z.c}}S.cvf&&(S.cvf._t=Date.now());render()},true);
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cvpaso"][data-d="1"],[data-act="cvconfirm"]');if(!b)return;var c=S.cargas.filter(function(x){return x.id===+(b.dataset.id||S.cvOpen)})[0];if(!c)return;var f=S.cvf;if(!f||CVP[f.paso||0][0]!=='costo')return;
+ var er=c.dsgOn==null?'Contesta si sumas el desgaste del vehículo':(c.suelOn==null?'Contesta si se le asignó un sueldo por este viaje':(c.suelOn&&num(c.suelM)<=0?'Escribe cuánto se le paga por el viaje':''));if(er){e.preventDefault();e.stopImmediatePropagation();toast(er)}},true);
+
+/* ---------- 54 · el desglose con TODOS los gastos ---------- */
+function gastosViaje68(c,k){var t=c.t||{},cv=c.cv&&c.cv.ok?c.cv:null,L=[],add=function(n,m,nota){m=num(m);if(Math.abs(m)>0.004)L.push({n:n,m:m,nota:nota||''})};
+ if(cv)add('Combustible'+(cv.lit?' ('+r2(cv.lit)+' L a '+f2(cv.precio)+')':''),cv.comb);else if(!c.vw)add('Combustible',t.diesel);
+ add('Básculas',t.extra);add('Comida',t.comida);add('Casetas',t.casetas);
+ (c.extras||[]).forEach(function(x){if((x.imp68||esImp68(x.c))&&(x.mant||num(x.m)>tope68()))return;add(String(x.c||'Otro gasto'),x.m)});
+ var dk=cv?num(cv.desg):num(c.dsgM),km=cv?num(cv.km):num(c.dsgKm);if(dk)add('Desgaste del vehículo ('+Math.round(km).toLocaleString('es-MX')+' km × '+f2(km?dk/km:0)+')',dk);
+ var su=cv?num(cv.sueldo)+num(cv.com):num(c.suelM);if(su)add('Sueldo '+(c.suelQ?'de '+c.suelQ+' ':'')+'por el viaje',su);
+ var s=sum(L,function(x){return x.m}),dif=r2(num(k.tr)-s);if(Math.abs(dif)>0.5)add('Otros gastos del viaje',dif);
+ return {L:L,big:impBig68(c)}}
+/* costo de repartir (por caja de roatán y por kilo de macho) */
+function cierreExtra68(r){try{var G=(S.gch||[]),t=tope68(),big=G.filter(function(x){return esImp68(x.tipo)&&num(x.m)>t});r.g68={tot:r2(sum(G,function(x){return num(x.m)})-sum(big,function(x){return num(x.m)})),big:big.map(function(x){return {tipo:x.tipo,m:num(x.m),nota:x.nota||''}}),comb:r2(sum(G.filter(function(x){return /combust/i.test(x.tipo)}),function(x){return num(x.m)})+sum(S.recs||[],function(x){return num(x.total||x.m)}))};
+ var vh=vehHoy();r.veh68=vh?vh.id:null;r.tasa68=tasa68(vh);var z=suelDia68(cl0(+S.chofHoy));r.suel68=z.s;r.ch68=+S.chofHoy}catch(e){}return r}
+var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
+function rep68(dias){dias=dias||30;var d0=iso(new Date(TODAY.getTime()-dias*864e5)),R=[];(S.rutasHist||[]).forEach(function(x){if(x.f>=d0&&x.res)R.push(x.res)});
+ try{rutasOtras().forEach(function(o){if(o.cierre&&o.cierre.sent&&o.cierre.res)R.push(o.cierre.res)})}catch(e){}if(S.cierre&&S.cierre.sent&&S.cierre.res&&R.indexOf(S.cierre.res)<0)R.push(S.cierre.res);
+ var o={rutas:0,cajas:0,kg:0,comb:0,otros:0,desg:0,suel:0};R.forEach(function(r){if(!(num(r.R)||num(r.M)))return;o.rutas++;o.cajas+=num(r.R);o.kg+=num(r.M);var g=r.g68||{};o.comb+=num(g.comb);o.otros+=Math.max(0,num(g.tot)-num(g.comb));o.desg+=Math.max(0,num(r.km))*(r.tasa68!=null?num(r.tasa68):0.6);o.suel+=num(r.suel68)});
+ o.tot=o.comb+o.otros+o.desg+o.suel;var kc=20;try{var lc=S.cargas.filter(function(c){return c.cajas>0&&c.kgR>0}).sort(function(a,b){return b.id-a.id})[0];if(lc)kc=lc.kgR/lc.cajas}catch(e){}
+ var wR=o.cajas*kc,wM=o.kg,w=wR+wM;o.caja=o.cajas&&w?o.tot*wR/w/o.cajas:0;o.kgc=o.kg&&w?o.tot*wM/w/o.kg:0;o.kc=kc;return o}
+repCostoCard=function(){var a=rep68(7),b=rep68(30);
+ if(!b.rutas)return '<div class="card"><b>Costo de reparto</b><div class="lbl">Todavía no hay rutas cerradas para calcularlo. Sale solo cuando los choferes manden sus cierres: combustible, gastos de la ruta, desgaste de la camioneta (km del odómetro) y su sueldo del día, entre lo que entregaron.</div></div>';
+ return '<div class="card"><b>Costo de reparto</b><div class="lbl">Lo real de las rutas: combustible, gastos de la ruta, desgaste de la camioneta (km del odómetro) y sueldo del día, entre lo entregado. El roatán va por caja y el macho por kilo (repartido por peso).</div>'
+  +rw('Últimos 7 días',(a.rutas?f2(a.caja)+' por caja · '+f2(a.kgc)+' por kilo':'sin rutas'))+rw('Últimos 30 días',f2(b.caja)+' por caja · '+f2(b.kgc)+' por kilo')
+  +'<div class="lbl" style="margin-top:6px">30 días: '+b.rutas+' rutas · combustible '+money(b.comb)+' · otros gastos '+money(b.otros)+' · desgaste '+money(b.desg)+' · sueldos '+money(b.suel)+' · '+b.cajas.toLocaleString('es-MX')+' cajas y '+Math.round(b.kg).toLocaleString('es-MX')+' kg</div></div>'};
+desg=function(c,k){var rp=rep68(30),vR=num(c.vCaja)||num(S.precio.R),vM=num(c.vKgM)||num(S.precio.M),eR=k.costoCaja+rp.caja,eM=k.costoKgM+rp.kgc,uR=vR-eR,uM=vM-eM,utR=c.cajas?uR*c.cajas:0,utM=c.kgM?uM*c.kgM:0,utO=sum(k.otros,function(x){return x.util}),ut=utR+utM+utO,mR=mgR68(c),mM=mgM68(c),
+ sec=function(n,t,col,bg,body){return '<div style="border-left:5px solid '+col+';background:'+bg+';border-radius:12px;padding:8px 12px;margin-top:10px"><div style="font-size:13px;font-weight:800;color:'+col+';text-transform:uppercase;letter-spacing:.03em">'+n+' · '+t+'</div>'+body+'</div>'},
+ ln=function(l,v,cls){return '<div style="display:flex;justify-content:space-between;gap:8px;font-size:15px;padding:3px 0"><span>'+l+'</span><b class="'+(cls||'')+'" style="white-space:nowrap">'+v+'</b></div>'},
+ big=function(l,v,col){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:1px solid rgba(0,0,0,.08);margin-top:4px;padding-top:6px"><b>'+l+'</b><span style="font-size:24px;font-weight:800;'+(col?'color:'+col:'')+'">'+v+'</span></div>'},
+ G=gastosViaje68(c,k);
+ var h=sec('1','Lo que pagaste','var(--fg)','var(--bg)',(k.fR?ln('Roatán · '+c.kgR.toLocaleString('es-MX')+' kg a '+f2(c.pR)+' el kilo',money(k.fR)):'')+(k.fM?ln('Macho · '+c.kgM.toLocaleString('es-MX')+' kg a '+f2(c.pM)+' el kilo',money(k.fM)):'')+k.otros.map(function(x){return ln(esc(x.n||'Otra fruta'),money(x.f))}).join('')
+  +'<div style="font-size:13px;font-weight:800;color:var(--muted);margin-top:6px">GASTOS DEL VIAJE</div>'+(G.L.length?G.L.map(function(x){return ln(esc(x.n),money(x.m))}).join(''):'<div class="lbl">Sin gastos del viaje.</div>')+ln('<b>Total de gastos del viaje</b>','<b>'+money(k.tr)+'</b>')
+  +big('Total del viaje',money(k.total))+G.big.map(function(x){return '<div class="lbl" style="margin-top:4px">🔧 '+esc(x.c)+' '+money(x.m)+': va al mantenimiento del vehículo, no al costo de la fruta.</div>'}).join(''));
+ h+=sec('2','Cuánto te cuesta cada una','var(--orange)','var(--banana-soft)',(c.cajas?ln('Caja de roatán puesta en bodega'+(c.kgR?'<br><span class="lbl">'+c.kgR.toLocaleString('es-MX')+' kg ÷ '+c.cajas+' cajas = '+k.kgCaja.toFixed(1)+' kg por caja</span>':''),'<span style="font-size:18px">'+f2(k.costoCaja)+'</span>')
+   +ln('+ Repartirla'+(rp.rutas?'':' <span class="lbl">(sin rutas cerradas todavía)</span>'),f2(rp.caja))+ln('<b>= Te cuesta entregada al cliente</b>','<span style="font-size:18px">'+f2(eR)+'</span>'):'')
+  +(c.kgM?ln('Kilo de macho puesto en bodega','<span style="font-size:18px">'+f2(k.costoKgM)+'</span>')+ln('+ Repartirlo',f2(rp.kgc))+ln('<b>= Te cuesta entregado</b>','<span style="font-size:18px">'+f2(eM)+'</span>'):'')
+  +k.otros.map(function(x){return ln('Kilo de '+esc(x.n||'otra fruta'),f2(x.costoKg))}).join('')+'<div class="lbl">Los gastos del viaje se reparten entre roatán y macho por kilos.</div>');
+ h+=sec('3','A cuánto la vendes','var(--info)','var(--surface)',(c.cajas?ln('Caja de roatán',f2(vR)+(num(c.vCaja)?'':' <span class="lbl">(precio de hoy)</span>'))+ln('Para ganar tu meta de '+mR+'%','<span class="lbl">véndela a </span>'+f2(eR*(1+mR/100))):'')+(c.kgM?ln('Kilo de macho',f2(vM)+(num(c.vKgM)?'':' <span class="lbl">(precio de hoy)</span>'))+ln('Para ganar tu meta de '+mM+'%','<span class="lbl">véndelo a </span>'+f2(eM*(1+mM/100))):''));
+ h+=sec('4','Cuánto ganas','var(--accent)','var(--ok-soft)',(c.cajas?ln('Por caja de roatán',f2(uR)+(eR?' ('+(uR/eR*100).toFixed(0)+'%)':''),uR<0?'neg':''):'')+(c.kgM?ln('Por kilo de macho',f2(uM)+(eM?' ('+(uM/eM*100).toFixed(0)+'%)':''),uM<0?'neg':''):'')+big('Utilidad del viaje',money(ut),ut<0?'var(--danger)':'var(--accent)')+'<div class="lbl">Si vendes todo a esos precios, ya contando lo que cuesta repartirla. No incluye merma.</div>');
+ return h};
+/* precio sugerido (resumen de "Revisa y guarda" y precio de la carga) con el costo de repartir y la meta de cada fruta */
+var _cC69=cC;cC=function(c){var o=_cC69.apply(this,arguments);try{var rp=rep68(30);o.repCaja=rp.caja;o.repKg=rp.kgc;o.sug=(o.costoCaja+rp.caja)*(1+mgR68(c)/100);o.sugM=(o.costoKgM+rp.kgc)*(1+mgM68(c)/100)}catch(e){}return o};
+/* meta de ganancia: roatán y macho (o la misma para los dos) */
+var _cf69=cfield;cfield=function(c,key,label,step){if(key!=='mg')return _cf69.apply(this,arguments);var ig=S.cfg.mgIgual!==false;
+ return _cf69(c,'mg',ig?'Meta de ganancia (roatán y macho) %':'Meta de ganancia del roatán %',step)+(ig?'':_cf69(c,'mgM','Meta de ganancia del macho %',step))
+  +'<button class="btn sm sec" style="width:auto;margin-top:6px" data-act="mgigual">'+(ig?'Poner una meta distinta para el macho':'Usar la misma para los dos')+'</button>'};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mgigual"]');if(!b)return;e.stopImmediatePropagation();S.cfg.mgIgual=S.cfg.mgIgual===false?true:false;toast(S.cfg.mgIgual===false?'Ahora el macho tiene su propia meta':'La misma meta para los dos');render()},true);
+var _bP69=bigPrecio;bigPrecio=function(tit,cost,key,step,unit,mg){if(key==='M'&&mg!=null){var c=S.cargas.filter(function(x){return S.cvOpen&&x.id===+S.cvOpen})[0];if(c)mg=mgM68(c)}return _bP69.call(this,tit,cost,key,step,unit,mg)};
+
+/* ---------- 55 · comida autorizada antes ---------- */
+/* viaje de carga: el administrador decide al mandarlo */
+var _vwB69=vwBody;vwBody=function(k){var h=_vwB69.apply(this,arguments);try{var v=S.vw;if(!v||k!=='plan'||!h)return h;var on=v.comOk===true?'si':(v.comOk===false?'no':'');
+  var c='<div class="card c68" style="margin-top:10px;padding:12px 14px;border:2px solid var(--accent)"><div style="font-size:18px;font-weight:900">¿Tiene autorizado comer en el viaje?</div>'+ch68('vw68','comOk',[['si','Sí'],['no','No']],on)
+   +(on==='si'?'<div class="field"><label for="vw68m">¿Máximo cuánto? $</label><input id="vw68m" type="number" inputmode="decimal" min="0" data-bind="vw.comMax" value="'+esc(v.comMax==null?'':v.comMax)+'"></div>':'')+'</div>';
+  var i=h.lastIndexOf('<div style="display:flex;gap:8px');return i>-1?h.slice(0,i)+c+h.slice(i):h+c}catch(e){return h}};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vw68"]');if(!b||!S.vw)return;e.stopImmediatePropagation();S.vw.comOk=b.dataset.v==='si';render()},true);
+var _vwS69=vwSideHTML;vwSideHTML=function(sd){var h=_vwS69.apply(this,arguments);try{var v=S.vw;if(sd!=='gasto'||!v)return h;
+  if(v.comOk===false){h=h.replace(/<button style="min-height:48px" data-act="vwgxt" data-v="Comida"[^>]*>Comida<\/button>/,'');h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">La comida no está autorizada en este viaje.</div><div class="field"><label for="vwgxm">')}
+  else if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">Comida autorizada: hasta '+money(num(v.comMax))+' (llevas '+money(ya)+').</div><div class="field"><label for="vwgxm">')}
+  /* imprevisto: grúa o refacción también */
+  h=h.replace('data-v="Reparación" aria-pressed','data-v="Reparación" aria-pressed').replace('>Reparación</button>','>Imprevisto (ponchadura, grúa, refacción)</button>')}catch(e){}return h};
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vwgx"]');if(!b||!S.vw)return;var v=S.vw,t=v.gxt||'Comida';if(t!=='Comida')return;
+ if(v.comOk===false){e.preventDefault();e.stopImmediatePropagation();toast('La comida no está autorizada en este viaje. Pídele permiso al administrador.');return}
+ if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});if(ya+num(v.gxm)>num(v.comMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del máximo autorizado para comida ('+money(num(v.comMax))+'). Llévale el ticket al administrador.')}}},true);
+/* ruta de reparto: presupuesto diario de comida en la ficha del chofer */
+var _fiE69=fiEmp;fiEmp=function(f){var h=_fiE69.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!c.comida)return h;
+  var add='<div class="field" style="margin-top:6px"><label for="chcp'+c.id+'">Presupuesto diario de comida $</label><input id="chcp'+c.id+'" type="number" inputmode="decimal" min="0" data-ch68="'+c.id+'" value="'+esc(c.comidaMax==null?'':c.comidaMax)+'" placeholder="sin tope"></div>';
+  return h.replace(/(data-act="chcomida"[^>]*>[^<]*<\/button><\/div>)/,'$1'+add)}catch(e){return h}};
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ch68)return;var c=cl0(+t.dataset.ch68);if(!c)return;var v=String(t.value).trim();c.comidaMax=v===''?null:num(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Presupuesto diario de comida de '+c.n+': '+(c.comidaMax==null?'sin tope':money(c.comidaMax))});toast('Guardado');render()},true);
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"]');if(!b||S.role!=='rep'||!S.gx||!/^Comida/.test(S.gx.tipo||''))return;var c=cl0(S.chofHoy);if(!c||c.comidaMax==null)return;
+ var ya=sum((S.gch||[]).filter(function(x){return /^Comida/.test(x.tipo||'')}),function(x){return num(x.m)});if(ya+num(S.gx.m)>num(c.comidaMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del presupuesto de comida de hoy ('+money(num(c.comidaMax))+'; llevas '+money(ya)+').')}},true);
+/* en el reparto no hay casetas: no sale la opción */
+var _gxT69=gxTipos;gxTipos=function(){return _gxT69.apply(this,arguments).replace(/<button data-act="gxt2" data-t="Caseta"[^>]*>[^<]*<\/button>/,'')};
+var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.role==='rep'){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxtipo"][data-t="Caseta"],[data-act="gxt2"][data-t="Caseta"]'),function(b){b.remove()});if(S.gx&&S.gx.tipo==='Caseta')S.gx.tipo='Ponchadura o reparación'}}catch(e){}return r};
+
+/* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
+var _vG69=vehGastos;vehGastos=function(vh,dias){var L=_vG69.apply(this,arguments);try{var lim=iso(new Date(TODAY.getTime()-(dias||365)*864e5));
+  S.cargas.forEach(function(c){if(+c.veh!==+vh.id||String(c.fecha)<lim)return;impBig68(c).forEach(function(x){L.push({f:c.fecha,t:x.c,cat:'Imprevisto del camino',m:num(x.m)})})});
+  (S.rutasHist||[]).forEach(function(r){var g=r.res&&r.res.g68;if(!g||r.f<lim||+r.res.veh68!==+vh.id)return;(g.big||[]).forEach(function(x){L.push({f:r.f,t:x.tipo,cat:'Imprevisto del camino',m:num(x.m)})})})}catch(e){}return L};
+function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
+  vh.desg=f.tasa;var txt='El desgaste de '+vh.n+' cambió de '+f2(ant)+' a '+f2(f.tasa)+' por km (con lo que de verdad se gastó en el año)';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:txt});(S.avPrecio=S.avPrecio||[]).push(txt)})}catch(e){}}
+var _rd69d=render;render=function(){var r=_rd69d.apply(this,arguments);desgAuto68();return r};
+
+/* ---------- 58 · contra errores de dedo: "¿Seguro? Es mucho más de lo normal" ---------- */
+function med68(L){L=L.filter(function(x){return x>0}).sort(function(a,b){return a-b});return L.length>=2?L[Math.floor(L.length/2)]:0}
+function raro68(v,L,f,dos){v=num(v);var m=med68(L);if(!(v>0)||!m)return '';return v>m*(f||3)?'mucho más':(dos&&v<m/(f||3)?'mucho menos':'')}
+function cmRaros68(k){var m=S.cm,C=S.cargas.slice(-15),R=[],chk=function(lbl,v,L,u,f){var r=raro68(v,L,f,!!f&&f<2);if(r)R.push(lbl+': '+num(v).toLocaleString('es-MX')+(u||'')+' es '+r+' de lo normal (normalmente ~'+med68(L).toLocaleString('es-MX',{maximumFractionDigits:2})+(u||'')+')')};
+ if(k==='R'){chk('Kilos de roatán',m.kgR,C.map(function(c){return num(c.kgR)}),' kg');chk('Cajas',m.cajas,C.map(function(c){return num(c.cajas)}));chk('Precio del kilo de roatán',m.pR,C.map(function(c){return num(c.pR)}),'',1.6)}
+ if(k==='M'){chk('Kilos de macho',m.kgM,C.map(function(c){return num(c.kgM)}),' kg');chk('Precio del kilo de macho',m.pM,C.map(function(c){return num(c.pM)}),'',1.6)}
+ if(k==='gastos'){chk('Combustible',m.comb,C.map(function(c){return num(c.t&&c.t.diesel)}),'');var x=m.x68;if(x&&x.impOn==='si')chk('Imprevisto',x.impM,[300,300],'',6)}
+ return R}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cmsig"]');if(!b||!S.cm)return;var P=cmPasos(),k=P[Math.min(S.cm.paso,P.length-1)];try{if(cmValida(k))return}catch(er){return}
+ var R=cmRaros68(k),sg=k+'|'+R.join('|');if(!R.length||(S.cm._dedo68||{})[sg])return;e.preventDefault();e.stopImmediatePropagation();
+ abrirModal('¿Seguro?',R.map(esc).join('<br>')+'<br><br>Revisa que no sea un error de dedo.',[['Sí, está bien','dedo68',' data-k="'+encodeURIComponent(sg)+'"']])},true);
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"]');if(!b||S.role!=='rep'||!S.gx)return;var t=S.gx.tipo||'';var v=num(S.gx.m),lim=/^Comida/.test(t)?600:(esImp68(t)?3000:1500);if(!(v>lim)||S.gx._dedo68===v)return;e.preventDefault();e.stopImmediatePropagation();
+ abrirModal('¿Seguro?','Un gasto de '+money(v)+' en "'+esc(t)+'" es mucho más de lo normal. Revisa que no sea un error de dedo.',[['Sí, está bien','dedo68g',' data-v="'+v+'"']])},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dedo68"],[data-act="dedo68g"]');if(!b)return;e.stopImmediatePropagation();S.modal=null;
+ if(b.dataset.act==='dedo68'){if(!S.cm)return render();S.cm._dedo68=S.cm._dedo68||{};S.cm._dedo68[decodeURIComponent(b.dataset.k)]=1;render();var s=document.querySelector('#cmov [data-act="cmsig"]');if(s)s.click()}
+ else{if(S.gx)S.gx._dedo68=num(b.dataset.v);render();var g=document.querySelector('[data-act="gxsave"]');if(g)g.click()}},true);
+
+/* ---------- 60 · ningún número vacío rompe las cuentas ---------- */
+function sano68(){var malos=[];try{var I=S.inv||{};['verdes','maduras','kgVerde','kgMaduro','reparto','repartoKg','vacias'].forEach(function(k){var v=I[k];if(typeof v==='number'&&isFinite(v))return;var n=Number(v);if(v===''||v==null||!isFinite(n)){malos.push('Bodega: '+k);I[k]=0}else I[k]=n});
+  (S.cli||[]).forEach(function(c){['vac','cred'].forEach(function(k){var v=c[k];if(typeof v==='number'&&isFinite(v))return;if(v===undefined||v===null||v===''){c[k]=0;return}var n=Number(v);if(!isFinite(n)){malos.push((k==='vac'?'Taras de ':'Saldo de ')+(c.n||'un cliente'));c[k]=0}else c[k]=n})});
+  ['cajasT0'].forEach(function(k){if(S[k]!=null&&!isFinite(Number(S[k]))){malos.push('Total de taras inicial');S[k]=0}else if(S[k]!=null)S[k]=Number(S[k])});
+  (S.cajasMov||[]).forEach(function(m){if(!isFinite(Number(m.n))){malos.push('Movimiento de taras: '+(m.t||''));m.n=0}else m.n=Number(m.n)})}catch(e){}
+ if(malos.length){apErr('número vacío','Faltaba un número y se puso en 0: '+malos.join(', '),S.tab&&S.tab[S.role]);try{(S.avPrecio=S.avPrecio||[]).push('Faltaba un número y la app lo puso en 0: '+malos.join(', ')+'. Revísalo; es un error de la app, ya quedó anotado.')}catch(e){}}}
+var _rd69s=render;render=function(){sano68();return _rd69s.apply(this,arguments)};
+
+/* ---------- 60 · avisos de "no cuadra" en palabras claras ---------- */
+var CU68={
+ 'Los números se pueden calcular':['Falta un número en las cuentas',1],
+ 'Inventario sin números negativos':['Hay inventario en negativo',0],
+ 'Ningún cliente con deuda negativa':['Un cliente quedó con saldo en negativo',0],
+ 'Cada deuda tiene desde cuándo':['A una deuda le falta la fecha',0],
+ 'Las cajas cuadran con dónde están':['Las taras no cuadran por lugar',1],
+ 'Todas las cajas están contadas':['Las taras no cuadran',0],
+ 'Ningún caja se pierde sin registrarse':['Las taras no cuadran',0],
+ 'Ningún cliente debe cajas negativas':['Un cliente quedó con taras en negativo',0],
+ 'Deuda a proveedores: total = suma por proveedor':['La deuda con proveedores no cuadra',1],
+ 'Cada entrega: cantidades × precio = total':['Una venta no cuadra (cantidad × precio)',1],
+ 'Efectivo del chofer = cobrado − sus gastos':['El efectivo del chofer no cuadra',1],
+ 'Lo cobrado hoy = pagos + abonos de las entregas':['Lo cobrado hoy no cuadra',1],
+ 'Todos los gastos tienen monto':['Hay un gasto sin cantidad',0],
+ 'Lo anulado no se cuenta':['Algo cancelado se sigue contando',1],
+ 'Cada gasto fijo pagado hoy salió de la caja':['Un gasto fijo pagado no salió de la caja',1],
+ 'Ningún gasto fijo se pagó dos veces hoy':['Un gasto fijo se pagó dos veces hoy',0],
+ 'Faltante del chofer = lo que debía − lo que entregó':['El faltante del chofer no cuadra',1]};
+var _cr69=cuentasRevisar;cuentasRevisar=function(){var R=_cr69.apply(this,arguments);try{R.forEach(function(x){var m=CU68[x.n];if(!m)return;x.n0=x.n;x.n=m[0];x.app=!!m[1];if(x.ok)return;var d=String(x.det||'');
+   if(x.n0==='Los números se pueden calcular'){d='Algún número del inventario, la caja o las deudas quedó vacío'}
+   else if(x.n0==='Todas las cajas están contadas'||x.n0==='Ningún caja se pierde sin registrarse'){var w=cajasDonde(),es=cajasEsperadas(),df=Math.round(es-w.tot);d=isFinite(w.tot)&&isFinite(es)?('La app cuenta '+Math.round(w.tot).toLocaleString('es-MX')+' taras y deberían ser '+Math.round(es).toLocaleString('es-MX')+': '+(df>0?'faltan '+df:'sobran '+(-df))+'. Cuéntalas en Bodega → Taras'):'Un número de las taras quedó vacío'}
+   else if(x.n0==='Las cajas cuadran con dónde están'){var w2=cajasDonde();d='Total '+Math.round(w2.tot)+': vacías en bodega '+num(w2.vac)+', llenas '+num(w2.llenas)+', en camión '+num(w2.cam)+', con clientes '+num(w2.cli)+', con proveedores '+num(w2.pv)}
+   else if(x.n0==='Inventario sin números negativos'){d=d.replace(/cajas vacías/g,'taras vacías')+'. Corrige el conteo en Bodega'}
+   x.det=d+(x.app?'. Es un error de la app, no tuyo; ya quedó anotado':'');if(x.app)apErr('no cuadra',x.n+': '+d,'cuentas')})}catch(e){}return R};
+var _avD69=avDestino;avDestino=function(x){var r=_avD69.apply(this,arguments)||{t:'inicio',cli:null};try{if(/no cuadra/.test(x)){if(/taras|cajas/i.test(x)){r.t='bodega';r.cli=null;r.sel='[data-act="cjfis"],.card.cajas68,[data-x="exist65"]'}else if(!r.sel){r.t='inicio';r.cli=null;r.sel='[data-x="cuadra68"]'}}}catch(e){}return r};
+/* "¿Cuadra todo?" a la vista en Inicio */
+function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter(function(x){return !x.ok}),d=document.createElement('div');d.dataset.x='cuadra68';
+ if(!m.length){d.className='card';d.style.cssText='padding:12px 16px;display:flex;align-items:center;gap:12px;border:1.5px solid color-mix(in srgb,#16A34A 40%,transparent);background:color-mix(in srgb,#16A34A 9%,var(--surface))';d.innerHTML='<span style="font-size:26px">✓</span><span><b style="font-size:17px;color:#15803D">Todo cuadra</b><br><span class="lbl">Caja, cajas, kilos, taras y deudas ('+R.length+' revisiones)</span></span>';return d}
+ d.className='card alert';d.style.cssText='padding:12px 16px;border-width:2px';d.innerHTML='<b style="font-size:18px" class="neg">⚠ Algo no cuadra</b>'+m.map(function(x){return '<div style="margin-top:8px;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--danger) 8%,var(--surface))"><b>'+esc(x.n)+'</b><div style="font-size:15px">'+esc(x.det||'')+'</div></div>'}).join('');return d}
+var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var mm=document.querySelector('main');if(mm&&S.role==='admin'&&S.tab.admin==='inicio'&&!mm.querySelector('[data-x="cuadra68"]')){var ref=mm.querySelector(':scope > details[data-k="avinfo"]')||Array.prototype.filter.call(mm.querySelectorAll(':scope > .card'),function(c){var b=c.querySelector('.tt');return b&&/^Por atender/.test(b.textContent)})[0]||mm.querySelector('.inv68');if(ref)ref.after(cuadraCard68())}}catch(e){console.error('cuadra68',e)}return r};
+/* 54 · "Costo del viaje más exacto" a la vista en la ficha de la carga (antes escondido en "Detalle") */
+var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{var c=cargaById(f.id);if(!c||S.role!=='admin'||c.est!=='Recibida'||h.indexOf('data-act="cvopen"')>-1)return h;
+  var bt='<button class="btn" style="min-height:56px;width:100%" data-act="cvopen" data-id="'+c.id+'">'+(c.cv&&c.cv.ok?'🧾 Corregir el costo del viaje':'🧾 Costo del viaje más exacto (combustible, desgaste, sueldo)')+'</button>';
+  var i=h.indexOf('<div class="card" style="display:flex;flex-direction:column;gap:8px">');if(i<0)return h;i+='<div class="card" style="display:flex;flex-direction:column;gap:8px">'.length;return h.slice(0,i)+bt+h.slice(i)}catch(e){return h}};
+
+/* ===================== v7.5 · (11 nov)
+   53 Bodega → "Fruta madura por antigüedad": cada lote se toca (o se desliza) y dice qué pasó: se tiró / se remató / ya no está / estaba buena y salió a la venta
+   57 Pedidos por WhatsApp: en qué va cada pedido (recibido → chofer asignado → salió a reparto), "Asignar chofer" ahí mismo y los ya asignados chiquitos
+   56 "🐞 Reportar un problema" (menú y "?"), con lo que la app sabe sola; Ajustes → "Problemas reportados" y "Sacar el registro"
+   58 ubicaciones: estoy aquí (GPS) / buscar como en Uber (Google) / pegar link, con pin que se arrastra; bodega en la primera vez,
+      proveedores y clientes; el chofer confirma la ubicación cuando está en el lugar ===================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ '.ov70{position:fixed;inset:0;z-index:97;background:var(--bg);overflow-y:auto}.ov70 .w{max-width:480px;margin:0 auto;padding:12px 16px 40px}',
+ '.ov70 .hd{display:flex;align-items:center;gap:10px;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 16px;position:sticky;top:0;z-index:2}.ov70 .hd b{font-size:20px;font-weight:900;flex:1}',
+ '.ov70 .q{font-size:22px;font-weight:900;margin:14px 0 6px;line-height:1.25}.ov70 .op{display:flex;align-items:center;gap:12px;width:100%;min-height:68px;padding:12px 14px;margin-top:10px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font-size:18px;font-weight:800;text-align:left;color:inherit}',
+ '.ov70 .op span.e{font-size:28px;width:36px;text-align:center}.ov70 .op small{display:block;font-size:14px;font-weight:600;color:var(--muted)}',
+ '.ov70 .btn.big{min-height:58px;font-size:18px;margin-top:12px;width:100%}',
+ '.lote[data-act="lt53"]{cursor:pointer}.lote .tq53{font-size:13px;color:var(--muted);margin-top:6px;font-weight:700}',
+ '.p57 .it.min{padding:10px 12px!important}.p57 .stp{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}.p57 .stp span{font-size:13px;font-weight:800;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#CBD5E1}.p57 .stp span.on{background:#16A34A;color:#fff}',
+ '.p57 .asg{margin-top:10px;width:100%;min-height:50px;border-radius:14px;border:0;background:#F59E0B;color:#1E293B;font-weight:900;font-size:17px}',
+ '.p57 .tg{background:none;border:0;color:#A7F3D0;font-weight:800;font-size:15px;min-height:40px;margin-top:6px;text-decoration:underline}',
+ '#ub68map{height:280px;border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:8px}',
+ '.ub68r{display:block;width:100%;text-align:left;padding:12px 14px;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:inherit;font-size:16px}.ub68r b{display:block;font-size:17px}',
+ '#blov{z-index:96!important}'
+ ].join('\n');document.head.appendChild(st)})();
+function ovW70(id,tit,body,x){return '<div id="'+id+'" class="ov70" role="dialog" aria-label="'+esc(tit)+'"><div class="hd"><b>'+esc(tit)+'</b><button class="helpb" style="margin:0" data-act="'+x+'" aria-label="Cerrar">×</button></div><div class="w">'+body+'</div></div>'}
+function ovPon70(id,html){var o=document.getElementById(id);if(o)o.remove();if(!html)return;var w=document.createElement('div');w.innerHTML=html;document.body.appendChild(w.firstElementChild)}
+
+/* =============== 53 · lotes de fruta madura =============== */
+antig65=function(){var L=(S.madL||[]).map(function(x,i){return {x:x,i:i}}).filter(function(o){return num(o.x.q)>0});if(!L.length)return null;var v=3;try{v=vidaDias()}catch(e){}
+ L.sort(function(a,b){return String(a.x.dia).localeCompare(String(b.x.dia))});
+ var d=document.createElement('div');d.className='card n65';d.dataset.x='antig65';
+ d.innerHTML='<div class="hd"><span class="ic" style="background:#DBEAFE;color:#2563EB">'+IC65.reloj+'</span><span class="grow"><div class="tt">Fruta madura por antigüedad</div><div class="st">Sale primero la más vieja · toca un lote para decir qué pasó</div></span></div>'
+  +'<div class="alc" style="background:var(--bg);border:1px solid var(--line);margin-top:0">🌡️ Ya madura aguanta <b>~'+v+' día'+(v===1?'':'s')+'</b> con este clima.</div>'
+  +L.map(function(o){var x=o.x,e=0;try{e=madEdad(x)}catch(er){}var q=v-e,mal=q<=0,man=q===1,col=mal?'#B91C1C':(man?'#B45309':'#15803D'),bg=mal?'color-mix(in srgb,#DC2626 7%,var(--surface))':'var(--bg)',tag=mal?'Pasada de tiempo':(man?'Sale mañana':'Lista para salir'),tbg=mal?'#DC2626':(man?'#FEF3C7':'#DCFCE7'),tfg=mal?'#fff':col;
+   return '<div class="lote" role="button" tabindex="0" data-act="lt53" data-k="'+o.i+'" data-p="'+x.p+'" style="background:'+bg+';border-color:'+(mal?'color-mix(in srgb,#DC2626 30%,transparent)':'var(--line)')+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><span><div class="q">'+(x.p==='R'?n65(x.q)+' cajas de roatán':n65(x.q)+' kg de macho')+'</div><div class="st">Salió de madurar '+(e<=0?'hoy':'hace <b style="color:'+col+'">'+e+' día'+(e===1?'':'s')+'</b>')+'</div></span><span class="tag" style="background:'+tbg+';color:'+tfg+'">'+tag+'</span></div>'
+    +(mal?'<div class="st" style="color:#B91C1C;font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid color-mix(in srgb,#DC2626 25%,transparent)">⚠️ Revisarla o rematarla hoy</div>':'')+'<div class="tq53">Toca para decir qué pasó ›</div></div>'}).join('');return d};
+function lt53Lote(){var t=S.lt53;return t?(S.madL||[])[t.k]:null}
+function lt53HTML(){var t=S.lt53,x=lt53Lote();if(!t)return '';if(!x||num(x.q)<=0){S.lt53=null;return ''}
+ var R=x.p==='R',u=R?'cajas':'kg',qtxt=(R?n65(x.q)+' cajas de roatán':n65(x.q)+' kg de macho'),adm=S.role==='admin'&&!S.encOn,kc=20;try{kc=vlKgCaja()||20}catch(e){}
+ var f=function(id,bind,v,l){return '<div class="field"><label for="'+id+'">'+l+'</label><input id="'+id+'" type="number" inputmode="decimal" min="0" step="any" data-bind="'+bind+'" value="'+esc(v)+'"></div>'},h='',
+  pie=function(sig,lab){return '<div style="display:flex;gap:8px;margin-top:16px"><button class="btn sec" style="flex:1;min-height:56px" data-act="lt53atras">Atrás</button><button class="btn" style="flex:2;min-height:56px" data-act="'+sig+'">'+lab+'</button></div>'};
+ if(t.paso===0){h='<div class="card" style="padding:12px 14px"><b style="font-size:19px">'+qtxt+'</b><div class="lbl">Salió de madurar el '+esc(fmtF(x.dia))+'</div></div><div class="q">¿Qué pasó con este lote?</div>'
+  +[['tiro','🗑️','Se tiró','Ya no servía (merma)'],['remate','💲','Se remató','Se vendió barato en bodega, por kilo'],['noesta','❓','Ya no está','No sé bien qué pasó'],['salio','✅','Estaba buena y salió a la venta','Ya se cargó a un chofer; no cambia ningún número']].map(function(o){return '<button class="op" data-act="lt53op" data-v="'+o[0]+'"><span class="e">'+o[1]+'</span><span>'+o[2]+'<small>'+o[3]+'</small></span></button>'}).join('')}
+ else if(t.op==='tiro'){if(t.q==='')t.q=String(x.q);h='<div class="q">¿Cuánto se tiró?</div>'+f('lt53q','lt53.q',t.q,R?'Cajas':'Kilos')+'<div class="lbl">Hay '+qtxt+' en este lote.'+(R?' Las taras quedan vacías en bodega.':'')+'</div>'+(adm?'':'<div class="lbl">Le llega al administrador para aprobarlo.</div>')+pie('lt53ok','Siguiente')}
+ else if(t.op==='remate'||t.op==='noesta'&&t.sub==='bodega'){if(!adm){h='<div class="card note" style="padding:12px 14px">El remate lo registra el administrador (entra dinero a la caja). Avísale.</div>'+pie('lt53x','Entendido')}else{if(t.q==='')t.q=String(x.q);if(t.kg==='')t.kg=String(R?Math.round(num(t.q)*kc):num(t.q));var tot=num(t.kg)*num(t.pr);
+   h='<div class="q">¿Cuánto se remató y a cuánto?</div>'+(R?f('lt53q','lt53.q',t.q,'Cajas'):'')+f('lt53kg','lt53.kg',t.kg,'Kilos')+f('lt53pr','lt53.pr',t.pr,'Precio por kilo $')+'<div class="card" style="padding:10px 14px;margin-top:8px">'+rw('Entra a la caja',money(tot))+'</div>'+pie('lt53ok','Siguiente')}}
+ else if(t.op==='noesta'&&!t.sub){h='<div class="q">¿Alguien la vendió?</div><button class="op" data-act="lt53sub" data-v="bodega"><span class="e">💲</span><span>Se vendió en bodega<small>Escribes cuánto y a cuánto</small></span></button><button class="op" data-act="lt53sub" data-v="nose"><span class="e">🤷</span><span>No sé<small>Solo se descuenta; queda en el historial quién y cuándo</small></span></button><div class="lbl" style="margin-top:8px">Si se la llevó un chofer, eso ya entró con su carga: escoge "Estaba buena y salió a la venta".</div>'+pie('lt53x','Cancelar')}
+ else if(t.op==='noesta'&&t.sub==='nose'){if(t.q==='')t.q=String(x.q);h='<div class="q">¿Cuánto ya no está?</div>'+f('lt53q','lt53.q',t.q,R?'Cajas':'Kilos')+(R?'<div class="lbl">Las taras se cuentan como vacías en bodega; si tampoco están, cuéntalas en Bodega → Taras.</div>':'')+pie('lt53ok','Siguiente')}
+ else if(t.op==='salio'){h='<div class="q">Estaba buena y salió a la venta</div><div class="card" style="padding:12px 14px">Cuando el chofer cargó, la app ya la descontó del inventario. Aquí solo se corrige <b>cuáles quedan</b>: las de bodega son las más nuevas.<br><br><b>No cambia ningún número</b> (inventario, cajas del chofer ni dinero).</div>'+pie('lt53ok','Siguiente')}
+ if(t.paso===2){var qq=num(t.q),txt=t.op==='tiro'?'Se tiraron '+qq+' '+u+' de '+(R?'roatán':'macho')+(adm?'. Se descuentan del inventario como merma.':'. Se manda al administrador para aprobar.'):(t.op==='salio'?'Este lote ya salió a la venta. Solo se acomodan las fechas de lo que queda.':(t.op==='noesta'&&t.sub==='nose'?'Ya no están '+qq+' '+u+'. Se descuentan del inventario y queda en el historial.':'Se remataron '+(R?qq+' cajas (':'')+num(t.kg)+' kg'+(R?')':'')+' a '+f2(num(t.pr))+' el kilo: entran '+money(num(t.kg)*num(t.pr))+' a la caja y se descuentan del inventario.'));
+  h='<div class="q">¿Seguro?</div><div class="card" style="padding:12px 14px;font-size:17px">'+txt+'</div>'+pie('lt53si','Sí, registrar')}
+ return ovW70('lt53ov','Fruta madura · '+(R?'roatán':'macho'),h,'lt53x')}
+function lt53Valida(){var t=S.lt53,x=lt53Lote(),R=x.p==='R',q=num(t.q),inv=R?num(S.inv.maduras):num(S.inv.kgMaduro);
+ if(t.op==='salio')return '';if(t.op==='noesta'&&!t.sub)return 'Escoge una opción';
+ if(!(q>0))return 'Escribe cuánto';if(q>num(x.q)+0.001)return 'En este lote solo hay '+n65(x.q)+(R?' cajas':' kg');if(q>inv+0.001)return 'En bodega solo hay '+n65(inv)+(R?' cajas maduras':' kg maduros');if(R&&q!==Math.round(q))return 'Las cajas van sin decimales';
+ if(t.op==='remate'||t.sub==='bodega'){if(!(num(t.kg)>0))return 'Escribe los kilos';if(!(num(t.pr)>0))return 'Escribe el precio por kilo'}return ''}
+function lt53Aplica(){var t=S.lt53,x=lt53Lote(),R=x.p==='R',q=num(t.q),hoy=iso(TODAY),adm=S.role==='admin'&&!S.encOn,qn=quien(),nom=R?q+' cajas de roatán':q+' kg de macho',hist=function(s){S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:qn,x:s})};
+ var baja=function(){x.q=R?num(x.q)-q:r2(num(x.q)-q);if(R){S.inv.maduras=num(S.inv.maduras)-q;S.inv.vacias=num(S.inv.vacias)+q}else S.inv.kgMaduro=r2(num(S.inv.kgMaduro)-q);S.madL=(S.madL||[]).filter(function(z){return num(z.q)>0.001})};
+ var costo=R?q*costoCajaAct():q*costoKgMAct();
+ if(t.op==='salio'){var otros=(S.madL||[]).filter(function(z){return z!==x&&z.p===x.p&&num(z.q)>0}).map(function(z){return String(z.dia)}).sort(),nd=otros.length?otros[otros.length-1]:hoy;if(nd<x.dia)nd=x.dia;var dv=x.dia;x.dia=nd;hist('Lote de fruta madura ('+(R?n65(x.q)+' cajas de roatán':n65(x.q)+' kg de macho')+', del '+fmtF(dv)+') salió a la venta: solo se acomodó la fecha (sin cambiar números)');return 'Listo: solo se acomodaron las fechas'}
+ if(t.op==='tiro'){var it={R:R?q:0,M:R?0:q,mot:'Lote pasado de tiempo',foto:null,quien:adm?'Administrador':qn,valor:costo,est:adm?'ok':'pend'};S.tiradas.push(it);
+  if(!adm){hist('Mandó a aprobar merma: '+nom);return 'Enviado al administrador para aprobar'}
+  baja();S.mermas.push({tipo:'Fruta tirada',fecha:hoy,R:R?q:0,M:R?0:q,valor:costo,txt:'Lote de fruta madura pasado de tiempo'});hist('Se tiró '+nom+' (merma de '+money(costo)+')');return 'Merma registrada: '+money(costo)}
+ if(t.op==='remate'||t.sub==='bodega'){var kg=num(t.kg),pr=num(t.pr),tot=r2(kg*pr);baja();S.aportes=S.aportes||[];S.aportes.push({t:'Remate en bodega',de:qn,f:hoy,m:tot,n:nom+' · '+kg+' kg a '+f2(pr),tipo:'remate'});
+  S.mermas.push({tipo:'Remate',fecha:hoy,R:R?q:0,M:R?0:q,valor:Math.max(0,r2(costo-tot)),txt:kg+' kg a '+f2(pr)+' el kilo ('+money(tot)+')'});hist('Remató '+nom+': '+kg+' kg a '+f2(pr)+' = '+money(tot)+' a la caja');return 'Remate registrado: '+money(tot)+' a la caja'}
+ if(t.sub==='nose'){baja();S.mermas.push({tipo:'Ya no estaba',fecha:hoy,R:R?q:0,M:R?0:q,valor:costo,txt:'Lote de fruta madura que ya no estaba (no se sabe qué pasó)'});hist('Ya no estaba: '+nom+' (se descontó; valor '+money(costo)+')');return 'Listo: se descontó del inventario'}
+ return ''}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!/^lt53/.test(a))return;e.stopImmediatePropagation();var t=S.lt53;
+ if(a==='lt53'){if(S.role!=='admin'&&S.role!=='local'){toast('Esto lo hace el administrador');return}S.lt53={k:+b.dataset.k,paso:0,op:'',sub:'',q:'',kg:'',pr:''};render();return}
+ if(!t)return;
+ if(a==='lt53x'){S.lt53=null;render();return}
+ if(a==='lt53op'){t.op=b.dataset.v;t.sub='';t.paso=1;render();return}
+ if(a==='lt53sub'){t.sub=b.dataset.v;render();return}
+ if(a==='lt53atras'){if(t.paso===2)t.paso=1;else if(t.op==='noesta'&&t.sub)t.sub='';else{t.paso=0;t.op='';t.q='';t.kg=''}render();return}
+ if(a==='lt53ok'){var er=lt53Valida();if(er){toast(er);return}t.paso=2;render();return}
+ if(a==='lt53si'){var er2=lt53Valida();if(er2){toast(er2);return}var m=lt53Aplica();S.lt53=null;toast(m);render();return}},true);
+/* deslizar el lote = abrir las mismas opciones */
+(function(){var s=null;document.addEventListener('pointerdown',function(e){var l=e.target.closest&&e.target.closest('.lote[data-act="lt53"]');s=l?{l:l,x:e.clientX,y:e.clientY}:null},true);
+ document.addEventListener('pointerup',function(e){if(!s)return;var dx=e.clientX-s.x,dy=e.clientY-s.y,l=s.l;s=null;if(Math.abs(dx)>60&&Math.abs(dy)<40)l.click()},true)})();
+/* al llegar desde el numerito de la barra (62c), además de marcar el lote se abren sus opciones */
+var _avF70=avFoco;avFoco=function(sel){_avF70.apply(this,arguments);try{if(/\.lote\[data-p=/.test(sel||'')){setTimeout(function(){var el=document.querySelector(sel.split(',')[0]);if(el&&!S.lt53)el.click()},900)}}catch(e){}};
+
+/* =============== 57 · pedidos por WhatsApp =============== */
+function chofsDia57(){return choferesL().filter(function(c){return !c.baja})}
+function est57(c){var r={ch:null,salio:false};chofsDia57().forEach(function(ch){if(r.ch)return;var st=null;try{st=nbRGet(ch.id,'stops')}catch(e){}if(!st&&+ch.id===+S.chofHoy)st=S.stops;var ar=((S.arPas||{})[ch.id]||[]);
+  if((st||[]).some(function(s){return +s.c===+c.id&&!s.done})||ar.indexOf(c.id)>-1){r.ch=ch;var sl=null;try{sl=nbRGet(ch.id,'salida')}catch(e){}r.salio=!!(sl&&sl.ok)}});return r}
+var _pc70=pedidoCard;pedidoCard=function(){if(S.role!=='admin')return _pc70.apply(this,arguments);var pend=(S.cli||[]).filter(function(c){return !c.oculto&&c.ped});
+ var L=pend.map(function(c){return {c:c,e:est57(c)}}),sin=L.filter(function(o){return !o.e.ch}),con=L.filter(function(o){return o.e.ch}),todos=!!S.ped57all;
+ var pills=function(p){var R=num(p.R),M=num(p.M);return '<div class="pills">'+(R?'<span class="pill pr">🍌 '+R+' caja'+(R>1?'s':'')+' de roatán</span>':'')+(M?'<span class="pill pm">⚖️ '+M+' kg de macho</span>':'')+'</div>'},
+  cu=function(p){return esc(p.cuando==='hoy'?'Hoy':(p.cuando==='manana'||p.cuando==='mañana'?'Mañana':String(p.cuando||'')))},
+  stp=function(e){return '<div class="stp"><span class="on">✓ Recibido</span><span class="'+(e.ch?'on':'')+'">'+(e.ch?'✓ '+esc(e.ch.n):'Chofer sin asignar')+'</span><span class="'+(e.salio?'on':'')+'">'+(e.salio?'✓ Salió a reparto':'Salió a reparto')+'</span></div>'},
+  nm=function(c){return '<span class="nm">'+esc(c.n)+(c.ap?' “'+esc(c.ap)+'”':'')+'</span>'};
+ var h='<div class="card pw40 p57" data-key="pedidos"><div class="hd"><span class="wa">'+WA40+'</span><span><div class="tt">Pedidos por WhatsApp</div><div class="st">Mensajes listos para surtir</div></span>'+(sin.length?'<span class="pend">'+sin.length+' sin chofer</span>':'')+'</div>';
+ if(!L.length)h+='<div class="vac">Sin pedidos pendientes.</div>';
+ h+=sin.map(function(o){var c=o.c,p=c.ped;return '<div class="it"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">'+nm(c)+'<span class="cu">'+cu(p)+'</span></div>'+pills(p)+(p.nota?'<div class="nota">'+esc(p.nota)+'</div>':'')+stp(o.e)+(p.cuando==='hoy'?'<button class="asg" data-act="p57asg" data-c="'+c.id+'">🚚 Asignar chofer</button>':'<div class="nota">Es para mañana: entra en la ruta de mañana.</div>')+'</div>'}).join('');
+ if(con.length){h+=(todos?con.map(function(o){var c=o.c,p=c.ped;return '<div class="it"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">'+nm(c)+'<span class="cu">'+cu(p)+'</span></div>'+pills(p)+stp(o.e)+'<button class="tg" data-act="p57asg" data-c="'+c.id+'">Cambiar de chofer</button></div>'}).join(''):con.map(function(o){var c=o.c;return '<div class="it min" role="button" tabindex="0" data-act="p57all"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:16px"><b>'+esc(c.n)+'</b><span style="font-weight:800;color:'+(o.e.salio?'#86EFAC':'#FDE68A')+'">'+esc(o.e.ch.n)+' · '+(o.e.salio?'en reparto':'asignado')+'</span></div></div>'}).join(''))
+   +'<button class="tg" data-act="p57all">'+(todos?'Ocultar los ya asignados':'Ver todos ('+con.length+' ya asignado'+(con.length>1?'s':'')+')')+'</button>'}
+ h+='<button class="btn" data-act="pwabre">＋ Registrar un pedido</button>'+(S.pf&&S.pf.ok?'<div style="color:#6EE7B7;font-weight:700;margin-top:6px">'+esc(S.pf.ok)+'</div>':'')+'</div>';return h};
+function p57HTML(){var x=S.p57;if(!x)return '';var c=cl(x.c);if(!c||!c.ped){S.p57=null;return ''}var e=est57(c),p=c.ped;
+ var h='<div class="card" style="padding:12px 14px"><b style="font-size:19px">'+esc(c.n)+'</b><div class="lbl">'+(num(p.R)?num(p.R)+' cajas de roatán ':'')+(num(p.M)?num(p.M)+' kg de macho':'')+'</div>'+(e.ch?'<div style="margin-top:6px">Ahora lo lleva: <b>'+esc(e.ch.n)+'</b>'+(e.salio?' (ya salió)':'')+'</div>':'')+'</div><div class="q">¿Qué chofer lo lleva hoy?</div>'
+  +chofsDia57().map(function(ch){var sl=null;try{sl=nbRGet(ch.id,'salida')}catch(er){}var on=e.ch&&+e.ch.id===+ch.id;return '<button class="op" data-act="p57ch" data-id="'+ch.id+'"'+(on?' style="border-color:var(--accent)"':'')+'><span class="e">🚚</span><span>'+esc(ch.n)+'<small>'+(sl&&sl.ok?'Ya salió a repartir (le llega el aviso)':'Todavía en bodega')+(on?' · ya lo lleva':'')+'</small></span></button>'}).join('');
+ if(x.conf){var nv=cl0(x.conf);h='<div class="q">¿Seguro?</div><div class="card" style="padding:12px 14px;font-size:17px">El pedido de <b>'+esc(c.n)+'</b> se pasa de '+esc(e.ch.n)+' a <b>'+esc(nv?nv.n:'')+'</b>. A los dos les llega el aviso.</div><div style="display:flex;gap:8px;margin-top:16px"><button class="btn sec" style="flex:1;min-height:56px" data-act="p57no">No</button><button class="btn" style="flex:2;min-height:56px" data-act="p57si">Sí, cambiar</button></div>'}
+ return ovW70('p57ov','Asignar chofer',h,'p57x')}
+function p57Stops(id){if(+id===+S.chofHoy&&!S.arOn)return S.stops;if((S.chSt||{})[id])return S.chSt[id].stops=S.chSt[id].stops||[];return null}
+function p57Asigna(c,id){var e=est57(c),tx=c.n+' ('+(num(c.ped.R)?num(c.ped.R)+' cajas':'')+(num(c.ped.R)&&num(c.ped.M)?', ':'')+(num(c.ped.M)?num(c.ped.M)+' kg':'')+')';
+ if(e.ch){var o=p57Stops(e.ch.id);if(o){for(var i=o.length-1;i>=0;i--)if(+o[i].c===+c.id&&!o[i].done)o.splice(i,1)}if(S.arPas&&S.arPas[e.ch.id])S.arPas[e.ch.id]=S.arPas[e.ch.id].filter(function(z){return +z!==+c.id});rutaAviso(e.ch.id,'Ya no llevas el pedido de '+tx+': se lo pasaron a '+chofN(id))}
+ var st=p57Stops(id);if(st){if(!st.some(function(s){return +s.c===+c.id&&!s.done}))st.push({c:c.id,ped:true})}else{S.arPas=S.arPas||{};S.arPas[id]=(S.arPas[id]||[]).concat([c.id])}
+ var sl=null;try{sl=nbRGet(id,'salida')}catch(er){}rutaAviso(id,(sl&&sl.ok?'Tienes una parada nueva: ':'Pedido para hoy: ')+tx);
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Asignó el pedido de '+tx+' a '+chofN(id)});return 'Listo: '+chofN(id)+' lleva el pedido de '+c.n}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!/^p57/.test(a))return;e.stopImmediatePropagation();var x=S.p57;
+ if(a==='p57all'){S.ped57all=!S.ped57all;render();return}
+ if(a==='p57asg'){S.p57={c:+b.dataset.c};render();return}
+ if(!x)return;var c=cl(x.c);
+ if(a==='p57x'){S.p57=null;render();return}
+ if(a==='p57no'){x.conf=null;render();return}
+ if(a==='p57ch'){var id=+b.dataset.id,ee=est57(c);if(ee.ch&&+ee.ch.id===id){toast('Ya lo lleva '+ee.ch.n);return}if(ee.ch){x.conf=id;render();return}toast(p57Asigna(c,id));S.p57=null;render();return}
+ if(a==='p57si'){toast(p57Asigna(c,x.conf));S.p57=null;render();return}},true);
+
+/* =============== 56 · reportar un problema =============== */
+try{if(NB_SH.indexOf('probs')<0)NB_SH.push('probs')}catch(e){}
+var _err70=[];function errNota70(m){try{m=String(m||'').slice(0,300);if(!m)return;_err70.push(hhmm()+' '+m);if(_err70.length>15)_err70.shift();apErr('error interno',m,dondeTxt70())}catch(e){}}
+window.addEventListener('error',function(e){errNota70((e&&e.message)||'error')});window.addEventListener('unhandledrejection',function(e){errNota70('promesa: '+((e&&e.reason&&e.reason.message)||e.reason||''))});
+(function(){var ce=console.error;console.error=function(){try{var a=Array.prototype.slice.call(arguments).map(function(x){return x&&x.message?x.message:(typeof x==='string'?x:'')}).join(' ');if(a)errNota70(a)}catch(e){}return ce.apply(console,arguments)}})();
+var TABN70={inicio:'Inicio',bodega:'Bodega',cargas:'Cargas',clientes:'Clientes',gastos:'Gastos',mas:'Más',vehiculos:'Vehículos',personal:'Personal',estadisticas:'Estadísticas',bienes:'Bienes',sugerencias:'Sugerencias',ruta:'Ruta',entrega:'Entrega',cierre:'Cierre',cierreadm:'Recibir cierre'};
+function dondeTxt70(){try{var r=S.role,t=S.tab[r],L=[{admin:'Administrador',rep:'Chofer',local:'Venta local',cont:'Contador'}[r]||r,TABN70[t]||t];
+  var ov=Array.prototype.filter.call(document.querySelectorAll('[role="dialog"]'),function(d){return d.id!=='rp56ov'&&d.offsetParent!==null}).map(function(d){var b=d.querySelector('b');return d.getAttribute('aria-label')||(b?b.textContent:'')||d.id}).filter(Boolean);
+  if(S.cm){var P=cmPasos();L.push('Registrar carga → paso '+(Math.min(S.cm.paso,P.length-1)+1)+' de '+P.length+' ('+P[Math.min(S.cm.paso,P.length-1)]+')')}else if(ov.length)L.push(ov[ov.length-1].slice(0,60));
+  return L.join(' → ')}catch(e){return ''}}
+function rp56HTML(){var x=S.rp56;if(!x)return '';var gs=[['traba','No me deja trabajar'],['numero','Un número está mal'],['raro','Se ve raro'],['idea','Es una idea']];
+ var h='<div class="card" style="padding:12px 14px"><div class="lbl">Estás en:</div><b style="font-size:17px">'+esc(x.donde||'—')+'</b><div class="lbl" style="margin-top:4px">'+esc(quien())+' · '+fmtF(iso(TODAY))+' '+hhmm()+' · '+(navigator.onLine===false?'sin internet':'con internet')+'</div></div>'
+  +'<div class="q">¿Qué pasó?</div><textarea id="rp56t" rows="5" style="width:100%;font-size:17px;border-radius:14px;padding:10px;border:1px solid var(--line)" placeholder="Escribe o dicta con el micrófono del teclado">'+esc(x.txt||'')+'</textarea>'
+  +'<div class="q" style="font-size:19px">¿Qué tan grave?</div><div class="chips" role="group" style="margin:6px 0">'+gs.map(function(g){return '<button data-act="rp56g" data-v="'+g[0]+'" aria-pressed="'+(x.g===g[0])+'" style="min-height:52px">'+g[1]+'</button>'}).join('')+'</div>'
+  +'<label class="btn sec" style="display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:10px" for="rp56f">🖼️ '+(x.foto?'Cambiar la captura de pantalla':'Agregar captura de pantalla (opcional)')+'</label><input id="rp56f" type="file" accept="image/*" style="display:none">'+(x.foto?'<img src="'+x.foto+'" alt="Captura" style="width:100%;max-height:240px;object-fit:contain;margin-top:8px;border-radius:12px;border:1px solid var(--line)">':'')
+  +'<div class="lbl" style="margin-top:8px">La app agrega sola: dónde estabas, quién, el celular, la versión, la hora, si había internet y los últimos errores internos.</div>'
+  +'<button class="btn big" data-act="rp56ok">Mandar</button>';
+ return ovW70('rp56ov','🐞 Reportar un problema',h,'rp56x')}
+document.addEventListener('input',function(e){if(e.target&&e.target.id==='rp56t'&&S.rp56)S.rp56.txt=e.target.value},true);
+document.addEventListener('change',function(e){var t=e.target;if(!t||t.id!=='rp56f'||!S.rp56||!t.files||!t.files[0])return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){try{var k=Math.min(1,900/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.rp56.foto=cv.toDataURL('image/jpeg',0.7)}catch(er){S.rp56.foto=fr.result}render()};im.src=fr.result};fr.readAsDataURL(t.files[0])},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!/^rp56|^pr56/.test(a))return;e.stopImmediatePropagation();
+ if(a==='rp56'){var d=dondeTxt70();S.menu=false;S.help=false;S.rp56={donde:d,txt:'',g:'',foto:null};render();return}
+ if(a==='rp56x'){S.rp56=null;render();return}
+ if(a==='rp56g'){S.rp56.g=b.dataset.v;render();return}
+ if(a==='rp56ok'){var x=S.rp56;if(!String(x.txt||'').trim()){toast('Escribe qué pasó');return}if(!x.g){toast('Escoge qué tan grave');return}S.probs=S.probs||[];var n=S.probs.filter(function(p){return !p.auto}).length+1;
+  S.probs.push({id:Date.now().toString(36),n:n,f:iso(TODAY),h:hhmm(),q:quien(),rol:S.role,donde:x.donde,txt:String(x.txt).trim(),g:x.g,foto:x.foto||null,cel:String(navigator.userAgent||'').replace(/^.*?\(([^)]*)\).*$/,'$1').slice(0,80),v:(typeof PN_VER!=='undefined'?PN_VER:''),red:navigator.onLine!==false,errs:_err70.slice(-8)});
+  S.rp56=null;toast('Gracias. Quedó anotado (#'+n+')'+(navigator.onLine===false?'; se manda cuando haya internet':''));render();return}
+ if(a==='pr56res'){var p=(S.probs||[]).filter(function(z){return z.id===b.dataset.id})[0];if(p){p.res=p.res?null:iso(TODAY)}render();return}
+ if(a==='pr56todos'){S.pr56all=!S.pr56all;render();return}
+ if(a==='pr56sacar'||a==='pr56wa'){var tx=pr56Texto();if(a==='pr56wa'){try{window.open('https://wa.me/?text='+encodeURIComponent(tx.slice(0,3500)),'_blank')}catch(er){}return}
+  var nom='problemas-'+iso(TODAY)+'.txt',n2=natPl&&natPl();if(n2&&n2.respaldoGuardar){n2.respaldoGuardar({texto:tx,nombre:nom}).then(function(r){toast('Guardado en '+((r&&r.donde)||'Descargas'))}).catch(function(){toast('No se pudo guardar el archivo')})}
+  else{try{var bl=new Blob([tx],{type:'text/plain'}),u=URL.createObjectURL(bl),ln=document.createElement('a');ln.href=u;ln.download=nom;document.body.appendChild(ln);ln.click();ln.remove()}catch(er){toast('No se pudo guardar el archivo')}}return}},true);
+var G56={traba:'No me deja trabajar',numero:'Un número está mal',raro:'Se ve raro',idea:'Idea',App:'Error de la app'};
+function pr56Texto(){var L=(S.probs||[]).filter(function(p){return !p.res});return 'Ruta Fácil · problemas reportados · '+fmtF(iso(TODAY))+'\n'+L.length+' sin resolver\n\n'+L.map(function(p){return (p.auto?'[automático] ':'#'+p.n+' ')+p.f+' '+p.h+' · '+(G56[p.g]||p.g||'')+' · '+(p.q||'')+'\nDónde: '+(p.donde||'')+'\n'+p.txt+(p.cel?'\nCelular: '+p.cel:'')+(p.v?' · versión '+p.v:'')+(p.red===false?' · sin internet':'')+((p.errs||[]).length?'\nErrores: '+p.errs.join(' | '):'')}).join('\n\n')}
+function pr56Card(){var L=(S.probs||[]).slice().reverse(),todos=!!S.pr56all,V=todos?L:L.filter(function(p){return !p.res}),nr=L.filter(function(p){return !p.res}).length;
+ return '<details class="card" data-k="pr56"'+(S.dOpen.pr56?' open':'')+'><summary><b>🐞 Problemas reportados</b><span class="lbl">'+(nr?nr+' sin resolver':'ninguno pendiente')+'</span></summary>'
+  +(V.length?V.slice(0,40).map(function(p){return '<div style="border-top:1px solid var(--line);padding:8px 0'+(p.res?';opacity:.55':'')+'"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+(p.auto?'Automático':'#'+p.n)+' · '+esc(G56[p.g]||p.g||'')+'</b><span class="lbl">'+esc(fmtF(p.f))+' '+esc(p.h||'')+'</span></div><div class="lbl">'+esc(p.q||'')+' · '+esc(p.donde||'')+'</div><div style="font-size:15px;margin-top:4px">'+esc(p.txt)+'</div>'+(p.foto?'<img src="'+p.foto+'" alt="Captura" style="max-width:100%;max-height:180px;margin-top:6px;border-radius:10px">':'')
+    +'<button class="btn sm '+(p.res?'sec':'')+'" style="width:auto;margin-top:6px" data-act="pr56res" data-id="'+esc(p.id)+'">'+(p.res?'↩ Volver a pendiente':'✓ Resuelto')+'</button></div>'}).join(''):'<div class="lbl" style="margin-top:6px">Nada por aquí.</div>')
+  +'<button class="link" data-act="pr56todos">'+(todos?'Ver solo los pendientes':'Ver también los resueltos')+'</button>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="pr56sacar">Sacar el registro</button><button class="btn sm sec" style="flex:1" data-act="pr56wa">Mandar por WhatsApp</button></div><div class="lbl">El archivo queda en Descargas/Ruta Facil. Pásaselo a Claude para arreglarlos por número.</div></details>'}
+var _aj70=ajHTML;ajHTML=function(){var h=_aj70.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+pr56Card()+h.slice(i)};
+
+/* =============== 58 · ubicaciones: GPS, buscar como en Uber, link; pin que se arrastra =============== */
+function ub68Obj(x){if(x.t==='bod')return (S.bods||[]).filter(function(z){return +z.id===+x.id})[0]||null;if(x.t==='prov')return provD(x.id);if(x.t==='cli')return cl(+x.id);return null}
+function ub68Nom(x){if(x.t==='bod'){var b=ub68Obj(x);return b?b.n:'la bodega'}return x.t==='prov'?String(x.id):((cl(+x.id)||{}).n||'el cliente')}
+function ub68HTML(){var x=S.ub68;if(!x)return '';var o=ub68Obj(x),nm=ub68Nom(x),h='';
+ if(x.p===0){h='<div class="q">¿Cómo guardamos la ubicación de '+esc(nm)+'?</div>'+(o&&o.lat!=null?'<div class="lbl">Ahora: '+o.lat+', '+o.lng+'</div>':'<div class="lbl">Todavía no tiene ubicación.</div>')
+  +'<button class="op" data-act="ub68gps"><span class="e">📍</span><span>Estoy aquí<small>Usa el GPS del celular (párate en el lugar)</small></span></button>'
+  +'<button class="op" data-act="ub68bus"><span class="e">🔎</span><span>Buscar el lugar<small>Como en Uber: escribe el nombre o la dirección</small></span></button>'
+  +'<div class="card" style="padding:12px 14px;margin-top:10px"><b>🔗 Pegar el link de Google Maps</b><textarea id="ub68l" rows="3" style="width:100%;margin-top:6px" placeholder="https://maps.app.goo.gl/… o 19.58,-96.93">'+esc(x.link||'')+'</textarea><button class="btn sec" style="margin-top:8px;min-height:52px;width:100%" data-act="ub68link">Usar el link</button></div>'+(x.err?'<div class="neg" role="alert" style="font-weight:700;margin-top:8px">'+esc(x.err)+'</div>':'')}
+ else if(x.p===1){h='<div class="q">Buscar '+esc(nm)+'</div><div style="display:flex;gap:8px"><input id="ub68q" type="text" value="'+esc(x.q||'')+'" placeholder="Ej. bodega de plátanos Banderilla" style="flex:1;font-size:17px;min-height:52px;border-radius:14px;padding:0 12px;border:1px solid var(--line);text-align:left"><button class="btn" style="width:auto;min-height:52px" data-act="ub68ir">Buscar</button></div>'
+  +(x.busy?'<div class="lbl" style="margin-top:10px">Buscando…</div>':'')+(x.err?'<div class="neg" role="alert" style="font-weight:700;margin-top:8px">'+esc(x.err)+'</div>':'')
+  +(x.res||[]).map(function(r,i){return '<button class="ub68r" data-act="ub68sel" data-i="'+i+'"><b>'+esc(r.n)+'</b><span class="lbl">'+esc(r.d||'')+'</span></button>'}).join('')+'<button class="btn sec big" data-act="ub68atras">Atrás</button>'}
+ else{h='<div class="q">¿Seguro que aquí es '+esc(nm)+'?</div><div class="lbl">Arrastra el pin para dejarlo exacto.</div><div id="ub68map"></div><div class="lbl" id="ub68c" style="margin-top:6px">'+x.lat+', '+x.lng+'</div>'
+  +'<button class="btn big" data-act="ub68si">Sí, guardar aquí</button><button class="btn sec big" data-act="ub68atras">Regresar</button>'}
+ return ovW70('ub68ov','📍 Ubicación de '+nm,h,'ub68x')}
+function ub68Map(){var x=S.ub68,el=document.getElementById('ub68map');if(!x||!el||!window.L)return;try{var m=L.map(el,{zoomControl:true}).setView([x.lat,x.lng],17);mapaCapa(m,el,0);var mk=L.marker([x.lat,x.lng],{draggable:true}).addTo(m);
+  mk.on('dragend',function(){var p=mk.getLatLng();x.lat=+p.lat.toFixed(6);x.lng=+p.lng.toFixed(6);var c=document.getElementById('ub68c');if(c)c.textContent=x.lat+', '+x.lng});
+  m.on('click',function(ev){mk.setLatLng(ev.latlng);x.lat=+ev.latlng.lat.toFixed(6);x.lng=+ev.latlng.lng.toFixed(6);var c=document.getElementById('ub68c');if(c)c.textContent=x.lat+', '+x.lng});setTimeout(function(){try{m.invalidateSize()}catch(e){}},200)}catch(e){console.error('mapa 58',e)}}
+function ub68Busca(){var x=S.ub68,n=natPl&&natPl();if(!String(x.q||'').trim()){toast('Escribe qué buscar');return}
+ if(!n||!n.lugaresGoogle){x.err='El buscador funciona en la app del celular. Aquí usa el link o el GPS.';render();return}
+ x.busy=true;x.err='';x.res=[];render();var cuerpo={textQuery:String(x.q).trim(),languageCode:'es',regionCode:'MX',maxResultCount:8};
+ n.lugaresGoogle({cuerpo:JSON.stringify(cuerpo)}).then(function(r){var j={};try{j=JSON.parse(r.json||'{}')}catch(er){}x.busy=false;
+  if(r.status>=400){x.err=r.status===403?'Falta habilitar "Places API (New)" en la llave de Google (Google Cloud → Credenciales).':'Google no respondió ('+r.status+'). Intenta otra vez.';render();return}
+  x.res=(j.places||[]).filter(function(p){return p.location}).map(function(p){return {n:(p.displayName&&p.displayName.text)||'Lugar',d:p.formattedAddress||'',lat:p.location.latitude,lng:p.location.longitude}});if(!x.res.length)x.err='No encontré ese lugar. Prueba con otras palabras o con la dirección.';render()})
+ .catch(function(er){x.busy=false;x.err='Sin conexión con Google. Revisa el internet.';render()})}
+function ub68Guarda(){var x=S.ub68,o=ub68Obj(x),nm=ub68Nom(x);if(!o)return;o.lat=x.lat;o.lng=x.lng;if(x.t==='cli'){o.locBy=quien();o.locF=iso(TODAY)}S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Guardó la ubicación de '+nm+' ('+x.lat+', '+x.lng+')'});try{if(x.t==='bod')bodAplica()}catch(e){}}
+document.addEventListener('input',function(e){var t=e.target;if(!t||!S.ub68)return;if(t.id==='ub68l')S.ub68.link=t.value;if(t.id==='ub68q')S.ub68.q=t.value},true);
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='ub68q'&&S.ub68){e.preventDefault();ub68Busca()}},true);
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="bodloc"]');if(!b)return;e.stopImmediatePropagation();e.preventDefault();if(!(S.role==='admin'&&!S.encOn)){toast('La ubicación de la bodega solo la cambia el administrador.');return}S.ub68={t:'bod',id:+b.dataset.id||((bodPrincipal()||{}).id),p:0};render()},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!/^ub68/.test(a))return;e.stopImmediatePropagation();
+ if(a==='ub68'){var t=b.dataset.t,id=b.dataset.id;if(t==='bod'&&!id){var bp=bodPrincipal();if(!bp){S.bods=S.bods||[];bp={id:1,n:'Bodega'};S.bods.push(bp)}id=bp.id}S.ub68={t:t,id:t==='prov'?decodeURIComponent(id):id,p:0};render();return}
+ var x=S.ub68;if(!x)return;
+ if(a==='ub68x'){S.ub68=null;render();return}
+ if(a==='ub68atras'){x.p=x.p===2&&x.res&&x.res.length?1:0;x.err='';render();return}
+ if(a==='ub68bus'){x.p=1;x.err='';render();setTimeout(function(){var q=document.getElementById('ub68q');if(q)q.focus()},100);return}
+ if(a==='ub68ir'){var q=document.getElementById('ub68q');if(q)x.q=q.value;ub68Busca();return}
+ if(a==='ub68sel'){var r=(x.res||[])[+b.dataset.i];if(r){x.lat=+(+r.lat).toFixed(6);x.lng=+(+r.lng).toFixed(6);x.p=2;render()}return}
+ if(a==='ub68link'){var c=coordsDe(x.link),nl=natPl&&natPl(),lk=String(x.link||'').trim();if(!c&&nl&&nl.linkLargo&&/^https:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|maps\.google\.com|www\.google\.com\/maps)/.test(lk)){toast('Abriendo el link…');nl.linkLargo({url:lk}).then(function(r){var c2=coordsDe(r&&r.url);if(!c2){x.err='Ese link no trae coordenadas. En Google Maps toca el pin del lugar y vuelve a "Compartir", o usa "Buscar el lugar".';render();return}x.lat=c2.lat;x.lng=c2.lng;x.p=2;x.err='';render()}).catch(function(){x.err='No se pudo abrir el link (¿hay internet?).';render()});return}if(!c){x.err='No encontré coordenadas en ese link. En Google Maps toca el lugar, "Compartir" y copia el link; o pega las coordenadas (19.58,-96.93). Los links cortos (maps.app.goo.gl) a veces no traen coordenadas: ábrelo y copia el link largo.';render();return}x.lat=c.lat;x.lng=c.lng;x.p=2;render();return}
+ if(a==='ub68gps'){x.err='';toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){x.lat=+p.coords.latitude.toFixed(6);x.lng=+p.coords.longitude.toFixed(6);x.p=2;render()},function(){x.err='No se pudo leer el GPS. Prende la ubicación, o busca el lugar o pega el link.';render()},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){x.err='No se pudo leer el GPS.';render()}return}
+ if(a==='ub68si'){ub68Guarda();S.ub68=null;toast('✓ Ubicación guardada');render();return}},true);
+/* bodega en la primera vez (paso "Bodega" del asistente) */
+var _suH70=setupHTML;setupHTML=function(){var h=_suH70.apply(this,arguments);try{if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==1)return h;var b=bodPrincipal(),ok=b&&b.lat!=null;
+  var c='<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--danger)')+'"><b style="font-size:18px">📍 Ubicación de la bodega</b><div class="lbl">'+(ok?'Guardada: '+b.lat+', '+b.lng:'Falta. Los mapas, los kilómetros y las rutas salen de aquí.')+'</div><button class="btn" style="margin-top:8px;min-height:56px;width:100%" data-act="ub68" data-t="bod">'+(ok?'Cambiar la ubicación':'Poner la ubicación de la bodega')+'</button></div>';
+  var i=h.indexOf('<div class="card">');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* proveedores y clientes: en "Datos" */
+var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
+  var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+var _fiCl70=fiCli;fiCli=function(f){var h=_fiCl70.apply(this,arguments);try{if(S.role!=='admin'||((S.fiTab||{})['cli:'+f.id]||'cta')!=='dat')return h;var c=cl(f.id),ok=c&&c.lat!=null;
+  var cd='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?c.lat+', '+c.lng+(c.locBy?' · '+esc(c.locBy):''):'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="cli" data-id="'+f.id+'">'+(ok?'Buscar o corregir en el mapa':'Poner la ubicación')+'</button></div>';
+  var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+cd+h.slice(i):h+cd}catch(e){return h}};
+/* el chofer confirma la ubicación cuando está en el lugar (entrega del cliente) */
+function cfUb70(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cfub70"]'))return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;
+ var d=document.createElement('div');d.className='card';d.dataset.x='cfub70';d.innerHTML='<b>📍 Ubicación de '+esc(c.n)+'</b><div class="lbl">'+(c.lat!=null?'Ya tiene. Si estás aquí y no es exacta, corrígela.':'Todavía no tiene ubicación.')+'</div><button class="btn sec" style="width:100%;margin-top:6px;min-height:52px" data-act="cfub70" data-id="'+c.id+'">Confirmar la ubicación aquí</button>';m.appendChild(d)}
+var _rd70u=render;render=function(){var r=_rd70u.apply(this,arguments);try{cfUb70()}catch(e){}return r};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c)return;
+ var guarda=function(la,ln){S.modal=null;var tenia=c.lat!=null;c.lat=+(+la).toFixed(6);c.lng=+(+ln).toFixed(6);c.locBy=chofN(S.chofHoy);c.locF=iso(TODAY);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Confirmó la ubicación de '+c.n+' estando ahí'});try{(S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' '+(tenia?'corrigió':'guardó')+' la ubicación de '+c.n+' estando ahí')}catch(er){}toast('✓ Ubicación guardada');render()};
+ toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){var la=p.coords.latitude,ln=p.coords.longitude;if(c.lat!=null){window._cf70=function(){guarda(la,ln)};abrirModal('¿Seguro?',esc(c.n)+' ya tenía ubicación. ¿La cambio por donde estás ahorita? Le aviso al administrador.',[['Sí, cambiarla','cfub70si']])}else guarda(la,ln)},function(){toast('No se pudo leer el GPS. Prende la ubicación.')},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){toast('No se pudo leer el GPS.')}},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70si"]');if(!b)return;e.stopImmediatePropagation();var f=window._cf70;window._cf70=null;if(f)f()},true);
+
+/* =============== las ventanas nuevas se dibujan encima; el menú y el "?" llevan "Reportar un problema" =============== */
+var _rd70=render;render=function(){var r=_rd70.apply(this,arguments);try{
+  ovPon70('lt53ov',lt53HTML());ovPon70('p57ov',p57HTML());ovPon70('rp56ov',rp56HTML());var ub=ub68HTML();ovPon70('ub68ov',ub);if(ub&&S.ub68.p===2)setTimeout(ub68Map,30);
+  var nv=document.querySelector('.drawer nav');if(nv&&!nv.querySelector('[data-act="rp56"]')){var bt=document.createElement('button');bt.className='btn sec';bt.style.marginTop='10px';bt.dataset.act='rp56';bt.textContent='🐞 Reportar un problema';var ref=nv.querySelector('[data-act="usrcambia"],[data-act="usrsalir"],.link[data-act="reset"]');if(ref)ref.before(bt);else nv.appendChild(bt)}
+  var hp=document.querySelector('[aria-labelledby="hlpT"]');if(hp&&!hp.querySelector('[data-act="rp56"]')){var b2=document.createElement('button');b2.className='btn sec';b2.style.cssText='margin-top:12px;width:100%;min-height:52px';b2.dataset.act='rp56';b2.textContent='🐞 Reportar un problema';hp.appendChild(b2)}
+ }catch(e){console.error('ventanas 7.5',e)}return r};
+
 
 /* ---------- Estructura ---------- */
 var HELP={inicio:['Inicio','Aquí ves cómo va el día: lo vendido, lo cobrado, el efectivo y quién debe. Arriba están los avisos: tócalos para ir a ese apartado. El botón verde + abre las acciones más comunes.'],bodega:['Bodega','Cuánto hay de cada cosa. El roatán se cuenta en cajas y el macho en kilos. Abajo metes fruta a madurar y ves cuánto le falta a cada lote.'],cargas:['Cargas','Lo que compras al proveedor. Cada carga te dice cuánto pagaste, cuánto te cuesta cada caja y cuánto ganas. Abajo están tus proveedores.'],clientes:['Clientes','Toca un cliente para ver lo que debe, llamarle o mandarle WhatsApp. Para cambiar sus datos usa el botón Editar.'],gastos:['Gastos','Registra lo que se gasta. En Sueldos pagas a los choferes y en Fijos llevas luz, agua, teléfono y seguros.'],vehiculos:['Vehículos','Cada camioneta con su aceite, seguro, documentos y gastos de taller.'],personal:['Personal','Dónde va cada chofer, sus clientes y su ruta de mañana.'],estadisticas:['Estadísticas','Cómo le fue al negocio por día, mes o año.'],mas:['Más','Las demás secciones de la app.'],ruta:['Ruta','Tu ruta de hoy. La tarjeta verde es tu siguiente parada: toca Ir para que Google Maps te lleve y Entregar al llegar.'],entrega:['Entrega','Pon cuántas cajas y kilos dejaste y cuánto te pagaron. Abajo aparece cuánto efectivo debes recibir.'],cierre:['Cierre','Al terminar el día revisa lo que vendiste y el efectivo que entregas, y manda el cierre.'],viaje:['Viaje','Los viajes para ir por fruta al proveedor.'],local:['Venta local','Elige el producto, pesa y escribe los kilos. La app calcula el total.'],corte:['Corte','Al final del día manda el corte con lo vendido y el efectivo.']};

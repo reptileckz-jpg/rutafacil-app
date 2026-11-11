@@ -670,6 +670,69 @@ public class RutaNativa extends Plugin {
         }).start();
     }
 
+    /* ---------------- 58 · buscar lugares como en Uber (Google Places API New, búsqueda de texto) ---------------- */
+    @PluginMethod
+    public void lugaresGoogle(PluginCall call) {
+        final String cuerpo = call.getString("cuerpo", "{}");
+        final String campos = "places.displayName,places.formattedAddress,places.location";
+        final String llave = llaveMapas();
+        if (llave == null || llave.isEmpty()) { call.reject("Esta app no trae la llave de Google Maps"); return; }
+        new Thread(() -> {
+            HttpURLConnection c = null;
+            try {
+                c = (HttpURLConnection) new URL("https://places.googleapis.com/v1/places:searchText").openConnection();
+                c.setRequestMethod("POST");
+                c.setConnectTimeout(15000);
+                c.setReadTimeout(20000);
+                c.setDoOutput(true);
+                c.setRequestProperty("Content-Type", "application/json");
+                c.setRequestProperty("X-Goog-Api-Key", llave);
+                c.setRequestProperty("X-Goog-FieldMask", campos);
+                c.setRequestProperty("X-Android-Package", getContext().getPackageName());
+                c.setRequestProperty("X-Android-Cert", huellaCert());
+                OutputStream os = c.getOutputStream();
+                os.write(cuerpo.getBytes("UTF-8"));
+                os.close();
+                int st = c.getResponseCode();
+                InputStream is = st >= 400 ? c.getErrorStream() : c.getInputStream();
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                if (is != null) { byte[] buf = new byte[8192]; int n; while ((n = is.read(buf)) > 0) bo.write(buf, 0, n); is.close(); }
+                JSObject o = new JSObject();
+                o.put("status", st);
+                o.put("json", bo.toString("UTF-8"));
+                call.resolve(o);
+            } catch (Exception e) {
+                call.reject("Sin conexión con Google: " + e.getMessage());
+            } finally { if (c != null) c.disconnect(); }
+        }).start();
+    }
+
+    /* 58 · los links cortos de Google Maps (maps.app.goo.gl) no traen coordenadas: se sigue la redirección para leer el link largo */
+    @PluginMethod
+    public void linkLargo(PluginCall call) {
+        final String url0 = call.getString("url", "");
+        if (!(url0.startsWith("https://maps.app.goo.gl/") || url0.startsWith("https://goo.gl/maps/") || url0.startsWith("https://maps.google.com/") || url0.startsWith("https://www.google.com/maps"))) { call.reject("No es un link de Google Maps"); return; }
+        new Thread(() -> {
+            String u = url0;
+            try {
+                for (int i = 0; i < 6; i++) {
+                    HttpURLConnection c = (HttpURLConnection) new URL(u).openConnection();
+                    c.setInstanceFollowRedirects(false);
+                    c.setConnectTimeout(10000);
+                    c.setReadTimeout(10000);
+                    c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android)");
+                    int st = c.getResponseCode();
+                    String loc = c.getHeaderField("Location");
+                    c.disconnect();
+                    if (st >= 300 && st < 400 && loc != null) { u = new URL(new URL(u), loc).toString(); } else break;
+                }
+                JSObject o = new JSObject();
+                o.put("url", u);
+                call.resolve(o);
+            } catch (Exception e) { call.reject("Sin conexión: " + e.getMessage()); }
+        }).start();
+    }
+
     /* ---------------- 29 · respaldo diario en Descargas/Ruta Facil/Respaldos ---------------- */
     @PluginMethod
     public void respaldoGuardar(PluginCall call) {

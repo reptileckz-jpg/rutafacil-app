@@ -12,7 +12,7 @@ ok(r&&!r.pct&&!r.alta&&r.taras&&!r.tarM&&r.bar===2&&r.tiles===8,'49: sin %, sin 
 r=await ev(()=>{var o=[];[[6,'v'],[3,'a'],[1,'r'],[100,'v']].forEach(function(x){o.push(alc68(x[0],'roatán').indexOf('alc '+x[1])>-1)});return o});ok(r.every(Boolean),'49: aviso de días con color (verde 5+, amarillo 2–4, rojo <2)',r);
 r=await ev(()=>{S.tab.admin='inicio';render();var c=document.querySelector('[data-x="invM"]');c.click();var t=S.tab.admin;S.tab.admin='inicio';render();return t});ok(r==='bodega','49: tocar una tarjeta lleva a Bodega',r);
 /* 50 */
-r=await ev(()=>{var A=[...document.querySelectorAll('.av.av68')];return {n:A.length,ic:A.every(a=>a.querySelector('.ic68 svg')),pos:A.every(a=>a.querySelector('.pos68')),col:A.map(a=>a.style.getPropertyValue('--c68')).slice(0,6)}});
+r=await ev(()=>{var A=[...document.querySelectorAll('.av[data-c68]')];return {n:A.length,ic:A.every(a=>a.querySelector('.ic68 svg')),pos:A.every(a=>a.querySelector('.pos68')),col:A.map(a=>a.style.getPropertyValue('--c68')).slice(0,6)}});
 ok(r.n>0&&r.ic&&r.pos,'50: avisos en tarjeta con ícono y "Posponer" abajo',r);
 r=await ev(()=>[avInfo68('60 cajas de roatán maduro ya se pasaron de tiempo: revisar o rematar').col,avInfo68('215 kg de macho maduro ya se pasaron de tiempo: revisar o rematar').col,avInfo68('DEF bajo en Freightliner M2 2015 (Ricardo): 1 cuadrito').col,avInfo68('Registraste una báscula nueva: Molo. Ponle cuánto cobra').col,avInfo68('Nissan NP300 2023: afinación mayor en 30 días').col]);
 ok(r[0]==='r'&&r[1]==='r'&&r[2]==='v'&&r[3]==='g'&&r[4]==='n','50: color según urgencia (fruta pasada roja en las dos, vehículo azul, dato verde, falta mucho gris)',r);

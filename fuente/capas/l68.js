@@ -45,10 +45,10 @@ var COL68={r:'#DC2626',o:'#EA580C',v:'#2563EB',g:'#16A34A',n:'#64748B'},NIV68={r
  '.inv68 .alc.a{background:color-mix(in srgb,#EAB308 16%,var(--surface));border-color:color-mix(in srgb,#CA8A04 45%,transparent)}.inv68 .alc.a b{color:#A16207}',
  '.inv68 .alc.r{background:color-mix(in srgb,#DC2626 12%,var(--surface));border-color:color-mix(in srgb,#DC2626 45%,transparent)}.inv68 .alc.r b{color:#B91C1C}',
  /* 50 avisos */
- '.av.av68{display:flex!important;align-items:center;gap:12px!important;padding:14px 12px!important;border-radius:18px!important;border:1.5px solid color-mix(in srgb,var(--c68) 38%,transparent)!important;background:color-mix(in srgb,var(--c68) 11%,var(--surface))!important;font-size:17px!important;line-height:1.35;margin-top:10px!important;box-shadow:0 2px 6px rgba(15,23,42,.06)}',
- '.av68 .ic68{width:42px;height:42px;flex:none;color:var(--c68);display:flex;align-items:center;justify-content:center}.av68 .ic68 svg{width:36px;height:36px}',
- '.av68>.lbl[aria-hidden]{font-size:34px!important;font-weight:900;color:var(--c68)!important;line-height:1;padding:0 2px}',
- '.av68 .avlv{display:none!important}.av68 .pos68{font-size:13px!important;min-height:30px!important;color:var(--muted)!important;padding:0!important;margin-top:2px}',
+ '.av[data-c68]{display:flex!important;align-items:center;gap:12px!important;padding:14px 12px!important;border-radius:18px!important;border:1.5px solid color-mix(in srgb,var(--c68) 38%,transparent)!important;background:color-mix(in srgb,var(--c68) 11%,var(--surface))!important;font-size:17px!important;line-height:1.35;margin-top:10px!important;box-shadow:0 2px 6px rgba(15,23,42,.06)}',
+ '.av[data-c68] .ic68{width:42px;height:42px;flex:none;color:var(--c68);display:flex;align-items:center;justify-content:center}.av[data-c68] .ic68 svg{width:36px;height:36px}',
+ '.av[data-c68]>.lbl[aria-hidden]{font-size:34px!important;font-weight:900;color:var(--c68)!important;line-height:1;padding:0 2px}',
+ '.av[data-c68] .avlv{display:none!important}.av[data-c68] .pos68{font-size:13px!important;min-height:30px!important;color:var(--muted)!important;padding:0!important;margin-top:2px}',
  'main{padding-bottom:calc(var(--navh,80px) + 96px)!important}',
  /* 61 ventana de aviso */
  '.pop68{background:var(--surface);border-radius:26px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}',
@@ -90,7 +90,7 @@ inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=di
 
 /* ---------- 50 · "Por atender": tarjetas de color con ícono ---------- */
 var _avRow68=avRow;avRow=function(x,u){var h=_avRow68.apply(this,arguments);try{var I=avInfo68(x);
-  h=h.replace('class="av"','class="av av68" style="--c68:'+COL68[I.col]+'"').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
+  h=h.replace('data-swipe=','data-c68="'+I.col+'" data-swipe=').replace('style="display:flex;','style="--c68:'+COL68[I.col]+';display:flex;').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
   /* la marca de "Urgente/Pronto" la da el color; el borde izquierdo de antes ya no */
   h=h.replace(/;border-left:5px solid var\(--danger\);font-weight:700/,';font-weight:700');
   var m=/<button class="link"[^>]*data-act="avpos"[^>]*>[^<]*<\/button>/.exec(h);if(m){h=h.replace(m[0],'');h=h.replace(/(<span class="grow">)([\s\S]*?)(<\/span>)/,'$1$2<br>'+m[0].replace('class="link"','class="link pos68"')+'$3')}}catch(e){}return h};

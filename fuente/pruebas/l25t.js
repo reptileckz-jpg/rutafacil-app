@@ -17,5 +17,5 @@ await p.screenshot({path:'v50/l25a.png'});
 await ev(()=>{document.querySelector('.mindock [data-act="bubmax"]').click()});await W(500);ok(await ev(()=>!S.bubMin&&!!document.querySelector('.vbub')),'tocar la de viaje la abre');
 // aviso de cajas solo para admin
 await ev(()=>{S.toast='';S.role='rep';S.inv.vacias+=7;render()});await W(400);r=await ev(()=>S.toast);ok(!/cuadra/.test(r),'el chofer no ve "no cuadra"',r);
-await ev(()=>{S.role='admin';_cuMal='';render()});await W(400);r=await ev(()=>S.toast);ok(/Las cajas no cuadran\. Sobran 7 cajas/.test(r),'admin: aviso claro de cajas',r);
+await ev(()=>{S.role='admin';_cuMal='';render()});await W(400);r=await ev(()=>S.toast);ok(/Las taras no cuadran\. La app cuenta [\d,]+ taras y deberían ser [\d,]+: sobran 7/.test(r),'admin: aviso claro de cajas (7.5: en palabras claras)',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

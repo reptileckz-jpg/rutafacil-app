@@ -1709,3 +1709,35 @@ El dueño sigue: negociar con proveedores y programar viajes.
     → 62c (Ricardo, 11 nov): en Bodega tenía el numerito 4; sospecha que no sabe cuál de los 4 escoger, o que eran las tarjetas de fruta madura que ya se iba a pasar (que no tienen acción, punto 53) y por eso no se veía nada.
       Muy probable: esos avisos mandan a "Bodega", y como ya estaba en Bodega, el 2º toque lo "llevaba" al mismo lugar y no se notaba nada.
       Al hacerlo: el 2º toque debe BAJAR hasta la tarjeta exacta del pendiente y marcarla (parpadeo), y si tiene acción, abrirla (ej.: el lote de fruta pasada abre sus opciones del 53). Si hay varios, va primero al más urgente; cada toque más pasa al siguiente, con un aviso chico "1 de 4: 60 cajas de roatán pasadas de tiempo". Nunca un toque sin que pase algo (si no hay a dónde ir, decirlo).
+### HECHO (11 nov) · versión 7.5 · capas l68, l69, l70 (puntos 49 al 62)
+- l68 · 49 inventario en Inicio: renglón "Inventario de bodega" + tarjetas Roatán (encabezado ámbar sólido, pastilla de taras vacías) y Macho (verde sólido), barra de colores, 4 cuadritos sin %, "Te alcanza para N días" verde/amarillo/rojo; tocar → Bodega.
+- l68 · 50 "Por atender": cada aviso en tarjeta de color según urgencia (rojo urgente, naranja pronto, azul vehículos, verde falta un dato, gris para saber), ícono dibujado en la app, letra grande, flecha ›, "Posponer" abajo del texto; espacio abajo para el +.
+- l68 · 52 PIN en modo oscuro. · 61 ventana de aviso: franja de color con nivel, "N de M", ícono, título claro, "Atender ›", "🕒 Después", sin ×.
+- l68 · 51 Finanzas ya no brinca (era el "anclaje del scroll" del navegador: overflow-anchor:none). · 59 el mapa chico ya no se corre: tenía la marca data-swipe del gesto "posponer aviso" (se cambió por data-noswipe).
+- l68 · 62a "Sugerencias" en el menú ya no se ve verde/seleccionado · 62b la barra de abajo vuelve al cambiar de pantalla o desbloquear · 62c 2º toque del numerito baja al pendiente exacto y lo marca; con varios, cada toque el siguiente ("1 de 4: …"); los lotes de fruta abren sus opciones.
+- l69 · 54 registrar carga: pregunta de imprevisto en "Gastos"; al final del desglose "¿Sumar el desgaste del vehículo?" (km × $/km) y "¿Se le asignó un sueldo por este viaje?"; desglose con TODOS los gastos en renglones y total que cuadra; "Costo del viaje más exacto" con las mismas dos preguntas (paso "Te cuesta") y botón grande a la vista en la ficha de la carga.
+- l69 · 55 costo de repartir REAL (rutas cerradas de 30 días: combustible y gastos de la ruta, desgaste por km del odómetro, sueldo del día) por caja de roatán y por kilo de macho; precio sugerido = (puesta en bodega + repartir) × meta; meta de roatán y de macho (botón "Usar la misma para los dos"); imprevistos hasta $500 al viaje, más al mantenimiento del vehículo (Ajustes cfg.topeImp); comida del viaje autorizada (sí/no y máximo) y presupuesto diario de comida en la ficha del chofer; sin "Caseta" en el reparto; el desgaste por km se ajusta solo una vez al día con lo gastado en el año.
+- l69 · 58 errores de dedo en la carga (kilos, cajas, precio, combustible) y en gastos de la ruta: "¿Seguro? Es mucho más de lo normal".
+- l69 · 60 ningún número vacío rompe las cuentas (se pone en 0, se avisa y se anota solo); avisos "no cuadra" en palabras claras con números y qué hacer ("Esto es un error de la app, no tuyo" cuando aplica); tarjeta "Todo cuadra / Algo no cuadra" en Inicio. Nota: el "Se tiró" de antes no regresaba la tara vacía (descuadraba taras); en el 53 sí se regresa.
+- l70 · 53 lotes de fruta madura: tocar o deslizar → Se tiró / Se remató (entra a la caja) / Ya no está (se vendió en bodega o no sé) / Salió a la venta (solo acomoda fechas) con ¿Seguro?.
+- l70 · 57 pedidos (en Clientes): pasos Recibido → Chofer → Salió a reparto (solos), "🚚 Asignar chofer" ahí mismo (con aviso al chofer y ¿Seguro? al cambiar), los ya asignados chiquitos y "Ver todos".
+- l70 · 56 "🐞 Reportar un problema" en el menú y en el "?" (dónde, quién, celular, versión, hora, internet y errores internos solos; captura opcional); se sube a la nube (s~probs); Ajustes → "Problemas reportados": Resuelto, "Sacar el registro" (Descargas/Ruta Facil) y "Mandar por WhatsApp". Los errores internos se anotan solos.
+- l70 · 58 ubicaciones: GPS / buscar como en Uber (nativo lugaresGoogle, Places API New) / pegar link (los cortos maps.app.goo.gl se abren con nativo linkLargo) con pin que se arrastra y ¿Seguro?; en el paso "Bodega" de la primera vez, en Ajustes, en proveedores y clientes (Datos); el chofer: "Confirmar la ubicación aquí" en la entrega (avisa al admin).
+- Pruebas nuevas: t68 (18), t69 (27), t70 (26).
+- PENDIENTE DEL USUARIO: en Google Cloud, en la llave de Android, agregar "Places API (New)" a las APIs permitidas (para "Buscar el lugar").
+
+### Lista de prueba 7.5 (por número de punto)
+49. Inicio: "Inventario de bodega" + tarjetas Roatán (ámbar) y Macho (verde) con barra de colores; el aviso de días cambia de color; tocar una tarjeta lleva a Bodega.
+50. Inicio → "Por atender": tarjetas de color con ícono y ›; la fruta pasada sale roja en roatán y en macho; el + no tapa el último aviso.
+51. Inicio → Finanzas → "👁 Mostrar" y "🙈 Ocultar": la pantalla no brinca.
+52. Celular en modo oscuro: la pantalla del PIN se ve oscura y se lee todo.
+53. Bodega → "Fruta madura por antigüedad": toca un lote → prueba "Se tiró", "Se remató" (entra a la caja), "Ya no está" y "Salió a la venta" (no cambia números).
+54. Registrar carga: en "Gastos" pregunta por imprevistos; en "Revisa y guarda" salen "¿Sumar el desgaste?" y "¿Sueldo por el viaje?"; el desglose trae cada gasto y el total cuadra. En la ficha de la carga, botón grande "Costo del viaje más exacto".
+55. Precio sugerido = puesta en bodega + repartirla (sale después de cerrar rutas) × meta; meta distinta para macho; imprevisto de más de $500 dice "va al mantenimiento"; viaje con comida "No" → el chofer no ve "Comida"; ficha del chofer → presupuesto diario de comida; en la ruta ya no sale "Caseta".
+56. Menú (☰) o "?" → "🐞 Reportar un problema" → escribe y manda; Ajustes → "Problemas reportados" → "Sacar el registro".
+57. Clientes → Pedidos por WhatsApp: un pedido de hoy sin chofer → "🚚 Asignar chofer" → al chofer le llega el aviso; luego se ve chiquito con "Ver todos".
+58. Primera vez → paso Bodega → "Poner la ubicación de la bodega" → "Buscar el lugar" (como Uber) → escoge → arrastra el pin → "Sí, guardar". También en Proveedores/Clientes → Datos. Chofer en la entrega → "Confirmar la ubicación aquí". (Necesita "Places API (New)" en la llave.)
+58b. Carga con 10 veces más kilos de lo normal → "¿Seguro? Es mucho más de lo normal".
+59. Personal → mapa chico: arrástralo; solo se mueven las calles, no el cuadro.
+60/61. Si algo no cuadra: el aviso dice qué, con números y dónde; la ventana urgente sin ×, con "Atender ›" y "Después". Inicio → tarjeta "Todo cuadra / Algo no cuadra".
+62. Menú: "Sugerencias" ya no se ve verde. Entra a Sugerencias, deja que se bloquee, mete el PIN: la barra de abajo aparece. Bodega con numerito: 1er toque entra, 2º toque baja al pendiente (con varios, cada toque el siguiente).

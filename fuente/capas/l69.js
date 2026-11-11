@@ -214,3 +214,5 @@ var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var m
 var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{var c=cargaById(f.id);if(!c||S.role!=='admin'||c.est!=='Recibida'||h.indexOf('data-act="cvopen"')>-1)return h;
   var bt='<button class="btn" style="min-height:56px;width:100%" data-act="cvopen" data-id="'+c.id+'">'+(c.cv&&c.cv.ok?'🧾 Corregir el costo del viaje':'🧾 Costo del viaje más exacto (combustible, desgaste, sueldo)')+'</button>';
   var i=h.indexOf('<div class="card" style="display:flex;flex-direction:column;gap:8px">');if(i<0)return h;i+='<div class="card" style="display:flex;flex-direction:column;gap:8px">'.length;return h.slice(0,i)+bt+h.slice(i)}catch(e){return h}};
+/* el aviso que sale abajo también dice qué no cuadra y por cuánto */
+var _tq69=toast;toast=function(t){try{var m=/^⚠ Algo no cuadra: ([^.]+)\. Revísalo en Estadísticas\.$/.exec(t||'');if(m){var x=cuentasRevisar().filter(function(y){return !y.ok&&y.n===m[1]})[0];if(x&&x.det)t='⚠ '+x.n+'. '+x.det+'.'}}catch(e){}return _tq69.call(this,t)};

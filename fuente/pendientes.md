@@ -1655,3 +1655,8 @@ El dueño sigue: negociar con proveedores y programar viajes.
     - También, sin botón: si la app tiene un error interno, lo anota sola en el mismo registro (marcado "automático").
     - Se sube a la nube (Firebase, colección aparte) para que el hijo lo vea desde Tijuana; si no hay internet, se guarda y se manda después.
     - Para revisarlos: Ajustes → "Problemas reportados": lista por fecha con dónde pasó, marcar "Resuelto", y "Sacar el registro" (archivo de texto en Descargas/Ruta Facil y botón de mandarlo por WhatsApp) para pasárselo a Claude en la siguiente sesión y arreglarlos por número.
+57. (11 nov) Inicio → "Pedidos por WhatsApp": cada tarjeta de pedido debe decir en qué va, y poderse MINIMIZAR para que la lista no se haga larga.
+    - Estados (como una rayita de pasos en cada pedido): ✓ Recibido (se registró) → ✓ Chofer asignado (nombre del chofer) → ✓ Salió a reparto → (al entregarse se quita de la lista, como hoy).
+    - Revisado en el código: hoy el pedido se guarda en el cliente (c.ped: roatán, macho, cuándo, nota) y NO tiene estado. Al hacerlo: "chofer asignado" = el cliente ya está en la ruta de un chofer para ese día; "salió a reparto" = ese chofer ya arrancó su ruta. (Que salga solo, sin que el admin lo marque a mano.)
+    - Minimizar: los pedidos que ya tienen chofer o ya salieron se ven chiquitos en un renglón (nombre · chofer · estado) y se pueden abrir con un toque; también un "Ver todos / Ocultar los ya asignados". A la vista grande quedan solo los que falta asignar, y siempre el botón "＋ Registrar un pedido".
+    - Pregunta pendiente: el pedido que todavía no tiene chofer, ¿debe tener un botón "Asignar chofer" ahí mismo?

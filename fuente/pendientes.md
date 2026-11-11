@@ -1585,3 +1585,6 @@ El dueño sigue: negociar con proveedores y programar viajes.
 - 48 segundo toque en una sección con numerito: lleva al pendiente (el urgente primero; en Inicio baja a "Por atender"; en "Más" al de las secciones de ahí).
 - Prueba t67.js.
 - Lo que sigue (nuevos puntos) se empieza en una conversación nueva (esta ya está muy cargada).
+49. (11 nov) Inicio: rediseñar las tarjetas de inventario (roatán y macho) como disenos/p49-inventario-inicio.html: un renglón "Inventario de bodega · Toca para ver la bodega" y DOS tarjetas separadas (Roatán y Macho), cada una con número grande, pastilla a la derecha (roatán: taras vacías), barra apilada de colores (verdes / madurando / maduras / reparto), 4 cuadritos con número y %, y abajo el aviso de cuántos días alcanza.
+    - Ricardo: conservar NUESTROS íconos (la caja/tara para roatán y el de plátano/kilo para macho) y poner COLORES MÁS SÓLIDOS para que se distingan (roatán naranja/ámbar fuerte, macho verde fuerte).
+    - Propuestas (esperando OK): encabezado de cada tarjeta en color sólido con letra blanca; el aviso de abajo cambia de color según los días (verde 5+, amarillo 2–4, rojo menos de 2) en lugar de "Stock asegurado" fijo; pastilla del macho "Alta disponibilidad" solo si alcanza 5+ días; tocar cada tarjeta lleva a la Bodega.

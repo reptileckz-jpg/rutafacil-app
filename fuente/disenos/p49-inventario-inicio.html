@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plátanos Nietos - Control de Reparto</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-100 font-sans antialiased text-slate-800 flex justify-center min-h-screen">
+
+    <!-- Mobile Screen Container -->
+    <div class="w-full max-w-md bg-slate-50 min-h-screen flex flex-col shadow-2xl relative overflow-hidden pb-24">
+
+        <!-- Header Superior -->
+        <header class="bg-white px-4 py-3 flex items-center justify-between border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+            <div class="flex items-center space-x-3">
+                <button class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition active:scale-95" aria-label="Menú">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center overflow-hidden shadow-xs border border-amber-200">
+                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=100&auto=format&fit=crop&q=80" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/fef08a/854d0e?text=🍌'">
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-900 text-sm leading-tight">Plátanos Nietos</h1>
+                        <p class="text-[11px] text-slate-500 font-medium">Control de reparto · <span class="text-emerald-600 font-semibold">v4.0</span></p>
+                    </div>
+                </div>
+            </div>
+            <button class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition active:scale-95" aria-label="Ayuda">
+                <i class="fa-solid fa-question text-sm"></i>
+            </button>
+        </header>
+
+        <!-- Contenido Desplazable -->
+        <main class="flex-1 px-4 py-5 space-y-5 overflow-y-auto">
+
+            <!-- Banner Inventario de Bodega -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center justify-between cursor-pointer hover:border-slate-300 transition group">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-warehouse"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 class="font-bold text-slate-900 text-base tracking-tight">Inventario de bodega</h2>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Activo</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5 font-medium">Toca para ver la bodega y auditoría</p>
+                    </div>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:translate-x-1 transition-transform text-slate-500">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </div>
+            </div>
+
+            <!-- TARJETA 1: ROATÁN (Tono Cálido Ámbar Distintivo) -->
+            <section class="bg-gradient-to-br from-amber-50/80 via-amber-50/20 to-white rounded-3xl p-5 shadow-sm border border-amber-200/70 space-y-4 relative">
+                <!-- Cabecera -->
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm border border-amber-200">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-extrabold tracking-wider text-amber-900 uppercase">Roatán</span>
+                            <div class="flex items-baseline space-x-1.5 mt-0.5">
+                                <span class="text-3xl font-extrabold text-slate-900 tracking-tight">1,353</span>
+                                <span class="text-xs font-semibold text-slate-600">cajas llenas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-white text-slate-700 text-xs font-semibold border border-amber-200/60 shadow-2xs">
+                            <span class="w-2 h-2 rounded-full bg-slate-400"></span> 0 taras vacías
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Barra de Progreso Gráfica Apilada -->
+                <div class="space-y-1.5 pt-1">
+                    <div class="flex justify-between text-[11px] font-semibold text-slate-600 px-0.5">
+                        <span>Distribución de maduración</span>
+                        <span class="text-slate-900 font-bold">100% Total</span>
+                    </div>
+                    <div class="h-3.5 w-full bg-slate-200/70 rounded-full overflow-hidden flex shadow-inner p-0.5 space-x-0.5">
+                        <div style="width: 92.4%" class="bg-emerald-500 rounded-l-full" title="Verdes: 1,250"></div>
+                        <div style="width: 0%" class="bg-amber-400" title="Madurando: 0"></div>
+                        <div style="width: 5.7%" class="bg-yellow-500" title="Maduras: 77"></div>
+                        <div style="width: 1.9%" class="bg-blue-500 rounded-r-full" title="Reparto: 26"></div>
+                    </div>
+                </div>
+
+                <!-- Subtarjetas de Estados (Alto Contraste) -->
+                <div class="grid grid-cols-4 gap-2 pt-1">
+                    <div class="bg-white border border-amber-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-emerald-700">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Verdes
+                        </div>
+                        <div class="my-1.5"><span class="text-base font-extrabold text-slate-900">1,250</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">92.4%</span>
+                    </div>
+                    <div class="bg-white border border-amber-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-amber-700">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Madur.
+                        </div>
+                        <div class="my-1.5"><span class="text-base font-extrabold text-slate-900">0</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">0%</span>
+                    </div>
+                    <div class="bg-white border border-amber-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-yellow-700">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500"></span> Maduras
+                        </div>
+                        <div class="my-1.5"><span class="text-base font-extrabold text-slate-900">77</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">5.7%</span>
+                    </div>
+                    <div class="bg-white border border-amber-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-blue-700">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Reparto
+                        </div>
+                        <div class="my-1.5"><span class="text-base font-extrabold text-slate-900">26</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">1.9%</span>
+                    </div>
+                </div>
+
+                <!-- Footer Alerta -->
+                <div class="bg-white/80 border border-amber-200/70 rounded-xl p-3 flex items-center space-x-3 shadow-2xs">
+                    <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-hourglass-half text-xs"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-slate-900">Stock asegurado</p>
+                        <p class="text-[11px] text-slate-600 font-medium">Te alcanza para <strong class="font-bold text-slate-900">muchos días</strong> de roatán.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TARJETA 2: MACHO (Tono Verde Esmeralda Distintivo) -->
+            <section class="bg-gradient-to-br from-emerald-50/70 via-emerald-50/20 to-white rounded-3xl p-5 shadow-sm border border-emerald-200/70 space-y-4 relative">
+                <!-- Cabecera -->
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm border border-emerald-200">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-extrabold tracking-wider text-emerald-900 uppercase">Macho</span>
+                            <div class="flex items-baseline space-x-1.5 mt-0.5">
+                                <span class="text-3xl font-extrabold text-slate-900 tracking-tight">4,395</span>
+                                <span class="text-xs font-semibold text-slate-600">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-white text-emerald-800 text-xs font-semibold border border-emerald-200/80 shadow-2xs">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Alta disponibilidad
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Barra de Progreso Gráfica Apilada -->
+                <div class="space-y-1.5 pt-1">
+                    <div class="flex justify-between text-[11px] font-semibold text-slate-600 px-0.5">
+                        <span>Distribución de peso (kg)</span>
+                        <span class="text-slate-900 font-bold">100% Total</span>
+                    </div>
+                    <div class="h-3.5 w-full bg-slate-200/70 rounded-full overflow-hidden flex shadow-inner p-0.5 space-x-0.5">
+                        <div style="width: 93.3%" class="bg-emerald-500 rounded-l-full" title="Verdes: 4,100 kg"></div>
+                        <div style="width: 0%" class="bg-amber-400" title="Madurando: 0 kg"></div>
+                        <div style="width: 4.9%" class="bg-yellow-500" title="Maduras: 215 kg"></div>
+                        <div style="width: 1.8%" class="bg-blue-500 rounded-r-full" title="Reparto: 80 kg"></div>
+                    </div>
+                </div>
+
+                <!-- Subtarjetas de Estados (Alto Contraste) -->
+                <div class="grid grid-cols-4 gap-2 pt-1">
+                    <div class="bg-white border border-emerald-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-emerald-700">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Verdes
+                        </div>
+                        <div class="my-1.5"><span class="text-sm font-extrabold text-slate-900">4,100</span><span class="block text-[9px] text-slate-500 font-semibold">kg</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">93.3%</span>
+                    </div>
+                    <div class="bg-white border border-emerald-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-amber-700">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Madur.
+                        </div>
+                        <div class="my-1.5"><span class="text-sm font-extrabold text-slate-900">0</span><span class="block text-[9px] text-slate-500 font-semibold">kg</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">0%</span>
+                    </div>
+                    <div class="bg-white border border-emerald-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-yellow-700">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500"></span> Maduras
+                        </div>
+                        <div class="my-1.5"><span class="text-sm font-extrabold text-slate-900">215</span><span class="block text-[9px] text-slate-500 font-semibold">kg</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">4.9%</span>
+                    </div>
+                    <div class="bg-white border border-emerald-200/50 rounded-2xl p-2.5 text-center flex flex-col justify-between shadow-2xs">
+                        <div class="flex items-center justify-center space-x-1 text-[11px] font-bold text-blue-700">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Reparto
+                        </div>
+                        <div class="my-1.5"><span class="text-sm font-extrabold text-slate-900">80</span><span class="block text-[9px] text-slate-500 font-semibold">kg</span></div>
+                        <span class="text-[10px] text-slate-600 font-semibold bg-slate-50 border border-slate-200/60 rounded-md py-0.5 px-1">1.8%</span>
+                    </div>
+                </div>
+
+                <!-- Footer Alerta -->
+                <div class="bg-white/80 border border-emerald-200/70 rounded-xl p-3 flex items-center space-x-3 shadow-2xs">
+                    <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-chart-line text-xs"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-slate-900">Proyección de abastecimiento</p>
+                        <p class="text-[11px] text-slate-600 font-medium">Te alcanza para <strong class="font-bold text-slate-900">muchos días</strong> de macho.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Botón flotante -->
+        <div class="absolute bottom-20 right-4 z-40">
+            <button class="w-14 h-14 rounded-full bg-emerald-600 text-white shadow-xl shadow-emerald-600/40 flex items-center justify-center text-2xl hover:bg-emerald-750 transition active:scale-95 focus:outline-none" aria-label="Agregar">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
+        <!-- Barra de Navegación Inferior -->
+        <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-3 py-2 flex items-center justify-between z-30 shadow-lg">
+            <button class="flex flex-col items-center flex-1 py-1 text-emerald-700">
+                <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-xs font-bold relative">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="absolute -top-1 -right-1 bg-emerald-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">1</span>
+                </div>
+                <span class="text-[10px] font-bold mt-1">Inicio</span>
+            </button>
+            <button class="flex flex-col items-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs relative">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span class="absolute -top-1 -right-1 bg-slate-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">2</span>
+                </div>
+                <span class="text-[10px] font-medium mt-1">Bodega</span>
+            </button>
+            <button class="flex flex-col items-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs relative">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                    <span class="absolute -top-1 -right-1 bg-slate-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">4</span>
+                </div>
+                <span class="text-[10px] font-medium mt-1">Cargas</span>
+            </button>
+            <button class="flex flex-col items-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <span class="text-[10px] font-medium mt-1">Clientes</span>
+            </button>
+            <button class="flex flex-col items-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <span class="text-[10px] font-medium mt-1">Gastos</span>
+            </button>
+            <button class="flex flex-col items-center flex-1 py-1 text-slate-400 hover:text-slate-600 transition">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs relative">
+                    <i class="fa-solid fa-ellipsis"></i>
+                    <span class="absolute -top-1 -right-1 bg-slate-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">1</span>
+                </div>
+                <span class="text-[10px] font-medium mt-1">Más</span>
+            </button>
+        </nav>
+
+    </div>
+
+</body>
+</html>

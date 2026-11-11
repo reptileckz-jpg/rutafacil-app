@@ -1691,3 +1691,12 @@ El dueño sigue: negociar con proveedores y programar viajes.
       · Dónde está: "Taras con clientes: 3 clientes sin número" / "Bodega: macho maduro vacío".
       · Qué hacer: un botón que lleve justo ahí ("Ir a contar las taras", "Corregir el número de Juan") y, si es un error de la app (no del usuario), decirlo claro: "Esto es un error de la app, no tuyo. Ya quedó anotado para arreglarlo" (se manda solo al registro de problemas del 56).
       · La tarjeta "¿Cuadra todo?" a la vista en Inicio (chica, verde ✓ cuando todo está bien; roja con la lista en palabras claras cuando no).
+61. (11 nov) Diseño nuevo de la ventana de AVISO URGENTE que sale al abrir la app ("Atiende esto", N de 7). Foto: fotos/p61-aviso-urgente.png.
+    - Diseño: franja roja arriba con ⚠️ "Urgente" y rayas diagonales; pastilla "4 de 7" y ×; ícono grande en círculo rosa (calendario con !); título grande y texto; botón rojo grande "✓ | Atender ›"; botón blanco con borde "🕒 | Después"; esquina con rayas rojas.
+    - Ajustes propuestos (esperando OK):
+      (a) Título: en vez de "Atiende esto" (siempre igual), el título claro del aviso (punto 60): "Las taras no cuadran", "Falta el precio de hoy"… y abajo el detalle con números y dónde.
+      (b) Ícono según el tipo de aviso (taras, dinero, vehículo, fruta, cliente…), no siempre el calendario; mismos íconos y colores que los avisos de Inicio (punto 50).
+      (c) Color según urgencia (punto 50): rojo solo en lo urgente; si sale uno naranja o azul, la franja y el botón de su color.
+      (d) Quitar la ×: hace lo mismo que "Después" y dos botones para lo mismo confunden. (Si se deja, que haga exactamente lo de "Después".)
+      (e) El ✓ en "Atender" parece "ya quedó resuelto", y en realidad te LLEVA a resolverlo → dejar solo "Atender ›" (o un ícono de flecha).
+      (f) Modo oscuro: fondo oscuro, misma franja de color.

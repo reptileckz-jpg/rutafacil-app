@@ -1700,3 +1700,5 @@ El dueño sigue: negociar con proveedores y programar viajes.
       (d) Quitar la ×: hace lo mismo que "Después" y dos botones para lo mismo confunden. (Si se deja, que haga exactamente lo de "Después".)
       (e) El ✓ en "Atender" parece "ya quedó resuelto", y en realidad te LLEVA a resolverlo → dejar solo "Atender ›" (o un ícono de flecha).
       (f) Modo oscuro: fondo oscuro, misma franja de color.
+    → 61 DECIDIDO (11 nov): sí a (a) título claro, (b) ícono según el tipo, (c) color según urgencia, (e) "Atender ›" sin palomita y (f) modo oscuro.
+      La × (Ricardo pensó que era para quitar todos los avisos de un golpe): SE QUITA. Razón: son urgentes (dinero, cajas); cerrarlos todos de un toque hace fácil que se pase algo importante. Con "Después" se pasa al siguiente y todos se quedan en Inicio → "Por atender", así que nada se pierde.

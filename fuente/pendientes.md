@@ -1604,3 +1604,12 @@ El dueño sigue: negociar con proveedores y programar viajes.
 52. (11 nov) Pantalla del PIN en MODO OSCURO: el texto sí cambia (se pone claro), pero el FONDO se queda claro → "Hola, Ricardo Nieto", el texto de "Pasaron 5 minutos…" y "Entrar con mi huella o cara" casi no se ven (letra clara sobre fondo claro). Foto: fotos/p52-pin-oscuro.png. Hay que corregirlo.
     - Causa en el código: capa l66, #pinov tiene el fondo fijo claro (linear-gradient #ECFDF5 → #F1F5F9 con !important) y las teclas blancas fijas; no hay versión para modo oscuro.
     - Al hacerlo: en modo oscuro, fondo oscuro (con un toque verde arriba), teclas oscuras con número claro, tecla de huella verde oscuro, botón "Entrar con mi huella o cara" oscuro con letra clara, "Olvidé mi PIN" y "No soy…" en colores que se lean. Revisar también: celular en oscuro + app en claro (y al revés), como en el punto 4/9.
+53. (11 nov) Bodega → "Fruta madura por antigüedad": las tarjetas de cada lote NO hacen nada: no se pueden tocar, no hay ninguna acción y no se pueden quitar (ni las que dicen "Pasada de tiempo").
+    - Ojo con los números: esos lotes NO son un registro aparte; salen del inventario de maduras (madSync: si bajan las maduras, se quitan primero los lotes más viejos). Si solo se "borrara" la tarjeta, el inventario y los lotes dejarían de cuadrar. Por eso cada acción debe mover el inventario de verdad.
+    - Propuesta (esperando OK): al tocar un lote se abre una tarjeta de pantalla completa paso a paso con:
+      (a) "Se tiró (merma)" → cuántas cajas/kg → foto opcional → ¿Seguro? (usa el mismo registro de merma que ya existe, "Registrar como merma"; el chofer/encargado lo manda para aprobación);
+      (b) "Se remató en bodega" → cuántos kg y a cuánto → ¿Seguro? (entra como venta de bodega por kilo, como lo de segunda);
+      (c) "Ya no está / el conteo está mal" → cuántas quedan de verdad → ¿Seguro? (ajuste de inventario que queda en el historial con quién y cuándo);
+      (d) "Todavía está buena" → marcarla revisada hoy (deja de salir en rojo hoy, sin mover números).
+      Deslizar el lote a un lado = atajo para abrir esas mismas opciones (no borrar directo).
+    - Pregunta pendiente para Ricardo: ¿le late así, o quiere otras acciones?

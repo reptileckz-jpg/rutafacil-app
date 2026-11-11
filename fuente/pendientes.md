@@ -1744,3 +1744,14 @@ El dueño sigue: negociar con proveedores y programar viajes.
 63. (11 nov) Remate de fruta (punto 53): a Ricardo no le convence cómo quedó. Hoy SÍ pregunta cuántas cajas/kilos y el precio por kilo (con ¿Seguro?), pero el dinero entra a la caja como "entrada de efectivo" (S.aportes, "Remate en bodega") y NO como venta → no sale en ventas ni estadísticas.
     - Propuesta (esperando OK): registrarlo como VENTA EN BODEGA (mismo lugar que la venta local, S.vlVentas, renglón "Remate de roatán/macho" con kilos y precio), ya recibida por el administrador para que entre a la caja UNA sola vez (sin pasar por el corte de venta local). Así sale en ventas del día, estadísticas y kilos vendidos, y en la merma solo queda la pérdida contra el costo. Revisar al hacerlo que la caja, ventas y merma cuadren (prueba).
 - (11 nov) El usuario YA habilitó "Places API (New)" en la llave de Android → "Buscar el lugar" (58) debe funcionar en la 1.0.24.
+
+## Lista nueva (después de la 1.0.24) — empieza otra vez en 1
+(Los puntos 1–63 de arriba son la lista anterior. Sigue pendiente de decidir el 63: remate como venta.)
+
+1. (11 nov, 1.0.24) Inicio → Finanzas: al mostrar/ocultar los números la pantalla SIGUE moviéndose. Video de 5.7 s (cuadros en fotos/n1-finanzas-video.png, 8 por segundo).
+   - Lo que se ve en el video (lo repitió 3 veces y siempre igual):
+     · Toca "👁 Mostrar": los números aparecen en su lugar, sin moverse (eso ya quedó bien en la 1.0.24).
+     · Toca "🙈 Ocultar": los números se tapan (••••••) en su lugar y, MEDIO SEGUNDO DESPUÉS, la pantalla se desliza SUAVE hacia abajo ~1/4 de pantalla hasta dejar "Finanzas" casi hasta arriba (se ven las 5 tarjetas tapadas, "Cierre de caja" y "Resumen por WhatsApp"). Él tiene que regresar con el dedo.
+   - Conclusión: el brinco de antes (el del navegador, instantáneo) ya no está; este es OTRO: es un desplazamiento SUAVE y con retraso, o sea que lo hace la app con una instrucción de "llevar la pantalla a…" (scrollIntoView/scrollTo con animación) que se dispara después de ocultar.
+   - Sospechas a revisar al hacerlo (solo análisis, sin cambios): algo que reacciona al toque o al cambio de Finanzas y baja a su tarjeta: (a) la guía "¿Qué sigue?"/"Aprende la app" (el paso del tutorial de Finanzas apunta a "button.finver, .fing" y centra la tarjeta con animación); (b) el "avisos/flash" que baja suave a una tarjeta; (c) el ajuste de pantalla al enfocar el botón (focusin). No se ve en la computadora con clic: hay que reproducirlo con toque de dedo (celular emulado) y registrar qué función mueve la pantalla.
+   - Al hacerlo: guardar dónde está el título "Finanzas" antes de mostrar/ocultar y, si algo lo mueve en los siguientes ~1.5 s sin que él toque, regresarlo a su lugar; y quitar la causa. Probar también el ocultado solo a los 20 s.

@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
 const p=await b.newPage({viewport:{width:400,height:880}});
-await p.addInitScript(()=>{window.__pnTest=1;window.PN_GMAPS=true;window.__gm={made:0,destroyed:0,mk:0,pl:0,fail:false};window.Capacitor={isNativePlatform:()=>true,Plugins:{}};
+await p.addInitScript(()=>{window.__pnTest=1;window.__gmInline=1;window.PN_GMAPS=true;window.__gm={made:0,destroyed:0,mk:0,pl:0,fail:false};window.Capacitor={isNativePlatform:()=>true,Plugins:{}};
  window.GMAPA={create:o=>window.__gm.fail?Promise.reject(new Error('x')):(window.__gm.made++,Promise.resolve({addMarkers:L=>{window.__gm.mk+=L.length;return Promise.resolve(L.map((x,i)=>String(i)))},addPolylines:L=>{window.__gm.pl+=L.length;return Promise.resolve(['p'])},removeMarkers:()=>Promise.resolve(),removePolylines:()=>Promise.resolve(),setCamera:()=>Promise.resolve(),enableCurrentLocation:()=>Promise.resolve(),updateMapBounds:()=>{},destroy:()=>{window.__gm.destroyed++;return Promise.resolve()}}))};
  window.L={map:function(){return {remove(){},invalidateSize(){},fitBounds(){},setView(){}}},layerGroup:()=>({addTo(){return this},clearLayers(){},addLayer(){}}),tileLayer:()=>({on(){},addTo(){}}),marker:()=>({bindTooltip(){return this}}),polyline:()=>({}),divIcon:()=>({})}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));

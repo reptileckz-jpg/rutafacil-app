@@ -1577,3 +1577,11 @@ El dueño sigue: negociar con proveedores y programar viajes.
     Sospechas: (a) la barra se esconde/aparece sola al deslizar (navHid) y en el borde del umbral va y viene; (b) algo vuelve a dibujar la pantalla cada pocos segundos (revisión de mapas cada 1.2–1.5 s, cuenta de numeritos de la barra en cada dibujo) y la barra se rehace; (c) el mapa de Google "debajo" (se quita con la opción A del 44). Revisar: que dibujar no rehaga la barra si no cambió nada y que esconder/mostrar la barra tenga margen para no parpadear.
 47. (11 nov) Rendimiento: en el Samsung Z Fold 5 la app va perfecta y fluida; en el Motorola Z2 Force (Android 15, usado como admin) se siente un poco más torpe, aunque todo funciona. Ricardo: NO hacer cambios de rendimiento que arriesguen algo; ya funciona bien.
     → Lo que sí ayuda sin riesgo y ya está decidido: opción A del 44 (quitar el mapa de Google "debajo" de la app, que es lo más pesado) y el 46 (no rehacer la barra si no cambió nada). Sugerencia al usuario: actualizar "Android System WebView" y Chrome en el Motorola.
+48. (11 nov) Numerito de la barra de abajo: tocarlo no hacía nada. Debe ser: 1er toque = ir a la sección (como siempre); 2º toque (ya estando ahí) = ir directo al pendiente de ese numerito.
+### HECHO (11 nov) · capa l67 · 44, 45, 46, 48
+- 44/45 opción A: los mapas chicos dentro de las pantallas son siempre el mapa de antes; Google Maps solo al tocar "Ver en Google Maps" (pantalla completa). Se quitó el interruptor "Mapas de Google" de Ajustes. Para pruebas: window.__gmInline=1 vuelve a prender el mapa chico de Google (gmin.js, t58.js).
+- 44 ya no se selecciona texto al tocar o mantener presionado (solo en campos donde se escribe).
+- 46 el numerito que parpadea ya no reinicia su animación cada vez que se vuelve a dibujar la barra (seguía su ritmo con el reloj).
+- 48 segundo toque en una sección con numerito: lleva al pendiente (el urgente primero; en Inicio baja a "Por atender"; en "Más" al de las secciones de ahí).
+- Prueba t67.js.
+- Lo que sigue (nuevos puntos) se empieza en una conversación nueva (esta ya está muy cargada).

@@ -1613,3 +1613,9 @@ El dueño sigue: negociar con proveedores y programar viajes.
       (d) "Todavía está buena" → marcarla revisada hoy (deja de salir en rojo hoy, sin mover números).
       Deslizar el lote a un lado = atajo para abrir esas mismas opciones (no borrar directo).
     - Pregunta pendiente para Ricardo: ¿le late así, o quiere otras acciones?
+    → 53 DECIDIDO (11 nov) · PRIORIDAD BAJA (Ricardo: "es muy, muy raro que se nos queden cajas así"; hacerlo sencillo). Al tocar un lote, 4 opciones, y las 4 DESCUENTAN del inventario de maduras:
+      1) "Se tiró" → cuánto → ¿Seguro? → merma (mismo registro de merma de siempre).
+      2) "Se remató" → cuánto y a cuánto → ¿Seguro? → venta de bodega por kilo (entra el dinero a la caja).
+      3) "Ya no está" → pregunta "¿Alguien se la llevó o la vendió?": un chofer (se le suma a lo que lleva para que su cierre cuadre) / se vendió en bodega (cuánto y a cuánto) / no sé (ajuste que queda en el historial con quién y cuándo).
+      4) "Estaba buena y salió a la venta" → misma pregunta: ¿qué chofer se la llevó, o se vendió en bodega?
+      Sin opción de "marcar revisada sin mover números" (se cambió por la 4). Deslizar = abre estas mismas opciones.

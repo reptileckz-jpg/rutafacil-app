@@ -12,7 +12,7 @@ ok(await ev(()=>(S.probs||[]).some(p=>p.auto&&/carga rota/.test(p.k||''))),'y sa
 r=await ev(()=>{var v=VIEWS.inicio;VIEWS.inicio=function(){throw new Error('prueba: inicio roto')};S.tab.admin='inicio';render();VIEWS.inicio=v;var o=document.getElementById('fallo77');return [!!o,o&&o.innerText]});
 ok(r[0]&&/Reintentar/.test(r[1])&&/Mandar el error/.test(r[1])&&/Volver a bajar los datos de la nube/.test(r[1]),'si sigue fallando: "La app encontró un problema" con Reintentar, Mandar el error y Bajar de la nube',r[1]&&r[1].slice(0,80));
 ok(/inicio roto/.test(await ev(()=>document.querySelector('#fallo77 pre').textContent)),'enseña el error para mandarlo');
-await ev(()=>{document.getElementById('fallo77').remove();render()});
+await ev(()=>{document.getElementById('fallo77').remove();DIAG77.paus=false;render()});
 // 3 · la carga de la nube se rompe: deja entrar y pide el PIN
 r=await ev(()=>{var f=nbForzarRol,pe=pinEntrar,pin=0;nbForzarRol=function(){throw new Error('prueba: nube rota')};pinEntrar=function(){pin++};window.NB.perfil={rol:'admin',activo:true};NB.vaciaNube=false;
  try{nbPrimera([{id:'s~cfg',data:{v:JSON.stringify(S.cfg)}}])}catch(e){return ['escapó',e.message]}var res=[NB.est,NB.listo,pin];nbForzarRol=f;pinEntrar=pe;return res});

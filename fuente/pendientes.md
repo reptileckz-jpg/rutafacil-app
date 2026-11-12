@@ -1965,3 +1965,9 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 26. Registrar pedido: "¿Cómo te lo pidió?" y "Precio especial"; chofer: "+ Pedido de un cliente" → "Pedir precio especial" → al admin le sale con reloj de 5 min.
 27/28. Asigna dos pedidos a un chofer con cierre enviado y la app abierta → le salen al momento, una sola tarjeta, un botón "Ir a cargar".
 29. Registra un pedido más grande de lo que hay → "No alcanza"; Bodega → "Apartado para pedidos".
+
+### 31 sigue (12 nov) · Ricardo: con la 7.8 sale la pantalla de rescate pero se queda CONGELADA (no deja ver el error ni mandarlo); el admin no abre.
+- Causa de que se congele: al fallar al dibujar, la app lo reintentaba cada pocos segundos y cada vez volvía a crear la pantalla de rescate (los toques nunca llegaban); además la pantalla de "Cargando" estaba al mismo nivel y algo de la app podía comerse los toques.
+- HECHO 7.9 (capa l77, parte 2): al salir la pantalla de rescate la app deja de cargar y de dibujar; quita "Cargando" de encima; botones con toque directo (WhatsApp como enlace, "Copiar el error", Reintentar, Volver a bajar); el error se ve sin abrir nada; DIAGNÓSTICO: estado de la carga y sus pasos con tiempos, si el guardado del celular terminó, cuántos documentos y KB bajó la nube y los más pesados, y los errores de la nube (antes solo iban a la consola y la app esperaba para siempre). El aviso de "tardó mucho" cubre también "Conectando" y el inicio de sesión (40 s).
+- SIGUIENTE: Ricardo manda el error con el diagnóstico → se arregla la causa.
+- Pruebas t77b (7); t77 ajustada.

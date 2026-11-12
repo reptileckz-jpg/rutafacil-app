@@ -1912,3 +1912,9 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
     - Si el pedido no se alcanza a surtir: aviso claro "No alcanza: hay 8 cajas listas y los pedidos de hoy suman 15" con opciones: registrarlo de todos modos (queda "Pendiente de fruta"), cambiar la cantidad, o dejarlo para mañana (y avisa cuánto está madurando y cuándo sale).
     - Chofer que registra un pedido en persona: si lo que trae en el camión no alcanza, le dice "Te faltan 5 cajas. En bodega hay 20 listas" y le ofrece la carga extra; si en bodega tampoco hay, "No hay fruta para surtirlo: avísale al cliente".
     - Lo apartado para pedidos se ve en Bodega ("12 cajas apartadas para pedidos de hoy").
+- DECIDIDO (12 nov):
+  · 29: la fruta apartada para pedidos NO está disponible para nadie más (otra ruta, venta local, remate); si alguien la necesita, la app dice "está apartada para el pedido de …" y pregunta si se libera.
+  · 26: el precio especial lo pueden dar el administrador y el chofer. El chofer SOLICITA permiso como ya se maneja en la app (contador de 5 minutos); si el administrador no contesta en esos 5 minutos, la app le dice "No se autorizó por ahora" y se cobra el precio del día.
+  · 29 (pedido para mañana): se aparta de lo que está madurando y sale a tiempo; si no alcanza, sugiere meter más a madurar (cuánto y cuándo).
+  · Sugerencia 1 aceptada: para probar sin reiniciar todo, usar Ajustes → Respaldo y datos → "Borrar datos de prueba".
+  · ARMAR: esperar a que Ricardo diga. Cuando lo diga, armar y probar pero NO publicar en main (no APK) hasta que diga.

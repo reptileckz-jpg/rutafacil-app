@@ -1763,6 +1763,7 @@ Errores y mejoras de la prueba (revisado en el código):
 75. Registrar carga de macho → "¿Metes a madurar?" → sí y kilos, pero no pregunta cuánto tiempo / cuándo sale.
 76. Costo de la carga: ya se dio "Usar desde hoy" y el botón vuelve a salir.
 77. Bodega: enseñar 4 números por fruta: total grande y abajo verdes / en maduración / maduras (hoy no salen los que están madurando).
+    → (12 nov, Ricardo lo repite) Revisado: en Bodega la tarjeta "Existencias en bodega" (l65 exist65) solo trae Verdes y Maduras y el total de arriba NO suma lo que está madurando (en Inicio sí sale "Madurando"). Debe quedar así, para roatán y macho: "Hay 500 cajas de roatán, de las cuales:" y en grande 400 verdes · 50 en maduración · 50 maduras; el total incluye las tres. Lo que va en los camiones se ve aparte (no es de bodega).
 78. Taras prestadas al cerrar entrega: ventana que recuerde no dejar taras (o el mínimo), botón "Ya le pedí las vacías", y si no las regresa en X días, descontar de la comisión/sueldo del chofer (preguntar reglas).
 79. Ruta: "Más opciones" se queda abierto al pasar a otro cliente.
 80. Ruta → registrar pedido de un cliente: en cajas de roatán no hay + y −; el formulario es del color del fondo (sin tarjeta).

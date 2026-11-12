@@ -1918,3 +1918,6 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
   · 29 (pedido para mañana): se aparta de lo que está madurando y sale a tiempo; si no alcanza, sugiere meter más a madurar (cuánto y cuándo).
   · Sugerencia 1 aceptada: para probar sin reiniciar todo, usar Ajustes → Respaldo y datos → "Borrar datos de prueba".
   · ARMAR: esperar a que Ricardo diga. Cuando lo diga, armar y probar pero NO publicar en main (no APK) hasta que diga.
+30. (12 nov) Desapareció el nivel del DEF del Freightliner M2.
+    Revisado: el vehículo tiene "¿Usa DEF?" (usaDef) y su nivel (def) en "Editar datos → Combustible", pero el alta por pasos nueva (primera vez y Vehículos → agregar) no lo pregunta, así que los vehículos dados de alta así quedan sin DEF y ya no sale su nivel.
+    Al hacerlo: en el alta por pasos, si escoge Diésel → "¿Usa DEF (AdBlue)?" Sí / No; si sí → nivel de hoy (con la misma aguja de la app). Para los vehículos ya dados de alta con Diésel y sin esa respuesta, preguntarlo una vez en la tarjeta del vehículo ("¿Este vehículo usa DEF?").

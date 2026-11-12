@@ -1897,3 +1897,7 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
     25 (datos de Ricardo): Moto Z, administrador; se cierra AL INSTANTE y después de varios intentos se queda abierto.
     Causa más probable: al tocar, algo de la app vuelve a dibujar la pantalla justo entre el toque y el momento en que el celular abre el apartado (en el Moto, que es más lento, se nota). La pantalla nueva sale cerrada porque la app todavía no se enteró de que lo abriste; el aviso de "se abrió" llega después y por eso, tras varios intentos, se queda abierto.
     Al hacerlo: que la app misma abra y cierre los apartados al tocar el título (y lo recuerde en ese momento), en TODOS los apartados de la app, no solo en "Aprende la app"; reproducirlo con un celular lento simulado (CPU 4× más lenta y toques táctiles).
+26. (12 nov) Pedidos por WhatsApp: falta el botón de precio especial de una sola vez (el que se platicó en el 81) y no hay forma de registrar pedidos por LLAMADA.
+    Al hacerlo (en la misma tarjeta, sin hacer otra):
+    - La tarjeta se llama "Pedidos" (WhatsApp, llamada o en persona). Al registrar un pedido: "¿Cómo te lo pidió?" WhatsApp / Llamada / En persona (sale como pastilla en cada pedido).
+    - En cada pedido: "⭐ Precio especial solo para este pedido" (para ganar al cliente o que te compre más). Se pone el precio por caja y/o por kilo; el chofer lo ve y se le cobra solo en esa entrega; después vuelve al precio del día. Si queda abajo del costo, pregunta "¿Seguro?". Usa el mismo mecanismo del precio especial de la ficha del cliente.

@@ -1793,3 +1793,9 @@ Errores y mejoras de la prueba (revisado en el código):
     - Listo: resumen por apartado con "Corregir" en cada uno.
     - Si se cierra a medias, sigue donde se quedó. Lo opcional se puede "Llenar después" y queda en "Datos que faltan".
     - Prueba automática de toda la primera vez con datos reales (incluye 1,900 kg de macho del 74).
+88. (12 nov) IMPORTAR CLIENTES (Ricardo tardó mucho poniendo ubicaciones a mano en las pruebas). En Clientes (admin) y en la primera vez (paso Clientes): "📥 Importar clientes" desde un archivo de Excel o CSV (Descargas, WhatsApp, Drive).
+    - Botón "Bajar la plantilla" (Excel con columnas: nombre, apodo, teléfono, ubicación [link de Google Maps o coordenadas], dirección/referencia, horario, días de visita, chofer, crédito inicial, taras que debe).
+    - Vista previa antes de guardar: cuántos entran, cuáles tienen error (en palabras claras) y cuáles ya existen (mismo nombre o teléfono → "Saltar" o "Actualizar"); ¿Seguro? al final.
+    - La ubicación se lee con el mismo lector del punto 64 (links cortos, coordenadas). Lo que falte queda en "Datos que faltan".
+    - Lo mismo para proveedores. Queda en el historial quién importó y cuándo.
+    - Para pruebas: Claude arma un archivo de ejemplo con clientes de prueba y ubicaciones reales de la ciudad que diga Ricardo.

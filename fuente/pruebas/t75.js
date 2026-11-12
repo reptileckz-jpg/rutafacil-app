@@ -15,8 +15,8 @@ v=await ev(()=>document.querySelector('[data-x75="res"]')&&document.querySelecto
 ok(await ev(()=>!!document.querySelector('[data-act="su75add"]')&&document.querySelector('#setov [data-act="suadd"]').closest('.card').style.display==='none'),'Vehículos: botón grande en lugar del formulario largo');
 await ck('[data-act="su75add"]');await p.waitForTimeout(80);await ck('[data-act="wzop"][data-v="carga"]');await p.waitForTimeout(60);
 await W(()=>p.fill('#wz_marca','Nissan'));await W(()=>p.fill('#wz_modelo','NP300'));await W(()=>p.fill('#wz_anio','2022'));await ck('#wzov [data-salta]');await p.waitForTimeout(50);
-await W(async()=>{await p.selectOption('#wz_plEdo','Baja California');await p.fill('#wz_pl','AB-123-C')});await ck('[data-act="wzop"][data-v="Diésel"]');await W(async()=>{});
-await W(()=>p.fill('#wz_capL','80'));await W(()=>p.fill('#wz_capC','60'));await W(()=>p.fill('#wz_odo','100000'));await ck('[data-act="wzop"][data-v="10000"]');await p.waitForTimeout(60);
+await W(async()=>{await p.selectOption('#wz_plEdo','Baja California');await p.fill('#wz_pl','AB-123-C')});await ck('[data-act="wzop"][data-v="Diésel"]');await W(async()=>{});await ck('[data-act="wzop"][data-v="si"]');await p.waitForTimeout(60);
+await W(()=>p.fill('#wz_capL','80'));await W(()=>p.fill('#wz_capC','60'));await W(()=>p.fill('#wz_odo','100000'));await ck('#wzov [data-salta]');await p.waitForTimeout(50);await ck('[data-act="wzop"][data-v="10000"]');await p.waitForTimeout(60);
 await ck('[data-act="wzop"][data-v="hace"]');await p.waitForTimeout(50);await W(()=>p.fill('#wz_acX','3600'));await ck('#wzov [data-salta]');await p.waitForTimeout(50);await ck('[data-act="wzfin"]');await p.waitForTimeout(100);
 ok(await ev(()=>S.setup.veh.length===1),'el vehículo se agrega con su alta por pasos');await sig();
 await ck('[data-act="su75add"]');await W(()=>p.fill('#wz_n','Pepe López'));await ck('[data-act="wzop"][data-v="chofer"]');await p.waitForTimeout(70);await ck('[data-act="wzfin"]');await p.waitForTimeout(70);ok(await ev(()=>S.setup.per.length===1),'personal por pasos');await sig();

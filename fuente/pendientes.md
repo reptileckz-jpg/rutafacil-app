@@ -1932,3 +1932,36 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Red de seguridad: si algo se rompe al cargar la nube, se salta y deja entrar (pide el PIN); si algo se rompe al dibujar, cierra lo abierto y regresa a Inicio; si sigue fallando, pantalla "La app encontró un problema" con Reintentar, "Mandar el error por WhatsApp" y "Volver a bajar los datos de la nube" (borra solo lo guardado en ese celular); si la carga pasa de 25 segundos, sale esa pantalla. El viaje abierto que ya terminó se cierra solo ("Ese viaje ya terminó"). Todo error queda anotado (Ajustes → Problemas reportados) con el texto exacto.
 - SIGUIENTE: que Ricardo mande el error que salga (WhatsApp o Problemas reportados) para arreglar la causa exacta. Luego, los puntos 15 al 30.
 - Prueba t77 (9). Todas: 23 archivos, 0 FAIL.
+
+### HECHO (12 nov) · versión 7.8 · capas l78 y l79 · puntos 15 al 30 (Ricardo: "añade lo que teníamos, arregla el fallo y publica")
+- 25 los apartados que se abren y cierran: la app los cambia y los recuerda al instante (ya no se cruzan con el redibujo). · 25b cada renglón de "Aprende la app" lleva a lo suyo (o dice por qué no hay).
+- 15 entrega: "Confirmar la ubicación" solo si falta o es aproximada (link, búsqueda, Excel); al confirmar ya no vuelve; "Corregir la ubicación" en Más opciones. Altas por pasos: al guardar la ubicación pasan solas al siguiente paso.
+- 16 TAG: cruce sin viaje de carga → Gastos "Casetas (TAG)" del vehículo, sin volver a salir de la caja.
+- 17 historial de revisiones (quién, hora, cuánto tardó, si usó "Todo lo demás bien", fallas) en la ficha del vehículo; al cierre "¿Lo entregas en las mismas condiciones?" (obligatorio; "No, pasó algo" con texto y foto → aviso urgente).
+- 18 galería: NP300, M2 y las fotos de tus vehículos (sin dibujos); sugiere por la marca; "Tomar foto" y "Galería". · 20 VIN (17, sin I/O/Q), motor y llanta con formato (295/75R22.5). · 30 diésel → "¿Usa DEF?"; vehículos de diésel ya dados de alta lo preguntan una vez.
+- 19 el rebote al final de la lista ya no esconde/enseña la barra ni hace trabajo extra; las fotos grandes de las tarjetas se ven en miniatura ligera.
+- 21/22 la bodega ya no se llama "Bodega Banderilla" de la demo; al guardar su ubicación se pone nombre y dirección (con el buscador se llenan solos; sugiere "Bodega + colonia").
+- 23 cámara: abre la principal (descarta mono/tele/gran angular) y "🔁 Lente" para cambiar; recuerda el lente en ese celular.
+- 24 "Lo que pasó hoy en su ruta" minimizado al recibir el cierre.
+- 26 pedidos: la tarjeta se llama "Pedidos"; "¿Cómo te lo pidió?" WhatsApp / llamada / en persona; "⭐ Precio especial solo para este pedido" (si queda abajo del costo, "¿Seguro?"). El chofer lo pide (en su pedido) y el administrador tiene 5 minutos con reloj; si no contesta, "No se autorizó por ahora" y precio del día.
+- 27 CAUSA ENCONTRADA: al asignar un pedido a un chofer que ya estaba en ruta, la 7.5 lo dejaba en una lista que nunca subía a la nube (arPas). Ahora va por la nube (pedAsig) y el celular del chofer lo mete a su ruta al momento, también con el cierre enviado y al volver de segundo plano. Probado con dos celulares y la nube de prueba (t78nube).
+- 28 una sola tarjeta y un solo botón "Ir a cargar" para todos los pedidos (se quitó el segundo botón de "Cargar más mercancía").
+- 29 al registrar un pedido: cuánto hay listo en bodega (sin lo apartado); "No alcanza" con cambiar la cantidad / dejar para mañana / registrarlo igual; para mañana cuenta lo que madura y sugiere cuánto meter a madurar. Lo apartado se ve en Bodega y nadie más lo usa: remate y venta en bodega preguntan si se libera. El chofer que registra un pedido ve lo que trae y lo de bodega; si no le alcanza, "Ir a cargar"; si en bodega tampoco hay, "Avísale al cliente".
+- Pruebas: t78 (30), t78nube (4); se ajustaron t75 (pasos nuevos del alta). Todas: 25 archivos, 0 FAIL.
+- Falta del 29: la venta local (en bodega) todavía no frena lo apartado por cantidad; solo el remate de fruta madura lo pregunta. Se termina en la siguiente.
+- Falta del 31: Ricardo debe mandar el error que salga (pantalla de rescate o Problemas reportados) para arreglar la causa exacta.
+
+### Lista de prueba 7.8 (por punto)
+31. Celular del admin: abre y entra (si sale "La app encontró un problema", "Mandar el error por WhatsApp").
+25. Abre y cierra apartados en el Moto: ya no se cierran solos. 25b. Inicio → Aprende la app: cada renglón lleva a su lugar.
+15. Cliente con ubicación de link → en la entrega sale "Confirmar"; confírmala → ya no sale; está en Más opciones. Alta de cliente: al guardar la ubicación pasa solo.
+16. TAG → Cruce de un día sin viaje → aparece en Gastos como "Casetas (TAG)" y la caja no baja otra vez.
+17. Cierre: "¿Lo entregas en las mismas condiciones?". Vehículos → ficha → Historial de revisiones.
+18/20/30. Vehículos → agregar: galería (NP300, M2, tus fotos), VIN/motor/llanta (295/75R22.5), "¿Usa DEF?" si es diésel; en Vehículos, el M2 pregunta si usa DEF.
+19. Vehículos: desliza hasta el final; el rebote ya no se traba.
+21/22. Ajustes → ubicación de la bodega → busca el lugar → nombre y dirección nuevos.
+23. Moto Z: la cámara abre la principal; "🔁 Lente" cambia.
+24. Recibir cierre: "Lo que pasó hoy" minimizado.
+26. Registrar pedido: "¿Cómo te lo pidió?" y "Precio especial"; chofer: "+ Pedido de un cliente" → "Pedir precio especial" → al admin le sale con reloj de 5 min.
+27/28. Asigna dos pedidos a un chofer con cierre enviado y la app abierta → le salen al momento, una sola tarjeta, un botón "Ir a cargar".
+29. Registra un pedido más grande de lo que hay → "No alcanza"; Bodega → "Apartado para pedidos".

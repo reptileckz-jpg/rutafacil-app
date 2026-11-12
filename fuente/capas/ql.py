@@ -54,3 +54,5 @@ R("fecha:cf.fecha||'2026-10-28',prov:cf.prov.trim","fecha:cf.fecha||iso(TODAY),p
 R("<b>El administrador cambió tu ruta</b>'+av.map(function(x){return '<div style=\"font-size:14px;margin-top:4px\">'+esc(x)+'</div>'}).join('')","<b>'+rutaAvTit(av)+'</b>'+av.map(function(x){return '<div style=\"font-size:15px;margin-top:4px\">'+esc(avPedTxt(x))+'</div>'}).join('')")
 # temperatura: en la app real no es "automática"
 R("""<div class="lbl" style="margin-top:4px">Temperatura afuera: '+S.clima.t+' °C, '+esc(S.clima.txt)+' (automático)</div>'""","""'+(MODO==='vacio'?'<div class="lbl" style="margin-top:4px">Si sabes la temperatura de la bodega, ponla abajo; si no, se calcula con '+S.clima.t+' °C.</div>':'<div class="lbl" style="margin-top:4px">Temperatura afuera: '+S.clima.t+' °C, '+esc(S.clima.txt)+' (automático)</div>')+''""")
+# 7.6 · 70 la marca de agua de las fotos del vehículo también dice quién la tomó
+R("cx.fillText(new Date().toLocaleString('es-MX')+' · '+vehHoy().pl,6,h-7);","cx.fillText(new Date().toLocaleString('es-MX')+' · '+vehHoy().pl+(typeof quienFoto73==='function'?' · '+quienFoto73():''),6,h-7);")

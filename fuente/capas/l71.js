@@ -113,6 +113,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(!lk){x.err='Pega el link de Google Maps o las coordenadas.';render();return}
  var c=coordsDe(lk);if(c){x.lat=c.lat;x.lng=c.lng;x.p=2;x.err='';render();return}
  if(!linkMaps71(lk)){x.err='Eso no parece un link de Google Maps ni coordenadas. Ejemplo de coordenadas: 32.5149, -117.0382';render();return}
+ var nl0=natPl&&natPl();if(!(nl0&&nl0.linkLargo)&&/goo\.gl/.test(lk)){x.err='Ese link es corto (maps.app.goo.gl): solo se abre en la app del celular. Aquí pega las coordenadas o el link largo.';render();return}
  toast('Abriendo el link…');linkAbre71(lk).then(function(r){if(r.c){x.lat=r.c.lat;x.lng=r.c.lng;x.p=2;x.err='';render();return}
    var nom=nomDeLink71(r.url);if(nom){x.q=nom;x.p=1;x.err='';render();toast('Ese link no trae el punto: lo busco por su nombre');ub68Busca();return}
    x.err='Ese link no trae el punto ni el nombre del lugar. En Google Maps mantén el dedo sobre el lugar y copia los números que salen arriba, o usa "Buscar el lugar".';render()},

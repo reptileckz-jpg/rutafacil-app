@@ -11,7 +11,7 @@ Lee, en este orden:
 
 ## Dónde está todo
 - **Repositorio:** `reptileckz-jpg/rutafacil-app`, privado.
-- **Código:** `fuente/base-v38.html` + las capas `fuente/capas/l1.js…l70.js`, en orden, + `patch39.py` y `ql.py`.
+- **Código:** `fuente/base-v38.html` + las capas `fuente/capas/l1.js…l76.js`, en orden, + `patch39.py` y `ql.py`.
 - **Pruebas:** `fuente/pruebas`, con Playwright. Cada una imprime "N OK · N FAIL".
 - **Nativo:** está en `nativo/` (RutaNativa, RutaGps, RutaArranque, RutaAdmin y MainActivity).
 - **Reglas de Firebase:** `firestore.rules`, con su prueba en `pruebas-reglas/`.

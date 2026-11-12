@@ -22,7 +22,7 @@ ok(r.err==='','tarjetas contestadas',r.err);
 ok(Math.abs(r.tr-4550)<0.01,'costo del viaje = 3000+100+200+150+300 imprevisto+300 desgaste+500 sueldo = 4550',r.tr);
 ok(Math.abs(r.cc-245.5)<0.01,'costo por caja = (20000+4550)/100 = 245.50',r.cc);
 ok(Math.abs(r.trTot-3750)<0.01,'dinero que salió (sin desgaste ni sueldo) = 3750',r.trTot);
-ok(/Desgaste del vehículo \(300 km × \$1/.test(r.txt)&&/Sueldo de .* por el viaje/.test(r.txt),'desglose: desgaste y sueldo con su renglón');
+ok(/Desgaste al ir por la fruta \(300 km × \$1/.test(r.txt)&&/Sueldo de .* por el viaje/.test(r.txt),'desglose: desgaste y sueldo con su renglón');
 ok(/Total de gastos del viaje\s*\$4,550/.test(r.txt)&&/Total del viaje\s*\$24,550/.test(r.txt),'desglose: totales cuadran con la suma');
 /* imprevisto grande → mantenimiento */
 r=await ev(()=>{S.cm.x68.impM='2000';var o=cmObj(),k=cC(o);render();return {tr:trCost(o),trTot:trTot(o),txt:document.querySelector('#cmov').innerText}});

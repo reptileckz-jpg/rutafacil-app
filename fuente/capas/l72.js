@@ -100,9 +100,11 @@ function cierreFalta72(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.c
  var p0=S.cierreP||0;for(var k=0;k<8;k++){if(k===p0)continue;S.cierreP=k;_rd72.call(window);if(vis()){setTimeout(function(){var el=document.querySelector(sel);if(el){try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}try{marcaFalta(el)}catch(e){}}},80);return}}S.cierreP=p0;_rd72.call(window)}
 
 /* ---------- 84 · botones de cliente nuevo y venta rápida ---------- */
-function botones72(){if(S.role!=='rep'||S.tab.rep!=='ruta'||!S.salida.ok)return;var m=document.querySelector('main');if(!m||m.querySelector('.cn72'))return;var b=m.querySelector('[data-act="calle"]');if(!b)return;var box=b.parentElement;
- var d=document.createElement('div');d.className='cn72';d.innerHTML='<button class="nv" data-act="calle" data-reg="1"><span class="e">🏪</span>Cliente nuevo<small>Darlo de alta y venderle</small></button><button class="vr" data-act="calle" data-reg="0"><span class="e">⚡</span>Venta rápida<small>Alguien en la calle</small></button>';
- var r=m.querySelector('.card.rep1');if(r)r.after(d);else m.prepend(d);if(box&&box.querySelectorAll('button').length===box.querySelectorAll('[data-act="calle"]').length)box.remove()}
+var CN72='<div class="cn72"><button class="nv" data-act="calle" data-reg="1"><span class="e">🏪</span>Cliente nuevo<small>Darlo de alta y venderle</small></button><button class="vr" data-act="calle" data-reg="0"><span class="e">⚡</span>Venta rápida<small>Alguien en la calle</small></button></div>';
+var CALLE0='<div style="display:flex;gap:8px"><button class="btn sec" style="flex:1" data-act="calle" data-reg="0">Venta rápida</button><button class="btn sec" style="flex:1" data-act="calle" data-reg="1">Cliente nuevo</button></div>';
+/* se acomodan al armar la pantalla (antes de que el tutorial calcule dónde señalar) */
+var _vr72=null;function vr72Pon(){if(_vr72||typeof VIEWS==='undefined'||!VIEWS.ruta)return;_vr72=VIEWS.ruta;VIEWS.ruta=function(){var h=_vr72.apply(this,arguments);try{if(S.role!=='rep'||!S.salida.ok||typeof h!=='string'||h.indexOf(CALLE0)<0)return h;h=h.replace(CALLE0,'');var sc='';try{sc=stockCard()}catch(e){}var i=sc?h.indexOf(sc):-1;return i>-1?h.slice(0,i+sc.length)+CN72+h.slice(i+sc.length):CN72+h}catch(e){return h}};}
+function botones72(){}
 
 /* ---------- dibujo ---------- */
-var _rd72=render;render=function(){var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML())}catch(e){console.error('l72',e)}return r};
+var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML())}catch(e){console.error('l72',e)}return r};

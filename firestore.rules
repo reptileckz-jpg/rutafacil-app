@@ -71,7 +71,7 @@ service cloud.firestore {
                         's~metaMes', 's~mesCerr', 's~reglas', 's~vehAsig', 's~admins', 's~bods',
                         's~mayP', 's~mayMin', 's~cajaBase', 's~aportes', 's~porPagar', 's~pagoPide',
                         's~enc', 's~vac', 's~bienes', 's~fijosPag',
-                        's~cliBase', 's~vacPlan'
+                        's~cliBase', 's~vacPlan', 's~fac76'
                       ]));
     }
     // fotos (comprimidas); las borra el administrador después de un mes

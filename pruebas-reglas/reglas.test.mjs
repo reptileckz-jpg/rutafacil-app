@@ -33,6 +33,7 @@ await prueba('chofer: NO cambia la configuración', () => assertFails(setDoc(doc
 await prueba('chofer: NO cambia el saldo base de los clientes', () => assertFails(setDoc(doc(db('danu'), 'n/pn/d/s~cliBase'), { k: 'm' })));
 await prueba('chofer: SÍ suma/resta en los saldos (cliCnt)', () => assertSucceeds(setDoc(doc(db('danu'), 'n/pn/d/s~cliCnt'), { k: 'c' }, { merge: true })));
 await prueba('chofer: NO cambia el plan de vacaciones', () => assertFails(setDoc(doc(db('danu'), 'n/pn/d/s~vacPlan'), { r: '{}' })));
+await prueba('chofer: NO cambia las facturas', () => assertFails(setDoc(doc(db('danu'), 'n/pn/d/s~fac76'), { r: '{}' })));
 await prueba('chofer: NO borra datos', () => assertFails(deleteDoc(doc(db('danu'), 'n/pn/d/s~cli'))));
 await prueba('chofer: NO se hace administrador', () => assertFails(setDoc(doc(db('danu'), 'usuarios_app/danu'), { rol: 'admin' }, { merge: true })));
 await prueba('chofer: NO crea otro perfil de administrador', () => assertFails(setDoc(doc(db('danu'), 'usuarios_app/nuevo'), { rol: 'admin', activo: true })));

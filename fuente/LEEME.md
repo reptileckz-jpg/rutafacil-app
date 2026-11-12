@@ -5,14 +5,15 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
 **Lee también:** `negocio.md` (cómo funciona el negocio) e `instrucciones.md` (cómo trabajar con Ricardo).
 
 - `base-v38.html`: la app base sobre la que se aplican las capas.
-- `capas/`: las capas `l1.js` … `l70.js`, que van en orden. También:
+- `capas/`: las capas `l1.js` … `l76.js`, que van en orden. También:
   - `patch39.py` y `ql.py`: cambios de texto sobre la base.
   - `imgs.json`: las imágenes.
   - `build.sh`: arma todo.
-- `pruebas/`: las pruebas automáticas (Playwright). Cada una imprime `N OK · N FAIL`. Las de la versión 7.2 son `t58.js` … `t63.js` y `t62xss.js` (textos peligrosos); las de la 7.5 son `t68.js`, `t69.js` (el dinero) y `t70.js`. `t61.js` prueba los saldos con dos celulares y una nube de prueba que se porta como Firestore.
+- `pruebas/`: las pruebas automáticas (Playwright). Cada una imprime `N OK · N FAIL`. Las de la versión 7.2 son `t58.js` … `t63.js` y `t62xss.js` (textos peligrosos); las de la 7.5 son `t68.js`, `t69.js` (el dinero) y `t70.js`; las de la 7.6 son `t71.js` … `t76.js`. `t61.js` prueba los saldos con dos celulares y una nube de prueba que se porta como Firestore.
 - `pendientes.md`: la bitácora completa. Están los puntos 1–100 (ya hechos) y la lista nueva, que empieza otra vez en 1.
 - `www.sh`: copia la versión "primera vez" a `www/index.html` y agrega los scripts de Firebase, Leaflet y mapas.
 - `fotos/`: capturas que mandó Ricardo para los pendientes.
+- `datos-prueba/clientes-prueba-tijuana.csv`: 40 clientes de prueba con ubicaciones de Tijuana, para "Importar clientes".
 
 ## Cómo se arma
 1. `build.sh` junta las capas en `libl.js`.
@@ -21,7 +22,7 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
 4. `www.sh` la copia a `www/index.html`.
 5. Al subir a `main`, GitHub Actions arma el APK. La versión es `1.0.<número de corrida>`.
 
-Las rutas dentro de `build.sh`, `patch39.py`, `www.sh` y las pruebas son las de la conversación original (`/tmp/claude-0/.../scratchpad/` y `/mnt/user-data/outputs/`). Hay que cambiarlas a la carpeta donde se copie esto.
+Las rutas dentro de `build.sh`, `patch39.py`, `www.sh` y las pruebas son las de la conversación original (`/tmp/claude-0/-home-claude/0fa80c8a-…/scratchpad/v40src/` y `/mnt/user-data/outputs/`). Lo más fácil es crear esas carpetas: copiar `capas/*` a `…/scratchpad/v40src/`, `base-v38.html` a `…/scratchpad/v38.bak.html`, y enlazar `/home/claude/rutafacil-app` al repositorio. Las pruebas se corren desde `/tmp` (ahí encuentra Playwright).
 
 ## Reglas de trabajo con Ricardo
 - Siempre en español sencillo de México.

@@ -3,11 +3,11 @@ const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,400):''))};
 const p=await b.newPage({viewport:{width:400,height:860}});await p.addInitScript(()=>{window.__pnTest=1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
 await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(700);const ev=(f,a)=>p.evaluate(f,a);
-await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};S.tutVisto={admin:true};S.cajaAyerSkip=true;S.tab.admin='bodega';render()});
+await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};S.tutVisto={admin:true};S.cajaAyerSkip=true;S.tab.admin='bodega';var v=vidaDias();(S.madL||[]).forEach(function(x,i){x.dia=iso(new Date(TODAY.getTime()-(v+2+i)*864e5))});render()});
 const click=s=>ev(s=>{const e=document.querySelector(s);if(!e)return 'NO '+s;e.click();return 'ok'},s);
 /* 53 */
 let r=await ev(()=>{var L=[...document.querySelectorAll('[data-x="antig65"] .lote[data-act="lt53"]')];return {n:L.length,madL:(S.madL||[]).length,p:L.map(l=>l.dataset.p)}});
-ok(r.n>0&&r.n===r.madL,'cada lote de fruta madura se puede tocar',r);
+ok(r.n>0&&r.n===r.madL,'cada lote pasado de tiempo se puede tocar',r);
 const tot0=await ev(()=>({mad:S.inv.maduras,vac:S.inv.vacias,caja:cajaEsp(),w:cajasDonde().tot,kg:S.inv.kgMaduro}));
 r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='R');var el=document.querySelector('.lote[data-k="'+k+'"]');el.click();return {k,ov:!!document.getElementById('lt53ov'),ops:document.querySelectorAll('#lt53ov [data-act="lt53op"]').length,q:S.madL[k].q}});
 ok(r.ov&&r.ops===4,'al tocar: 4 opciones (se tiró, se remató, ya no está, salió a la venta)',r);const kR=r.k,qR=r.q;
@@ -17,22 +17,22 @@ await click('#lt53ov [data-act="lt53si"]');
 r=await ev(t=>({mad:S.inv.maduras-t.mad,vac:S.inv.vacias-t.vac,w:cajasDonde().tot-t.w,merma:S.mermas[S.mermas.length-1].tipo}),tot0);
 ok(r.mad===-2&&r.vac===2&&r.w===0&&r.merma==='Fruta tirada','se tiró 2 cajas: maduras −2, taras vacías +2, el total de taras no cambia; merma',r);
 /* remate (roatán) */
-await ev(k=>{document.querySelector('.lote[data-k="'+k+'"]').click()},kR);await click('#lt53ov [data-act="lt53op"][data-v="remate"]');
+await ev(k=>{S.madL[k].dia=iso(new Date(TODAY.getTime()-(vidaDias()+3)*864e5));render();document.querySelector('.lote[data-k="'+k+'"]').click()},kR);await click('#lt53ov [data-act="lt53op"][data-v="remate"]');
 await ev(()=>{S.lt53.q='1';S.lt53.kg='20';S.lt53.pr='5';render()});await click('#lt53ov [data-act="lt53ok"]');await click('#lt53ov [data-act="lt53si"]');
 r=await ev(t=>({mad:S.inv.maduras-t.mad,caja:Math.round((cajaEsp()-t.caja)*100)/100,w:cajasDonde().tot-t.w}),tot0);
 ok(r.mad===-3&&r.caja===100&&r.w===0,'remate de 1 caja (20 kg a $5): maduras −1 más, la caja sube $100, taras cuadran',r);
 /* salió a la venta: no cambia ningún número */
 const n1=await ev(()=>({mad:S.inv.maduras,caja:cajaEsp(),tot:(S.madL||[]).reduce((a,x)=>a+x.q,0)}));
-r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='R');document.querySelector('.lote[data-k="'+k+'"]').click();return S.madL[k].dia},null);
+r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='R');S.madL[k].dia=iso(new Date(TODAY.getTime()-(vidaDias()+3)*864e5));render();document.querySelector('.lote[data-k="'+k+'"]').click();return S.madL[k].dia},null);
 await click('#lt53ov [data-act="lt53op"][data-v="salio"]');await click('#lt53ov [data-act="lt53ok"]');await click('#lt53ov [data-act="lt53si"]');
 r=await ev(t=>({mad:S.inv.maduras-t.mad,caja:cajaEsp()-t.caja,tot:(S.madL||[]).reduce((a,x)=>a+x.q,0)-t.tot}),n1);
 ok(r.mad===0&&Math.abs(r.caja)<0.001&&r.tot===0,'"salió a la venta": no cambia inventario ni dinero',r);
 /* ya no está → no sé (macho) */
-r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='M');if(k<0)return null;var kg0=S.inv.kgMaduro;document.querySelector('.lote[data-k="'+k+'"]').click();return {kg0,q:S.madL[k].q}});
+r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='M');if(k<0)return null;var kg0=S.inv.kgMaduro;S.madL[k].dia=iso(new Date(TODAY.getTime()-(vidaDias()+3)*864e5));render();document.querySelector('.lote[data-k="'+k+'"]').click();return {kg0,q:S.madL[k].q}});
 if(r){await click('#lt53ov [data-act="lt53op"][data-v="noesta"]');r.txt=await ev(()=>document.querySelector('#lt53ov').innerText);
  await click('#lt53ov [data-act="lt53sub"][data-v="nose"]');await ev(()=>{S.lt53.q='5';render()});await click('#lt53ov [data-act="lt53ok"]');await click('#lt53ov [data-act="lt53si"]');
  const kg1=await ev(()=>S.inv.kgMaduro);ok(Math.abs(kg1-(r.kg0-5))<0.001&&/Se vendió en bodega/.test(r.txt)&&/No sé/.test(r.txt),'"ya no está" pregunta si se vendió; "no sé" descuenta 5 kg',{kg1,kg0:r.kg0})}
-r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='R');document.querySelector('.lote[data-k="'+k+'"]').click();S.lt53.op='tiro';S.lt53.paso=1;S.lt53.q='99999';render();document.querySelector('#lt53ov [data-act="lt53ok"]').click();var t=S.toast;S.lt53=null;render();return t});
+r=await ev(()=>{var k=S.madL.findIndex(x=>x.p==='R');S.madL[k].dia=iso(new Date(TODAY.getTime()-(vidaDias()+3)*864e5));render();document.querySelector('.lote[data-k="'+k+'"]').click();S.lt53.op='tiro';S.lt53.paso=1;S.lt53.q='99999';render();document.querySelector('#lt53ov [data-act="lt53ok"]').click();var t=S.toast;S.lt53=null;render();return t});
 ok(/solo hay/.test(r),'no deja tirar más de lo que hay',r);
 /* 57 */
 r=await ev(()=>{S.tab.admin='clientes';var c=S.cli.filter(x=>!x.oculto)[5];c.ped={R:3,M:20,cuando:'hoy',nota:''};S.chSt=S.chSt||{};Object.keys(S.chSt).forEach(id=>{(S.chSt[id].stops||[]).forEach(s=>{if(s.c===c.id)s.done=true})});S.stops.forEach(s=>{if(s.c===c.id)s.done=true});render();

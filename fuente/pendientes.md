@@ -1771,3 +1771,14 @@ Errores y mejoras de la prueba (revisado en el código):
 83. Cierre de ruta: al decir "falta la foto" no lleva al paso de la foto; hay que buscarlo. Arreglo: el aviso trae "Ir a tomarla" y salta al paso.
 84. Chofer: "Cliente nuevo" y "Venta rápida" más arriba, más visibles y más bonitos.
 85. Precio del día: caja a $200 pero mayoreo mínimo $220. Código: mayMin {R:'220',M:'15'} viene de la DEMO y no se borra en la app real (como el punto 74 viejo). Arreglo: al fijar el precio del día se fija también el de mayoreo (siempre menor o igual al normal, con aviso si queda debajo del costo); quitar ese dato de la demo.
+### Decisiones (12 nov)
+- 65 fruta madura: si las ventas ya cubrieron el lote, se quita SOLO, sin preguntar. Solo pregunta el lote pasado de días que no se vendió.
+- 74 macho en 0: Ricardo está seguro de que puso 1,900 kg en el asistente y en Bodega salía 0 → es error de la app. Reproducirlo con la primera vez completa (asistente → nube → Bodega) antes de arreglar.
+- 78 taras prestadas: "buró de taras" con los mismos tiempos del buró de crédito (cfg bD1/bD2/bD3 = 7/15/30 días): recordatorios al chofer y, al último plazo, descuento del SUELDO del chofer. El precio por tara del descuento se ajusta en Ajustes. Al cerrar la entrega con taras prestadas: ventana que le recuerda recogerlas o sufrirá deducciones de su sueldo + botón "Ya le pedí las vacías".
+- 81 precio especial: solo UNA vez (promoción), nunca fijo. El mayoreo del día debe ser MAYOR al costo. Se pide al iniciar el día junto con el precio, como ya se hace (y se quita el $220 de la demo).
+- 67 huella: no ofrecerla en la pantalla del PIN; ofrecerla dentro de la app y, si se omitió, volver a sugerirla dentro de la app más adelante (y siempre en Ajustes).
+- 69 cámara: en el Fold la última usada fue la trasera y aun así abre la frontal → la cámara de Samsung no respeta lo que pide la app. Hacer cámara propia dentro de la app (siempre trasera, botón para voltear).
+- TAGs: todavía no hay proveedor → hacerlo genérico (cualquier proveedor), que sirva para camioneta y camión (ligero/pesado).
+- Facturas: SÍ, dejar todo listo y apagado (datos fiscales, facturar venta, factura global mensual); se conecta el PAC cuando lo quiera usar.
+- IA: todavía NO. No olvidarla: proponerla más adelante (Functions + Haiku para lo diario y Opus para preguntas/resumen).
+- 63 Places: "Places API (New)" ya dice "API habilitada" en el proyecto → el problema está en la LLAVE: falta agregarla a "Restricciones de API" de la llave que usa la app (la misma donde se agregó Routes API), o la huella SHA-1 del APK. Pedirle que lo revise; además enseñar el mensaje real de Google.

@@ -1828,3 +1828,20 @@ Errores y mejoras de la prueba (revisado en el código):
 11. Chofer (Z Fold): al entrar ya no ofrece la huella en el PIN; adentro sí, con "Ahora no" (67). Iniciar el día: sin pedidos no dice cuánto cargar (68). La revisión del lunes es paso a paso (71). Las fotos abren la cámara de atrás y llevan fecha y tu nombre (69, 70).
 12. Ruta: botones grandes "Cliente nuevo" y "Venta rápida" arriba (84). Cliente nuevo → todo por pasos → entrega sin volver a pedir datos (72). Deja taras sin recibir vacías → aviso y "Ya le pedí las vacías" (78). Sin "cajas rotas" (73). "Más opciones" se cierra al cambiar de cliente (79). "+ Pedido de un cliente": + y − en cajas (80).
 13. Cierre: intenta enviar sin la foto de lo que regresas → te lleva a esa foto (83).
+
+## 2026-11-12 · LISTA NUEVA (otra vez desde 1) — puntos 63–88 cerrados en la 7.6
+Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primero van los que Claude no pudo probar en un celular de verdad o que dejan alguna duda:
+1. Buscador de lugares (Places): solo se probó con respuestas simuladas. Revisar en el celular que salgan lugares, y si falla, qué mensaje da.
+2. Links de Google Maps (cortos maps.app.goo.gl y "Compartir" de un lugar): la parte nativa que abre el link no se probó con links reales. Si el link no trae el punto, la app busca el nombre del lugar (depende del punto 1).
+3. Cámara propia: se probó en una computadora con cámara simulada, no en el Z Fold. Revisar: que pida permiso de cámara, que abra la trasera, "Voltear", "Galería" y que la foto llegue con fecha y nombre.
+4. Huella: la ventana nativa de la huella no se puede probar aquí. Revisar: que ya no salga en el PIN, que se ofrezca adentro, "Ahora no", y activarla desde Ajustes.
+5. Importar de Excel: se probó con CSV. El .xlsx (Excel de verdad) no se probó con un archivo real, y en Android el selector puede no dejar escoger el CSV. Probar los dos y "Bajar la plantilla".
+6. Nube: lo nuevo (TAG del vehículo, datos fiscales, precio especial, buró de taras) no se probó con dos celulares a la vez. Revisar que lo que haga el admin se vea en el otro celular y que el descuento de taras no salga dos veces.
+7. TAG: un cruce solo se suma como gasto si ese día hubo viaje de carga con ese vehículo. Los cruces de días de reparto o sin viaje quedan solo en el TAG (no cuentan como gasto en ningún lado). Duda: ¿a dónde deben ir?
+8. Costo de repartir estimado: usa 40 km, 40 cajas y 150 kg por ruta mientras no haya rutas cerradas. Revisar si esos números se parecen a la realidad (Ajustes → Costo de repartir).
+9. Precios pactados que ya existían: se volvieron "de una sola vez" sin preguntar. Revisar que nadie quedara con un precio que no se quería.
+10. Primera vez: si se cierra la app a medias, debe seguir donde se quedó. No se probó cerrando la app de verdad.
+11. Cliente nuevo del chofer: la ubicación es obligatoria. Si no hay señal de GPS, puede buscar el lugar o pegar el link; revisar que nunca se quede atorado.
+12. Revisión del vehículo: el botón "Todo lo demás bien" ayuda a ir rápido, pero un chofer podría saltarse la revisión. Duda: ¿se deja o se quita?
+13. Reglas de Firebase (facturas solo el administrador): opcional; la prueba no se pudo correr aquí. Falta pegarlas en la consola y Publicar.
+14. Los 40 clientes de prueba de Tijuana tienen puntos dentro de colonias reales, pero algunos pueden caer fuera de la calle.

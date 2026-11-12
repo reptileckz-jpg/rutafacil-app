@@ -1845,3 +1845,17 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 12. Revisión del vehículo: el botón "Todo lo demás bien" ayuda a ir rápido, pero un chofer podría saltarse la revisión. Duda: ¿se deja o se quita?
 13. Reglas de Firebase (facturas solo el administrador): opcional; la prueba no se pudo correr aquí. Falta pegarlas en la consola y Publicar.
 14. Los 40 clientes de prueba de Tijuana tienen puntos dentro de colonias reales, pero algunos pueden caer fuera de la calle.
+### Prueba del 1.0.25 (12 nov) — SOLO ANOTAR (pidió no hacer cambios todavía)
+- Ya funcionan en el celular: 1 buscador de lugares, 2 links de Google Maps, 3 cámara, 4 huella. Falta probar: 5 Excel, 6 nube, 10 primera vez, 11 cliente sin señal (y 8, 9, 13, 14).
+- 12 DECIDIDO: se queda "Todo lo demás bien" (es responsabilidad del chofer leer). A cambio → punto 17.
+15. Ubicación que no se cierra: aunque ya se abrió el link de Google, sigue pidiendo confirmar por GPS; "Estoy aquí" → espera → "Guardar" → vuelve a salir el mismo apartado con "Estoy aquí", sin fin.
+    Revisado en el código, hay dos lugares que se portan así:
+    (a) en la ENTREGA del chofer, la tarjeta "📍 Ubicación de … · Confirmar la ubicación aquí" (l70) sale SIEMPRE, aunque el cliente ya tenga ubicación y aunque se acabe de confirmar;
+    (b) en el alta por pasos (cliente nuevo), el paso "¿Dónde está?" se queda en pantalla después de guardar, con "✓ Ubicación guardada" y otra vez los botones "Estoy aquí", hasta que se toca "Siguiente".
+    Propuesta: (a) la tarjeta solo sale si el cliente no tiene ubicación o si la que tiene es aproximada (de link, búsqueda o Excel, sin confirmar en el lugar); una vez confirmada por GPS ya no sale (queda "Corregir la ubicación" dentro de "Más opciones"). (b) al guardar la ubicación pasa solo al siguiente paso.
+    Pregunta a Ricardo: ¿en cuál de las dos lo viste (o en las dos)?
+16. TAG · la primera recarga y los cruces sin viaje de carga. Propuesta (esperando OK):
+    - Recargar el TAG NUNCA es gasto: es dinero que se pasa de la caja (o del banco) al TAG, como un monedero. La caja baja, el saldo del TAG sube, las ganancias no cambian. El saldo que ya traía el TAG al darlo de alta tampoco es gasto (ya se pagó antes).
+    - El gasto es cada CRUCE: si ese día hubo viaje de carga con ese vehículo → gasto de ese viaje (ya así está); si no hubo viaje (reparto u otro) → gasto general del vehículo en Gastos, categoría "Casetas (TAG)", sin volver a sacar dinero de la caja (ya salió en la recarga).
+    - Así el gasto del mes es lo que de verdad se cruzó, y la recarga solo mueve dinero.
+17. Historial de revisiones del vehículo (porque se queda "Todo lo demás bien"): en la ficha del vehículo, cada revisión con chofer, fecha, hora, cuánto tardó, cuántos puntos revisó uno por uno, si usó "Todo lo demás bien" y las fallas. Opcional: avisar al administrador si un chofer lo usa siempre o tarda muy poco.

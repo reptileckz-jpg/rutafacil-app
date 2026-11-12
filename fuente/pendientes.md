@@ -1782,3 +1782,4 @@ Errores y mejoras de la prueba (revisado en el código):
 - Facturas: SÍ, dejar todo listo y apagado (datos fiscales, facturar venta, factura global mensual); se conecta el PAC cuando lo quiera usar.
 - IA: todavía NO. No olvidarla: proponerla más adelante (Functions + Haiku para lo diario y Opus para preguntas/resumen).
 - 63 Places: "Places API (New)" ya dice "API habilitada" en el proyecto → el problema está en la LLAVE: falta agregarla a "Restricciones de API" de la llave que usa la app (la misma donde se agregó Routes API), o la huella SHA-1 del APK. Pedirle que lo revise; además enseñar el mensaje real de Google.
+- (12 nov) 63 Places: Ricardo agregó "Places API (New)" a las Restricciones de API de la llave (sí faltaba). Probar "Buscar el lugar" otra vez en el celular (puede tardar ~5 min).

@@ -9,9 +9,9 @@ r=await ev(()=>{var v=VIEWS.cargas;VIEWS.cargas=function(){throw new Error('prue
 ok(r[0]==='inicio'&&r[1]==null&&r[2]&&!r[3],'si una pantalla se rompe, cierra lo abierto y regresa a Inicio (sin pantalla blanca)',r);ok(r[4]===1&&r[5],'el error queda anotado',r);
 ok(await ev(()=>(S.probs||[]).some(p=>p.auto&&/carga rota/.test(p.k||''))),'y sale en Problemas reportados');
 // 2 · si se rompe siempre: pantalla de rescate
-r=await ev(()=>{var v=VIEWS.inicio;VIEWS.inicio=function(){throw new Error('prueba: inicio roto')};S.tab.admin='inicio';render();VIEWS.inicio=v;var o=document.getElementById('fallo77');return [!!o,o&&o.innerText]});
+await ev(()=>{var v=VIEWS.inicio;VIEWS.inicio=function(){throw new Error('prueba: inicio roto')};S.tab.admin='inicio';render();VIEWS.inicio=v});await p.waitForTimeout(400);r=await ev(()=>{var o=document.getElementById('fallo77');return [!!o,o&&o.contentDocument&&o.contentDocument.body.innerText]});
 ok(r[0]&&/Reintentar/.test(r[1])&&/Mandar el error/.test(r[1])&&/Volver a bajar los datos de la nube/.test(r[1]),'si sigue fallando: "La app encontró un problema" con Reintentar, Mandar el error y Bajar de la nube',r[1]&&r[1].slice(0,80));
-ok(/inicio roto/.test(await ev(()=>document.querySelector('#fallo77 pre').textContent)),'enseña el error para mandarlo');
+ok(/inicio roto/.test(await ev(()=>document.getElementById('fallo77').contentDocument.getElementById('tx').textContent)),'enseña el error para mandarlo');
 await ev(()=>{document.getElementById('fallo77').remove();DIAG77.paus=false;render()});
 // 3 · la carga de la nube se rompe: deja entrar y pide el PIN
 r=await ev(()=>{var f=nbForzarRol,pe=pinEntrar,pin=0;nbForzarRol=function(){throw new Error('prueba: nube rota')};pinEntrar=function(){pin++};window.NB.perfil={rol:'admin',activo:true};NB.vaciaNube=false;

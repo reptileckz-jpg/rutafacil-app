@@ -10318,6 +10318,41 @@ var _rd77b=render;render=function(){if(DIAG77.paus)return;return _rd77b.apply(th
 if(typeof nbAplica==='function'){var _nbA77b=nbAplica;nbAplica=function(){if(DIAG77.paus)return false;return _nbA77b.apply(this,arguments)}}
 /* el aviso de "tardó mucho" ahora espera 40 segundos y también cubre "Conectando…" */
 
+/* ===================== 7.9b · el viaje que quedó a medias ya no tumba la app =====================
+   Error real de Ricardo (Moto, administrador, Inicio): vwPend → "Cannot read properties of undefined (reading 'forEach')".
+   Un viaje de carga quedó guardado sin su lista de proveedores/básculas (par) cuando el chofer lo terminó; la burbuja del
+   viaje lo quería recorrer y la app se caía antes de entrar. Ahora: los viajes a medias se quitan al abrir y cada vez que
+   llega algo de la nube, y la burbuja del viaje nunca tumba la app. */
+function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n=S.vws.length;S.vws=S.vws.filter(function(v){return v&&typeof v==='object'&&Array.isArray(v.par)});
+ if(S.vw&&(S.vws.indexOf(S.vw)<0||!Array.isArray(S.vw.par))){var cid0=S.vw.cid,ab0=!!S.vw.open,mismo=S.vws.filter(function(v){return cid0!=null&&v.cid===cid0})[0];if(!mismo&&ab0&&S.role==='admin')setTimeout(function(){try{toast('Ese viaje ya terminó')}catch(x){}},50);S.vw=mismo||S.vws[S.vwI]||S.vws[0]||null;if(S.vw)S.vwI=S.vws.indexOf(S.vw);else S.vwI=0}
+ if(S.vws.length<n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'La app',x:'Se quitó '+(n-S.vws.length)+' viaje de carga que había quedado a medias'})}catch(e){}try{falloAnota77(new Error('viaje a medias quitado ('+(n-S.vws.length)+')'),'al limpiar')}catch(e){}}return S.vws.length<n}catch(e){return false}}
+vwLimpia77();
+var _rd77c=render;render=function(){vwLimpia77();return _rd77c.apply(this,arguments)};
+if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
+if(typeof vwBurbuja==='function'){var _vB77=vwBurbuja;vwBurbuja=function(){try{return _vB77.apply(this,arguments)}catch(e){falloAnota77(e,'burbuja del viaje');return ''}}}
+if(typeof vwPend==='function'){var _vP77=vwPend;vwPend=function(){try{return _vP77.apply(this,arguments)}catch(e){return []}}}
+
+/* la pantalla de rescate va en un cuadro aparte (iframe): nada de la app le puede quitar los toques ni el deslizar */
+var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Diagnóstico —\n'+diagTxt77();FALLO77.ult=txt;try{localStorage.setItem('pnFallo',txt)}catch(x){}
+ var o=document.getElementById('fallo77');if(o)o.remove();var f=document.createElement('iframe');f.id='fallo77';f.setAttribute('style','position:fixed;inset:0;width:100%;height:100%;border:0;z-index:2147483000;background:#F6F1E3');
+ var es=function(s){return String(s).replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]})},bt='display:block;width:100%;min-height:56px;margin-top:10px;border-radius:16px;font-size:18px;font-weight:800;font-family:inherit';
+ f.srcdoc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#F6F1E3;color:#1E2A1A;font-family:system-ui,sans-serif}pre{white-space:pre-wrap;word-break:break-word;font-size:12px;background:#fff;border-radius:10px;padding:10px;user-select:text;-webkit-user-select:text}</style></head><body><div style="max-width:480px;margin:0 auto;padding:22px 16px 40px">'
+  +'<div style="font-size:40px;text-align:center">🛠️</div><h1 style="font-size:23px;text-align:center;margin:6px 0">La app encontró un problema</h1><p style="font-size:16px;text-align:center;margin:6px 0">No se perdió nada del negocio. Manda este error para arreglarlo.</p>'
+  +'<button id="wa" style="'+bt+';border:0;background:#25D366;color:#fff">📲 Mandar el error por WhatsApp</button><button id="cp" style="'+bt+';border:2px solid #2F7D32;background:#fff;color:#2F7D32">📋 Copiar el error</button>'
+  +'<button id="re" style="'+bt+';border:0;background:#2F7D32;color:#fff">Reintentar</button><button id="nube" style="'+bt+';border:2px solid #B45309;background:#fff;color:#B45309;font-size:16px">☁️ Volver a bajar los datos de la nube</button>'
+  +'<div style="font-size:14px;font-weight:700;margin-top:16px">El error:</div><pre id="tx">'+es(txt)+'</pre></div></body></html>';
+ document.body.appendChild(f);
+ f.onload=function(){try{var d=f.contentDocument,P=window,g=function(id){return d.getElementById(id)};
+  g('re').onclick=function(){P.location.reload()};
+  g('wa').onclick=function(){var u='https://wa.me/?text='+encodeURIComponent(txt.slice(0,3500));try{P.open(u,'_blank')||(P.location.href=u)}catch(x){P.location.href=u}};
+  g('cp').onclick=function(){var ok=function(){g('cp').textContent='✓ Copiado'};try{(f.contentWindow.navigator.clipboard||P.navigator.clipboard).writeText(txt).then(ok,function(){var r=d.createRange();r.selectNodeContents(g('tx'));var s=f.contentWindow.getSelection();s.removeAllRanges();s.addRange(r);try{d.execCommand('copy');ok()}catch(x){}})}catch(x){}};
+  g('nube').onclick=function(){if(!f.contentWindow.confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}P.location.reload()};var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{P._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}}}catch(x){}}}catch(x){try{_fP77b(t)}catch(y){}}};
+/* la causa: un viaje que el chofer borró y que el celular del administrador "revivió" al escribir un solo dato (p. ej. que tenía
+   abierta la ruta en vivo). En la nube quedaba un pedazo sin su orden ni sus demás datos. Al armar listas desde la nube,
+   los pedazos sueltos (sin orden ni marca de elemento) ya no se convierten en elementos. */
+if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&F.k==='a'){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
+  var suelto={};Object.keys(G).forEach(function(K){if(!ord[K]&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
+
 /* ===================== v7.8 · lista nueva, puntos 15 al 30 (12 nov)
    25 los apartados que se abren y cierran ya no se cruzan con el redibujo (Moto Z)  · 25b "Aprende la app" lleva a cada cosa
    15 ubicación: la tarjeta del chofer solo si falta o es aproximada; en el alta pasa sola al siguiente paso

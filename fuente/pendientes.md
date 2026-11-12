@@ -1901,3 +1901,8 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
     Al hacerlo (en la misma tarjeta, sin hacer otra):
     - La tarjeta se llama "Pedidos" (WhatsApp, llamada o en persona). Al registrar un pedido: "¿Cómo te lo pidió?" WhatsApp / Llamada / En persona (sale como pastilla en cada pedido).
     - En cada pedido: "⭐ Precio especial solo para este pedido" (para ganar al cliente o que te compre más). Se pone el precio por caja y/o por kilo; el chofer lo ve y se le cobra solo en esa entrega; después vuelve al precio del día. Si queda abajo del costo, pregunta "¿Seguro?". Usa el mismo mecanismo del precio especial de la ficha del cliente.
+27. (12 nov) Chofer con la app abierta y el cierre YA enviado: le llegó la notificación "se te asignó un pedido", pero en la app no salió nada hasta cerrarla y volverla a abrir. (Es el mismo caso del 65 de la lista anterior; sigue pasando.)
+    Revisado en el código, dos sospechas:
+    (a) cuando llega el cambio de la nube con la app abierta (o al volver de segundo plano), la pantalla no se vuelve a dibujar, o la parte del chofer después del cierre ignora el cambio hasta que se reinicia;
+    (b) la tarjeta "Se te asignó una nueva entrega" está en una capa (l45) que envuelve una función de la ruta que la pantalla ya no usa (la pantalla usa su propio registro de vistas); lo mismo explica que "Aprende la app" no le salga al chofer en la ruta.
+    Al hacerlo: reproducirlo con dos celulares simulados y la nube de prueba (t61): admin asigna pedido → chofer con cierre enviado y app abierta → debe salir la tarjeta al momento, y también al volver de segundo plano o al tocar la notificación.

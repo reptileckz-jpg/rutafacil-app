@@ -10350,8 +10350,8 @@ var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var tx
 /* la causa: un viaje que el chofer borró y que el celular del administrador "revivió" al escribir un solo dato (p. ej. que tenía
    abierta la ruta en vivo). En la nube quedaba un pedazo sin su orden ni sus demás datos. Al armar listas desde la nube,
    los pedazos sueltos (sin orden ni marca de elemento) ya no se convierten en elementos. */
-if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&F.k==='a'){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
-  var suelto={};Object.keys(G).forEach(function(K){if(!ord[K]&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
+if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
+  var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
 
 /* ===================== v7.8 · lista nueva, puntos 15 al 30 (12 nov)
    25 los apartados que se abren y cierran ya no se cruzan con el redibujo (Moto Z)  · 25b "Aprende la app" lleva a cada cosa

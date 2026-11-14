@@ -46,5 +46,13 @@ ok(r.arriba&&!r.abajo&&r.pR.every(x=>!x[0]&&!x[1]),'sin historial: arriba "no ha
 r=await ev(()=>{var c1=S.cli[0].id;S.rutasHist=[{f:'2026-11-01',ch:S.chofHoy,log:[{c:c1,R:6,M:20,total:1,pago:1}]}];render();var t=document.querySelector('main').innerText;var a=(t.match(/Sugerido: ([^\n]*)/)||[])[1],b=(t.match(/Sugerido para hoy: ([^\n]*)/)||[])[1];return {a,b}});
 ok(r.a&&r.a===r.b,'con historial: arriba y abajo dicen lo mismo',r);
 await ev(()=>{S.role='admin';render()});
+// 48 · fotos de evidencia
+r=await ev(()=>{var ev2=document.createElement('input');ev2.type='file';ev2.setAttribute('capture','environment');document.body.appendChild(ev2);cam73Abre(ev2);var g1=!!document.querySelector('#cam73 [data-cam="gal"]');cam73Cierra();var doc=document.createElement('input');doc.type='file';document.body.appendChild(doc);cam73Abre(doc);var g2=!!document.querySelector('#cam73 [data-cam="gal"]');cam73Cierra();return {evid:g1,doc:g2}});
+ok(!r.evid&&r.doc,'la foto de evidencia ya no ofrece "Galería" (los documentos sí)',r);
+r=await ev(()=>{var t=[];var cx={fillRect:()=>{},fillText:(x)=>t.push(x),set fillStyle(v){},set font(v){},set textBaseline(v){}};S.role='rep';cam73Sello(cx,1000,700);S.role='admin';return t});
+ok(r.length===2&&/Chofer Uno/.test(r[0])&&/Placa A1/.test(r[1]),'la marca dice fecha y hora, quién la tomó y la placa',r);
+r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;var px='data:image/jpeg;base64,'+'A'.repeat(40);S.chofHoy=null;S.chSt=S.chSt||{};S.chSt[ch]=chNuevo(ch);S.chSt[ch].salida={ok:true,fotos:{frente:px,atras:px,izq:px,der:px,odo:px},fotosFin:{}};S.role='admin';S.rt81={dia:'hoy',sel:{}};render();var b=document.querySelector('#rt81 [data-act="fv82"][data-id="'+ch+'"]');if(!b)return {b:false};b.click();var o=document.getElementById('fv82');return {b:true,o:!!o,imgs:o?o.querySelectorAll('img').length:0}});
+ok(r.b&&r.o&&r.imgs===5,'el administrador ve las 4 fotos y el odómetro desde Rutas',r);
+await ev(()=>{S.fv82=null;S.rt81=null;render()});
 ok(errs.length===0,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

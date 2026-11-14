@@ -13,4 +13,7 @@ r=await p.evaluate(()=>{var U=S.setup;U.yo='Dueño';U.veh=[{n:'Camioneta A',pl:'
 ok(!Object.keys(r.out).length,'ninguna pantalla muestra datos de la demo',r.out);ok(r.adm.indexOf('Ricardo Mejía')<0,'sin el administrador de ejemplo',r.adm);ok(r.mes.every(x=>!x),'sin ventas del mes inventadas',r.mes);ok(r.pl,'la placa dice el estado de verdad');
 r=await p.evaluate(()=>{var c=S.cli[0];resetDraft(c);return [S.d.R,S.d.M]});ok(r[0]===0&&r[1]===0,'la entrega empieza en ceros (no 4 cajas y 30 kg)',r);
 r=await p.evaluate(()=>{S.lotes=[{id:1,prod:'R',q:10,h:0,est:30}];render();return !!S.lotes[0].t0a});ok(r,'maduración de antes sin hora: pregunta cuántas horas lleva');
+r=await p.evaluate(()=>{var b=bodPrincipal();b.n='Bodega';b.dir='Blvd. Industrial 123, Otay Constituyentes, 22457 Tijuana, B.C., México';var v=nuevoVeh({n:'Nueva'});return {e:v.plEdo,L:edos80()[0],bn:bodNom80(),nodo:vwNodos({par:[]})[0].n}});
+ok(r.e==='Baja California'&&r.L==='Baja California','el estado de la placa sale de la dirección de la bodega',r);ok(r.bn==='Bodega Otay Constituyentes'&&r.nodo==='Bodega Otay Constituyentes','el viaje dice el nombre de tu bodega (no Banderilla)',r);
+r=await p.evaluate(()=>{var b=bodPrincipal();b.dir='Av. X, Centro, 64000 Monterrey, N.L., México';return nuevoVeh({n:'Otra'}).plEdo});ok(r==='Nuevo León','con otra dirección, otro estado',r);
 ok(errs.length===0,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

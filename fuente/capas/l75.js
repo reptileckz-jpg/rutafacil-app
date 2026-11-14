@@ -36,7 +36,7 @@ function suListas75(){var U=S.setup,o=document.getElementById('setov');if(!U||!o
  var nav=sw.querySelector('.wz-nav');if(nav)nav.before(d);else sw.appendChild(d)}
 var COMB75={Magna:'Gasolina Magna',Premium:'Gasolina Premium','Diésel':'Diésel'};
 WZ.suVeh={tit:'Vehículo',fin:'Agregar vehículo',pasos:WZ.veh.pasos.filter(function(p){return !/papeles/.test(p.q)}),
- guardar:function(d){var U=S.setup,odo=num(d.odo),v=num(d.acX);var x={n:vehNomDe(d)||d.modelo||'Vehículo',pl:String(d.pl||'').trim(),plEdo:d.plEdo||'Baja California',plTipo:d.tipo==='auto'?'auto':'carga',comb:COMB75[d.comb]||d.comb,img:d.tipo==='auto'?0:1,odo:odo,fotoMia:d.foto||null,
+ guardar:function(d){var U=S.setup,odo=num(d.odo),v=num(d.acX);var x={n:vehNomDe(d)||d.modelo||'Vehículo',pl:String(d.pl||'').trim(),plEdo:d.plEdo||edoDef80(),plTipo:d.tipo==='auto'?'auto':'carga',comb:COMB75[d.comb]||d.comb,img:d.tipo==='auto'?0:1,odo:odo,fotoMia:d.foto||null,
   ex75:{marca:d.marca,modelo:d.modelo,anio:d.anio,color:d.color,capL:d.capL,precio:d.precio,capC:d.capC,capK:d.capK,kmMes:d.kmMes,acInt:d.acInt,acLast:d.acM==='tab'?v:(d.acM==='hace'?Math.max(0,odo-v):odo),esAuto:d.tipo==='auto'}};
   U.veh.push(x);toast('✓ '+x.n+' agregado');return true}};
 WZ.suPer={tit:'Personal',fin:'Agregar',pasos:[

@@ -2016,3 +2016,4 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 6. Vehículos: la placa dice tu estado; si dice Veracruz, cámbialo a Baja California en la ficha.
 7. Fruta madura por antigüedad: deslízala a un lado.
 8. Viaje de carga: durante el camino ve "Cómo van las cuentas".
+- 38b (14 nov) Ricardo: los nombres de lugar SÍ deben aparecer, pero sacados de la ubicación real. HECHO: donde decía "Banderilla" ahora sale el nombre de tu bodega (o "Bodega + colonia" de su dirección); el estado de la placa de un vehículo nuevo sale de la dirección de la bodega (B.C. → Baja California, N.L. → Nuevo León…), y ese estado aparece primero en las opciones; la dirección del negocio se llena con la de la bodega si estaba vacía; la sugerencia "Bodega + colonia" ya no toma la ciudad (quita país y estado del final). Prueba t80vacio (11).

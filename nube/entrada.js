@@ -2,7 +2,7 @@
 // La app solo usa window.NUBE_AD: si este archivo no está (p. ej. en la página de prueba), la app funciona sin nube.
 import {initializeApp} from 'firebase/app';
 import {initializeAuth, indexedDBLocalPersistence, inMemoryPersistence, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, deleteUser} from 'firebase/auth';
-import {initializeFirestore, persistentLocalCache, persistentSingleTabManager, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, deleteField, increment, query, where, limit, getDocs, documentId, orderBy} from 'firebase/firestore';
+import {initializeFirestore, persistentLocalCache, persistentSingleTabManager, memoryLocalCache, terminate, clearIndexedDbPersistence, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot, deleteField, increment, query, where, limit, getDocs, documentId, orderBy} from 'firebase/firestore';
 
 let cfg, app, auth, db, app2, auth2;
 window.NUBE_AD = {
@@ -10,7 +10,21 @@ window.NUBE_AD = {
     cfg = c;
     app = initializeApp(cfg);
     auth = initializeAuth(app, {persistence: indexedDBLocalPersistence});
-    db = initializeFirestore(app, {localCache: persistentLocalCache({tabManager: persistentSingleTabManager()})});
+    // 36 · si la copia de la nube en el celular se dañó dos veces, este celular trabaja con la copia en memoria (plan B)
+    let mem = false;
+    try { mem = localStorage.getItem('fsMem') === '1'; } catch (e) {}
+    db = initializeFirestore(app, {localCache: mem ? memoryLocalCache() : persistentLocalCache({tabManager: persistentSingleTabManager()})});
+    this.memoria = mem;
+  },
+  // 36 · borra SOLO la copia de la nube guardada en este celular (los datos del negocio siguen en la nube)
+  reparar() {
+    const borraTodo = () => {
+      try {
+        if (indexedDB.databases) return indexedDB.databases().then(L => Promise.all(L.filter(d => d && d.name && /firestore/i.test(d.name)).map(d => new Promise(r => { const q = indexedDB.deleteDatabase(d.name); q.onsuccess = q.onerror = q.onblocked = () => r(); }))));
+      } catch (e) {}
+      return Promise.resolve();
+    };
+    return terminate(db).then(() => clearIndexedDbPersistence(db)).catch(() => borraTodo()).then(() => borraTodo());
   },
   onUser(cb) { return onAuthStateChanged(auth, u => cb(u ? {uid: u.uid, email: u.email} : null)); },
   login(email, pw) { return signInWithEmailAndPassword(auth, email, pw); },

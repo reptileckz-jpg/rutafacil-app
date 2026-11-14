@@ -1993,3 +1993,26 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
     - Si ayer no trabajó (no salió, sin ventas), no le pide cierre: se archiva solo y le sale la ruta de hoy.
     - Administrador: en "Por atender" el aviso con dos opciones: "Recordarle" (le manda aviso) y "Liberar su ruta de hoy" (por si perdió el celular o no puede mandarlo: su ruta de hoy se arma ya y lo de ayer queda pendiente para cuadrar con él, con lo que haya en la nube).
     Relacionado: el cambio de día lo hace el primer celular que abre ese día; revisar que no dependa del celular del admin (si éste falla al abrir, que el del chofer igual arme su ruta).
+36. (14 nov) La copia de la nube en el celular del admin se dañó ("Failed to read large IndexedDB value" / "INTERNAL ASSERTION FAILED") y se quedó en "perfil". Ricardo tuvo que borrar datos.
+37. (14 nov) La MADURACIÓN no contaba el tiempo: las horas eran un número fijo del prototipo que solo avanzaba con el botón de la demo. Lo que metió a madurar antier seguía en "lleva 0 h".
+38. (14 nov) Ricardo: "ya no debe haber NADA de la demo en la app real" (solo la lista de 40 clientes). También el precio de hoy que había fijado se perdió al apagarse el celular (se quedó en el celular sin subir y luego se borraron datos).
+
+### HECHO (14 nov) · versión 8.0 · capa l80 · puntos 32 al 38 (Ricardo: "arregla todos esos errores para seguir probando")
+- 35 Ruta del día: cada ruta guarda de qué día es. Al cambiar de día, se le arma la ruta nueva a cada chofer que ya cerró, abra el celular que abra (antes, si el admin abría primero, el chofer se quedaba en "Es todo por hoy"). Chofer con el cierre de ayer sin mandar: pantalla "No mandaste tu cierre de ayer" → "Mandar mi cierre" → al mandarlo se le arma sola la de hoy. Si ayer no trabajó, no pide cierre. Admin: "Recordarle" / "Liberar su ruta de hoy".
+- 36 Copia de la nube dañada: se repara sola (borra solo la copia local de la nube y recarga; los datos están en la nube). Si vuelve a pasar el mismo día, usa copia en memoria. Botón "Reparar la conexión con la nube" en la pantalla de rescate. Fotos de la cámara de la app a 1000 px (más ligeras). Aviso "N cambios sin subir: no borres datos" si algo tarda más de 20 s en subir. Cambios en `nube/entrada.js` (memoria + reparar) y en la parte nativa (búsqueda "cerca").
+- 34 Bodega con GPS: Google dice qué hay en ese punto → dirección y "Bodega + colonia". Si no hay dirección, el nombre es obligatorio. "Bodega Banderilla" se limpia también al bajar de la nube.
+- 33 "Fruta madura por antigüedad": se desliza para quitarla; vuelve sola si entra fruta de otro día o algo está por pasarse.
+- 32 Viaje de carga: tarjeta "Cómo van las cuentas" en vivo durante el camino (chofer y admin): le dieron, combustible, otros gastos → debe regresar. Al llegar ya existía el resumen prellenado (dieron / gastó / debe regresar + efectivo que regresa).
+- 37 Maduración: cuenta con el reloj real. Lo metido antes de esta versión pregunta una sola vez "¿Cuántas horas lleva madurando?".
+- 38 Sin demo en la app real: sin el administrador "Ricardo Mejía", sin ventas del mes inventadas ($15,200), sin teléfono 228, placas con el estado real (antes siempre decía VERACRUZ; se agregó Baja California y es la de inicio), la entrega empieza con lo de la vez pasada o en ceros (antes 4 cajas y 30 kg), mapas sin Banderilla (si la bodega no tiene ubicación se centran en los clientes y lo dice), clima real (open-meteo) en vez de 24 °C fijo, sin precios de ejemplo en el asistente.
+- Pruebas nuevas t80 (14) y t80vacio (8); t62 y t70 ahora escriben el nombre de la bodega. Todas: 0 FAIL.
+
+### Lista de prueba 8.0
+1. Admin: Bodega → Maduración: lo de antes pregunta las horas; escríbelas y revisa más tarde que avance.
+2. Mete fruta a madurar nueva: no pregunta horas y avanza sola.
+3. Chofer: si no mandó el cierre de ayer, sale la pantalla; mándalo y le sale la ruta de hoy.
+4. Admin: "Liberar su ruta de hoy" con un chofer que no cerró.
+5. Bodega → Cambiar ubicación → GPS → debe sugerir "Bodega + colonia"; si no, pide nombre.
+6. Vehículos: la placa dice tu estado; si dice Veracruz, cámbialo a Baja California en la ficha.
+7. Fruta madura por antigüedad: deslízala a un lado.
+8. Viaje de carga: durante el camino ve "Cómo van las cuentas".

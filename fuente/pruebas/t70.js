@@ -57,7 +57,7 @@ r=await ev(()=>{S.ub68={t:'bod',id:(bodPrincipal()||{id:1}).id,p:0};render();var
 ok(r.indexOf('ub68gps')>-1&&r.indexOf('ub68bus')>-1&&r.indexOf('ub68link')>-1,'ubicación: GPS, buscar y link',r);
 r=await ev(()=>{S.ub68.link='https://www.google.com/maps/@32.5149,-117.0382,17z';document.querySelector('[data-act="ub68link"]').click();return {p:S.ub68.p,lat:S.ub68.lat,map:!!document.getElementById('ub68map'),t:document.getElementById('ub68ov').innerText}});
 ok(r.p===2&&r.lat===32.5149&&r.map&&/¿Seguro que aquí es/.test(r.t),'link → mapa con pin para arrastrar y ¿Seguro?',r);
-r=await ev(()=>{document.querySelector('[data-act="ub68si"]').click();var b=bodPrincipal();return {lat:b.lat,BOD:BOD.lat}});ok(r.lat===32.5149&&r.BOD===32.5149,'bodega guardada y los mapas la usan',r);
+r=await ev(()=>{S.ub68.nm78='Bodega Otay';document.querySelector('[data-act="ub68si"]').click();var b=bodPrincipal();return {lat:b.lat,BOD:BOD.lat}});ok(r.lat===32.5149&&r.BOD===32.5149,'bodega guardada y los mapas la usan',r);
 r=await ev(()=>{S.ub68={t:'bod',id:1,p:1,q:'bodega'};render();document.querySelector('[data-act="ub68ir"]').click();return S.ub68.err});ok(/celular/.test(r),'buscar sin la app del celular: dice por qué',r);
 r=await ev(()=>{S.ub68=null;var n=provNames()[0];var h=fiProv({id:n,t:'prov'});S.fiTab=S.fiTab||{};S.fiTab['prov:'+n]='dat';h=fiProv({id:n,t:'prov'});return /data-act="ub68" data-t="prov"/.test(h)});ok(r,'proveedor → Datos: botón de ubicación');
 r=await ev(()=>{var c=S.cli[0];S.fiTab['cli:'+c.id]='dat';return /data-act="ub68" data-t="cli"/.test(fiCli({id:c.id,t:'cli'}))});ok(r,'cliente → Datos: botón de ubicación');

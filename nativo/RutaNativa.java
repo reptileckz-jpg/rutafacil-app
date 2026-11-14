@@ -675,12 +675,14 @@ public class RutaNativa extends Plugin {
     public void lugaresGoogle(PluginCall call) {
         final String cuerpo = call.getString("cuerpo", "{}");
         final String campos = "places.displayName,places.formattedAddress,places.location";
+        /* 34 · "cerca": qué hay en un punto (para sacar la dirección y la colonia cuando se usa el GPS) */
+        final String url = "cerca".equals(call.getString("modo", "")) ? "https://places.googleapis.com/v1/places:searchNearby" : "https://places.googleapis.com/v1/places:searchText";
         final String llave = llaveMapas();
         if (llave == null || llave.isEmpty()) { call.reject("Esta app no trae la llave de Google Maps"); return; }
         new Thread(() -> {
             HttpURLConnection c = null;
             try {
-                c = (HttpURLConnection) new URL("https://places.googleapis.com/v1/places:searchText").openConnection();
+                c = (HttpURLConnection) new URL(url).openConnection();
                 c.setRequestMethod("POST");
                 c.setConnectTimeout(15000);
                 c.setReadTimeout(20000);

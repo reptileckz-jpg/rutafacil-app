@@ -5,11 +5,11 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
 **Lee también:** `negocio.md` (cómo funciona el negocio) e `instrucciones.md` (cómo trabajar con Ricardo).
 
 - `base-v38.html`: la app base sobre la que se aplican las capas.
-- `capas/`: las capas `l1.js` … `l79.js`, que van en orden. También:
+- `capas/`: las capas `l1.js` … `l80.js`, que van en orden. También:
   - `patch39.py` y `ql.py`: cambios de texto sobre la base.
   - `imgs.json`: las imágenes.
   - `build.sh`: arma todo.
-- `pruebas/`: las pruebas automáticas (Playwright). Cada una imprime `N OK · N FAIL`. Las de la versión 7.2 son `t58.js` … `t63.js` y `t62xss.js` (textos peligrosos); las de la 7.5 son `t68.js`, `t69.js` (el dinero) y `t70.js`; las de la 7.6 son `t71.js` … `t76.js`; `t77.js` es la red de seguridad (7.7); las de la 7.8 son `t78.js` y `t78nube.js` (pedido asignado con dos celulares). `t61.js` prueba los saldos con dos celulares y una nube de prueba que se porta como Firestore.
+- `pruebas/`: las pruebas automáticas (Playwright). Cada una imprime `N OK · N FAIL`. Las de la versión 7.2 son `t58.js` … `t63.js` y `t62xss.js` (textos peligrosos); las de la 7.5 son `t68.js`, `t69.js` (el dinero) y `t70.js`; las de la 7.6 son `t71.js` … `t76.js`; `t77.js` es la red de seguridad (7.7); las de la 7.8 son `t78.js` y `t78nube.js` (pedido asignado con dos celulares); las de la 8.0 son `t80.js` y `t80vacio.js` (la app real no trae nada de la demo). `t61.js` prueba los saldos con dos celulares y una nube de prueba que se porta como Firestore.
 - `pendientes.md`: la bitácora completa. Están los puntos 1–100 (ya hechos) y la lista nueva, que empieza otra vez en 1.
 - `www.sh`: copia la versión "primera vez" a `www/index.html` y agrega los scripts de Firebase, Leaflet y mapas.
 - `fotos/`: capturas que mandó Ricardo para los pendientes.

@@ -64,5 +64,27 @@ ok(!r.demo,'52 · sin textos de la demo en Estadísticas',r);
 r=await ev(()=>{var m0=iso(TODAY).slice(0,7),c1=S.cli[0];c1.mesR=7;cambioDeDia(m0==='2026-11'?'2026-10-31':'2026-01-31');return [c1.mesR,c1.compras]});ok(r[0]===0&&r[1]===2,'51 · al cambiar de mes se reinicia "este mes", no las compras pagadas',r);
 r=await ev(()=>{S.role='rep';S.chofHoy=S.choferes.find(c=>c.n==='Chofer Uno').id;S.salida.ok=false;S.tab.rep='ruta';render();var t=document.querySelector('main').innerText;S.role='admin';return {rev:/Revisión del lunes/.test(t),demo:/en la demo/.test(t)}});
 ok(!r.rev&&!r.demo,'53 · ya no sale la "Revisión del lunes" vieja ni "en la demo"',r);
+// 55 · pedido tarde
+r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id,c=S.cli[1];S.role='admin';S.chofHoy=null;S.chSt={};S.chSt[ch]=chNuevo(ch);S.chSt[ch].cierre={sent:true,res:{}};S.chSt[ch].log=[{c:1}];c.ped={R:3,M:0,cuando:'hoy'};S.pedQ82=[];S.cfg.hPed82='23:00';
+ var hh=new Date().getHours();var msg=p57Asigna(c,ch);return {hh,msg,q:(S.pedQ82||[]).length,lim:hLim82()}});
+ok(r.lim===19*60+30,'55 · la hora límite nunca pasa de las 7:30 pm aunque Ajustes diga 23:00',r.lim);
+ok(r.hh>=19.5?/queda para mañana/.test(r.msg):(r.q===1&&/preguntó/.test(r.msg)),'55 · chofer que ya cerró: antes de la hora se le pregunta; después pasa a mañana',r);
+if(r.q===1){r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;S.tab.admin='inicio';render();var adm=!!document.querySelector('[data-x="pedq82"]');var keep=JSON.parse(JSON.stringify(S.chSt[ch]));S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;Object.keys(keep).forEach(k=>S[k]=keep[k]);S.tab.rep='ruta';render();var b=document.querySelector('[data-act="pedq82"][data-v="si"]');if(!b)return {adm,b:false};b.click();return {adm,b:true,sent:S.cierre.sent,en:S.stops.some(s=>+s.c===S.cli[1].id&&!s.done),tab:S.tab.rep}});
+ ok(r.adm&&r.b&&r.sent===false&&r.en&&r.tab==='ruta','55 · el chofer dice "Sí, lo llevo": se reabre su ruta solo con ese pedido',r);
+ r=await ev(()=>{var c=S.cli[0];S.pedQ82=[{id:1,c:c.id,ch:S.chofHoy,t:Date.now()-6*60000,f:iso(TODAY),est:'pend'}];S.role='admin';S.chofHoy=null;render();return {est:S.pedQ82[0].est,man:ovDe81(man81(),c.id),av:(S.avPrecio||[]).some(x=>/MAÑANA/.test(x))}});
+ ok(r.est==='tiempo'&&r.man!=null&&r.av,'55 · si no contesta en 5 min, pasa a mañana con ese chofer y te avisa',r)}
+// 56 · kilos sueltos
+r=await ev(()=>{S.role='admin';S.vlAbierta=5;S.tab.admin='bodega';S.cnt={tipo:'dia',rv:'',ra:'',mv:'',ma:''};S.cnt82=null;render();var i=document.getElementById('cnt82s');S.role='local';S.tab.local='local';render();var t=document.querySelector('main').innerText;S.role='admin';S.tab.admin='bodega';render();return {i:!!i,txt:/Kg sueltos de roatán \(caja abierta\): ~5 kg/.test(t)}});
+ok(r.i&&r.txt,'56 · los kg sueltos salen en Bodega y en "Contar bodega"',r);
+r=await ev(()=>new Promise(res=>{S.cnt82={suel:'3',mot:'Se echó a perder (merma)'};var n0=S.mermas.length;document.querySelector('[data-act="registrarcnt"]').click();setTimeout(()=>{var m=S.mermas[S.mermas.length-1];res({n:S.mermas.length-n0,ab:S.vlAbierta,kg:m&&m.kgS82,v:m&&m.valor>0})},80)}));
+ok(r.n===1&&r.ab===3&&r.kg===2&&r.v,'56 · si se cuentan menos, la diferencia es merma y quedan los contados',r);
+// 58 · taras
+r=await ev(()=>{S.cajaCfg.precio='60';var m=recFaltaMonto({dR:0,dM:0,dV:-2});var t=recFaltaTxt({dR:0,dM:0,dV:-2});return {m,t}});ok(r.m===120&&/2 taras/.test(r.t),'58 · tara que falta: se carga al chofer al precio de la tara de Ajustes',r);
+r=await ev(()=>{S.chofHoy=S.choferes.find(c=>c.n==='Chofer Uno').id;S.recep={dV:3};var n0=S.faltantes.length;var b=document.createElement('button');b.dataset.act='recep';document.body.appendChild(b);b.click();return new Promise(res=>setTimeout(()=>{var f=S.faltantes[S.faltantes.length-1];b.remove();res({n:S.faltantes.length-n0,m:f&&f.m})},80))});
+ok(r.n===1&&r.m===-180,'58 · taras de más: se le abonan al chofer',r);
+// 59 · día sin movimientos
+r=await ev(()=>{S.chofHoy=null;S.chSt={};S.rutasHist=[];S.vlVentas=[];S.gastos=S.gastos.filter(g=>(g.f||g.f82)!==iso(TODAY));var F=cuadre82(iso(TODAY));return {ok:F.every(o=>o.e==='ok'&&/sin movimientos/.test(o.L[0])),sm:sinMov82(iso(TODAY))}});
+ok(r.sm&&r.ok,'59 · día sin movimientos: "¿Cuadran las cuentas?" lo dice y todo en verde',r);
+r=await ev(()=>{var y=ayerIso();S.gastos=S.gastos.filter(g=>(g.f||g.f82)!==y);S.cargas=S.cargas.filter(c=>c.fecha!==y);S.primerDia=false;S.cajaAyerSkip=false;S.cajaCierres=[];S.sinTrabajo=[];var p=cajaAyerPend();return {p,st:S.sinTrabajo}});ok(r.p===false&&r.st.length===1,'59 · ayer sin movimientos: no pide el cierre de caja',r);
 ok(errs.length===0,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

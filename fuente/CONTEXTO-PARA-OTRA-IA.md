@@ -1,6 +1,6 @@
 # Ruta Fácil (Plátanos Nietos): contexto completo para analizar la app
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.2, en la rama; último APK 1.0.33).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.2, APK 1.0.34).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -200,7 +200,7 @@
 | 8.0 (14 nov) | Ruta del día sin depender del cierre ni del celular del admin; reparación de la copia de la nube; **maduración con reloj real** (antes no avanzaba: error grave ya corregido); quitar todo lo de la demo de la versión real; bodega con GPS; cuentas del viaje en vivo |
 | 8.0b | Nombres de lugar sacados de la ubicación de la bodega (colonia, estado de placas) |
 | 8.1 / 8.1b (14 nov) | **Rutas del administrador** y su tutorial |
-| 8.2 (14 nov) | Estadísticas con datos reales (antes solo la demo), retiro del dueño fuera de la ganancia, **¿Cuadran las cuentas?**, recontar bodega con motivo, fruta madura solo si se pasó, la pantalla ya no brinca |
+| 8.2 (14 nov) | Estadísticas con datos reales (antes solo la demo), retiro del dueño fuera de la ganancia, **¿Cuadran las cuentas?**, recontar bodega con motivo, fruta madura solo si se pasó, la pantalla ya no brinca, cuánto cargar con un solo cálculo, fotos de evidencia solo cámara + el admin las ve, rankings y datos del cliente desde las entregas, pedido tarde (hora límite), kg sueltos de venta local, taras al chofer, días sin movimientos |
 
 ## 8. Decisiones tomadas (no volver a proponer como nuevas)
 
@@ -211,12 +211,17 @@
 - **La × para cerrar todos los avisos de golpe:** quitada a propósito (son urgentes). Se usa "Después".
 - **Estado de las placas:** se escoge a mano; la app sugiere el de la dirección de la bodega. Pendiente para uso libre: lista de los 32 estados (hoy solo hay diseño de placa de Veracruz y Guerrero; los demás salen genéricos).
 - **Reparto automático de clientes entre choferes por zona, historial de cambios de ruta y planear la semana completa:** dejados para después, a propósito.
+- **Fotos del viaje de carga:** obligatorias para el chofer, opcionales para el administrador (decidido).
+- **Precio de la venta local:** independiente del precio del día (es remate), decidido.
+- **Pedido a un chofer que ya cerró:** hora límite ajustable (tope 7:30 pm); antes se le pregunta al chofer, después pasa a mañana. Ya hecho.
+- **Taras que faltan al recibir:** se cargan al chofer al precio de la tara; las de más se abonan. Ya hecho.
 - **Play Store:** se publicará por prueba interna con cuenta personal; aún no se hace.
 - **Datos de prueba:** solo los 40 clientes de Tijuana (`fuente/datos-prueba/clientes-prueba-tijuana.csv`), con 12–13 clientes por día en días salteados. Nada más ficticio.
 
 ## 9. Lo que se sabe que falta o está a medias
 
 - La **venta local** no frena lo **apartado**: decidido que no hace falta (la venta en bodega es casi siempre remate).
+- **Sugerencias de otra IA ya revisadas (14 nov):** pantalla de cuadre (hecha), correcciones como movimientos (ya existía), conteo físico vs calculado (hecho), corte de emergencia, "modo papá", agrupar avisos, "explícame este número", chofer nuevo con ayudas extra, reporte de pérdidas: anotadas para después; no proponerlas como nuevas.
 - **Android 8 (Samsung viejo):** debería instalarse (Capacitor 7 pide Android 6+), pero necesita actualizados "Android System WebView" y Chrome. No se ha probado.
 - **Fotos ya guardadas antes de la 8.0:** siguen pesadas. Solo las nuevas salen a 1000 px.
 - **Vehículos ya dados de alta con estado "Veracruz" por defecto:** no se cambian solos.

@@ -2079,3 +2079,22 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 53 Fuera la "Revisión del lunes" vieja (salía a diario); queda la revisión semanal por pasos.
 - Prueba t82 (26). Todas: 0 FAIL.
 - POR HACER (decididos): 55 pedido tarde (hora ajustable, tope 7:30 pm, pregunta al chofer), 56 kg sueltos de venta local, 58 taras perdidas al chofer, 59 días sin movimientos no piden nada.
+### HECHO (14 nov) · 55, 56, 58, 59 en la 8.2 (capa l82) · Ricardo: "sí y arma"
+- 55 Pedido tarde: Ajustes → "Pedidos tarde" (hora límite, de inicio 5:00 pm; nunca pasa de 7:30 pm). Si el chofer ya cerró: antes de la hora, al admin le dice "se le preguntó" y al chofer le sale "¿Puedes llevar este pedido?" (Sí, lo llevo / No puedo; 5 min). Sí → se reabre su ruta solo con ese pedido. No, o sin respuesta, o ya tarde → pasa a mañana con ese chofer y avisa "Si urge hoy, pásalo a otro en Rutas".
+- 56 Kg sueltos de la venta local: en Venta local dice "Kg sueltos de roatán (caja abierta): ~N kg. Siguen para mañana; se cuentan en Contar bodega"; en Contar bodega hay el renglón "Kg sueltos de roatán"; si se cuentan menos, la diferencia es merma (con motivo) y quedan los contados.
+- 58 Taras: la que falta al recibir se carga al chofer al precio de la tara de Ajustes → Taras (antes usaba otro valor) y dice "taras" en vez de "cajas vacías"; las de más se le abonan como faltante negativo.
+- 59 Día sin movimientos (sin rutas, venta local, gastos ni cargas): no pide el cierre de caja de ese día (queda como "sin trabajo"), después del mediodía ya no pide el precio de hoy, y "¿Cuadran las cuentas?" dice "Día sin movimientos" en verde.
+- Prueba t82 (36). Todas: 0 FAIL. PUBLICADA.
+
+### Lista de prueba 8.2 (completa, por pantalla)
+1. Inicio → "¿Cuadran las cuentas?" (Hoy/Ayer): recibe el efectivo de un chofer y mira cómo pasa de amarillo a verde.
+2. Inicio: abre y cierra apartados; Entrega del chofer: toca Efectivo/Tarjeta, $200, "Mañana". Nada debe brincar.
+3. Estadísticas: después de un día con entregas, ventas, ganancia, gastos, y Rankings de choferes y clientes.
+4. Gastos: "Retiro del dueño" (sale la nota) y "Para un vehículo".
+5. Bodega → Contar bodega: 5 cajas menos → recontar → mismo número → motivo. Y el renglón de kg sueltos si vendiste en bodega.
+6. Bodega: la tarjeta de fruta madura solo si algo ya se pasó; sin deslizar.
+7. Chofer al iniciar: las dos tarjetas de "cuánto cargar" dicen lo mismo (o nada si no hay historial).
+8. Chofer: las 4 fotos del vehículo solo con cámara, marca arriba con fecha/quién/placa. Admin: Rutas → "📷 Fotos del vehículo".
+9. Pedido para hoy a un chofer que ya cerró: antes de la hora de Ajustes le pregunta; después pasa a mañana.
+10. Recibir al chofer con taras de menos o de más: faltante o abono.
+11. Un día sin salir: no debe pedir cierre de caja al día siguiente.

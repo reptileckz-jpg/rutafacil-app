@@ -54,5 +54,15 @@ ok(r.length===2&&/Chofer Uno/.test(r[0])&&/Placa A1/.test(r[1]),'la marca dice f
 r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;var px='data:image/jpeg;base64,'+'A'.repeat(40);S.chofHoy=null;S.chSt=S.chSt||{};S.chSt[ch]=chNuevo(ch);S.chSt[ch].salida={ok:true,fotos:{frente:px,atras:px,izq:px,der:px,odo:px},fotosFin:{}};S.role='admin';S.rt81={dia:'hoy',sel:{}};render();var b=document.querySelector('#rt81 [data-act="fv82"][data-id="'+ch+'"]');if(!b)return {b:false};b.click();var o=document.getElementById('fv82');return {b:true,o:!!o,imgs:o?o.querySelectorAll('img').length:0}});
 ok(r.b&&r.o&&r.imgs===5,'el administrador ve las 4 fotos y el odómetro desde Rutas',r);
 await ev(()=>{S.fv82=null;S.rt81=null;render()});
+// 49–53 · re-análisis
+r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id,c1=S.cli[0],hoy=iso(TODAY),m0=hoy.slice(0,7);S.role='admin';S.chofHoy=null;S.chSt={};c1.ult=null;c1.compras=0;c1.mesR=0;
+ S.rutasHist=[{f:m0+'-03',ch:ch,log:[{c:c1.id,R:5,M:0,total:1500,pago:1500,abono:0}]},{f:m0+'-05',ch:ch,log:[{c:c1.id,R:2,M:0,total:600,pago:600,abono:0}]}];S.tab.admin='estadisticas';S.st.sec='clientes';render();
+ var t=document.querySelector('main').innerText;return {rk:/Chofer Uno[\s\S]{0,40}\$2,100/.test(t),ult:c1.ult,comp:c1.compras,mesR:c1.mesR,demo:/ejemplo|hasta ayer|esta demo/.test(t)}});
+ok(r.rk,'49 · ranking de choferes del mes con las rutas reales ($2,100)',r);
+ok(r.ult&&r.comp===2&&r.mesR===7,'51 · última compra, compras pagadas y cajas del mes del cliente salen de las entregas',r);
+ok(!r.demo,'52 · sin textos de la demo en Estadísticas',r);
+r=await ev(()=>{var m0=iso(TODAY).slice(0,7),c1=S.cli[0];c1.mesR=7;cambioDeDia(m0==='2026-11'?'2026-10-31':'2026-01-31');return [c1.mesR,c1.compras]});ok(r[0]===0&&r[1]===2,'51 · al cambiar de mes se reinicia "este mes", no las compras pagadas',r);
+r=await ev(()=>{S.role='rep';S.chofHoy=S.choferes.find(c=>c.n==='Chofer Uno').id;S.salida.ok=false;S.tab.rep='ruta';render();var t=document.querySelector('main').innerText;S.role='admin';return {rev:/Revisión del lunes/.test(t),demo:/en la demo/.test(t)}});
+ok(!r.rev&&!r.demo,'53 · ya no sale la "Revisión del lunes" vieja ni "en la demo"',r);
 ok(errs.length===0,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

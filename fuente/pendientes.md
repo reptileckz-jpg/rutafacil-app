@@ -2019,3 +2019,16 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 38b (14 nov) Ricardo: los nombres de lugar SÍ deben aparecer, pero sacados de la ubicación real. HECHO: donde decía "Banderilla" ahora sale el nombre de tu bodega (o "Bodega + colonia" de su dirección); el estado de la placa de un vehículo nuevo sale de la dirección de la bodega (B.C. → Baja California, N.L. → Nuevo León…), y ese estado aparece primero en las opciones; la dirección del negocio se llena con la de la bodega si estaba vacía; la sugerencia "Bodega + colonia" ya no toma la ciudad (quita país y estado del final). Prueba t80vacio (11).
 39. (14 nov) PROPUESTA (Ricardo: "aún no la empieces") · Sección "Rutas" del administrador: Hoy/Mañana con los clientes por chofer; marcar varios → "Pasar a…", "Todos a un chofer"; para hoy le llega al chofer al momento con aviso; avisos "Sin chofer" y "Sin días"; cambio "solo hoy" o "siempre"; orden con "Ordenar con tráfico". Más: mapa con colores por chofer, "¿le cabe?" (cajas vs capacidad), pendientes de ayer y pedidos marcados en la lista, "Hoy no" para saltar un cliente solo ese día; si el chofer ya salió, aviso "ya va en camino". Después: reparto automático por zona, historial, semana completa.
     Datos de prueba (14 nov): el archivo de 40 clientes de Tijuana ahora tiene días salteados: 8 clientes 3 veces por semana (un día sí y uno no) y 32 dos veces; 12–13 clientes cada día, de lunes a domingo, zonas mezcladas. Volver a importarlo actualiza los días (busca por nombre, no duplica).
+
+### HECHO (14 nov) · versión 8.1 · capa l81 · 39 Rutas del administrador (Ricardo: "agrega los 6 puntos y los 4 últimos")
+- Entrada: tarjeta "🗺️ Rutas de hoy" arriba en Inicio y en Personal (cuántos clientes lleva cada chofer y cuántos sin chofer) → "Ver y repartir" / "Mañana".
+- Hoy / Mañana: cada chofer con su color, sus clientes (zona, cajas y kilos aproximados), "ya va en camino" / "no ha salido", "ya entregó N".
+- Marcar varios → "Pasar a…" (escoges chofer) → "Solo hoy/mañana" o "Siempre (cambia su chofer)". "Pasar todos…" por chofer y "Todos a un chofer".
+- Hoy: el cambio le llega al celular del chofer al momento (nube, canal rq81) con notificación "Cambió tu ruta de hoy"; si está entregando a ese cliente, espera a que termine. Si ya salió, la app avisa "ya va en camino" antes de hacer el cambio.
+- Mañana: el cambio se guarda para ese día (rutaOv81) y la ruta se arma sola con él; el chofer recibe aviso.
+- "Hoy no" / "Mañana no": salta al cliente solo ese día ("Volver a ponerlo" lo regresa).
+- Avisos "Sin chofer" (les toca y nadie los lleva, con casilla para pasarlos) y "Sin días de visita".
+- Mapa con el color de cada chofer (rojo: sin chofer). "¿Le cabe?": cajas aproximadas contra la capacidad de su camioneta.
+- Los que no se visitaron ayer (solo si el chofer sí trabajó) salen primero en la ruta nueva, marcados; los pedidos marcados. Los pedidos "para mañana" quedan con el chofer que se escogió.
+- El orden lo sigue poniendo "Ordenar con tráfico".
+- Pruebas: t81 (16) y t81nube (4, dos celulares). Todas: 0 FAIL.

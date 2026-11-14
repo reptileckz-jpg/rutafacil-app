@@ -2045,7 +2045,8 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 43 Contar bodega: si la diferencia es grande (más de 2 cajas o 20 kg) pide volver a contar; si el 2º conteo da lo mismo, se registra. Toda diferencia pide el motivo (se echó a perder, venta no registrada, error en la carga, está en un vehículo, otro).
 - 44 Fruta madura por antigüedad: la tarjeta solo sale cuando hay fruta pasada de tiempo (solo esos lotes, para decir qué pasó); ya no se desliza (eso cambiaba de página). El aviso "Lote … pasó su tiempo" (maduración) ahora lleva a ese lote en Maduración.
 - 45 La pantalla ya no brinca sola: al abrir un apartado se cerraban otros de arriba y lo tocado se iba para arriba (hasta 2,000 px); en la entrega del chofer (forma de pago, $200/$500, precio, cuándo vuelve) la pantalla subía ~200 px al redibujarse. Ahora lo que tocas se queda en su lugar (se respetan los saltos a propósito: ir arriba, llevar a un campo).
-- Pruebas: t82 (15), t82scroll (2). t68 sigue pasando. Todas: 0 FAIL.
+- Gastos y ventas en bodega viejos sin fecha (de antes de la 8.2) quedan "sin fecha" y no se cuentan en ningún día; lo nuevo recibe el día al guardarse.
+- Pruebas: t82 (16), t82scroll (2). t68 sigue pasando. Todas: 0 FAIL.
 
 ### Lista de prueba 8.2 (cuando se arme)
 1. Inicio → "¿Cuadran las cuentas?": con un chofer que ya mandó su cierre, ver dinero/cajas/kilos; recibir su efectivo y ver que se pone verde.

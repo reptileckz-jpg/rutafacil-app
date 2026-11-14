@@ -10931,7 +10931,8 @@ function hist82(){var hoy=iso(TODAY),D={};var add=function(d){if(d&&d<=hoy)D[d]=
 function histPon82(){if(MODO!=='vacio'||typeof HIST==='undefined')return;var L=hist82();HIST.length=0;L.forEach(function(r){HIST.push(r)});
  if(typeof COMPRAS!=='undefined'&&Array.isArray(COMPRAS)){COMPRAS.length=0;(S.cargas||[]).filter(function(c){return c.fecha&&(num(c.pR)||num(c.pM))}).sort(function(a,b){return String(a.fecha).localeCompare(String(b.fecha))}).forEach(function(c){COMPRAS.push({d:c.fecha,pR:num(c.pR),pM:num(c.pM)})})}}
 /* fechas que faltaban: venta local y gastos sin día */
-function fechas82(){var h=iso(TODAY);(S.vlVentas||[]).forEach(function(v){if(v&&!v.f82)v.f82=h});(S.gastos||[]).forEach(function(g){if(g&&!g.f&&!g.f82)g.f82=h})}
+/* la primera vez (ya con los datos de la nube) lo viejo sin fecha queda como "sin fecha" ('?') y no se cuenta; de ahí en adelante lo nuevo recibe el día */
+function fechas82(){if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var h=iso(TODAY),v1=!S.f82ini;(S.vlVentas||[]).forEach(function(v){if(v&&!v.f82)v.f82=v1?'?':h});(S.gastos||[]).forEach(function(g){if(g&&!g.f&&!g.f82)g.f82=v1?'?':h});if(v1)S.f82ini=h}
 var _est82=estadisticas;estadisticas=function(){var h=_est82.apply(this,arguments);if(MODO==='vacio')h=String(h).replace('Datos de ejemplo hasta ayer. Lo de hoy se suma al cerrar el día.','Con lo que se registra en la app (rutas, venta en bodega, gastos y mermas). Lo de hoy se va sumando.');if(MODO==='vacio')h=String(h).replace(' En la app final se guardan día con día.',' Se guardan solos, día con día.');return h};
 /* rankings: lo que de verdad compró cada cliente en 30 días */
 var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.apply(this,arguments);var d0=iso(new Date(TODAY.getTime()-30*864e5)),T={},keep={};

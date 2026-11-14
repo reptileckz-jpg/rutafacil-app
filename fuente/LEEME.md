@@ -2,7 +2,7 @@
 
 Aquí está todo lo necesario para seguir trabajando en la app desde otra conversación.
 
-**Lee también:** `negocio.md` (cómo funciona el negocio) e `instrucciones.md` (cómo trabajar con Ricardo).
+**Lee también:** `CONTEXTO-PARA-OTRA-IA.md` (todo lo que ya hace la app, para otra IA), `negocio.md` (cómo funciona el negocio) e `instrucciones.md` (cómo trabajar con Ricardo).
 
 - `base-v38.html`: la app base sobre la que se aplican las capas.
 - `capas/`: las capas `l1.js` … `l81.js`, que van en orden. También:

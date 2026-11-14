@@ -1,0 +1,241 @@
+# Ruta Fácil (Plátanos Nietos): contexto completo para analizar la app
+
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.1b, APK 1.0.33).
+> Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
+> Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
+> No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
+> Contesta en español sencillo de México. Numera tus sugerencias y di en qué pantalla va cada una.
+
+---
+
+## 1. Qué es
+
+- **App Android para administrar un negocio familiar de reparto de plátano** (roatán y macho) a tiendas, fruterías y restaurantes.
+- **Nombre:** dentro de la app, "Plátanos Nietos". El APK se llama **"Ruta Fácil"** (`com.rutafacil.app`).
+- **Quién la hace:** Ricardo Nieto Mejía (hijo), sin cobrar, para el negocio de su papá (también Ricardo). La programa con ayuda de IA (Claude Code).
+- **Estado:** en pruebas reales. Hoy se prueba en Tijuana con 1 o 2 choferes y 40 clientes de prueba con ubicaciones reales de Tijuana. El negocio real está en **Banderilla, Veracruz**.
+- **Meta del negocio:** que el papá (persona mayor, con lentes, poca tecnología, pero buen uso de WhatsApp) pueda manejar el negocio desde el celular, apartarse sin abandonarlo y tomarse ~10 días de vacaciones. También, que un chofer nuevo pueda hacer la ruta sin que le enseñen cliente por cliente.
+- **Lo más importante:** que **los números siempre cuadren** (dinero, cajas y kilos) y que nada se pierda.
+- **A futuro:** Ricardo quiere sacarla para uso libre, para otros negocios. Por eso todo lo de lugares (estado, colonia, bodega) sale de la ubicación GPS y no está fijo a Veracruz.
+
+## 2. El negocio (cómo funciona en la vida real)
+
+- **Producto:**
+  - **Roatán:** se compra **por kilo** al proveedor y se vende **por caja** (≈20–22 kg). Caja llena = "caja"; caja vacía = "tara" (pesa 2 kg).
+  - **Macho:** se compra y se vende **por kilo**.
+- **Maduración:** la fruta llega verde y se madura en bodega con carburo. Tarda **horas** (distinto para roatán y para macho) y depende del clima: con frío tarda más. Ya madura dura ~3 días. Lo de segunda se remata por kilo; lo que no sirve se tira (merma).
+- **Gente:**
+  - **Administradores:** dos (papá e hijo), cada uno con su cuenta y la misma información.
+  - **Choferes:** 1 o 2 al día, empiezan a las 8:00. Se trabaja también en domingo.
+  - **Encargado:** un chofer de confianza puede quedar como encargado temporal (recibe efectivo y hace el cierre del día).
+  - **Contador:** con acceso de solo lectura a números.
+  - **Venta local:** venta en bodega.
+- **Clientes:** 40–100 por toda la ciudad. Casi todo es en efectivo; también tarjeta y transferencia. El crédito se da a pocos clientes y lo autoriza el admin. El ticket se manda como imagen por WhatsApp o se imprime en una impresora térmica Bluetooth.
+- **Viajes de carga:**
+  - El roatán viene de El Pital (proveedor "Roly"). El macho viene de Nautla (Josue) y de Coacoatzintla ("El Lic").
+  - Ruta típica: Banderilla → El Pital → Nautla → Banderilla, en camión Freightliner M2. A Coacoatzintla se va aparte, en NP300.
+  - A quien va le dan efectivo para pagar y para gastos (diésel, básculas, comida). Hay básculas en el camino.
+- **Vehículos:**
+  - Freightliner M2 2015: diésel y DEF, placas de Guerrero, aceite cada 13,000 km.
+  - Dos Nissan NP300: gasolina, placas de Veracruz, aceite cada 10,000 km.
+  - Cada día se registran el odómetro, el nivel del tanque y 4 fotos al salir y al regresar (solo con cámara, no galería).
+- **Dinero:** no hay sueldo fijo del dueño (toma de la caja). No hay cuenta bancaria del negocio. Están en el SAT pero no facturan.
+- **Celulares:** los de los choferes son **del negocio**, por eso la ubicación se manda siempre. Al final del día se entregan en bodega el celular, la terminal, la impresora y el vehículo.
+
+## 3. Cómo está hecha (técnico)
+
+- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **81 capas** (`fuente/capas/l1.js … l81.js`).
+  - Cada capa reemplaza o envuelve funciones globales: `var _f=f; f=function(){…}`.
+  - `patch39.py` y `ql.py` hacen cambios de texto sobre la base. `build.sh` junta todo.
+  - Salen dos versiones: `prototipo-platanos.html` (**demo** con datos de ejemplo) y `platanos-primera-vez.html` (**versión real**, `PN_MODO="vacio"`, sin datos de ejemplo). La real se copia a `www/index.html`.
+- **Estado:** un objeto global `S`. `render()` dibuja la pantalla según `S.role` y `S.tab`. Hay un motor que solo actualiza lo que cambió.
+- **Guardado local:** IndexedDB en el teléfono, ~0.7 s después de cada cambio y al irse al fondo. Además, la caché de Firestore.
+- **Nube:** Firebase.
+  - Auth: usuario/correo + contraseña, con perfiles y roles.
+  - Firestore: el estado `S` se parte en "unidades". Hay datos compartidos del negocio (lista `NB_SH`) y la ruta de cada chofer (documentos `r~id~clave`).
+  - Se combinan **campo por campo**, así que dos celulares no se borran los cambios. Los saldos usan sumas y restas (increment).
+  - Hay reglas de seguridad (`firestore.rules`) con pruebas.
+  - Si la copia local se daña, se repara sola. Plan B: copia en memoria.
+- **Android:** Capacitor 7 (pide Android 6 o más nuevo). Hay código nativo propio (`nativo/`):
+  - `RutaNativa`: huella, compartir a WhatsApp, Descargas, impresora Bluetooth ESC/POS, escáner, Google Places, notificaciones.
+  - `RutaGps`: ubicación siempre prendida en celulares del negocio.
+  - `RutaArranque`, `RutaAdmin`: modo administrado del dispositivo.
+- **Mapas:** Leaflet (OpenStreetMap) dentro de las pantallas; Google Maps a pantalla completa con "Ver en Google Maps".
+  - Google **Routes API** para "Ordenar con tráfico". Google **Places** para buscar y nombrar lugares.
+  - La llave está en el secreto `MAPS_KEY` de GitHub. **Nunca va en el código.**
+- **Clima:** open-meteo, con la ubicación de la bodega.
+- **Publicación:** subir a `main` hace que GitHub Actions arme el APK firmado `1.0.<número de corrida>` y lo publique en Releases. Lo que no debe armar APK lleva `[skip ci]`.
+- **Pruebas:** Playwright, ~35 archivos en `fuente/pruebas/` (cada uno imprime "N OK · N FAIL"). Hay pruebas con **dos celulares** y una nube de prueba que se porta como Firestore (`t61`, `t78nube`, `t81nube`). También una prueba que revisa que la versión real **no traiga nada de la demo** (`t80vacio`). Todas pasan en la 8.1b.
+- **Bitácora:** `fuente/pendientes.md` tiene todo el historial: puntos 1–100 de la primera lista, y la lista nueva 1–39.
+
+## 4. Reglas de diseño que ya se siguen (no proponerlas como nuevas)
+
+- Español sencillo de México. Letra y botones **grandes** (el dueño usa lentes). Tarjetas blancas redondeadas, ícono en cuadrito de color, números grandes.
+- Todo lo que pide datos o decisiones va en una **tarjeta de pantalla completa, paso a paso, una pregunta a la vez**, con "Atrás" y "Siguiente".
+- **"¿Estás seguro?"** en lo que no se puede deshacer.
+- **Ningún botón se queda sin hacer nada:** si algo no se puede, la app dice por qué.
+- Todo lo que "falta…" te lleva al campo (se pone rojo y se sacude).
+- **Doble toque = un solo registro** (protección de 1 s).
+- Avisos en segunda persona cuando tú lo hiciste ("Registraste…") y con nombre cuando fue otro ("Danu registró…").
+- Fotos de evidencia solo con cámara (la cámara propia de la app, trasera, con marca de agua de fecha y hora). Ahora se guardan a 1000 px.
+- Con cada versión se le da a Ricardo una lista de prueba corta por número de punto.
+
+## 5. Roles y pantallas
+
+- **Administrador:** pestañas Inicio · Bodega · Cargas · Clientes · Gastos · Vehículos · Personal · Estadísticas. Además: menú, Ajustes, botón "+" y botón "?".
+- **Chofer (rep):** pestañas Ruta · Entrega · Cierre · Viaje/Gasto, con tutorial propio.
+- **Encargado:** chofer con permisos de admin temporales.
+- **Contador:** Resumen · Gastos · Deudas · Exportar.
+- **Venta local:** Vender · Corte.
+- **Acceso:** PIN por usuario (se vuelve a pedir tras 5 min admin/contador o 30 min chofer), huella (se ofrece dentro de la app), PIN olvidado, cambiar de usuario, sesiones.
+
+## 6. Lo que YA hace la app (inventario por área)
+
+### Inicio del administrador
+- Precio de hoy (si no se fija, se cobra el de ayer y la tarjeta se pone roja). Precio de mayoreo mínimo (no puede ser mayor que el normal). Aviso de precio ±10%.
+- Inventario en dos tarjetas (roatán y macho) con "Te alcanza para N días".
+- "Por atender": avisos en tarjetas por urgencia, con ícono. Ventana de urgentes "1 de N". "Atender" lleva al lugar exacto.
+- Cierres de los choferes por recibir. **Recepción a ciegas:** quien recibe cuenta sin ver lo que debería ser. Faltantes y qué hacer con ellos.
+- Resumen del día por WhatsApp. Respaldo (copia y Excel). "Aprende la app" (lista que se palomea sola al hacer cada cosa). "Hoy te toca" / "Ahora sigue". Burbuja "¿Qué sigue?".
+- **Rutas de hoy** (ver 6.7).
+- "Liberar su ruta de hoy" / "Recordarle" cuando un chofer no mandó su cierre de ayer.
+
+### Bodega
+- Inventario: verdes, en maduración, maduras, taras vacías. Varias bodegas.
+- **Maduración:** meter a madurar (cajas o kilos, método, clima, temperatura real). Cuándo se sacan (en horas o día y hora). Barra de avance con el **reloj real**. "Sacar: ya está maduro". Sugerencia de cuánto meter a madurar hoy para mañana.
+- **Fruta madura por antigüedad:** cada lote dice qué pasó (se tiró / se remató / ya no está / salió a la venta). Los lotes se descuentan solos con las ventas. La tarjeta se desliza para quitarla y vuelve sola si entra fruta de otro día o algo está por pasarse. Fruta apartada para pedidos.
+- Cajas que regresan del reparto: no entran a bodega hasta que alguien las cuenta ("Cajas sin contar"), con foto obligatoria. Buró de taras (quién debe taras y desde cuándo).
+- **Ubicación de la bodega con GPS:** Google dice qué hay en ese punto y sugiere "Bodega + colonia". Si no hay dirección, el nombre es obligatorio. De ahí salen el estado de las placas, el clima y la dirección del negocio.
+
+### Cargas y viajes de carga
+- Registrar carga: proveedor, kilos, precio, cajas, macho, gastos, todo desglosado. "¿Sumar el desgaste del vehículo?", "¿Sueldo por este viaje?", costo del viaje más exacto. "¿Meter a madurar?" con día y hora de salida.
+- **Simulador de viaje:** cuánto cuesta cada caja y cuánto deja el viaje antes de hacerlo. "+ Otra báscula", "+ Nuevo" proveedor. Pronóstico de 7 días: si alcanza la fruta y cuándo pedir.
+- **Programar un viaje** (fecha, hora, chofer, vehículo, efectivo). **Viaje de carga paso a paso** para el chofer: revisión, tanque, combustible, fotos, camino, básculas, proveedores, vuelta, registro.
+  - Ubicaciones de básculas y proveedores: aproximadas → exactas al llegar.
+  - Viaje pactado vs real. "Cómo van las cuentas" en vivo durante el camino (le dieron, combustible, otros gastos, debe regresar). Al llegar, resumen prellenado y efectivo que regresa.
+  - Retraso: avisa al admin. Pedir al proveedor por WhatsApp.
+- Proveedores: qué vende cada uno, crédito, lo que se les debe, pagos.
+
+### Clientes
+- Ficha con pestañas: foto de fachada, ubicación (GPS / link de Maps / coordenadas / búsqueda en Google Places), horario, **días de visita**, chofer fijo, crédito y límite, taras que debe, mayoreo, historial de compras.
+- **Alta por pasos.** **Importar clientes** desde CSV o Excel con plantilla (nombre, apodo, teléfono, ubicación, dirección, horario, días, chofer, crédito, taras). Si el cliente ya existe, lo actualiza por nombre sin duplicarlo.
+- **Buró de crédito y mayoreo:**
+  - Crédito máximo por cliente ($1,500; excepciones solo el admin). Tope por chofer de lo que le deben todos sus clientes, con sugerencias de subir o bajar.
+  - 2 mayoreos a mano en 10 días → "en revisión".
+- Cobranza: quién debe y desde cuándo. Recordatorio amable por WhatsApp. QR de clientes (opcional).
+- "Datos que faltan", agrupados por prioridad. Cada uno lleva al campo.
+
+### Pedidos
+- Pedidos por WhatsApp, llamada o en persona, paso a paso: cliente (o cliente nuevo), cajas y kilos, para hoy o mañana, a qué chofer (sugiere el más cercano), "¿Cabe en la ruta?".
+- Seguimiento: recibido → chofer asignado → salió a reparto. Le llega al chofer al momento por la nube.
+- **Precio especial** solo para ese pedido: el chofer pide permiso y el admin tiene 5 min para contestar; si no contesta, va a precio normal.
+
+### Rutas del chofer y reparto
+- **La ruta del día se arma sola:** al cambiar de día, cada chofer recibe sus clientes (chofer fijo + días de visita), más pedidos, más los que no se visitaron ayer (solo si ese día sí trabajó), más los cambios del admin.
+  - Funciona abra el celular que abra primero.
+  - Si el chofer no mandó su cierre de ayer: pantalla "No mandaste tu cierre de ayer" → al mandarlo se le arma sola la de hoy. Si ayer no trabajó, no se le pide.
+- **Ordenar con tráfico** (Google Routes, una llamada), con hora estimada por cliente. La app aprende los tiempos.
+- Inicio de ruta: odómetro y tanque confirmados, 4 fotos, revisión del vehículo (la del lunes es más completa), equipo con buen o mal estado (celular, terminal, impresora, llaves).
+- **Entrega:**
+  - Cajas y kilos; empieza con lo de la vez pasada o en ceros. "Lo mismo de la vez pasada". Taras que deja y recoge.
+  - Pago: efectivo, tarjeta (con comisión), transferencia o mixto. Crédito o abono (con permiso para fiar). Mayoreo.
+  - Ticket obligatorio por WhatsApp si queda crédito o hay abono, e impresión Bluetooth.
+  - "No estaba", "Tenía producto", "Compró a otro", cambios de fruta mala con foto, cancelar con motivo, cliente nuevo en ruta (alta por pasos), confirmar o corregir la ubicación.
+- Gastos de ruta: comida solo si se acordó, ticket obligatorio con foto, combustible (litros, precio, total). TAG de autopista.
+- Modo manejo automático. Ubicación en vivo cada 2 min o cada 200 m. Alertas: sin señal, exceso de velocidad, paradas raras.
+- "Su recorrido" para el admin: dónde está ahora, paradas con hora, tiempo en cada parada, km, plan vs real.
+- **Cierre por pasos:**
+  - Efectivo que de verdad entrega, con billetes opcionales con + y −. Corte en foto con QR. Fotos y odómetro de regreso. Si entrega el vehículo en las mismas condiciones.
+  - Reabrir con permiso, carga extra u otra vuelta con permiso. Apoyo entre choferes y pasar la ruta.
+  - Lo que pasó hoy en su ruta (minimizado).
+
+### 6.7 Rutas del administrador (nuevo, versión 8.1)
+- Tarjeta "🗺️ Rutas de hoy" en Inicio y en Personal → pantalla **Rutas** con **Hoy / Mañana**.
+- Cada chofer con su color: sus clientes (zona, cajas y kilos aproximados), "ya va en camino" / "no ha salido", cuántos lleva entregados.
+- Marcar varios → **Pasar a…** → chofer → **solo ese día** o **siempre** (cambia su chofer fijo). **Pasar todos…** por chofer. **Todos a un chofer.**
+- **Hoy no / Mañana no** (salta solo ese día) y "Volver a ponerlo".
+- Avisos **Sin chofer** y **Sin días de visita**. **Mapa** con el color de cada chofer. **"¿Le cabe?"**: cajas contra la capacidad de su camioneta.
+- Si el cambio es para hoy, al chofer le llega una notificación y su lista se acomoda sola, aunque ya vaya en camino (la app te avisa antes). Si está entregando a ese cliente, el cambio espera.
+- Incluida en el tutorial: paso "Rutas", recorrido "Nuevo: Rutas", "Aprende la app", "¿Cómo se usa?" y el botón "?".
+
+### Gastos, caja y dinero
+- Efectivo en caja = lo que de verdad está en la caja. Cierre de caja obligatorio. Límite de pagos. Conteo doble.
+- Gastos fijos y gastos con factura. Cerrar el mes por pasos. Préstamos, adelantos, bonos y sueldos (semanal, por día, base + comisión por caja o kilo).
+- Costo de repartir. Desgaste del vehículo. Por pagar a proveedores.
+- Los saldos de cliente y proveedor se guardan como sumas y restas, así que dos celulares no se borran el movimiento. Centavos redondeados.
+- **Facturas CFDI 4.0:** listas pero **apagadas** (datos fiscales, facturar venta, factura global mensual). Falta conectar un PAC cuando se quiera.
+
+### Vehículos
+- Ficha con placa dibujada del estado real, papeles con vencimientos (seguro, tarjeta de circulación, verificación), VIN, llantas, DEF.
+- Aceite y afinación por km con aviso, preguntando "¿qué marcaba el tablero?" o "¿hace cuántos km?". Taller, bitácora, historial de revisiones.
+- TAG por vehículo: saldo, recargas, cruces como gasto del viaje, importar cruces del estado de cuenta, aviso de saldo bajo.
+- Rendimiento de combustible y consumo alto. Vehículo asignado a cada chofer.
+
+### Personal
+- Alta por pasos: puesto, papeles (licencia, INE, frente y reverso), referencias, sueldo y PIN. Accesos a la nube desde Personal. Bajas.
+- Encargado temporal y "Me voy de vacaciones" (solo llegan avisos urgentes). Permisos por chofer (seguir trabajando, fiar).
+
+### Estadísticas
+- Ventas, ganancia, por chofer y por cliente, por día, mes y año. Historial para comparar fechas, clima y temporadas.
+
+### Primera vez y ayuda
+- Asistente de inicio por pasos: Bienvenida, Bodega, Vehículos, Personal, Clientes (o importar), Proveedores, Dinero y precios, Listo. Con "Corregir".
+- Tutorial de la primera vez (admin y chofer) y tutorial por días. Botón "?" en cada pantalla. Bienvenida y permisos al primer uso.
+
+### Seguridad, estabilidad y datos
+- **Red de seguridad:** si algo se rompe al cargar o al dibujar, la app no se queda en blanco. Hay pantalla de rescate con el error, "Copiar el error", "Mandar por WhatsApp", "Reparar la conexión con la nube" y diagnóstico.
+- Limpieza de "viajes revividos a medias" que traía la nube.
+- Aviso "N cambios sin subir: no borres datos" si algo tarda más de 20 s en subir.
+- Problemas reportados (Ajustes). Borrar datos de prueba. Respaldo con Excel.
+- **Sin datos de demo en la versión real** (lo revisa una prueba automática).
+
+## 7. Historial reciente (lo último que se hizo)
+
+| Versión | Qué |
+|---|---|
+| 7.6 (12 nov) | Fruta madura, ubicaciones con Google Places, chofer (cliente nuevo, taras, botones), cámara propia, huella, aceite, revisión por pasos, primera vez por pasos, importar clientes, TAGs, facturas apagadas |
+| 7.7–7.9b (12 nov) | Red de seguridad. Arreglo del admin atorado en "Cargando" (pedazos sueltos de un viaje que la nube revivía) |
+| 7.8 (12 nov) | Puntos 15–30: ubicación, TAG, galería, VIN/llantas/DEF, pedidos con precio especial, apartados, historial de revisiones |
+| 8.0 (14 nov) | Ruta del día sin depender del cierre ni del celular del admin; reparación de la copia de la nube; **maduración con reloj real** (antes no avanzaba: error grave ya corregido); quitar todo lo de la demo de la versión real; bodega con GPS; cuentas del viaje en vivo |
+| 8.0b | Nombres de lugar sacados de la ubicación de la bodega (colonia, estado de placas) |
+| 8.1 / 8.1b (14 nov) | **Rutas del administrador** y su tutorial |
+
+## 8. Decisiones tomadas (no volver a proponer como nuevas)
+
+- **IA dentro de la app:** decidido que **todavía no**. Se propondrá más adelante (Firebase Functions + Claude Haiku para lo diario y un modelo grande para preguntas y resúmenes).
+- **Facturación:** lista pero apagada. Se conecta el PAC cuando el negocio quiera facturar.
+- **Mapas chicos dentro de las pantallas = Leaflet.** Google Maps solo a pantalla completa. Google Maps "debajo" de la app se desfasaba y trababa algunos celulares, así que se descartó.
+- **Huella:** no en la pantalla del PIN. Se ofrece dentro de la app; si se omite, se vuelve a sugerir en 3 días (máximo dos veces) y siempre está en Ajustes.
+- **La × para cerrar todos los avisos de golpe:** quitada a propósito (son urgentes). Se usa "Después".
+- **Estado de las placas:** se escoge a mano; la app sugiere el de la dirección de la bodega. Pendiente para uso libre: lista de los 32 estados (hoy solo hay diseño de placa de Veracruz y Guerrero; los demás salen genéricos).
+- **Reparto automático de clientes entre choferes por zona, historial de cambios de ruta y planear la semana completa:** dejados para después, a propósito.
+- **Play Store:** se publicará por prueba interna con cuenta personal; aún no se hace.
+- **Datos de prueba:** solo los 40 clientes de Tijuana (`fuente/datos-prueba/clientes-prueba-tijuana.csv`), con 12–13 clientes por día en días salteados. Nada más ficticio.
+
+## 9. Lo que se sabe que falta o está a medias
+
+- La **venta local** (en bodega) todavía no frena lo **apartado** para pedidos por cantidad. Solo el remate de fruta madura lo pregunta.
+- **Android 8 (Samsung viejo):** debería instalarse (Capacitor 7 pide Android 6+), pero necesita actualizados "Android System WebView" y Chrome. No se ha probado.
+- **Fotos ya guardadas antes de la 8.0:** siguen pesadas. Solo las nuevas salen a 1000 px.
+- **Vehículos ya dados de alta con estado "Veracruz" por defecto:** no se cambian solos.
+- **Lo que hay que probar con dos celulares:** Rutas (pasar clientes hoy y mañana), ruta del día con cierre pendiente, pedidos, maduración con reloj real.
+
+## 10. Cómo ayudar mejor
+
+1. Lee primero las secciones 6 y 8.
+2. Prioriza en este orden:
+   1. Que los números cuadren.
+   2. Que no se pierda nada.
+   3. Que el dueño (mayor, con lentes) pueda usarla solo.
+   4. Que un chofer nuevo no necesite que le enseñen.
+3. Para cada sugerencia di:
+   - **Pantalla.**
+   - **Qué pasa hoy:** si no lo sabes, dilo.
+   - **Qué propones.**
+   - **Por qué**, con un ejemplo real del negocio (cajas, kilos, choferes, cobro).
+4. Separa:
+   - **Errores o riesgos:** se pierde dinero o datos, o algo no cuadra.
+   - **Mejoras de uso.**
+   - **Ideas nuevas.**
+5. No propongas cambiar la tecnología: Android con Capacitor, Firebase, capas sobre la base. Funciona, y está probado con pruebas automáticas y dos celulares.
+6. Si quieres ver el código, el repositorio es `reptileckz-jpg/rutafacil-app` (privado). La bitácora completa con cada decisión está en `fuente/pendientes.md`; empieza por el final.

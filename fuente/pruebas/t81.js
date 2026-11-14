@@ -43,5 +43,11 @@ r=await ev(()=>{document.querySelector('[data-act="rt81map"]').click();return !!
 // pendientes de ayer: el chofer trabajó y dejó 2 sin visitar → mañana le salen primero
 r=await ev(()=>{S.chSt[A].salida={ok:true};S.chSt[A].log=[{x:1}];S.chSt[A].stops.forEach((s,i)=>{s.done=i>1});var pend=S.chSt[A].stops.filter(s=>!s.done).map(s=>s.c);S.chSt[A].rutaDia80=hoy81();var T0=TODAY;TODAY=new Date(TODAY.getTime()+864e5);var o=chNuevo(A);TODAY=T0;return {pend,st:o.stops.slice(0,pend.length).map(s=>[s.c,!!s.pend81])}});
 ok(r.st.length===r.pend.length&&r.st.every((x,i)=>x[0]===r.pend[i]&&x[1]),'los que no se visitaron ayer salen primero y marcados',r);
+// tutorial
+r=await ev(()=>{S.rt81=null;S.tab.admin='inicio';render();var sel=TUT['n:rt81'].map(x=>!!document.querySelector(x[0]));return {sel,adm:TUT.admin[1][1],rep:TUT.rep.some(x=>/Tu ruta puede cambiar/.test(x[1])),apr:aprendeItems().some(x=>/Repartir las rutas/.test(x[0])),help:/Rutas de hoy/.test(HELP.inicio[1])}});
+ok(r.sel.every(Boolean)&&r.adm==='Rutas'&&r.rep&&r.apr&&r.help,'tutorial: recorrido de Rutas, paso nuevo, "Aprende la app" y ayuda',r);
+r=await ev(()=>{S.rt81Visto=0;document.querySelector('[data-act="rt81open"]').click();var d=document.querySelector('#rt81 details[data-act="rt81ay"]');var a=d&&d.open;S.rt81=null;render();document.querySelector('[data-act="rt81open"]').click();var d2=document.querySelector('#rt81 details[data-act="rt81ay"]');return [a,d2&&!d2.open]});
+ok(r[0]&&r[1],'"¿Cómo se usa?" sale abierta la primera vez y luego cerrada',r);
+await ev(()=>{S.rt81=null;render()});
 ok(errs.length===0,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

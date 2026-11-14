@@ -10841,7 +10841,7 @@ function aplica81(dest,modo){var R=S.rt81,f=R.dia==='hoy'?hoy81():man81(),hoy=R.
  Object.keys(av).forEach(function(id){try{rutaAviso(+id,av[id].join(' · '))}catch(e){}});
  var tx=dest==='no'?(hoy?'Hoy':'Mañana')+' no se visita: '+nom.join(', '):'Pasó '+(n===1?'a '+nom[0]:n+' clientes')+' con '+chofN(dest)+(modo==='siempre'?' (para siempre)':' ('+(hoy?'solo hoy':'solo mañana')+')');
  S.hist.push({t:fmtF(hoy81())+' '+hhmm(),q:quien(),x:'Rutas: '+tx});R.sel={};R.pick=null;toast(tx)}
-document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act^="rt81"]');if(!b)return;var a=b.dataset.act;if(a==='rt81sd')return;e.preventDefault();e.stopImmediatePropagation();
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act^="rt81"]');if(!b)return;var a=b.dataset.act;if(a==='rt81sd'||a==='rt81ay')return;e.preventDefault();e.stopImmediatePropagation();
  if(a==='rt81open'){S.rt81={dia:b.dataset.v||'hoy',sel:{}};render();return}var R=S.rt81;if(!R)return;
  if(a==='rt81x'){S.rt81=null;render();return}
  if(a==='rt81d'){R.dia=b.dataset.v;R.sel={};R.pick=null;render();return}
@@ -10866,6 +10866,33 @@ function rtEntrada81(){if(S.role!=='admin'||S.encOn||S.rt81)return;var t=S.tab.a
  d.innerHTML='<div class="row"><span><b style="font-size:18px">🗺️ Rutas de hoy</b><br><span class="lbl">'+n+' cliente'+(n===1?'':'s')+(partes.length?' · '+esc(partes.join(' · ')):'')+(sc?' · <b>'+sc+' sin chofer</b>':'')+'</span></span></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:1" data-act="rt81open" data-v="hoy">Ver y repartir</button><button class="btn sec" style="flex:1" data-act="rt81open" data-v="man">Mañana</button></div>';
  var ref=m.querySelector('[data-x="dia80a"]');if(ref)ref.after(d);else m.prepend(d)}
 var _rd81=render;render=function(){var ch=false;try{ch=toma81()}catch(e){console.error('l81 toma',e)}var r=_rd81.apply(this,arguments);try{rtEntrada81();rt81Pon()}catch(e){console.error('l81',e)}return r};
+
+/* ---------- 39 · Rutas en el tutorial ---------- */
+try{TUT.admin.splice(1,0,['[data-x="rt81e"]','Rutas','Aquí ves qué clientes tocan hoy y mañana y con qué chofer. Toca "Ver y repartir" para pasar clientes de un chofer a otro, saltar a uno solo por hoy o ver la ruta en el mapa.'])}catch(e){}
+try{TUT.rep.push(['nav.tabs button[data-t="ruta"], nav.tabs','Tu ruta puede cambiar','Si el administrador te pasa un cliente o te quita uno, te llega un aviso y tu lista se acomoda sola.'])}catch(e){}
+TUT['n:rt81']=[['[data-x="rt81e"]','Nuevo: Rutas','Aquí ves cuántos clientes lleva cada chofer hoy y si alguno se quedó sin chofer.'],
+ ['[data-x="rt81e"] [data-act="rt81open"][data-v="hoy"]','Ver y repartir','Marca uno o varios clientes y toca "Pasar a…". Escoges el chofer y si es solo por hoy o para siempre. Si ya salió, le llega un aviso al momento.'],
+ ['[data-x="rt81e"] [data-act="rt81open"][data-v="man"]','Mañana','Lo mismo para mañana: la ruta se le arma sola con tus cambios. Con "Mañana no" saltas a un cliente solo ese día.']];
+TUT['n:rt81rep']=[['nav.tabs button[data-t="ruta"], nav.tabs','Tu ruta puede cambiar','Si el administrador te pasa un cliente o te quita uno, te llega un aviso y tu lista se acomoda sola. El orden lo pones tú con "Ordenar con tráfico".']];
+var _tI81=tutIniciar;tutIniciar=function(k){try{if(k==='admin')S.tutVisto['n:rt81']=true;if(k==='rep')S.tutVisto['n:rt81rep']=true}catch(e){}return _tI81.apply(this,arguments)};
+function tutNuevo81(){if(window.__pnTest||!REAL||S.tut||window.__tutAct||(typeof _pin!=='undefined'&&_pin&&_pin.modo)||document.getElementById('nbov')||document.getElementById('setov')||S.rt81)return;S.tutVisto=S.tutVisto||{};
+ var k=S.role==='admin'&&!S.encOn&&S.tab.admin==='inicio'&&document.querySelector('[data-x="rt81e"]')?'n:rt81':(S.role==='rep'?'n:rt81rep':null);if(!k||S.tutVisto[k]||!S.tutVisto[S.role==='rep'?'rep':'admin'])return;
+ S.tutVisto[k]=true;setTimeout(function(){if(S.tut)return;S.tut={k:k,i:0,prev:{tab:S.tab[S.role]},tab:S.tab[S.role]};render()},1200)}
+/* "Aprende la app": Repartir las rutas */
+var _ai81=aprendeItems;aprendeItems=function(){var L=_ai81.apply(this,arguments);try{if(S.role!=='rep')L.push(['Repartir las rutas','inicio',!!S.rt81Ya])}catch(e){}return L};
+var _ap81=aplica81;aplica81=function(){S.rt81Ya=1;return _ap81.apply(this,arguments)};
+function aprende81(){Array.prototype.forEach.call(document.querySelectorAll('[data-act="aprendeir"]'),function(b){if(/Repartir las rutas/.test(b.textContent)){b.dataset.act='rt81open';b.dataset.v='hoy'}})}
+/* botón "?" */
+function help81(){try{if(HELP._81)return;HELP.inicio[1]+=' En "Rutas de hoy" ves qué clientes lleva cada chofer y los repartes.';HELP.personal[1]+=' Para repartir los clientes de hoy o mañana usa "Rutas de hoy".';HELP._81=1}catch(e){}}
+/* dentro de Rutas: "¿Cómo se usa?" (abierta la primera vez) */
+var _rtH81=rt81HTML;rt81HTML=function(){var h=_rtH81.apply(this,arguments);if(!h)return h;var R=S.rt81;if(R.ay==null)R.ay=!S.rt81Visto;S.rt81Visto=1;
+ var ay='<details class="card" data-act="rt81ay"'+(R.ay?' open':'')+'><summary><b>¿Cómo se usa?</b></summary><ol style="margin:8px 0 0;padding-left:20px;line-height:1.45">'
+  +'<li>Arriba escoge <b>Hoy</b> o <b>Mañana</b>.</li><li>Marca uno o varios clientes (toca el cuadrito).</li><li>Toca <b>Pasar a…</b>, escoge el chofer y si es <b>solo ese día</b> o <b>siempre</b>. Luego <b>Hacer el cambio</b>.</li>'
+  +'<li>Con <b>Hoy no</b> saltas a un cliente solo ese día; abajo lo puedes <b>volver a poner</b>.</li><li><b>Pasar todos…</b> pasa todos los de un chofer (por si falta). <b>Todos a un chofer</b> junta a todos.</li>'
+  +'<li>Si es para hoy, al chofer le llega un aviso y su lista se acomoda sola, aunque ya vaya en camino.</li><li>Rojo arriba: clientes <b>sin chofer</b>. "Le cabe": si lo que lleva cabe en su camioneta.</li><li>El orden de las paradas lo pone el chofer con <b>Ordenar con tráfico</b>.</li></ol></details>';
+ var i=h.indexOf('<div class="w">');return i<0?h:h.slice(0,i+15)+ay+h.slice(i+15)};
+document.addEventListener('toggle',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.act==='rt81ay'&&S.rt81)S.rt81.ay=t.open},true);
+var _rd81b=render;render=function(){var r=_rd81b.apply(this,arguments);try{help81();aprende81();tutNuevo81()}catch(e){}return r};
 
 
 /* ---------- Estructura ---------- */

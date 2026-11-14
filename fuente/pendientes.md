@@ -2032,3 +2032,4 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Los que no se visitaron ayer (solo si el chofer sí trabajó) salen primero en la ruta nueva, marcados; los pedidos marcados. Los pedidos "para mañana" quedan con el chofer que se escogió.
 - El orden lo sigue poniendo "Ordenar con tráfico".
 - Pruebas: t81 (16) y t81nube (4, dos celulares). Todas: 0 FAIL.
+- 39b (14 nov) Ricardo: "no olvides añadir Rutas al tutorial". HECHO: paso "Rutas" en el recorrido de la primera vez (admin); recorrido corto "Nuevo: Rutas" (3 pasos) que sale una sola vez a quien ya hizo el tutorial; chofer: paso "Tu ruta puede cambiar" (y una vez a los choferes que ya lo hicieron); "Aprende la app" → "Repartir las rutas" (se palomea al hacer un cambio y abre Rutas); dentro de Rutas "¿Cómo se usa?" (abierta la primera vez); botón "?" de Inicio y Personal lo mencionan. Prueba t81 (18).

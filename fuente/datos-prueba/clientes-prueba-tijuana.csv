@@ -1,41 +1,41 @@
 ﻿Nombre,Apodo,Teléfono,Ubicación,Dirección o referencia,Horario,Días de visita,Chofer,Crédito inicial,Taras que debe
-Verdulería Doña Mary,Mamá Chela,6645550100,"32.532359, -117.040714","Zona Centro, Tijuana",7:00-10:00,"Lun,Jue",,0,6
+Verdulería Doña Mary,Mamá Chela,6645550100,"32.532359, -117.040714","Zona Centro, Tijuana",7:00-10:00,"Jue,Dom",,0,6
 Abarrotes Don Toño,,6645550101,"32.521218, -117.023812","Zona Río, Tijuana",10:00-13:00,"Mar,Vie",,0,0
-Tienda La Norteñita,,6645550102,"32.541396, -117.010385","Colonia Libertad, Tijuana",7:00-10:00,"Mié,Sáb",,0,6
-Abarrotes El Paisa,El flaco,6645550103,"32.527184, -117.036603","Colonia Cacho, Tijuana",7:00-10:00,Lun,,1000,0
-Carnicería y abarrotes El Compa,,6645550104,"32.504654, -117.007558","Hipódromo, Tijuana",9:00-12:00,Mar,,1000,0
-Tienda El Paisa,,6645550105,"32.51157, -117.013497","Chapultepec, Tijuana",7:00-10:00,Mié,,1000,0
-Tortillería Don Beto,Mamá Chela,6645550106,"32.530952, -116.970029","Otay Universidad, Tijuana",10:00-13:00,Jue,,0,4
-Tortillería Santa Fe,,6645550107,"32.507893, -116.987013","La Mesa, Tijuana",8:00-11:00,Vie,,1500,0
-Carnicería y abarrotes Don Toño,,6645550108,"32.481961, -116.919252","Mariano Matamoros, Tijuana",10:00-13:00,Sáb,,0,6
-Tienda El Güero,Doña,6645550109,"32.472095, -116.86068","El Florido, Tijuana",8:00-11:00,"Lun,Mié,Vie",,500,4
-Abarrotes La Esperanza,,6645550110,"32.498117, -116.894416","Villa Fontana, Tijuana",14:00-17:00,"Lun,Jue",,0,2
-Verdulería Los Arcos,,6645550111,"32.494973, -116.930625","Cerro Colorado, Tijuana",7:00-10:00,"Mar,Vie",,0,2
-Taquería La Esperanza,Mamá Chela,6645550112,"32.489485, -117.008388","Sánchez Taboada, Tijuana",7:00-9:00,"Mié,Sáb",,500,2
-Depósito Don Pancho,,6645550113,"32.492181, -117.029306","Camino Verde, Tijuana",8:00-11:00,Lun,,1000,0
-Taquería Don Beto,,6645550114,"32.510746, -117.045701","Lomas Taurinas, Tijuana",7:00-9:00,Mar,,0,4
-Depósito La Güera,Mamá Chela,6645550115,"32.523645, -117.121407","Playas de Tijuana, Tijuana",9:00-12:00,Mié,,0,4
-Cocina económica El Chino,,6645550116,"32.488651, -116.948108","Francisco Villa, Tijuana",7:00-9:00,Jue,,500,0
-Fruteria La Esperanza,,6645550117,"32.49341, -116.944144","Las Américas, Tijuana",8:00-11:00,Vie,,0,4
-Tortillería Los Primos,El primo,6645550118,"32.513102, -116.965967","Los Pinos, Tijuana",12:00-15:00,Sáb,,0,6
-Tortillería La Michoacana,,6645550119,"32.482625, -116.981476","Buenos Aires Norte, Tijuana",12:00-15:00,"Lun,Mié,Vie",,1000,0
+Tienda La Norteñita,,6645550102,"32.541396, -117.010385","Colonia Libertad, Tijuana",7:00-10:00,"Mar,Vie",,0,6
+Abarrotes El Paisa,El flaco,6645550103,"32.527184, -117.036603","Colonia Cacho, Tijuana",7:00-10:00,"Mar,Sáb",,1000,0
+Carnicería y abarrotes El Compa,,6645550104,"32.504654, -117.007558","Hipódromo, Tijuana",9:00-12:00,"Mar,Jue,Dom",,1000,0
+Tienda El Paisa,,6645550105,"32.51157, -117.013497","Chapultepec, Tijuana",7:00-10:00,"Jue,Dom",,1000,0
+Tortillería Don Beto,Mamá Chela,6645550106,"32.530952, -116.970029","Otay Universidad, Tijuana",10:00-13:00,"Jue,Dom",,0,4
+Tortillería Santa Fe,,6645550107,"32.507893, -116.987013","La Mesa, Tijuana",8:00-11:00,"Lun,Vie",,1500,0
+Carnicería y abarrotes Don Toño,,6645550108,"32.481961, -116.919252","Mariano Matamoros, Tijuana",10:00-13:00,"Lun,Mié,Sáb",,0,6
+Tienda El Güero,Doña,6645550109,"32.472095, -116.86068","El Florido, Tijuana",8:00-11:00,"Mar,Jue,Sáb",,500,4
+Abarrotes La Esperanza,,6645550110,"32.498117, -116.894416","Villa Fontana, Tijuana",14:00-17:00,"Mié,Dom",,0,2
+Verdulería Los Arcos,,6645550111,"32.494973, -116.930625","Cerro Colorado, Tijuana",7:00-10:00,"Lun,Vie",,0,2
+Taquería La Esperanza,Mamá Chela,6645550112,"32.489485, -117.008388","Sánchez Taboada, Tijuana",7:00-9:00,"Lun,Vie",,500,2
+Depósito Don Pancho,,6645550113,"32.492181, -117.029306","Camino Verde, Tijuana",8:00-11:00,"Mar,Sáb",,1000,0
+Taquería Don Beto,,6645550114,"32.510746, -117.045701","Lomas Taurinas, Tijuana",7:00-9:00,"Mié,Sáb",,0,4
+Depósito La Güera,Mamá Chela,6645550115,"32.523645, -117.121407","Playas de Tijuana, Tijuana",9:00-12:00,"Lun,Vie",,0,4
+Cocina económica El Chino,,6645550116,"32.488651, -116.948108","Francisco Villa, Tijuana",7:00-9:00,"Mar,Sáb",,500,0
+Fruteria La Esperanza,,6645550117,"32.49341, -116.944144","Las Américas, Tijuana",8:00-11:00,"Mié,Vie,Dom",,0,4
+Tortillería Los Primos,El primo,6645550118,"32.513102, -116.965967","Los Pinos, Tijuana",12:00-15:00,"Mar,Sáb",,0,6
+Tortillería La Michoacana,,6645550119,"32.482625, -116.981476","Buenos Aires Norte, Tijuana",12:00-15:00,"Mié,Dom",,1000,0
 Taquería La Norteñita,,6645550120,"32.532339, -117.037908","Zona Centro, Tijuana",7:00-10:00,"Lun,Jue",,500,4
-Abarrotes San Judas,El flaco,6645550121,"32.520039, -117.02283","Zona Río, Tijuana",7:00-10:00,"Mar,Vie",,0,6
+Abarrotes San Judas,El flaco,6645550121,"32.520039, -117.02283","Zona Río, Tijuana",7:00-10:00,"Lun,Vie",,0,6
 Abarrotes El Güero,,6645550122,"32.538002, -117.01579","Colonia Libertad, Tijuana",7:00-10:00,"Mié,Sáb",,0,6
-Mini súper Los Arcos,,6645550123,"32.52551, -117.031925","Colonia Cacho, Tijuana",9:00-12:00,Lun,,1000,2
-Taquería El Güero,El primo,6645550124,"32.504423, -117.004595","Hipódromo, Tijuana",10:00-13:00,Mar,,500,2
-Tienda Doña Mary,,6645550125,"32.507818, -117.012259","Chapultepec, Tijuana",9:00-12:00,Mié,,500,0
-Cocina económica Lupita,,6645550126,"32.527642, -116.966384","Otay Universidad, Tijuana",9:00-12:00,Jue,,0,6
-Carnicería y abarrotes La Esperanza,Doña,6645550127,"32.51057, -116.986911","La Mesa, Tijuana",8:00-11:00,Vie,,0,0
-Cocina económica La Norteñita,,6645550128,"32.484232, -116.919363","Mariano Matamoros, Tijuana",8:00-11:00,Sáb,,1000,0
-Mini súper Las Palmas,,6645550129,"32.473919, -116.860186","El Florido, Tijuana",12:00-15:00,"Lun,Mié,Vie",,500,2
-Abarrotes Lupita,El flaco,6645550130,"32.498321, -116.895222","Villa Fontana, Tijuana",7:00-9:00,"Lun,Jue",,1000,2
-Taquería Don Pancho,,6645550131,"32.49864, -116.934083","Cerro Colorado, Tijuana",8:00-11:00,"Mar,Vie",,0,0
-Taquería San Judas,,6645550132,"32.491702, -117.010139","Sánchez Taboada, Tijuana",12:00-15:00,"Mié,Sáb",,0,4
-Verdulería La Esperanza,El primo,6645550133,"32.498677, -117.032041","Camino Verde, Tijuana",14:00-17:00,Lun,,1500,0
-Taquería Los Primos,,6645550134,"32.512471, -117.042913","Lomas Taurinas, Tijuana",7:00-10:00,Mar,,1500,4
-Taquería Las Palmas,,6645550135,"32.528947, -117.124321","Playas de Tijuana, Tijuana",8:00-11:00,Mié,,0,0
-Abarrotes Doña Mary,El flaco,6645550136,"32.487726, -116.952277","Francisco Villa, Tijuana",12:00-15:00,Jue,,1000,4
-Fruteria Lupita,,6645550137,"32.492114, -116.938233","Las Américas, Tijuana",7:00-9:00,Vie,,0,6
-Fruteria El Compa,,6645550138,"32.518892, -116.964442","Los Pinos, Tijuana",14:00-17:00,Sáb,,0,0
+Mini súper Los Arcos,,6645550123,"32.52551, -117.031925","Colonia Cacho, Tijuana",9:00-12:00,"Mié,Sáb",,1000,2
+Taquería El Güero,El primo,6645550124,"32.504423, -117.004595","Hipódromo, Tijuana",10:00-13:00,"Jue,Dom",,500,2
+Tienda Doña Mary,,6645550125,"32.507818, -117.012259","Chapultepec, Tijuana",9:00-12:00,"Lun,Jue",,500,0
+Cocina económica Lupita,,6645550126,"32.527642, -116.966384","Otay Universidad, Tijuana",9:00-12:00,"Lun,Jue",,0,6
+Carnicería y abarrotes La Esperanza,Doña,6645550127,"32.51057, -116.986911","La Mesa, Tijuana",8:00-11:00,"Mié,Dom",,0,0
+Cocina económica La Norteñita,,6645550128,"32.484232, -116.919363","Mariano Matamoros, Tijuana",8:00-11:00,"Lun,Jue",,1000,0
+Mini súper Las Palmas,,6645550129,"32.473919, -116.860186","El Florido, Tijuana",12:00-15:00,"Mar,Vie",,500,2
+Abarrotes Lupita,El flaco,6645550130,"32.498321, -116.895222","Villa Fontana, Tijuana",7:00-9:00,"Mié,Sáb",,1000,2
+Taquería Don Pancho,,6645550131,"32.49864, -116.934083","Cerro Colorado, Tijuana",8:00-11:00,"Lun,Jue",,0,0
+Taquería San Judas,,6645550132,"32.491702, -117.010139","Sánchez Taboada, Tijuana",12:00-15:00,"Mar,Jue,Sáb",,0,4
+Verdulería La Esperanza,El primo,6645550133,"32.498677, -117.032041","Camino Verde, Tijuana",14:00-17:00,"Lun,Mié,Vie",,1500,0
+Taquería Los Primos,,6645550134,"32.512471, -117.042913","Lomas Taurinas, Tijuana",7:00-10:00,"Mar,Sáb",,1500,4
+Taquería Las Palmas,,6645550135,"32.528947, -117.124321","Playas de Tijuana, Tijuana",8:00-11:00,"Mié,Dom",,0,0
+Abarrotes Doña Mary,El flaco,6645550136,"32.487726, -116.952277","Francisco Villa, Tijuana",12:00-15:00,"Mar,Jue,Dom",,1000,4
+Fruteria Lupita,,6645550137,"32.492114, -116.938233","Las Américas, Tijuana",7:00-9:00,"Mié,Dom",,0,6
+Fruteria El Compa,,6645550138,"32.518892, -116.964442","Los Pinos, Tijuana",14:00-17:00,"Mar,Vie",,0,0
 Carnicería y abarrotes San Judas,Mamá Chela,6645550139,"32.477344, -116.985076","Buenos Aires Norte, Tijuana",9:00-12:00,"Lun,Mié,Vie",,0,6

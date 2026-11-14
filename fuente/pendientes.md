@@ -2033,3 +2033,24 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - El orden lo sigue poniendo "Ordenar con tráfico".
 - Pruebas: t81 (16) y t81nube (4, dos celulares). Todas: 0 FAIL.
 - 39b (14 nov) Ricardo: "no olvides añadir Rutas al tutorial". HECHO: paso "Rutas" en el recorrido de la primera vez (admin); recorrido corto "Nuevo: Rutas" (3 pasos) que sale una sola vez a quien ya hizo el tutorial; chofer: paso "Tu ruta puede cambiar" (y una vez a los choferes que ya lo hicieron); "Aprende la app" → "Repartir las rutas" (se palomea al hacer un cambio y abre Rutas); dentro de Rutas "¿Cómo se usa?" (abierta la primera vez); botón "?" de Inicio y Personal lo mencionan. Prueba t81 (18).
+
+## 2026-11-14 · Sugerencias de Copilot revisadas contra el código + lo que encontró Ricardo
+- Ricardo: la venta local es casi siempre remate → no choca con lo apartado (no se hace). El retiro del dueño no afecta la ganancia; lo que se le compra a un vehículo sí. Sí a "¿Cuadran las cuentas?" y a recontar la bodega. "Haz los cambios, pero aún no generes la APK".
+- Ricardo también encontró: la pantalla se mueve sola al tocar algunas partes; las tarjetas de fruta madura no le convencen y al deslizarlas se cambia de página.
+
+### HECHO (14 nov) · versión 8.2 · capa l82 · puntos 40 al 45 — en la rama, SIN publicar (no armar APK todavía)
+- 40 ESTADÍSTICAS DE VERDAD (encontrado al revisar): en la app real nunca se llenaban (solo la demo tenía días; decía "Todavía no hay historial" para siempre). Ahora cada día sale de: las rutas archivadas de cada chofer (y la de hoy), la venta en bodega, los gastos, las mermas y el costo de la fruta de la última carga. Ganancia = ventas − lo que costó la fruta. Rankings de clientes con lo que de verdad compraron en 30 días. Los gastos y ventas en bodega sin fecha la reciben al guardarse.
+- 41 Retiro del dueño: no es gasto (no baja la ganancia), tampoco el "sueldo del dueño" de gastos fijos; nueva categoría "Para un vehículo" (sí es gasto); al escoger Retiro sale la explicación.
+- 42 "¿Cuadran las cuentas?" (tarjeta en Inicio → pantalla con Hoy/Ayer): dinero de cada chofer (esperado vs recibido, faltantes), cajas de roatán y kilos de macho (salieron → vendió, cambios, regresan → contado), taras, conteo de bodega y cierre de caja; verde / amarillo / rojo y cada renglón lleva a resolverlo. El día archivado guarda lo recibido y lo contado.
+- 43 Contar bodega: si la diferencia es grande (más de 2 cajas o 20 kg) pide volver a contar; si el 2º conteo da lo mismo, se registra. Toda diferencia pide el motivo (se echó a perder, venta no registrada, error en la carga, está en un vehículo, otro).
+- 44 Fruta madura por antigüedad: la tarjeta solo sale cuando hay fruta pasada de tiempo (solo esos lotes, para decir qué pasó); ya no se desliza (eso cambiaba de página). El aviso "Lote … pasó su tiempo" (maduración) ahora lleva a ese lote en Maduración.
+- 45 La pantalla ya no brinca sola: al abrir un apartado se cerraban otros de arriba y lo tocado se iba para arriba (hasta 2,000 px); en la entrega del chofer (forma de pago, $200/$500, precio, cuándo vuelve) la pantalla subía ~200 px al redibujarse. Ahora lo que tocas se queda en su lugar (se respetan los saltos a propósito: ir arriba, llevar a un campo).
+- Pruebas: t82 (15), t82scroll (2). t68 sigue pasando. Todas: 0 FAIL.
+
+### Lista de prueba 8.2 (cuando se arme)
+1. Inicio → "¿Cuadran las cuentas?": con un chofer que ya mandó su cierre, ver dinero/cajas/kilos; recibir su efectivo y ver que se pone verde.
+2. Estadísticas: después de un día con entregas, ver ventas, ganancia y gastos de ese día.
+3. Gastos → Retiro del dueño (sale la explicación) y "Para un vehículo".
+4. Bodega → Contar bodega: poner 5 cajas menos → pide recontar → mismo número → pide motivo.
+5. Inicio: abrir y cerrar apartados; Entrega: tocar Efectivo/Tarjeta, $200, Mañana: la pantalla no debe brincar.
+6. Bodega: la tarjeta de fruta madura solo cuando algo ya se pasó.

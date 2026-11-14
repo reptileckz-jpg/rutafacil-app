@@ -1,6 +1,6 @@
 # Ruta Fácil (Plátanos Nietos): contexto completo para analizar la app
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.1b, APK 1.0.33).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.2, en la rama; último APK 1.0.33).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -176,7 +176,8 @@
 - Encargado temporal y "Me voy de vacaciones" (solo llegan avisos urgentes). Permisos por chofer (seguir trabajando, fiar).
 
 ### Estadísticas
-- Ventas, ganancia, por chofer y por cliente, por día, mes y año. Historial para comparar fechas, clima y temporadas.
+- Ventas, ganancia, por chofer y por cliente, por día, mes y año, con datos reales de cada día (rutas archivadas, venta en bodega, gastos, mermas, costo de la última carga). Rankings con lo que compró cada cliente en 30 días. Revisión de números (15 revisiones).
+- **¿Cuadran las cuentas?** (Inicio): dinero, cajas, kilos, taras, conteo de bodega y cierre de caja, en verde/amarillo/rojo, hoy y ayer.
 
 ### Primera vez y ayuda
 - Asistente de inicio por pasos: Bienvenida, Bodega, Vehículos, Personal, Clientes (o importar), Proveedores, Dinero y precios, Listo. Con "Corregir".
@@ -199,6 +200,7 @@
 | 8.0 (14 nov) | Ruta del día sin depender del cierre ni del celular del admin; reparación de la copia de la nube; **maduración con reloj real** (antes no avanzaba: error grave ya corregido); quitar todo lo de la demo de la versión real; bodega con GPS; cuentas del viaje en vivo |
 | 8.0b | Nombres de lugar sacados de la ubicación de la bodega (colonia, estado de placas) |
 | 8.1 / 8.1b (14 nov) | **Rutas del administrador** y su tutorial |
+| 8.2 (14 nov) | Estadísticas con datos reales (antes solo la demo), retiro del dueño fuera de la ganancia, **¿Cuadran las cuentas?**, recontar bodega con motivo, fruta madura solo si se pasó, la pantalla ya no brinca |
 
 ## 8. Decisiones tomadas (no volver a proponer como nuevas)
 
@@ -214,7 +216,7 @@
 
 ## 9. Lo que se sabe que falta o está a medias
 
-- La **venta local** (en bodega) todavía no frena lo **apartado** para pedidos por cantidad. Solo el remate de fruta madura lo pregunta.
+- La **venta local** no frena lo **apartado**: decidido que no hace falta (la venta en bodega es casi siempre remate).
 - **Android 8 (Samsung viejo):** debería instalarse (Capacitor 7 pide Android 6+), pero necesita actualizados "Android System WebView" y Chrome. No se ha probado.
 - **Fotos ya guardadas antes de la 8.0:** siguen pesadas. Solo las nuevas salen a 1000 px.
 - **Vehículos ya dados de alta con estado "Veracruz" por defecto:** no se cambian solos.

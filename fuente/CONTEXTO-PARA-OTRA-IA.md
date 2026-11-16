@@ -1,6 +1,6 @@
 # Ruta Fácil (Plátanos Nietos): contexto completo para analizar la app
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.2, APK 1.0.34).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.5, APK 1.0.35).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -201,6 +201,7 @@
 | 8.0b | Nombres de lugar sacados de la ubicación de la bodega (colonia, estado de placas) |
 | 8.1 / 8.1b (14 nov) | **Rutas del administrador** y su tutorial |
 | 8.2 (14 nov) | Estadísticas con datos reales (antes solo la demo), retiro del dueño fuera de la ganancia, **¿Cuadran las cuentas?**, recontar bodega con motivo, fruta madura solo si se pasó, la pantalla ya no brinca, cuánto cargar con un solo cálculo, fotos de evidencia solo cámara + el admin las ve, rankings y datos del cliente desde las entregas, pedido tarde (hora límite), kg sueltos de venta local, taras al chofer, días sin movimientos |
+| 8.3–8.5 (16 nov) | Rutas con el diseño de Ricardo (letra grande, tarjetas de chofer, panel de abajo con Confirmar, Deshacer), el chofer ya no se traba en "No mandaste tu cierre", el administrador no reparte salvo que prenda "¿Repartes hoy?", días fijos al pasar un cliente sin días, no visitados solo si su siguiente visita está a 2+ días o fallaron 2 |
 
 ## 8. Decisiones tomadas (no volver a proponer como nuevas)
 

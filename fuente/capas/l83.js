@@ -56,3 +56,17 @@ var _tm83=toma81;toma81=function(){try{if(S.chofHoy!=null){var f=hoy81(),Q=(S.rq
  try{if(S.chofHoy!=null){var Q2=(S.rq81||{})[hoy81()],L2=loc83(),ch2=false;if(Q2)Object.keys(Q2).forEach(function(k){var x=Q2[k];if(x&&+x.ch===+S.chofHoy&&x.hecho&&!L2[k]){L2[k]=1;ch2=true}});if(ch2)locPon83(L2)}}catch(e){}return r};
 /* dos paradas PENDIENTES del mismo cliente se juntan en una (las ya entregadas no se tocan: un cliente sí puede pedir dos veces) */
 var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops)){var vis={},out=[],cur=S.stops[S.cur]&&S.stops[S.cur].c,cambio=false;S.stops.forEach(function(s){var k=+s.c;if(s.done){out.push(s);return}if(vis[k]!=null){cambio=true;return}vis[k]=out.length;out.push(s)});if(cambio){S.stops=out;if(cur!=null){var ni=out.map(function(s){return +s.c}).indexOf(+cur);S.cur=ni>-1?ni:Math.max(0,curStop())}}}}catch(e){}return _rd83.apply(this,arguments)};
+
+/* ---------- 61 · el chofer trabado en "No mandaste tu cierre" (16 nov) ----------
+   (1) las pantallas completas se volvían a crear en cada redibujo (con la nube, cada pocos segundos): el botón desaparecía bajo el
+       dedo y el toque se perdía. Ahora solo se vuelven a crear si cambió algo.
+   (2) si ese día hubo entregas pero nunca se tocó "Iniciar", el cierre te regresaba a "Iniciar el día": ahora deja hacer el cierre.
+   (3) salida de emergencia: "Pedir que liberen mi ruta" (le llega URGENTE al administrador).
+   (4) "del Antier sábado" → "del sábado". */
+var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
+var _rdC83=render;render=function(){try{if(S.role==='rep'&&S.tab.rep==='cierre'&&S.dia80&&S.salida&&!S.salida.ok&&(S.log||[]).length&&!(S.cierre&&S.cierre.sent)){S.salida.ok=true;S.salida.tarde83=1}}catch(e){}return _rdC83.apply(this,arguments)};
+del80=function(f){if(f===ayer80())return 'de ayer';var t=String(fmtF(f)).replace(/^(Hoy|Ayer|Antier|Antes de ayer)\s+/i,'');return 'del '+t};
+var _d80H83=dia80HTML;dia80HTML=function(){var h=_d80H83.apply(this,arguments);if(!h)return h;var ya=(S.libPide83||'')===iso(TODAY);
+ return h.replace(/<\/div><\/div>$/,'<div style="margin-top:22px;text-align:center"><div class="lbl" style="font-size:15px">¿No puedes mandarlo (no te deja, o ya no tienes los datos)?</div>'+(ya?'<div style="font-weight:800;margin-top:8px">✓ Ya se le pidió al administrador. En cuanto la libere, te sale tu ruta.</div>':'<button class="btn sec" style="width:100%;min-height:54px;margin-top:8px" data-act="lib83">Pedir que liberen mi ruta de hoy</button>')+'</div></div></div>')};
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib83"]');if(!b)return;e.stopImmediatePropagation();S.libPide83=iso(TODAY);(S.avPrecio=S.avPrecio||[]).push('URGENTE: '+chofN(S.chofHoy)+' no puede mandar su cierre '+del80(S.dia80||ayer80())+' y no le sale su ruta de hoy. En Inicio toca "Liberar su ruta de hoy".');
+ try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Pidió que liberen su ruta de hoy (no pudo mandar su cierre '+del80(S.dia80||ayer80())+')'})}catch(er){}toast('Listo: se le avisó al administrador');render()},true);

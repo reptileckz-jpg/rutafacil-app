@@ -2104,3 +2104,9 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Ahora: marcas y abajo salen directo los choferes ("¿A quién se los pasas?"), sin el chofer de origen; un toque y listo (por defecto solo ese día; interruptor "Para siempre"). "Deshacer" ~9 s. Marcar solo cambia la casilla y la barra. Un solo aviso.
 - El chofer: si un aviso de cambio llega dos veces ya no mete otra vez a un cliente (aunque ya se le haya entregado); dos paradas PENDIENTES del mismo cliente se juntan (las entregadas no se tocan: un cliente puede pedir dos veces).
 - Pruebas t81 (21). Todas: 0 FAIL.
+### 61 (16 nov) URGENTE · el chofer se quedó trabado en "No mandaste tu cierre del Antier sábado": el botón no hacía nada → HECHO (l83), en la rama
+- Causa 1: las pantallas completas (ovPon70) se borraban y se volvían a crear en CADA redibujo; con la nube sincronizando, el botón desaparecía bajo el dedo y el toque se perdía. Ahora solo se vuelven a crear si cambió algo (ayuda en toda la app).
+- Causa 2: si ese día hubo entregas pero nunca se tocó "Iniciar", el cierre regresaba a "Iniciar el día" y de ahí otra vez a la pantalla. Ahora deja hacer el cierre.
+- Salida de emergencia en esa pantalla: "Pedir que liberen mi ruta de hoy" (le llega URGENTE al admin). Texto: "del sábado" en vez de "del Antier sábado".
+- Para destrabar ya (sin APK): admin → Inicio → "Liberar su ruta de hoy".
+- Prueba t80 (18). Todas: 0 FAIL.

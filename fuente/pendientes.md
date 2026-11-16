@@ -2119,3 +2119,12 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Panel de abajo flotante: "Mover N clientes a:" → tarjetas de chofer (iniciales y cuántos lleva; el de origen en gris "Origen actual") → "Vigencia del cambio: Solo hoy / Para siempre" → aviso de qué va a pasar (y si alguien ya va en camino) → Cancelar / ✓ Confirmar cambio; "Hoy no se visita". Después: "Deshacer".
 - Marcar, escoger chofer, abrir/cerrar y buscar ya no vuelven a dibujar toda la app.
 - Pruebas t81 (21) adaptadas. Todas: 0 FAIL.
+
+## 2026-11-16 · Prueba de Rutas (1.0.34) — SOLO ANOTAR (Ricardo: "no hagas cambios hasta que te diga, pero ve analizándolo")
+63. "Pasar a…" → al escoger Ricardo Nieto o Danu el botón del chofer se quedaba "en blanco", como trabado. Causa: en la barra vieja (l81) el chofer escogido cambiaba a un estilo casi blanco sobre blanco y la barra se redibujaba completa. YA RESUELTO en la 8.4 (rama): el escogido sale verde con ✓ y aviso antes de "Confirmar cambio".
+64. El ADMINISTRADOR cuenta como chofer: le asignan clientes aunque no salga. Causa: esCh() incluye al admin, y al IMPORTAR sin columna "Chofer" la app le da los clientes al primer chofer de la lista (el admin).
+    DECIDIDO: interruptor diario en Inicio "¿Repartes hoy?" (apagado por defecto; se puede prender más tarde en el día, no solo en la mañana; al día siguiente se apaga solo). Mientras esté apagado el admin no aparece en Rutas como destino, no se le arma ruta ni se le asignan clientes (importar, pedidos, "Asignar todos"). Si está prendido, sale como un chofer más.
+    DECIDIDO: los clientes que hoy tiene el admin como chofer fijo (por el importador) pasan a Danu. Y el importador, con "Chofer" vacío, ya no se los da al admin (se los da al primer chofer de verdad).
+65. "Sin días de visita": al pasarlo a un chofer desde Rutas solo se mandaba por ese día y el aviso seguía. DECIDIDO: al pasarlo, preguntar "¿Qué días le tocan?" (Lun…Dom) y dejarlo FIJO con ese chofer y esos días; el aviso se quita.
+66. No visitados: hoy un cliente que no se visitó ayer se mete a la ruta de hoy aunque le toque pasado mañana. DECIDIDO: solo se mete al día siguiente (y se avisa "se está quedando sin visita") si su siguiente visita está lejos (ej. 1 vez por semana) o si ya falló 2 visitas seguidas; si le toca pronto (ej. lun/mié/vie y falló el lunes), espera a su día sin aviso.
+- Todo esto queda para hacerse cuando Ricardo diga. Lo de la rama (8.3/8.4: chofer trabado, Rutas sin duplicados, diseño nuevo) tampoco se ha publicado.

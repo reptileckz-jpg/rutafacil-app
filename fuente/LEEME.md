@@ -5,7 +5,7 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
 **Lee también:** `CONTEXTO-PARA-OTRA-IA.md` (todo lo que ya hace la app, para otra IA), `negocio.md` (cómo funciona el negocio) e `instrucciones.md` (cómo trabajar con Ricardo).
 
 - `base-v38.html`: la app base sobre la que se aplican las capas.
-- `capas/`: las capas `l1.js` … `l82.js`, que van en orden. También:
+- `capas/`: las capas `l1.js` … `l83.js`, que van en orden. También:
   - `patch39.py` y `ql.py`: cambios de texto sobre la base.
   - `imgs.json`: las imágenes.
   - `build.sh`: arma todo.

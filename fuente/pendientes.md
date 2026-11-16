@@ -2098,3 +2098,9 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 9. Pedido para hoy a un chofer que ya cerró: antes de la hora de Ajustes le pregunta; después pasa a mañana.
 10. Recibir al chofer con taras de menos o de más: faltante o abono.
 11. Un día sin salir: no debe pedir cierre de caja al día siguiente.
+
+### 60 (16 nov) Ricardo usando Rutas: "es muy confuso, se traba, a veces si selecciono dos clientes me marca dos veces" → HECHO versión 8.3 (capa l83), en la rama
+- Antes: marcar → "Pasar a…" → chofer → solo hoy/siempre → "Hacer el cambio" (5 toques); cada casilla volvía a dibujar toda la app (con la nube sincronizando se sentía trabado y se perdían toques); salían DOS avisos iguales (el mensajito negro y la barra).
+- Ahora: marcas y abajo salen directo los choferes ("¿A quién se los pasas?"), sin el chofer de origen; un toque y listo (por defecto solo ese día; interruptor "Para siempre"). "Deshacer" ~9 s. Marcar solo cambia la casilla y la barra. Un solo aviso.
+- El chofer: si un aviso de cambio llega dos veces ya no mete otra vez a un cliente (aunque ya se le haya entregado); dos paradas PENDIENTES del mismo cliente se juntan (las entregadas no se tocan: un cliente puede pedir dos veces).
+- Pruebas t81 (21). Todas: 0 FAIL.

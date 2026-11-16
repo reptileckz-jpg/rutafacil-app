@@ -2110,3 +2110,12 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Salida de emergencia en esa pantalla: "Pedir que liberen mi ruta de hoy" (le llega URGENTE al admin). Texto: "del sábado" en vez de "del Antier sábado".
 - Para destrabar ya (sin APK): admin → Inicio → "Liberar su ruta de hoy".
 - Prueba t80 (18). Todas: 0 FAIL.
+
+### 62 (16 nov) Ricardo mandó un diseño para Rutas ("¿qué te parece esta estética?") → HECHO versión 8.4 (capa l84), en la rama
+- Decidido: con su estética pero LETRA GRANDE y sin nada de internet; escoger chofer y luego "Confirmar cambio" (no un solo toque).
+- Encabezado compacto (Rutas · Hoy/Mañana · ? · ×); "¿Cómo se usa?" en ventanita del "?"; franjas de aviso "sin chofer" (Asignar) y "sin días" (Ver); resumen "N clientes hoy" con "Asignar todos" y "Mapa".
+- Tarjetas de chofer: iniciales en cuadrito de color, etiqueta En ruta / Sin salir / Cierre pendiente, clientes y cajas, "¿le cabe?", se abren y cierran, 📷 Fotos y "Pasar todos"; buscador dentro de la lista (con más de 6); renglón marcado en verde.
+- Solo se marcan clientes de UN chofer a la vez (salvo "Asignar todos"/"Pasar todos").
+- Panel de abajo flotante: "Mover N clientes a:" → tarjetas de chofer (iniciales y cuántos lleva; el de origen en gris "Origen actual") → "Vigencia del cambio: Solo hoy / Para siempre" → aviso de qué va a pasar (y si alguien ya va en camino) → Cancelar / ✓ Confirmar cambio; "Hoy no se visita". Después: "Deshacer".
+- Marcar, escoger chofer, abrir/cerrar y buscar ya no vuelven a dibujar toda la app.
+- Pruebas t81 (21) adaptadas. Todas: 0 FAIL.

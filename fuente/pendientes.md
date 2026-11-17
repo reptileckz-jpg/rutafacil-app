@@ -2410,3 +2410,12 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - El buró (l19) solo sale al fiar (una parte o a crédito).
   - Cajas vacías: "Ya debía N · le dejas N · devuelve N → Queda debiendo N / Al corriente", en vivo.
   - Prueba `t115.js` (12 OK): al guardar, el efectivo del chofer sube exactamente lo que dijo "A cobrar" y la deuda del cliente cuadra.
+
+## 2026-11-17 · 116 · Ricardo: tope de cajas vacías del chofer ("así como hay un límite de dinero… que entre todos sus clientes no superen las 15 o 20 taras")
+- Decisiones (Ricardo): 20 cajas de inicio · igual que el dinero (no deja guardar) · solo el tope del chofer, no por cliente.
+- **HECHO 116** (sin publicar), en `capas/tema-taras.js`:
+  - Ajustes (tarjeta del buró): "Cajas vacías que pueden deber todos los clientes de un chofer" (`cfg.tarCh116`, de inicio 20; vacío = sin tope).
+  - Ficha del chofer → "Crédito de sus clientes": su propio tope (`ch.tarMax116`) y cuántas le deben; "Usar los de Ajustes" también lo regresa. Queda en el historial.
+  - En la entrega, en "Cajas vacías": "Tus clientes te deberían N de 20 cajas" (en rojo si se pasa). Si con lo que deja se pasa, no deja guardar: "Tus clientes ya te deben N cajas vacías. Tu tope es 20: recoge vacías o cóbraselas antes de dejar más".
+  - Si ya está pasado pero en esa entrega no deja cajas de más (devuelve lo mismo que le deja), sí deja entregar.
+  - Prueba `t116.js` (12 OK).

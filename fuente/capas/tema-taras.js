@@ -83,3 +83,23 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='deb109cob'){render();setTimeout(function(){var el=document.querySelector(y.cr>0?'[data-bind="d.abono"]':'[data-bind="d.V"], #dV, [data-k="d.V"]')||document.querySelector('[data-bind="d.abono"]');if(el){el.scrollIntoView({block:'center'});try{marcaFalta(el)}catch(er){}if(el.focus)el.focus()}toast(y.cr>0?'Escribe cuánto te abona de lo que debía':'Anota las taras que te regresa')},120);return}
  /* "Ya le pedí, no tenía": queda registrado y se termina la entrega */
  var c=cl(y.c);if(S.d)S.d._deb109='pedi';render();setTimeout(function(){var bt=document.querySelector('[data-act="entconf"]');if(bt)bt.click();try{if(c)S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Le pidió a '+c.n+' lo que debía de antes'+(y.cr>0?' ('+money(y.cr)+')':'')+(y.tv>0?' y '+y.tv+' taras':'')+': no tenía'})}catch(er){}},40)},true);
+
+/* ---------- 116 · tope de cajas vacías del chofer (como el tope de dinero: entre todos sus clientes) ----------
+   Ajustes: cfg.tarCh116 (de inicio 20; vacío = sin tope). Por chofer: ch.tarMax116 (en "Crédito de sus clientes").
+   En la entrega no deja guardar si con lo que deja se pasa del tope; se arregla recogiendo vacías o cobrándolas. */
+function tarTope116(ch){var v=ch&&ch.tarMax116!=null&&ch.tarMax116!==''?ch.tarMax116:(S.cfg.tarCh116==null?'20':S.cfg.tarCh116);return String(v).trim()===''?0:Math.max(0,Math.round(num(v)))}
+function chVac116(chId,excepto){return sum(S.cli.filter(function(c){return !c.oculto&&+c.chofer===+chId&&c.id!==excepto}),function(c){return num(c.vac)})}
+function tarPasa116(){var k=entregaCalc(),d=S.d;if(!k||!k.c||!d||(k.c.rapida&&!d.reg))return null;var c=k.c,tope=tarTope116(chofHoyObj());if(!(tope>0))return null;
+ var q=Math.max(0,num(c.vac)+num(d.R)-num(d.V));if(q<=num(c.vac))return null;var otros=chVac116(S.chofHoy,c.id);if(otros+q<=tope)return null;return {tope:tope,ya:otros+num(c.vac),q:q,otros:otros}}
+var _ev116=entValida;entValida=function(){var r=_ev116.apply(this,arguments);if(r)return r;var x=tarPasa116();if(!x)return null;
+ return ['#dV','Tus clientes ya te deben '+x.ya+' cajas vacías. Tu tope es '+x.tope+': recoge vacías o cóbraselas antes de dejar más']};
+/* el renglón en "Cajas vacías" de la entrega (lo llama vacSaldo115) */
+function tarLinea116(c,q){var tope=tarTope116(chofHoyObj());if(!(tope>0)||!c||S.role!=='rep')return '';var t=chVac116(S.chofHoy,c.id)+num(q),pasa=t>tope&&num(q)>num(c.vac);
+ return '<div style="font-size:15px;margin-top:4px'+(pasa?';color:var(--danger);font-weight:800':'')+'">Tus clientes te deberían '+t+' de '+tope+' cajas'+(pasa?' · ya no puedes dejar más':'')+'</div>'}
+/* en la ficha del chofer (admin) */
+function tarCampo116(ch){var cf=S.cfg.tarCh116==null?'20':S.cfg.tarCh116,pv=ch.tarMax116!=null&&ch.tarMax116!=='',t=tarTope116(ch);
+ return '<div class="field"><label for="chtv'+ch.id+'">Tope de cajas vacías de todos sus clientes</label><input id="chtv'+ch.id+'" type="number" inputmode="numeric" step="1" min="0" data-chtar116="'+ch.id+'" value="'+esc(pv?ch.tarMax116:cf)+'"></div>'
+  +'<div class="lbl">Sus clientes le deben '+chVac116(ch.id,null)+(t>0?' de '+t:'')+' cajas vacías</div>'}
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.chtar116)return;var ch=S.choferes.filter(function(x){return x.id===+t.dataset.chtar116})[0];if(!ch)return;
+ var ant=tarTope116(ch),v=String(t.value).trim()===''?'':String(Math.max(0,Math.round(num(t.value))));ch.tarMax116=v;
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Cambió el tope de cajas vacías de '+ch.n+': '+(ant||'sin tope')+' → '+(tarTope116(ch)||'sin tope')});toast('Tope de cajas de '+ch.n+': '+(tarTope116(ch)||'sin tope'));render()});

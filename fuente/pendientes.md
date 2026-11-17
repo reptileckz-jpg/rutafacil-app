@@ -2261,3 +2261,7 @@ HECHO (tema-rutadia.js + tema-pantallas.js):
 - Al recibir: el efectivo entra a la caja de hoy, las cajas a la bodega, los gastos de la ruta a Gastos, y si no cuadra queda el faltante con su motivo.
 - El ajuste de cajas de un cierre ya mandado se hace en un solo celular (nunca dos veces).
 BATERÍA t95nube (dos celulares, cuenta efectivo y cajas al final): 1 mandado 11 p.m. y recibido después de las 12 (+$600, +73 cajas) · 2 mandado 12:30 a.m. (sin bloqueo, recepción normal) · 3 7 a.m. con el chofer sin señal (+$900, +72) · 4 liberar (rojo en Hoy, numerito rojo, +$600, +73, chofer con su ruta de hoy) · 5 salió sin entregar (+75 cajas, $0) · 6 entregó $500 de $600 (entran $500 y faltante de $100). 16 OK. Ajustadas t87 y t94nube. Todas: 0 FAIL.
+
+## 2026-11-17 · 96 · Ricardo: viajes de carga de noche (empieza martes 10 p.m., termina miércoles 1 p.m.), ¿hay problema?
+- Revisado: el viaje se guarda aparte (S.vws) y el cambio de día no lo toca; el vehículo sigue ocupado; el chofer sigue con la pantalla de "viaje en curso" (no le sale "No mandaste tu cierre") y no se guarda como "falta recibir". Cada gasto/caseta queda con el día en que se hizo; el efectivo para el viaje sale de la caja del martes y lo que regresa entra el miércoles.
+- Prueba t96viaje (6): el mismo viaje con y sin pasar la medianoche se comporta igual. Sin cambios en la app.

@@ -2133,7 +2133,7 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 64 Una vez: los clientes con el admin como chofer fijo pasan al primer chofer de verdad (Danu) y avisa; los de hoy se le pasan a Danu con aviso. Importar con "Chofer" vacío ya no se los da al admin. Si el admin no reparte, sus clientes de hoy salen como "sin chofer".
 - 65 Rutas: al marcar un cliente "sin días" y escoger chofer, sale "¿Qué días le tocan?" (Lun…Dom); "Confirmar" no se activa hasta escoger al menos uno; quedan fijos con ese chofer y se quita el aviso.
 - 66 No visitados: solo pasan al día siguiente si su siguiente visita está a 2 días o más, o si ya fallaron 2 visitas seguidas (y avisa "se está quedando sin visita"); si le toca mañana, espera a su día. Las fallas se cuentan una vez por día y se borran al entregarle.
-- Prueba t85 (9). Todas: 0 FAIL. SIN PUBLICAR.
+- Prueba t85 (9). Todas: 0 FAIL. PUBLICADA (APK 1.0.41).
 
 ## 2026-11-17 · Prueba de la 1.0.35 · HECHO versión 8.6 (capa l86), en la rama
 67. El chofer SIGUE trabado en "Mandar mi cierre del sábado"; "Pedir que liberen" no le llegaba al admin; "Liberar" no le llegaba al chofer. Causas: (a) la pantalla "No mandaste tu cierre" se quedaba aunque la ruta ya fuera la de hoy (se recordaba "del sábado"); (b) el celular del admin tiene CARGADA la ruta del chofer (así recibe su efectivo), y "Liberar su ruta de hoy" solo buscaba en las rutas de otros choferes: nunca salía. HECHO: la pantalla se quita sola en cuanto la ruta es la de hoy; el admin ve "Liberar" también para la ruta cargada en su celular; la petición del chofer sale ARRIBA en Inicio, en rojo ("🆘 Danu pide que liberes su ruta") con el botón. Prueba con dos celulares t86nube (8).
@@ -2207,7 +2207,7 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 89. Vehículo duplicado. Causa de fondo: los vehículos dados de alta en "Para empezar" quedaban TODOS con el mismo número interno (id 1), así que para la app eran el mismo (y se mezclaban los kilómetros). HECHO: las altas salen con número propio; los repetidos se renumeran solos al abrir la app (aviso "revisa el odómetro de cada uno"). Además: si otro ya salió con un vehículo y no ha cerrado, sale "🔒 NP300 · ocupado: lo trae Danu", se le cambia solo a uno libre, en la revisión no se puede escoger y no deja Iniciar con él.
 90. Admin en su ruta: ya no sale "el administrador ve tu ubicación" ni "¿No eres Ricardo?"; el cierre dice "Efectivo de tu ruta / Va a la caja / Cerrar mi ruta" en vez de "Debes entregar / Enviar cierre al administrador"; sin "Aprende la app" del chofer.
 - Prueba t90 (25). Todas: 0 FAIL.
-91. (17 nov) Arriba decía "Control de reparto · v4.0" desde hace mucho (texto fijo). HECHO: muestra la versión real del APK (1.0.N), leída del celular; si no se puede leer, "9.0". Prueba t90ver. SIN PUBLICAR.
+91. (17 nov) Arriba decía "Control de reparto · v4.0" desde hace mucho (texto fijo). HECHO: muestra la versión real del APK (1.0.N), leída del celular; si no se puede leer, "9.0". Prueba t90ver. PUBLICADA (APK 1.0.41).
 
 ## 2026-11-17 · 92 · REORGANIZACIÓN (Ricardo respondió las preguntas) · PRIMERO un dibujo para aprobar · ANTES de seguir con Vite
 Análisis (como usuario nuevo): Inicio con 25 bloques (~9 pantallas) y 4 listas de "qué hacer"; repetidos (cuadran ×2, te deben ×3, inventario, fruta próximos días); precio de hoy hasta la 3a pantalla; "Por atender" mezcla urgente con informativo; cada sección empieza con el bloque de pendientes + "Viaje en curso"; numeritos en las 6 pestañas; Rutas no está en la barra; Cobranza regada; título repetido pegado en la lista de pendientes (8.8).
@@ -2243,4 +2243,4 @@ Decisiones:
 - Reproducido: a las 12 la app se recarga con el día nuevo; la ruta (que sí salió y no tenía cierre) quedaba "de ayer" → pantalla "No mandaste tu cierre de ayer". En la prueba, con esa pantalla SÍ se pudo mandar el cierre; no se encontró qué lo trabó en su celular (si vuelve a pasar: captura o el texto de "Ver el error").
 - HECHO (tema-rutadia.js): de 12 a 5 a.m. la ruta de ayer que ya salió sigue como la de hoy: puede seguir entregando y manda su cierre sin ninguna pantalla de bloqueo; su ruta no se cambia hasta las 5 a.m. (así el admin recibe ese cierre normal). A las 5 a.m., si no lo mandó, sí sale "No mandaste tu cierre de ayer". De noche, al admin no le sale "Liberar" ni "no envió su cierre".
 - Arreglado de paso: si el cierre de ayer se mandaba tarde, el historial se quedaba "no enviado" (a medianoche ya se había guardado sin enviar); ahora se actualiza.
-- Prueba t93 (7). Todas: 0 FAIL. SIN PUBLICAR.
+- Prueba t93 (7). Todas: 0 FAIL. PUBLICADA (APK 1.0.41).

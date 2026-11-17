@@ -2382,3 +2382,12 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Prueba t111 (11). Todas: 0 FAIL.
 
 ## 2026-11-17 · 112 · Ricardo: en la ruta del chofer, al entregar, sale una lista larga de todos los clientes ya visitados; deberían pasarse al final de la lista y minimizados (ocupan mucho espacio)
+
+## 2026-11-17 · 113 · Ricardo: al FINALIZAR la ruta (cierre), la foto del odómetro tampoco se guarda y la pantalla parpadea más o menos cada segundo, como si se actualizara
+- (Ricardo, videos fotos/ no guardados: Screen_Recording 13:34 y 13:38, Moto) La cámara: dice "Abriendo la cámara…" con un ícono gris de "reproducir", luego "No se pudo abrir la cámara. Revisa el permiso…" y después abre sola. En el Moto X abre a color y al instante cambia al lente blanco y negro; en el Samsung no cambia de lente pero también tarda. En el cierre, la foto del odómetro tenía la imagen "Sin foto · No prende la cámara"; al tomarla otra vez con la cámara del celular ("Reintentar / Aceptar") no se guardaba.
+### HECHO (17 nov) · 112 y 113 · SIN PUBLICAR
+- 112: en la ruta del chofer, los que faltan van arriba y los ya visitados al final, juntos en "✓ Ya visitados (N)" minimizado (al abrirlo siguen Corregir y Cancelar de cada uno). (ql.py)
+- 113 PARPADEO: (a) el tutorial que espera turno redibujaba la pantalla cada 1.5 s SIN FIN si ya había otro tutorial puesto (l59); ahora solo cuando de verdad puede salir. (b) En cada dibujo se volvían a escribir clases de la página completa (pro, onecol, av-visto…) aunque no cambiaran; en celulares lentos eso repinta toda la pantalla. Ahora solo se escriben si cambian (l9). (c) Alerta de velocidad sin GPS: ya no redibuja cada segundo (l22).
+- 113 FOTO DEL ODÓMETRO (y 106): (a) si la foto se toma con la cámara del celular o la galería y al volver la pantalla ya se redibujó, la foto se pasa a la casilla que está en pantalla (antes se perdía sin avisar) (l73); (b) lo mismo con la cámara de la app (l80/l73, ya del 106).
+- 113 CÁMARA: se abría DOS veces (una para el permiso y otra con el lente guardado): tardaba, la segunda chocaba con la primera y salía "No se pudo abrir… permiso" aunque sí había permiso, y en el Moto X cambiaba al lente guardado (blanco y negro). Ahora se abre UNA vez con el lente principal; si tarda o está ocupada, reintenta sola; el aviso de permiso solo si Android de verdad lo niega; "Lente" cambia a mano solo para esa foto (ya no se recuerda). Mientras arranca: fondo negro, sin el ícono gris de "reproducir". (l78, l73)
+- Pruebas: t112 (5), t113 (11). Todas: 0 FAIL.

@@ -59,6 +59,12 @@ function vbgPon(){Array.prototype.forEach.call(document.querySelectorAll('.vcard
 /* vehBasic: pasó a tema-vehiculos.js */
 
 /* ---- Barra de abajo sin parpadeo ---- */
+/* 113 · las clases de la página completa (html) solo se escriben si cambian: varias se ponían en CADA dibujo (pro, onecol, av-visto,
+   vwab, tuton…) y en celulares lentos cada escritura repinta toda la pantalla (parpadeo) */
+(function(){try{var cl=document.documentElement.classList,t0=cl.toggle.bind(cl),a0=cl.add.bind(cl),r0=cl.remove.bind(cl);
+ cl.toggle=function(k,f){if(arguments.length>1&&cl.contains(k)===!!f)return !!f;return arguments.length>1?t0(k,f):t0(k)};
+ cl.add=function(){var L=[].slice.call(arguments).filter(function(k){return !cl.contains(k)});if(L.length)a0.apply(null,L)};
+ cl.remove=function(){var L=[].slice.call(arguments).filter(function(k){return cl.contains(k)});if(L.length)r0.apply(null,L)}}catch(e){}})();
 /* 104 · solo se toca la clase si de verdad cambia: escribirla en cada movimiento hacía que celulares lentos repintaran toda la pantalla (destello con la burbuja de arriba) */
 function navSync(){try{if(S.tut)navHid=false;var de=document.documentElement,on=!!navHid;if(de.classList.contains('navhid')!==on)de.classList.toggle('navhid',on)}catch(e){}}
 window.addEventListener('scroll',navSync,{passive:true});

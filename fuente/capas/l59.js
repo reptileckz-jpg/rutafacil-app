@@ -39,7 +39,8 @@ var _rd59c=render;render=function(){
   else if(!S.tut&&_tutPend59&&pnArranqueListo()){S.tut=_tutPend59;S.tut._ok=1;_tutPend59=null}
   else if(S.tut&&!S.tut._ok)S.tut._ok=1}catch(e){}
  return _rd59c.apply(this,arguments)};
-setInterval(function(){try{if(_tutPend59&&pnArranqueListo())render()}catch(e){}},1500);
+/* 113 · solo si de verdad ya puede salir (sin otro tutorial puesto): antes, con otro tutorial en pantalla, redibujaba cada 1.5 s sin fin (parpadeo) */
+setInterval(function(){try{if(_tutPend59&&!S.tut&&pnArranqueListo())render()}catch(e){}},1500);
 
 /* ---------- 17 · tarjetas URGENTE: una a la vez, y "Atender" sí te lleva ---------- */
 /* antes: al atender salía la siguiente tarjeta encima del lugar a donde te llevó (parecía que no hacía nada), y a veces se brincaba una */

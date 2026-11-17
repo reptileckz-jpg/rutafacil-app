@@ -1050,15 +1050,15 @@ function ruta(){
   +'<div style="padding:10px 14px;display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="lbl">'+rest.length+' pendientes · '+kmRuta().toFixed(1)+' km · terminas ~'+hm(E.fin)+'</span>'+(rest.length>1?'<span style="display:flex;gap:6px">'+(S.stopsOrig?'<button class="btn sm sec" data-act="revertir">Revertir</button>':'')+'<button class="btn sm sec" data-act="optimizar">Ordenar mejor</button></span>':'')+'</div></div>';
  if(S.callMsg)h+='<div class="card note"><b>Parada nueva por llamada</b><div style="font-size:14px">'+esc(S.callMsg)+'</div></div>';
  h+='<div class="card" style="padding:4px 14px">';
- var k=0;
- S.stops.forEach(function(s,i){var c=cl(s.c),e=E[i],n=s.done?'':++k;
+ var k=0,hv112='',nv112=0,h0112=null;
+ S.stops.forEach(function(s,i){if(s.done){h0112=h;h=''}var c=cl(s.c),e=E[i],n=s.done?'':++k;
   var sub=s.done?(s.nov?'<span class="neg">No entregado: '+esc(s.nov)+'</span>':'Entregada'+(s.lleg?' · '+hm(s.lleg)+'–'+hm(s.sal||s.lleg):'')):
    ((c.rapida?'Venta rápida':c.nuevo?'Cliente nuevo por llamada':(c.cred>0?'<span class="neg">Crédito '+money(c.cred)+'</span>':'Al corriente')+(c.vac>0?' · debe '+c.vac+' vacías':''))
    +'<br>Llegas ~'+hm(e.eta)+(c.hCi?' · recibe '+c.hAb+'–'+c.hCi:'')+(c.prio?' · <b style="color:var(--orange)">prioridad</b>':'')+(s.ped||c.ped?' · <b>pedido</b>':'')+(c.chofer!==+S.chofHoy&&!c.oculto?' · de '+esc(chofN(c.chofer)):''));
   h+='<div class="stop"><div class="num'+(s.done?' done':(s.call||s.ped?' call':''))+'">'+(s.done?(s.nov?'×':'✓'):n)+'</div><div class="grow"><div style="font-weight:600">'+esc(c.n)+'</div><div class="lbl">'+sub+'</div>'
    +(!s.done&&e.late?'<div class="neg" style="font-size:13px;font-weight:600">Cierra '+c.hCi+' y llegarías '+hm(e.eta)+'</div><button class="link" style="min-height:36px" data-act="confirma" data-id="'+c.id+'">El cliente confirmó que me recibe</button>':'')
    +(!s.done&&c.conf&&c.hCi&&e.eta>hmin(c.hCi)?'<div class="lbl">Confirmó que te recibe</div>':'')+'</div>'
-   +(s.done?(!s.nov&&s.logI!=null&&!S.cierre.sent?'<span style="display:flex;flex-direction:column;gap:2px"><button class="link" style="min-height:34px" data-act="corrnew" data-i="'+i+'">Corregir</button><button class="link" style="min-height:34px;color:var(--danger)" data-act="cancelent" data-i="'+i+'">Cancelar</button></span>':''):'<button class="btn sm'+(i===ni?'':' sec')+'" data-act="entregar" data-i="'+i+'">'+(i===ni?'Entregar':'Ir aquí')+'</button>')+'</div>'});
+   +(s.done?(!s.nov&&s.logI!=null&&!S.cierre.sent?'<span style="display:flex;flex-direction:column;gap:2px"><button class="link" style="min-height:34px" data-act="corrnew" data-i="'+i+'">Corregir</button><button class="link" style="min-height:34px;color:var(--danger)" data-act="cancelent" data-i="'+i+'">Cancelar</button></span>':''):'<button class="btn sm'+(i===ni?'':' sec')+'" data-act="entregar" data-i="'+i+'">'+(i===ni?'Entregar':'Ir aquí')+'</button>')+'</div>';if(s.done){hv112+=h;h=h0112;nv112++}});if(nv112)h+='<details data-k="vis112"'+(S.dOpen.vis112?' open':'')+' style="border-top:1px solid var(--line)"><summary style="min-height:56px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;cursor:pointer">✓ Ya visitados ('+nv112+')<span class="lbl" style="margin-left:auto">'+(S.dOpen.vis112?'ocultar':'ver')+'</span></summary>'+hv112+'</details>';
  h+='</div><div style="display:flex;gap:8px"><button class="btn sec" style="flex:1" data-act="calle" data-reg="0">Venta rápida</button><button class="btn sec" style="flex:1" data-act="calle" data-reg="1">Cliente nuevo</button></div>';
  if(ok&&!S.cierre.sent)h+=extraCard();
  if(ok)h+=revResumen()+corrListaHTML();if(MODO!=='vacio')h+=demoRutaHTML();
@@ -4210,6 +4210,12 @@ function vbgPon(){Array.prototype.forEach.call(document.querySelectorAll('.vcard
 /* vehBasic: pasó a tema-vehiculos.js */
 
 /* ---- Barra de abajo sin parpadeo ---- */
+/* 113 · las clases de la página completa (html) solo se escriben si cambian: varias se ponían en CADA dibujo (pro, onecol, av-visto,
+   vwab, tuton…) y en celulares lentos cada escritura repinta toda la pantalla (parpadeo) */
+(function(){try{var cl=document.documentElement.classList,t0=cl.toggle.bind(cl),a0=cl.add.bind(cl),r0=cl.remove.bind(cl);
+ cl.toggle=function(k,f){if(arguments.length>1&&cl.contains(k)===!!f)return !!f;return arguments.length>1?t0(k,f):t0(k)};
+ cl.add=function(){var L=[].slice.call(arguments).filter(function(k){return !cl.contains(k)});if(L.length)a0.apply(null,L)};
+ cl.remove=function(){var L=[].slice.call(arguments).filter(function(k){return cl.contains(k)});if(L.length)r0.apply(null,L)}}catch(e){}})();
 /* 104 · solo se toca la clase si de verdad cambia: escribirla en cada movimiento hacía que celulares lentos repintaran toda la pantalla (destello con la burbuja de arriba) */
 function navSync(){try{if(S.tut)navHid=false;var de=document.documentElement,on=!!navHid;if(de.classList.contains('navhid')!==on)de.classList.toggle('navhid',on)}catch(e){}}
 window.addEventListener('scroll',navSync,{passive:true});
@@ -5447,7 +5453,7 @@ function velMedir(){var a=S.velAl;if(!a)return;
  if(navigator.geolocation&&!_velW&&!DEMO){try{_velW=navigator.geolocation.watchPosition(function(p){var s=p.coords&&p.coords.speed;if(s==null||!S.velAl)return;S.velAl.cur=Math.round(s*3.6);velRevisar()},function(){},{enableHighAccuracy:true,maximumAge:1000})}catch(e){}}}
 function velRevisar(){var a=S.velAl;if(!a)return;var cur=a.cur==null?a.vel:a.cur;if(cur<=a.lim){_velBajo++;if(_velBajo>=2){velCerrar(true);return}}else _velBajo=0;render()}
 function velCerrar(auto){S.velAl=null;_velBajo=0;_velSin=0;if(_velW!=null){try{navigator.geolocation.clearWatch(_velW)}catch(e){}_velW=null}if(auto)toast('Gracias, ya vas a buena velocidad');render()}
-setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20)render()},1000);
+setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20&&!a._sin113){a._sin113=1;render()}},1000);
 /* velAlertaHTML: pasó a tema-vehiculos.js */
 
 //@@capa l23.js
@@ -8203,7 +8209,8 @@ var _rd59c=render;render=function(){
   else if(!S.tut&&_tutPend59&&pnArranqueListo()){S.tut=_tutPend59;S.tut._ok=1;_tutPend59=null}
   else if(S.tut&&!S.tut._ok)S.tut._ok=1}catch(e){}
  return _rd59c.apply(this,arguments)};
-setInterval(function(){try{if(_tutPend59&&pnArranqueListo())render()}catch(e){}},1500);
+/* 113 · solo si de verdad ya puede salir (sin otro tutorial puesto): antes, con otro tutorial en pantalla, redibujaba cada 1.5 s sin fin (parpadeo) */
+setInterval(function(){try{if(_tutPend59&&!S.tut&&pnArranqueListo())render()}catch(e){}},1500);
 
 /* ---------- 17 · tarjetas URGENTE: una a la vez, y "Atender" sí te lleva ---------- */
 /* antes: al atender salía la siguiente tarjeta encima del lugar a donde te llevó (parecía que no hacía nada), y a veces se brincaba una */
@@ -9879,7 +9886,8 @@ function cam73Prende(){var v=document.querySelector('#cam73 video'),m=document.q
  var c1=CAM73.cara==='environment'?{exact:'environment'}:'user';
  pide(c1).catch(function(){return pide({ideal:CAM73.cara})}).then(function(s){CAM73.stream=s;v.srcObject=s;v.play().catch(function(){});if(m)m.textContent=''}).catch(function(er){if(m)m.innerHTML='No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Revisa el permiso de cámara de la app, o usa "Galería".</span>'})}
 function cam73Abre(inp){cam73Cierra();CAM73.inp=inp;CAM73.cara='environment';var d=document.createElement('div');d.id='cam73';d.setAttribute('role','dialog');d.setAttribute('aria-label','Cámara');
- d.innerHTML='<video playsinline autoplay muted></video><div class="msg">Abriendo la cámara…</div><div class="ctop73"><button data-cam="x" aria-label="Cerrar">×</button><span>📷 Toma la foto</span><span style="width:48px"></span></div><div class="cbar73"><button data-cam="gal">🖼️<br>Galería</button><button class="tiro" data-cam="tiro" aria-label="Tomar foto"></button><button data-cam="voltea">🔄<br>Voltear</button></div>';
+ /* 113 · sin el ícono gris de "reproducir" que Android pone mientras arranca la cámara: imagen vacía y fondo negro */
+ d.innerHTML='<video playsinline autoplay muted poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="background:#000"></video><div class="msg">Abriendo la cámara…</div><div class="ctop73"><button data-cam="x" aria-label="Cerrar">×</button><span>📷 Toma la foto</span><span style="width:48px"></span></div><div class="cbar73"><button data-cam="gal">🖼️<br>Galería</button><button class="tiro" data-cam="tiro" aria-label="Tomar foto"></button><button data-cam="voltea">🔄<br>Voltear</button></div>';
  document.body.appendChild(d);cam73Prende()}
 function cam73Sello(cx,w,h){var t=new Date().toLocaleString('es-MX')+(quienFoto73()?' · '+quienFoto73():''),hh=Math.max(22,Math.round(w*22/480));cx.fillStyle='rgba(0,0,0,.55)';cx.fillRect(0,h-hh,w,hh);cx.fillStyle='#fff';cx.font=Math.round(hh*0.6)+'px sans-serif';cx.textBaseline='middle';cx.fillText(t,Math.round(hh*0.3),h-hh/2)}
 /* 106 · si mientras la cámara estaba abierta la pantalla se volvió a dibujar, la casilla que se recordó ya no está en pantalla:
@@ -9894,6 +9902,10 @@ function cam73Galeria(){var inp=cam73Destino(CAM73.inp);cam73Cierra();if(!inp)re
  if(!inp._cam73fw){inp._cam73fw=1;inp.addEventListener('change',function(){if(inp.isConnected)return;var x=cam73Destino(inp);if(x&&x!==inp&&inp.files&&inp.files.length){try{x.files=inp.files;x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}})}var cap=inp.getAttribute('capture');inp.removeAttribute('capture');inp._cam73skip=1;try{inp.click()}catch(e){}setTimeout(function(){inp._cam73skip=0;if(cap!=null)inp.setAttribute('capture',cap)},1500)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#cam73 [data-cam]');if(!b)return;e.stopImmediatePropagation();e.preventDefault();var a=b.dataset.cam;
  if(a==='x'){cam73Cierra();return}if(a==='tiro'){cam73Tira();return}if(a==='gal'){cam73Galeria();return}if(a==='voltea'){CAM73.cara=CAM73.cara==='environment'?'user':'environment';cam73Prende();return}},true);
+/* 113 · al tomar una foto, si al volver (de la cámara del celular o de la galería) la pantalla ya se volvió a dibujar, la casilla de
+   donde se pidió ya no está en pantalla: la foto se pasa a la que está ahora (la del mismo id). Antes se perdía sin avisar. */
+window.addEventListener('click',function(e){var t=e.target,inp=null;if(!t||!t.closest)return;if(t.matches&&t.matches('input[type=file]'))inp=t;else{var lb=t.closest('label[for]');if(lb){var x=document.getElementById(lb.htmlFor);if(x&&x.matches&&x.matches('input[type=file]'))inp=x}}
+ if(!inp||inp._fw113)return;inp._fw113=1;inp.addEventListener('change',function(){if(inp.isConnected)return;var y=inp.id&&document.getElementById(inp.id);if(y&&y!==inp&&inp.files&&inp.files.length){try{y.files=inp.files;y.dispatchEvent(new Event('change',{bubbles:true}))}catch(er){}}})},true);
 window.addEventListener('click',function(e){if(window.__pnTest&&!window.__cam73Test)return;if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))return;var t=e.target,inp=null;if(!t||!t.closest)return;
  if(t.matches&&t.matches('input[type=file]'))inp=t;else{var lb=t.closest('label[for]');if(lb){var x=document.getElementById(lb.htmlFor);if(x&&x.matches('input[type=file]'))inp=x}}
  if(!inp||inp._cam73skip||!inp.hasAttribute('capture')||!/image/.test(inp.getAttribute('accept')||'image'))return;e.preventDefault();e.stopImmediatePropagation();cam73Abre(inp)},true);
@@ -10291,7 +10303,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4982,"l17.js"],[5013,"l18.js"],[5090,"l19.js"],[5160,"l20.js"],[5209,"l21.js"],[5255,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5523,"l25.js"],[5554,"l26.js"],[5697,"l27.js"],[5763,"l28.js"],[5895,"l29.js"],[6021,"l30.js"],[6065,"l31.js"],[6101,"l32.js"],[6195,"l33.js"],[6214,"l34.js"],[6274,"l35.js"],[6334,"l36.js"],[6432,"l37.js"],[6453,"l38.js"],[6541,"l39.js"],[6622,"l40.js"],[6746,"l41.js"],[6830,"l42.js"],[6933,"l43.js"],[7035,"l44.js"],[7136,"l45.js"],[7231,"l46.js"],[7299,"l47.js"],[7413,"l48.js"],[7468,"l49.js"],[7504,"l50.js"],[7608,"l51.js"],[7618,"l52.js"],[7761,"l53.js"],[7783,"l54.js"],[7858,"l55.js"],[7887,"l56.js"],[7972,"l57.js"],[8037,"l58.js"],[8164,"l59.js"],[8223,"l60.js"],[8385,"l61.js"],[8442,"l62.js"],[8572,"l63.js"],[8743,"l64.js"],[8775,"l65.js"],[8876,"l66.js"],[8982,"l67.js"],[9009,"l68.js"],[9143,"l69.js"],[9370,"l70.js"],[9592,"l71.js"],[9717,"l72.js"],[9834,"l73.js"],[9905,"l74.js"],[10029,"l75.js"],[10182,"l76.js"],[10285,"l77.js"],[10413,"l78.js"],[10555,"l79.js"],[10663,"l80.js"],[10787,"l81.js"],[10940,"l82.js"],[11193,"l83.js"],[11262,"l84.js"],[11375,"l85.js"],[11436,"tema-rutadia.js"],[11601,"l86.js"],[11661,"l87.js"],[11704,"l88.js"],[11754,"l89.js"],[11803,"l90.js"],[11909,"tema-cobranza.js"],[12056,"tema-pantallas.js"],[12275,"tema-avisos.js"],[12437,"tema-reparte.js"],[12503,"tema-vehiculos.js"],[12647,"tema-notas.js"],[12664,"tema-taras.js"],[12751,"tema-cargarmas.js"],[12790,"tema-cargas.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4471,"l10.js"],[4531,"l11.js"],[4548,"l12.js"],[4595,"l13.js"],[4741,"l14.js"],[4817,"l15.js"],[4879,"l16.js"],[4988,"l17.js"],[5019,"l18.js"],[5096,"l19.js"],[5166,"l20.js"],[5215,"l21.js"],[5261,"l22.js"],[5459,"l23.js"],[5513,"l24.js"],[5529,"l25.js"],[5560,"l26.js"],[5703,"l27.js"],[5769,"l28.js"],[5901,"l29.js"],[6027,"l30.js"],[6071,"l31.js"],[6107,"l32.js"],[6201,"l33.js"],[6220,"l34.js"],[6280,"l35.js"],[6340,"l36.js"],[6438,"l37.js"],[6459,"l38.js"],[6547,"l39.js"],[6628,"l40.js"],[6752,"l41.js"],[6836,"l42.js"],[6939,"l43.js"],[7041,"l44.js"],[7142,"l45.js"],[7237,"l46.js"],[7305,"l47.js"],[7419,"l48.js"],[7474,"l49.js"],[7510,"l50.js"],[7614,"l51.js"],[7624,"l52.js"],[7767,"l53.js"],[7789,"l54.js"],[7864,"l55.js"],[7893,"l56.js"],[7978,"l57.js"],[8043,"l58.js"],[8170,"l59.js"],[8230,"l60.js"],[8392,"l61.js"],[8449,"l62.js"],[8579,"l63.js"],[8750,"l64.js"],[8782,"l65.js"],[8883,"l66.js"],[8989,"l67.js"],[9016,"l68.js"],[9150,"l69.js"],[9377,"l70.js"],[9599,"l71.js"],[9724,"l72.js"],[9841,"l73.js"],[9917,"l74.js"],[10041,"l75.js"],[10194,"l76.js"],[10297,"l77.js"],[10425,"l78.js"],[10575,"l79.js"],[10683,"l80.js"],[10807,"l81.js"],[10960,"l82.js"],[11213,"l83.js"],[11282,"l84.js"],[11395,"l85.js"],[11456,"tema-rutadia.js"],[11621,"l86.js"],[11681,"l87.js"],[11724,"l88.js"],[11774,"l89.js"],[11823,"l90.js"],[11929,"tema-cobranza.js"],[12076,"tema-pantallas.js"],[12295,"tema-avisos.js"],[12457,"tema-reparte.js"],[12523,"tema-vehiculos.js"],[12667,"tema-notas.js"],[12684,"tema-taras.js"],[12771,"tema-cargarmas.js"],[12810,"tema-cargas.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10539,8 +10551,16 @@ function camLentes78(){return navigator.mediaDevices.enumerateDevices().then(fun
  atras.sort(function(a,b){return malo(a)-malo(b)||num(a)-num(b)});CAM78.L=atras;return atras})}
 function camAbre78(id){var v=document.querySelector('#cam73 video'),m=document.querySelector('#cam73 .msg');if(!v)return;try{if(CAM73.stream)CAM73.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}
  navigator.mediaDevices.getUserMedia({audio:false,video:{deviceId:{exact:id},width:{ideal:1920},height:{ideal:1080}}}).then(function(s){CAM73.stream=s;v.srcObject=s;v.play().catch(function(){});if(m)m.textContent=''}).catch(function(){toast('Ese lente no se pudo abrir')})}
-var _cP78=cam73Prende;cam73Prende=function(){if(CAM73.cara!=='environment')return _cP78.apply(this,arguments);var v=document.querySelector('#cam73 video'),m=document.querySelector('#cam73 .msg');
- navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'environment'}}).then(function(s){try{s.getTracks().forEach(function(t){t.stop()})}catch(e){}return camLentes78()}).then(function(L){if(!L||!L.length)return _cP78.apply(window,[]);var gu='';try{gu=localStorage.getItem('cam78')||''}catch(e){}var i=Math.max(0,L.findIndex(function(d){return d.deviceId===gu}));CAM78.i=i;camAbre78(L[i].deviceId);camBtn78()}).catch(function(){_cP78.apply(window,[])})};
+var _cP78=cam73Prende;cam73Prende=function(){if(CAM73.cara!=='environment')return _cP78.apply(this,arguments);var v=document.querySelector('#cam73 video'),m=document.querySelector('#cam73 .msg');if(!v)return;
+ /* 113 · antes se abría dos veces (una para el permiso y otra con el lente guardado): tardaba, a veces decía "falta permiso" y en el Moto X
+    cambiaba al lente blanco y negro. Ahora: una sola vez, el lente principal; "Lente" cambia a mano solo para esa foto. */
+ try{if(CAM73.stream)CAM73.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}try{localStorage.removeItem('cam78')}catch(e){}CAM78.i=0;var intento=0;
+ var abre=function(){navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}}).then(function(s){if(!document.getElementById('cam73')){try{s.getTracks().forEach(function(t){t.stop()})}catch(e){}return}
+   CAM73.stream=s;v.srcObject=s;v.play().catch(function(){});if(m)m.textContent='';camLentes78().then(function(){camBtn78()}).catch(function(){})})
+  .catch(function(er){var n=er&&er.name,perm=n==='NotAllowedError'||n==='SecurityError';if(!document.getElementById('cam73'))return;
+   if(!perm&&intento<3){intento++;if(m)m.textContent='Abriendo la cámara…';setTimeout(abre,700);return}
+   if(m)m.innerHTML=perm?'No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Dale permiso de cámara a la app: Ajustes del celular → Apps → Ruta Fácil → Permisos → Cámara.</span>':'No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Ciérrala y vuelve a intentar.</span>'})};
+ abre()};
 function camBtn78(){var bar=document.querySelector('#cam73 .cbar73');if(!bar||bar.querySelector('[data-cam="lente"]')||CAM78.L.length<2)return;var b=document.createElement('button');b.dataset.cam='lente';b.innerHTML='🔁<br>Lente';var g=bar.querySelector('[data-cam="gal"]');bar.insertBefore(b,g.nextSibling)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#cam73 [data-cam="lente"]');if(!b)return;e.stopImmediatePropagation();e.preventDefault();if(!CAM78.L.length)return;CAM78.i=(CAM78.i+1)%CAM78.L.length;var d=CAM78.L[CAM78.i];try{localStorage.setItem('cam78',d.deviceId)}catch(er){}camAbre78(d.deviceId);toast('Lente '+(CAM78.i+1)+' de '+CAM78.L.length)},true);
 

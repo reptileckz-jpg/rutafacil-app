@@ -192,5 +192,5 @@ function velMedir(){var a=S.velAl;if(!a)return;
  if(navigator.geolocation&&!_velW&&!DEMO){try{_velW=navigator.geolocation.watchPosition(function(p){var s=p.coords&&p.coords.speed;if(s==null||!S.velAl)return;S.velAl.cur=Math.round(s*3.6);velRevisar()},function(){},{enableHighAccuracy:true,maximumAge:1000})}catch(e){}}}
 function velRevisar(){var a=S.velAl;if(!a)return;var cur=a.cur==null?a.vel:a.cur;if(cur<=a.lim){_velBajo++;if(_velBajo>=2){velCerrar(true);return}}else _velBajo=0;render()}
 function velCerrar(auto){S.velAl=null;_velBajo=0;_velSin=0;if(_velW!=null){try{navigator.geolocation.clearWatch(_velW)}catch(e){}_velW=null}if(auto)toast('Gracias, ya vas a buena velocidad');render()}
-setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20)render()},1000);
+setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20&&!a._sin113){a._sin113=1;render()}},1000);
 /* velAlertaHTML: pasó a tema-vehiculos.js */

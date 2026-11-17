@@ -2333,3 +2333,7 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Al INICIAR LA RUTA: la foto del ODÓMETRO sí se puede tomar, pero NO SE GUARDA. Las fotos de los lados del vehículo sí se guardan.
 - No sabe si pasa solo con el administrador que reparte o con el vehículo nuevo (o con los dos). Revisar los dos casos: admin en "Mi ruta" y chofer normal; vehículo dado de alta en el asistente/nuevo y uno viejo.
 - Pendiente: sin cambios hasta que Ricardo diga. No publicar APK.
+
+## 2026-11-17 · 107 · Ricardo: "las notas de remisión no guardan el orden que llevan, cada día se reinician a 1"
+- CAUSA (revisada en el código, sin cambiar nada): el número de la nota es cuántas entregas lleva esa ruta HOY (base: `folio:S.log.length`). Por eso cada día empieza en 1. Además cada chofer tiene su propia ruta: dos choferes pueden dar el MISMO número el mismo día (y el administrador que reparte también).
+- Pendiente: decidir cómo se numeran (consecutivo de todo el negocio, o una serie por chofer para que no se repitan aunque no haya señal) y cuándo se hace. No publicar APK todavía (Ricardo, 106).

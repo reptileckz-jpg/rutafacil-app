@@ -25,8 +25,8 @@ ok(/Nuevos\s*40/.test(await ev(()=>document.getElementById('im75ov').innerText))
 ok(await ev(()=>S.setup.cli.length===40),'quedan en la lista de la primera vez');await sig();
 await ck('[data-act="su75add"]');await W(()=>p.fill('#wz_n','Roly'));await ck('[data-act="wzop"][data-v="Roatán"]');await p.waitForTimeout(70);await ev(()=>{S.wz.p=wzPasos().length-1;render()});await ck('[data-act="wzfin"]');await p.waitForTimeout(70);await sig();
 await p.fill('#setov [data-bind="cajaBase"]','5000');await sig();await p.fill('#setov [data-bind="precio.R"]','200');await p.fill('#setov [data-bind="precio.M"]','17');await sig();
-ok((await vis()).some(t=>/Mayoreo de hoy/.test(t)),'Dinero: pide el mayoreo del día');await p.fill('#su75mR','220');await p.fill('#su75mM','15');await sig();await sig();
-ok(await ev(()=>S.setup.p===6),'mayoreo más alto que el precio: no deja seguir');await p.fill('#su75mR','190');await sig();await sig();
+ok((await vis()).some(t=>/Mayoreo de hoy/.test(t)),'Dinero: pide el mayoreo del día');await p.fill('#su75mR','220');await p.fill('#su75mM','15');await sig();ok((await vis()).some(t=>/¿Cuánto te cuesta\?/.test(t)),'Dinero: pregunta cuánto te cuesta la caja y el kilo (100)');await sig();await sig();
+ok(await ev(()=>S.setup.p===6),'mayoreo más alto que el precio: no deja seguir');await p.fill('#su75mR','190');await sig();await sig();await sig();
 ok(await ev(()=>S.setup.p===7&&!!document.querySelector('[data-x75="cor"]')),'Listo: con "Corregir" por apartado');
 await ck('#setov [data-act="sufin"]');await p.waitForTimeout(700);
 let r=await ev(()=>({inv:S.inv,veh:S.veh.map(v=>[v.acLast,v.acInt,v.capC,v.plEdo]),cli:S.cli.length,ub:S.cli.filter(c=>c.lat!=null).length,hor:S.cli.filter(c=>c.hAb).length,dias:S.cli.filter(c=>c.dias&&c.dias.length).length,may:S.mayMin,av:S.avPrecio.length}));

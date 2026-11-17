@@ -107,3 +107,8 @@ var _veh47=vehiculos;vehiculos=function(){var h=_veh47.apply(this,arguments);if(
  var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vftipo"]');if(!b||!S.vf)return;e.stopImmediatePropagation();S.vf.esAuto=b.dataset.v==='auto';S.vf.plTipo=S.vf.esAuto?'auto':'carga';render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vsave"]');if(!b||!S.vf||S.vfId==null||S.vf.esAuto==null)return;var id=S.vfId,a=!!S.vf.esAuto;setTimeout(function(){var v=vehById(id);if(v){v.esAuto=a;v.plTipo=a?'auto':'carga'}render()},20)},true);
+/* 100 · cuánto te cuesta (mientras no hay ninguna carga): tarjeta paso a paso, desde "Datos que faltan" */
+WZ.costo96={tit:'¿Cuánto te cuesta?',fin:'Guardar',pasos:[
+ {q:'¿Cuánto te cuesta la caja de roatán?',a:'Lo que pagas al proveedor más lo del viaje. Sirve para la ganancia y las mermas hasta que registres tu primera carga; desde ahí la app usa el costo de verdad.',c:[{k:'R',l:'La caja de roatán $',t:'number',ph:'Ej. 200'}]},
+ {q:'¿Y el kilo de macho?',a:'Si no vendes macho, déjalo vacío.',saltar:true,c:[{k:'M',l:'El kilo de macho $',t:'number',opc:true,ph:'Ej. 12'}]}],
+ guardar:function(d){S.cfg.costoIniR=num(d.R)>0?String(num(d.R)):'';S.cfg.costoIniM=num(d.M)>0?String(num(d.M)):'';toast('Listo: guardado lo que te cuesta');return true}};

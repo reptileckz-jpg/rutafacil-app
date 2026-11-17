@@ -17,7 +17,11 @@ function rep1Fit89(){var c=document.querySelector('main .card.rep1');if(!c)retur
 /* ---------- 80 · ubicación ---------- */
 function coords89(t){try{var c=coordsDe(String(t||''));if(c&&isFinite(c.lat)&&isFinite(c.lng)&&Math.abs(c.lat)<=90&&Math.abs(c.lng)<=180)return c}catch(e){}var m=/^\s*(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})\s*$/.exec(String(t||''));return m?{lat:+m[1],lng:+m[2]}:null}
 function ubLog89(c,via){try{c.ubLog89=(c.ubLog89||[]).slice(-9);c.ubLog89.push({f:iso(TODAY),h:hhmm(),q:quien(),lat:c.lat,lng:c.lng,via:via})}catch(e){}}
-function ubArregla89(){var n=0;(S.cli||[]).forEach(function(c){if(!c||c.oculto)return;if(ubTiene(c))return;var k=coords89(c.a);if(!k)return;c.lat=k.lat;c.lng=k.lng;c.ubAprox=false;c.locConf=iso(TODAY);c.a='';ubLog89(c,'estaba escrita en la dirección');n++});return n}
+function ubArregla89(){var n=0;(S.cli||[]).forEach(function(c){if(!c||c.oculto)return;if(ubTiene(c))return;var k=coords89(c.a);if(!k)return;c.lat=k.lat;c.lng=k.lng;c.ubAprox=false;c.locConf=iso(TODAY);c.a='';ubLog89(c,'estaba escrita en la dirección');n++});
+ /* 98 · lo mismo con proveedores y básculas: si la coordenada quedó escrita en la dirección, es su ubicación (ya no se pide en el viaje) */
+ var fija=function(o){if(!o||ubTiene(o))return;var k=coords89(o.dir);if(!k)return;o.lat=k.lat;o.lng=k.lng;o.ubAprox=false;o.dir='';ubLog89(o,'estaba escrita en la dirección');n++};
+ try{Object.keys(S.provDir||{}).forEach(function(p){fija(S.provDir[p])});(S.basc||[]).forEach(fija)}catch(e){}
+ return n}
 /* al guardar con la ventana nueva: la coordenada no va a la dirección */
 var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var a0=o?o.a:null,lat0=o?o.lat:null;var r=_u68G89.apply(this,arguments);
  try{if(x&&x.t==='cli'&&o){if(coords89(o.a)&&!coords89(a0))o.a=a0||'';var k=coords89(o.a);if(k&&!ubTiene(o)){o.lat=k.lat;o.lng=k.lng;o.a=''}if(ubTiene(o)&&(o.lat!==lat0)){ubLog89(o,'ventana de ubicación');o.locConf=o.locConf||iso(TODAY)}}}catch(e){}return r};
@@ -29,7 +33,9 @@ function ubDup89(){var m=document.querySelector('main');if(!m)return;var a=m.que
 /* ---------- 79 · odómetro ---------- */
 function ultOdo89(vid){var v=vehById(+vid);if(!v)return 0;var mx=num(v.odo);var mira=function(o){try{if(o&&+o.vehHoy===+vid){if(o.cierre&&o.cierre.sent)mx=Math.max(mx,num(o.cierre.odo));if(o.salida&&o.salida.ok)mx=Math.max(mx,num(o.cierre&&o.cierre.odoIni))}}catch(e){}};
  mira(S);Object.keys(S.chSt||{}).forEach(function(id){mira(S.chSt[id])});(S.vws||[]).forEach(function(w){if(w&&+w.veh===+vid){mx=Math.max(mx,num(w.odoFin),num(w.odoIni))}});(S.inspHist||[]).forEach(function(h){if(h&&+h.veh===+vid)mx=Math.max(mx,num(h.odo))});return mx}
-function odo89(){try{if(S.role==='rep'&&S.chofHoy!=null&&S.vehHoy!=null&&S.cierre){var L=ultOdo89(S.vehHoy);if(!S.salida.ok&&L>num(S.cierre.odoIni)){S.cierre.odoIni=L;if(num(S.cierre.odo)<L)S.cierre.odo=L}
+function odo89(){try{if(S.role==='rep'&&S.chofHoy!=null&&S.vehHoy!=null&&S.cierre){var L=ultOdo89(S.vehHoy);
+   /* 100 · la ruta traía el odómetro del camión de la demo (48,262): se usa el de su vehículo */
+   if(MODO==='vacio'&&!S.salida.ok&&num(S.cierre.odoIni)===48262&&L<48262){S.cierre.odoIni=L;S.cierre.odo=L}if(!S.salida.ok&&L>num(S.cierre.odoIni)){S.cierre.odoIni=L;if(num(S.cierre.odo)<L)S.cierre.odo=L}
    var vh=vehById(+S.vehHoy);if(vh&&S.cierre.sent&&num(S.cierre.odo)>num(vh.odo))vh.odo=num(S.cierre.odo)}
   var w=S.vw;if(w&&w.veh!=null){var vv=vehById(+w.veh),L2=ultOdo89(w.veh);if(!w.started&&L2>num(w.odoIni))w.odoIni=String(L2);if(vv&&num(w.odoFin)>num(vv.odo)&&(w.hist||w.fin||w.k==='gracias'))vv.odo=num(w.odoFin)}}catch(e){}}
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset)return;var b=t.dataset.bind||'';if(!/^(cierre\.odoIni|vw\.odoIni|salida\.odoIni)$/.test(b))return;var vid=/^vw/.test(b)?(S.vw&&S.vw.veh):S.vehHoy;if(vid==null)return;var L=ultOdo89(vid),v=num(t.value);if(v&&L&&v<L-0.5)toast('¿Seguro? El último odómetro de este vehículo fue '+Math.round(L).toLocaleString('es-MX')+' km')},true);

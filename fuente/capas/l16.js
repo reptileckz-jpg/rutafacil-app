@@ -51,7 +51,12 @@ function dfLista(){var L=[],add=function(pr,txt,go){L.push({pr:pr,txt:txt,go:go}
    if(dfVacio(v.verVence)&&!(typeof verifDe==='function'&&verifDe(v)))add(2,'Verificación de '+v.n,Object.assign({p:2},g));
    if(dfVacio(v.capL))add(3,'Litros del tanque de '+v.n,Object.assign({p:1},g));
    if(dfVacio(v.odo))add(3,'Kilometraje de '+v.n,Object.assign({p:0},g));
-   if(dfVacio(v.acLast))add(3,'Último cambio de aceite de '+v.n,Object.assign({p:3},g))});
+   if(dfVacio(v.acLast))add(3,'Último cambio de aceite de '+v.n,Object.assign({p:3},g));
+   /* 100 · ya no se inventan (antes venían de la camioneta de la demo) */
+   if(MODO==='vacio'&&!v.esAuto&&dfVacio(v.rend0)&&!(v.hist&&v.hist.length))add(3,'Rendimiento de '+v.n+' (km por litro)',Object.assign({p:1},g));
+   var an=v.anual||{};if(MODO==='vacio'&&!(num(an.seguro)||num(an.tenencia)||num(an.verif)||num(an.placas)))add(3,'Lo que pagas al año por '+v.n+' (seguro, tenencia, verificación y placas)',Object.assign({p:2},g))});
+  /* 100 · el costo de la caja y del kilo mientras no hay ninguna carga */
+  if(MODO==='vacio'&&((!hayCostoCarga96('R')&&!num(S.cfg.costoIniR))||(!hayCostoCarga96('M')&&!num(S.cfg.costoIniM))))add(1,'Cuánto te cuesta la caja de roatán y el kilo de macho (mientras registras tu primera carga)',{t:'costo96'});
   S.cli.forEach(function(c){if(c.oculto||c.arch||c.rapida)return;var g={t:'cli',id:c.id};
    if(dfVacio(c.a))add(3,'Dirección de '+c.n,g);
    if(dfVacio(c.tel))add(3,'Teléfono de '+c.n,g);
@@ -89,6 +94,7 @@ function dfIr(x){var g=x.go;S.dfOpen=false;S.menu=false;var sel=null;
  else if(g.t==='emp'||g.t==='emppin'||g.t==='empsue'){S.tab.admin='personal';S.openCh=g.id;S.chEdit=g.t==='emp'?g.id:null;
   if(g.t==='empsue')S.fiTab=S.fiTab||{};sel=g.t==='emp'?(g.k==='lic'||g.k==='ine'||g.k==='foto'?'#fiov [data-chimg="'+g.id+':'+g.k+'"], #fiov label[for*="'+g.k+'"]':'#ch'+g.id+g.k):(g.t==='emppin'?'#fiov [data-act^="pin"]':null);
   if(g.t==='empsue'){render();var tb=document.querySelector('#fiov [data-act="fitab"][data-v="sue"]');if(tb)tb.click();return}}
+ else if(g.t==='costo96'){wzAbre('costo96',{R:S.cfg.costoIniR||'',M:S.cfg.costoIniM||''});return}
  else if(g.t==='veh'){S.tab.admin='vehiculos';S.vehOpen=null;render();var b=document.createElement('button');b.dataset.act='vedit';b.dataset.id=g.id;b.style.display='none';document.body.appendChild(b);b.click();b.remove();S.vfP=g.p||0}
  else if(g.t==='cli'||g.t==='clidias'){S.tab.admin='clientes';S.openCli=g.id;if(g.t==='cli'){render();var b2=document.createElement('button');b2.dataset.act='ceedit';b2.dataset.id=g.id;b2.style.display='none';document.body.appendChild(b2);b2.click();b2.remove()}}
  else if(g.t==='prov'){S.openProv=g.n;S.pvEdit=g.n}

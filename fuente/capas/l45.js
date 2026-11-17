@@ -67,14 +67,24 @@ var _aj45=ajHTML;ajHTML=function(){var h=_aj45.apply(this,arguments);if(!h||h.in
 var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
 var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};
 /* ---------- 74 · nada de la demo en la app real ---------- */
-function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=2;return s}
+function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}
 if(typeof MODO!=='undefined'&&MODO==='vacio'){var _fr45=fresh;fresh=function(){return limpiaDemo(_fr45.apply(this,arguments))};limpiaDemo(S)}
 /* lo que ya se subió a la nube con datos de la demo se limpia una sola vez (sin tocar lo que capturó el usuario) */
-function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=2)return;var antes='2026-11-01';
+function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=3)return;if(S.limpDemo>=2){migraDemo100();S.limpDemo=3;return}var antes='2026-11-01';
  S.vjHist=(S.vjHist||[]).filter(function(v){return !(String(v.f||'')<antes&&/Freightliner M2 2015/.test(v.veh||''))});
  if(S.tarasProv&&num(S.tarasProv.Roly)===20&&!(S.cajasMov||[]).some(function(m){return /Roly/.test(JSON.stringify(m))}))delete S.tarasProv.Roly;
  S.loteCierres=(S.loteCierres||[]).filter(function(x){return String(x.fin||'')>=antes});if(S.precio)S.precio.hist=(S.precio.hist||[]).filter(function(x){return String(x.f||'')>=antes});
- if(S.metaMes&&S.metaMes.ven==='260000'&&S.metaMes.gan==='45000')S.metaMes={ven:'',gan:''};S.limpDemo=2}
+ if(S.metaMes&&S.metaMes.ven==='260000'&&S.metaMes.gan==='45000')S.metaMes={ven:'',gan:''};migraDemo100();S.limpDemo=3}
+/* 100 · vehículos y clientes que se dieron de alta en el asistente con datos de la demo: se quitan los que son IGUALES a los de ejemplo
+   (costos al año, sueldo, parte de las ventas, valor, km al mes, precio de combustible, rendimiento y capacidades); lo que el usuario cambió se queda */
+function migraDemo100(){var T=[];try{T=tpl().veh||[]}catch(e){}var J=function(x){return JSON.stringify(x)};
+ (S.veh||[]).forEach(function(v){if(!v)return;T.forEach(function(t){
+  if(v.anual&&J(v.anual)===J(t.anual))v.anual={};
+  ['parteVentas','sueldoMes'].forEach(function(k){if(t[k]!=null&&v[k]===t[k])delete v[k]});
+  ['valor','precioC','kmMes'].forEach(function(k){if(num(t[k])&&num(v[k])===num(t[k]))v[k]=''});
+  if(!(v.hist&&v.hist.length)){if(num(t.precio)&&num(v.precio)===num(t.precio))v.precio='';if(num(t.rend0)&&num(v.rend0)===num(t.rend0))v.rend0=''}
+  var C=['capV','capVK','capRC','capRK','capC'];if(C.every(function(k){return num(v[k])===num(t[k])})&&C.some(function(k){return num(t[k])}))C.forEach(function(k){v[k]=''})})});
+ (S.cli||[]).forEach(function(c){if(c&&c.pc===70&&c.dp==null)c.pc=null})}
 ['limpDemo'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 var _r45e=render;render=function(){try{if(typeof NB==='undefined'||!NB.on||NB.listo)migraDemo()}catch(e){}return _r45e.apply(this,arguments)};
 /* ---------- encargado: su perfil en la nube dice hasta cuándo manda (para las reglas de seguridad) ---------- */

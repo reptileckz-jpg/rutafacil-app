@@ -56,3 +56,8 @@ R("<b>El administrador cambió tu ruta</b>'+av.map(function(x){return '<div styl
 R("""<div class="lbl" style="margin-top:4px">Temperatura afuera: '+S.clima.t+' °C, '+esc(S.clima.txt)+' (automático)</div>'""","""'+(MODO==='vacio'?'<div class="lbl" style="margin-top:4px">Si sabes la temperatura de la bodega, ponla abajo; si no, se calcula con '+S.clima.t+' °C.</div>':'<div class="lbl" style="margin-top:4px">Temperatura afuera: '+S.clima.t+' °C, '+esc(S.clima.txt)+' (automático)</div>')+''""")
 # 7.6 · 70 la marca de agua de las fotos del vehículo también dice quién la tomó
 R("cx.fillText(new Date().toLocaleString('es-MX')+' · '+vehHoy().pl,6,h-7);","cx.fillText(new Date().toLocaleString('es-MX')+' · '+vehHoy().pl+(typeof quienFoto73==='function'?' · '+quienFoto73():''),6,h-7);")
+# 100 · sin costo inventado de la demo cuando no hay cargas (costoIni96 en l7.js) y "cuesta —" si todavía no hay costo
+R("return c?cC(c).costoCaja:190}","return c?cC(c).costoCaja:costoIni96('R')}")
+R("return c?cC(c).costoKgM:14}","return c?cC(c).costoKgM:costoIni96('M')}")
+R("cuesta '+money(costoCajaAct())+'","cuesta '+(costoCajaAct()?money(costoCajaAct()):'—')+'")
+R("cuesta '+money(costoKgMAct())+'","cuesta '+(costoKgMAct()?money(costoKgMAct()):'—')+'")

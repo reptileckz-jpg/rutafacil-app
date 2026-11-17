@@ -67,7 +67,10 @@ function impBig68(c){return (c.extras||[]).filter(function(x){return (x.imp68||e
 var _trC69=trCost;trCost=function(c){var r=_trC69.apply(this,arguments);try{if(!(c.cv&&c.cv.ok))r+=num(c.dsgM)+num(c.suelM);r-=sum(impBig68(c),function(x){return num(x.m)})}catch(e){}return r};
 /* "Costo del viaje más exacto": respeta lo que se contestó de desgaste y sueldo */
 var _cvD69=cvDef;cvDef=function(c){var D=_cvD69.apply(this,arguments);try{if(c.dsgOn===false)D.desgKm=0;if(c.suelOn===false){D.sueldo=0;D.com=0}else if(c.suelOn===true){D.sueldo=num(c.suelM);D.com=0}}catch(e){}return D};
-var _cvP69=cvPasoHTML;cvPasoHTML=function(c,P,wiz){var h=_cvP69.apply(this,arguments);if(P!=='costo')return h;try{var D=cvDef(c),vh=D.vh||{n:'el vehículo'},km=Math.round(num(cvCalc(c).km)),tasa=tasa68(vh),z=suelDia68(D.ch),sd=c.suelM!=null&&c.suelM!==''?c.suelM:String(z.s+z.c||''),nom=D.ch&&D.ch.id!==2?D.ch.n:'Tú';
+var _cvP69=cvPasoHTML;cvPasoHTML=function(c,P,wiz){var h=_cvP69.apply(this,arguments);
+ /* 111 · en "La fruta": ¿sí se cargó la fruta planeada sin precio? (tema-cargas.js) */
+ if(P==='fruta'){try{var fh=fant111HTML(c);if(fh){var j=h.indexOf('<div class="card"');h=j>-1?h.slice(0,j)+fh+h.slice(j):fh+h}}catch(e){}return h}
+ if(P!=='costo')return h;try{var D=cvDef(c),vh=D.vh||{n:'el vehículo'},km=Math.round(num(cvCalc(c).km)),tasa=tasa68(vh),z=suelDia68(D.ch),sd=c.suelM!=null&&c.suelM!==''?c.suelM:String(z.s+z.c||''),nom=D.ch&&D.ch.id!==2?D.ch.n:'Tú';
   var dOn=c.dsgOn===true?'si':(c.dsgOn===false?'no':''),sOn=c.suelOn===true?'si':(c.suelOn===false?'no':''),at=' data-id="'+c.id+'"';
   h+='<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div><div class="row"><span>'+esc(vh.n)+'</span><b>'+km.toLocaleString('es-MX')+' km × '+f2(tasa)+' = '+money(Math.round(km*tasa))+'</b></div>'+ch68('cv68','dOn',[['si','Sí, súmalo'],['no','No']],dOn,at)+suma103(dOn,Math.round(km*tasa),caja103(c),'No se suma el desgaste.')+'</div>'
    +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div><div class="lbl">Fue: <b>'+esc(nom)+'</b></div>'+ch68('cv68','sOn',[['si','Sí'],['no','No']],sOn,at)

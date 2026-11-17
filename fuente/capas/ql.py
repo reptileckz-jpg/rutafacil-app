@@ -66,3 +66,9 @@ R("cfield(c,'kgR','Kilos de roatán comprados')+cfield(c,'pR','Precio al que com
 # 107 · notas de remisión: serie por chofer que nunca se reinicia (tema-notas.js)
 R("S.nota={tel:c.tel||'',folio:S.log.length,","S.nota={tel:c.tel||'',folio:folioNota107(),")
 R("'Nota de remisión No. '+('000'+n.folio).slice(-4)","'Nota de remisión No. '+folioTxt107(n.folio)")
+# 111 · "¿A quién se le cargan los gastos del viaje?" solo con 2 frutas o más (compradas) y con la otra fruta como opción (tema-cargas.js)
+R("+(c.kgM&&(c.cajas||c.kgR)?'<div class=\"card\" style=\"padding:10px 12px\">'+trChips('c',c.trMode||'kilos',c.id)+'</div>':'');","+(frutas111(c).length>1?'<div class=\"card\" style=\"padding:10px 12px\">'+trChips('c',c.trMode||'kilos',c.id)+'</div>':'');")
+R("+(c.kgM&&(c.cajas||c.kgR)?trChips('c',c.trMode||'kilos',c.id):'')","+trChips('c',c.trMode||'kilos',c.id)")
+# 111 · reparto del costo del viaje: "Solo la otra fruta"
+R("trR=c.trMode==='R'?(c.kgR||c.cajas?tr:0):(c.trMode==='M'?0:(kg?tr*c.kgR/kg:0)),trM=c.trMode==='M'?(c.kgM?tr:0):(c.trMode==='R'?0:(kg?tr*c.kgM/kg:0));","trR=c.trMode==='R'?(c.kgR||c.cajas?tr:0):(c.trMode==='M'||c.trMode==='O'?0:(kg?tr*c.kgR/kg:0)),trM=c.trMode==='M'?(c.kgM?tr:0):(c.trMode==='R'||c.trMode==='O'?0:(kg?tr*c.kgM/kg:0));")
+R("t=c.trMode&&c.trMode!=='kilos'?0:(kg?tr*kx/kg:0)","t=c.trMode==='O'?(kgO?tr*kx/kgO:0):(c.trMode&&c.trMode!=='kilos'?0:(kg?tr*kx/kg:0))")

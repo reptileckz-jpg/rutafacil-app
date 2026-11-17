@@ -2328,3 +2328,8 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Prueba t102 (16). Todas: 0 FAIL.
 
 ## 2026-11-17 · Ricardo: "arma el apk" → versión 9.6 a main (98, 100, 102–105 y la migración a Vite: avisos, quién reparte, vehículos). Todas las pruebas: 0 FAIL. PUBLICADA (APK 1.0.43).
+
+## 2026-11-17 · 106 · Ricardo (probando 1.0.43): "No hagas cambios, pero no modifiques el APK aún"
+- Al INICIAR LA RUTA: la foto del ODÓMETRO sí se puede tomar, pero NO SE GUARDA. Las fotos de los lados del vehículo sí se guardan.
+- No sabe si pasa solo con el administrador que reparte o con el vehículo nuevo (o con los dos). Revisar los dos casos: admin en "Mi ruta" y chofer normal; vehículo dado de alta en el asistente/nuevo y uno viejo.
+- Pendiente: sin cambios hasta que Ricardo diga. No publicar APK.

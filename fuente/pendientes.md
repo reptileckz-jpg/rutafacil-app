@@ -2189,3 +2189,12 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
   - Botones por cliente: "📲 Mandar estado de cuenta" (WhatsApp con el desglose: fecha, qué se llevó, cuánto, abonos y saldo), "🤝 Prometió pagar…" (día) → la app te lo recuerda ese día y se lo pone al chofer en su ruta, "💵 Registrar abono" (si te pagó a ti).
   - "Mandar a todos los vencidos": uno por uno por WhatsApp, sin escribir nada.
   - Si no pagó cuando prometió: sube a rojo y te avisa.
+
+### HECHO (17 nov) · 84 · Cobranza (tema-cobranza.js) · Ricardo: plazo "uno para todos, cambiable por cliente"; promesa "te avisa a ti" + "le sale al chofer" · SIN PUBLICAR
+- Inicio: "💰 Te deben $X · N vencidos (y cuánto)" + "🤝 Prometieron pagar hoy: …" → abre Cobranza (reemplaza la tarjeta vieja "Cobrar hoy").
+- Cobranza: por cobrar y vencido; filtro por chofer; grupos rojo (15+ días pasado su plazo o no cumplió su promesa), amarillo (vencido), verde (en su plazo). Cada cliente: cuánto, desde cuándo, días, plazo, chofer, último aviso, promesa.
+- Botones: "📲 Estado de cuenta" (WhatsApp con cada compra a crédito, abonos y saldo), "🤝 Prometió pagar" (Mañana / día de la semana / otra fecha + cuánto), "💵 Registrar abono" (los pasos de siempre), "Ver su crédito". "Mandar estado de cuenta a todos los vencidos": uno por uno.
+- Plazo general = Ajustes → Cobranza "Mensaje de WhatsApp a los N días" (hoy 5). Plazo propio en la pantalla del crédito del cliente (General / 7 / 15 / 30).
+- Promesa: ese día sale en Por atender y en Inicio, y al chofer en su ruta ("Hoy te prometieron pagar") y en la entrega. Si pasó el día sin pagar nada: rojo + "Pago vencido: X no pagó su deuda como prometió". Si pagó, se quita sola y queda en su historial.
+- Los abonos nuevos se guardan con fecha (para el estado de cuenta).
+- Prueba t91cob (27). Todas: 0 FAIL.

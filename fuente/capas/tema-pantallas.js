@@ -162,7 +162,8 @@ function inicio92(){if(!adm92()||S.tab.admin!=='inicio')return;var m=document.qu
  porTxt(/^Por atender/).concat(porTxt(/^Fruta para los próximos días/),porTxt(/^Hoy de un vistazo/)).forEach(function(e){if(e.parentNode===m)e.remove()});
  var pr=q('[data-x="precio65"]');if(pr){var pf=q('.pfix');if(pf)pf.remove()}else pr=q('.card.dban')||q('.pfix');if(pr){pr.dataset.p92='1';var ok=S.precio&&S.precio.conf===hoy;if(!ok){pr.classList.add('sinfijar92');var st=pr.querySelector('.st');if(st)st.textContent='⚠️ No lo has fijado hoy';var n=document.createElement('div');n.className='pr92n';n.textContent='Mientras, los choferes cobran con el último precio: el de ayer.';var hd=pr.querySelector('.hd');if(hd)hd.after(n);else pr.prepend(n)}}
  /* arriba, en orden */
- var top=[q('[data-x="dia80a"]'),pr,q('[data-x="adm85"]'),q('[data-act="arentrar"]')].filter(Boolean);var hc=document.createElement('div');hc.innerHTML=hoyCard92();var hoyEl=hc.firstElementChild;top.push(hoyEl);var cm=q('[data-x="camb"]');if(cm)top.push(cm);var vb=q('.vbub');if(vb)top.push(vb);
+ /* (Ricardo) si hay un viaje de carga o una ruta tuya en curso, su burbuja va hasta ARRIBA (a la mitad se perdía) */
+ var vb=q('.bubpanel')||q('.vbub');var top=[vb,q('[data-act="arentrar"]'),q('[data-x="dia80a"]'),pr,q('[data-x="adm85"]')].filter(Boolean);var hc=document.createElement('div');hc.innerHTML=hoyCard92();var hoyEl=hc.firstElementChild;top.push(hoyEl);var cm=q('[data-x="camb"]');if(cm)top.push(cm);
  var ref=m.firstChild;/* lo que ya iba antes (avisos de vacaciones, permisos) se queda arriba */
  var ancla=kids().filter(function(x){return x!==pr&&top.indexOf(x)<0})[0]||null;top.forEach(function(e){m.insertBefore(e,ancla)});
  /* números de hoy, luego la bodega como antes, luego ¿cuadran?, cierre de caja, resumen */

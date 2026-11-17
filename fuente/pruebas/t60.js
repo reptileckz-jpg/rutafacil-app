@@ -39,9 +39,9 @@ r=await ev(()=>{S.avPrecio.push('URGENTE: el efectivo de '+chofN(1)+' no coincid
 
 /* ---- 21 · lo informativo no va a Avisos ---- */
 r=await ev(()=>{S.avPrecio.push(chofN(1)+' registró un gasto: Comida $80');S.avPrecio.push(chofN(1)+' cargó 5 cajas y 0 kg más en bodega a las 12:00');S.avPrecio.push(chofN(1)+' registró un gasto: Comida $80');render();return 1});await W(1400);r=await ev(()=>{render();
- return {av:S.avPrecio.filter(x=>/registró un gasto|más en bodega/.test(x)).length,act:actDe(1,iso(TODAY)).filter(a=>/gasto|bodega/.test(a.x)).length,inf:/Informativos/.test(document.querySelector('main').innerText),grp:new RegExp(chofN(1)+':.*gasto').test(document.querySelector('main').textContent)}});
-ok(r.av===0&&r.act===2,'21 · gastos y "volvió a cargar" no van a Avisos: van a la actividad del día (sin repetir)',r);ok(r.inf&&r.grp,'21 · Informativos agrupado por chofer en una línea',r);
-r=await ev(()=>/Por atender/.test(document.querySelector('main').innerText));ok(r,'21 · arriba "Por atender (N)"');
+ return {av:S.avPrecio.filter(x=>/registró un gasto|más en bodega/.test(x)).length,act:actDe(1,iso(TODAY)).filter(a=>/gasto|bodega/.test(a.x)).length,inf:(function(){S.act92=true;render();var o=document.getElementById('act92ov');var t=o?o.textContent:'';S.act92=false;render();return new RegExp(chofN(1)+':.*gasto').test(t)?'G'+t:t})()}});r.grp=/^G/.test(r.inf);r.inf=/Por persona/.test(r.inf);
+ok(r.av===0&&r.act===2,'21 · gastos y "volvió a cargar" no van a Avisos: van a la actividad del día (sin repetir)',r);ok(r.inf&&r.grp,'21 · "Lo que pasó hoy" (en Más) agrupado por chofer en una línea',r);
+r=await ev(()=>!!document.querySelector('main [data-x="hoy92"]'));ok(r,'21 · arriba la lista "Hoy" (antes "Por atender")');
 r=await ev(()=>{S.rcv={p:0};return /Lo que pasó hoy en su ruta/.test(rcHTML())&&/registró un gasto/.test(rcHTML())});ok(r,'21 · en la recepción del cierre: "Lo que pasó hoy en su ruta"');await ev(()=>{S.rcv=null;render()});
 r=await ev(()=>{S.avPrecio.push('URGENTE: '+chofN(1)+' pide reabrir su ruta para cargar más');render();return S.avPrecio.some(x=>/pide reabrir/.test(x))});ok(r,'21 · lo que pide permiso sí se queda en Avisos');
 
@@ -55,7 +55,7 @@ r=await ev(()=>{S.cierre.sent=true;S.cierreReg=null;S.recep=null;render();return
 await ev(()=>{S.tab.admin='inicio';S.cierre.sent=false;S.salida.ok=false;S.chSt={};render()});
 
 /* ---- 25 · numeritos ---- */
-r=await ev(()=>{render();return {n:document.querySelectorAll('nav.tabs .tbadge').length,b:document.querySelectorAll('nav.tabs .tbadge.blink').length}});ok(r.n>=1&&r.b===1,'25 · numerito por sección y solo uno parpadea',r);
+r=await ev(()=>{render();return {n:document.querySelectorAll('nav.tabs .tbadge').length,b:document.querySelectorAll('nav.tabs .tbadge.blink').length}});ok(r.n>=1&&r.b<=1,'25 · numerito por sección (rojo solo lo urgente) y a lo más uno parpadea',r);
 
 /* ---- 28 · chofer ---- */
 r=await ev(()=>{S.rutaAv={1:['Pedido para hoy: 3 cajas','Pedido para hoy: 3 cajas','Se quitó Don Beto de mañana','Se regresó Don Beto a mañana']};render();return S.rutaAv[1]});ok(r.length===1,'28 · avisos del chofer sin repetidos (y lo que se canceló, se quita)',r);

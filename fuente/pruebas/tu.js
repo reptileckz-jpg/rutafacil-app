@@ -6,6 +6,6 @@ await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.wa
 let r=await ev(()=>{S.role='admin';S.encOn=false;S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)};var yo=quien();return [avYo(yo+' registró una báscula nueva: X'),avYo('URGENTE: '+yo+' guardó la ubicación de Y'),avYo('Danu registró una báscula nueva: Z'),avYo('Tú registró algo')]});
 ok(r[0]==='Registraste una báscula nueva: X'&&r[1]==='URGENTE: Guardaste la ubicación de Y'&&r[2]==='Danu registró una báscula nueva: Z'&&r[3]==='Registraste algo','segunda persona si fuiste tú; nombre si fue otro',r);
 await ev(()=>{S.avPrecio.push(quien()+' registró una báscula nueva: Prueba');S.avPrecio.push('Tú guardó la ubicación de Z');S.tab.admin='inicio';render()});await W(1500);await ev(()=>render());
-r=await ev(()=>{var t=document.body.textContent;return {mal:(t.match(/Tú [a-záéíóú]+ó\b/g)||[]),bien:/Registraste una báscula nueva: Prueba/.test(t)}});ok(!r.mal.length&&r.bien,'en pantalla: "Registraste…", nunca "Tú registró"',r);
+r=await ev(()=>{S.act92=true;render();var t=document.body.textContent;return {mal:(t.match(/Tú [a-záéíóú]+ó\b/g)||[]),bien:/Registraste una báscula nueva: Prueba/.test(t)}});ok(!r.mal.length&&r.bien,'en pantalla: "Registraste…", nunca "Tú registró"',r);
 r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk[pinKey()]=true;return avYo('Danu guardó la ubicación de X')});ok(r==='Guardaste la ubicación de X','el chofer ve "Guardaste…" de lo suyo',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

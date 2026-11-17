@@ -10316,7 +10316,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4134,"l8.js"],[4145,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4976,"l17.js"],[5007,"l18.js"],[5084,"l19.js"],[5154,"l20.js"],[5203,"l21.js"],[5249,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5698,"l27.js"],[5764,"l28.js"],[5896,"l29.js"],[6022,"l30.js"],[6067,"l31.js"],[6103,"l32.js"],[6197,"l33.js"],[6217,"l34.js"],[6277,"l35.js"],[6337,"l36.js"],[6435,"l37.js"],[6469,"l38.js"],[6557,"l39.js"],[6638,"l40.js"],[6762,"l41.js"],[6846,"l42.js"],[6949,"l43.js"],[7058,"l44.js"],[7159,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7422,"l48.js"],[7477,"l49.js"],[7513,"l50.js"],[7617,"l51.js"],[7627,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8048,"l58.js"],[8175,"l59.js"],[8237,"l60.js"],[8416,"l61.js"],[8473,"l62.js"],[8603,"l63.js"],[8774,"l64.js"],[8806,"l65.js"],[8907,"l66.js"],[9013,"l67.js"],[9040,"l68.js"],[9180,"l69.js"],[9400,"l70.js"],[9622,"l71.js"],[9747,"l72.js"],[9859,"l73.js"],[9925,"l74.js"],[10054,"l75.js"],[10207,"l76.js"],[10310,"l77.js"],[10438,"l78.js"],[10580,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11221,"l83.js"],[11294,"l84.js"],[11407,"l85.js"],[11469,"tema-rutadia.js"],[11563,"l86.js"],[11626,"l87.js"],[11669,"l88.js"],[11723,"l89.js"],[11766,"l90.js"],[11885,"tema-cobranza.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4134,"l8.js"],[4145,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4976,"l17.js"],[5007,"l18.js"],[5084,"l19.js"],[5154,"l20.js"],[5203,"l21.js"],[5249,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5698,"l27.js"],[5764,"l28.js"],[5896,"l29.js"],[6022,"l30.js"],[6067,"l31.js"],[6103,"l32.js"],[6197,"l33.js"],[6217,"l34.js"],[6277,"l35.js"],[6337,"l36.js"],[6435,"l37.js"],[6469,"l38.js"],[6557,"l39.js"],[6638,"l40.js"],[6762,"l41.js"],[6846,"l42.js"],[6949,"l43.js"],[7058,"l44.js"],[7159,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7422,"l48.js"],[7477,"l49.js"],[7513,"l50.js"],[7617,"l51.js"],[7627,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8048,"l58.js"],[8175,"l59.js"],[8237,"l60.js"],[8416,"l61.js"],[8473,"l62.js"],[8603,"l63.js"],[8774,"l64.js"],[8806,"l65.js"],[8907,"l66.js"],[9013,"l67.js"],[9040,"l68.js"],[9180,"l69.js"],[9400,"l70.js"],[9622,"l71.js"],[9747,"l72.js"],[9859,"l73.js"],[9925,"l74.js"],[10054,"l75.js"],[10207,"l76.js"],[10310,"l77.js"],[10438,"l78.js"],[10580,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11221,"l83.js"],[11294,"l84.js"],[11407,"l85.js"],[11469,"tema-rutadia.js"],[11563,"l86.js"],[11626,"l87.js"],[11669,"l88.js"],[11723,"l89.js"],[11766,"l90.js"],[11885,"tema-cobranza.js"],[12033,"tema-pantallas.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -11554,7 +11554,7 @@ function dia80HTML(){
 function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o)&&salio87(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
  if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!(S.cierre&&S.cierre.sent)&&salio87(S)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
 /* la tarjeta roja en Inicio (pide que la liberen / no ha mandado su cierre) */
-function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
+function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||['inicio','rutas'].indexOf(S.tab.admin)<0)return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
  var pide=Object.keys(P).filter(function(id){return P[id]&&P[id].f===hoy});if(!L.length&&!pide.length)return;var ya={};
  var h=pide.map(function(id){ya[id]=1;var en=L.filter(function(x){return x.id===+id})[0];return '<div class="card sos86" style="padding:12px 14px"><b style="font-size:18px">🆘 '+esc(chofN(+id))+' pide que liberes su ruta</b><div class="lbl" style="font-size:15px">No puede mandar su cierre'+(P[id].de?' '+esc(del80(P[id].de)):'')+' y no le sale su ruta de hoy.</div>'+(en?'<button class="btn" style="margin-top:8px;min-height:54px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button>':'<div class="lbl" style="margin-top:6px">✓ Su ruta de hoy ya está lista. En cuanto su celular tenga señal le sale.</div>')+'</div>'}).join('');
  h+=L.filter(function(x){return !ya[x.id]}).map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x.id))+' no ha mandado su cierre '+esc(del80(x.f))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x.id+'">Recordarle</button><button class="btn" style="flex:1" data-act="lib86" data-id="'+x.id+'">Liberar su ruta de hoy</button></div></div>'}).join('');
@@ -11951,9 +11951,11 @@ function ini91(){if(S.role!=='admin'||S.encOn||S.tab.admin!=='inicio')return;var
  var a=m.querySelector('[data-x="cu82e"]')||m.querySelector('[data-x="rt81e"]');if(a&&a.parentNode===m)a.after(d);else m.prepend(d)}
 
 /* ---------- la pantalla Cobranza ---------- */
-function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin')return '';var hoy=iso(TODAY),Dall=deud91(),D=deud91(X.ch),tot=sum(D,function(c){return num(c.cred)}),V=D.filter(function(c){var e=est91(c);return e==='am'||e==='ro'}),vt=sum(V,function(c){return num(c.cred)});
+function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin'||X.inl)return '';return '<div id="cob91" role="dialog" aria-label="Cobranza"><div class="fiw"><div class="fihd"><button class="fiback" data-act="cob91x" aria-label="Regresar">←</button><span class="grow"><b style="font-size:20px">Cobranza</b><br><span class="lbl">Plazo general: '+plazoGen91()+' días (se cambia en Ajustes)</span></span></div>'+cob91Cuerpo()+'</div></div>'}
+/* el contenido (se usa en la pestaña Cobranza de Clientes y en la ventana) */
+function cob91Cuerpo(){var X=S.cob91=S.cob91||{ch:null};var hoy=iso(TODAY),Dall=deud91(),D=deud91(X.ch),tot=sum(D,function(c){return num(c.cred)}),V=D.filter(function(c){var e=est91(c);return e==='am'||e==='ro'}),vt=sum(V,function(c){return num(c.cred)});
  var chs={};Dall.forEach(function(c){if(c.chofer!=null)chs[c.chofer]=(chs[c.chofer]||0)+1});var CH=Object.keys(chs);
- var h='<div id="cob91" role="dialog" aria-label="Cobranza"><div class="fiw"><div class="fihd"><button class="fiback" data-act="cob91x" aria-label="Regresar">←</button><span class="grow"><b style="font-size:20px">Cobranza</b><br><span class="lbl">Plazo general: '+plazoGen91()+' días (se cambia en Ajustes)</span></span></div>';
+ var h='';
  h+='<div class="cob91tot"><div><b>'+money(tot)+'</b><span>por cobrar · '+D.length+' cliente'+(D.length===1?'':'s')+'</span></div><div><b class="'+(vt>0.005?'neg':'')+'">'+money(vt)+'</b><span>vencido · '+V.length+' cliente'+(V.length===1?'':'s')+'</span></div></div>';
  if(CH.length>1)h+='<div class="chips" role="group" aria-label="Chofer" style="margin-top:10px"><button data-act="cob91ch" data-v="" aria-pressed="'+(X.ch==null||X.ch==='')+'">Todos</button>'+CH.map(function(id){return '<button data-act="cob91ch" data-v="'+id+'" aria-pressed="'+(String(X.ch)===String(id))+'">'+esc(chofN(+id))+' ('+chs[id]+')</button>'}).join('')+'</div>';
  var Vt=V.filter(function(c){return c.tel});
@@ -11963,7 +11965,7 @@ function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin')return '';var hoy=iso
  if(!D.length)h+='<div class="card good" style="margin-top:12px;text-align:center;font-size:17px">✓ Nadie te debe'+(X.ch!=null&&X.ch!==''?' de esta ruta':'')+'.</div>';
  [['ro','#DC2626','Vencidos hace mucho o no pagaron lo que prometieron'],['am','#F59E0B','Vencidos'],['ve','#16A34A','Al corriente (todavía en su plazo)']].forEach(function(g){var L=D.filter(function(c){return est91(c)===g[0]});if(!L.length)return;
   h+='<div class="cob91g"><i style="background:'+g[1]+'"></i>'+g[2]+' · '+L.length+'</div>'+L.map(function(c){return cob91Cli(c,g[0])}).join('')});
- return h+'</div></div>'}
+ return h}
 function cob91Cli(c,e){var X=S.cob91,d=credAge(c),p=plazo91(c),pr=c.prom91,hoy=iso(TODAY);
  var h='<div class="cob91c '+(e==='ro'?'ro':e==='am'?'am':'')+'" data-cid="'+c.id+'"><div class="cb91h"><b>'+esc(c.n)+'</b><span class="m '+(e==='ve'?'':'neg')+'">'+money(c.cred)+'</span></div>'
   +'<div class="ln">Debe desde el '+(c.credDesde?fCorta91(c.credDesde):'—')+' · hace <b>'+d+' día'+(d===1?'':'s')+'</b> · plazo '+p+' días'+(c.plazo91!=null&&c.plazo91!==''?' (suyo)':'')+(d>=p?' · <b class="neg">vencido hace '+(d-p)+' día'+(d-p===1?'':'s')+'</b>':' · vence en '+(p-d)+' día'+(p-d===1?'':'s'))+'</div>'
@@ -12008,15 +12010,15 @@ function ch91(){if(S.role!=='rep')return;var m=document.querySelector('main');if
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act^="cob91"]');if(!b)return;var a=b.dataset.act,id=b.dataset.id!=null?+b.dataset.id:null,c=id!=null?cl(id):null,X=S.cob91;
  if(a==='cob91wa'||a==='cob91sw'){if(c)avisado91(c);if(a==='cob91sw'&&X)X.si=(X.si||0)+1;setTimeout(render,60);return}   /* el enlace abre WhatsApp */
  e.preventDefault();e.stopImmediatePropagation();
- if(a==='cob91o'){S.cob91={ch:null};render();var o=document.getElementById('cob91');if(o)o.scrollTop=0;return}
+ if(a==='cob91o'){S.cob91={ch:null,inl:1};S.cli92='cob';S.tab.admin='clientes';render();window.scrollTo(0,0);return}
  if(a==='cob91pl'){if(!c)return;c.plazo91=b.dataset.v===''?null:num(b.dataset.v);try{crHist(c,'plazo para pagar: '+(c.plazo91==null?'el general':c.plazo91+' días'))}catch(er){}toast('Plazo de '+c.n+': '+plazo91(c)+' días');render();return}
  if(!X)return;
  if(a==='cob91x'){S.cob91=null;render();return}
  if(a==='cob91ch'){X.ch=b.dataset.v===''?null:b.dataset.v;X.seq=null;render();return}
- if(a==='cob91s'){var D=deud91(X.ch).filter(function(c){var s=est91(c);return (s==='am'||s==='ro')&&c.tel});X.seq=D.map(function(c){return c.id});X.si=0;render();var o2=document.getElementById('cob91');if(o2)o2.scrollTop=0;return}
+ if(a==='cob91s'){var D=deud91(X.ch).filter(function(c){var s=est91(c);return (s==='am'||s==='ro')&&c.tel});X.seq=D.map(function(c){return c.id});X.si=0;render();var o2=document.getElementById('cob91');if(o2)o2.scrollTop=0;else window.scrollTo(0,0);return}
  if(a==='cob91sn'){X.si=(X.si||0)+1;render();return}
  if(a==='cob91sx'){X.seq=null;X.si=0;render();return}
- if(a==='cob91p'){X.prom=id;X.pf=c&&c.prom91&&!c.prom91.no?c.prom91.f:'';X.pm=c&&c.prom91&&num(c.prom91.m)?c.prom91.m:null;render();setTimeout(function(){var k=document.querySelector('#cob91 .cob91p');if(k)k.scrollIntoView({block:'center'})},30);return}
+ if(a==='cob91p'){X.prom=id;X.pf=c&&c.prom91&&!c.prom91.no?c.prom91.f:'';X.pm=c&&c.prom91&&num(c.prom91.m)?c.prom91.m:null;render();setTimeout(function(){var k=document.querySelector('.cob91p');if(k)k.scrollIntoView({block:'center'})},30);return}
  if(a==='cob91pc'){X.prom=null;render();return}
  if(a==='cob91pf'){var mi=document.getElementById('cob91m');if(mi)X.pm=mi.value;X.pf=b.dataset.v;render();return}
  if(a==='cob91pq'){if(c){c.prom91=null;try{crHist(c,'se quitó su promesa de pago')}catch(er){}}X.prom=null;toast('Se quitó la promesa');render();return}
@@ -12027,6 +12029,220 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.id==='cob91fd'&&S.cob91){var mi=document.getElementById('cob91m');if(mi)S.cob91.pm=mi.value;S.cob91.pf=t.value;render()}},true);
 
 var _rd91=render;render=function(){try{cobF91();rev91()}catch(e){console.error('cob91',e)}var r=_rd91.apply(this,arguments);try{ini91();ch91();cob91Pon()}catch(e){console.error('cob91b',e)}return r};
+
+//@@capa tema-pantallas.js
+/* ===================== TEMA · Pantallas del administrador (reorganización, punto 92 · 17 nov) =====================
+   Ricardo aprobó el dibujo. Todo lo de cómo se acomodan las pantallas del administrador vive AQUÍ.
+   - Barra: Inicio · Rutas · Clientes · Bodega · Cargas · Más (Gastos, Vehículos, Personal, Estadísticas, Bienes, Ajustes).
+   - Rutas (nueva): cierres por recibir, liberar rutas, Hoy/Mañana con "Ver y repartir", mapa en vivo y cada chofer con su estado.
+   - Inicio: precio de hoy (destella en rojo si no se ha fijado) · Mi ruta de hoy · UNA lista "Hoy" · viaje en curso ·
+     números de hoy · inventario como antes (verdes, madurando, maduras, reparto) · ¿cuadran las cuentas? · cierre de caja.
+   - Clientes con pestañas: Clientes · Pedidos · Cobranza (con los límites y topes de crédito por decidir).
+   - Pendientes de cada sección: un renglón que se abre. Numeritos: rojo solo lo urgente; lo demás, puntito gris.
+   - Lo que solo informa va a "Lo que pasó hoy" (en Más). "Viaje en curso" solo en Inicio y Cargas.
+   - Sueldos en Personal. Resumen de la semana en Estadísticas. "Aprende la app" se quita sola al terminarla.
+   ===================================================================================================================== */
+(function(){var st=document.createElement('style');st.textContent=[
+ '@keyframes pn92{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.55);border-color:#DC2626}50%{box-shadow:0 0 0 7px rgba(220,38,38,0);border-color:#F87171}}',
+ '[data-x="precio65"].sinfijar92{border:2.5px solid #DC2626!important;background:color-mix(in srgb,#DC2626 8%,var(--surface))!important;animation:pn92 1.4s ease-in-out infinite}',
+ '.pr92n{font-size:14px;color:#991B1B;font-weight:700;margin:4px 0 2px}',
+ '.hoy92 .it92{display:flex;align-items:center;gap:10px;width:100%;padding:11px 2px;border:0;border-top:1px solid var(--line);background:none;color:inherit;text-align:left;font-size:15.5px;line-height:1.3}',
+ '.hoy92 .it92:first-of-type{border-top:0}.hoy92 .it92 .t{flex:1;min-width:0}.hoy92 .it92 .go{color:var(--accent);font-weight:800;white-space:nowrap}',
+ '.hoy92 .it92.ok{opacity:.55}.hoy92 .it92.ok .t{text-decoration:line-through}.hoy92 .ck92{width:24px;height:24px;border-radius:8px;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;background:none;color:#fff;padding:0}',
+ '.hoy92 .ck92[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}',
+ '.hoy92 .urg92{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:color-mix(in srgb,#DC2626 9%,var(--surface));border:1.5px solid #FCA5A5;border-radius:14px;padding:10px 12px;margin:0 0 8px;color:inherit;font-size:15px}',
+ '.hoy92 .urg92 .t{flex:1;min-width:0}.hoy92 .urg92 b{color:#B91C1C}.hoy92 .urg92 .go{color:#B91C1C;font-weight:800}',
+ '.hoy92 .sub92 .it92{padding-left:8px}.hoy92 .lbl92{font-size:13px;color:var(--muted);display:block}',
+ 'nav.tabs .tbadge.dot92{min-width:10px!important;width:10px!important;height:10px!important;padding:0!important;font-size:0!important;background:#94A3B8!important;animation:none!important;top:4px!important}',
+ '.pnd86.c92{padding:0!important;overflow:hidden}.pnd86.c92>.hd92{display:flex;align-items:center;gap:8px;width:100%;border:0;background:color-mix(in srgb,#F59E0B 12%,var(--surface));color:inherit;padding:12px 14px;font-weight:800;font-size:15.5px;text-align:left}',
+ '.pnd86.c92>.hd92 .go{margin-left:auto;color:#92400E;white-space:nowrap}.pnd86.c92.cerr92>:not(.hd92){display:none!important}.pnd86.c92:not(.cerr92)>:not(.hd92){margin-left:12px;margin-right:12px}',
+ '.pnd86 .it88 .lbl{display:block;font-weight:400}',
+ '.tabs92{display:flex;background:var(--surface);border-radius:14px;padding:4px;margin:0 0 12px;gap:4px}.tabs92 button{flex:1;border:0;background:none;border-radius:11px;padding:9px 4px;font-weight:800;font-size:14.5px;color:var(--muted);min-height:50px}',
+ '.tabs92 button small{display:block;font-weight:600;font-size:11.5px}.tabs92 button[aria-pressed="true"]{background:var(--accent);color:#fff}',
+ '.ch92{background:var(--surface);border-radius:16px;padding:12px 14px;margin-bottom:10px}.ch92 .tg{font-size:12px;font-weight:800;border-radius:999px;padding:3px 8px;margin-left:6px;white-space:nowrap}',
+ '.mas92{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mas92 button{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:14px 12px;text-align:left;color:inherit;font-weight:800;font-size:16px;min-height:96px}',
+ '.mas92 button .ic92{display:block;margin-bottom:6px;color:var(--accent)}.mas92 button small{display:block;color:var(--muted);font-weight:600;font-size:12.5px;margin-top:3px}',
+ '.act92 .l{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:15px}.act92 .l:first-child{border-top:0}'].join('\n');document.head.appendChild(st)})();
+
+var SEC92=['gastos','vehiculos','personal','estadisticas','bienes','sugerencias','mas'];
+function adm92(){return S.role==='admin'}
+
+/* ---------- barra de abajo ---------- */
+var _tD92=tabsDe;tabsDe=function(r){if(r!=='admin')return _tD92.apply(this,arguments);return [['inicio','Inicio'],['rutas','Rutas'],['clientes','Clientes'],['bodega','Bodega'],['cargas','Cargas'],['mas','Más']]};
+function barra92(){if(!adm92())return;var nv=document.querySelector('nav.tabs');if(!nv)return;var t=S.tab.admin;
+ [].slice.call(nv.querySelectorAll('button[data-t]')).forEach(function(b){var k=b.dataset.t,on=k===t||(k==='rutas'&&t==='cierreadm')||(k==='mas'&&SEC92.indexOf(t)>-1);b.setAttribute('aria-pressed',String(on));
+  })}
+/* numeritos: rojo solo lo urgente; lo demás un puntito gris */
+var _tB92=tabBadges;tabBadges=function(){var r=_tB92.apply(this,arguments);try{[].slice.call(document.querySelectorAll('nav.tabs .tbadge.suave')).forEach(function(b){b.classList.add('dot92');b.classList.remove('blink');b.textContent=''})}catch(e){}return r};
+
+/* ---------- lo que solo informa no es pendiente: va a "Lo que pasó hoy" ---------- */
+var INFO92=/desgaste de .* cambió de|cambió de \$[\d.,]+ a \$[\d.,]+ por km/i;
+var _avs92=avisos;avisos=function(){var L=_avs92.apply(this,arguments);if(!adm92())return L;return L.filter(function(x){if(typeof x==='string'&&INFO92.test(x)){try{actAdd(null,x)}catch(e){}return false}return true})};
+
+var _avD92=avDestino;avDestino=function(x){var r=_avD92.apply(this,arguments);try{if(r&&r.t==='personal'&&/sin señal|última ubicación|ubicación del chofer|apagó el GPS|GPS apagado/i.test(String(x)))r.t='rutas'}catch(e){}return r};
+/* ---------- "Viaje en curso": solo en Inicio y Cargas ---------- */
+var _vb92=vwBurbuja;vwBurbuja=function(){if(adm92()&&['inicio','cargas'].indexOf(S.tab.admin)<0)return '';return _vb92.apply(this,arguments)};
+
+/* ---------- RUTAS ---------- */
+function chEstado92(id){var sal=false,ci=null,rg=null,L=[];try{sal=salio81(id);ci=nbRGet(id,'cierre');rg=nbRGet(id,'cierreReg');L=lista81(id,hoy81()).L}catch(e){}var hechos=L.filter(function(x){return x.done}).length;
+ var vj=false;try{vj=chofViajeActivo(+id)}catch(e){}
+ if(ci&&ci.sent)return rg!=null?{t:'✓ cierre recibido',c:'#DCFCE7',f:'#166534',x:hechos+' de '+L.length+' entregados'}:{t:'✓ mandó su cierre',c:'#DCFCE7',f:'#166534',x:hechos+' de '+L.length+' entregados',rec:1};
+ if(vj)return {t:'viaje de carga',c:'#FEF3C7',f:'#92400E',x:'Está en un viaje de carga'};
+ if(sal)return {t:'en ruta',c:'#DBEAFE',f:'#1E40AF',x:hechos+' de '+L.length+' entregados'};
+ return {t:'no ha salido',c:'#F1F5F9',f:'#475569',x:L.length+' cliente'+(L.length===1?'':'s')+' para hoy'}}
+function rutas92(){var d=S.rut92==='man'?'man':'hoy',f=d==='hoy'?hoy81():man81(),CH=[],sc=0,n=0,partes=[];try{CH=chs81();sc=sinCh81(f).length;CH.forEach(function(c){var k=lista81(+c.id,f).L.length;n+=k;if(k)partes.push(chofN(c.id)+' '+k)})}catch(e){}
+ var h='<h1>Rutas</h1>';try{h+=cierreTop()}catch(e){}
+ h+='<div class="tabs92" role="group" aria-label="Día"><button data-act="rut92d" data-v="hoy" aria-pressed="'+(d==='hoy')+'">Hoy<small>'+esc(fCorta91(hoy81()))+'</small></button><button data-act="rut92d" data-v="man" aria-pressed="'+(d==='man')+'">Mañana<small>'+esc(fCorta91(man81()))+'</small></button></div>';
+ h+='<div class="card'+(sc?' alert':'')+'" data-x="rut92s" style="padding:12px 14px"><b style="font-size:18px">'+n+' cliente'+(n===1?'':'s')+(d==='hoy'?' hoy':' mañana')+'</b><div class="lbl">'+(partes.length?esc(partes.join(' · ')):'Todavía nadie lleva clientes')+(sc?' · <b class="neg">'+sc+' sin chofer</b>':' · ninguno sin chofer')+'</div>'
+  +'<button class="btn" style="width:100%;margin-top:10px;min-height:52px" data-act="rt81open" data-v="'+d+'">Ver y repartir clientes</button></div>';
+ if(d==='hoy'){var mv='';try{mv=mapaVivo()+viajesGps()}catch(e){}if(mv)h+='<h2 style="font-size:18px;margin:14px 2px 8px">Mapa en vivo</h2>'+mv;
+  h+='<h2 style="font-size:18px;margin:14px 2px 8px">Choferes</h2>';
+  CH.forEach(function(c){var id=+c.id,E=chEstado92(id),yo=esAdm(c);
+   h+='<div class="ch92" data-x="ch92" data-id="'+id+'"><div class="row" style="align-items:center"><span style="flex:1;min-width:0"><b style="font-size:17px">'+esc(yo?chofN(id)+' (tú)':chofN(id))+'</b><span class="tg" style="background:'+E.c+';color:'+E.f+'">'+E.t+'</span><br><span class="lbl">'+esc(E.x)+'</span></span>'
+    +(yo?'<button class="btn sec" style="min-height:42px;width:auto" data-act="arentrar">Mi ruta ›</button>':'')+'</div>'
+    +(E.rec?'<button class="btn" style="width:100%;margin-top:10px;min-height:50px" data-act="verruta" data-id="'+id+'" data-ir="cierreadm">Recibir su cierre</button>':'')
+    +(!yo?'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1;min-height:42px" data-act="verruta" data-id="'+id+'" data-ir="cierreadm">Ver su día</button><button class="btn sec" style="flex:1;min-height:42px" data-act="fv82" data-id="'+id+'">📷 Fotos del vehículo</button></div>':'')+'</div>'});
+  if(!CH.length)h+='<div class="card note">No hay choferes. Dalos de alta en Más → Personal.</div>'}
+ return h}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rut92d"]');if(!b)return;e.stopImmediatePropagation();S.rut92=b.dataset.v;render()},true);
+/* "Rutas de hoy" y el mapa ya no van en Inicio ni en Personal */
+var _pe92=personal;personal=function(){var h=_pe92.apply(this,arguments);try{var a=h.indexOf('<div class="lbl" style="margin:-4px 2px 8px"><b>Choferes en ruta</b></div>'),z=h.indexOf('<datalist id="pn-parent">');if(a>-1&&z>a)h=h.slice(0,a)+h.slice(z)}catch(e){}
+ try{var i=h.indexOf('</h1>');if(i>-1){var P=S.per92==='sue';var ch='<div class="tabs92" role="group" aria-label="Personal"><button data-act="per92" data-v="" aria-pressed="'+!P+'">Personal</button><button data-act="per92" data-v="sue" aria-pressed="'+P+'">💵 Sueldos</button></div>';
+  if(P)return h.slice(0,i+5)+ch+sueldos();h=h.slice(0,i+5)+ch+h.slice(i+5)}}catch(e){}return h};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="per92"]');if(!b)return;e.stopImmediatePropagation();S.per92=b.dataset.v;render();window.scrollTo(0,0)},true);
+/* Sueldos ya no es una pestaña de Gastos (siguen saliendo como gasto) */
+function personal92(){if(!adm92()||S.tab.admin!=='personal')return;var e=document.querySelector('main [data-x="rt81e"]');if(e)e.remove()}
+function gastos92(){if(!adm92()||S.tab.admin!=='gastos')return;var b=document.querySelector('main [data-act="gsec"][data-p="sueldos"]');if(b)b.remove()}
+/* Estadísticas: el resumen de la semana pasada */
+if(typeof estadisticas==='function'){var _es92=estadisticas;estadisticas=function(){var h=_es92.apply(this,arguments);try{var l=(typeof HIST!=='undefined'&&HIST.length)?lunesHTML(true):'';var i=h.indexOf('</h1>');if(l&&i>-1)h=h.slice(0,i+5)+l+h.slice(i+5)}catch(e){}return h}}
+
+/* ---------- MÁS ---------- */
+function mas92(){var it=[['tab','gastos','gastos','Gastos','registrar, fijos, cerrar el mes'],['tab','vehiculos','vehiculos','Vehículos','servicio, papeles, fotos'],['tab','personal','personal','Personal','choferes, sueldos, permisos'],
+ ['tab','estadisticas','estadisticas','Estadísticas','ventas, ganancias, meta del mes'],['tab','bienes','bienes','Bienes','teléfonos, básculas, equipo'],['ajopen','','ajustes','Ajustes','precios, cobranza, la app']];
+ var nAct=0;try{nAct=actDe(null,iso(TODAY)).length}catch(e){}
+ return '<h1>Más</h1><div class="mas92">'+it.map(function(x){var ic='';try{ic=icon(x[2],24)}catch(e){}return '<button data-act="'+x[0]+'"'+(x[1]?' data-t="'+x[1]+'"':'')+' data-x="mas92-'+x[2]+'"><span class="ic92">'+ic+'</span>'+x[3]+'<small>'+x[4]+'</small></button>'}).join('')+'</div>'
+  +'<button class="card" data-act="act92" style="width:100%;text-align:left;color:inherit;margin-top:12px;display:flex;align-items:center;gap:10px"><span style="font-size:22px">🕓</span><span style="flex:1"><b>Lo que pasó hoy</b><br><span class="lbl">'+(nAct?nAct+' aviso'+(nAct===1?'':'s')+' que solo informan':'Aquí quedan los avisos que solo informan')+'</span></span><span>›</span></button>'
+  +'<button class="card" data-act="tutver" style="width:100%;text-align:left;color:inherit;display:flex;align-items:center;gap:10px"><span style="font-size:22px">🎓</span><span style="flex:1"><b>Aprende la app</b><br><span class="lbl">Un recorrido por las pantallas</span></span><span>›</span></button>'}
+mas=mas92;
+/* "Lo que pasó hoy" */
+function act92HTML(){if(!S.act92||!adm92())return '';var hoy=iso(TODAY),G={},I=[],nAct=0,h='';try{G=actGrupos(hoy);I=infos92();nAct=actDe(null,hoy).length}catch(e){}var gk=Object.keys(G);
+ if(gk.length)h+='<div class="card act92"><b>Por persona</b>'+gk.map(function(k){return '<div class="actl"><b>'+esc(k)+':</b> '+esc(actResumen(G[k]))+'</div>'}).join('')+'</div>';
+ if(I.length)h+='<div class="card"><b>Avisos que solo informan</b>'+I.map(function(x){return avRow(x,false)}).join('')+'</div>';
+ if(nAct)h+='<div class="card">'+actDiaHTML(hoy,null,'Todo lo de hoy, en orden')+'</div>';
+ if(!h)h='<div class="card lbl">Todavía no pasa nada hoy.</div>';
+ return ovW70('act92ov','Lo que pasó hoy',h+(gk.length||I.length?'<button class="btn sec" style="margin-top:8px" data-act="avvisto">Marcar todo como visto</button>':''),'act92x')}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="act92"],[data-act="act92x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();S.act92=b.dataset.act==='act92';render()},true);
+
+/* ---------- PENDIENTES de cada sección: un renglón que se abre ---------- */
+var _pc92=pendCard86;pendCard86=function(){var r=_pc92.apply(this,arguments);try{var c=document.querySelector('main [data-x="pnd86"]');if(!c||c.dataset.v92)return r;c.dataset.v92='1';var t=S.tab.admin;
+ /* el título ya no se repite pegado ("Tienda Don BetoTienda Don Beto: …") */
+ [].slice.call(c.querySelectorAll('.it88')).forEach(function(it){var b=it.querySelector('b'),l=it.querySelector('.lbl');if(!b||!l)return;var bt=b.textContent.trim(),lt=l.textContent.trim();if(bt&&lt.indexOf(bt)===0){var rest=lt.slice(bt.length).replace(/^[\s:·,-]+/,'');if(rest)l.textContent=rest.charAt(0).toUpperCase()+rest.slice(1);else l.remove()}});
+ var n=c.querySelectorAll('.it88, button.it').length,u=c.querySelectorAll('.it88').length?0:0;var tit=c.querySelector('b');var txt=tit?tit.textContent.replace(/^🔔\s*/,''):(n+' pendientes');if(tit)tit.parentNode===c&&tit.remove();var lb=c.querySelector(':scope>.lbl');if(lb)lb.remove();
+ var abierto=(S.pnd92||'')===t;c.classList.add('c92');if(!abierto)c.classList.add('cerr92');
+ var h=document.createElement('button');h.className='hd92';h.dataset.act='pnd92';h.innerHTML='🔔 '+esc(txt)+'<span class="go">'+(abierto?'cerrar ▲':'ver ›')+'</span>';c.prepend(h)}catch(e){console.error('pnd92',e)}return r};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd92"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var t=S.tab.admin;S.pnd92=(S.pnd92||'')===t?'':t;render()},true);
+
+/* ---------- CLIENTES con pestañas: Clientes · Pedidos · Cobranza ---------- */
+function cli92(){if(!adm92()||S.tab.admin!=='clientes'||S.openCli!=null)return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="tabs92c"]'))return;var v=S.cli92||'cli';
+ var h1=[].slice.call(m.children).filter(function(x){return x.tagName==='H1'})[0];if(!h1)return;
+ var D=deud91(),tot=sum(D,function(c){return num(c.cred)}),nC=(S.cli||[]).filter(function(c){return !c.oculto}).length,nP=0;try{nP=(S.cli||[]).filter(function(c){return c.ped&&(num(c.ped.R)||num(c.ped.M))}).length}catch(e){}
+ var T=document.createElement('div');T.className='tabs92';T.dataset.x='tabs92c';T.setAttribute('role','group');T.setAttribute('aria-label','Clientes');
+ T.innerHTML='<button data-act="cli92" data-v="cli" aria-pressed="'+(v==='cli')+'">Clientes<small>'+nC+'</small></button><button data-act="cli92" data-v="ped" aria-pressed="'+(v==='ped')+'">Pedidos<small>'+(nP?nP+' por surtir':'sin pendientes')+'</small></button><button data-act="cli92" data-v="cob" aria-pressed="'+(v==='cob')+'">Cobranza<small style="'+(tot>0.5&&v!=='cob'?'color:#B91C1C':'')+'">'+money(tot)+'</small></button>';
+ h1.after(T);
+ var esPed=function(x){return x.classList&&(x.classList.contains('p57')||x.classList.contains('pw40'))},esCfg=function(x){return /^Cobranza/.test((x.textContent||'').trim())&&x.tagName==='DETAILS'||/^Cobranzamensaje/.test((x.textContent||'').replace(/\s+/g,''))};
+ var fijos=function(x){return x===h1||x===T||x.dataset&&x.dataset.x==='pnd86'||x.classList&&x.classList.contains('foot')||x.classList&&x.classList.contains('vbub')};
+ var cfg=null;[].slice.call(m.children).forEach(function(x){if(fijos(x))return;if(esCfg(x))cfg=x;var mostrar=v==='cli'?(!esPed(x)&&!esCfg(x)):(v==='ped'?esPed(x):false);if(!mostrar)x.style.display='none'});
+ if(v==='cob'){S.cob91=S.cob91||{ch:null};S.cob91.inl=1;var w=document.createElement('div');w.id='cob91i';w.dataset.x='cob92';var ex='';try{ex=(typeof mayRevHTML==='function'?mayRevHTML():'')+limRevHTML()+chBuroHTML()}catch(e){}
+  w.innerHTML=cob91Cuerpo()+(ex?'<h2 style="font-size:18px;margin:16px 2px 8px">Créditos por decidir</h2>'+ex:'');T.after(w);if(cfg){cfg.style.display='';w.after(cfg)}}}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cli92"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();S.cli92=b.dataset.v||'cli';if(S.cli92==='cob'){S.cob91=S.cob91||{ch:null};S.cob91.inl=1}S.tab.admin='clientes';S.openCli=null;render();window.scrollTo(0,0)},true);
+
+/* ---------- INICIO ---------- */
+function hoyItems92(){var L=[];try{L=hoyItems()}catch(e){}return L}
+function pendTodos92(){return avSinEfecto(function(){var A=[];try{A=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}
+ return A.filter(function(x){return AV_URG.test(x)||!AV_INFO.test(x)}).map(function(x){var d=null;try{d=avDestino(x)}catch(e){}return {x:x,t:(d&&d.t)||'inicio',u:AV_URG.test(x)||(typeof AV_ROJO!=='undefined'&&AV_ROJO.test(x))}})})}
+function infos92(){return avSinEfecto(function(){var A=[];try{A=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]&&!AV_URG.test(x)&&AV_INFO.test(x)})}catch(e){}return A})}
+function limpio92(x){return String(x||'').replace(/^URGENTE:\s*/i,'').replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'')}
+function hoyCard92(){var hoy=iso(TODAY),P=[];try{P=pendTodos92()}catch(e){}var U=P.filter(function(o){return o.u}),N=P.filter(function(o){return !o.u}),vis={},h='';
+ var row=function(t,go,ok,extra){var k=t.toLowerCase().replace(/\s*[·(].*$/,'').trim();if(vis[k])return '';vis[k]=1;return '<div class="it92'+(ok?' ok':'')+'">'+(extra||'')+'<span class="t">'+t+'</span>'+go+'</div>'};
+ h+=U.map(function(o){return avRow(o.x,true)}).join('');
+ var T=[];try{T=hoyTareas()}catch(e){}
+ T.forEach(function(x){if(x.k==='ef')return;var go=x.k==='cb'?'<button class="go" data-act="cli92" data-v="cob" style="background:none;border:0">Ir ›</button>':'<button class="go" data-act="popgo" data-t="'+esc(x.go)+'" style="background:none;border:0">Ir ›</button>';
+  h+=row(esc(x.t),go,x.ok,'<button class="ck92" data-act="hoyok" data-k="'+esc(x.k)+'" aria-pressed="'+!!x.ok+'" aria-label="Marcar como hecho">'+(x.ok?'✓':'')+'</button>')});
+ hoyItems92().forEach(function(x,i){if(/^Fijar el precio/.test(x[0]))return;h+=row(esc(x[0]),'<button class="go" data-act="hoyir" data-i="'+i+'" style="background:none;border:0">Ir ›</button>',x[1],'<span class="ck92"'+(x[1]?' style="background:var(--accent);border-color:var(--accent)"':'')+'>'+(x[1]?'✓':'')+'</span>')});
+ var cr=0;try{cr=S.cli.filter(function(c){return c.limRev&&!c.oculto}).length+(chBuroHTML()?1:0)+(typeof mayRevHTML==='function'&&mayRevHTML()?1:0)}catch(e){}
+ if(cr)h+=row('Créditos por decidir','<button class="go" data-act="cli92" data-v="cob" style="background:none;border:0">Ir ›</button>',false,'<span class="ck92"></span>');
+ if(N.length){var ab=!!S.hoy92;h+='<button class="it92" data-act="hoy92"><span style="font-size:16px">🟡</span><span class="t">'+N.length+' pendiente'+(N.length===1?'':'s')+' más en las secciones</span><span class="go">'+(ab?'cerrar ▲':'ver ›')+'</span></button>';
+  if(ab)h+='<div class="sub92">'+N.map(function(o){return avRow(o.x,false)}).join('')+'</div>'}
+ var nA=0;try{nA=actDe(null,hoy).length+infos92().length}catch(e){}
+ if(nA)h+='<button class="it92" data-act="act92" style="color:var(--muted)"><span style="font-size:16px">🕓</span><span class="t" style="font-size:14.5px">Lo que pasó hoy ('+nA+')</span><span class="go" style="color:var(--muted)">Ver ›</span></button>';
+ var nu=U.length,np=h.split('class="it92"').length-1;
+ return '<div class="card hoy92" data-x="hoy92"><div class="row" style="margin-bottom:8px"><b style="font-size:19px">Hoy</b><span class="lbl">'+(nu?nu+' urgente'+(nu===1?'':'s')+' · ':'')+'lo que hay que hacer</span></div>'+(h||'<div class="lbl">✓ Nada pendiente por ahora.</div>')+'</div>'}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="hoy92"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();S.hoy92=!S.hoy92;render()},true);
+/* "Ver a los choferes en ruta" y los cierres ahora están en Rutas */
+var _hI92=hoyItems;hoyItems=function(){var L=_hI92.apply(this,arguments);try{L.forEach(function(x){if(/^Ver a los choferes en ruta/.test(x[0])){x[2]='nav.tabs button[data-t="rutas"]';x[3]='rutas';x[1]=!!S.hoyVisto&&S.hoyVisto.rutas===iso(TODAY)}})}catch(e){}return L};
+/* "Te deben" de los números de hoy lleva a Cobranza */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.finwrap [data-act="finopen"]');if(!b||!/deben/i.test(b.textContent))return;e.preventDefault();e.stopImmediatePropagation();S.cli92='cob';S.cob91=S.cob91||{ch:null};S.cob91.inl=1;S.tab.admin='clientes';render();window.scrollTo(0,0)},true);
+function inicio92(){if(!adm92()||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.dataset.v92)return;m.dataset.v92='1';var hoy=iso(TODAY);
+ var q=function(s){return m.querySelector(s)},kids=function(){return [].slice.call(m.children)},porTxt=function(re){return kids().filter(function(x){return re.test((x.textContent||'').trim())})};
+ /* fuera de Inicio (cada cosa queda en su sección) */
+ ['[data-x="rt81e"]','[data-x="cob91c"]','[data-key="hoytoca"]','[data-k="hoyq"]','[data-k="avinfo"]','[data-key="mayrev"]','[data-key="limrev"]','[data-key="chburo"]','[data-k="lunes"]','[data-act="vermeta"]','[data-x="pnd86"]'].forEach(function(s){var e=q(s);if(e)e.remove()});
+ var c68=q('[data-x="cuadra68"]');if(c68){if(/^\s*✓/.test(c68.textContent)||/Todo cuadra/.test(c68.textContent.slice(0,40)))c68.remove()}
+ porTxt(/^Por atender/).concat(porTxt(/^Fruta para los próximos días/),porTxt(/^Hoy de un vistazo/)).forEach(function(e){if(e.parentNode===m)e.remove()});
+ var pr=q('[data-x="precio65"]');if(pr){var pf=q('.pfix');if(pf)pf.remove()}else pr=q('.card.dban')||q('.pfix');if(pr){pr.dataset.p92='1';var ok=S.precio&&S.precio.conf===hoy;if(!ok){pr.classList.add('sinfijar92');var st=pr.querySelector('.st');if(st)st.textContent='⚠️ No lo has fijado hoy';var n=document.createElement('div');n.className='pr92n';n.textContent='Mientras, los choferes cobran con el último precio: el de ayer.';var hd=pr.querySelector('.hd');if(hd)hd.after(n);else pr.prepend(n)}}
+ /* arriba, en orden */
+ var top=[q('[data-x="dia80a"]'),pr,q('[data-x="adm85"]'),q('[data-act="arentrar"]')].filter(Boolean);var hc=document.createElement('div');hc.innerHTML=hoyCard92();var hoyEl=hc.firstElementChild;top.push(hoyEl);var cm=q('[data-x="camb"]');if(cm)top.push(cm);var vb=q('.vbub');if(vb)top.push(vb);
+ var ref=m.firstChild;/* lo que ya iba antes (avisos de vacaciones, permisos) se queda arriba */
+ var ancla=kids().filter(function(x){return x!==pr&&top.indexOf(x)<0})[0]||null;top.forEach(function(e){m.insertBefore(e,ancla)});
+ /* números de hoy, luego la bodega como antes, luego ¿cuadran?, cierre de caja, resumen */
+ var fw=q('.finwrap');if(fw){var t2=fw.querySelector('h2');if(t2)t2.textContent='Números de hoy'}
+ var inv=[q('[data-x="inv65"]'),q('.dcaja')].filter(Boolean),cu=[q('[data-x="cu82e"]'),q('[data-x="cuadra68"]')].filter(Boolean),cd=q('[data-k="cajadia"]'),foot=q('.foot');var antes=cd||foot||null;
+ inv.concat(cu).forEach(function(e){m.insertBefore(e,antes)});
+ /* "Aprende la app" y "Para empezar": al final, y solo mientras no se terminen */
+ [q('.card.aprende'),q('.card.guia')].forEach(function(e){if(!e)return;var t=(e.textContent||'').replace(/\s+/g,' '),k=/(\d+) de (\d+)/.exec(t);if(k&&+k[1]>=+k[2]){e.remove();return}m.insertBefore(e,foot)})}
+
+/* ---------- todo junto ---------- */
+var _rd92=render;render=function(){try{if(typeof VIEWS!=='undefined'){VIEWS.rutas=rutas92;VIEWS.personal=personal;VIEWS.mas=mas92}if(typeof ICO!=='undefined'){if(!ICO.rutas)ICO.rutas='M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5';if(!ICO.ajustes)ICO.ajustes='M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'}if(adm92()){if(S.tab.admin==='gastos'&&S.gsec==='sueldos'){S.gsec='gastos';S.tab.admin='personal';S.per92='sue'}if(S.tab.admin!=='clientes'&&S.cob91&&S.cob91.inl)S.cob91=null}}catch(e){}
+ var r=_rd92.apply(this,arguments);
+ try{barra92();inicio92();cli92();gastos92();personal92();ovPon70('act92ov',act92HTML())}catch(e){console.error('tema-pantallas',e)}return r};
+
+/* ---------- tutoriales y ayuda ("?") con las pantallas nuevas ---------- */
+(function(){try{
+ var A=TUT.admin||[];A.forEach(function(st){if(/rt81e/.test(st[0])){st[0]='nav.tabs button[data-t="rutas"]';st[1]='Rutas';st[2]='Abajo está Rutas: ahí repartes los clientes de hoy y mañana, ves el mapa en vivo de los choferes y recibes sus cierres.'}
+  if(/finver|\.fing/.test(st[0])){st[1]='Números de hoy';st[2]='Lo vendido, lo cobrado, el efectivo en caja y lo que te deben. Con el ojito los ocultas. "Te deben" te lleva a Cobranza.'}});
+ var ip=-1;A.forEach(function(st,i){if(/precio65|pfix|deco-pl/.test(st[0])&&ip<0)ip=i});
+ A.splice(ip>-1?ip+2:2,0,['[data-x="hoy92"]','Hoy','Todo lo que hay que hacer hoy, en orden. Lo urgente sale en rojo hasta arriba. "Ir" te lleva a resolverlo; lo que solo informa queda en Más → Lo que pasó hoy.']);
+ A.push(['nav.tabs button[data-t="clientes"]','Clientes','Tiene tres pestañas: Clientes, Pedidos y Cobranza (quién te debe, desde cuándo, y mandarles su estado de cuenta).']);
+ A.push(['nav.tabs button[data-t="mas"]','Más','Gastos, Vehículos, Personal (con los sueldos), Estadísticas, Bienes, Ajustes y "Lo que pasó hoy".']);
+ TUT['n:rt81']=[['nav.tabs button[data-t="rutas"]','Rutas','Rutas ahora está en la barra de abajo: cuántos clientes lleva cada chofer hoy y si alguno se quedó sin chofer.'],
+  ['nav.tabs button[data-t="rutas"]','Ver y repartir','Adentro toca "Ver y repartir clientes": marca uno o varios y abajo toca el chofer al que se los pasas. Por defecto es solo hoy; si te equivocas, "Deshacer".'],
+  ['nav.tabs button[data-t="rutas"]','Mañana','Arriba escoges Hoy o Mañana. Mañana la ruta se le arma sola con tus cambios.']];
+ /* recorrido nuevo para quien ya conocía la app: lo que cambió de lugar */
+ TUT['n:92']=[['nav.tabs','Se reacomodó la app','La barra de abajo ahora es: Inicio · Rutas · Clientes · Bodega · Cargas · Más.'],['[data-x="hoy92"]','Una sola lista "Hoy"','Lo que hay que hacer hoy, con lo urgente en rojo arriba.'],
+  ['nav.tabs button[data-t="rutas"]','Rutas','Repartir clientes, mapa en vivo y recibir los cierres.'],['nav.tabs button[data-t="clientes"]','Clientes','Pestañas Clientes · Pedidos · Cobranza.'],['nav.tabs button[data-t="mas"]','Más','Gastos, Vehículos, Personal (con sueldos), Estadísticas, Bienes, Ajustes y "Lo que pasó hoy".']];
+}catch(e){console.error('tut92',e)}})();
+/* el recorrido de lo que cambió sale una vez a quien ya había visto el tutorial del administrador */
+function tutNuevo92(){if(window.__pnTest||typeof REAL==='undefined'||!REAL||S.tut||S.role!=='admin'||S.encOn||S.tab.admin!=='inicio')return;S.tutVisto=S.tutVisto||{};if(S.tutVisto['n:92']||!S.tutVisto.admin)return;
+ if(!document.querySelector('[data-x="hoy92"]'))return;S.tutVisto['n:92']=true;setTimeout(function(){if(S.tut)return;S.tut={k:'n:92',i:0,prev:{tab:'inicio'},tab:'inicio'};render()},1400)}
+var _tI92=tutIniciar;tutIniciar=function(k){try{if(k==='admin')S.tutVisto['n:92']=true}catch(e){}return _tI92.apply(this,arguments)};
+function tutTxt92(){try{if(TUT._92)return;TUT._92=1;var D=function(k,i,sel,tit,tx){var L=TUT[k];if(!L||!L[i])return;if(sel)L[i][0]=sel;if(tit)L[i][1]=tit;if(tx)L[i][2]=tx};
+ D('d:admin:2',0,'nav.tabs button[data-t="rutas"]','Cierres de los choferes','Cuando un chofer manda su cierre, te sale en Rutas (y en tu lista "Hoy"). La app te dice todo lo que debe regresar (cajas, kilos y efectivo) y tú solo confirmas, o corriges lo que llegó diferente.');
+ D('d:admin:2',1,null,null,'Si un chofer pide cargar más u otra vuelta, lo autorizas desde tu lista "Hoy" (o en su ficha le das permiso de seguir solo).');
+ D('d:admin:3',0,'nav.tabs button[data-t="clientes"]','Cobranza','En Clientes, pestaña Cobranza: quién te debe, desde cuándo y le mandas su estado de cuenta por WhatsApp con un toque.');
+ D('d:admin:5',0,'nav.tabs button[data-t="mas"]','Estadísticas','En Más → Estadísticas ves ventas, ganancia, la meta del mes y cómo va cada chofer y cada cliente.');
+ D('d:admin:7',0,null,null,'En tu lista "Hoy" te mandas el resumen del día cuando recibas los cierres. La app guarda sola un respaldo cada día en Descargas › Ruta Facil › Respaldos.')}catch(e){}
+ try{if(typeof GUIA!=='undefined'&&GUIA.admin&&!GUIA._92){GUIA._92=1;var G=GUIA.admin;
+  G.inicio=['Inicio','Arriba el precio de hoy. Luego tu lista "Hoy": lo que hay que hacer, con lo urgente en rojo. Los numeritos de la barra de abajo te dicen en qué sección hay algo urgente.','[data-x="hoy92"], main .card'];
+  G.rutas=['Rutas','Aquí repartes los clientes de hoy y de mañana, ves el mapa en vivo de los choferes y recibes sus cierres.','[data-x="rut92s"], main .card'];
+  G.mas=['Más','Aquí están Gastos, Vehículos, Personal, Estadísticas, Bienes, Ajustes y "Lo que pasó hoy".','.mas92, main .card'];
+  if(G.personal)G.personal=['Personal','Toca a alguien para ver sus datos y permisos. En "Sueldos" ves y pagas lo de cada quien. Dónde va cada chofer está en Rutas.','main .card'];
+  if(G.clientes)G.clientes=['Clientes','Arriba tienes tres pestañas: Clientes, Pedidos y Cobranza. Toca un cliente para ver su cuenta o cambiar sus datos.','[data-x="tabs92c"], main .card']}}catch(e){}}
+function help92(){tutTxt92();try{if(typeof HELP==='undefined'||HELP._92)return;HELP._92=1;HELP._81=1;
+ HELP.inicio=['Inicio','Arriba el precio de hoy (si no lo has fijado, parpadea en rojo; mientras, los choferes cobran con el último precio). Luego la lista "Hoy": lo que hay que hacer, con lo urgente en rojo. Abajo los números del día, la bodega y si cuadran las cuentas.'];
+ HELP.rutas=['Rutas','Aquí repartes los clientes de hoy y de mañana ("Ver y repartir clientes"), ves el mapa en vivo de los choferes, recibes sus cierres y, si alguno no mandó el suyo, liberas su ruta.'];
+ HELP.mas=['Más','Las demás secciones: Gastos, Vehículos, Personal (con los sueldos), Estadísticas, Bienes y Ajustes. También "Lo que pasó hoy": los avisos que solo informan.'];
+ if(HELP.personal)HELP.personal=[HELP.personal[0],'Choferes, ayudantes y bodega: sus datos, permisos y expediente. En "Sueldos" pagas y ves lo que se le debe a cada quien. El mapa y las rutas están en Rutas.'];
+ if(HELP.clientes)HELP.clientes=[HELP.clientes[0],String(HELP.clientes[1]||'')+' Arriba tienes tres pestañas: Clientes, Pedidos y Cobranza.']}catch(e){}}
+var _rd92t=render;render=function(){try{help92()}catch(e){}var r=_rd92t.apply(this,arguments);try{tutNuevo92()}catch(e){}return r};
 
 
 /* ---------- Estructura ---------- */

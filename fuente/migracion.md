@@ -11,6 +11,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | 17 nov | 568 | 0% | Inicio |
 | 17 nov | 560 | 1% | Mapa de errores · tema "la ruta del día" (−15) · Cobranza ya nació como tema · la 9.0 (l90) agregó 5 |
 
+| 17 nov | 560 | 1% | Reorganización de pantallas (punto 92) hecha en `tema-pantallas.js` (sin envolturas nuevas en capas viejas) |
+
 ## Temas (de más fácil a más difícil)
 | Tema | Envolturas aprox. | Estado |
 |---|---|---|
@@ -29,7 +31,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 
 ## Antes de seguir
-**Ricardo (17 nov): primero la reorganización de pantallas (pendiente 92), luego seguir con la migración.** Lo que se reorganice se escribe ya en su `tema-*.js`, así que también cuenta como avance.
+**Ricardo (17 nov): primero la reorganización de pantallas (pendiente 92), luego seguir con la migración.** ✅ Reorganización hecha y publicada. Lo que se reorganice se escribe ya en su `tema-*.js`, así que también cuenta como avance.
 
 ## Reglas
 - Cada tema se comprueba con `pruebas/comp-tema.js` (mismos casos antes y después = idéntico) y con todas las pruebas.

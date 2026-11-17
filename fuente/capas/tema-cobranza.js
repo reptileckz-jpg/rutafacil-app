@@ -66,9 +66,11 @@ function ini91(){if(S.role!=='admin'||S.encOn||S.tab.admin!=='inicio')return;var
  var a=m.querySelector('[data-x="cu82e"]')||m.querySelector('[data-x="rt81e"]');if(a&&a.parentNode===m)a.after(d);else m.prepend(d)}
 
 /* ---------- la pantalla Cobranza ---------- */
-function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin')return '';var hoy=iso(TODAY),Dall=deud91(),D=deud91(X.ch),tot=sum(D,function(c){return num(c.cred)}),V=D.filter(function(c){var e=est91(c);return e==='am'||e==='ro'}),vt=sum(V,function(c){return num(c.cred)});
+function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin'||X.inl)return '';return '<div id="cob91" role="dialog" aria-label="Cobranza"><div class="fiw"><div class="fihd"><button class="fiback" data-act="cob91x" aria-label="Regresar">←</button><span class="grow"><b style="font-size:20px">Cobranza</b><br><span class="lbl">Plazo general: '+plazoGen91()+' días (se cambia en Ajustes)</span></span></div>'+cob91Cuerpo()+'</div></div>'}
+/* el contenido (se usa en la pestaña Cobranza de Clientes y en la ventana) */
+function cob91Cuerpo(){var X=S.cob91=S.cob91||{ch:null};var hoy=iso(TODAY),Dall=deud91(),D=deud91(X.ch),tot=sum(D,function(c){return num(c.cred)}),V=D.filter(function(c){var e=est91(c);return e==='am'||e==='ro'}),vt=sum(V,function(c){return num(c.cred)});
  var chs={};Dall.forEach(function(c){if(c.chofer!=null)chs[c.chofer]=(chs[c.chofer]||0)+1});var CH=Object.keys(chs);
- var h='<div id="cob91" role="dialog" aria-label="Cobranza"><div class="fiw"><div class="fihd"><button class="fiback" data-act="cob91x" aria-label="Regresar">←</button><span class="grow"><b style="font-size:20px">Cobranza</b><br><span class="lbl">Plazo general: '+plazoGen91()+' días (se cambia en Ajustes)</span></span></div>';
+ var h='';
  h+='<div class="cob91tot"><div><b>'+money(tot)+'</b><span>por cobrar · '+D.length+' cliente'+(D.length===1?'':'s')+'</span></div><div><b class="'+(vt>0.005?'neg':'')+'">'+money(vt)+'</b><span>vencido · '+V.length+' cliente'+(V.length===1?'':'s')+'</span></div></div>';
  if(CH.length>1)h+='<div class="chips" role="group" aria-label="Chofer" style="margin-top:10px"><button data-act="cob91ch" data-v="" aria-pressed="'+(X.ch==null||X.ch==='')+'">Todos</button>'+CH.map(function(id){return '<button data-act="cob91ch" data-v="'+id+'" aria-pressed="'+(String(X.ch)===String(id))+'">'+esc(chofN(+id))+' ('+chs[id]+')</button>'}).join('')+'</div>';
  var Vt=V.filter(function(c){return c.tel});
@@ -78,7 +80,7 @@ function cob91HTML(){var X=S.cob91;if(!X||S.role!=='admin')return '';var hoy=iso
  if(!D.length)h+='<div class="card good" style="margin-top:12px;text-align:center;font-size:17px">✓ Nadie te debe'+(X.ch!=null&&X.ch!==''?' de esta ruta':'')+'.</div>';
  [['ro','#DC2626','Vencidos hace mucho o no pagaron lo que prometieron'],['am','#F59E0B','Vencidos'],['ve','#16A34A','Al corriente (todavía en su plazo)']].forEach(function(g){var L=D.filter(function(c){return est91(c)===g[0]});if(!L.length)return;
   h+='<div class="cob91g"><i style="background:'+g[1]+'"></i>'+g[2]+' · '+L.length+'</div>'+L.map(function(c){return cob91Cli(c,g[0])}).join('')});
- return h+'</div></div>'}
+ return h}
 function cob91Cli(c,e){var X=S.cob91,d=credAge(c),p=plazo91(c),pr=c.prom91,hoy=iso(TODAY);
  var h='<div class="cob91c '+(e==='ro'?'ro':e==='am'?'am':'')+'" data-cid="'+c.id+'"><div class="cb91h"><b>'+esc(c.n)+'</b><span class="m '+(e==='ve'?'':'neg')+'">'+money(c.cred)+'</span></div>'
   +'<div class="ln">Debe desde el '+(c.credDesde?fCorta91(c.credDesde):'—')+' · hace <b>'+d+' día'+(d===1?'':'s')+'</b> · plazo '+p+' días'+(c.plazo91!=null&&c.plazo91!==''?' (suyo)':'')+(d>=p?' · <b class="neg">vencido hace '+(d-p)+' día'+(d-p===1?'':'s')+'</b>':' · vence en '+(p-d)+' día'+(p-d===1?'':'s'))+'</div>'
@@ -123,15 +125,15 @@ function ch91(){if(S.role!=='rep')return;var m=document.querySelector('main');if
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act^="cob91"]');if(!b)return;var a=b.dataset.act,id=b.dataset.id!=null?+b.dataset.id:null,c=id!=null?cl(id):null,X=S.cob91;
  if(a==='cob91wa'||a==='cob91sw'){if(c)avisado91(c);if(a==='cob91sw'&&X)X.si=(X.si||0)+1;setTimeout(render,60);return}   /* el enlace abre WhatsApp */
  e.preventDefault();e.stopImmediatePropagation();
- if(a==='cob91o'){S.cob91={ch:null};render();var o=document.getElementById('cob91');if(o)o.scrollTop=0;return}
+ if(a==='cob91o'){S.cob91={ch:null,inl:1};S.cli92='cob';S.tab.admin='clientes';render();window.scrollTo(0,0);return}
  if(a==='cob91pl'){if(!c)return;c.plazo91=b.dataset.v===''?null:num(b.dataset.v);try{crHist(c,'plazo para pagar: '+(c.plazo91==null?'el general':c.plazo91+' días'))}catch(er){}toast('Plazo de '+c.n+': '+plazo91(c)+' días');render();return}
  if(!X)return;
  if(a==='cob91x'){S.cob91=null;render();return}
  if(a==='cob91ch'){X.ch=b.dataset.v===''?null:b.dataset.v;X.seq=null;render();return}
- if(a==='cob91s'){var D=deud91(X.ch).filter(function(c){var s=est91(c);return (s==='am'||s==='ro')&&c.tel});X.seq=D.map(function(c){return c.id});X.si=0;render();var o2=document.getElementById('cob91');if(o2)o2.scrollTop=0;return}
+ if(a==='cob91s'){var D=deud91(X.ch).filter(function(c){var s=est91(c);return (s==='am'||s==='ro')&&c.tel});X.seq=D.map(function(c){return c.id});X.si=0;render();var o2=document.getElementById('cob91');if(o2)o2.scrollTop=0;else window.scrollTo(0,0);return}
  if(a==='cob91sn'){X.si=(X.si||0)+1;render();return}
  if(a==='cob91sx'){X.seq=null;X.si=0;render();return}
- if(a==='cob91p'){X.prom=id;X.pf=c&&c.prom91&&!c.prom91.no?c.prom91.f:'';X.pm=c&&c.prom91&&num(c.prom91.m)?c.prom91.m:null;render();setTimeout(function(){var k=document.querySelector('#cob91 .cob91p');if(k)k.scrollIntoView({block:'center'})},30);return}
+ if(a==='cob91p'){X.prom=id;X.pf=c&&c.prom91&&!c.prom91.no?c.prom91.f:'';X.pm=c&&c.prom91&&num(c.prom91.m)?c.prom91.m:null;render();setTimeout(function(){var k=document.querySelector('.cob91p');if(k)k.scrollIntoView({block:'center'})},30);return}
  if(a==='cob91pc'){X.prom=null;render();return}
  if(a==='cob91pf'){var mi=document.getElementById('cob91m');if(mi)X.pm=mi.value;X.pf=b.dataset.v;render();return}
  if(a==='cob91pq'){if(c){c.prom91=null;try{crHist(c,'se quitó su promesa de pago')}catch(er){}}X.prom=null;toast('Se quitó la promesa');render();return}

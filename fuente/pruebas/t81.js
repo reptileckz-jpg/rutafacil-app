@@ -5,8 +5,8 @@ const p=await (await b.newContext({viewport:{width:400,height:860}})).newPage();
 await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(800);const ev=(f,a)=>p.evaluate(f,a);const ck=s=>ev(s=>{var e=document.querySelector(s);if(!e)return false;e.click();return true},s);let r;
 // escenario: dos choferes (A y B) con su ruta de hoy armada; el admin en otro celular
 r=await ev(()=>{var L=chs81();var A=+L[0].id,B=+L[1].id;window.A=A;window.B=B;var d=TODAY.getDay();S.cli.forEach((c,i)=>{c.oculto=false;c.dias=i<6?[d]:[];c.chofer=i<3?A:(i<6?B:A);c.extra=null;c.ped=null});S.chofHoy=null;S.chSt={};S.chSt[A]=chNuevo(A);S.chSt[B]=chNuevo(B);
- S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';render();return {A,B,a:S.chSt[A].stops.length,b:S.chSt[B].stops.length,e:!!document.querySelector('[data-x="rt81e"]')}});
-const A0=r.A,B0=r.B;ok(r.a===3&&r.b===3&&r.e,'Inicio: tarjeta "Rutas de hoy"',r);
+ S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='rutas';render();return {A,B,a:S.chSt[A].stops.length,b:S.chSt[B].stops.length,e:!!document.querySelector('[data-x="rut92s"]')}});
+const A0=r.A,B0=r.B;ok(r.a===3&&r.b===3&&r.e,'Rutas (en la barra): tarjeta con los clientes de hoy',r);
 await ck('[data-act="rt81open"][data-v="hoy"]');r=await ev(()=>({ov:!!document.getElementById('rt81'),cards:document.querySelectorAll('#rt81 .ch84').length,its:document.querySelectorAll('#rt81 .it84').length}));ok(r.ov&&r.cards>=3&&r.its>=6,'la pantalla Rutas muestra a cada chofer con sus clientes',r);
 // sin días (los demás clientes) → aviso
 ok(await ev(()=>/sin días de visita/.test(document.getElementById('rt81').innerText)),'aviso "sin días de visita"');
@@ -44,9 +44,9 @@ r=await ev(()=>{document.querySelector('[data-act="rt81map"]').click();return !!
 r=await ev(()=>{S.chSt[A].salida={ok:true};S.chSt[A].log=[{x:1}];S.chSt[A].stops.forEach((s,i)=>{s.done=i>1});var pend=S.chSt[A].stops.filter(s=>!s.done).map(s=>s.c);S.chSt[A].rutaDia80=hoy81();var T0=TODAY;TODAY=new Date(TODAY.getTime()+864e5);var o=chNuevo(A);TODAY=T0;return {pend,st:o.stops.slice(0,pend.length).map(s=>[s.c,!!s.pend81])}});
 ok(r.st.length===r.pend.length&&r.st.every((x,i)=>x[0]===r.pend[i]&&x[1]),'los que no se visitaron ayer salen primero y marcados',r);
 // tutorial
-r=await ev(()=>{S.rt81=null;S.tab.admin='inicio';render();var sel=TUT['n:rt81'].map(x=>!!document.querySelector(x[0]));return {sel,adm:TUT.admin[1][1],rep:TUT.rep.some(x=>/Tu ruta puede cambiar/.test(x[1])),apr:aprendeItems().some(x=>/Repartir las rutas/.test(x[0])),help:/Rutas de hoy/.test(HELP.inicio[1])}});
+r=await ev(()=>{S.rt81=null;S.tab.admin='inicio';render();var sel=TUT['n:rt81'].map(x=>!!document.querySelector(x[0]));return {sel,adm:TUT.admin[1][1],rep:TUT.rep.some(x=>/Tu ruta puede cambiar/.test(x[1])),apr:aprendeItems().some(x=>/Repartir las rutas/.test(x[0])),help:/Rutas/.test((HELP.rutas||[])[0]||'')}});
 ok(r.sel.every(Boolean)&&r.adm==='Rutas'&&r.rep&&r.apr&&r.help,'tutorial: recorrido de Rutas, paso nuevo, "Aprende la app" y ayuda',r);
-r=await ev(()=>{S.rt81=null;render();document.querySelector('[data-act="rt81open"]').click();var a=!!document.querySelector('#rt81 .hlp84');document.querySelector('#rt81 [data-act="rt84h"]').click();var b=!!document.querySelector('#rt81 .hlp84');return [!a,b]});
+r=await ev(()=>{S.rt81=null;S.tab.admin='rutas';render();document.querySelector('[data-act="rt81open"]').click();var a=!!document.querySelector('#rt81 .hlp84');document.querySelector('#rt81 [data-act="rt84h"]').click();var b=!!document.querySelector('#rt81 .hlp84');return [!a,b]});
 ok(r[0]&&r[1],'"¿Cómo se usa?" está en el botón "?" (ventanita) y no ocupa la pantalla',r);
 await ev(()=>{S.rt81=null;render()});
 // 8.3 · más fácil: marcar no redibuja toda la app; un toque al chofer; deshacer; aviso repetido

@@ -1,0 +1,45 @@
+/* 9.2 · reorganización (punto 92): barra, Rutas, Inicio, Clientes con pestañas, pendientes en un renglón, numeritos, sueldos, Más, tutoriales */
+const {chromium}=require('playwright');const SC=process.argv[2]||'/tmp';(async()=>{const b=await chromium.launch();
+let ok=0,fail=0;const T=(n,c,x)=>{if(c){ok++;console.log('OK  ',n)}else{fail++;console.log('FAIL',n,x===undefined?'':JSON.stringify(x).slice(0,400))}};
+for(const f of ['platanos-primera-vez.html','prototipo-platanos.html']){const real=/primera/.test(f);
+const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(String(e)));await p.addInitScript(()=>{window.__pnTest=1});
+await p.goto('file:///mnt/user-data/outputs/'+f);await p.waitForTimeout(1000);const ev=(fn,a)=>p.evaluate(fn,a);const P=real?'[real] ':'[demo] ';
+await ev(()=>{if(window.PN_MODO==='vacio'){var U=S.setup;U.veh=[{n:'NP300',pl:'A1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1000}];U.per=[{n:'Danu',puesto:'chofer',tel:'1'}];
+  U.cli=[{n:'C1',a:'x',tel:'6641234567',dias:[0,1,2,3,4,5,6],cred:900,vac:0,ch:'0'},{n:'C2',a:'y',tel:'2',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'}];U.prov=[];S.precio.R=300;S.precio.M=20;suAplicar();S.cli[0].credDesde=iso(new Date(TODAY.getTime()-20*864e5))}
+ S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';S.popVisto={admin:iso(TODAY)};render()});
+let r=await ev(()=>[...document.querySelectorAll('nav.tabs button')].map(b=>b.dataset.t).join(' '));T(P+'Barra: Inicio · Rutas · Clientes · Bodega · Cargas · Más',r==='inicio rutas clientes bodega cargas mas',r);
+r=await ev(()=>{var m=document.querySelector('main'),k=[...m.children].map(x=>(x.dataset&&x.dataset.p92)?'precio':(x.dataset&&x.dataset.x)||(x.dataset&&x.dataset.act)||x.className);return {k,i:k.indexOf('precio'),h:k.indexOf('hoy92'),f:k.findIndex(x=>/finwrap/.test(x)),inv:k.indexOf('inv65'),old:['rt81e','cob91c','avinfo','pnd86'].filter(x=>k.indexOf(x)>-1).concat(/Por atender|Hoy te toca|Qué hacer hoy|Fruta para los próximos días|Hoy de un vistazo/.test(m.textContent)?['textos viejos']:[])}});
+T(P+'Inicio: precio, luego Hoy, luego números y después la bodega',r.i===0&&r.h>r.i&&r.f>r.h&&(r.inv<0||r.inv>r.f),r.k);T(P+'Inicio: sin lo que se fue a su sección',!r.old.length,r.old);
+r=await ev(()=>{S.precio.conf=null;render();var c=document.querySelector('main [data-p92]');var a=getComputedStyle(c).animationName;return {cls:c.className,a,t:c.textContent}});T(P+'Precio sin fijar: la tarjeta destella en rojo y avisa',/sinfijar92/.test(r.cls)&&r.a==='pn92'&&/No lo has fijado hoy/.test(r.t)&&/último precio/.test(r.t),r);
+r=await ev(()=>{S.precio.conf=iso(TODAY);render();return document.querySelector('main [data-p92]').className});T(P+'Precio fijado: deja de destellar',!/sinfijar92/.test(r),r);
+/* el chofer cobra con el último precio aunque hoy nadie lo fije */
+r=await ev(()=>{S.precio.conf=iso(new Date(TODAY.getTime()-2*864e5));var R=num(S.precio.R);var ch=S.choferes.filter(c=>esCh(c)&&!esAdm(c))[0].id;var bk={role:S.role,ch:S.chofHoy};S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;arLoad(chNuevo(ch));S.stops=[{c:S.cli[0].id}];S.cur=0;S.salida.ok=true;S.tab.rep='entrega';S.d=S.d||{};S.d.R=2;S.d.M=0;S.d.mode='todo';render();var k=entregaCalc();var bloq=!!document.getElementById('dia80')||/precio/i.test((document.querySelector('.card.alert')||{}).textContent||'');S.role='admin';S.salida.ok=false;S.tab.admin='inicio';render();return {tot:k.total,R,bloq}});
+T(P+'Sin fijar el precio, el chofer cobra con el último y no se bloquea',r.tot===2*r.R&&!r.bloq,r);
+/* Rutas */
+r=await ev(()=>{S.tab.admin='rutas';render();var m=document.querySelector('main');return {h:(m.querySelector('h1')||{}).textContent,s:!!m.querySelector('[data-x="rut92s"] [data-act="rt81open"]'),ch:m.querySelectorAll('[data-x="ch92"]').length,mapa:/Mapa en vivo/.test(m.textContent),pr:document.querySelector('nav.tabs button[data-t="rutas"]').getAttribute('aria-pressed')}});
+T(P+'Rutas: "Ver y repartir", mapa en vivo y cada chofer',r.h==='Rutas'&&r.s&&r.ch>=1&&r.mapa&&r.pr==='true',r);
+r=await ev(()=>{document.querySelector('[data-act="rut92d"][data-v="man"]').click();var m=document.querySelector('main');var v=m.querySelector('[data-act="rt81open"]').dataset.v;document.querySelector('[data-act="rut92d"][data-v="hoy"]').click();return v});T(P+'Rutas: Hoy / Mañana',r==='man',r);
+r=await ev(()=>{S.tab.admin='personal';render();var t=document.querySelector('main').textContent;return {mapa:/Choferes en ruta|Mapa en vivo/.test(t),rt:!!document.querySelector('main [data-x="rt81e"]'),sue:!!document.querySelector('[data-act="per92"][data-v="sue"]'),mas:document.querySelector('nav.tabs button[data-t="mas"]').getAttribute('aria-pressed')}});
+T(P+'Personal: sin mapa ni "Rutas de hoy", con pestaña Sueldos, y se marca "Más"',!r.mapa&&!r.rt&&r.sue&&r.mas==='true',r);
+r=await ev(()=>{document.querySelector('[data-act="per92"][data-v="sue"]').click();var a=document.querySelector('main').textContent;S.per92='';S.tab.admin='gastos';render();var g=!!document.querySelector('main [data-act="gsec"][data-p="sueldos"]');return {a:/Sueldos|sueldo/i.test(a),g}});T(P+'Sueldos en Personal y ya no en Gastos',r.a&&!r.g,r);
+/* Clientes */
+r=await ev(()=>{S.tab.admin='clientes';S.cli92='cli';render();var t=[...document.querySelectorAll('[data-x="tabs92c"] button')].map(x=>x.textContent);document.querySelector('[data-act="cli92"][data-v="cob"]').click();var cob=!!document.querySelector('#cob91i')&&!document.getElementById('cob91');document.querySelector('[data-act="cli92"][data-v="ped"]').click();var ped=[...document.querySelector('main').children].filter(x=>x.style.display!=='none').some(x=>x.classList.contains('p57')||x.classList.contains('pw40'));S.cli92='cli';render();return {t,cob,ped}});
+T(P+'Clientes: pestañas Clientes · Pedidos · Cobranza',r.t.length===3&&/^Clientes/.test(r.t[0])&&/^Pedidos/.test(r.t[1])&&/^Cobranza/.test(r.t[2])&&r.cob&&r.ped,r);
+/* pendientes en un renglón */
+r=await ev(()=>{S.avPrecio.push('Le debes $500 a Prueba desde hace 9 días');S.tab.admin='cargas';render();var c=document.querySelector('main [data-x="pnd86"]');if(!c)return null;var hd=c.querySelector('.hd92'),h0=hd?hd.textContent:'(sin renglón) '+c.outerHTML.slice(0,200);var cerr=c.classList.contains('cerr92'),vis=[...c.children].filter(x=>getComputedStyle(x).display!=='none').length;if(hd)hd.click();var c2=document.querySelector('main [data-x="pnd86"]');var vis2=[...c2.children].filter(x=>getComputedStyle(x).display!=='none').length;return {cerr,vis,vis2,h:h0}});
+T(P+'Pendientes: un renglón que se abre al tocarlo',r&&r.cerr&&r.vis===1&&r.vis2>1&&/pendiente/.test(r.h),r);
+r=await ev(()=>{render();return [...document.querySelectorAll('nav.tabs .tbadge')].map(b=>b.className+':'+b.textContent)});T(P+'Numeritos: los no urgentes son puntito gris (sin número)',r.every(x=>/dot92:$/.test(x)||!/suave/.test(x)),r);
+/* viaje en curso solo en Inicio y Cargas */
+r=await ev(()=>{var o={};['inicio','cargas','clientes','bodega','rutas'].forEach(t=>{S.tab.admin=t;render();o[t]=!!document.querySelector('main .vbub')});return o});
+T(P+'"Viaje en curso" no sale en Clientes, Bodega ni Rutas',!r.clientes&&!r.bodega&&!r.rutas,r);
+/* Más */
+r=await ev(()=>{S.tab.admin='mas';render();var m=document.querySelector('main');var bs=[...m.querySelectorAll('.mas92 button')].map(x=>x.dataset.t||x.dataset.act);m.querySelector('[data-act="act92"]').click();var ov=!!document.getElementById('act92ov');document.querySelector('[data-act="act92x"]').click();return {bs,ov}});
+T(P+'Más: Gastos, Vehículos, Personal, Estadísticas, Bienes, Ajustes y "Lo que pasó hoy"',JSON.stringify(r.bs)===JSON.stringify(['gastos','vehiculos','personal','estadisticas','bienes','ajopen'])&&r.ov,r);
+/* tutoriales: cada paso señala algo que sí está */
+r=await ev(()=>{var out=[];Object.keys(TUT).filter(k=>k==='admin'||/^d:admin:|^n:/.test(k)&&!/rep/.test(k)).forEach(function(k){S.tab.admin='inicio';S.tut={k:k,i:0,prev:{tab:'inicio'},tab:'inicio'};TUT[k].forEach(function(st,i){S.tut.i=i;render();if(!tutBlanco(st))out.push(k+'#'+(i+1))});S.tut=null});render();
+ var viejo=[];Object.keys(TUT).filter(k=>k==='admin'||/^d:admin:/.test(k)).forEach(k=>TUT[k].forEach(st=>{if(/Hoy te toca|Por atender|Rutas de hoy|Finanzas|rt81e/.test(st[0]+' '+st[2]))viejo.push(k+':'+st[1])}));return {out,viejo}});
+T(P+'Tutoriales: todos los pasos señalan algo que existe',!r.out.length,r.out);T(P+'Tutoriales: ya no hablan de pantallas viejas',!r.viejo.length,r.viejo);
+r=await ev(()=>({h:!!(HELP.rutas&&HELP.mas),g:!!(GUIA.admin.rutas)&&!/Por atender/.test(GUIA.admin.inicio[1])}));T(P+'Ayuda "?" y guía de cada sección al día',r.h&&r.g,r);
+if(real)await p.evaluate(()=>{S.tab.admin='inicio';render();window.scrollTo(0,0)}),await p.screenshot({path:SC+'/t92ini.png',fullPage:true});
+T(P+'Sin errores',!errs.length,errs.slice(0,3));await p.close()}
+console.log(ok+' OK · '+fail+' FAIL');await b.close()})();

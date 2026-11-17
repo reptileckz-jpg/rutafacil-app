@@ -33,7 +33,7 @@ var _ev19=entValida;entValida=function(){var r=_ev19.apply(this,arguments);if(r)
  return null};
 function buroPill(c){var b=buroDe(c),x=BURO[b.n];return '<span class="pill" style="background:'+['rgba(47,125,50,.14)','rgba(242,194,48,.25)','rgba(230,126,34,.2)','rgba(192,57,43,.18)'][b.n]+';color:inherit">'+x[0]+' '+x[1]+'</span>'}
 /* en la entrega: su calificación, su límite y cuánto le queda al chofer */
-var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
+var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;/* 115 · el buró se ve al fiar (una parte o a crédito) */if(S.d&&S.d.mode==='todo')return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
  var x='<div class="lbl" style="margin:6px 0;line-height:1.6">Buró: '+buroPill(c)+' · límite '+money(lim)+(c.cred>0?' · debe '+money(c.cred):'')+'<br>Tus clientes te deben <b>'+money(dch)+'</b> de '+money(mx)+(dch>=mx?' · <b class="neg">ya no puedes fiar</b>':'')+'</div>';
  return h.replace('<div id="calc"',x+'<div id="calc"')};
 /* en la ficha del cliente (admin) */

@@ -2395,3 +2395,18 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 
 ## 2026-11-17 · 114 · Ricardo: si el administrador tiene un viaje de carga o una ruta en curso, la burbuja en Inicio quedó a la mitad y es fácil perderla: regresarla arriba
 ### HECHO (17 nov) · 114 · SIN PUBLICAR (tema-pantallas.js): en Inicio, hasta arriba la burbuja del viaje en curso (también cuando viene junto con "Faltan N"), luego (si repartes hoy) "¿Repartes hoy?" y "Mi ruta de hoy" juntos (como en el 88), y después el precio de hoy y la lista "Hoy". Si no repartes, "¿Repartes hoy?" va después del precio. Ajustada t92 al orden nuevo. Todas: 0 FAIL.
+
+## 2026-11-17 · 115 · Ricardo: rediseño del cobro en la entrega (mandó un diseño en HTML: "sacar lo bueno y conservar nuestros textos")
+- Decisiones (Ricardo): meter las 4 partes · hacerlo ya, sin publicar.
+  1. "A cobrar" grande en la barra de abajo (entrega + abono) con "Queda debiendo $X" y desglose al tocarla.
+  2. "¿Con cuánto te paga?" con billetes sugeridos y "Cambio a entregar $X" (solo efectivo).
+  3. Entrega y deuda separadas: "Esta entrega: Pagó todo / Una parte / A crédito" y aparte "Abono a lo que debía" ($0 / mitad / Liquidar); con el buró a la vista al fiar.
+  4. Cajas vacías con el saldo en vivo ("Ya debía 4 · devuelve 5 → al corriente").
+- Se queda lo nuestro: letra y botones grandes, nuestros textos, tarjeta con comisión / transferencia / mixto, ticket obligatorio con crédito o abono, permiso para fiar, "Más opciones" y la ubicación.
+- **HECHO 115** (sin publicar): nuevo tema `capas/tema-cobro.js` (va al final, después de `tema-cargas.js`) + líneas 115 en `ql.py`.
+  - Barra de abajo: "A cobrar en efectivo $X ▴" + "Queda debiendo $X" / "Queda al corriente" / "Sin cobro en esta visita". Al tocarla sale el desglose (Esta entrega · Paga de esta entrega · Abono · Total a cobrar · Su deuda queda en).
+  - Billetes según lo que hay que cobrar: $1,100 → $1,200 · $1,500 · $2,000 · Exacto. "Dale $X de cambio" como antes.
+  - "Esta entrega: $X" arriba y "Lo que ya debía: $X" con botones $0 / La mitad / Liquidar (se conserva el campo "Abona a deuda anterior $").
+  - El buró (l19) solo sale al fiar (una parte o a crédito).
+  - Cajas vacías: "Ya debía N · le dejas N · devuelve N → Queda debiendo N / Al corriente", en vivo.
+  - Prueba `t115.js` (12 OK): al guardar, el efectivo del chofer sube exactamente lo que dijo "A cobrar" y la deuda del cliente cuadra.

@@ -74,7 +74,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 (function(){var s=null;document.addEventListener('pointerdown',function(e){var l=e.target.closest&&e.target.closest('.lote[data-act="lt53"]');s=l?{l:l,x:e.clientX,y:e.clientY}:null},true);
  document.addEventListener('pointerup',function(e){if(!s)return;var dx=e.clientX-s.x,dy=e.clientY-s.y,l=s.l;s=null;if(Math.abs(dx)>60&&Math.abs(dy)<40)l.click()},true)})();
 /* al llegar desde el numerito de la barra (62c), además de marcar el lote se abren sus opciones */
-var _avF70=avFoco;avFoco=function(sel){_avF70.apply(this,arguments);try{if(/\.lote\[data-p=/.test(sel||'')){setTimeout(function(){var el=document.querySelector(sel.split(',')[0]);if(el&&!S.lt53)el.click()},900)}}catch(e){}};
+/* avFoco: pasó a tema-avisos.js */
 
 /* =============== 57 · pedidos por WhatsApp =============== */
 function chofsDia57(){return choferesL().filter(function(c){return !c.baja})}

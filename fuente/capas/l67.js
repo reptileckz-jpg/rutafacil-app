@@ -13,7 +13,7 @@ var _rd67a=render;render=function(){var r=_rd67a.apply(this,arguments);try{var b
  'input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}'].join('\n');document.head.appendChild(st)})();
 /* 46 · la barra se vuelve a dibujar en cada actualización y la animación del numerito arrancaba de nuevo (parpadeo):
    ahora la animación sigue su ritmo según el reloj, aunque se vuelva a dibujar */
-var _tb67=tabBadges;tabBadges=function(){var r=_tb67.apply(this,arguments);try{var d=-(Date.now()%1100)+'ms';Array.prototype.forEach.call(document.querySelectorAll('nav.tabs .tbadge.blink'),function(b){b.style.animationDelay=d})}catch(e){}return r};
+/* tabBadges: pasó a tema-avisos.js */
 /* 48 · numerito de la barra: 1er toque = ir a la sección; 2º toque (ya estando ahí) = ir directo al pendiente de ese numerito */
 function tabPend48(t){var cas=['inicio','bodega','cargas','clientes','gastos','mas'],nv=document.querySelector('nav.tabs'),enBarra={};if(nv)Array.prototype.forEach.call(nv.querySelectorAll('button[data-t]'),function(b){enBarra[b.dataset.t]=1});
  return avSinEfecto(function(){var L=[];try{L=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}

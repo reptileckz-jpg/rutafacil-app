@@ -19,7 +19,7 @@ function salio87(o){return !!(o&&o.salida&&o.salida.ok)}
 /* ---------- 74 · "X no envió su cierre": se quita solo; y su pantalla trae botones ---------- */
 function bloqueado87(nombre){return porLib86().some(function(x){return chofN(x.id)===nombre})}
 function limpiaCierre87(){if(S.role!=='admin'||!Array.isArray(S.avPrecio))return;var cambio=false;S.avPrecio=S.avPrecio.filter(function(x){var m=/^(?:URGENTE:\s*)?(.+?) no envió su cierre de ayer/.exec(String(x||''));if(!m)return true;var ns=m[1].split(/,\s*/),sigue=ns.some(bloqueado87);if(!sigue)cambio=true;return sigue});return cambio}
-var _avD87=avDestino;avDestino=function(x){var r=_avD87.apply(this,arguments);try{if(/no envió su cierre/.test(String(x))&&r){r.t='inicio';r.sel='[data-x="dia80a"]'}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 function cierreAdm87(){if(S.role!=='admin'||S.tab.admin!=='cierreadm')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cad87"]'))return;var id=S.chofHoy;if(id==null||(S.cierre&&S.cierre.sent))return;var bl=porLib86().some(function(x){return x.id===+id});
  var d=document.createElement('div');d.dataset.x='cad87';d.className='card '+(bl?'alert':'note');d.style.padding='12px 14px';
  d.innerHTML=bl?'<b style="font-size:18px">'+esc(chofN(id))+' no ha mandado su cierre '+esc(del80(S.rutaDia80))+'</b><div class="lbl">Si no puede mandarlo, libera su ruta de hoy; lo de antes se queda en el historial para cuadrarlo con él.</div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn sec" style="flex:1;min-height:52px" data-act="dia80r" data-id="'+id+'">Recordarle</button><button class="btn" style="flex:1;min-height:52px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button></div>'

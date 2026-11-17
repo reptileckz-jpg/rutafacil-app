@@ -114,14 +114,7 @@ notaImg=function(n){var it=notaItems(n);if(tkSinNombre()&&it[0]&&it[0].t==='c'&&
 
 /* ---- Cada aviso lleva a su lugar (antes algunos solo subían hasta arriba de Inicio) ---- */
 function reEsc(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-var _avD9=avDestino;avDestino=function(x){var r=_avD9.apply(this,arguments);
- var vh=S.veh.filter(function(v){return !v.baja&&x.indexOf(v.n)>-1})[0];
- if(vh){var tb=/[Mm]ensualidad/.test(x)?'cre':(/verificar|Verificación|Seguro|Tarjeta|placa/.test(x)?'pap':(/aceite|afinación|[Ll]lantas|[Ff]renos|servicio/.test(x)?'tal':null));if(tb){r.t='vehiculos';r.cli=null;S.vehOpen=vh.id;S.fiTab['veh:'+vh.id]=tb}}
- if(/^(Falta pagar|Mañana toca pagar)/.test(x)){r.t='gastos';r.cli=null;S.gsec='fijos'}
- var bn=(S.bienes||[]).filter(function(b){return b.est!=='Dado de baja'&&x.indexOf(b.n)>-1})[0];if(bn&&/calibrar|Vence |Venció /.test(x)){r.t='bienes';r.cli=null;S.bienOpen=bn.id}
- var ch=S.choferes.filter(function(c){return new RegExp('(^|[^A-Za-zÁÉÍÓÚáéíóúñÑ])'+reEsc(chofN(c.id))+'([^A-Za-zÁÉÍÓÚáéíóúñÑ]|$)').test(x)})[0];
- if(ch&&/Licencia|sin señal/.test(x)){r.t='personal';r.cli=null;S.openCh=ch.id;S.fiTab['emp:'+ch.id]=/Licencia/.test(x)?'dat':'ruta'}
- return r};
+/* avDestino: pasó a tema-avisos.js */
 /* "Qué hacer hoy": si la tarea está en la misma pantalla, baja hasta ella en lugar de subir hasta arriba */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="popgo"]');if(!b)return;var D=b.dataset;
  if(D.t!==S.tab[S.role]||D.x||D.p||D.s||D.c||D.h||D.pop)return;e.stopImmediatePropagation();

@@ -5,4 +5,4 @@ function avYo(x){x=String(x==null?'':x);var pre='',m=/^(URGENTE: )/.exec(x);if(m
  var yo=[quien()];try{if(S.role==='admin')yo.push(adminNom())}catch(e){}yo.push('Tú');
  for(var i=0;i<yo.length;i++){var n=yo[i];if(!n||x.indexOf(n+' ')!==0)continue;var r=x.slice(n.length+1);for(var v in AV_VERB){if(r.indexOf(v+' ')===0||r===v)return pre+AV_VERB[v]+r.slice(v.length)}if(n==='Tú')return pre+'Tú: '+r}
  return pre+x}
-var _avRow51=avRow;avRow=function(x,u){var h=_avRow51.apply(this,arguments),y=avYo(x);return y===x?h:h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(y)+'</span>')};
+/* avRow: pasó a tema-avisos.js */

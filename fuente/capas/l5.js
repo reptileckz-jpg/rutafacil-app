@@ -92,7 +92,7 @@ function cuentasHTML(){var R=cuentasRevisar(),m=R.filter(function(x){return !x.o
  return '<details class="card'+(m.length?' alert':'')+'" data-k="cuentas"'+(S.dOpen.cuentas||m.length?' open':'')+'><summary><b>'+(m.length?'⚠ Algo no cuadra':'✓ Las cuentas cuadran')+'</b><span class="lbl">'+(R.length-m.length)+' de '+R.length+' revisiones</span></summary>'
   +R.map(function(x){return '<div class="row"><span>'+(x.ok?'✓ ':'⚠ ')+esc(x.n)+(x.ok||!x.det?'':'<br><span class="lbl neg">'+esc(x.det)+'</span>')+'</span></div>'}).join('')+'<div class="lbl">La app se revisa sola después de cada movimiento.</div></details>'}
 /* aviso si algo deja de cuadrar */
-var _avL5=avisos;avisos=function(){var a=_avL5.apply(this,arguments);try{cuentasRevisar().filter(function(x){return !x.ok}).forEach(function(x){a.unshift('URGENTE: no cuadra · '+x.n+(x.det?' ('+x.det+')':''))})}catch(e){}return a};
+/* avisos: pasó a tema-avisos.js */
 var _rL5=render;render=function(){_rL5.apply(this,arguments);try{var R=cuentasRevisar().filter(function(x){return !x.ok}).map(function(x){return x.n}).join('|');if(R&&R!==_cuMal)setTimeout(function(){toast('⚠ Algo no cuadra: '+R.split('|')[0]+'. Revísalo en Estadísticas.')},10);_cuMal=R;
  var m=document.querySelector('main');if(!m)return;
  if(S.role==='admin'&&S.tab.admin==='estadisticas'&&!m.querySelector('[data-k="cuentas"]')){var h1=m.querySelector('h1'),w=document.createElement('div');w.innerHTML=cuentasHTML();if(h1)h1.after(w.firstElementChild)}

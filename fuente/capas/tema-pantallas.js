@@ -40,17 +40,17 @@ function barra92(){if(!adm92())return;var nv=document.querySelector('nav.tabs');
  [].slice.call(nv.querySelectorAll('button[data-t]')).forEach(function(b){var k=b.dataset.t,on=k===t||(k==='rutas'&&t==='cierreadm')||(k==='mas'&&SEC92.indexOf(t)>-1);b.setAttribute('aria-pressed',String(on));
   })}
 /* numeritos: rojo solo lo urgente; lo demás un puntito gris */
-var _tB92=tabBadges;tabBadges=function(){var r=_tB92.apply(this,arguments);try{[].slice.call(document.querySelectorAll('nav.tabs .tbadge.suave')).forEach(function(b){b.classList.add('dot92');b.classList.remove('blink');b.textContent=''})}catch(e){}return r};
+/* tabBadges: pasó a tema-avisos.js */
 
 /* ---------- lo que solo informa no es pendiente: va a "Lo que pasó hoy" ---------- */
 var INFO92=/desgaste de .* cambió de|cambió de \$[\d.,]+ a \$[\d.,]+ por km/i;
-var _avs92=avisos;avisos=function(){var L=_avs92.apply(this,arguments);if(!adm92())return L;return L.filter(function(x){if(typeof x==='string'&&INFO92.test(x)){try{actAdd(null,x)}catch(e){}return false}return true})};
+/* avisos: pasó a tema-avisos.js */
 
-var _avD92=avDestino;avDestino=function(x){var r=_avD92.apply(this,arguments);try{if(r&&r.t==='personal'&&/sin señal|última ubicación|ubicación del chofer|apagó el GPS|GPS apagado/i.test(String(x)))r.t='rutas'}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 /* 95 · lo que falta recibir es URGENTE: rojo en "Hoy" y numerito rojo en Rutas, hasta que se reciba */
 function atrasTxt95(x){var n=chofN(x.id),d=fCorta91(x.f);return 'URGENTE: falta recibir '+(x.why==='cierre'?'el cierre del '+d+' de '+n:'lo que traía '+n+' del '+d)+' ('+money(x.ef)+')'}
-var _avs95=avisos;avisos=function(){var L=_avs95.apply(this,arguments);try{if(adm92()&&typeof atrasLista93==='function')atrasLista93().forEach(function(x){L.unshift(atrasTxt95(x))})}catch(e){}return L};
-var _avD95=avDestino;avDestino=function(x){if(/^URGENTE: falta recibir /.test(String(x)))return {t:'rutas',cli:null,sel:'[data-x="atr93c"]'};return _avD95.apply(this,arguments)};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 /* ---------- "Viaje en curso": solo en Inicio y Cargas ---------- */
 var _vb92=vwBurbuja;vwBurbuja=function(){if(adm92()&&['inicio','cargas'].indexOf(S.tab.admin)<0)return '';return _vb92.apply(this,arguments)};
 
@@ -110,12 +110,7 @@ function act92HTML(){if(!S.act92||!adm92())return '';var hoy=iso(TODAY),G={},I=[
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="act92"],[data-act="act92x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();S.act92=b.dataset.act==='act92';render()},true);
 
 /* ---------- PENDIENTES de cada sección: un renglón que se abre ---------- */
-var _pc92=pendCard86;pendCard86=function(){var r=_pc92.apply(this,arguments);try{var c=document.querySelector('main [data-x="pnd86"]');if(!c||c.dataset.v92)return r;c.dataset.v92='1';var t=S.tab.admin;
- /* el título ya no se repite pegado ("Tienda Don BetoTienda Don Beto: …") */
- [].slice.call(c.querySelectorAll('.it88')).forEach(function(it){var b=it.querySelector('b'),l=it.querySelector('.lbl');if(!b||!l)return;var bt=b.textContent.trim(),lt=l.textContent.trim();if(bt&&lt.indexOf(bt)===0){var rest=lt.slice(bt.length).replace(/^[\s:·,-]+/,'');if(rest)l.textContent=rest.charAt(0).toUpperCase()+rest.slice(1);else l.remove()}});
- var n=c.querySelectorAll('.it88, button.it').length,u=c.querySelectorAll('.it88').length?0:0;var tit=c.querySelector('b');var txt=tit?tit.textContent.replace(/^🔔\s*/,''):(n+' pendientes');if(tit)tit.parentNode===c&&tit.remove();var lb=c.querySelector(':scope>.lbl');if(lb)lb.remove();
- var abierto=(S.pnd92||'')===t;c.classList.add('c92');if(!abierto)c.classList.add('cerr92');
- var h=document.createElement('button');h.className='hd92';h.dataset.act='pnd92';h.innerHTML='🔔 '+esc(txt)+'<span class="go">'+(abierto?'cerrar ▲':'ver ›')+'</span>';c.prepend(h)}catch(e){console.error('pnd92',e)}return r};
+/* pendCard86: pasó a tema-avisos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd92"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var t=S.tab.admin;S.pnd92=(S.pnd92||'')===t?'':t;render()},true);
 
 /* ---------- CLIENTES con pestañas: Clientes · Pedidos · Cobranza ---------- */

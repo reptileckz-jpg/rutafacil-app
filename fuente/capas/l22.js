@@ -111,7 +111,7 @@ function minCampos(pref){return '<div class="card" data-key="mincard"><b>¿Cuán
 var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
 var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
 function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(lim==null||lim==='')return;lim=num(lim);var hay=num(S.inv[m[3]]);if(hay<=lim)a.push('URGENTE: '+(m[2]==='kg'?'quedan pocos ':'quedan pocas ')+m[1].toLowerCase()+': '+(m[2]==='kg'?(Math.round(hay*10)/10).toLocaleString('es-MX')+' kg':hay+' cajas')+' (te aviso con '+lim+'). '+m[4]+'.')});return a}
-var _av22=avisos;avisos=function(){var a=_av22.apply(this,arguments);try{return minAvisos().concat(a)}catch(e){return a}};
+/* avisos: pasó a tema-avisos.js */
 
 /* ===================== Versión real: sin rastros de demo, fecha y hora de verdad ===================== */
 if(REAL){document.documentElement.classList.add('real');(function(){var st=document.createElement('style');st.textContent='html.real main .foot,html.real [data-act="reset"]{display:none!important}.bvhola>:first-child{margin-left:auto!important;margin-right:auto!important}';document.head.appendChild(st)})()}

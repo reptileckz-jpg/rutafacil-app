@@ -3829,7 +3829,7 @@ function cuentasHTML(){var R=cuentasRevisar(),m=R.filter(function(x){return !x.o
  return '<details class="card'+(m.length?' alert':'')+'" data-k="cuentas"'+(S.dOpen.cuentas||m.length?' open':'')+'><summary><b>'+(m.length?'⚠ Algo no cuadra':'✓ Las cuentas cuadran')+'</b><span class="lbl">'+(R.length-m.length)+' de '+R.length+' revisiones</span></summary>'
   +R.map(function(x){return '<div class="row"><span>'+(x.ok?'✓ ':'⚠ ')+esc(x.n)+(x.ok||!x.det?'':'<br><span class="lbl neg">'+esc(x.det)+'</span>')+'</span></div>'}).join('')+'<div class="lbl">La app se revisa sola después de cada movimiento.</div></details>'}
 /* aviso si algo deja de cuadrar */
-var _avL5=avisos;avisos=function(){var a=_avL5.apply(this,arguments);try{cuentasRevisar().filter(function(x){return !x.ok}).forEach(function(x){a.unshift('URGENTE: no cuadra · '+x.n+(x.det?' ('+x.det+')':''))})}catch(e){}return a};
+/* avisos: pasó a tema-avisos.js */
 var _rL5=render;render=function(){_rL5.apply(this,arguments);try{var R=cuentasRevisar().filter(function(x){return !x.ok}).map(function(x){return x.n}).join('|');if(R&&R!==_cuMal)setTimeout(function(){toast('⚠ Algo no cuadra: '+R.split('|')[0]+'. Revísalo en Estadísticas.')},10);_cuMal=R;
  var m=document.querySelector('main');if(!m)return;
  if(S.role==='admin'&&S.tab.admin==='estadisticas'&&!m.querySelector('[data-k="cuentas"]')){var h1=m.querySelector('h1'),w=document.createElement('div');w.innerHTML=cuentasHTML();if(h1)h1.after(w.firstElementChild)}
@@ -3923,8 +3923,8 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('focusin',function(){if(S.role==='admin'&&offIds().length)sigTomar()},true);
 document.addEventListener('change',function(e){if(S.role!=='admin'||!offIds().length)return;setTimeout(function(){var p0=JSON.stringify(S.pendCh);sigRevisar('Cambio de ruta o de clientes');if(JSON.stringify(S.pendCh)!==p0)render()},0)});
 function senalTxt(id){var c=conn(id);if(c.on)return '';var m=sinSenMin(id),p=(S.pendCh[id]||[]).length;return '<span class="sinsen">Sin señal</span> <span class="lbl">desde las '+esc(c.desde)+' ('+sinDurTxt(m)+')'+(p?' · '+p+' cambio'+(p>1?'s':'')+' pendiente'+(p>1?'s':'')+' de llegarle':'')+'</span>'}
-var _avL6=avisos;avisos=function(){var a=_avL6.apply(this,arguments);try{offIds().forEach(function(id){var m=sinSenMin(id),p=(S.pendCh[id]||[]).length;if(m>=60)a.unshift(chofN(id)+' lleva '+sinDurTxt(m)+' sin señal'+(conn(id).pos?' · última ubicación: '+conn(id).pos:''));if(p)a.push('Pendiente de llegar a '+chofN(id)+' (sin señal): '+p+' cambio'+(p>1?'s':''))})}catch(e){}return a};
-var _avD6=avDestino;avDestino=function(x){if(/sin señal|Pendiente de llegar a/.test(x))return {t:'personal',cli:null};return _avD6.apply(this,arguments)};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 /* lado del chofer */
 function senalDemoBtn(){var id=+S.chofHoy,c=conn(id);return '<button class="btn sec" style="margin-top:8px" data-act="senal">'+(c.on?'Simular que me quedé sin señal':'Volvió la señal')+'</button>'}
 function colaCuenta(a){return /^(guardar|gxsave|recargar|enviar|cobrar|calle|cambio|infsave)$/.test(a)}
@@ -4259,14 +4259,7 @@ notaImg=function(n){var it=notaItems(n);if(tkSinNombre()&&it[0]&&it[0].t==='c'&&
 
 /* ---- Cada aviso lleva a su lugar (antes algunos solo subían hasta arriba de Inicio) ---- */
 function reEsc(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-var _avD9=avDestino;avDestino=function(x){var r=_avD9.apply(this,arguments);
- var vh=S.veh.filter(function(v){return !v.baja&&x.indexOf(v.n)>-1})[0];
- if(vh){var tb=/[Mm]ensualidad/.test(x)?'cre':(/verificar|Verificación|Seguro|Tarjeta|placa/.test(x)?'pap':(/aceite|afinación|[Ll]lantas|[Ff]renos|servicio/.test(x)?'tal':null));if(tb){r.t='vehiculos';r.cli=null;S.vehOpen=vh.id;S.fiTab['veh:'+vh.id]=tb}}
- if(/^(Falta pagar|Mañana toca pagar)/.test(x)){r.t='gastos';r.cli=null;S.gsec='fijos'}
- var bn=(S.bienes||[]).filter(function(b){return b.est!=='Dado de baja'&&x.indexOf(b.n)>-1})[0];if(bn&&/calibrar|Vence |Venció /.test(x)){r.t='bienes';r.cli=null;S.bienOpen=bn.id}
- var ch=S.choferes.filter(function(c){return new RegExp('(^|[^A-Za-zÁÉÍÓÚáéíóúñÑ])'+reEsc(chofN(c.id))+'([^A-Za-zÁÉÍÓÚáéíóúñÑ]|$)').test(x)})[0];
- if(ch&&/Licencia|sin señal/.test(x)){r.t='personal';r.cli=null;S.openCh=ch.id;S.fiTab['emp:'+ch.id]=/Licencia/.test(x)?'dat':'ruta'}
- return r};
+/* avDestino: pasó a tema-avisos.js */
 /* "Qué hacer hoy": si la tarea está en la misma pantalla, baja hasta ella en lugar de subir hasta arriba */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="popgo"]');if(!b)return;var D=b.dataset;
  if(D.t!==S.tab[S.role]||D.x||D.p||D.s||D.c||D.h||D.pop)return;e.stopImmediatePropagation();
@@ -5360,7 +5353,7 @@ function minCampos(pref){return '<div class="card" data-key="mincard"><b>¿Cuán
 var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
 var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
 function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(lim==null||lim==='')return;lim=num(lim);var hay=num(S.inv[m[3]]);if(hay<=lim)a.push('URGENTE: '+(m[2]==='kg'?'quedan pocos ':'quedan pocas ')+m[1].toLowerCase()+': '+(m[2]==='kg'?(Math.round(hay*10)/10).toLocaleString('es-MX')+' kg':hay+' cajas')+' (te aviso con '+lim+'). '+m[4]+'.')});return a}
-var _av22=avisos;avisos=function(){var a=_av22.apply(this,arguments);try{return minAvisos().concat(a)}catch(e){return a}};
+/* avisos: pasó a tema-avisos.js */
 
 /* ===================== Versión real: sin rastros de demo, fecha y hora de verdad ===================== */
 if(REAL){document.documentElement.classList.add('real');(function(){var st=document.createElement('style');st.textContent='html.real main .foot,html.real [data-act="reset"]{display:none!important}.bvhola>:first-child{margin-left:auto!important;margin-right:auto!important}';document.head.appendChild(st)})()}
@@ -6439,20 +6432,7 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
  '.avfoco{animation:avFoco 1.6s ease 2;border-radius:12px}'].join('\n');document.head.appendChild(st)})();
 function avChofDe(x){return S.choferes.filter(function(c){var n=chofN(c.id);return n&&new RegExp('(^|[^A-Za-zÁÉÍÓÚáéíóúñÑ])'+reEsc(n)+'([^A-Za-zÁÉÍÓÚáéíóúñÑ]|$)').test(x)})[0]||null}
 /* a dónde lleva cada aviso y qué resalta al llegar */
-var _avD37=avDestino;avDestino=function(x){var r=_avD37.apply(this,arguments)||{t:'inicio',cli:null},ch=avChofDe(x),pk=typeof avPinK==='function'?avPinK(x):null;r.sel=null;
- if(pk||/PIN de /.test(x)){var id=pk&&/^c:/.test(pk)?+pk.slice(2):(ch?ch.id:null);r.t='personal';r.cli=null;if(id){S.openCh=id;S.fiTab['emp:'+id]='dat'}r.sel='[data-act="pinreset"]';return r}
- if(/pide reabrir su ruta/.test(x)){r.t='inicio';r.cli=null;r.sel='[data-act="reabsi"]';return r}
- if(/no envió su cierre|segundo cierre|reabrió su (cierre|ruta)|Cierre con faltante|no se contaron las cajas/i.test(x)){r.t='cierreadm';r.cli=null;if(ch&&+S.chofHoy!==+ch.id)try{chCambiar(+ch.id)}catch(e){}return r}
- if(/SIN ticket: .*(L por|combustible)|cargó combustible SIN ticket/.test(x)||/registró un gasto/.test(x)){r.t='gastos';r.cli=null;return r}
- if(/báscula|Báscula/.test(x)){r.t='cargas';r.cli=null;return r}
- if(/DEF|Consumo alto|Problema en el viaje|cajas vacías se quedaron|lleva \d+ cajas vacías|Pagar a |roatán de .* vino bajo/.test(x)){r.t='cargas';r.cli=null;return r}
- if(/Salió con una falla|no puede salir|hizo el encargo|no pudo hacer el encargo/.test(x)){r.t='vehiculos';r.cli=null;var vh=S.veh.filter(function(v){return !v.baja&&x.indexOf(v.n)>-1})[0];if(vh)S.vehOpen=vh.id;return r}
- if(/Pedido para|registró un pedido/.test(x)){r.t='inicio';r.cli=null;r.sel='.pedcard,[data-key="pedidos"]';return r}
- if(/no tomó la foto|anuló|corrigió la entrega|pidió corregir|canceló la entrega|cambió fruta|está ayudando|cargó .* más en bodega|Reporte de/.test(x)&&ch){r.t='personal';r.cli=null;S.openCh=ch.id;S.fiTab['emp:'+ch.id]='ruta';return r}
- if(/Revisa el número|agregó el teléfono|dio de alta un cliente|Cliente nuevo|guardó la ubicación|no pudo guardar la ubicación|cerró el negocio|le compró a otro proveedor|pasó su límite|Mayoreo por debajo|mayoreo .* veces|ya lleva 5 compras|bajó su consumo|pide permiso (de mayoreo|para fiarle)|quedó con deuda/.test(x)){
-  var c=null;S.cli.forEach(function(k){if(!k.oculto&&k.n&&x.indexOf(k.n)>-1&&(!c||k.n.length>c.n.length))c=k});if(c){r.t='clientes';r.cli=c.id;S.fiTab=S.fiTab||{};if(/número|teléfono|ubicación|dio de alta|Cliente nuevo/.test(x))S.fiTab['cli:'+c.id]='dat';return r}}
- if(r.t==='inicio'&&ch&&!esAdm(ch)){r.t='personal';S.openCh=ch.id}
- return r};
+/* avDestino: pasó a tema-avisos.js */
 /* al llegar: baja hasta el lugar y lo resalta */
 function avFoco(sel){if(!sel)return;var n=0,f=function(){var el=document.querySelector(sel);if(!el){if(++n<8)setTimeout(f,120);return}var c=el.closest('.card')||el;try{c.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}c.classList.remove('avfoco');void c.offsetWidth;c.classList.add('avfoco');setTimeout(function(){c.classList.remove('avfoco')},3400)};setTimeout(f,150)}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avgo"]');if(!b||e.target.closest('[data-act="avpos"],[data-act="atiende"]'))return;e.stopImmediatePropagation();
@@ -6462,7 +6442,7 @@ var _popI37=popItems;popItems=function(){var L=_popI37.apply(this,arguments);if(
  avisos().filter(function(x){return AV_URG.test(x)}).forEach(function(x){var t=x.replace(/^URGENTE:\s*/,'').replace(/\s*\[pin:[^\]]+\]/,'');if(ya.indexOf(t.slice(0,30))>-1)return;
   L.push({t:'Atiende esto',m:esc(t),b:[['Ir a atenderlo','avgo',' data-k="'+encodeURIComponent(x)+'"']]})})}catch(e){}return L};
 /* el texto del aviso no enseña la marca [pin:…] */
-var _avRow37=avRow;avRow=function(x,u){return _avRow37.apply(this,arguments).replace(/\s*\[pin:[^\]]+\]/,'')};
+/* avRow: pasó a tema-avisos.js */
 /* al reiniciar el PIN, se quita la petición y su aviso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pinreset"]');if(!b)return;var k=b.dataset.k;if(S.pinPide)delete S.pinPide[k];if(S.pinPista)delete S.pinPista[k];S.avPrecio=(S.avPrecio||[]).filter(function(x){return x.indexOf('[pin:'+k+']')<0})},true);
 
@@ -7622,7 +7602,7 @@ function avYo(x){x=String(x==null?'':x);var pre='',m=/^(URGENTE: )/.exec(x);if(m
  var yo=[quien()];try{if(S.role==='admin')yo.push(adminNom())}catch(e){}yo.push('Tú');
  for(var i=0;i<yo.length;i++){var n=yo[i];if(!n||x.indexOf(n+' ')!==0)continue;var r=x.slice(n.length+1);for(var v in AV_VERB){if(r.indexOf(v+' ')===0||r===v)return pre+AV_VERB[v]+r.slice(v.length)}if(n==='Tú')return pre+'Tú: '+r}
  return pre+x}
-var _avRow51=avRow;avRow=function(x,u){var h=_avRow51.apply(this,arguments),y=avYo(x);return y===x?h:h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(y)+'</span>')};
+/* avRow: pasó a tema-avisos.js */
 
 //@@capa l52.js
 /* ===================== v6.6 · Escáner nativo (ya no se cierra la app), ubicación siempre prendida del celular del negocio,
@@ -7685,10 +7665,7 @@ function gpsAlertas(){if(S.role!=='admin')return;var A=S.gpsAv=S.gpsAv||{},ahora
 function hmDe(t){var d=new Date(+t);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 setInterval(function(){try{gpsAdmEscucha();gpsAlertas();gpsLimpia()}catch(e){}},60000);setTimeout(function(){try{gpsAdmEscucha()}catch(e){}},5000);
 /* los avisos con [tel:…] y [geo:…] muestran botones de Llamar y Ver dónde */
-var _avRow52=avRow;avRow=function(x,u){var tel=/ \[tel:(\d+)\]/.exec(x),geo=/ \[geo:(-?[\d.]+),(-?[\d.]+)\]/.exec(x);if(!tel&&!geo)return _avRow52.apply(this,arguments);
- var lim=x.replace(/ \[tel:\d+\]/,'').replace(/ \[geo:[^\]]+\]/,''),h=_avRow52.apply(this,arguments);h=h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>').replace('<span class="grow">'+esc(avYo(x))+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>');
- var bt=(tel?'<a class="btn sm" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="tel:'+tel[1]+'" data-noav="1">📞 Llamar</a>':'')+(geo?'<a class="btn sm sec" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="https://www.google.com/maps?q='+geo[1]+','+geo[2]+'" target="_blank" rel="noopener" data-noav="1">📍 Ver dónde</a>':'');
- return h.replace(/<\/div>$/,'<span style="display:flex;gap:6px;flex-wrap:wrap">'+bt+'</span></div>')};
+/* avRow: pasó a tema-avisos.js */
 window.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-noav]'))e.stopPropagation()},true);
 /* borrar puntos de más de 30 días (una vez al día) */
 function pad13(n){return ('0000000000000'+Math.max(0,Math.round(n))).slice(-13)}
@@ -8250,7 +8227,7 @@ setInterval(function(){try{if(_popPausa&&Date.now()-_popPausa.t>90000&&S.tab[S.r
 
 /* ---------- marcas escondidas en el texto de los avisos ---------- */
 function avLimpio(x){return String(x||'').replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'')}
-var _avRow60=avRow;avRow=function(x,u){return _avRow60.apply(this,arguments).replace(/\s*\[(gps|gpsev):[^\]]*\]/g,'')};
+/* avRow: pasó a tema-avisos.js */
 var _natN60=natNotif;natNotif=function(t,x){return _natN60.call(this,avLimpio(t),avLimpio(x))};
 
 /* ---------- actividad del día (lo que pasó, sin ser aviso) ---------- */
@@ -8301,15 +8278,7 @@ var _popI60=popItems;popItems=function(){var L=_popI60.apply(this,arguments);try
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avgeo"],[data-act="avtel"]');if(!b)return;e.stopImmediatePropagation();
  var u=b.dataset.act==='avtel'?'tel:'+b.dataset.tel:'https://www.google.com/maps?q='+b.dataset.lat+','+b.dataset.lng;try{if(b.dataset.act==='avtel')location.href=u;else window.open(u,'_blank')}catch(er){}},true);
 /* a dónde lleva cada aviso */
-var _avD60=avDestino;avDestino=function(x){var r=_avD60.apply(this,arguments)||{t:'inicio',cli:null};try{var ch=avChofDe(x);
- /* ubicación / celular apagado → ficha del chofer, en "Su recorrido" con su última ubicación */
- if(/\[gps(ev)?:|no manda su ubicación|apagó el celular|apagó la ubicación|quitó el permiso de ubicación|ubicación detenida|sin señal/.test(x)){r.t='personal';r.cli=null;if(ch){S.openCh=ch.id;S.fiTab=S.fiTab||{};S.fiTab['emp:'+ch.id]='ruta'}r.sel='[data-k^="gpsruta"]';return r}
- /* efectivo que no coincide → tarjeta del faltante */
- if(/el efectivo de .* no coincide/.test(x)){S.faov={x:x};r.t=S.tab[S.role]||'inicio';r.cli=null;r.sel=null;return r}
- /* faltante de cierre → recepción */
- if(/faltante|Faltaron/i.test(x)&&!/no coincide/.test(x)){r.t='cierreadm';if(ch&&+S.chofHoy!==+ch.id)try{chCambiar(+ch.id)}catch(e){}return r}
- /* equipo sin entregar → bienes del chofer */
- if(/no ha entregado su equipo|NO entregó /.test(x)){r.t='bienes';r.cli=null;return r}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- 20 · "el efectivo no coincide": tarjeta de pantalla completa del faltante ---------- */
 function faChof(x){var c=null;try{c=avChofDe(x)}catch(e){}return c}
@@ -8342,16 +8311,7 @@ function actGrupos(f){var G={};actDe(null,f).forEach(function(a){var k=a.ch!=nul
 function actResumen(L){var c={g:0,cn:0,rc:0,ca:0,co:0,ot:0};L.forEach(function(a){var x=a.x;if(/registró un gasto/.test(x))c.g++;else if(/cliente nuevo|Cliente nuevo/.test(x))c.cn++;else if(/cargó \d+ cajas/.test(x)||/regresa a la bodega a cargar/.test(x))c.ca++;else if(/reabrió/.test(x))c.rc++;else if(/corrigió|canceló la entrega|anuló|cambió fruta/.test(x))c.co++;else c.ot++});
  var p=[];if(c.g)p.push(c.g+' gasto'+(c.g>1?'s':''));if(c.cn)p.push(c.cn+' cliente'+(c.cn>1?'s':'')+' nuevo'+(c.cn>1?'s':''));if(c.ca)p.push('volvió a cargar'+(c.ca>1?' '+c.ca+' veces':''));if(c.rc)p.push('reabrió '+c.rc+' vez'+(c.rc>1?'es':''));if(c.co)p.push(c.co+' cambio'+(c.co>1?'s':''));if(c.ot)p.push(c.ot+' más');return p.join(', ')}
 function actDiaHTML(f,ch,tit){var L=actDe(ch,f);if(!L.length)return '';return '<div style="margin-top:8px"><b>'+(tit||'Lo que pasó')+'</b>'+L.map(function(a){return '<div class="actl"><span class="lbl">'+esc(a.h)+'</span>'+esc(typeof avYo==='function'?avYo(a.x):a.x)+'</div>'}).join('')+'</div>'}
-var _avH60=avisosHTML;avisosHTML=function(av){var hoy=iso(TODAY),G=actGrupos(hoy),gk=Object.keys(G),visto=(S.actVisto||{})[hoy]||0,nAct=actDe(null,hoy).length;
- var U=av.filter(function(x){return AV_URG.test(x)}),I=av.filter(function(x){return !AV_URG.test(x)&&AV_INFO.test(x)}),N=av.filter(function(x){return U.indexOf(x)<0&&I.indexOf(x)<0});
- var lv={r:'Urgente',o:'Pronto',b:'Info'},row=function(x){var n=avNivel(x);return avRow(x).replace('class="av"','class="av avl '+n+'"').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="avlv '+n+'">'+lv[n]+'</span>')};
- N.sort(function(a,b){var o={r:0,o:1,b:2};return o[avNivel(a)]-o[avNivel(b)]});var P=U.concat(N);
- var h=P.length?'<div class="card'+(U.length?' alert':'')+'" style="'+(U.length?'border-width:2px':'')+'"><b class="tt">Por atender ('+P.length+')</b><div class="lbl">Toca uno para ir a donde se resuelve. Deslízalo hacia un lado para posponerlo a mañana.</div>'+P.map(row).join('')+'</div>':'';
- var nInfo=I.length+gk.length;if(nInfo&&(I.length||nAct>visto)){h+='<details class="card" data-k="avinfo"'+(S.dOpen.avinfo?' open':'')+'><summary><b>Informativos</b><span class="lbl">'+nInfo+' · se borran solos mañana</span></summary>'
-  +gk.map(function(k){return '<div class="actl"><b>'+esc(k)+':</b> '+esc(actResumen(G[k]))+'</div>'}).join('')+I.map(row).join('')
-  +(nAct?'<details style="margin-top:6px"><summary class="lbl">Ver la actividad de hoy ('+nAct+')</summary>'+actDiaHTML(hoy,null,' ')+'</details>':'')
-  +'<button class="btn sm sec" style="width:auto;margin-top:8px" data-act="avvisto">Marcar todo como visto</button></details>'}
- return h};
+/* avisosHTML: pasó a tema-avisos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avvisto"]');if(!b)return;e.stopImmediatePropagation();var hoy=iso(TODAY);S.actVisto=S.actVisto||{};S.actVisto[hoy]=actDe(null,hoy).length;
  S.avPrecio=(S.avPrecio||[]).filter(function(x){return typeof x!=='string'||AV_URG.test(x)||!AV_INFO.test(x)});toast('Listo');render()},true);
 /* recepción del cierre: "Lo que pasó hoy en su ruta" antes de confirmar el efectivo */
@@ -8369,7 +8329,7 @@ function chAvLimpia(){var R=S.rutaAv;if(!R)return false;var cam=false;Object.key
 /* ---------- se ordena todo antes de dibujar ---------- */
 /* lo informativo se pasa a la actividad un momento después (algunas partes le agregan el motivo al aviso justo después de crearlo) */
 var _avOrdT=0;function avOrdenaLuego(){if(_avOrdT)return;if(!(S.avPrecio||[]).some(function(x){return typeof x==='string'&&avEsAct(x)}))return;_avOrdT=setTimeout(function(){_avOrdT=0;try{if(avOrdena())render()}catch(e){}},1200)}
-var _avs60=avisos;avisos=function(){return _avs60.apply(this,arguments).filter(function(x){return typeof x!=='string'||!avEsAct(x)})};
+/* avisos: pasó a tema-avisos.js */
 var _rd60a=render;render=function(){try{avOrdenaLuego();faLimpia();chAvLimpia()}catch(e){console.error(e)}var r=_rd60a.apply(this,arguments);
  try{var fo=document.getElementById('faov');if(fo)fo.remove();var fh=faovHTML();if(fh){var w=document.createElement('div');w.innerHTML=fh;document.body.appendChild(w.firstElementChild)}}catch(e){console.error(e)}
  try{tabBadges()}catch(e){console.error(e)}return r};
@@ -8760,7 +8720,7 @@ function respHaz(manual){var n=natPl();if(!n||!n.respaldoGuardar){if(manual){try
 function respUlt(){try{return localStorage.getItem('respUlt')}catch(e){return null}}
 setInterval(function(){try{if(window.__pnTest&&!window.__respTest)return;if(!(S.role==='admin'&&!S.encOn)||!_cargado)return;if(respUlt()===iso(new Date()))return;respHaz(false)}catch(e){}},30000);
 setTimeout(function(){try{if(window.__pnTest&&!window.__respTest)return;if(S.role==='admin'&&!S.encOn&&respUlt()!==iso(new Date()))respHaz(false)}catch(e){}},8000);
-var _av63=avisos;avisos=function(){var a=_av63.apply(this,arguments);try{if(S.role==='admin'&&!S.encOn&&natPl()&&natPl().respaldoGuardar){var u=respUlt(),d=u?Math.round((new Date(iso(new Date())).getTime()-new Date(u).getTime())/864e5):99;if(d>2)a.push('URGENTE: lleva '+(u?d+' días':'mucho')+' sin respaldo. Ve a Ajustes › Respaldo y toca "Respaldar ahora".')}}catch(e){}return a};
+/* avisos: pasó a tema-avisos.js */
 var _aj63=ajHTML;ajHTML=function(){var h=_aj63.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var u=respUlt(),dn='';try{dn=localStorage.getItem('respDonde')||''}catch(e){}
  var c='<div class="card" data-key="respauto"><b>Respaldo automático</b><div class="lbl">Cada día, la primera vez que abres la app, se guarda una copia en este celular (se quedan los últimos 30 días).</div>'
   +rw('Último',u?fmtF(u):'todavía no')+(dn?rw('Dónde',esc(dn)):'')
@@ -9026,7 +8986,7 @@ var _rd67a=render;render=function(){var r=_rd67a.apply(this,arguments);try{var b
  'input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}'].join('\n');document.head.appendChild(st)})();
 /* 46 · la barra se vuelve a dibujar en cada actualización y la animación del numerito arrancaba de nuevo (parpadeo):
    ahora la animación sigue su ritmo según el reloj, aunque se vuelva a dibujar */
-var _tb67=tabBadges;tabBadges=function(){var r=_tb67.apply(this,arguments);try{var d=-(Date.now()%1100)+'ms';Array.prototype.forEach.call(document.querySelectorAll('nav.tabs .tbadge.blink'),function(b){b.style.animationDelay=d})}catch(e){}return r};
+/* tabBadges: pasó a tema-avisos.js */
 /* 48 · numerito de la barra: 1er toque = ir a la sección; 2º toque (ya estando ahí) = ir directo al pendiente de ese numerito */
 function tabPend48(t){var cas=['inicio','bodega','cargas','clientes','gastos','mas'],nv=document.querySelector('nav.tabs'),enBarra={};if(nv)Array.prototype.forEach.call(nv.querySelectorAll('button[data-t]'),function(b){enBarra[b.dataset.t]=1});
  return avSinEfecto(function(){var L=[];try{L=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}
@@ -9129,11 +9089,7 @@ inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=di
  return d};
 
 /* ---------- 50 · "Por atender": tarjetas de color con ícono ---------- */
-var _avRow68=avRow;avRow=function(x,u){var h=_avRow68.apply(this,arguments);try{var I=avInfo68(x);
-  h=h.replace('data-swipe=','data-c68="'+I.col+'" data-swipe=').replace('style="display:flex;','style="--c68:'+COL68[I.col]+';display:flex;').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
-  /* la marca de "Urgente/Pronto" la da el color; el borde izquierdo de antes ya no */
-  h=h.replace(/;border-left:5px solid var\(--danger\);font-weight:700/,';font-weight:700');
-  var m=/<button class="link"[^>]*data-act="avpos"[^>]*>[^<]*<\/button>/.exec(h);if(m){h=h.replace(m[0],'');h=h.replace(/(<span class="grow">)([\s\S]*?)(<\/span>)/,'$1$2<br>'+m[0].replace('class="link"','class="link pos68"')+'$3')}}catch(e){}return h};
+/* avRow: pasó a tema-avisos.js */
 
 /* ---------- 61 · ventana de aviso urgente ---------- */
 var _popH68=popHTML;popHTML=function(){var h=_popH68.apply(this,arguments);if(!h)return h;try{var L=popItems(),i=S.popI||0,x=L[i];if(!x)return h;
@@ -9165,9 +9121,7 @@ var _rd68n=render;render=function(){var r=_rd68n.apply(this,arguments);try{
   _t68=t;_pin68=pin}catch(e){}return r};
 
 /* ---------- 62c · numerito de la barra, 2º toque: va al pendiente EXACTO (baja y lo marca); si hay varios, cada toque pasa al siguiente ("1 de 4: …") ---------- */
-var _avD68=avDestino;avDestino=function(x){var r=_avD68.apply(this,arguments)||{t:'inicio',cli:null};try{
-  if(/(roat[aá]n|macho).*(madur|se pasa|pas[oó] su tiempo|pasaron de tiempo)|Lote de (roat[aá]n|macho)/i.test(x)&&!r.sel){var R=/roat[aá]n/i.test(x);r.t='bodega';r.cli=null;r.sel='[data-x="antig65"] .lote[data-p="'+(R?'R':'M')+'"],[data-x="antig65"]';r.lote68=R?'R':'M'}
- }catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 var _np68={};
 tabPend48=function(t){var cas=['inicio','bodega','cargas','clientes','gastos','mas'],nv=document.querySelector('nav.tabs'),enBarra={};if(nv)Array.prototype.forEach.call(nv.querySelectorAll('button[data-t]'),function(b){enBarra[b.dataset.t]=1});
  var L=avSinEfecto(function(){var A=[];try{A=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}
@@ -9384,7 +9338,7 @@ var _cr69=cuentasRevisar;cuentasRevisar=function(){var R=_cr69.apply(this,argume
    else if(x.n0==='Las cajas cuadran con dónde están'){var w2=cajasDonde();d='Total '+Math.round(w2.tot)+': vacías en bodega '+num(w2.vac)+', llenas '+num(w2.llenas)+', en camión '+num(w2.cam)+', con clientes '+num(w2.cli)+', con proveedores '+num(w2.pv)}
    else if(x.n0==='Inventario sin números negativos'){d=d.replace(/cajas vacías/g,'taras vacías')+'. Corrige el conteo en Bodega'}
    x.det=d+(x.app?'. Es un error de la app, no tuyo; ya quedó anotado':'');if(x.app)apErr('no cuadra',x.n+': '+d,'cuentas')})}catch(e){}return R};
-var _avD69=avDestino;avDestino=function(x){var r=_avD69.apply(this,arguments)||{t:'inicio',cli:null};try{if(/no cuadra/.test(x)){if(/taras|cajas/i.test(x)){r.t='bodega';r.cli=null;r.sel='[data-act="cjfis"],.card.cajas68,[data-x="exist65"]'}else if(!r.sel){r.t='inicio';r.cli=null;r.sel='[data-x="cuadra68"]'}}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 /* "¿Cuadra todo?" a la vista en Inicio */
 function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter(function(x){return !x.ok}),d=document.createElement('div');d.dataset.x='cuadra68';
  if(!m.length){d.className='card';d.style.cssText='padding:12px 16px;display:flex;align-items:center;gap:12px;border:1.5px solid color-mix(in srgb,#16A34A 40%,transparent);background:color-mix(in srgb,#16A34A 9%,var(--surface))';d.innerHTML='<span style="font-size:26px">✓</span><span><b style="font-size:17px;color:#15803D">Todo cuadra</b><br><span class="lbl">Caja, cajas, kilos, taras y deudas ('+R.length+' revisiones)</span></span>';return d}
@@ -9474,7 +9428,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 (function(){var s=null;document.addEventListener('pointerdown',function(e){var l=e.target.closest&&e.target.closest('.lote[data-act="lt53"]');s=l?{l:l,x:e.clientX,y:e.clientY}:null},true);
  document.addEventListener('pointerup',function(e){if(!s)return;var dx=e.clientX-s.x,dy=e.clientY-s.y,l=s.l;s=null;if(Math.abs(dx)>60&&Math.abs(dy)<40)l.click()},true)})();
 /* al llegar desde el numerito de la barra (62c), además de marcar el lote se abren sus opciones */
-var _avF70=avFoco;avFoco=function(sel){_avF70.apply(this,arguments);try{if(/\.lote\[data-p=/.test(sel||'')){setTimeout(function(){var el=document.querySelector(sel.split(',')[0]);if(el&&!S.lt53)el.click()},900)}}catch(e){}};
+/* avFoco: pasó a tema-avisos.js */
 
 /* =============== 57 · pedidos por WhatsApp =============== */
 function chofsDia57(){return choferesL().filter(function(c){return !c.baja})}
@@ -10316,7 +10270,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4134,"l8.js"],[4145,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4976,"l17.js"],[5007,"l18.js"],[5084,"l19.js"],[5154,"l20.js"],[5203,"l21.js"],[5249,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5698,"l27.js"],[5764,"l28.js"],[5896,"l29.js"],[6022,"l30.js"],[6067,"l31.js"],[6103,"l32.js"],[6197,"l33.js"],[6217,"l34.js"],[6277,"l35.js"],[6337,"l36.js"],[6435,"l37.js"],[6469,"l38.js"],[6557,"l39.js"],[6638,"l40.js"],[6762,"l41.js"],[6846,"l42.js"],[6949,"l43.js"],[7058,"l44.js"],[7159,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7422,"l48.js"],[7477,"l49.js"],[7513,"l50.js"],[7617,"l51.js"],[7627,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8048,"l58.js"],[8175,"l59.js"],[8237,"l60.js"],[8416,"l61.js"],[8473,"l62.js"],[8603,"l63.js"],[8774,"l64.js"],[8806,"l65.js"],[8907,"l66.js"],[9013,"l67.js"],[9040,"l68.js"],[9180,"l69.js"],[9400,"l70.js"],[9622,"l71.js"],[9747,"l72.js"],[9859,"l73.js"],[9925,"l74.js"],[10054,"l75.js"],[10207,"l76.js"],[10310,"l77.js"],[10438,"l78.js"],[10580,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11221,"l83.js"],[11294,"l84.js"],[11407,"l85.js"],[11469,"tema-rutadia.js"],[11634,"l86.js"],[11694,"l87.js"],[11737,"l88.js"],[11791,"l89.js"],[11834,"l90.js"],[11953,"tema-cobranza.js"],[12101,"tema-pantallas.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4134,"l8.js"],[4145,"l9.js"],[4458,"l10.js"],[4518,"l11.js"],[4535,"l12.js"],[4582,"l13.js"],[4728,"l14.js"],[4804,"l15.js"],[4866,"l16.js"],[4969,"l17.js"],[5000,"l18.js"],[5077,"l19.js"],[5147,"l20.js"],[5196,"l21.js"],[5242,"l22.js"],[5446,"l23.js"],[5500,"l24.js"],[5517,"l25.js"],[5548,"l26.js"],[5691,"l27.js"],[5757,"l28.js"],[5889,"l29.js"],[6015,"l30.js"],[6060,"l31.js"],[6096,"l32.js"],[6190,"l33.js"],[6210,"l34.js"],[6270,"l35.js"],[6330,"l36.js"],[6428,"l37.js"],[6449,"l38.js"],[6537,"l39.js"],[6618,"l40.js"],[6742,"l41.js"],[6826,"l42.js"],[6929,"l43.js"],[7038,"l44.js"],[7139,"l45.js"],[7223,"l46.js"],[7291,"l47.js"],[7402,"l48.js"],[7457,"l49.js"],[7493,"l50.js"],[7597,"l51.js"],[7607,"l52.js"],[7750,"l53.js"],[7772,"l54.js"],[7847,"l55.js"],[7876,"l56.js"],[7961,"l57.js"],[8025,"l58.js"],[8152,"l59.js"],[8214,"l60.js"],[8376,"l61.js"],[8433,"l62.js"],[8563,"l63.js"],[8734,"l64.js"],[8766,"l65.js"],[8867,"l66.js"],[8973,"l67.js"],[9000,"l68.js"],[9134,"l69.js"],[9354,"l70.js"],[9576,"l71.js"],[9701,"l72.js"],[9813,"l73.js"],[9879,"l74.js"],[10008,"l75.js"],[10161,"l76.js"],[10264,"l77.js"],[10392,"l78.js"],[10534,"l79.js"],[10644,"l80.js"],[10768,"l81.js"],[10921,"l82.js"],[11174,"l83.js"],[11247,"l84.js"],[11360,"l85.js"],[11422,"tema-rutadia.js"],[11587,"l86.js"],[11647,"l87.js"],[11690,"l88.js"],[11740,"l89.js"],[11783,"l90.js"],[11902,"tema-cobranza.js"],[12049,"tema-pantallas.js"],[12268,"tema-avisos.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -11094,8 +11048,7 @@ window.addEventListener('pointerup',function(e){if(PD82&&(Math.abs(e.clientX-PD8
   var ae=document.activeElement;if(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)&&ae!==a.el)return;var x=ancHalla82(a);if(!x)return;var d=x.getBoundingClientRect().top-a.top;if(Math.abs(d)>12){var t=ANC82.t;window.scrollBy(0,d);ANC82.t=t}}catch(er){}};
  setTimeout(fija,30);setTimeout(fija,150);setTimeout(fija,450)},true);
 /* el aviso "Lote de roatán (20 cajas) pasó su tiempo" es de MADURACIÓN: lleva a ese lote (botón "Sacar"), no a la fruta madura por antigüedad */
-var _avD82=avDestino;avDestino=function(x){var r=_avD82.apply(this,arguments);try{var m=/^Lote de (roatán|macho) \(([\d.]+) (cajas|kg)\) pasó su tiempo/i.exec(String(x||''));if(m&&r){var pr=/roat/i.test(m[1])?'R':'M',q=num(m[2]),l=(S.lotes||[]).filter(function(o){return o.prod===pr&&num(o.q)===q})[0]||(S.lotes||[]).filter(function(o){return o.prod===pr})[0];
- r.t='bodega';r.sel=l?'[data-act="sacar"][data-id="'+l.id+'"]':'[data-act="sacar"]';delete r.lote68}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- 46 · lo que carga el chofer: un solo cálculo, con lo que de verdad se ha entregado ----------
    Antes: arriba decía "no hay con qué calcularlo" y abajo "Tus 5 clientes suelen llevar ~8 cajas y 60 kg": ese "suelen llevar"
@@ -11713,7 +11666,7 @@ function salio87(o){return !!(o&&o.salida&&o.salida.ok)}
 /* ---------- 74 · "X no envió su cierre": se quita solo; y su pantalla trae botones ---------- */
 function bloqueado87(nombre){return porLib86().some(function(x){return chofN(x.id)===nombre})}
 function limpiaCierre87(){if(S.role!=='admin'||!Array.isArray(S.avPrecio))return;var cambio=false;S.avPrecio=S.avPrecio.filter(function(x){var m=/^(?:URGENTE:\s*)?(.+?) no envió su cierre de ayer/.exec(String(x||''));if(!m)return true;var ns=m[1].split(/,\s*/),sigue=ns.some(bloqueado87);if(!sigue)cambio=true;return sigue});return cambio}
-var _avD87=avDestino;avDestino=function(x){var r=_avD87.apply(this,arguments);try{if(/no envió su cierre/.test(String(x))&&r){r.t='inicio';r.sel='[data-x="dia80a"]'}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 function cierreAdm87(){if(S.role!=='admin'||S.tab.admin!=='cierreadm')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cad87"]'))return;var id=S.chofHoy;if(id==null||(S.cierre&&S.cierre.sent))return;var bl=porLib86().some(function(x){return x.id===+id});
  var d=document.createElement('div');d.dataset.x='cad87';d.className='card '+(bl?'alert':'note');d.style.padding='12px 14px';
  d.innerHTML=bl?'<b style="font-size:18px">'+esc(chofN(id))+' no ha mandado su cierre '+esc(del80(S.rutaDia80))+'</b><div class="lbl">Si no puede mandarlo, libera su ruta de hoy; lo de antes se queda en el historial para cuadrarlo con él.</div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn sec" style="flex:1;min-height:52px" data-act="dia80r" data-id="'+id+'">Recordarle</button><button class="btn" style="flex:1;min-height:52px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button></div>'
@@ -11758,13 +11711,9 @@ function ordena88(){if(S.role!=='admin'||!Array.isArray(S.avPrecio))return;var c
   if(!/^URGENTE/i.test(x)&&INFO88.test(t)){try{actAdd(null,x)}catch(e){}cam=true;return false}
   var m=/^Revisa el número: .*? (?:el WhatsApp de|el teléfono de|el número de) (.+?) \(/.exec(t);if(m){var c=(S.cli||[]).filter(function(y){return y.n===m[1]})[0];try{if(c&&telConfOk(c)){actAdd(null,'Confirmaste el teléfono de '+c.n);cam=true;return false}}catch(e){}}
   return true});return cam}
-var _avs88=avisos;avisos=function(){var L=_avs88.apply(this,arguments);if(S.role!=='admin')return L;var hoy=iso(TODAY),O=S.avOk88||{},D=S.avLater88||{};
- return L.filter(function(x){if(typeof x!=='string')return true;if(O[x])return false;if(D[x]&&D[x]>hoy)return false;return true})};
+/* avisos: pasó a tema-avisos.js */
 /* ---------- 75 · Ir / ✓ Listo / Recordar mañana ---------- */
-var _pc88=pendCard86;pendCard86=function(){_pc88.apply(this,arguments);var c=document.querySelector('[data-x="pnd86"]');if(!c||c.dataset.v88)return;c.dataset.v88='1';
- Array.prototype.forEach.call(c.querySelectorAll('button.it[data-act="avgo"]'),function(b){var x=decodeURIComponent(b.dataset.k||''),din=DIN88.test(x),fa=/^(URGENTE:\s*)?Salió con una falla/.test(x);var d=document.createElement('div');d.className='it88';
-  d.innerHTML=b.querySelector('.tx').innerHTML.replace(/<span class="lbl" style="font-size:20px">›<\/span>/,'')+(fa?falla88HTML(x):'<div class="row88"><button class="ir88" data-act="avgo" data-k="'+b.dataset.k+'">Ir ›</button>'+(din?'<button class="ok88" data-act="av88m" data-k="'+b.dataset.k+'">Recordar mañana</button>':'<button class="ok88" data-act="av88ok" data-k="'+b.dataset.k+'">✓ Listo</button>')+'</div>');b.replaceWith(d)});
- var lb=c.querySelector('.lbl');if(lb)lb.textContent='Es el numerito de la barra de abajo. "Ir" te lleva a resolverlo; "✓ Listo" lo quita.'};
+/* pendCard86: pasó a tema-avisos.js */
 function quita88(x,como){var hoy=iso(TODAY),i=(S.avPrecio||[]).indexOf(x);if(i>-1){S.avPrecio=S.avPrecio.filter(function(y){return y!==x})}else{S.avOk88=S.avOk88||{};S.avOk88[x]=hoy}try{actAdd(null,(como||'Atendido')+': '+avLimpio88(x))}catch(e){}}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="av88ok"],[data-act="av88m"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var x=decodeURIComponent(b.dataset.k||'');
  if(b.dataset.act==='av88ok'){quita88(x,'Visto');toast('Listo: se quitó de pendientes')}else{S.avLater88=S.avLater88||{};S.avLater88[x]=iso(new Date(TODAY.getTime()+864e5));toast('Te lo recuerdo mañana')}render()},true);
@@ -12060,9 +12009,8 @@ function rev91(){if(S.role!=='admin')return;var hoy=iso(TODAY);(S.cli||[]).forEa
  if(!(num(c.cred)>0.005)){c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:true}]);c.prom91=null;try{crHist(c,'cumplió: pagó lo que prometió')}catch(e){}return}
  if(!p.no&&p.f<hoy){if(num(c.cred)<num(p.cred0)-0.5){c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:true,parte:true}]);c.prom91=null;try{crHist(c,'pagó una parte de lo que prometió')}catch(e){}}
   else{p.no=true;c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:false}]);try{crHist(c,'no pagó lo que prometió el '+fCorta91(p.f))}catch(e){}}}})}
-var _avs91=avisos;avisos=function(){var L=_avs91.apply(this,arguments);try{if(S.role==='admin'){var hoy=iso(TODAY);(S.cli||[]).forEach(function(c){var p=c&&c.prom91;if(!p||c.oculto||!(num(c.cred)>0.005))return;
-  if(p.no)L.push('Pago vencido: '+c.n+' no pagó su deuda como prometió ('+fCorta91(p.f)+'): debe '+money(c.cred));else if(p.f===hoy)L.push('🤝 Hoy ('+fCorta91(p.f)+') prometió pagar '+c.n+': '+money(num(p.m)||num(c.cred)))})}}catch(e){}return L};
-var _avD91=avDestino;avDestino=function(x){var r=_avD91.apply(this,arguments);try{if(/prometió pagar|como prometió/.test(String(x))&&r){r.t='inicio';r.cli=null;r.sel='[data-x="cob91c"]'}}catch(e){}return r};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- los abonos llevan fecha (para el estado de cuenta) ---------- */
 function cobF91(){var L=S.cobros;if(!Array.isArray(L))return;if(S.cobN91==null||S.cobN91>L.length){S.cobN91=L.length;return}for(var i=S.cobN91;i<L.length;i++){var x=L[i];if(x&&!x.f){x.f=iso(TODAY);x.h=hhmm();try{x.q=quien()}catch(e){}}}S.cobN91=L.length}
@@ -12141,17 +12089,17 @@ function barra92(){if(!adm92())return;var nv=document.querySelector('nav.tabs');
  [].slice.call(nv.querySelectorAll('button[data-t]')).forEach(function(b){var k=b.dataset.t,on=k===t||(k==='rutas'&&t==='cierreadm')||(k==='mas'&&SEC92.indexOf(t)>-1);b.setAttribute('aria-pressed',String(on));
   })}
 /* numeritos: rojo solo lo urgente; lo demás un puntito gris */
-var _tB92=tabBadges;tabBadges=function(){var r=_tB92.apply(this,arguments);try{[].slice.call(document.querySelectorAll('nav.tabs .tbadge.suave')).forEach(function(b){b.classList.add('dot92');b.classList.remove('blink');b.textContent=''})}catch(e){}return r};
+/* tabBadges: pasó a tema-avisos.js */
 
 /* ---------- lo que solo informa no es pendiente: va a "Lo que pasó hoy" ---------- */
 var INFO92=/desgaste de .* cambió de|cambió de \$[\d.,]+ a \$[\d.,]+ por km/i;
-var _avs92=avisos;avisos=function(){var L=_avs92.apply(this,arguments);if(!adm92())return L;return L.filter(function(x){if(typeof x==='string'&&INFO92.test(x)){try{actAdd(null,x)}catch(e){}return false}return true})};
+/* avisos: pasó a tema-avisos.js */
 
-var _avD92=avDestino;avDestino=function(x){var r=_avD92.apply(this,arguments);try{if(r&&r.t==='personal'&&/sin señal|última ubicación|ubicación del chofer|apagó el GPS|GPS apagado/i.test(String(x)))r.t='rutas'}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 /* 95 · lo que falta recibir es URGENTE: rojo en "Hoy" y numerito rojo en Rutas, hasta que se reciba */
 function atrasTxt95(x){var n=chofN(x.id),d=fCorta91(x.f);return 'URGENTE: falta recibir '+(x.why==='cierre'?'el cierre del '+d+' de '+n:'lo que traía '+n+' del '+d)+' ('+money(x.ef)+')'}
-var _avs95=avisos;avisos=function(){var L=_avs95.apply(this,arguments);try{if(adm92()&&typeof atrasLista93==='function')atrasLista93().forEach(function(x){L.unshift(atrasTxt95(x))})}catch(e){}return L};
-var _avD95=avDestino;avDestino=function(x){if(/^URGENTE: falta recibir /.test(String(x)))return {t:'rutas',cli:null,sel:'[data-x="atr93c"]'};return _avD95.apply(this,arguments)};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 /* ---------- "Viaje en curso": solo en Inicio y Cargas ---------- */
 var _vb92=vwBurbuja;vwBurbuja=function(){if(adm92()&&['inicio','cargas'].indexOf(S.tab.admin)<0)return '';return _vb92.apply(this,arguments)};
 
@@ -12211,12 +12159,7 @@ function act92HTML(){if(!S.act92||!adm92())return '';var hoy=iso(TODAY),G={},I=[
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="act92"],[data-act="act92x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();S.act92=b.dataset.act==='act92';render()},true);
 
 /* ---------- PENDIENTES de cada sección: un renglón que se abre ---------- */
-var _pc92=pendCard86;pendCard86=function(){var r=_pc92.apply(this,arguments);try{var c=document.querySelector('main [data-x="pnd86"]');if(!c||c.dataset.v92)return r;c.dataset.v92='1';var t=S.tab.admin;
- /* el título ya no se repite pegado ("Tienda Don BetoTienda Don Beto: …") */
- [].slice.call(c.querySelectorAll('.it88')).forEach(function(it){var b=it.querySelector('b'),l=it.querySelector('.lbl');if(!b||!l)return;var bt=b.textContent.trim(),lt=l.textContent.trim();if(bt&&lt.indexOf(bt)===0){var rest=lt.slice(bt.length).replace(/^[\s:·,-]+/,'');if(rest)l.textContent=rest.charAt(0).toUpperCase()+rest.slice(1);else l.remove()}});
- var n=c.querySelectorAll('.it88, button.it').length,u=c.querySelectorAll('.it88').length?0:0;var tit=c.querySelector('b');var txt=tit?tit.textContent.replace(/^🔔\s*/,''):(n+' pendientes');if(tit)tit.parentNode===c&&tit.remove();var lb=c.querySelector(':scope>.lbl');if(lb)lb.remove();
- var abierto=(S.pnd92||'')===t;c.classList.add('c92');if(!abierto)c.classList.add('cerr92');
- var h=document.createElement('button');h.className='hd92';h.dataset.act='pnd92';h.innerHTML='🔔 '+esc(txt)+'<span class="go">'+(abierto?'cerrar ▲':'ver ›')+'</span>';c.prepend(h)}catch(e){console.error('pnd92',e)}return r};
+/* pendCard86: pasó a tema-avisos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd92"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var t=S.tab.admin;S.pnd92=(S.pnd92||'')===t?'':t;render()},true);
 
 /* ---------- CLIENTES con pestañas: Clientes · Pedidos · Cobranza ---------- */
@@ -12321,6 +12264,168 @@ function help92(){tutTxt92();try{if(typeof HELP==='undefined'||HELP._92)return;H
  if(HELP.personal)HELP.personal=[HELP.personal[0],'Choferes, ayudantes y bodega: sus datos, permisos y expediente. En "Sueldos" pagas y ves lo que se le debe a cada quien. El mapa y las rutas están en Rutas.'];
  if(HELP.clientes)HELP.clientes=[HELP.clientes[0],String(HELP.clientes[1]||'')+' Arriba tienes tres pestañas: Clientes, Pedidos y Cobranza.']}catch(e){}}
 var _rd92t=render;render=function(){try{help92()}catch(e){}var r=_rd92t.apply(this,arguments);try{tutNuevo92()}catch(e){}return r};
+
+//@@capa tema-avisos.js
+/* ===================== TEMA · Avisos y pendientes (aplanado el 17 nov) =====================
+   Antes estaba repartido en envolturas encadenadas en l5, l6, l9, l22, l37, l51, l52, l60, l63, l67, l68, l69, l70,
+   l82, l87, l88, tema-cobranza.js y tema-pantallas.js. Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo.
+   Se arma AL FINAL (después de tema-pantallas.js), en build.sh.
+   Si se cambia algo de los avisos o pendientes, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - avisos: la lista de avisos (lo que hay que atender). Cada paso agrega, quita o filtra.
+   - avDestino: a dónde lleva cada aviso al tocarlo ("Ir", "Atender", numeritos).
+   - avRow: cómo se dibuja un renglón de aviso. avisosHTML: la tarjeta "Por atender" + "Informativos".
+   - avFoco: marca el lugar exacto al llegar. tabBadges: numeritos de la barra. pendCard86: "🔔 N pendientes · ver" (Ir / Listo).
+   Las funciones que usan los pasos (cuentasRevisar, minAvisos, avEsAct, avInfo68, atrasLista93…) siguen en su capa.
+   ============================================================================================ */
+
+/* ---------- la lista de avisos ---------- */
+var _avisosBase=avisos;
+avisos=function(){var a=_avisosBase.apply(this,arguments);
+ /* l5 · aviso si algo deja de cuadrar */
+ try{cuentasRevisar().filter(function(x){return !x.ok}).forEach(function(x){a.unshift('URGENTE: no cuadra · '+x.n+(x.det?' ('+x.det+')':''))})}catch(e){}
+ /* l6 · choferes sin señal y cambios que no les han llegado */
+ try{offIds().forEach(function(id){var m=sinSenMin(id),p=(S.pendCh[id]||[]).length;if(m>=60)a.unshift(chofN(id)+' lleva '+sinDurTxt(m)+' sin señal'+(conn(id).pos?' · última ubicación: '+conn(id).pos:''));if(p)a.push('Pendiente de llegar a '+chofN(id)+' (sin señal): '+p+' cambio'+(p>1?'s':''))})}catch(e){}
+ /* l22 · los de minAvisos van primero */
+ try{a=minAvisos().concat(a)}catch(e){}
+ /* l60 · 21 · lo que solo es actividad del día no es aviso */
+ a=a.filter(function(x){return typeof x!=='string'||!avEsAct(x)});
+ /* l63 · días sin respaldo */
+ try{if(S.role==='admin'&&!S.encOn&&natPl()&&natPl().respaldoGuardar){var u=respUlt(),d=u?Math.round((new Date(iso(new Date())).getTime()-new Date(u).getTime())/864e5):99;if(d>2)a.push('URGENTE: lleva '+(u?d+' días':'mucho')+' sin respaldo. Ve a Ajustes › Respaldo y toca "Respaldar ahora".')}}catch(e){}
+ /* l88 · los que se marcaron "✓ Listo" o "Recordar mañana" */
+ if(S.role==='admin'){var hoy88=iso(TODAY),O=S.avOk88||{},D=S.avLater88||{};
+  a=a.filter(function(x){if(typeof x!=='string')return true;if(O[x])return false;if(D[x]&&D[x]>hoy88)return false;return true})}
+ /* 91 · Cobranza: promesas de pago de hoy y las que no se cumplieron */
+ try{if(S.role==='admin'){var hoy=iso(TODAY);(S.cli||[]).forEach(function(c){var p=c&&c.prom91;if(!p||c.oculto||!(num(c.cred)>0.005))return;
+  if(p.no)a.push('Pago vencido: '+c.n+' no pagó su deuda como prometió ('+fCorta91(p.f)+'): debe '+money(c.cred));else if(p.f===hoy)a.push('🤝 Hoy ('+fCorta91(p.f)+') prometió pagar '+c.n+': '+money(num(p.m)||num(c.cred)))})}}catch(e){}
+ /* 92 · lo que solo informa va a "Lo que pasó hoy" (INFO92 está en tema-pantallas.js) */
+ if(adm92())a=a.filter(function(x){if(typeof x==='string'&&INFO92.test(x)){try{actAdd(null,x)}catch(e){}return false}return true});
+ /* 95 · lo que falta recibir es URGENTE y va hasta arriba (atrasTxt95 está en tema-pantallas.js) */
+ try{if(adm92()&&typeof atrasLista93==='function')atrasLista93().forEach(function(x){a.unshift(atrasTxt95(x))})}catch(e){}
+ return a};
+
+/* ---------- a dónde lleva cada aviso ---------- */
+/* Primero los que se deciden sin preguntar a nadie más (95 y l6); luego la base; luego cada paso puede corregir el destino. */
+function avDst37(x,r){r=r||{t:'inicio',cli:null};var ch=avChofDe(x),pk=typeof avPinK==='function'?avPinK(x):null;r.sel=null;
+ if(pk||/PIN de /.test(x)){var id=pk&&/^c:/.test(pk)?+pk.slice(2):(ch?ch.id:null);r.t='personal';r.cli=null;if(id){S.openCh=id;S.fiTab['emp:'+id]='dat'}r.sel='[data-act="pinreset"]';return r}
+ if(/pide reabrir su ruta/.test(x)){r.t='inicio';r.cli=null;r.sel='[data-act="reabsi"]';return r}
+ if(/no envió su cierre|segundo cierre|reabrió su (cierre|ruta)|Cierre con faltante|no se contaron las cajas/i.test(x)){r.t='cierreadm';r.cli=null;if(ch&&+S.chofHoy!==+ch.id)try{chCambiar(+ch.id)}catch(e){}return r}
+ if(/SIN ticket: .*(L por|combustible)|cargó combustible SIN ticket/.test(x)||/registró un gasto/.test(x)){r.t='gastos';r.cli=null;return r}
+ if(/báscula|Báscula/.test(x)){r.t='cargas';r.cli=null;return r}
+ if(/DEF|Consumo alto|Problema en el viaje|cajas vacías se quedaron|lleva \d+ cajas vacías|Pagar a |roatán de .* vino bajo/.test(x)){r.t='cargas';r.cli=null;return r}
+ if(/Salió con una falla|no puede salir|hizo el encargo|no pudo hacer el encargo/.test(x)){r.t='vehiculos';r.cli=null;var vh=S.veh.filter(function(v){return !v.baja&&x.indexOf(v.n)>-1})[0];if(vh)S.vehOpen=vh.id;return r}
+ if(/Pedido para|registró un pedido/.test(x)){r.t='inicio';r.cli=null;r.sel='.pedcard,[data-key="pedidos"]';return r}
+ if(/no tomó la foto|anuló|corrigió la entrega|pidió corregir|canceló la entrega|cambió fruta|está ayudando|cargó .* más en bodega|Reporte de/.test(x)&&ch){r.t='personal';r.cli=null;S.openCh=ch.id;S.fiTab['emp:'+ch.id]='ruta';return r}
+ if(/Revisa el número|agregó el teléfono|dio de alta un cliente|Cliente nuevo|guardó la ubicación|no pudo guardar la ubicación|cerró el negocio|le compró a otro proveedor|pasó su límite|Mayoreo por debajo|mayoreo .* veces|ya lleva 5 compras|bajó su consumo|pide permiso (de mayoreo|para fiarle)|quedó con deuda/.test(x)){
+  var c=null;S.cli.forEach(function(k){if(!k.oculto&&k.n&&x.indexOf(k.n)>-1&&(!c||k.n.length>c.n.length))c=k});if(c){r.t='clientes';r.cli=c.id;S.fiTab=S.fiTab||{};if(/número|teléfono|ubicación|dio de alta|Cliente nuevo/.test(x))S.fiTab['cli:'+c.id]='dat';return r}}
+ if(r.t==='inicio'&&ch&&!esAdm(ch)){r.t='personal';S.openCh=ch.id}
+ return r}
+function avDst60(x,r){r=r||{t:'inicio',cli:null};try{var ch=avChofDe(x);
+ /* ubicación / celular apagado → ficha del chofer, en "Su recorrido" con su última ubicación */
+ if(/\[gps(ev)?:|no manda su ubicación|apagó el celular|apagó la ubicación|quitó el permiso de ubicación|ubicación detenida|sin señal/.test(x)){r.t='personal';r.cli=null;if(ch){S.openCh=ch.id;S.fiTab=S.fiTab||{};S.fiTab['emp:'+ch.id]='ruta'}r.sel='[data-k^="gpsruta"]';return r}
+ /* efectivo que no coincide → tarjeta del faltante */
+ if(/el efectivo de .* no coincide/.test(x)){S.faov={x:x};r.t=S.tab[S.role]||'inicio';r.cli=null;r.sel=null;return r}
+ /* faltante de cierre → recepción */
+ if(/faltante|Faltaron/i.test(x)&&!/no coincide/.test(x)){r.t='cierreadm';if(ch&&+S.chofHoy!==+ch.id)try{chCambiar(+ch.id)}catch(e){}return r}
+ /* equipo sin entregar → bienes del chofer */
+ if(/no ha entregado su equipo|NO entregó /.test(x)){r.t='bienes';r.cli=null;return r}}catch(e){}return r}
+var _avDestinoBase=avDestino;
+avDestino=function(x){
+ /* 95 · lo que falta recibir → Rutas, a su tarjeta (no pasa por nada más) */
+ if(/^URGENTE: falta recibir /.test(String(x)))return {t:'rutas',cli:null,sel:'[data-x="atr93c"]'};
+ /* l6 · sin señal → Personal (sin preguntar a la base) */
+ var r=/sin señal|Pendiente de llegar a/.test(x)?{t:'personal',cli:null}:_avDestinoBase.apply(this,arguments);
+ /* l9 · vehículos, pagos fijos, bienes y licencias */
+ var vh=S.veh.filter(function(v){return !v.baja&&x.indexOf(v.n)>-1})[0];
+ if(vh){var tb=/[Mm]ensualidad/.test(x)?'cre':(/verificar|Verificación|Seguro|Tarjeta|placa/.test(x)?'pap':(/aceite|afinación|[Ll]lantas|[Ff]renos|servicio/.test(x)?'tal':null));if(tb){r.t='vehiculos';r.cli=null;S.vehOpen=vh.id;S.fiTab['veh:'+vh.id]=tb}}
+ if(/^(Falta pagar|Mañana toca pagar)/.test(x)){r.t='gastos';r.cli=null;S.gsec='fijos'}
+ var bn=(S.bienes||[]).filter(function(b){return b.est!=='Dado de baja'&&x.indexOf(b.n)>-1})[0];if(bn&&/calibrar|Vence |Venció /.test(x)){r.t='bienes';r.cli=null;S.bienOpen=bn.id}
+ var ch=S.choferes.filter(function(c){return new RegExp('(^|[^A-Za-zÁÉÍÓÚáéíóúñÑ])'+reEsc(chofN(c.id))+'([^A-Za-zÁÉÍÓÚáéíóúñÑ]|$)').test(x)})[0];
+ if(ch&&/Licencia|sin señal/.test(x)){r.t='personal';r.cli=null;S.openCh=ch.id;S.fiTab['emp:'+ch.id]=/Licencia/.test(x)?'dat':'ruta'}
+ /* l37 · PIN, cierres, gastos, cargas, vehículos, pedidos, choferes y clientes (con el lugar exacto) */
+ r=avDst37(x,r);
+ /* l60 · ubicación, efectivo que no coincide, faltantes, equipo */
+ r=avDst60(x,r);
+ /* l68 · lotes de fruta → Bodega, al lote */
+ r=r||{t:'inicio',cli:null};try{
+  if(/(roat[aá]n|macho).*(madur|se pasa|pas[oó] su tiempo|pasaron de tiempo)|Lote de (roat[aá]n|macho)/i.test(x)&&!r.sel){var R=/roat[aá]n/i.test(x);r.t='bodega';r.cli=null;r.sel='[data-x="antig65"] .lote[data-p="'+(R?'R':'M')+'"],[data-x="antig65"]';r.lote68=R?'R':'M'}
+ }catch(e){}
+ /* l69 · "no cuadra" → Bodega (taras/cajas) o "¿Cuadran las cuentas?" */
+ r=r||{t:'inicio',cli:null};try{if(/no cuadra/.test(x)){if(/taras|cajas/i.test(x)){r.t='bodega';r.cli=null;r.sel='[data-act="cjfis"],.card.cajas68,[data-x="exist65"]'}else if(!r.sel){r.t='inicio';r.cli=null;r.sel='[data-x="cuadra68"]'}}}catch(e){}
+ /* l82 · lote que pasó su tiempo → su botón "Sacar" */
+ try{var m=/^Lote de (roatán|macho) \(([\d.]+) (cajas|kg)\) pasó su tiempo/i.exec(String(x||''));if(m&&r){var pr=/roat/i.test(m[1])?'R':'M',q=num(m[2]),l=(S.lotes||[]).filter(function(o){return o.prod===pr&&num(o.q)===q})[0]||(S.lotes||[]).filter(function(o){return o.prod===pr})[0];
+  r.t='bodega';r.sel=l?'[data-act="sacar"][data-id="'+l.id+'"]':'[data-act="sacar"]';delete r.lote68}}catch(e){}
+ /* l87 · "no envió su cierre" → Inicio, a su tarjeta */
+ try{if(/no envió su cierre/.test(String(x))&&r){r.t='inicio';r.sel='[data-x="dia80a"]'}}catch(e){}
+ /* 91 · promesas de pago → la tarjeta de Cobranza */
+ try{if(/prometió pagar|como prometió/.test(String(x))&&r){r.t='inicio';r.cli=null;r.sel='[data-x="cob91c"]'}}catch(e){}
+ /* 92 · sin señal / ubicación → Rutas (ya no Personal) */
+ try{if(r&&r.t==='personal'&&/sin señal|última ubicación|ubicación del chofer|apagó el GPS|GPS apagado/i.test(String(x)))r.t='rutas'}catch(e){}
+ return r};
+
+/* ---------- cómo se dibuja un renglón de aviso ---------- */
+var _avRowBase=avRow;
+avRow=function(x,u){var h=_avRowBase.apply(this,arguments);
+ /* l37 · sin la marca [pin:…] */
+ h=h.replace(/\s*\[pin:[^\]]+\]/,'');
+ /* l51 · en segunda persona si lo hiciste tú ("Registraste…") */
+ var y=avYo(x);if(y!==x)h=h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(y)+'</span>');
+ /* l52 · los avisos con [tel:…] y [geo:…] muestran botones de Llamar y Ver dónde */
+ var tel=/ \[tel:(\d+)\]/.exec(x),geo=/ \[geo:(-?[\d.]+),(-?[\d.]+)\]/.exec(x);
+ if(tel||geo){var lim=x.replace(/ \[tel:\d+\]/,'').replace(/ \[geo:[^\]]+\]/,'');h=h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>').replace('<span class="grow">'+esc(avYo(x))+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>');
+  var bt=(tel?'<a class="btn sm" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="tel:'+tel[1]+'" data-noav="1">📞 Llamar</a>':'')+(geo?'<a class="btn sm sec" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="https://www.google.com/maps?q='+geo[1]+','+geo[2]+'" target="_blank" rel="noopener" data-noav="1">📍 Ver dónde</a>':'');
+  h=h.replace(/<\/div>$/,'<span style="display:flex;gap:6px;flex-wrap:wrap">'+bt+'</span></div>')}
+ /* l60 · sin las marcas [gps:…] */
+ h=h.replace(/\s*\[(gps|gpsev):[^\]]*\]/g,'');
+ /* l68 · color e ícono por tipo; "Posponer" abajo del texto */
+ try{var I=avInfo68(x);
+  h=h.replace('data-swipe=','data-c68="'+I.col+'" data-swipe=').replace('style="display:flex;','style="--c68:'+COL68[I.col]+';display:flex;').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
+  /* la marca de "Urgente/Pronto" la da el color; el borde izquierdo de antes ya no */
+  h=h.replace(/;border-left:5px solid var\(--danger\);font-weight:700/,';font-weight:700');
+  var m=/<button class="link"[^>]*data-act="avpos"[^>]*>[^<]*<\/button>/.exec(h);if(m){h=h.replace(m[0],'');h=h.replace(/(<span class="grow">)([\s\S]*?)(<\/span>)/,'$1$2<br>'+m[0].replace('class="link"','class="link pos68"')+'$3')}}catch(e){}
+ return h};
+
+/* ---------- l60 · tarjeta "Por atender" (por nivel: Urgente / Pronto / Info) + "Informativos" ---------- */
+avisosHTML=function(av){var hoy=iso(TODAY),G=actGrupos(hoy),gk=Object.keys(G),visto=(S.actVisto||{})[hoy]||0,nAct=actDe(null,hoy).length;
+ var U=av.filter(function(x){return AV_URG.test(x)}),I=av.filter(function(x){return !AV_URG.test(x)&&AV_INFO.test(x)}),N=av.filter(function(x){return U.indexOf(x)<0&&I.indexOf(x)<0});
+ var lv={r:'Urgente',o:'Pronto',b:'Info'},row=function(x){var n=avNivel(x);return avRow(x).replace('class="av"','class="av avl '+n+'"').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="avlv '+n+'">'+lv[n]+'</span>')};
+ N.sort(function(a,b){var o={r:0,o:1,b:2};return o[avNivel(a)]-o[avNivel(b)]});var P=U.concat(N);
+ var h=P.length?'<div class="card'+(U.length?' alert':'')+'" style="'+(U.length?'border-width:2px':'')+'"><b class="tt">Por atender ('+P.length+')</b><div class="lbl">Toca uno para ir a donde se resuelve. Deslízalo hacia un lado para posponerlo a mañana.</div>'+P.map(row).join('')+'</div>':'';
+ var nInfo=I.length+gk.length;if(nInfo&&(I.length||nAct>visto)){h+='<details class="card" data-k="avinfo"'+(S.dOpen.avinfo?' open':'')+'><summary><b>Informativos</b><span class="lbl">'+nInfo+' · se borran solos mañana</span></summary>'
+  +gk.map(function(k){return '<div class="actl"><b>'+esc(k)+':</b> '+esc(actResumen(G[k]))+'</div>'}).join('')+I.map(row).join('')
+  +(nAct?'<details style="margin-top:6px"><summary class="lbl">Ver la actividad de hoy ('+nAct+')</summary>'+actDiaHTML(hoy,null,' ')+'</details>':'')
+  +'<button class="btn sm sec" style="width:auto;margin-top:8px" data-act="avvisto">Marcar todo como visto</button></details>'}
+ return h};
+
+/* ---------- al llegar, se marca el lugar exacto ---------- */
+var _avFocoBase=avFoco;
+avFoco=function(sel){_avFocoBase.apply(this,arguments);
+ /* l70 · al llegar desde el numerito de la barra a un lote, además se abren sus opciones */
+ try{if(/\.lote\[data-p=/.test(sel||'')){setTimeout(function(){var el=document.querySelector(sel.split(',')[0]);if(el&&!S.lt53)el.click()},900)}}catch(e){}};
+
+/* ---------- numeritos de la barra ---------- */
+var _tabBadgesBase=tabBadges;
+tabBadges=function(){var r=_tabBadgesBase.apply(this,arguments);
+ /* l67 · 46 · todos los que parpadean van al mismo compás (no arrancan de nuevo al redibujar) */
+ try{var d=-(Date.now()%1100)+'ms';Array.prototype.forEach.call(document.querySelectorAll('nav.tabs .tbadge.blink'),function(b){b.style.animationDelay=d})}catch(e){}
+ /* 92 · rojo solo lo urgente; lo demás un puntito gris */
+ try{[].slice.call(document.querySelectorAll('nav.tabs .tbadge.suave')).forEach(function(b){b.classList.add('dot92');b.classList.remove('blink');b.textContent=''})}catch(e){}
+ return r};
+
+/* ---------- pendientes de cada sección: "🔔 N pendientes · ver" con Ir / ✓ Listo ---------- */
+/* l88 · cada pendiente con "Ir ›" y "✓ Listo" (o "Recordar mañana"; la falla del vehículo con sus 3 opciones) */
+function pndIr88(){var c=document.querySelector('[data-x="pnd86"]');if(!c||c.dataset.v88)return;c.dataset.v88='1';
+ Array.prototype.forEach.call(c.querySelectorAll('button.it[data-act="avgo"]'),function(b){var x=decodeURIComponent(b.dataset.k||''),din=DIN88.test(x),fa=/^(URGENTE:\s*)?Salió con una falla/.test(x);var d=document.createElement('div');d.className='it88';
+  d.innerHTML=b.querySelector('.tx').innerHTML.replace(/<span class="lbl" style="font-size:20px">›<\/span>/,'')+(fa?falla88HTML(x):'<div class="row88"><button class="ir88" data-act="avgo" data-k="'+b.dataset.k+'">Ir ›</button>'+(din?'<button class="ok88" data-act="av88m" data-k="'+b.dataset.k+'">Recordar mañana</button>':'<button class="ok88" data-act="av88ok" data-k="'+b.dataset.k+'">✓ Listo</button>')+'</div>');b.replaceWith(d)});
+ var lb=c.querySelector('.lbl');if(lb)lb.textContent='Es el numerito de la barra de abajo. "Ir" te lleva a resolverlo; "✓ Listo" lo quita.'}
+/* 92 · un solo renglón que se abre; el título ya no se repite pegado ("Tienda Don BetoTienda Don Beto: …") */
+function pndRenglon92(){try{var c=document.querySelector('main [data-x="pnd86"]');if(!c||c.dataset.v92)return;c.dataset.v92='1';var t=S.tab.admin;
+ [].slice.call(c.querySelectorAll('.it88')).forEach(function(it){var b=it.querySelector('b'),l=it.querySelector('.lbl');if(!b||!l)return;var bt=b.textContent.trim(),lt=l.textContent.trim();if(bt&&lt.indexOf(bt)===0){var rest=lt.slice(bt.length).replace(/^[\s:·,-]+/,'');if(rest)l.textContent=rest.charAt(0).toUpperCase()+rest.slice(1);else l.remove()}});
+ var n=c.querySelectorAll('.it88, button.it').length;var tit=c.querySelector('b');var txt=tit?tit.textContent.replace(/^🔔\s*/,''):(n+' pendientes');if(tit)tit.parentNode===c&&tit.remove();var lb=c.querySelector(':scope>.lbl');if(lb)lb.remove();
+ var abierto=(S.pnd92||'')===t;c.classList.add('c92');if(!abierto)c.classList.add('cerr92');
+ var h=document.createElement('button');h.className='hd92';h.dataset.act='pnd92';h.innerHTML='🔔 '+esc(txt)+'<span class="go">'+(abierto?'cerrar ▲':'ver ›')+'</span>';c.prepend(h)}catch(e){console.error('pnd92',e)}}
+var _pendCardBase=pendCard86;
+pendCard86=function(){_pendCardBase.apply(this,arguments);pndIr88();pndRenglon92()};
 
 
 /* ---------- Estructura ---------- */

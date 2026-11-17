@@ -44,7 +44,7 @@
 
 ## 3. Cómo está hecha (técnico)
 
-- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`).
+- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`, `tema-avisos.js`).
   - **Regla nueva:** lo de un tema aplanado se cambia en su `tema-*.js`, sin envolturas nuevas en otras capas. Avance de la migración a Vite en `fuente/migracion.md` (se mide con `bash capas/mide.sh`: envolturas que quedan; meta 0).
   - **Mapa de errores:** `build.sh` marca dónde empieza cada capa y `mapa.py` lo anota; los errores dicen "En: l80.js:57".
   - Cada capa reemplaza o envuelve funciones globales: `var _f=f; f=function(){…}`.

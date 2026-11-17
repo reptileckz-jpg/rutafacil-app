@@ -157,7 +157,7 @@ function respHaz(manual){var n=natPl();if(!n||!n.respaldoGuardar){if(manual){try
 function respUlt(){try{return localStorage.getItem('respUlt')}catch(e){return null}}
 setInterval(function(){try{if(window.__pnTest&&!window.__respTest)return;if(!(S.role==='admin'&&!S.encOn)||!_cargado)return;if(respUlt()===iso(new Date()))return;respHaz(false)}catch(e){}},30000);
 setTimeout(function(){try{if(window.__pnTest&&!window.__respTest)return;if(S.role==='admin'&&!S.encOn&&respUlt()!==iso(new Date()))respHaz(false)}catch(e){}},8000);
-var _av63=avisos;avisos=function(){var a=_av63.apply(this,arguments);try{if(S.role==='admin'&&!S.encOn&&natPl()&&natPl().respaldoGuardar){var u=respUlt(),d=u?Math.round((new Date(iso(new Date())).getTime()-new Date(u).getTime())/864e5):99;if(d>2)a.push('URGENTE: lleva '+(u?d+' días':'mucho')+' sin respaldo. Ve a Ajustes › Respaldo y toca "Respaldar ahora".')}}catch(e){}return a};
+/* avisos: pasó a tema-avisos.js */
 var _aj63=ajHTML;ajHTML=function(){var h=_aj63.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var u=respUlt(),dn='';try{dn=localStorage.getItem('respDonde')||''}catch(e){}
  var c='<div class="card" data-key="respauto"><b>Respaldo automático</b><div class="lbl">Cada día, la primera vez que abres la app, se guarda una copia en este celular (se quedan los últimos 30 días).</div>'
   +rw('Último',u?fmtF(u):'todavía no')+(dn?rw('Dónde',esc(dn)):'')

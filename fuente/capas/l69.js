@@ -204,7 +204,7 @@ var _cr69=cuentasRevisar;cuentasRevisar=function(){var R=_cr69.apply(this,argume
    else if(x.n0==='Las cajas cuadran con dónde están'){var w2=cajasDonde();d='Total '+Math.round(w2.tot)+': vacías en bodega '+num(w2.vac)+', llenas '+num(w2.llenas)+', en camión '+num(w2.cam)+', con clientes '+num(w2.cli)+', con proveedores '+num(w2.pv)}
    else if(x.n0==='Inventario sin números negativos'){d=d.replace(/cajas vacías/g,'taras vacías')+'. Corrige el conteo en Bodega'}
    x.det=d+(x.app?'. Es un error de la app, no tuyo; ya quedó anotado':'');if(x.app)apErr('no cuadra',x.n+': '+d,'cuentas')})}catch(e){}return R};
-var _avD69=avDestino;avDestino=function(x){var r=_avD69.apply(this,arguments)||{t:'inicio',cli:null};try{if(/no cuadra/.test(x)){if(/taras|cajas/i.test(x)){r.t='bodega';r.cli=null;r.sel='[data-act="cjfis"],.card.cajas68,[data-x="exist65"]'}else if(!r.sel){r.t='inicio';r.cli=null;r.sel='[data-x="cuadra68"]'}}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 /* "¿Cuadra todo?" a la vista en Inicio */
 function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter(function(x){return !x.ok}),d=document.createElement('div');d.dataset.x='cuadra68';
  if(!m.length){d.className='card';d.style.cssText='padding:12px 16px;display:flex;align-items:center;gap:12px;border:1.5px solid color-mix(in srgb,#16A34A 40%,transparent);background:color-mix(in srgb,#16A34A 9%,var(--surface))';d.innerHTML='<span style="font-size:26px">✓</span><span><b style="font-size:17px;color:#15803D">Todo cuadra</b><br><span class="lbl">Caja, cajas, kilos, taras y deudas ('+R.length+' revisiones)</span></span>';return d}

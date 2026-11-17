@@ -21,13 +21,9 @@ function ordena88(){if(S.role!=='admin'||!Array.isArray(S.avPrecio))return;var c
   if(!/^URGENTE/i.test(x)&&INFO88.test(t)){try{actAdd(null,x)}catch(e){}cam=true;return false}
   var m=/^Revisa el número: .*? (?:el WhatsApp de|el teléfono de|el número de) (.+?) \(/.exec(t);if(m){var c=(S.cli||[]).filter(function(y){return y.n===m[1]})[0];try{if(c&&telConfOk(c)){actAdd(null,'Confirmaste el teléfono de '+c.n);cam=true;return false}}catch(e){}}
   return true});return cam}
-var _avs88=avisos;avisos=function(){var L=_avs88.apply(this,arguments);if(S.role!=='admin')return L;var hoy=iso(TODAY),O=S.avOk88||{},D=S.avLater88||{};
- return L.filter(function(x){if(typeof x!=='string')return true;if(O[x])return false;if(D[x]&&D[x]>hoy)return false;return true})};
+/* avisos: pasó a tema-avisos.js */
 /* ---------- 75 · Ir / ✓ Listo / Recordar mañana ---------- */
-var _pc88=pendCard86;pendCard86=function(){_pc88.apply(this,arguments);var c=document.querySelector('[data-x="pnd86"]');if(!c||c.dataset.v88)return;c.dataset.v88='1';
- Array.prototype.forEach.call(c.querySelectorAll('button.it[data-act="avgo"]'),function(b){var x=decodeURIComponent(b.dataset.k||''),din=DIN88.test(x),fa=/^(URGENTE:\s*)?Salió con una falla/.test(x);var d=document.createElement('div');d.className='it88';
-  d.innerHTML=b.querySelector('.tx').innerHTML.replace(/<span class="lbl" style="font-size:20px">›<\/span>/,'')+(fa?falla88HTML(x):'<div class="row88"><button class="ir88" data-act="avgo" data-k="'+b.dataset.k+'">Ir ›</button>'+(din?'<button class="ok88" data-act="av88m" data-k="'+b.dataset.k+'">Recordar mañana</button>':'<button class="ok88" data-act="av88ok" data-k="'+b.dataset.k+'">✓ Listo</button>')+'</div>');b.replaceWith(d)});
- var lb=c.querySelector('.lbl');if(lb)lb.textContent='Es el numerito de la barra de abajo. "Ir" te lleva a resolverlo; "✓ Listo" lo quita.'};
+/* pendCard86: pasó a tema-avisos.js */
 function quita88(x,como){var hoy=iso(TODAY),i=(S.avPrecio||[]).indexOf(x);if(i>-1){S.avPrecio=S.avPrecio.filter(function(y){return y!==x})}else{S.avOk88=S.avOk88||{};S.avOk88[x]=hoy}try{actAdd(null,(como||'Atendido')+': '+avLimpio88(x))}catch(e){}}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="av88ok"],[data-act="av88m"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var x=decodeURIComponent(b.dataset.k||'');
  if(b.dataset.act==='av88ok'){quita88(x,'Visto');toast('Listo: se quitó de pendientes')}else{S.avLater88=S.avLater88||{};S.avLater88[x]=iso(new Date(TODAY.getTime()+864e5));toast('Te lo recuerdo mañana')}render()},true);

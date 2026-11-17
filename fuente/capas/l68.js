@@ -89,11 +89,7 @@ inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=di
  return d};
 
 /* ---------- 50 · "Por atender": tarjetas de color con ícono ---------- */
-var _avRow68=avRow;avRow=function(x,u){var h=_avRow68.apply(this,arguments);try{var I=avInfo68(x);
-  h=h.replace('data-swipe=','data-c68="'+I.col+'" data-swipe=').replace('style="display:flex;','style="--c68:'+COL68[I.col]+';display:flex;').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="ic68" aria-hidden="true">'+ic68(I.ic)+'</span>');
-  /* la marca de "Urgente/Pronto" la da el color; el borde izquierdo de antes ya no */
-  h=h.replace(/;border-left:5px solid var\(--danger\);font-weight:700/,';font-weight:700');
-  var m=/<button class="link"[^>]*data-act="avpos"[^>]*>[^<]*<\/button>/.exec(h);if(m){h=h.replace(m[0],'');h=h.replace(/(<span class="grow">)([\s\S]*?)(<\/span>)/,'$1$2<br>'+m[0].replace('class="link"','class="link pos68"')+'$3')}}catch(e){}return h};
+/* avRow: pasó a tema-avisos.js */
 
 /* ---------- 61 · ventana de aviso urgente ---------- */
 var _popH68=popHTML;popHTML=function(){var h=_popH68.apply(this,arguments);if(!h)return h;try{var L=popItems(),i=S.popI||0,x=L[i];if(!x)return h;
@@ -125,9 +121,7 @@ var _rd68n=render;render=function(){var r=_rd68n.apply(this,arguments);try{
   _t68=t;_pin68=pin}catch(e){}return r};
 
 /* ---------- 62c · numerito de la barra, 2º toque: va al pendiente EXACTO (baja y lo marca); si hay varios, cada toque pasa al siguiente ("1 de 4: …") ---------- */
-var _avD68=avDestino;avDestino=function(x){var r=_avD68.apply(this,arguments)||{t:'inicio',cli:null};try{
-  if(/(roat[aá]n|macho).*(madur|se pasa|pas[oó] su tiempo|pasaron de tiempo)|Lote de (roat[aá]n|macho)/i.test(x)&&!r.sel){var R=/roat[aá]n/i.test(x);r.t='bodega';r.cli=null;r.sel='[data-x="antig65"] .lote[data-p="'+(R?'R':'M')+'"],[data-x="antig65"]';r.lote68=R?'R':'M'}
- }catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 var _np68={};
 tabPend48=function(t){var cas=['inicio','bodega','cargas','clientes','gastos','mas'],nv=document.querySelector('nav.tabs'),enBarra={};if(nv)Array.prototype.forEach.call(nv.querySelectorAll('button[data-t]'),function(b){enBarra[b.dataset.t]=1});
  var L=avSinEfecto(function(){var A=[];try{A=avisos().filter(function(x){return typeof x==='string'&&!(S.avPos||{})[x]})}catch(e){}

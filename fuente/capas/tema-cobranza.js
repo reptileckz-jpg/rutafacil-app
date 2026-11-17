@@ -107,9 +107,8 @@ function rev91(){if(S.role!=='admin')return;var hoy=iso(TODAY);(S.cli||[]).forEa
  if(!(num(c.cred)>0.005)){c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:true}]);c.prom91=null;try{crHist(c,'cumplió: pagó lo que prometió')}catch(e){}return}
  if(!p.no&&p.f<hoy){if(num(c.cred)<num(p.cred0)-0.5){c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:true,parte:true}]);c.prom91=null;try{crHist(c,'pagó una parte de lo que prometió')}catch(e){}}
   else{p.no=true;c.promH91=(c.promH91||[]).slice(-4).concat([{f:p.f,m:p.m,ok:false}]);try{crHist(c,'no pagó lo que prometió el '+fCorta91(p.f))}catch(e){}}}})}
-var _avs91=avisos;avisos=function(){var L=_avs91.apply(this,arguments);try{if(S.role==='admin'){var hoy=iso(TODAY);(S.cli||[]).forEach(function(c){var p=c&&c.prom91;if(!p||c.oculto||!(num(c.cred)>0.005))return;
-  if(p.no)L.push('Pago vencido: '+c.n+' no pagó su deuda como prometió ('+fCorta91(p.f)+'): debe '+money(c.cred));else if(p.f===hoy)L.push('🤝 Hoy ('+fCorta91(p.f)+') prometió pagar '+c.n+': '+money(num(p.m)||num(c.cred)))})}}catch(e){}return L};
-var _avD91=avDestino;avDestino=function(x){var r=_avD91.apply(this,arguments);try{if(/prometió pagar|como prometió/.test(String(x))&&r){r.t='inicio';r.cli=null;r.sel='[data-x="cob91c"]'}}catch(e){}return r};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- los abonos llevan fecha (para el estado de cuenta) ---------- */
 function cobF91(){var L=S.cobros;if(!Array.isArray(L))return;if(S.cobN91==null||S.cobN91>L.length){S.cobN91=L.length;return}for(var i=S.cobN91;i<L.length;i++){var x=L[i];if(x&&!x.f){x.f=iso(TODAY);x.h=hhmm();try{x.q=quien()}catch(e){}}}S.cobN91=L.length}

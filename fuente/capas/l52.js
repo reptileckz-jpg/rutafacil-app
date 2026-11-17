@@ -58,10 +58,7 @@ function gpsAlertas(){if(S.role!=='admin')return;var A=S.gpsAv=S.gpsAv||{},ahora
 function hmDe(t){var d=new Date(+t);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 setInterval(function(){try{gpsAdmEscucha();gpsAlertas();gpsLimpia()}catch(e){}},60000);setTimeout(function(){try{gpsAdmEscucha()}catch(e){}},5000);
 /* los avisos con [tel:…] y [geo:…] muestran botones de Llamar y Ver dónde */
-var _avRow52=avRow;avRow=function(x,u){var tel=/ \[tel:(\d+)\]/.exec(x),geo=/ \[geo:(-?[\d.]+),(-?[\d.]+)\]/.exec(x);if(!tel&&!geo)return _avRow52.apply(this,arguments);
- var lim=x.replace(/ \[tel:\d+\]/,'').replace(/ \[geo:[^\]]+\]/,''),h=_avRow52.apply(this,arguments);h=h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>').replace('<span class="grow">'+esc(avYo(x))+'</span>','<span class="grow">'+esc(avYo(lim))+'</span>');
- var bt=(tel?'<a class="btn sm" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="tel:'+tel[1]+'" data-noav="1">📞 Llamar</a>':'')+(geo?'<a class="btn sm sec" style="width:auto;min-height:40px;display:inline-flex;align-items:center" href="https://www.google.com/maps?q='+geo[1]+','+geo[2]+'" target="_blank" rel="noopener" data-noav="1">📍 Ver dónde</a>':'');
- return h.replace(/<\/div>$/,'<span style="display:flex;gap:6px;flex-wrap:wrap">'+bt+'</span></div>')};
+/* avRow: pasó a tema-avisos.js */
 window.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-noav]'))e.stopPropagation()},true);
 /* borrar puntos de más de 30 días (una vez al día) */
 function pad13(n){return ('0000000000000'+Math.max(0,Math.round(n))).slice(-13)}

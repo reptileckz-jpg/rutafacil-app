@@ -13,7 +13,7 @@
 
 /* ---------- marcas escondidas en el texto de los avisos ---------- */
 function avLimpio(x){return String(x||'').replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'')}
-var _avRow60=avRow;avRow=function(x,u){return _avRow60.apply(this,arguments).replace(/\s*\[(gps|gpsev):[^\]]*\]/g,'')};
+/* avRow: pasó a tema-avisos.js */
 var _natN60=natNotif;natNotif=function(t,x){return _natN60.call(this,avLimpio(t),avLimpio(x))};
 
 /* ---------- actividad del día (lo que pasó, sin ser aviso) ---------- */
@@ -64,15 +64,7 @@ var _popI60=popItems;popItems=function(){var L=_popI60.apply(this,arguments);try
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avgeo"],[data-act="avtel"]');if(!b)return;e.stopImmediatePropagation();
  var u=b.dataset.act==='avtel'?'tel:'+b.dataset.tel:'https://www.google.com/maps?q='+b.dataset.lat+','+b.dataset.lng;try{if(b.dataset.act==='avtel')location.href=u;else window.open(u,'_blank')}catch(er){}},true);
 /* a dónde lleva cada aviso */
-var _avD60=avDestino;avDestino=function(x){var r=_avD60.apply(this,arguments)||{t:'inicio',cli:null};try{var ch=avChofDe(x);
- /* ubicación / celular apagado → ficha del chofer, en "Su recorrido" con su última ubicación */
- if(/\[gps(ev)?:|no manda su ubicación|apagó el celular|apagó la ubicación|quitó el permiso de ubicación|ubicación detenida|sin señal/.test(x)){r.t='personal';r.cli=null;if(ch){S.openCh=ch.id;S.fiTab=S.fiTab||{};S.fiTab['emp:'+ch.id]='ruta'}r.sel='[data-k^="gpsruta"]';return r}
- /* efectivo que no coincide → tarjeta del faltante */
- if(/el efectivo de .* no coincide/.test(x)){S.faov={x:x};r.t=S.tab[S.role]||'inicio';r.cli=null;r.sel=null;return r}
- /* faltante de cierre → recepción */
- if(/faltante|Faltaron/i.test(x)&&!/no coincide/.test(x)){r.t='cierreadm';if(ch&&+S.chofHoy!==+ch.id)try{chCambiar(+ch.id)}catch(e){}return r}
- /* equipo sin entregar → bienes del chofer */
- if(/no ha entregado su equipo|NO entregó /.test(x)){r.t='bienes';r.cli=null;return r}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- 20 · "el efectivo no coincide": tarjeta de pantalla completa del faltante ---------- */
 function faChof(x){var c=null;try{c=avChofDe(x)}catch(e){}return c}
@@ -105,16 +97,7 @@ function actGrupos(f){var G={};actDe(null,f).forEach(function(a){var k=a.ch!=nul
 function actResumen(L){var c={g:0,cn:0,rc:0,ca:0,co:0,ot:0};L.forEach(function(a){var x=a.x;if(/registró un gasto/.test(x))c.g++;else if(/cliente nuevo|Cliente nuevo/.test(x))c.cn++;else if(/cargó \d+ cajas/.test(x)||/regresa a la bodega a cargar/.test(x))c.ca++;else if(/reabrió/.test(x))c.rc++;else if(/corrigió|canceló la entrega|anuló|cambió fruta/.test(x))c.co++;else c.ot++});
  var p=[];if(c.g)p.push(c.g+' gasto'+(c.g>1?'s':''));if(c.cn)p.push(c.cn+' cliente'+(c.cn>1?'s':'')+' nuevo'+(c.cn>1?'s':''));if(c.ca)p.push('volvió a cargar'+(c.ca>1?' '+c.ca+' veces':''));if(c.rc)p.push('reabrió '+c.rc+' vez'+(c.rc>1?'es':''));if(c.co)p.push(c.co+' cambio'+(c.co>1?'s':''));if(c.ot)p.push(c.ot+' más');return p.join(', ')}
 function actDiaHTML(f,ch,tit){var L=actDe(ch,f);if(!L.length)return '';return '<div style="margin-top:8px"><b>'+(tit||'Lo que pasó')+'</b>'+L.map(function(a){return '<div class="actl"><span class="lbl">'+esc(a.h)+'</span>'+esc(typeof avYo==='function'?avYo(a.x):a.x)+'</div>'}).join('')+'</div>'}
-var _avH60=avisosHTML;avisosHTML=function(av){var hoy=iso(TODAY),G=actGrupos(hoy),gk=Object.keys(G),visto=(S.actVisto||{})[hoy]||0,nAct=actDe(null,hoy).length;
- var U=av.filter(function(x){return AV_URG.test(x)}),I=av.filter(function(x){return !AV_URG.test(x)&&AV_INFO.test(x)}),N=av.filter(function(x){return U.indexOf(x)<0&&I.indexOf(x)<0});
- var lv={r:'Urgente',o:'Pronto',b:'Info'},row=function(x){var n=avNivel(x);return avRow(x).replace('class="av"','class="av avl '+n+'"').replace(/(role="button" tabindex="0"[^>]*>)/,'$1<span class="avlv '+n+'">'+lv[n]+'</span>')};
- N.sort(function(a,b){var o={r:0,o:1,b:2};return o[avNivel(a)]-o[avNivel(b)]});var P=U.concat(N);
- var h=P.length?'<div class="card'+(U.length?' alert':'')+'" style="'+(U.length?'border-width:2px':'')+'"><b class="tt">Por atender ('+P.length+')</b><div class="lbl">Toca uno para ir a donde se resuelve. Deslízalo hacia un lado para posponerlo a mañana.</div>'+P.map(row).join('')+'</div>':'';
- var nInfo=I.length+gk.length;if(nInfo&&(I.length||nAct>visto)){h+='<details class="card" data-k="avinfo"'+(S.dOpen.avinfo?' open':'')+'><summary><b>Informativos</b><span class="lbl">'+nInfo+' · se borran solos mañana</span></summary>'
-  +gk.map(function(k){return '<div class="actl"><b>'+esc(k)+':</b> '+esc(actResumen(G[k]))+'</div>'}).join('')+I.map(row).join('')
-  +(nAct?'<details style="margin-top:6px"><summary class="lbl">Ver la actividad de hoy ('+nAct+')</summary>'+actDiaHTML(hoy,null,' ')+'</details>':'')
-  +'<button class="btn sm sec" style="width:auto;margin-top:8px" data-act="avvisto">Marcar todo como visto</button></details>'}
- return h};
+/* avisosHTML: pasó a tema-avisos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avvisto"]');if(!b)return;e.stopImmediatePropagation();var hoy=iso(TODAY);S.actVisto=S.actVisto||{};S.actVisto[hoy]=actDe(null,hoy).length;
  S.avPrecio=(S.avPrecio||[]).filter(function(x){return typeof x!=='string'||AV_URG.test(x)||!AV_INFO.test(x)});toast('Listo');render()},true);
 /* recepción del cierre: "Lo que pasó hoy en su ruta" antes de confirmar el efectivo */
@@ -132,7 +115,7 @@ function chAvLimpia(){var R=S.rutaAv;if(!R)return false;var cam=false;Object.key
 /* ---------- se ordena todo antes de dibujar ---------- */
 /* lo informativo se pasa a la actividad un momento después (algunas partes le agregan el motivo al aviso justo después de crearlo) */
 var _avOrdT=0;function avOrdenaLuego(){if(_avOrdT)return;if(!(S.avPrecio||[]).some(function(x){return typeof x==='string'&&avEsAct(x)}))return;_avOrdT=setTimeout(function(){_avOrdT=0;try{if(avOrdena())render()}catch(e){}},1200)}
-var _avs60=avisos;avisos=function(){return _avs60.apply(this,arguments).filter(function(x){return typeof x!=='string'||!avEsAct(x)})};
+/* avisos: pasó a tema-avisos.js */
 var _rd60a=render;render=function(){try{avOrdenaLuego();faLimpia();chAvLimpia()}catch(e){console.error(e)}var r=_rd60a.apply(this,arguments);
  try{var fo=document.getElementById('faov');if(fo)fo.remove();var fh=faovHTML();if(fh){var w=document.createElement('div');w.innerHTML=fh;document.body.appendChild(w.firstElementChild)}}catch(e){console.error(e)}
  try{tabBadges()}catch(e){console.error(e)}return r};

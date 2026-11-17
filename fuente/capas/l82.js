@@ -127,8 +127,7 @@ window.addEventListener('pointerup',function(e){if(PD82&&(Math.abs(e.clientX-PD8
   var ae=document.activeElement;if(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)&&ae!==a.el)return;var x=ancHalla82(a);if(!x)return;var d=x.getBoundingClientRect().top-a.top;if(Math.abs(d)>12){var t=ANC82.t;window.scrollBy(0,d);ANC82.t=t}}catch(er){}};
  setTimeout(fija,30);setTimeout(fija,150);setTimeout(fija,450)},true);
 /* el aviso "Lote de roatán (20 cajas) pasó su tiempo" es de MADURACIÓN: lleva a ese lote (botón "Sacar"), no a la fruta madura por antigüedad */
-var _avD82=avDestino;avDestino=function(x){var r=_avD82.apply(this,arguments);try{var m=/^Lote de (roatán|macho) \(([\d.]+) (cajas|kg)\) pasó su tiempo/i.exec(String(x||''));if(m&&r){var pr=/roat/i.test(m[1])?'R':'M',q=num(m[2]),l=(S.lotes||[]).filter(function(o){return o.prod===pr&&num(o.q)===q})[0]||(S.lotes||[]).filter(function(o){return o.prod===pr})[0];
- r.t='bodega';r.sel=l?'[data-act="sacar"][data-id="'+l.id+'"]':'[data-act="sacar"]';delete r.lote68}}catch(e){}return r};
+/* avDestino: pasó a tema-avisos.js */
 
 /* ---------- 46 · lo que carga el chofer: un solo cálculo, con lo que de verdad se ha entregado ----------
    Antes: arriba decía "no hay con qué calcularlo" y abajo "Tus 5 clientes suelen llevar ~8 cajas y 60 kg": ese "suelen llevar"

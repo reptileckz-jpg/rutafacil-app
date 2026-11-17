@@ -2265,3 +2265,9 @@ BATERÍA t95nube (dos celulares, cuenta efectivo y cajas al final): 1 mandado 11
 ## 2026-11-17 · 96 · Ricardo: viajes de carga de noche (empieza martes 10 p.m., termina miércoles 1 p.m.), ¿hay problema?
 - Revisado: el viaje se guarda aparte (S.vws) y el cambio de día no lo toca; el vehículo sigue ocupado; el chofer sigue con la pantalla de "viaje en curso" (no le sale "No mandaste tu cierre") y no se guarda como "falta recibir". Cada gasto/caseta queda con el día en que se hizo; el efectivo para el viaje sale de la caja del martes y lo que regresa entra el miércoles.
 - Prueba t96viaje (6): el mismo viaje con y sin pasar la medianoche se comporta igual. Sin cambios en la app.
+
+## 2026-11-17 · 97 · Ricardo: "Continúa con Vite" → migración, tema "avisos y pendientes"
+- HECHO (`tema-avisos.js`, va al final del armado): avisos, avDestino (a dónde lleva cada aviso), avRow, avisosHTML ("Por atender" e "Informativos"), avFoco, numeritos de la barra y "🔔 N pendientes" con Ir / ✓ Listo. Antes eran 31 envolturas encadenadas en l5, l6, l9, l22, l37, l51, l52, l60, l63, l67, l68, l69, l70, l82, l87, l88, tema-cobranza.js y tema-pantallas.js. Ahora están juntas y en el mismo orden; en cada capa vieja queda una nota "pasó a tema-avisos.js".
+- La app hace exactamente lo mismo: `pruebas/comp-avisos.js` compara la versión de antes con la nueva (lista de avisos como admin, contador, chofer y encargado; "✓ Listo" y "Recordar mañana"; destino de 50 textos de aviso y lo que cambia en la pantalla; renglones; tarjeta "Por atender"; barra y pendientes de las 11 secciones, cerrados y abiertos). Demo: 264 casos iguales. Real: 246 iguales.
+- Envolturas en capas viejas: 560 → 537 (5%). Siguiente tema: el administrador que reparte.
+- Todas las pruebas: 0 FAIL. Sin cambios para el usuario, así que no hace falta publicar un APK solo por esto.

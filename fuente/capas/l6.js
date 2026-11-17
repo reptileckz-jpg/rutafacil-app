@@ -61,8 +61,8 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('focusin',function(){if(S.role==='admin'&&offIds().length)sigTomar()},true);
 document.addEventListener('change',function(e){if(S.role!=='admin'||!offIds().length)return;setTimeout(function(){var p0=JSON.stringify(S.pendCh);sigRevisar('Cambio de ruta o de clientes');if(JSON.stringify(S.pendCh)!==p0)render()},0)});
 function senalTxt(id){var c=conn(id);if(c.on)return '';var m=sinSenMin(id),p=(S.pendCh[id]||[]).length;return '<span class="sinsen">Sin señal</span> <span class="lbl">desde las '+esc(c.desde)+' ('+sinDurTxt(m)+')'+(p?' · '+p+' cambio'+(p>1?'s':'')+' pendiente'+(p>1?'s':'')+' de llegarle':'')+'</span>'}
-var _avL6=avisos;avisos=function(){var a=_avL6.apply(this,arguments);try{offIds().forEach(function(id){var m=sinSenMin(id),p=(S.pendCh[id]||[]).length;if(m>=60)a.unshift(chofN(id)+' lleva '+sinDurTxt(m)+' sin señal'+(conn(id).pos?' · última ubicación: '+conn(id).pos:''));if(p)a.push('Pendiente de llegar a '+chofN(id)+' (sin señal): '+p+' cambio'+(p>1?'s':''))})}catch(e){}return a};
-var _avD6=avDestino;avDestino=function(x){if(/sin señal|Pendiente de llegar a/.test(x))return {t:'personal',cli:null};return _avD6.apply(this,arguments)};
+/* avisos: pasó a tema-avisos.js */
+/* avDestino: pasó a tema-avisos.js */
 /* lado del chofer */
 function senalDemoBtn(){var id=+S.chofHoy,c=conn(id);return '<button class="btn sec" style="margin-top:8px" data-act="senal">'+(c.on?'Simular que me quedé sin señal':'Volvió la señal')+'</button>'}
 function colaCuenta(a){return /^(guardar|gxsave|recargar|enviar|cobrar|calle|cambio|infsave)$/.test(a)}

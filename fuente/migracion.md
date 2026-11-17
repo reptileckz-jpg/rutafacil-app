@@ -28,6 +28,9 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Lo que sobre | resto | pendiente |
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 
+## Antes de seguir
+**Ricardo (17 nov): primero la reorganización de pantallas (pendiente 92), luego seguir con la migración.** Lo que se reorganice se escribe ya en su `tema-*.js`, así que también cuenta como avance.
+
 ## Reglas
 - Cada tema se comprueba con `pruebas/comp-tema.js` (mismos casos antes y después = idéntico) y con todas las pruebas.
 - Lo nuevo de un tema ya juntado se escribe en su `tema-*.js`, nunca como envoltura en otra capa.

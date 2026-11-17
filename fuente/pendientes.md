@@ -2208,3 +2208,19 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 90. Admin en su ruta: ya no sale "el administrador ve tu ubicación" ni "¿No eres Ricardo?"; el cierre dice "Efectivo de tu ruta / Va a la caja / Cerrar mi ruta" en vez de "Debes entregar / Enviar cierre al administrador"; sin "Aprende la app" del chofer.
 - Prueba t90 (25). Todas: 0 FAIL.
 91. (17 nov) Arriba decía "Control de reparto · v4.0" desde hace mucho (texto fijo). HECHO: muestra la versión real del APK (1.0.N), leída del celular; si no se puede leer, "9.0". Prueba t90ver. SIN PUBLICAR.
+
+## 2026-11-17 · 92 · REORGANIZACIÓN (Ricardo respondió las preguntas) · PRIMERO un dibujo para aprobar · ANTES de seguir con Vite
+Análisis (como usuario nuevo): Inicio con 25 bloques (~9 pantallas) y 4 listas de "qué hacer"; repetidos (cuadran ×2, te deben ×3, inventario, fruta próximos días); precio de hoy hasta la 3a pantalla; "Por atender" mezcla urgente con informativo; cada sección empieza con el bloque de pendientes + "Viaje en curso"; numeritos en las 6 pestañas; Rutas no está en la barra; Cobranza regada; título repetido pegado en la lista de pendientes (8.8).
+Decisiones:
+- Barra: Inicio · Rutas · Clientes · Bodega · Cargas. En "Más": Gastos, Vehículos, Personal, Estadísticas, Bienes.
+- Rutas (nueva sección): repartir clientes (hoy/mañana) + mapa en vivo + recibir cierres. ("Mi ruta de hoy" sigue en Inicio.)
+- Inicio: arriba el precio de hoy + UNA sola lista "Hoy" (lo urgente en rojo arriba). Además solo: números del día (vendido, cobrado, caja, te deben, con ojito), inventario resumido (te alcanza para N días) y "¿Cuadran las cuentas?" (un renglón). Todo lo demás solo en su sección (meta del mes → Estadísticas).
+- Pendientes en cada sección: un renglón "🔔 N pendientes · ver" que se abre (Ir / Listo).
+- Numeritos de la barra: solo lo urgente en rojo; lo demás un puntito gris.
+- Informativos: a "Lo que pasó hoy" (no cuentan como pendiente).
+- "Viaje en curso": solo en Inicio y Cargas.
+- Clientes con pestañas: Clientes · Pedidos · Cobranza (en Inicio solo la tarjeta "Te deben" que lleva ahí).
+- "Aprende la app" y "Para empezar": se quitan solas al terminarlas; después quedan en el menú.
+- Sueldos: en Personal (en Gastos sigue saliendo como gasto). Bienes: se queda en Más.
+- Orden: primero reorganizar, luego migrar a Vite. Aprobación: dibujo primero (capturas de Inicio, barra y Rutas).
+- Arreglar de paso: el título repetido pegado en la lista de pendientes.

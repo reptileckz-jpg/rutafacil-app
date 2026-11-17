@@ -2271,3 +2271,9 @@ BATERÍA t95nube (dos celulares, cuenta efectivo y cajas al final): 1 mandado 11
 - La app hace exactamente lo mismo: `pruebas/comp-avisos.js` compara la versión de antes con la nueva (lista de avisos como admin, contador, chofer y encargado; "✓ Listo" y "Recordar mañana"; destino de 50 textos de aviso y lo que cambia en la pantalla; renglones; tarjeta "Por atender"; barra y pendientes de las 11 secciones, cerrados y abiertos). Demo: 264 casos iguales. Real: 246 iguales.
 - Envolturas en capas viejas: 560 → 537 (5%). Siguiente tema: el administrador que reparte.
 - Todas las pruebas: 0 FAIL. Sin cambios para el usuario, así que no hace falta publicar un APK solo por esto.
+
+## 2026-11-17 · 98 · Ricardo: con los PROVEEDORES pasa lo mismo que pasaba con los clientes (punto 80) · "No hagas cambios, anótalo"
+- Qué pasa: un proveedor que ya tenía su ubicación guardada (con coordenadas) ahora sale con la ubicación como DIRECCIÓN (texto), y al volver a ir a cargar con él (viaje de carga) la app pide su ubicación otra vez.
+- Probable causa (sin revisar el código todavía): la misma que en el 80. La coordenada quedó como texto en la dirección y la ubicación de verdad (lat/lng) está vacía, o el arreglo del 80 (l89) solo se hizo para clientes y no para proveedores ni para el viaje de carga.
+- Propuesta (igual que el 80, para proveedores): (a) si un proveedor no tiene ubicación pero su dirección ES una coordenada (o un link de Maps), tomarla como su ubicación ya confirmada y dejar de pedirla en el viaje de carga; (b) al guardar la ubicación de un proveedor (en su ficha o al llegar en el viaje), que la coordenada vaya a la ubicación y no a la dirección; (c) revisar si las básculas tienen lo mismo; (d) prueba con un proveedor ya guardado así.
+- Pendiente: preguntarle a Ricardo de qué proveedor se trata y si fue en el viaje de carga o en la ficha del proveedor (captura si se puede).

@@ -19,8 +19,8 @@ r=await ev(()=>{S.role='admin';S.chofHoy=null;var ids=(S.choferes||[]).filter(c=
 ok(r.a&&r.nuevo&&r.dia==='2026-10-28','35 · el admin cambia de día: el chofer que ya cerró tiene su ruta nueva (antes se quedaba sin ruta)',r);
 ok(r.c2==null||r.b==='2026-10-27','35 · el que no mandó cierre conserva la de ayer (con su fecha)',r);
 // admin: liberar
-if(r.c2!=null){await ev(()=>{S.tab.admin='inicio';S.pinOk[pinKey()]=true;render()});r=await ev(c2=>{var b=document.querySelector('[data-act="dia80l"][data-id="'+c2+'"]');return !!b},r.c2);ok(r,'35 · el admin ve "Liberar su ruta de hoy"');
- r=await ev(()=>{var b=document.querySelector('[data-act="dia80l"]');var id=+b.dataset.id;b.click();var s=document.querySelector('[data-act="dia80ls"]');if(s)s.click();return {id,d:S.chSt[id].rutaDia80,l:S.chSt[id].log.length}});ok(r.d==='2026-10-28'&&r.l===0,'35 · al liberarla le sale su ruta de hoy',r)}
+if(r.c2!=null){await ev(()=>{S.tab.admin='inicio';S.pinOk[pinKey()]=true;render()});r=await ev(c2=>{var b=document.querySelector('[data-act="lib86"][data-id="'+c2+'"]');return !!b},r.c2);ok(r,'35 · el admin ve "Liberar su ruta de hoy"');
+ r=await ev(()=>{var b=document.querySelector('[data-act="lib86"]');var id=+b.dataset.id;b.click();var s=document.querySelector('[data-act="lib86s"]');if(s)s.click();return {id,d:S.chSt[id].rutaDia80,l:S.chSt[id].log.length}});ok(r.d==='2026-10-28'&&r.l===0,'35 · al liberarla le sale su ruta de hoy',r)}
 // 37 · maduración cuenta el tiempo
 r=await ev(()=>{S.lotes=[{id:901,prod:'R',q:5,h:0,est:30,met:'Carburo'}];render();var l=S.lotes[0];l.t0=Date.now()-5*36e5;render();return l.h});ok(r===5,'37 · la maduración avanza con el reloj (lleva 5 h)',r);
 // 33 · fruta madura: quitar y que vuelva cuando cambie

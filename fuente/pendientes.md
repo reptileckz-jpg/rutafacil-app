@@ -2373,3 +2373,12 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - 100 (encontrado de paso): en la versión real, con el chofer en ruta, salía la tarjeta "Herramientas (de la demo)" con botones de prueba. Ya solo sale en la demo (ql.py).
 - Pruebas: t108 (20). Ajustada t74 (la entrega del precio especial ahora puede mostrar la ventana del 109). Todas: 0 FAIL.
 - Ideas para después: recomprarle al cliente las taras que pagó ("opción a comprárselas"); que "Cargar más" avise al administrador cuando el chofer va a la bodega.
+
+## 2026-11-17 · 111 · Ricardo: al crear un viaje de carga, paso 4 de 8 "Otros gastos del viaje": aunque solo cargó una fruta pregunta "¿A quién se le cargan los gastos del viaje?"; debería salir con 2 o más; y solo dice "dividir entre los dos / solo roatán / solo macho", no deja poner otra fruta
+- CAUSA: la carga programada se crea con lo PLANEADO (p. ej. 300 kg de macho). Si ese día no se cargó, se quedaban esos kilos sin precio: "Costo del viaje" creía que había dos frutas (por eso la pregunta, y por eso en el 102 pedía datos del macho) y, al dividir "entre los dos", esa fruta fantasma se quedaba con parte del costo del viaje: la caja de roatán salía MÁS BARATA de lo real (en la prueba $193.60 en lugar de $196.00).
+### HECHO (17 nov) · 111 · SIN PUBLICAR (`tema-cargas.js`)
+- En "La fruta" (paso 1): si una fruta tiene kilos pero no precio y otra sí: "¿Sí se cargó macho? Se había planeado (300 kg), pero no tiene precio de compra" → "No se cargó" (la quita; queda registrado) o "Sí, falta su precio" (lleva al campo). No se pasa del paso sin contestar.
+- "¿A quién se le cargan los gastos del viaje?" solo con 2 frutas o más (compradas: con kilos y precio). Las opciones son las frutas de la carga, también la otra fruta ("Solo Dominico"); con tres, "Dividir entre todas". El reparto del costo (base cC, ql.py) ya entiende "Solo la otra fruta".
+- Prueba t111 (11). Todas: 0 FAIL.
+
+## 2026-11-17 · 112 · Ricardo: en la ruta del chofer, al entregar, sale una lista larga de todos los clientes ya visitados; deberían pasarse al final de la lista y minimizados (ocupan mucho espacio)

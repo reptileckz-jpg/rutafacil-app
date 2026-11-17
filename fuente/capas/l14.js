@@ -1,7 +1,7 @@
 /* ===================== v5 · Ruta sin trampas (cancelar con motivo, tickets, cambios con foto) ===================== */
 /* cualquier foto que se toma: se vacía el campo después de leerla (si no, la ventana de "¿Confirmar?" fallaba al querer restaurarlo) */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.type==='file')setTimeout(function(){try{t.value=''}catch(er){}},0)},true);
-function fotoLeer(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,900/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL('image/jpeg',0.7))};im.src=fr.result};fr.readAsDataURL(f)}
+function fotoLeer(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,FOTO_PX119/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL('image/jpeg',FOTO_Q119))};im.src=fr.result};fr.readAsDataURL(f)}
 
 /* ---- 1. Cancelar una entrega: el chofer puede, pero escribe por qué. Sale en su corte. ---- */
 function cancL(){return S.cancels||(S.cancels=[])}

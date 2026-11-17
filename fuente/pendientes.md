@@ -2459,3 +2459,10 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - Apodo igual al nombre (sin importar mayúsculas ni acentos) se borra y ya no se repite.
   - "💵 Esta entrega te deja" y "Si le cobras su deuda" dentro de la tarjeta verde: etiqueta blanca / amarilla con letra oscura (antes verde sobre verde).
   - Prueba `t117.js` (12 OK). **Falta del 117:** la barra flotante de lo ganado (siguiente versión).
+
+## 2026-11-17 · 119 · Ricardo: "las fotos tienen una compresión muy agresiva, no se distingue muy bien"
+- Cómo estaba: las fotos de la ruta (odómetro y lados al salir/cerrar) se guardaban a **480 px** y 70%; casi todas las demás a 640–720 px y 70–75%; algunas a 900–1000 px. La cámara de la app tomaba a 1000 px y luego se volvía a reducir.
+- Decisión (Ricardo): 1280 px y 82%, ya, sin publicar.
+- **HECHO 119**: `FOTO_PX119=1280` y `FOTO_Q119=0.82` en `capas/l1.js` (un solo lugar para cambiarlo) + líneas 119 en `ql.py` (las de la base) y `l7, l13, l14, l43, l47, l50, l70, l78, l79`. La cámara de la app toma hasta 1600 px y la casilla la deja en 1280. El sello de fecha y placa de las fotos de la ruta crece con la foto (antes letra de 13 px fija). No se tocaron: miniaturas (l78, 560 px), logo (l9, 512 px) y el fondo borroso (l9).
+- Peso: una foto de odómetro queda en ~130 KB (antes ~45 KB). Cada foto es su propio documento en la nube (límite 1 MB) y las de evidencia se borran a los 30 días.
+- Prueba `t119.js` (5 OK).

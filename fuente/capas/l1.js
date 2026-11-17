@@ -1,4 +1,6 @@
 /* ===================== v3.9 · 1. Colores, imágenes y placas ===================== */
+/* 119 · tamaño y calidad de las fotos (antes 640–720 px y 70–75%: no se distinguía bien) */
+var FOTO_PX119=1280,FOTO_Q119=0.82;
 /* el PIN se vuelve a pedir si no se usa la app: admin y contador 5 min, chofer y venta local 30 min.
    (va aquí para que se registre antes que todo: el primer toque después de la espera solo desbloquea) */
 function pinLimMin(k){k=k||pinKey();return /^a:/.test(k)||k==='cont'?5:30}

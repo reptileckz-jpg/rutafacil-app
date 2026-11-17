@@ -2224,3 +2224,4 @@ Decisiones:
 - Sueldos: en Personal (en Gastos sigue saliendo como gasto). Bienes: se queda en Más.
 - Orden: primero reorganizar, luego migrar a Vite. Aprobación: dibujo primero (capturas de Inicio, barra y Rutas).
 - Arreglar de paso: el título repetido pegado en la lista de pendientes.
+- (Ricardo) Los TUTORIALES se adaptan a la nueva interfaz: el del administrador (TUT.admin), los nuevos por día (d:admin:N), el de Rutas (n:rt81), "Aprende la app" (aprendeItems), la guía "Para empezar" y el de "Mi ruta" (ar90). Cada paso debe señalar algo que exista en la pantalla nueva (Rutas en la barra, lista "Hoy", pestañas de Clientes, Sueldos en Personal). Se agrega una prueba que recorre TODOS los tutoriales y falla si un paso señala algo que no está (como la que encontró el error del 87).

@@ -25,6 +25,8 @@ chNuevo=function(id){var o=_chNBase.apply(this,arguments);
 /* ---------- el celular abre en un día nuevo ---------- */
 var _cddBase=cambioDeDia;   /* l21 (archiva las rutas) + l28 (espera a la nube) */
 cambioDeDia=function(viejo){var hoy=iso(TODAY),nuevo=!!(viejo&&viejo!==hoy);
+ /* 94 · los cierres mandados y sin recibir se guardan aparte antes de armar rutas nuevas */
+ try{if(nuevo){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(sinRecibir93(r))atrasGuarda93(r,+id,r.rutaDia80||viejo)});if(S.chofHoy!=null&&!S.arOn){var o9=arPack();if(sinRecibir93(o9)){if(!o9.cierre.regMov){regMov93(S);o9=arPack()}atrasGuarda93(o9,S.chofHoy,S.rutaDia80||viejo)}}}}catch(e){console.error('94 dia',e)}
  /* 85 · los clientes que no se visitaron quedan anotados */
  try{if(nuevo){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==hoy)fallas85(r,r.rutaDia80||viejo)});if(S.chofHoy!=null&&S.rutaDia80!==hoy)fallas85(S,S.rutaDia80||viejo)}}catch(e){}
  /* 82 · se guarda cómo se recibió cada cierre, para el historial */
@@ -56,6 +58,8 @@ function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;va
  /* rutas de antes (sin fecha): vieja si ya mandó el cierre y no trae a ninguno de sus clientes de hoy */
  var H=cliHoy80(S.chofHoy).map(function(c){return c.id});if(!H.length)return null;var st=S.stops||[];if(st.some(function(s){return H.indexOf(+s.c)>-1}))return null;return 'antes'}
 function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),env=!!(o.cierre&&o.cierre.sent),f=v==='antes'?ayer80():v;
+ /* 94 · si mandó su cierre y todavía no se recibe, se guarda aparte ANTES de armarle la ruta de hoy */
+ try{if(sinRecibir93(o)){if(!o.cierre.regMov){regMov93(S);o=arPack()}atrasGuarda93(o,S.chofHoy,f)}}catch(e){console.error('94',e)}
  /* 71 · si NO salió a ruta (no tocó "Iniciar"), no se bloquea: lo de antes se archiva y al admin le llega "cuádralo con él" */
  var sinSalir=!env&&!salio87(o),rv=rutaVacia;
  if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
@@ -73,7 +77,7 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
   else if(ya&&env&&!ya.enviado){ya.log=o.log;ya.res=o.cierre&&o.cierre.res||null;ya.enviado=true;ya.tarde93=1;if(ya.recep82===undefined||ya.recep82===null){ya.cierreReg82=rec.reg||null;ya.recep82=rec.recep||null}}
   /* 82 · al historial se le pega cómo se recibió el cierre */
   try{S.rutasHist.slice(n).forEach(function(e){if(e.recep82===undefined){e.cierreReg82=rec.reg||null;e.recep82=rec.recep||null}})}catch(e){}
-  arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var k=(S.stops||[]).length;setTimeout(function(){try{toast(k?'Listo: ya puedes empezar tu ruta de hoy ('+k+' cliente'+(k===1?'':'s')+')':'Tu ruta de hoy está lista')}catch(e){}},80);return true
+  arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var k=(S.stops||[]).length;setTimeout(function(){try{toast((env?'Tu cierre '+del80(f)+' se mandó al administrador. ':'')+(k?'Ya puedes empezar tu ruta de hoy ('+k+' cliente'+(k===1?'':'s')+')':'Tu ruta de hoy está lista'))}catch(e){}},80);return true
  }finally{if(sinSalir)rutaVacia=rv}}
 
 /* ---------- la pantalla del chofer "No mandaste tu cierre" ---------- */
@@ -99,3 +103,41 @@ function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||['inicio','rutas'].indexOf
  var h=pide.map(function(id){ya[id]=1;var en=L.filter(function(x){return x.id===+id})[0];return '<div class="card sos86" style="padding:12px 14px"><b style="font-size:18px">🆘 '+esc(chofN(+id))+' pide que liberes su ruta</b><div class="lbl" style="font-size:15px">No puede mandar su cierre'+(P[id].de?' '+esc(del80(P[id].de)):'')+' y no le sale su ruta de hoy.</div>'+(en?'<button class="btn" style="margin-top:8px;min-height:54px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button>':'<div class="lbl" style="margin-top:6px">✓ Su ruta de hoy ya está lista. En cuanto su celular tenga señal le sale.</div>')+'</div>'}).join('');
  h+=L.filter(function(x){return !ya[x.id]}).map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x.id))+' no ha mandado su cierre '+esc(del80(x.f))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x.id+'">Recordarle</button><button class="btn" style="flex:1" data-act="lib86" data-id="'+x.id+'">Liberar su ruta de hoy</button></div></div>'}).join('');
  var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=h;m.prepend(d)}
+
+/* ===================== 94 · un cierre MANDADO y todavía sin recibir nunca se pierde al cambiar de día =====================
+   Antes: al cambiar de día (o al mandar el cierre de ayer), la ruta nueva se armaba ENCIMA del cierre sin recibir: el administrador
+   ya no lo podía recibir y se perdían el efectivo, las entregas y las cajas/taras que regresaban (quedaban como faltantes).
+   Ahora: antes de armar la ruta nueva, ese cierre se guarda aparte (en la nube, "atras93"). En el celular del administrador sale en
+   Rutas (y en "Hoy") como "📥 Cierre atrasado · Recibir"; al tocarlo se abre la recepción de siempre con ESE cierre, sin tocar la
+   ruta de hoy del chofer. Al terminar de recibirlo, queda en el historial como recibido y se regresa a lo que tenía abierto. */
+try{if(NB_SH.indexOf('atras93')<0)NB_SH.push('atras93')}catch(e){}
+function flaco93(o){return JSON.parse(JSON.stringify(o,function(k,v){return typeof v==='string'&&v.length>3000&&/^data:/.test(v)?'':v}))}
+function sinRecibir93(o){return !!(o&&o.cierre&&o.cierre.sent&&o.cierre.res&&o.cierreReg==null)}
+/* lo mismo que hace l13 justo después de mandar: las cajas que regresan se cuentan al recibir, no antes */
+function regMov93(o){var c=o&&o.cierre;if(!c||!c.sent||!c.res||c.regMov||o.recep)return;var r=c.res;c.regMov=true;c.porContar=true;try{S.inv.maduras-=Math.max(0,num(r.reg));S.inv.kgMaduro=r2(S.inv.kgMaduro-Math.max(0,num(r.regK)));S.inv.vacias-=num(r.V)}catch(e){}}
+function atrasGuarda93(o,id,f){if(!sinRecibir93(o)||id==null)return false;S.atras93=S.atras93||{};var k=(+id)+'|'+f;if(S.atras93[k])return false;regMov93(o);
+ S.atras93[k]={id:+id,f:f,h:hhmm(),ef:num(o.cierre.res&&o.cierre.res.efectivo),pack:flaco93(o)};
+ try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'El cierre del '+fCorta91(f)+' de '+chofN(+id)+' quedó guardado para recibirlo (se cambió de día antes de recibirlo)'})}catch(e){}return true}
+function atrasLista93(){var A=S.atras93||{};return Object.keys(A).filter(function(k){return A[k]&&!A[k].hecho}).map(function(k){var e=A[k];return {k:k,id:e.id,f:e.f,ef:e.ef}}).sort(function(a,b){return a.f<b.f?-1:1})}
+/* ---- el administrador recibe un cierre atrasado ---- */
+function atrasAbre93(k){var e=(S.atras93||{})[k];if(!e||e.hecho||S.role!=='admin')return;var cur=S.chofHoy;S.chSt=S.chSt||{};if(cur!=null&&!S.atr93)S.chSt[cur]=arPack();
+ S.atr93={k:k,id:+e.id,prev:cur};arLoad(JSON.parse(JSON.stringify(e.pack)));S.chofHoy=+e.id;S.rcv=null;S.tab.admin='cierreadm'}
+function atrasSale93(recibido){var x=S.atr93;if(!x)return;var e=(S.atras93||{})[x.k];
+ if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id})[0];var pk=arPack();
+   if(H){H.log=pk.log;H.res=pk.cierre&&pk.cierre.res||H.res;H.enviado=true;H.cierreReg82=S.cierreReg||null;H.recep82=S.recep||null;H.recibido94=1}
+   else{S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:e.f,ch:+e.id,log:pk.log,res:pk.cierre&&pk.cierre.res||null,enviado:true,cierreReg82:S.cierreReg||null,recep82:S.recep||null,recibido94:1})}
+   S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Recibió el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)})}catch(er){}
+  /* el efectivo que se recibió entra a la caja de hoy (como un "cierre entregado") */
+  try{if(S.cierreReg){S.cierresPrev=S.cierresPrev||[];S.cierresPrev.push({n:S.cierresPrev.length+1,res:S.cierre&&S.cierre.res||null,rec:num(S.cierreReg.rec),ch:+e.id,f:e.f,atras94:1});try{actAdd(+e.id,'Recibiste el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)+': '+money(num(S.cierreReg.rec)))}catch(er){}}}catch(er){}}
+ S.atr93=null;var prev=x.prev;if(prev!=null){arLoad(S.chSt[prev]||chNuevo(+prev));S.chofHoy=+prev}S.rcv=null;S.tab.admin='rutas'}
+/* mientras se recibe un cierre atrasado, la ruta de hoy de ese chofer NO se toca (ni se sube ni se baja de la nube a la pantalla) */
+var _nbG94=nbRGet;nbRGet=function(id,k){if(S.atr93&&+id===+S.atr93.id){var o=(S.chSt||{})[id];return o?o[k]:undefined}return _nbG94.apply(this,arguments)};
+var _nbS94=nbRSet;nbRSet=function(id,k,v){if(S.atr93&&+id===+S.atr93.id){S.chSt=S.chSt||{};S.chSt[id]=S.chSt[id]||{};S.chSt[id][k]=v;return}return _nbS94.apply(this,arguments)};
+/* termina solo en cuanto quedó recibido (efectivo y cajas) */
+function atrasRevisa93(){if(!S.atr93)return;if(S.role!=='admin'){S.atr93=null;return}if(S.cierreReg!=null&&S.recep&&!S.rcv){atrasSale93(true);setTimeout(function(){try{toast('Listo: cierre recibido')}catch(e){}},60)}}
+function atrasBanner93(){if(!S.atr93||S.role!=='admin'||S.tab.admin!=='cierreadm')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="atr93b"]'))return;var e=(S.atras93||{})[S.atr93.k]||{};
+ var d=document.createElement('div');d.dataset.x='atr93b';d.className='card alert';d.style.padding='12px 14px';d.innerHTML='<b style="font-size:17px">📥 Estás recibiendo el cierre del '+esc(fCorta91(e.f||''))+' de '+esc(chofN(S.atr93.id))+'</b><div class="lbl">Su ruta de hoy no se toca. Al terminar de recibirlo regresas a Rutas.</div><button class="btn sec" style="margin-top:8px;min-height:44px" data-act="atr93x">Salir sin recibirlo</button>';m.prepend(d)}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="atr93"],[data-act="atr93x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();if(b.dataset.act==='atr93')atrasAbre93(b.dataset.k);else atrasSale93(false);render();window.scrollTo(0,0)},true);
+/* no se puede cambiar de chofer a la mitad (primero terminar o salir) */
+var _chC94=chCambiar;chCambiar=function(id){if(S.atr93){if(+id===+S.atr93.id)return;atrasSale93(false)}return _chC94.apply(this,arguments)};
+var _rd94=render;render=function(){try{atrasRevisa93()}catch(e){console.error('94r',e)}var r=_rd94.apply(this,arguments);try{atrasBanner93()}catch(e){}return r};

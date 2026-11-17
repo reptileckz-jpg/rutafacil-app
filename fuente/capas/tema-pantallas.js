@@ -58,7 +58,7 @@ function chEstado92(id){var sal=false,ci=null,rg=null,L=[];try{sal=salio81(id);c
  if(sal)return {t:'en ruta',c:'#DBEAFE',f:'#1E40AF',x:hechos+' de '+L.length+' entregados'};
  return {t:'no ha salido',c:'#F1F5F9',f:'#475569',x:L.length+' cliente'+(L.length===1?'':'s')+' para hoy'}}
 function rutas92(){var d=S.rut92==='man'?'man':'hoy',f=d==='hoy'?hoy81():man81(),CH=[],sc=0,n=0,partes=[];try{CH=chs81();sc=sinCh81(f).length;CH.forEach(function(c){var k=lista81(+c.id,f).L.length;n+=k;if(k)partes.push(chofN(c.id)+' '+k)})}catch(e){}
- var h='<h1>Rutas</h1>';try{h+=cierreTop()}catch(e){}
+ var h='<h1>Rutas</h1>';try{h+=atrasLista93().map(function(x){return '<div class="card alert" data-x="atr93c" style="padding:12px 14px"><b style="font-size:17px">📥 Cierre del '+esc(fCorta91(x.f))+' de '+esc(chofN(x.id))+'</b><div class="lbl">Lo mandó pero no se recibió antes de cambiar de día. Entrega '+money(x.ef)+' en efectivo.</div><button class="btn" style="width:100%;margin-top:8px;min-height:50px" data-act="atr93" data-k="'+esc(x.k)+'">Recibir su cierre</button></div>'}).join('')}catch(e){}try{h+=cierreTop()}catch(e){}
  h+='<div class="tabs92" role="group" aria-label="Día"><button data-act="rut92d" data-v="hoy" aria-pressed="'+(d==='hoy')+'">Hoy<small>'+esc(fCorta91(hoy81()))+'</small></button><button data-act="rut92d" data-v="man" aria-pressed="'+(d==='man')+'">Mañana<small>'+esc(fCorta91(man81()))+'</small></button></div>';
  h+='<div class="card'+(sc?' alert':'')+'" data-x="rut92s" style="padding:12px 14px"><b style="font-size:18px">'+n+' cliente'+(n===1?'':'s')+(d==='hoy'?' hoy':' mañana')+'</b><div class="lbl">'+(partes.length?esc(partes.join(' · ')):'Todavía nadie lleva clientes')+(sc?' · <b class="neg">'+sc+' sin chofer</b>':' · ninguno sin chofer')+'</div>'
   +'<button class="btn" style="width:100%;margin-top:10px;min-height:52px" data-act="rt81open" data-v="'+d+'">Ver y repartir clientes</button></div>';
@@ -132,6 +132,7 @@ function limpio92(x){return String(x||'').replace(/^URGENTE:\s*/i,'').replace(/\
 function hoyCard92(){var hoy=iso(TODAY),P=[];try{P=pendTodos92()}catch(e){}var U=P.filter(function(o){return o.u}),N=P.filter(function(o){return !o.u}),vis={},h='';
  var row=function(t,go,ok,extra){var k=t.toLowerCase().replace(/\s*[·(].*$/,'').trim();if(vis[k])return '';vis[k]=1;return '<div class="it92'+(ok?' ok':'')+'">'+(extra||'')+'<span class="t">'+t+'</span>'+go+'</div>'};
  h+=U.map(function(o){return avRow(o.x,true)}).join('');
+ try{atrasLista93().forEach(function(x){h+=row('📥 Recibir el cierre del '+esc(fCorta91(x.f))+' de '+esc(chofN(x.id)),'<button class="go" data-act="atr93" data-k="'+esc(x.k)+'" style="background:none;border:0">Ir ›</button>',false,'<span class="ck92"></span>')})}catch(e){}
  var T=[];try{T=hoyTareas()}catch(e){}
  T.forEach(function(x){if(x.k==='ef')return;var go=x.k==='cb'?'<button class="go" data-act="cli92" data-v="cob" style="background:none;border:0">Ir ›</button>':'<button class="go" data-act="popgo" data-t="'+esc(x.go)+'" style="background:none;border:0">Ir ›</button>';
   h+=row(esc(x.t),go,x.ok,'<button class="ck92" data-act="hoyok" data-k="'+esc(x.k)+'" aria-pressed="'+!!x.ok+'" aria-label="Marcar como hecho">'+(x.ok?'✓':'')+'</button>')});
@@ -154,6 +155,7 @@ function inicio92(){if(!adm92()||S.tab.admin!=='inicio')return;var m=document.qu
  /* fuera de Inicio (cada cosa queda en su sección) */
  ['[data-x="rt81e"]','[data-x="cob91c"]','[data-key="hoytoca"]','[data-k="hoyq"]','[data-k="avinfo"]','[data-key="mayrev"]','[data-key="limrev"]','[data-key="chburo"]','[data-k="lunes"]','[data-act="vermeta"]','[data-x="pnd86"]'].forEach(function(s){var e=q(s);if(e)e.remove()});
  var c68=q('[data-x="cuadra68"]');if(c68){if(/^\s*✓/.test(c68.textContent)||/Todo cuadra/.test(c68.textContent.slice(0,40)))c68.remove()}
+ porTxt(/^Cierre \d+ de .* entregado$/).forEach(function(e){if(e.parentNode===m)e.remove()});
  porTxt(/^Por atender/).concat(porTxt(/^Fruta para los próximos días/),porTxt(/^Hoy de un vistazo/)).forEach(function(e){if(e.parentNode===m)e.remove()});
  var pr=q('[data-x="precio65"]');if(pr){var pf=q('.pfix');if(pf)pf.remove()}else pr=q('.card.dban')||q('.pfix');if(pr){pr.dataset.p92='1';var ok=S.precio&&S.precio.conf===hoy;if(!ok){pr.classList.add('sinfijar92');var st=pr.querySelector('.st');if(st)st.textContent='⚠️ No lo has fijado hoy';var n=document.createElement('div');n.className='pr92n';n.textContent='Mientras, los choferes cobran con el último precio: el de ayer.';var hd=pr.querySelector('.hd');if(hd)hd.after(n);else pr.prepend(n)}}
  /* arriba, en orden */

@@ -2284,3 +2284,14 @@ BATERÍA t95nube (dos celulares, cuenta efectivo y cajas al final): 1 mandado 11
 - `pruebas/comp-reparte.js`: 33 casos iguales en la demo y en la real (con "¿Repartes hoy?" prendido y apagado, la pantalla Rutas completa, y 12 casos de cambios de ruta: quitar, quitar al que está entregando, agregar, ya tomado, otro día, otro chofer, administrador en su ruta…). comp-avisos sigue igual.
 - Envolturas en capas viejas: 537 → 528 (7%). Siguiente tema: vehículos.
 - Todas las pruebas: 0 FAIL. Sin cambios para el usuario.
+
+## 2026-11-17 · 100 · Ricardo: "antes de continuar, revisa que ya no quede ningún texto o tarjeta residual de las versiones de prueba, la app debe quedar limpia"
+Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer Uno", "Cliente Uno", "Camioneta Uno"): todas las pantallas de los 4 roles (incluidas Rutas, pestañas de Clientes, las de "Más", Ajustes, menús, asistente), con desplegables abiertos; textos de tutoriales, ayuda "?" y guías; y todo el estado guardado comparado contra la demo.
+- TEXTOS Y TARJETAS: limpio. Ningún nombre, dirección, placa ni lugar de la demo (Xalapa, Banderilla, Tuxtepec, Roly, Fruver, Walmart…). Lo que dice "prueba" es de verdad ("Imprimir prueba", "Borrar datos de prueba"). Los recorridos "Nuevo: Rutas" y "Se reacomodó la app" solo salen una vez a quien ya conocía la app (a una instalación nueva no).
+- PERO SE CUELAN VALORES DE LA DEMO QUE AFECTAN LOS NÚMEROS (sin arreglar todavía):
+  a) ODÓMETRO: la ruta nueva del chofer empieza con odómetro inicial 48,262 km (el del camión de la demo), aunque su camioneta se dio de alta con 1,000. La app solo sube ese número, nunca lo baja, así que le sale prellenado; si lo confirma sin ver, al cerrar se le suman a la camioneta (aceite, rendimiento y km mal). También "tanque Lleno" de entrada.
+  b) COSTO SIN CARGAS: mientras no hay ninguna carga registrada, la app supone que la caja de roatán cuesta $190 y el kilo de macho $14 (demo). Sale en la tarjeta del precio ("cuesta $190") y se usa para valuar mermas y cambios de fruta, el aviso de "precio debajo del costo" y otros cálculos.
+  c) VEHÍCULOS DEL ASISTENTE: heredan datos de la camioneta de la demo: seguro $9,800, tenencia $1,200, verificación $600, placas $800, sueldo $9,000 al mes, gasolina $25.50, rendimiento 10 km/l, "60% de las ventas", capacidades (50 cajas / 600 kg). Entran al costo fijo del vehículo, al desgaste y a "cuánto deja" cada vehículo; y como ya traen valor, "Datos que faltan" no los pide.
+  d) CLIENTES NUEVOS: traen "70% de contado" inventado (lo usa el buró de crédito para calificarlos). La frecuencia de 7 días sí está bien como valor de inicio.
+  e) CLIMA: mientras no carga el clima real sale "24° Nublado" (demo); en maduración se propone "Nublado".
+  f) Revisado y bien: la entrega empieza en ceros (aunque el borrador interno traiga 4 cajas/30 kg); los límites de configuración (crédito $1,500, tope $5,000, etc.) son decisiones, no demo.

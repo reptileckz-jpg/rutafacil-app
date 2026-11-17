@@ -2436,3 +2436,19 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
     - **Horario:** él puso de 8 de la mañana a **8 de la noche**, y quedó "08:00 a 08:01". Por eso sale en rojo "Llegarías después de que cierra (08:01)". Causa probable: el reloj de Android (`input type="time"`) en formato de 12 horas; se quedó en a. m. y el minuto se movió a 01. Hoy no se revisa que "cierra" sea después de "abre" (se captura en la ficha `cliForm`, en ubicación `l41` y en el asistente `l16`).
       Arreglo propuesto: (1) si cierra es antes o casi igual que abre, preguntar "¿Cierra a las 8 de la noche?" y corregirlo con un toque; (2) mostrar las horas como "8 de la mañana a 8 de la noche" (o "8:00 a. m. – 8:00 p. m."), no "08:00 a 08:01"; (3) revisar los clientes que ya tienen cierra ≤ abre + 1 h y avisarlos en "Datos que faltan".
     - **Benavides:** sí tiene "Benavides" de nombre y de apodo. Arreglo propuesto: si el apodo es igual al nombre (sin importar mayúsculas ni acentos), no repetirlo.
+
+## 2026-11-17 · 118 · Ricardo: sueldos sin semana, sin fecha de ingreso — PARA LA SIGUIENTE VERSIÓN (solo anotado)
+- Ricardo: "no tenemos cuándo inicia la semana, cuándo acaba, cuándo empezó a trabajar, etcétera".
+- Cómo está hoy:
+  - La "semana" del sueldo (`szCalc`, base línea ~1116) no tiene fechas: va desde el último pago hasta que el admin toca "Pagar" (ahí se reinician `sz.dias/cv/kv`). Pero los viajes (`vjHist`) y lo de "Esta semana" de la comisión cuentan desde el **lunes** (`mondayIso`). Si se paga un día distinto, se mezclan.
+  - No hay día de pago; si el admin no paga, la "semana" sigue sumando días.
+  - La fecha de ingreso se guarda sola (`c.ing` = día en que se dio de alta en la app, `l7.js`), pero no se ve ni se puede cambiar. No hay fecha de baja.
+- Decisiones (Ricardo):
+  1. **Semana de lunes a sábado; se paga el sábado.** El domingo no cuenta (si trabaja domingo, ¿cuenta a la siguiente semana o como extra? → preguntar).
+     - Pago dice "Semana del lun 16 al sáb 21 nov"; lo de comisión, viajes, días, bonos, adelantos y faltantes se juntan por esas fechas (no por "desde el último pago").
+     - El sábado: aviso al admin "Hoy toca pagar sueldos" con la lista; si no paga, la semana queda "pendiente de pagar" y la siguiente empieza el lunes igual.
+  2. **"Empezó a trabajar el"**: campo en la ficha del empleado y en el asistente (de inicio, el día del alta; editable). Se ve la antigüedad ("lleva 1 año 3 meses").
+  3. **Primera semana proporcional**: si entra a media semana, sueldo semanal ÷ 6 × días desde que entró (los de sueldo por día ya salen solos).
+  4. **Vacaciones y aguinaldo** según la antigüedad (Ley Federal del Trabajo: 12 días de vacaciones el primer año y suben; aguinaldo mínimo 15 días, proporcional si no completa el año). Mostrarlo en la ficha y avisar en diciembre.
+  5. **Fecha de baja**: "Dejó de trabajar el"; calcula su última semana proporcional + aguinaldo y vacaciones proporcionales (finiquito); queda oculto pero con su historial.
+- Dudas para cuando se haga: ¿domingo trabajado cómo se paga?; ¿días de descanso o faltas descuentan en sueldo semanal?; ¿aguinaldo sobre sueldo base o también comisiones?

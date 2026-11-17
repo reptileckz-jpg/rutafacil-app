@@ -48,7 +48,11 @@ cambioDeDia=function(viejo){var hoy=iso(TODAY),nuevo=!!(viejo&&viejo!==hoy);
  return r};
 
 /* ---------- el celular del chofer cambia solo a la ruta de hoy ---------- */
-function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;var hoy=iso(TODAY);if(S.rutaDia80)return S.rutaDia80!==hoy?S.rutaDia80:null;
+/* 93 · de noche (12 a 5 a.m.) la ruta de AYER que ya salió sigue siendo "la de hoy": el chofer termina sus entregas y manda su cierre
+   sin que se le bloquee nada; a las 5 a.m., si todavía no lo mandó, ya sale "No mandaste tu cierre de ayer". */
+var NOCHE93=5;
+function noche93(f){try{var h=window.__hora93!=null?window.__hora93:new Date().getHours();return !!f&&f===ayer80()&&h<NOCHE93}catch(e){return false}}
+function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;var hoy=iso(TODAY);if(S.rutaDia80&&noche93(S.rutaDia80)&&salio87(S))return null;if(S.rutaDia80)return S.rutaDia80!==hoy?S.rutaDia80:null;
  /* rutas de antes (sin fecha): vieja si ya mandó el cierre y no trae a ninguno de sus clientes de hoy */
  var H=cliHoy80(S.chofHoy).map(function(c){return c.id});if(!H.length)return null;var st=S.stops||[];if(st.some(function(s){return H.indexOf(+s.c)>-1}))return null;return 'antes'}
 function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),env=!!(o.cierre&&o.cierre.sent),f=v==='antes'?ayer80():v;
@@ -63,7 +67,10 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
   var rec={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length;
   /* salió y no ha mandado el cierre: se bloquea con la pantalla "No mandaste tu cierre" */
   if(!env&&!rutaVacia(o)){if(v!=='antes')S.dia80=v;return false}
-  S.rutasHist=S.rutasHist||[];if(!rutaVacia(o)&&!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
+  S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy})[0];
+  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
+  /* 93 · si al cambiar de día ya se había guardado "sin enviar" y luego SÍ mandó su cierre, se actualiza (antes se quedaba "no enviado") */
+  else if(ya&&env&&!ya.enviado){ya.log=o.log;ya.res=o.cierre&&o.cierre.res||null;ya.enviado=true;ya.tarde93=1;if(ya.recep82===undefined||ya.recep82===null){ya.cierreReg82=rec.reg||null;ya.recep82=rec.recep||null}}
   /* 82 · al historial se le pega cómo se recibió el cierre */
   try{S.rutasHist.slice(n).forEach(function(e){if(e.recep82===undefined){e.cierreReg82=rec.reg||null;e.recep82=rec.recep||null}})}catch(e){}
   arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var k=(S.stops||[]).length;setTimeout(function(){try{toast(k?'Listo: ya puedes empezar tu ruta de hoy ('+k+' cliente'+(k===1?'':'s')+')':'Tu ruta de hoy está lista')}catch(e){}},80);return true
@@ -71,6 +78,8 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
 
 /* ---------- la pantalla del chofer "No mandaste tu cierre" ---------- */
 function dia80HTML(){
+ /* 93 · de noche no se bloquea la ruta que va en curso */
+ if(S.role==='rep'&&S.dia80&&noche93(S.dia80)&&salio87(S)){S.dia80=null;return ''}
  /* 71 · si no salió a ruta, no se bloquea */
  if(S.role==='rep'&&S.dia80&&!salio87(S)&&!(S.cierre&&S.cierre.sent)){S.dia80=null;setTimeout(function(){try{render()}catch(e){}},0);return ''}
  if(S.role!=='rep'||!S.dia80||S.cierre&&S.cierre.sent||S.tab.rep==='cierre')return '';var n=cliHoy80(S.chofHoy).length,ya=(S.libPide83||'')===iso(TODAY);
@@ -82,8 +91,8 @@ function dia80HTML(){
 
 /* ---------- el administrador: rutas que puede liberar ---------- */
 /* las de otros choferes Y la que tiene cargada en su celular; solo si el chofer SALIÓ y no mandó su cierre */
-function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o)&&salio87(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
- if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!(S.cierre&&S.cierre.sent)&&salio87(S)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
+function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!noche93(o.rutaDia80)&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o)&&salio87(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
+ if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!noche93(S.rutaDia80)&&!(S.cierre&&S.cierre.sent)&&salio87(S)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
 /* la tarjeta roja en Inicio (pide que la liberen / no ha mandado su cierre) */
 function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||['inicio','rutas'].indexOf(S.tab.admin)<0)return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
  var pide=Object.keys(P).filter(function(id){return P[id]&&P[id].f===hoy});if(!L.length&&!pide.length)return;var ya={};

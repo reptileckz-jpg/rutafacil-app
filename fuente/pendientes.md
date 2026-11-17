@@ -2238,3 +2238,9 @@ Decisiones:
 - Tutoriales y ayuda: tutorial del administrador (pasos Rutas, Hoy, Números de hoy, Clientes, Más), los de cada día, Rutas, guía de cada sección y "?"; recorrido nuevo "Se reacomodó la app" (una vez, a quien ya conocía la app). Prueba que recorre TODOS los tutoriales del administrador.
 - Probado: el chofer cobra con el último precio si nadie lo fija y no se bloquea.
 - Pruebas: t92 (38, app real y demo); ajustadas t60, t81, t91cob, tu. Todas: 0 FAIL. PUBLICADA junto con la 9.0 (versión real del APK arriba, punto 91).
+
+## 2026-11-17 · 93 · Ricardo: "como repartidor, si cambia de día, se sigue bloqueando la app y no puedo mandar mi cierre" (repartiendo a las 11 p.m., dieron las 12)
+- Reproducido: a las 12 la app se recarga con el día nuevo; la ruta (que sí salió y no tenía cierre) quedaba "de ayer" → pantalla "No mandaste tu cierre de ayer". En la prueba, con esa pantalla SÍ se pudo mandar el cierre; no se encontró qué lo trabó en su celular (si vuelve a pasar: captura o el texto de "Ver el error").
+- HECHO (tema-rutadia.js): de 12 a 5 a.m. la ruta de ayer que ya salió sigue como la de hoy: puede seguir entregando y manda su cierre sin ninguna pantalla de bloqueo; su ruta no se cambia hasta las 5 a.m. (así el admin recibe ese cierre normal). A las 5 a.m., si no lo mandó, sí sale "No mandaste tu cierre de ayer". De noche, al admin no le sale "Liberar" ni "no envió su cierre".
+- Arreglado de paso: si el cierre de ayer se mandaba tarde, el historial se quedaba "no enviado" (a medianoche ya se había guardado sin enviar); ahora se actualiza.
+- Prueba t93 (7). Todas: 0 FAIL. SIN PUBLICAR.

@@ -2326,3 +2326,5 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - 105 En "Editar datos" del vehículo: "🗑 Quitar foto" en la foto del vehículo (también el dibujo que trae la app) y en las de la póliza, tarjeta de circulación y verificación, con "¿Quitar la foto?". Al guardar se queda sin foto (antes se le ponía un dibujo solo). (tema-vehiculos.js)
 - Arreglada de paso la prueba t82 (55): contaba solo la hora, sin minutos, y fallaba entre 7:30 y 7:59 pm.
 - Prueba t102 (16). Todas: 0 FAIL.
+
+## 2026-11-17 · Ricardo: "arma el apk" → versión 9.6 a main (98, 100, 102–105 y la migración a Vite: avisos, quién reparte, vehículos). Todas las pruebas: 0 FAIL.

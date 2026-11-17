@@ -23,7 +23,7 @@ def FR(name,old,new):
     s=s[:i]+body.replace(old,new)+s[m.start():]
 def LIB(fn):
     R("/* ---------- Estructura ---------- */",open(D+fn,encoding='utf-8').read()+"\n/* ---------- Estructura ---------- */")
-R('Control de reparto · v3.8','Control de reparto · v4.0')
+R('Control de reparto · v3.8',"Control de reparto · v'+APP_VER+'")
 for part in sys.argv[1:]:
     exec(open(D+part,encoding='utf-8').read())
 open(P,'w',encoding='utf-8').write(s)

@@ -113,3 +113,5 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 
 var _rd90=render;render=function(){try{vehIds90();vehAuto90();arStToma90();arCuenta90();arTut90()}catch(e){console.error('l90',e)}var r=_rd90.apply(this,arguments);
  try{arArriba90();arLimpia90();vehOcupados90();vehSel90();ovPon70('av90',av90HTML())}catch(e){console.error('l90b',e)}return r};
+/* ---------- versión: la del APK (1.0.N), leída del celular; si no se puede, la de la app ---------- */
+(function(){try{var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(!A||!A.getInfo)return;A.getInfo().then(function(i){if(i&&i.version){APP_VER=String(i.version);try{render()}catch(e){}}},function(){})}catch(e){}})();

@@ -2351,3 +2351,5 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   · Si el cliente YA PAGÓ sus taras, esas taras ya son suyas (se le quedan), con opción a comprárselas de vuelta. Al chofer NO se le devuelve el descuento, porque ya son del cliente. "Esto dependerá de los tiempos que se asignen para cobrarlas" (plazos del buró de taras en Ajustes: cuándo se le cobra al cliente y cuándo se le descuenta al chofer).
   · El fondo para comprar taras: SOLO COMO REPORTE (un renglón en Estadísticas con cuánto se ha juntado por taras de clientes y de choferes), sin apartar el dinero.
   · Por definir al construirlo: los dos plazos (cliente y chofer) y qué pasa si el cliente paga antes de que se le descuente al chofer.
+
+## 2026-11-17 · Ricardo: "aún no sigas con Vite, vamos a seguir puliendo la app" → Vite en pausa (503 envolturas, 11%). Siguen: 106 (anotado), 107 (hecho, sin publicar), 108 (anotado).

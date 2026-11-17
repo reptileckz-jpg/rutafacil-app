@@ -33,6 +33,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 
 ## Antes de seguir
+**Ricardo (17 nov, después de la 9.6 / APK 1.0.43): "aún no sigas con Vite, vamos a seguir puliendo la app".** La migración queda en pausa en 503 envolturas (11%); el siguiente tema, cuando se retome, es ruta y entrega del chofer.
+
 **Ricardo (17 nov): primero la reorganización de pantallas (pendiente 92), luego seguir con la migración.** ✅ Reorganización hecha y publicada. Lo que se reorganice se escribe ya en su `tema-*.js`, así que también cuenta como avance.
 
 ## Reglas

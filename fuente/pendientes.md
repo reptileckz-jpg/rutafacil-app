@@ -2176,3 +2176,9 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 81 Ruta del chofer: "Hola, Danu · el administrador ve tu ubicación mientras trabajas" arriba como texto; "Te quedan en el camión" ya no se sale (los cuadros se acomodan y el número se encoge si no cabe).
 - 82 Roatán en Inicio: azul petróleo (#0E7490) en vez de naranja.
 - Prueba t89 (7); t68 ajustada al color. Todas: 0 FAIL.
+
+## 2026-11-17 · Ideas de otra IA revisadas contra la app (Ricardo)
+- Ya existían: repetir último pedido, gastos con foto obligatoria, corte por billetes, modo manejo, recordatorio de cobro por WhatsApp. A medias: focos rojos (Por atender + ¿Cuadran?), motivo de no compra (No estaba / Tenía producto / Compró a otro), apoyo entre choferes.
+83. Orden de carga al revés (lo de los últimos clientes al fondo): Ricardo "sí y no: solo aplicaría si hay otras frutas, pues todo el plátano es el mismo" → PARA DESPUÉS, solo si se venden varios productos distintos.
+- No se hacen por ahora: llegada automática por GPS, "voy en 10 minutos", focos rojos, traspaso por QR, kilo neto con tara, modo práctica.
+84. Ricardo: lo que más tiempo le quita hoy es EL SEGUIMIENTO DE CRÉDITOS → diseñar una pantalla de Cobranza (en preguntas).

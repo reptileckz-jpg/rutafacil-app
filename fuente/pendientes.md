@@ -2337,3 +2337,7 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 ## 2026-11-17 · 107 · Ricardo: "las notas de remisión no guardan el orden que llevan, cada día se reinician a 1"
 - CAUSA (revisada en el código, sin cambiar nada): el número de la nota es cuántas entregas lleva esa ruta HOY (base: `folio:S.log.length`). Por eso cada día empieza en 1. Además cada chofer tiene su propia ruta: dos choferes pueden dar el MISMO número el mismo día (y el administrador que reparte también).
 - Pendiente: decidir cómo se numeran (consecutivo de todo el negocio, o una serie por chofer para que no se repitan aunque no haya señal) y cuándo se hace. No publicar APK todavía (Ricardo, 106).
+- Decisión (Ricardo): serie por chofer · hacerlo ya, sin publicar.
+### HECHO (17 nov) · 107 · SIN PUBLICAR (no armar APK hasta que Ricardo diga)
+- Cada chofer (y el administrador que reparte) tiene su letra y su consecutivo que nunca se reinicia: "Nota de remisión No. B-0001", B-0002… Otro chofer C-0001… No se repiten aunque no haya señal (la letra sale del orden de alta; el consecutivo lo lleva el celular de ese chofer y se guarda en la nube con los choferes). Cada entrega se queda con el número de su nota.
+- Nuevo tema `tema-notas.js` (nació aplanado). Prueba t107 (9). Todas: 0 FAIL.

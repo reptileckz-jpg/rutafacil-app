@@ -63,3 +63,6 @@ R("cuesta '+money(costoCajaAct())+'","cuesta '+(costoCajaAct()?money(costoCajaAc
 R("cuesta '+money(costoKgMAct())+'","cuesta '+(costoKgMAct()?money(costoKgMAct()):'—')+'")
 # 102 · carga programada: "Completar con lo que se compre" solo pide la fruta del viaje (si no se sabe, las dos)
 R("cfield(c,'kgR','Kilos de roatán comprados')+cfield(c,'pR','Precio al que compraste el kilo de roatán $')+cfield(c,'cajas','Cajas que se llenaron')+cfield(c,'kgM','Kilos de macho')+cfield(c,'pM','Precio al que compraste el kilo de macho $'):'')","(c.kgR||c.cajas||c.provR||!(c.kgM||c.provM)?cfield(c,'kgR','Kilos de roatán comprados')+cfield(c,'pR','Precio al que compraste el kilo de roatán $')+cfield(c,'cajas','Cajas que se llenaron'):'')+(c.kgM||c.provM||!(c.kgR||c.cajas||c.provR)?cfield(c,'kgM','Kilos de macho')+cfield(c,'pM','Precio al que compraste el kilo de macho $'):''):'')")
+# 107 · notas de remisión: serie por chofer que nunca se reinicia (tema-notas.js)
+R("S.nota={tel:c.tel||'',folio:S.log.length,","S.nota={tel:c.tel||'',folio:folioNota107(),")
+R("'Nota de remisión No. '+('000'+n.folio).slice(-4)","'Nota de remisión No. '+folioTxt107(n.folio)")

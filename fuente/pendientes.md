@@ -2198,3 +2198,12 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - Promesa: ese día sale en Por atender y en Inicio, y al chofer en su ruta ("Hoy te prometieron pagar") y en la entrega. Si pasó el día sin pagar nada: rojo + "Pago vencido: X no pagó su deuda como prometió". Si pagó, se quita sola y queda en su historial.
 - Los abonos nuevos se guardan con fecha (para el estado de cuenta).
 - Prueba t91cob (27). Todas: 0 FAIL.
+
+## 2026-11-17 · Reporte de Ricardo (5 puntos + el administrador que reparte) → HECHO versión 9.0 (capa l90) · SIN PUBLICAR
+85. Fotos del vehículo (admin): no se ampliaban. Causa: la foto en grande se abría DETRÁS de la ventana "Fotos de Danu". HECHO: se abre encima.
+86. Al quitarle un cliente a un chofer en ruta no le llegaba nada (solo un letrero de 3 segundos). HECHO: ventana grande "⚠️ Ya no vayas con X · lo lleva Y / hoy no se visita" + "Tu siguiente parada (ahora) es Z" con "Entendido"; si estaba en la entrega de ese cliente, sale de la entrega; notificación del celular.
+87. Tutorial de reparto del admin: le salía el del chofer, que señalaba botones que él no tiene (4 de 6 pasos a la nada). HECHO: tutorial propio de 3 pasos (barra para regresar, Iniciar, entregar y cerrar).
+88. Admin que reparte: "Mi ruta de hoy" decía 0 clientes hasta entrar (los contaba al tocarlo). HECHO: cuenta al momento y sale grande justo debajo de "¿Repartes hoy?"; ya no pregunta otra vez "¿Vas a salir a repartir?"; lo que se pasa en Rutas le llega aunque ya esté en su ruta (antes no); barra azul fija "🚚 Estás repartiendo · ← Volver a administrador".
+89. Vehículo duplicado. Causa de fondo: los vehículos dados de alta en "Para empezar" quedaban TODOS con el mismo número interno (id 1), así que para la app eran el mismo (y se mezclaban los kilómetros). HECHO: las altas salen con número propio; los repetidos se renumeran solos al abrir la app (aviso "revisa el odómetro de cada uno"). Además: si otro ya salió con un vehículo y no ha cerrado, sale "🔒 NP300 · ocupado: lo trae Danu", se le cambia solo a uno libre, en la revisión no se puede escoger y no deja Iniciar con él.
+90. Admin en su ruta: ya no sale "el administrador ve tu ubicación" ni "¿No eres Ricardo?"; el cierre dice "Efectivo de tu ruta / Va a la caja / Cerrar mi ruta" en vez de "Debes entregar / Enviar cierre al administrador"; sin "Aprende la app" del chofer.
+- Prueba t90 (25). Todas: 0 FAIL.

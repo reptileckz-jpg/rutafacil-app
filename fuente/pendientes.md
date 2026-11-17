@@ -2341,3 +2341,9 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 ### HECHO (17 nov) · 107 · SIN PUBLICAR (no armar APK hasta que Ricardo diga)
 - Cada chofer (y el administrador que reparte) tiene su letra y su consecutivo que nunca se reinicia: "Nota de remisión No. B-0001", B-0002… Otro chofer C-0001… No se repiten aunque no haya señal (la letra sale del orden de alta; el consecutivo lo lleva el celular de ese chofer y se guarda en la nube con los choferes). Cada entrega se queda con el número de su nota.
 - Nuevo tema `tema-notas.js` (nació aplanado). Prueba t107 (9). Todas: 0 FAIL.
+
+## 2026-11-17 · 108 · Ricardo: taras prestadas → cobrarlas en efectivo al CLIENTE y también descontarlas al CHOFER (a propósito, no es un error)
+- Pregunta de Ricardo: "¿el descuento es doble?". Revisado: HOY NO. La app solo descuenta al chofer a los 30 días (buró de taras, punto 78: aviso al chofer a los 7, al admin a los 15, descuento del sueldo a los 30, una sola vez por deuda). Al cliente nunca se le cobra; su deuda queda en taras, no en pesos. No existe una opción de cobrarle las taras al cliente.
+- Hueco encontrado: si el cliente regresa las taras DESPUÉS del descuento, al chofer no se le devuelve solo (solo dice "avísale al administrador").
+- Lo que pide Ricardo: "también existía la opción de cobrárselas en efectivo al cliente, pero también al chofer; así, si alguien no las regresa, tenemos un FONDO para comprar más taras (se rompen, se dañan, es un problema). Con eso tenemos más control sobre ellas y, sobre todo, se genera un sentimiento de responsabilidad del repartidor sobre las cosas que le dan trabajo: cuidar los vehículos, las taras, a los clientes, los créditos, etc."
+- Pendiente: definir con Ricardo cuándo se le cobra al cliente, qué pasa si después regresa las taras, y cómo se ve el fondo. No publicar APK (106).

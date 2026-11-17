@@ -1061,7 +1061,7 @@ function ruta(){
    +(s.done?(!s.nov&&s.logI!=null&&!S.cierre.sent?'<span style="display:flex;flex-direction:column;gap:2px"><button class="link" style="min-height:34px" data-act="corrnew" data-i="'+i+'">Corregir</button><button class="link" style="min-height:34px;color:var(--danger)" data-act="cancelent" data-i="'+i+'">Cancelar</button></span>':''):'<button class="btn sm'+(i===ni?'':' sec')+'" data-act="entregar" data-i="'+i+'">'+(i===ni?'Entregar':'Ir aquí')+'</button>')+'</div>'});
  h+='</div><div style="display:flex;gap:8px"><button class="btn sec" style="flex:1" data-act="calle" data-reg="0">Venta rápida</button><button class="btn sec" style="flex:1" data-act="calle" data-reg="1">Cliente nuevo</button></div>';
  if(ok&&!S.cierre.sent)h+=extraCard();
- if(ok)h+=revResumen()+corrListaHTML();h+=demoRutaHTML();
+ if(ok)h+=revResumen()+corrListaHTML();if(MODO!=='vacio')h+=demoRutaHTML();
  return h}
 function entregaCalc(){
  var d=S.d,i=curStop(),c=i>=0?cl(S.stops[i].c):null;if(!c)return{};
@@ -9793,15 +9793,18 @@ function tarBuro72(){if(!(S.role==='admin'&&!S.encOn))return;var hoy=iso(TODAY);
  (S.cli||[]).forEach(function(c){if(c.oculto||!(num(c.vac)>0)||!c.vacDesde)return;var e=tarEdad72(c),ch=c.chofer,cn=chofN(ch);
   if(e>=T.d2&&c.tarAv72!==c.vacDesde){c.tarAv72=c.vacDesde;(S.avPrecio=S.avPrecio||[]).push(c.n+' debe '+c.vac+' taras desde hace '+e+' días (lo visita '+cn+'). A los '+T.d3+' días se descuentan del sueldo de '+cn+'.')}
   if(e>=T.d3&&c.tarDesc72!==c.vacDesde&&ch){c.tarDesc72=c.vacDesde;var m=r2(num(c.vac)*T.pr);S.faltantes.push({ch:+ch,m:m,fecha:hoy,desc:true,pend:true,mot:'Taras no regresadas de '+c.n+' ('+c.vac+' × '+money(T.pr)+')',tar72:c.id});
-   S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Descuento a '+cn+': '+money(m)+' por '+c.vac+' taras de '+c.n+' ('+e+' días)'});(S.avPrecio=S.avPrecio||[]).push('Se descontaron '+money(m)+' del sueldo de '+cn+' por '+c.vac+' taras que '+c.n+' no regresó en '+T.d3+' días.')}})}
+   S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Descuento a '+cn+': '+money(m)+' por '+c.vac+' taras de '+c.n+' ('+e+' días)'});(S.avPrecio=S.avPrecio||[]).push('Se descontaron '+money(m)+' del sueldo de '+cn+' por '+c.vac+' taras que '+c.n+' no regresó en '+T.d3+' días.')}});
+ /* 108 · las que el cliente pagó en lugar de regresarlas: al chofer a mitad de precio (tema-taras.js) */
+ try{if(typeof tarCastigo108==='function')tarCastigo108(T)}catch(e){}}
 try{if(typeof CLIK!=='undefined'&&CLIK.push)['vacPidio','tarAv72','tarDesc72','telNo','fotoSkip','altaCh','locBy','locF'].forEach(function(k){if(CLIK.indexOf(k)<0)CLIK.push(k)})}catch(e){}
 /* al chofer: en la entrega, cuánto tiempo lleva debiendo y qué pasa si no las regresa */
 function tarEnt72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="tar72"]'))return;var i=curStop(),c=i>=0?cl(S.stops[i].c):null;if(!c||!(num(c.vac)>0))return;var e=tarEdad72(c),T=tarCfg72();if(e<T.d1)return;
- var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>';
+ var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>'+(typeof tarCobBtn108==='function'?tarCobBtn108(c,e):'');
  var an=m.querySelector('.card');if(an)an.after(d);else m.prepend(d)}
 /* Ajustes: precio de la tara para el descuento */
 var _aj72=ajHTML;ajHTML=function(){var h=_aj72.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var T=tarCfg72();
- var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+'.</div>'
+ var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+' (a mitad de precio las que el cliente pagó).</div>'
+  +'<div class="field"><label for="tarCob108">Días para cobrarle las taras al cliente</label><input id="tarCob108" type="number" inputmode="numeric" step="1" min="1" data-bind="cfg.tarCob108" value="'+esc(S.cfg.tarCob108==null?'25':S.cfg.tarCob108)+'"></div>'
   +'<div class="field"><label for="taraDesc">Descuento por cada tara $</label><input id="taraDesc" type="number" inputmode="decimal" step="any" min="0" data-bind="cfg.taraDesc" value="'+esc(S.cfg.taraDesc==null?String(T.pr):S.cfg.taraDesc)+'"></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
 
@@ -9821,7 +9824,9 @@ var _vr72=null;function vr72Pon(){if(_vr72||typeof VIEWS==='undefined'||!VIEWS.r
 function botones72(){}
 
 /* ---------- dibujo ---------- */
-var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML())}catch(e){console.error('l72',e)}return r};
+var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML());
+ /* 108–110 (tema-taras.js, tema-cargarmas.js) */
+ if(typeof tar108HTML==='function'){ovPon70('tar108ov',tar108HTML());ovPon70('deb109ov',deb109HTML());debCard109();tarFondoCard108()}if(typeof cm110HTML==='function'){ovPon70('cm110ov',cm110HTML());bodCard110()}}catch(e){console.error('l72',e)}return r};
 
 //@@capa l73.js
 /* ===================== v7.6 · huella y cámara (12 nov)
@@ -10283,7 +10288,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4982,"l17.js"],[5013,"l18.js"],[5090,"l19.js"],[5160,"l20.js"],[5209,"l21.js"],[5255,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5523,"l25.js"],[5554,"l26.js"],[5697,"l27.js"],[5763,"l28.js"],[5895,"l29.js"],[6021,"l30.js"],[6065,"l31.js"],[6101,"l32.js"],[6195,"l33.js"],[6214,"l34.js"],[6274,"l35.js"],[6334,"l36.js"],[6432,"l37.js"],[6453,"l38.js"],[6541,"l39.js"],[6622,"l40.js"],[6746,"l41.js"],[6830,"l42.js"],[6933,"l43.js"],[7035,"l44.js"],[7136,"l45.js"],[7231,"l46.js"],[7299,"l47.js"],[7413,"l48.js"],[7468,"l49.js"],[7504,"l50.js"],[7608,"l51.js"],[7618,"l52.js"],[7761,"l53.js"],[7783,"l54.js"],[7858,"l55.js"],[7887,"l56.js"],[7972,"l57.js"],[8037,"l58.js"],[8164,"l59.js"],[8223,"l60.js"],[8385,"l61.js"],[8442,"l62.js"],[8572,"l63.js"],[8743,"l64.js"],[8775,"l65.js"],[8876,"l66.js"],[8982,"l67.js"],[9009,"l68.js"],[9143,"l69.js"],[9367,"l70.js"],[9589,"l71.js"],[9714,"l72.js"],[9826,"l73.js"],[9897,"l74.js"],[10021,"l75.js"],[10174,"l76.js"],[10277,"l77.js"],[10405,"l78.js"],[10547,"l79.js"],[10655,"l80.js"],[10779,"l81.js"],[10932,"l82.js"],[11185,"l83.js"],[11254,"l84.js"],[11367,"l85.js"],[11428,"tema-rutadia.js"],[11593,"l86.js"],[11653,"l87.js"],[11696,"l88.js"],[11746,"l89.js"],[11795,"l90.js"],[11901,"tema-cobranza.js"],[12048,"tema-pantallas.js"],[12267,"tema-avisos.js"],[12429,"tema-reparte.js"],[12495,"tema-vehiculos.js"],[12639,"tema-notas.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4982,"l17.js"],[5013,"l18.js"],[5090,"l19.js"],[5160,"l20.js"],[5209,"l21.js"],[5255,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5523,"l25.js"],[5554,"l26.js"],[5697,"l27.js"],[5763,"l28.js"],[5895,"l29.js"],[6021,"l30.js"],[6065,"l31.js"],[6101,"l32.js"],[6195,"l33.js"],[6214,"l34.js"],[6274,"l35.js"],[6334,"l36.js"],[6432,"l37.js"],[6453,"l38.js"],[6541,"l39.js"],[6622,"l40.js"],[6746,"l41.js"],[6830,"l42.js"],[6933,"l43.js"],[7035,"l44.js"],[7136,"l45.js"],[7231,"l46.js"],[7299,"l47.js"],[7413,"l48.js"],[7468,"l49.js"],[7504,"l50.js"],[7608,"l51.js"],[7618,"l52.js"],[7761,"l53.js"],[7783,"l54.js"],[7858,"l55.js"],[7887,"l56.js"],[7972,"l57.js"],[8037,"l58.js"],[8164,"l59.js"],[8223,"l60.js"],[8385,"l61.js"],[8442,"l62.js"],[8572,"l63.js"],[8743,"l64.js"],[8775,"l65.js"],[8876,"l66.js"],[8982,"l67.js"],[9009,"l68.js"],[9143,"l69.js"],[9367,"l70.js"],[9589,"l71.js"],[9714,"l72.js"],[9831,"l73.js"],[9902,"l74.js"],[10026,"l75.js"],[10179,"l76.js"],[10282,"l77.js"],[10410,"l78.js"],[10552,"l79.js"],[10660,"l80.js"],[10784,"l81.js"],[10937,"l82.js"],[11190,"l83.js"],[11259,"l84.js"],[11372,"l85.js"],[11433,"tema-rutadia.js"],[11598,"l86.js"],[11658,"l87.js"],[11701,"l88.js"],[11751,"l89.js"],[11800,"l90.js"],[11906,"tema-cobranza.js"],[12053,"tema-pantallas.js"],[12272,"tema-avisos.js"],[12434,"tema-reparte.js"],[12500,"tema-vehiculos.js"],[12644,"tema-notas.js"],[12661,"tema-taras.js"],[12748,"tema-cargarmas.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -12652,6 +12657,132 @@ function folioNota107(){var c=(S.choferes||[]).filter(function(x){return +x.id==
  if(c){c.folio107=num(c.folio107)+1;n=serie107(c)+'-'+('000'+c.folio107).slice(-4)}else{S.cfg.folio107=num(S.cfg.folio107)+1;n='X-'+('000'+S.cfg.folio107).slice(-4)}
  try{var l=S.log&&S.log[S.log.length-1];if(l&&!l.folio107)l.folio107=n}catch(e){}return n}
 function folioTxt107(f){return typeof f==='string'?f:('000'+f).slice(-4)}
+
+//@@capa tema-taras.js
+/* ===================== TEMA · Taras prestadas y deudas en la entrega (nació como tema, 17 nov · puntos 108 y 109) =====================
+   108 · Cobrarle las taras al cliente (Ricardo):
+   - El chofer se las cobra desde la entrega ("💵 Cobrarle las taras"). A los 25 días (Ajustes → Buró de taras) se lo pide en rojo.
+   - Al cobrarlas, las taras se quedan con el cliente (salen de las taras del negocio con su movimiento, para que todo cuadre)
+     y su precio pasa a ser deuda en pesos que se cobra COMO ABONO en esa misma entrega: entra al efectivo del chofer, al ticket y al cierre.
+   - Al chofer igual se le descuentan a los 30 días: a precio completo las que no regresaron ni se pagaron (como antes, l72) y a
+     MITAD DE PRECIO las que el cliente pagó ("castigo por no pedirlas").
+   - El "fondo para taras" es un reporte (Estadísticas): lo cobrado a clientes y lo descontado a choferes por taras.
+   109 · Si el cliente YA debía dinero o taras de antes: aviso grande arriba de la entrega y, al terminarla sin cobrar, una ventana
+     que lo recuerda (como la de taras prestadas): "Cobrar ahora", "Ya le pedí, no tenía" o "Regresar a la entrega".
+   Si se cambia algo de esto, se cambia AQUÍ.
+   ============================================================================================ */
+function tarCobDias108(){return num(S.cfg&&S.cfg.tarCob108)||25}
+function tarPr108(){return tarCfg72().pr}
+function cliEnt108(){var i=curStop();return i>=0&&S.stops[i]?cl(S.stops[i].c):null}
+function diasDesde108(f){return f?Math.max(0,Math.round((TODAY-new Date(f+'T12:00:00'))/864e5)):0}
+
+/* ---------- 108 · el botón en la tarjeta de taras de la entrega (lo llama tarEnt72) ---------- */
+function tarCobBtn108(c,e){if(!c||!(num(c.vac)>0))return '';var D=tarCobDias108(),ya=e>=D;
+ return (ya?'<div style="font-size:16px;margin-top:6px;font-weight:800;color:var(--danger)">Ya pasaron '+D+' días: cóbrale las taras ('+money(tarPr108())+' cada una).</div>':'')
+  +'<button class="btn'+(ya?'':' sec')+'" style="margin-top:8px;min-height:54px;font-size:17px" data-act="tar108">💵 Cobrarle las taras</button>'}
+
+/* ---------- 108 · la tarjeta de pantalla completa para cobrarlas ---------- */
+function tar108HTML(){var x=S.tar108;if(!x)return '';var c=cl(x.c);if(!c||!(num(c.vac)>0)){S.tar108=null;return ''}var n=Math.max(1,Math.min(num(c.vac),Math.round(num(x.n)||num(c.vac)))),pr=tarPr108(),m=r2(n*pr);x.n=n;
+ return ovW70('tar108ov','Cobrarle las taras','<div class="card tb72" style="padding:14px"><div style="font-size:20px;font-weight:900">'+esc(c.n)+' debe '+c.vac+' tara'+(c.vac===1?'':'s')+'</div>'
+  +'<div class="lbl" style="font-size:16px;margin-top:4px">Desde hace '+diasDesde108(c.vacDesde)+' días.</div></div>'
+  +'<div class="card" style="padding:14px"><div style="font-size:17px;font-weight:800">¿Cuántas le cobras?</div><div class="row" style="margin-top:8px;justify-content:center;gap:16px"><button class="btn sec" style="width:64px;min-height:56px;font-size:26px" data-act="tar108n" data-d="-1" aria-label="Menos">−</button><b style="font-size:34px">'+n+'</b><button class="btn sec" style="width:64px;min-height:56px;font-size:26px" data-act="tar108n" data-d="1" aria-label="Más">+</button></div>'
+  +'<div style="text-align:center;font-size:18px;margin-top:8px">'+n+' × '+money(pr)+' = <b style="font-size:22px">'+money(m)+'</b></div>'
+  +'<div class="lbl" style="font-size:15px;margin-top:10px">Esas taras se quedan con el cliente. Los '+money(m)+' se cobran en esta entrega, como abono (salen en su ticket y en tu efectivo).</div></div>'
+  +'<button class="btn big" data-act="tar108ok">Sí, cobrar '+money(m)+'</button><button class="btn sec big" data-act="tar108x">Regresar a la entrega</button>','tar108x')}
+function tarCobra108(c,n){var pr=tarPr108(),m=r2(n*pr),hoy=iso(TODAY);if(!c||!(n>0))return 0;var desde=c.vacDesde||hoy;
+ /* las taras se quedan con el cliente: salen de las del negocio (movimiento, para que cuadre) */
+ c.vac=Math.max(0,num(c.vac)-n);if(!c.vac)c.vacDesde=null;
+ S.cajasMov=S.cajasMov||[];S.cajasMov.push({t:'Taras que compró '+c.n+' ('+n+' × '+money(pr)+')',f:hoy,n:-n,m:m,tar108:c.id,ch:S.chofHoy});
+ /* para el descuento al chofer a mitad de precio cuando se cumplan sus 30 días */
+ c.tarPag108=(c.tarPag108||[]).concat([{n:n,desde:desde,f:hoy}]);
+ /* su precio pasa a deuda en pesos y se cobra como abono en esta entrega */
+ var cr0=num(c.cred);c.cred=r2(cr0+m);if(cr0<=0.005)c.credDesde=hoy;if(S.d)S.d.abono=String(r2(num(S.d.abono)+m));
+ S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Le cobró a '+c.n+' '+n+' taras ('+money(m)+'): se le quedan al cliente'});
+ return m}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tar108"],[data-act="tar108n"],[data-act="tar108ok"],[data-act="tar108x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.act;
+ if(a==='tar108'){var c=cliEnt108();if(c)S.tar108={c:c.id,n:num(c.vac)};render();return}
+ var x=S.tar108;if(!x){render();return}
+ if(a==='tar108n'){x.n=num(x.n)+num(b.dataset.d);render();return}
+ if(a==='tar108x'){S.tar108=null;render();return}
+ var c2=cl(x.c),m=tarCobra108(c2,num(x.n));S.tar108=null;render();toast('Listo: se suman '+money(m)+' a lo que te paga en esta entrega (abono)')},true);
+
+/* ---------- 108 · al chofer, a los 30 días, MITAD de precio por las que el cliente pagó (lo hace el celular del administrador; lo llama tarBuro72) ---------- */
+function tarCastigo108(T){var hoy=iso(TODAY);(S.cli||[]).forEach(function(c){if(!c||c.oculto||!c.tarPag108||!c.tarPag108.length)return;var ch=c.chofer;if(ch==null)return;
+ c.tarPag108.forEach(function(p){if(p.desc||diasDesde108(p.desde)<T.d3)return;p.desc=hoy;var m=r2(num(p.n)*T.pr/2),cn=chofN(ch);
+  S.faltantes.push({ch:+ch,m:m,fecha:hoy,desc:true,pend:true,mot:'Taras que pagó '+c.n+' sin regresarlas ('+p.n+' × '+money(T.pr)+' a mitad de precio)',tar108:c.id});
+  S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Descuento a '+cn+': '+money(m)+' (mitad de precio) por '+p.n+' taras que '+c.n+' pagó y no regresó'});
+  (S.avPrecio=S.avPrecio||[]).push('Se descontaron '+money(m)+' del sueldo de '+cn+' (mitad de precio) por '+p.n+' taras que '+c.n+' pagó en lugar de regresarlas.')})})}
+try{if(typeof CLIK!=='undefined'&&CLIK.push)['tarPag108'].forEach(function(k){if(CLIK.indexOf(k)<0)CLIK.push(k)})}catch(e){}
+
+/* ---------- 108 · el fondo para taras (reporte en Estadísticas) ---------- */
+function tarFondo108(){var cli=r2(sum((S.cajasMov||[]).filter(function(m){return m&&m.tar108!=null}),function(m){return num(m.m)})),ch=r2(sum((S.faltantes||[]).filter(function(f){return f&&(f.tar72!=null||f.tar108!=null)}),function(f){return num(f.m)}));return {cli:cli,ch:ch,tot:r2(cli+ch)}}
+function tarFondoCard108(){if(S.role!=='admin'||S.tab.admin!=='estadisticas')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="tf108"]'))return;var F=tarFondo108();
+ var d=document.createElement('div');d.className='card';d.dataset.x='tf108';d.style.padding='12px 14px';
+ d.innerHTML='<b style="font-size:17px">🧺 Fondo para comprar taras</b><div class="lbl">Lo que se ha juntado por taras que no regresaron.</div>'+rw('Cobrado a clientes',money(F.cli))+rw('Descontado a choferes',money(F.ch))+'<div class="row" style="min-height:48px"><b>Total</b><b>'+money(F.tot)+'</b></div>';
+ var h=m.querySelector('h1');if(h&&h.nextSibling)h.parentNode.insertBefore(d,h.nextSibling);else m.appendChild(d)}
+
+/* ---------- 109 · lo que el cliente YA debía antes de esta entrega ---------- */
+function debAntes109(){var c=cliEnt108();if(!c||c.oculto||c.rapida)return null;var d=S.d||{},cr=num(c.cred),tv=num(c.vac);return {c:c,cr:cr,tv:tv,dc:diasDesde108(c.credDesde),dt:diasDesde108(c.vacDesde)}}
+/* aviso grande arriba de la entrega (lo llama l72 después de dibujar) */
+function debCard109(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="deb109"]'))return;var x=debAntes109();if(!x||!(x.cr>0.005||x.tv>0))return;
+ var L=[];if(x.cr>0.005)L.push('<b>'+money(x.cr)+'</b> de antes'+(x.dc?' (desde hace '+x.dc+' días)':''));if(x.tv>0&&!m.querySelector('[data-x="tar72"]'))L.push('<b>'+x.tv+' tara'+(x.tv===1?'':'s')+'</b>');
+ if(!L.length)return;var d=document.createElement('div');d.className='card';d.dataset.x='deb109';d.setAttribute('style','padding:12px 14px;border:3px solid var(--danger);background:color-mix(in srgb,var(--danger) 10%,var(--surface))');
+ d.innerHTML='<div style="font-size:19px;font-weight:900;color:var(--danger)">⚠️ '+esc(x.c.n)+' te debe '+L.join(' y ')+'</div><div style="font-size:16px;margin-top:4px">Cóbraselo en esta entrega'+(x.cr>0.005?' (abono)':'')+'.</div>';
+ var an=m.querySelector('.card');if(an)an.before(d);else m.prepend(d)}
+/* al terminar la entrega sin cobrar lo de antes: ventana que lo recuerda */
+function deb109HTML(){var y=S.deb109;if(!y)return '';var c=cl(y.c);if(!c){S.deb109=null;return ''}
+ var L=[];if(y.cr>0.005)L.push(money(y.cr)+(y.ab>0.005?' (te abonó '+money(y.ab)+')':''));if(y.tv>0)L.push(y.tv+' tara'+(y.tv===1?'':'s'));
+ return ovW70('deb109ov','Antes de terminar','<div class="card" style="padding:14px;border:3px solid var(--danger)"><div style="font-size:20px;font-weight:900">'+esc(c.n)+' ya te debía '+L.join(' y ')+'</div>'
+  +'<div style="font-size:17px;margin-top:6px">¿Ya se lo pediste? Lo que no cobres sigue en su cuenta.</div></div>'
+  +'<button class="btn big" data-act="deb109cob">💵 Cobrar ahora</button><button class="btn sec big" data-act="deb109pedi">Ya le pedí, no tenía</button><button class="btn sec big" data-act="deb109x">Regresar a la entrega</button>','deb109x')}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="entconf"]');if(!b||S.role!=='rep'||!S.d||S.d._deb109)return;var x=debAntes109();if(!x)return;var k=entregaCalc()||{},d=S.d;
+ /* si en esta entrega ya salió la ventana de taras prestadas, aquí solo se recuerda el dinero */
+ var faltaDin=x.cr>0.005&&num(k.abono)<x.cr-0.005,faltaTar=x.tv>0&&num(d.V)<x.tv&&!d._tar72;if(!faltaDin&&!faltaTar)return;
+ e.preventDefault();e.stopImmediatePropagation();S.deb109={c:x.c.id,cr:faltaDin?x.cr:0,ab:num(k.abono),tv:faltaTar?x.tv:0};render()},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="deb109cob"],[data-act="deb109pedi"],[data-act="deb109x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var y=S.deb109,a=b.dataset.act;S.deb109=null;
+ if(a==='deb109x'||!y){render();return}
+ if(a==='deb109cob'){render();setTimeout(function(){var el=document.querySelector(y.cr>0?'[data-bind="d.abono"]':'[data-bind="d.V"], #dV, [data-k="d.V"]')||document.querySelector('[data-bind="d.abono"]');if(el){el.scrollIntoView({block:'center'});try{marcaFalta(el)}catch(er){}if(el.focus)el.focus()}toast(y.cr>0?'Escribe cuánto te abona de lo que debía':'Anota las taras que te regresa')},120);return}
+ /* "Ya le pedí, no tenía": queda registrado y se termina la entrega */
+ var c=cl(y.c);if(S.d)S.d._deb109='pedi';render();setTimeout(function(){var bt=document.querySelector('[data-act="entconf"]');if(bt)bt.click();try{if(c)S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Le pidió a '+c.n+' lo que debía de antes'+(y.cr>0?' ('+money(y.cr)+')':'')+(y.tv>0?' y '+y.tv+' taras':'')+': no tenía'})}catch(er){}},40)},true);
+
+//@@capa tema-cargarmas.js
+/* ===================== TEMA · Cargar más estando en ruta (nació como tema, 17 nov · punto 110) =====================
+   Antes, "Cargar más mercancía" preguntaba de una vez cuánto más cargaste. Ahora primero pregunta "¿Vas a la bodega por más?":
+   - Sí → en su ruta sale la parada extra "🏭 Bodega" como la siguiente (con "Cómo llegar"). Al llegar, "Ya llegué" abre la captura
+     de lo que cargó; al registrarla, la parada se quita sola y sigue con el cliente que le tocaba.
+   - No (se lo llevaron, o ya lo trae) → la captura de siempre (la ventana de l32 con cuánto cargaste y la foto).
+   La parada no es un cliente: no entra a la lista de clientes, ni al orden con tráfico, ni a las entregas.
+   Si se cambia algo de esto, se cambia AQUÍ.
+   ============================================================================================ */
+function bodLugar110(){try{var b=(S.bods||[]).filter(function(x){return +x.id===+(S.bodSel||1)})[0]||(S.bods||[])[0];if(b&&b.lat!=null&&b.lng!=null)return {n:b.n||'la bodega',lat:+b.lat,lng:+b.lng}}catch(e){}return {n:'la bodega',lat:null,lng:null}}
+function enRuta110(){return S.role==='rep'&&S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent)}
+/* la pregunta, antes de capturar */
+function cm110HTML(){if(!S.cm110)return '';
+ return ovW70('cm110ov','Cargar más','<div class="card" style="padding:14px"><div style="font-size:21px;font-weight:900">¿Vas a la bodega por más?</div><div style="font-size:16px;margin-top:6px">Si vas, te la pongo como tu siguiente parada y luego sigues con el cliente que te tocaba.</div></div>'
+  +'<button class="btn big" data-act="cm110si">🏭 Sí, llévame a la bodega</button><button class="btn sec big" data-act="cm110no">No, ya lo traigo (me lo llevaron)</button><button class="btn sec big" data-act="cm110x">Regresar</button>','cm110x')}
+/* la parada en la ruta */
+function bodCard110(){var x=S.bod110;if(!x)return;if(x.f!==iso(TODAY)||!enRuta110()){S.bod110=null;return}
+ if(num((S.extras||[]).length)>num(x.n0)){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;S.bod110=null;toast('Listo: carga registrada'+(c?'. Sigue con '+c.n:''));return}
+ if(S.tab.rep!=='ruta')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="bod110"]'))return;var B=bodLugar110(),i2=curStop(),sig=i2>=0&&S.stops[i2]?cl(S.stops[i2].c):null;
+ var d=document.createElement('div');d.className='card';d.dataset.x='bod110';d.setAttribute('style','padding:14px;border:3px solid #1E3A8A;background:color-mix(in srgb,#1E3A8A 8%,var(--surface))');
+ d.innerHTML='<div class="lbl" style="font-weight:800;color:#1E3A8A">TU SIGUIENTE PARADA</div><div style="font-size:21px;font-weight:900;margin-top:2px">🏭 Bodega · a cargar más</div>'
+  +(sig?'<div style="font-size:16px;margin-top:4px">Después sigues con <b>'+esc(sig.n)+'</b>.</div>':'')
+  +(B.lat!=null?'<a class="btn sec" style="margin-top:10px;min-height:54px;display:flex;align-items:center;justify-content:center" href="https://www.google.com/maps/dir/?api=1&destination='+B.lat+','+B.lng+'" target="_blank" rel="noopener">📍 Cómo llegar</a>':'')
+  +'<button class="btn" style="margin-top:8px;min-height:58px;font-size:18px" data-act="bod110ya">Ya llegué: capturar lo que cargué</button><button class="btn sec" style="margin-top:8px" data-act="bod110x">Ya no voy a la bodega</button>';
+ var h=m.querySelector('.hola89, .hello');if(h)h.after(d);else m.prepend(d)}
+/* la captura de siempre (la ventana de l32: cuánto cargaste y la foto) */
+function abreExtra110(){S.tab.rep='ruta';S.cx={R:'',M:'',foto:null,k:'carga'};render()}
+/* "Cargar más mercancía" (la tarjeta o el botón) primero pregunta */
+window.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest||!enRuta110()||S.bod110)return;
+ var sm=t.closest('[data-k="extra"]>summary'),ab=t.closest('[data-act="abrirextra"],[data-act="cxabre"]');if(!sm&&!ab)return;if(sm){var dt=sm.parentElement;if(dt&&dt.open)return}
+ e.preventDefault();e.stopImmediatePropagation();S.cm110=1;render()},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cm110si"],[data-act="cm110no"],[data-act="cm110x"],[data-act="bod110ya"],[data-act="bod110x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.act;S.cm110=null;
+ if(a==='cm110x'){render();return}
+ if(a==='cm110no'){abreExtra110();return}
+ if(a==='cm110si'){S.bod110={f:iso(TODAY),h:hhmm(),n0:(S.extras||[]).length};S.tab.rep='ruta';render();window.scrollTo(0,0);try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Va a la bodega a cargar más'})}catch(er){}return}
+ if(a==='bod110ya'){abreExtra110();return}
+ if(a==='bod110x'){S.bod110=null;render();return}},true);
+try{if(typeof AR_K!=='undefined'&&AR_K.indexOf('bod110')<0)AR_K.push('bod110')}catch(e){}
 
 
 /* ---------- Estructura ---------- */

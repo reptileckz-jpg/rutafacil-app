@@ -2354,7 +2354,9 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   · Al CLIENTE se las cobra el CHOFER desde la entrega: botón "Cobrarle las taras" (cuántas × precio de la tara), entra con el efectivo de su ruta; la app se lo sugiere cuando ya pasó el plazo.
   · Si el cliente YA PAGÓ sus taras, esas taras ya son suyas (se le quedan), con opción a comprárselas de vuelta. Al chofer NO se le devuelve el descuento, porque ya son del cliente. "Esto dependerá de los tiempos que se asignen para cobrarlas" (plazos del buró de taras en Ajustes: cuándo se le cobra al cliente y cuándo se le descuenta al chofer).
   · El fondo para comprar taras: SOLO COMO REPORTE (un renglón en Estadísticas con cuánto se ha juntado por taras de clientes y de choferes), sin apartar el dinero.
-  · Por definir al construirlo: los dos plazos (cliente y chofer) y qué pasa si el cliente paga antes de que se le descuente al chofer.
+  · (Ricardo, 17 nov) PLAZOS: al cliente se le cobran a los 25 DÍAS (el chofer le cobra desde la entrega; se cambia en Ajustes). Al chofer se le descuentan a los 30 DÍAS (como hoy).
+  · (Ricardo) Si el cliente YA PAGÓ sus taras, al chofer IGUAL se le descuentan a los 30 días, pero a MITAD DE PRECIO, "a manera de castigo por no pedirlas". Si no se regresaron ni se pagaron: precio completo (como hoy).
+  · Ricardo: construirlo ya, sin publicar.
 
 ## 2026-11-17 · Ricardo: "aún no sigas con Vite, vamos a seguir puliendo la app" → Vite en pausa (503 envolturas, 11%). Siguen: 106 (anotado), 107 (hecho, sin publicar), 108 (anotado).
 
@@ -2363,3 +2365,11 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 
 ## 2026-11-17 · 110 · Ricardo: "Cargar más" estando en ruta
 - Hoy, al tocar "Cargar más", pregunta directo cuánto más cargaste. Debería preguntar también si quiere que lo lleve a la bodega, y que salga esa parada extra en su ruta (a la bodega) y de regreso con el cliente que seguía.
+- Decisiones (Ricardo): 109 ventana al terminar (como la de taras prestadas) y aviso grande · 110 pregunta y agrega la parada · construir 108, 109 y 110 ya, sin publicar.
+### HECHO (17 nov) · 108, 109, 110 · SIN PUBLICAR
+- 108 (`tema-taras.js`): en la entrega, la tarjeta de taras tiene "💵 Cobrarle las taras"; a los 25 días (Ajustes → Buró de taras) dice en rojo "Ya pasaron 25 días: cóbrale las taras". Tarjeta de pantalla completa: cuántas (empieza con todas) × precio. Al cobrar: esas taras se quedan con el cliente (salen de las del negocio con su movimiento "Taras que compró…", para que cuadre) y su precio se cobra COMO ABONO en esa misma entrega (ticket, efectivo del chofer y cierre). A los 30 días: al chofer, precio completo las que no regresaron ni se pagaron (como antes) y MITAD de precio las que el cliente pagó; una sola vez. "Fondo para comprar taras" en Estadísticas (cobrado a clientes + descontado a choferes), solo como reporte.
+- 109 (`tema-taras.js`): si el cliente ya debía de antes, aviso grande en rojo arriba de la entrega ("⚠️ Don Beto te debe $500 de antes (desde hace 12 días)"). Al tocar "Guardar entrega" sin cobrarlo: ventana "Antes de terminar: Don Beto ya te debía $500" con "💵 Cobrar ahora", "Ya le pedí, no tenía" (queda registrado y sigue) y "Regresar a la entrega". Si ya salió la ventana de taras prestadas en esa entrega, ésta solo recuerda el dinero.
+- 110 (`tema-cargarmas.js`): "📦 Cargar más mercancía" en ruta primero pregunta "¿Vas a la bodega por más?". Sí → tarjeta "TU SIGUIENTE PARADA · 🏭 Bodega · a cargar más" (con "Cómo llegar" y "Después sigues con X"); "Ya llegué" abre la captura de siempre y al registrarla la parada se quita sola. No → la captura de siempre.
+- 100 (encontrado de paso): en la versión real, con el chofer en ruta, salía la tarjeta "Herramientas (de la demo)" con botones de prueba. Ya solo sale en la demo (ql.py).
+- Pruebas: t108 (20). Ajustada t74 (la entrega del precio especial ahora puede mostrar la ventana del 109). Todas: 0 FAIL.
+- Ideas para después: recomprarle al cliente las taras que pagó ("opción a comprárselas"); que "Cargar más" avise al administrador cuando el chofer va a la bodega.

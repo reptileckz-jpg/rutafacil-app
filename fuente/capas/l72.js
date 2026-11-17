@@ -79,15 +79,18 @@ function tarBuro72(){if(!(S.role==='admin'&&!S.encOn))return;var hoy=iso(TODAY);
  (S.cli||[]).forEach(function(c){if(c.oculto||!(num(c.vac)>0)||!c.vacDesde)return;var e=tarEdad72(c),ch=c.chofer,cn=chofN(ch);
   if(e>=T.d2&&c.tarAv72!==c.vacDesde){c.tarAv72=c.vacDesde;(S.avPrecio=S.avPrecio||[]).push(c.n+' debe '+c.vac+' taras desde hace '+e+' días (lo visita '+cn+'). A los '+T.d3+' días se descuentan del sueldo de '+cn+'.')}
   if(e>=T.d3&&c.tarDesc72!==c.vacDesde&&ch){c.tarDesc72=c.vacDesde;var m=r2(num(c.vac)*T.pr);S.faltantes.push({ch:+ch,m:m,fecha:hoy,desc:true,pend:true,mot:'Taras no regresadas de '+c.n+' ('+c.vac+' × '+money(T.pr)+')',tar72:c.id});
-   S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Descuento a '+cn+': '+money(m)+' por '+c.vac+' taras de '+c.n+' ('+e+' días)'});(S.avPrecio=S.avPrecio||[]).push('Se descontaron '+money(m)+' del sueldo de '+cn+' por '+c.vac+' taras que '+c.n+' no regresó en '+T.d3+' días.')}})}
+   S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Descuento a '+cn+': '+money(m)+' por '+c.vac+' taras de '+c.n+' ('+e+' días)'});(S.avPrecio=S.avPrecio||[]).push('Se descontaron '+money(m)+' del sueldo de '+cn+' por '+c.vac+' taras que '+c.n+' no regresó en '+T.d3+' días.')}});
+ /* 108 · las que el cliente pagó en lugar de regresarlas: al chofer a mitad de precio (tema-taras.js) */
+ try{if(typeof tarCastigo108==='function')tarCastigo108(T)}catch(e){}}
 try{if(typeof CLIK!=='undefined'&&CLIK.push)['vacPidio','tarAv72','tarDesc72','telNo','fotoSkip','altaCh','locBy','locF'].forEach(function(k){if(CLIK.indexOf(k)<0)CLIK.push(k)})}catch(e){}
 /* al chofer: en la entrega, cuánto tiempo lleva debiendo y qué pasa si no las regresa */
 function tarEnt72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="tar72"]'))return;var i=curStop(),c=i>=0?cl(S.stops[i].c):null;if(!c||!(num(c.vac)>0))return;var e=tarEdad72(c),T=tarCfg72();if(e<T.d1)return;
- var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>';
+ var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>'+(typeof tarCobBtn108==='function'?tarCobBtn108(c,e):'');
  var an=m.querySelector('.card');if(an)an.after(d);else m.prepend(d)}
 /* Ajustes: precio de la tara para el descuento */
 var _aj72=ajHTML;ajHTML=function(){var h=_aj72.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var T=tarCfg72();
- var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+'.</div>'
+ var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+' (a mitad de precio las que el cliente pagó).</div>'
+  +'<div class="field"><label for="tarCob108">Días para cobrarle las taras al cliente</label><input id="tarCob108" type="number" inputmode="numeric" step="1" min="1" data-bind="cfg.tarCob108" value="'+esc(S.cfg.tarCob108==null?'25':S.cfg.tarCob108)+'"></div>'
   +'<div class="field"><label for="taraDesc">Descuento por cada tara $</label><input id="taraDesc" type="number" inputmode="decimal" step="any" min="0" data-bind="cfg.taraDesc" value="'+esc(S.cfg.taraDesc==null?String(T.pr):S.cfg.taraDesc)+'"></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
 
@@ -107,4 +110,6 @@ var _vr72=null;function vr72Pon(){if(_vr72||typeof VIEWS==='undefined'||!VIEWS.r
 function botones72(){}
 
 /* ---------- dibujo ---------- */
-var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML())}catch(e){console.error('l72',e)}return r};
+var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML());
+ /* 108–110 (tema-taras.js, tema-cargarmas.js) */
+ if(typeof tar108HTML==='function'){ovPon70('tar108ov',tar108HTML());ovPon70('deb109ov',deb109HTML());debCard109();tarFondoCard108()}if(typeof cm110HTML==='function'){ovPon70('cm110ov',cm110HTML());bodCard110()}}catch(e){console.error('l72',e)}return r};

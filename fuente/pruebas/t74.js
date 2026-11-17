@@ -23,7 +23,7 @@ ok(await ev(()=>!document.getElementById('ce_ppR')&&/¿Se le da precio de mayore
 await ck('[data-act="may74"][data-v="1"]');ok(await ev(()=>S.cli[0].mayoreo===true),'"Sí" le da el mayoreo del día');
 await ck('[data-act="pe74"]');await p.waitForTimeout(80);await p.fill('#pe74R','240');await ck('[data-act="pe74ok"]');await p.waitForTimeout(80);ok(await ev(()=>S.cli[0].ppR==='240'&&!!S.cli[0].ppUna),'precio especial: queda solo para su próxima compra');
 // se usa una vez
-await ev(()=>{S.ce=null;S.cliEdit=null;S.role='rep';S.chofHoy=S.cli[0].chofer||1;S.pinOk['c:'+S.chofHoy]=true;S.salida.ok=true;S.inv.reparto=20;S.stops=[{c:S.cli[0].id}];S.cur=0;resetDraft(S.cli[0]);S.d.R=1;S.d.M=0;S.d.V=1;S.d._tar72='no';S.tab.rep='entrega';render()});
+await ev(()=>{S.ce=null;S.cliEdit=null;S.role='rep';S.chofHoy=S.cli[0].chofer||1;S.pinOk['c:'+S.chofHoy]=true;S.salida.ok=true;S.inv.reparto=20;S.stops=[{c:S.cli[0].id}];S.cur=0;resetDraft(S.cli[0]);S.d.R=1;S.d.M=0;S.d.V=1;S.d._tar72='no';S.d._deb109='no';S.tab.rep='entrega';render()});
 ok(await ev(()=>entregaCalc().pr===240),'en la entrega se cobra el precio especial');
 await ck('[data-act="entconf"]');await p.waitForTimeout(200);await ev(()=>{var b=[...document.querySelectorAll('.modal [data-act], [role=dialog] [data-act]')].find(x=>/Sí|Guardar/.test(x.innerText));if(b)b.click()});await p.waitForTimeout(700);
 r=await ev(()=>[S.stops[0].done,S.cli[0].ppR,!!S.cli[0].ppUna]);ok(r[0]&&!r[1]&&!r[2],'después de esa compra vuelve al precio del día',r);

@@ -49,7 +49,10 @@ var _szR18=szRes;szRes=function(c){var h=_szR18.apply(this,arguments);if(c.sz.ti
  '.combar{height:8px;border-radius:4px;background:rgba(255,255,255,.25);overflow:hidden;margin-top:6px}.combar i{display:block;height:100%;background:#F2C230;border-radius:4px;transition:width .6s}',
  '.comfloat{position:fixed;z-index:95;font-weight:900;font-size:22px;color:#2F7D32;text-shadow:0 1px 0 #fff;pointer-events:none;animation:comUp 1.4s ease-out forwards}',
  '@keyframes comUp{0%{opacity:0;transform:translateY(6px) scale(.8)}15%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-46px) scale(1)}}',
- '.comtip{display:inline-flex;align-items:center;gap:6px;background:rgba(47,125,50,.12);color:var(--accent);border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;margin:2px 0 8px}'
+ '.comtip{display:inline-flex;align-items:center;gap:6px;background:rgba(47,125,50,.12);color:var(--accent);border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;margin:2px 0 8px}',
+ /* 117 · dentro de la tarjeta verde de la siguiente parada: etiqueta blanca, letra verde oscuro (antes verde sobre verde, no se leía) */
+ '.card.next .comtip{background:#fff!important;color:#1B5E20!important;font-size:15px;padding:6px 12px;box-shadow:0 1px 3px rgba(0,0,0,.18)}',
+ '.card.next .comtip.deu{background:#FFF3C4!important;color:#5C4300!important}'
 ].join('\n');document.head.appendChild(st)})();
 function comOn(){var c=chofHoyObj();return S.role==='rep'&&!!c&&comPct(c)>0}
 function rachaDe(id){return ((S.racha||{})[id]||{}).n||0}
@@ -61,7 +64,7 @@ function comCardHTML(){var c=chofHoyObj(),p=comPct(c),hoy=comHoyDe(c),k=szCalc(c
 var _meta18=metaCard;metaCard=function(){var h=_meta18.apply(this,arguments);if(!comOn()||!S.salida.ok)return h;return comCardHTML()};
 /* siguiente parada: lo que le deja y lo que ganaría si cobra la deuda */
 function comEstimado(c){var p=comPct(chofHoyObj());var visitas=Math.max(1,30/Math.max(1,num(c.f)||7)),prom=num(c.c30)>0?num(c.c30)/visitas:(4*num(S.precio.R)+30*num(S.precio.M));return r2(prom*p)}
-var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x='<span class="comtip">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>'+(c.cred>0.5?' <span class="comtip" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
+var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x='<span class="comtip" data-x="tedeja">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>'+(c.cred>0.5?' <span class="comtip deu" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
  return h.replace('<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">',x+'<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">')};
 var _ent18=entrega;entrega=function(){var h=_ent18.apply(this,arguments);if(!comOn())return h;var c=curCli();if(!c||!(c.cred>0))return h;var p=comPct(chofHoyObj());
  return h.replace(/(<input id="abono"[^>]*><\/div>)/,'$1<div class="lbl" style="color:var(--accent);font-weight:700">Si te paga toda su deuda ('+money(c.cred)+'), ganas '+money(r2(c.cred*p))+'</div>')};

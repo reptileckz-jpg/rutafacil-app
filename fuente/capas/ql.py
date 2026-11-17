@@ -83,3 +83,9 @@ R("+[200,500,1000].map(function(b){return '<button data-act=\"entcon\"","+bill11
 R("h+='<div class=\"card\"><b style=\"font-size:18px\">Cobro</b>'","h+='<div class=\"card\"><b style=\"font-size:18px\">Cobro</b><div style=\"font-size:16px;margin-top:2px\">Esta entrega: <b>'+money(k.total)+'</b></div>'")
 R("+(c.cred>0?'<div class=\"field\"><label for=\"abono\">Abona a deuda anterior $</label>","+(c.cred>0?'<div style=\"border-top:1px solid var(--line);margin-top:10px;padding-top:8px\"><b style=\"font-size:17px\">Lo que ya debía: '+money(c.cred)+'</b>'+abonoBtns115(c)+'</div><div class=\"field\"><label for=\"abono\">Abona a deuda anterior $</label>")
 R("(c.vac>0?'<div class=\"lbl\">Debe '+c.vac+'. Pídeselas, pero si no las tiene, entrégale de todos modos.</div>':'')+'</div>';","(c.vac>0?'<div class=\"lbl\">Debe '+c.vac+'. Pídeselas, pero si no las tiene, entrégale de todos modos.</div>':'')+vacSaldo115(c,d,k)+'</div>';")
+
+# 117 · horario en palabras ("8 de la mañana a 8 de la noche")
+R("function horTxt(c){return c.hCi?'Recibe de '+c.hAb+' a '+c.hCi:'Sin horario registrado'}","function horTxt(c){return c.hCi?'Recibe '+horRango117(c):'Sin horario registrado'}")
+R("Llegarías después de que cierra ('+c.hCi+'). Llama","Llegarías después de que cierra ('+horaTxt117(c.hCi)+'). Llama")
+R("(c.hCi?' · recibe '+c.hAb+'–'+c.hCi:'')","(c.hCi?' · recibe '+horRango117(c):'')")
+R("'<div class=\"neg\" style=\"font-size:13px;font-weight:600\">Cierra '+c.hCi+' y llegarías","'<div class=\"neg\" style=\"font-size:13px;font-weight:600\">Cierra a las '+horaTxt117(c.hCi)+' y llegarías")

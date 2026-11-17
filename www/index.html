@@ -981,11 +981,11 @@ function subirImg(inp){var f=inp.files&&inp.files[0],q=inp.dataset.chimg.split('
 
 /* ---------- Repartidor ---------- */
 function fachImg(c,hgt){return c.foto?'<img src="'+c.foto+'" alt="Fachada de '+esc(c.n)+'" style="width:100%;height:'+(hgt||120)+'px;object-fit:cover;border-radius:12px;display:block;margin:8px 0">':''}
-function horTxt(c){return c.hCi?'Recibe de '+c.hAb+' a '+c.hCi:'Sin horario registrado'}
+function horTxt(c){return c.hCi?'Recibe '+horRango117(c):'Sin horario registrado'}
 function sigCard(i,E){var st=S.stops[i],c=cl(st.c),e=E[i],n=S.stops.filter(function(x){return x.done}).length+1;
  return '<div class="card next"><div class="lbl">Siguiente parada · '+n+' de '+S.stops.length+'</div><div style="font-size:22px;font-weight:800;margin-top:2px">'+esc(c.n)+'</div><div class="lbl">'+esc(c.a)+(c.ap?' · “'+esc(c.ap)+'”':'')+'</div>'+fachImg(c)
   +'<div style="display:flex;gap:14px;margin:8px 0;font-size:14px"><span>Llegas ~<b>'+hm(e.eta)+'</b></span><span>'+horTxt(c)+'</span></div>'
-  +(e.late?'<div style="background:#fff;color:var(--danger);border-radius:10px;padding:6px 10px;font-size:14px;font-weight:600;margin-bottom:8px">Llegarías después de que cierra ('+c.hCi+'). Llama para confirmar o cambia el orden.</div>':'')
+  +(e.late?'<div style="background:#fff;color:var(--danger);border-radius:10px;padding:6px 10px;font-size:14px;font-weight:600;margin-bottom:8px">Llegarías después de que cierra ('+horaTxt117(c.hCi)+'). Llama para confirmar o cambia el orden.</div>':'')
   +(c.chofer!==+S.chofHoy?'<div class="lbl" style="margin-bottom:6px">Cliente de '+esc(chofN(c.chofer))+' · lo estás ayudando</div>':'')
   +'<div style="display:flex;gap:8px">'+(c.lat!=null||c.a?'<a class="btn sec" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none" target="_blank" rel="noopener" href="'+mapsLink(c)+'">'+icon('nav',18)+'Ir</a>':'')
   +'<button class="btn bn" style="flex:1" data-act="entregar" data-i="'+i+'">Entregar</button></div>'+(c.lat==null?'<div class="lbl" style="margin-top:6px">Sin ubicación GPS: se guarda sola al entregar.</div>':'')+'</div>'}
@@ -1054,9 +1054,9 @@ function ruta(){
  S.stops.forEach(function(s,i){if(s.done){h0112=h;h=''}var c=cl(s.c),e=E[i],n=s.done?'':++k;
   var sub=s.done?(s.nov?'<span class="neg">No entregado: '+esc(s.nov)+'</span>':'Entregada'+(s.lleg?' · '+hm(s.lleg)+'–'+hm(s.sal||s.lleg):'')):
    ((c.rapida?'Venta rápida':c.nuevo?'Cliente nuevo por llamada':(c.cred>0?'<span class="neg">Crédito '+money(c.cred)+'</span>':'Al corriente')+(c.vac>0?' · debe '+c.vac+' vacías':''))
-   +'<br>Llegas ~'+hm(e.eta)+(c.hCi?' · recibe '+c.hAb+'–'+c.hCi:'')+(c.prio?' · <b style="color:var(--orange)">prioridad</b>':'')+(s.ped||c.ped?' · <b>pedido</b>':'')+(c.chofer!==+S.chofHoy&&!c.oculto?' · de '+esc(chofN(c.chofer)):''));
+   +'<br>Llegas ~'+hm(e.eta)+(c.hCi?' · recibe '+horRango117(c):'')+(c.prio?' · <b style="color:var(--orange)">prioridad</b>':'')+(s.ped||c.ped?' · <b>pedido</b>':'')+(c.chofer!==+S.chofHoy&&!c.oculto?' · de '+esc(chofN(c.chofer)):''));
   h+='<div class="stop"><div class="num'+(s.done?' done':(s.call||s.ped?' call':''))+'">'+(s.done?(s.nov?'×':'✓'):n)+'</div><div class="grow"><div style="font-weight:600">'+esc(c.n)+'</div><div class="lbl">'+sub+'</div>'
-   +(!s.done&&e.late?'<div class="neg" style="font-size:13px;font-weight:600">Cierra '+c.hCi+' y llegarías '+hm(e.eta)+'</div><button class="link" style="min-height:36px" data-act="confirma" data-id="'+c.id+'">El cliente confirmó que me recibe</button>':'')
+   +(!s.done&&e.late?'<div class="neg" style="font-size:13px;font-weight:600">Cierra a las '+horaTxt117(c.hCi)+' y llegarías '+hm(e.eta)+'</div><button class="link" style="min-height:36px" data-act="confirma" data-id="'+c.id+'">El cliente confirmó que me recibe</button>':'')
    +(!s.done&&c.conf&&c.hCi&&e.eta>hmin(c.hCi)?'<div class="lbl">Confirmó que te recibe</div>':'')+'</div>'
    +(s.done?(!s.nov&&s.logI!=null&&!S.cierre.sent?'<span style="display:flex;flex-direction:column;gap:2px"><button class="link" style="min-height:34px" data-act="corrnew" data-i="'+i+'">Corregir</button><button class="link" style="min-height:34px;color:var(--danger)" data-act="cancelent" data-i="'+i+'">Cancelar</button></span>':''):'<button class="btn sm'+(i===ni?'':' sec')+'" data-act="entregar" data-i="'+i+'">'+(i===ni?'Entregar':'Ir aquí')+'</button>')+'</div>';if(s.done){hv112+=h;h=h0112;nv112++}});if(nv112)h+='<details data-k="vis112"'+(S.dOpen.vis112?' open':'')+' style="border-top:1px solid var(--line)"><summary style="min-height:56px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;cursor:pointer">✓ Ya visitados ('+nv112+')<span class="lbl" style="margin-left:auto">'+(S.dOpen.vis112?'ocultar':'ver')+'</span></summary>'+hv112+'</details>';
  h+='</div><div style="display:flex;gap:8px"><button class="btn sec" style="flex:1" data-act="calle" data-reg="0">Venta rápida</button><button class="btn sec" style="flex:1" data-act="calle" data-reg="1">Cliente nuevo</button></div>';
@@ -4940,7 +4940,7 @@ function dfLista(){var L=[],add=function(pr,txt,go){L.push({pr:pr,txt:txt,go:go}
    if(dfVacio(c.a))add(3,'Dirección de '+c.n,g);
    if(dfVacio(c.tel))add(3,'Teléfono de '+c.n,g);
    if(!(c.dias&&c.dias.length)&&!c.sinRuta)add(3,'Días de visita de '+c.n,{t:'clidias',id:c.id});
-   if(dfVacio(c.hAb)||dfVacio(c.hCi))add(3,'Horario de '+c.n,g);
+   if(dfVacio(c.hAb)||dfVacio(c.hCi))add(3,'Horario de '+c.n,g);else if(horMal117(c))add(3,'Horario de '+c.n+': dice que cierra a las '+horaTxt117(c.hCi)+', revísalo',g);
    if(dfVacio(c.recibe))add(4,'Quién recibe en '+c.n,g)});
   if(dfVacio(S.cfg.tel))add(3,'Teléfono del negocio',{t:'aj'});
   if(dfVacio(S.cfg.dir))add(3,'Dirección del negocio',{t:'aj'});
@@ -5068,7 +5068,10 @@ var _szR18=szRes;szRes=function(c){var h=_szR18.apply(this,arguments);if(c.sz.ti
  '.combar{height:8px;border-radius:4px;background:rgba(255,255,255,.25);overflow:hidden;margin-top:6px}.combar i{display:block;height:100%;background:#F2C230;border-radius:4px;transition:width .6s}',
  '.comfloat{position:fixed;z-index:95;font-weight:900;font-size:22px;color:#2F7D32;text-shadow:0 1px 0 #fff;pointer-events:none;animation:comUp 1.4s ease-out forwards}',
  '@keyframes comUp{0%{opacity:0;transform:translateY(6px) scale(.8)}15%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-46px) scale(1)}}',
- '.comtip{display:inline-flex;align-items:center;gap:6px;background:rgba(47,125,50,.12);color:var(--accent);border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;margin:2px 0 8px}'
+ '.comtip{display:inline-flex;align-items:center;gap:6px;background:rgba(47,125,50,.12);color:var(--accent);border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;margin:2px 0 8px}',
+ /* 117 · dentro de la tarjeta verde de la siguiente parada: etiqueta blanca, letra verde oscuro (antes verde sobre verde, no se leía) */
+ '.card.next .comtip{background:#fff!important;color:#1B5E20!important;font-size:15px;padding:6px 12px;box-shadow:0 1px 3px rgba(0,0,0,.18)}',
+ '.card.next .comtip.deu{background:#FFF3C4!important;color:#5C4300!important}'
 ].join('\n');document.head.appendChild(st)})();
 function comOn(){var c=chofHoyObj();return S.role==='rep'&&!!c&&comPct(c)>0}
 function rachaDe(id){return ((S.racha||{})[id]||{}).n||0}
@@ -5080,7 +5083,7 @@ function comCardHTML(){var c=chofHoyObj(),p=comPct(c),hoy=comHoyDe(c),k=szCalc(c
 var _meta18=metaCard;metaCard=function(){var h=_meta18.apply(this,arguments);if(!comOn()||!S.salida.ok)return h;return comCardHTML()};
 /* siguiente parada: lo que le deja y lo que ganaría si cobra la deuda */
 function comEstimado(c){var p=comPct(chofHoyObj());var visitas=Math.max(1,30/Math.max(1,num(c.f)||7)),prom=num(c.c30)>0?num(c.c30)/visitas:(4*num(S.precio.R)+30*num(S.precio.M));return r2(prom*p)}
-var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x='<span class="comtip">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>'+(c.cred>0.5?' <span class="comtip" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
+var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x='<span class="comtip" data-x="tedeja">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>'+(c.cred>0.5?' <span class="comtip deu" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
  return h.replace('<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">',x+'<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">')};
 var _ent18=entrega;entrega=function(){var h=_ent18.apply(this,arguments);if(!comOn())return h;var c=curCli();if(!c||!(c.cred>0))return h;var p=comPct(chofHoyObj());
  return h.replace(/(<input id="abono"[^>]*><\/div>)/,'$1<div class="lbl" style="color:var(--accent);font-weight:700">Si te paga toda su deuda ('+money(c.cred)+'), ganas '+money(r2(c.cred*p))+'</div>')};
@@ -6817,7 +6820,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- completar datos del cliente en cualquier momento (y su horario) ---------- */
 var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};
 var _ubH41=ubHTML;ubHTML=function(){var h=_ubH41.apply(this,arguments),u=S.ub;if(!h||!u||u.k!=='cli'||u.modo!=='datos')return h;var c=cl(u.id);if(!c)return h;
- var hor=c.hCi?'<div class="row"><span>Horario</span><b>'+esc(c.hAb)+' a '+esc(c.hCi)+'</b></div>':'<div class="field"><label for="ubab">Abre a las</label><input id="ubab" type="time" data-bind="ub.hAb" value="'+esc(u.hAb||'')+'"></div><div class="field"><label for="ubci">Cierra a las</label><input id="ubci" type="time" data-bind="ub.hCi" value="'+esc(u.hCi||'')+'"></div>';
+ var hor=c.hCi?'<div class="row"><span>Horario</span><b>'+esc(horRango117(c))+'</b></div>':'<div class="field"><label for="ubab">Abre a las</label><input id="ubab" type="time" data-bind="ub.hAb" value="'+esc(u.hAb||'')+'"></div><div class="field"><label for="ubci">Cierra a las</label><input id="ubci" type="time" data-bind="ub.hCi" value="'+esc(u.hCi||'')+'"></div>';
  var D=['D','L','M','M','J','V','S'],da=c.diasAbre||u.diasAbre||[];var dias=c.diasAbre?'<div class="lbl">Abre: '+c.diasAbre.map(function(i){return ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][i]}).join(', ')+'</div>':'<div class="lbl" style="margin-top:6px">¿Qué días abre?</div><div class="chips" role="group" aria-label="Días que abre">'+D.map(function(x,i){return '<button data-act="ubdia" data-v="'+i+'" aria-pressed="'+(da.indexOf(i)>-1)+'">'+x+'</button>'}).join('')+'</div>';
  var card='<div class="card" style="padding:8px 12px;margin-top:10px"><b>Horario del negocio</b>'+hor+dias+'</div>';
  /* lo que ya tiene no se cambia: el teléfono y quién recibe se enseñan fijos */
@@ -9983,7 +9986,7 @@ function cliF74Pasos(c){var P=[],v=function(x){return x==null||String(x).trim()=
  if(c.lat==null)P.push({q:'¿Dónde está '+c.n+'?',a:'Pon el punto exacto, o déjalo para que el chofer lo guarde al llegar.',saltar:true,html:function(d){return ubWz72(d)}});
  if(v(c.a))P.push({q:'Dirección o referencia de '+c.n,saltar:true,c:[{k:'a',l:'Dirección o cómo llegar',opc:true}]});
  if(!(c.dias&&c.dias.length)&&!c.sinRuta)P.push({q:'¿Qué días se le visita?',html:function(d){var L=d.dias||[];return '<div class="card"><div class="opc" style="grid-template-columns:repeat(4,1fr)">'+DIAS_TXT.map(function(x,i){return '<button data-act="wzdia" data-v="'+i+'" aria-pressed="'+(L.indexOf(i)>-1)+'" style="min-height:56px">'+x.slice(0,3)+'</button>'}).join('')+'</div></div>'},ok:function(d){return (d.dias||[]).length?'':'Escoge al menos un día'}});
- if(v(c.hAb)||v(c.hCi))P.push({q:'¿A qué hora abre y cierra '+c.n+'?',html:function(d){var o=HORAS72();var sel=function(k,l){return '<div class="field grande"><label for="wz_'+k+'">'+l+'</label><select id="wz_'+k+'" data-wz="'+k+'"><option value="">Escoge</option>'+o.map(function(x){return '<option value="'+x[0]+'"'+(d[k]===x[0]?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div>'};return '<div class="card">'+sel('hAb','Abre a las')+sel('hCi','Cierra a las')+'</div>'},
+ if(v(c.hAb)||v(c.hCi)||horMal117(c))P.push({q:'¿A qué hora abre y cierra '+c.n+'?',a:horMal117(c)?'Dice que abre a las '+horaTxt117(c.hAb)+' y cierra a las '+horaTxt117(c.hCi)+'. Escógelo otra vez.':undefined,html:function(d){var o=HORAS72();var sel=function(k,l){return '<div class="field grande"><label for="wz_'+k+'">'+l+'</label><select id="wz_'+k+'" data-wz="'+k+'"><option value="">Escoge</option>'+o.map(function(x){return '<option value="'+x[0]+'"'+(d[k]===x[0]?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div>'};return '<div class="card">'+sel('hAb','Abre a las')+sel('hCi','Cierra a las')+'</div>'},
   ok:function(d){if(!d.hAb||!d.hCi)return 'Escoge la hora en que abre y en que cierra';return d.hCi<=d.hAb?'La hora de cierre debe ser después de la de abrir':''}});
  if(v(c.recibe))P.push({q:'¿Quién recibe en '+c.n+'?',saltar:true,c:[{k:'recibe',l:'Nombre de quien recibe',opc:true}]});
  P.push({q:'Revisa y guarda',html:function(d){return '<div class="card good">'+['tel','a','recibe'].filter(function(k){return d[k]}).map(function(k){return rw({tel:'Teléfono',a:'Dirección',recibe:'Recibe'}[k],esc(d[k]))}).join('')+(d.lat!=null?rw('Ubicación','✓'):'')+(d.dias&&d.dias.length?rw('Días',d.dias.map(function(i){return DIAS_TXT[i]}).join(', ')):'')+(d.hAb?rw('Horario',esc(d.hAb+' a '+d.hCi)):'')+'</div>'}});return P}
@@ -10304,7 +10307,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4471,"l10.js"],[4531,"l11.js"],[4548,"l12.js"],[4595,"l13.js"],[4741,"l14.js"],[4817,"l15.js"],[4879,"l16.js"],[4988,"l17.js"],[5019,"l18.js"],[5096,"l19.js"],[5166,"l20.js"],[5215,"l21.js"],[5261,"l22.js"],[5459,"l23.js"],[5513,"l24.js"],[5529,"l25.js"],[5560,"l26.js"],[5703,"l27.js"],[5769,"l28.js"],[5901,"l29.js"],[6027,"l30.js"],[6071,"l31.js"],[6107,"l32.js"],[6201,"l33.js"],[6220,"l34.js"],[6280,"l35.js"],[6340,"l36.js"],[6438,"l37.js"],[6459,"l38.js"],[6547,"l39.js"],[6628,"l40.js"],[6752,"l41.js"],[6836,"l42.js"],[6939,"l43.js"],[7041,"l44.js"],[7142,"l45.js"],[7237,"l46.js"],[7305,"l47.js"],[7419,"l48.js"],[7474,"l49.js"],[7510,"l50.js"],[7614,"l51.js"],[7624,"l52.js"],[7767,"l53.js"],[7789,"l54.js"],[7864,"l55.js"],[7893,"l56.js"],[7978,"l57.js"],[8043,"l58.js"],[8170,"l59.js"],[8230,"l60.js"],[8392,"l61.js"],[8449,"l62.js"],[8579,"l63.js"],[8750,"l64.js"],[8782,"l65.js"],[8883,"l66.js"],[8989,"l67.js"],[9016,"l68.js"],[9150,"l69.js"],[9377,"l70.js"],[9599,"l71.js"],[9724,"l72.js"],[9842,"l73.js"],[9918,"l74.js"],[10042,"l75.js"],[10195,"l76.js"],[10298,"l77.js"],[10426,"l78.js"],[10576,"l79.js"],[10684,"l80.js"],[10808,"l81.js"],[10961,"l82.js"],[11214,"l83.js"],[11283,"l84.js"],[11396,"l85.js"],[11457,"tema-rutadia.js"],[11622,"l86.js"],[11682,"l87.js"],[11725,"l88.js"],[11775,"l89.js"],[11824,"l90.js"],[11930,"tema-cobranza.js"],[12077,"tema-pantallas.js"],[12298,"tema-avisos.js"],[12460,"tema-reparte.js"],[12526,"tema-vehiculos.js"],[12670,"tema-notas.js"],[12687,"tema-taras.js"],[12794,"tema-cargarmas.js"],[12833,"tema-cargas.js"],[12867,"tema-cobro.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4471,"l10.js"],[4531,"l11.js"],[4548,"l12.js"],[4595,"l13.js"],[4741,"l14.js"],[4817,"l15.js"],[4879,"l16.js"],[4988,"l17.js"],[5019,"l18.js"],[5099,"l19.js"],[5169,"l20.js"],[5218,"l21.js"],[5264,"l22.js"],[5462,"l23.js"],[5516,"l24.js"],[5532,"l25.js"],[5563,"l26.js"],[5706,"l27.js"],[5772,"l28.js"],[5904,"l29.js"],[6030,"l30.js"],[6074,"l31.js"],[6110,"l32.js"],[6204,"l33.js"],[6223,"l34.js"],[6283,"l35.js"],[6343,"l36.js"],[6441,"l37.js"],[6462,"l38.js"],[6550,"l39.js"],[6631,"l40.js"],[6755,"l41.js"],[6839,"l42.js"],[6942,"l43.js"],[7044,"l44.js"],[7145,"l45.js"],[7240,"l46.js"],[7308,"l47.js"],[7422,"l48.js"],[7477,"l49.js"],[7513,"l50.js"],[7617,"l51.js"],[7627,"l52.js"],[7770,"l53.js"],[7792,"l54.js"],[7867,"l55.js"],[7896,"l56.js"],[7981,"l57.js"],[8046,"l58.js"],[8173,"l59.js"],[8233,"l60.js"],[8395,"l61.js"],[8452,"l62.js"],[8582,"l63.js"],[8753,"l64.js"],[8785,"l65.js"],[8886,"l66.js"],[8992,"l67.js"],[9019,"l68.js"],[9153,"l69.js"],[9380,"l70.js"],[9602,"l71.js"],[9727,"l72.js"],[9845,"l73.js"],[9921,"l74.js"],[10045,"l75.js"],[10198,"l76.js"],[10301,"l77.js"],[10429,"l78.js"],[10579,"l79.js"],[10687,"l80.js"],[10811,"l81.js"],[10964,"l82.js"],[11217,"l83.js"],[11286,"l84.js"],[11399,"l85.js"],[11460,"tema-rutadia.js"],[11625,"l86.js"],[11685,"l87.js"],[11728,"l88.js"],[11778,"l89.js"],[11827,"l90.js"],[11933,"tema-cobranza.js"],[12080,"tema-pantallas.js"],[12301,"tema-avisos.js"],[12463,"tema-reparte.js"],[12529,"tema-vehiculos.js"],[12673,"tema-notas.js"],[12690,"tema-taras.js"],[12797,"tema-cargarmas.js"],[12836,"tema-cargas.js"],[12870,"tema-cobro.js"],[12906,"tema-horario.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -12899,6 +12902,45 @@ function vacSaldo115(c,d,k){if(!c||c.oculto)return '';var ya=num(c.vac),R=num(d&
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="entdesg"],[data-act="abono115"]');if(!b||!S.d)return;e.preventDefault();e.stopImmediatePropagation();
  if(b.dataset.act==='entdesg'){S.d._desg115=!S.d._desg115;render();return}
  S.d.abono=b.dataset.v==='0'?'':b.dataset.v;render()},true);
+
+//@@capa tema-horario.js
+/* ===================== TEMA · Horario y apodo de los clientes (nació como tema, 17 nov · punto 117) =====================
+   Ricardo puso a Benavides "de 8 de la mañana a 8 de la noche" y quedó "08:00 a 08:01" (el reloj del celular en 12 horas):
+   - Las horas se muestran como "8 de la mañana", "2:30 de la tarde", "8 de la noche" (horaTxt117).
+   - Al escribir el horario, si "cierra" queda antes o casi igual que "abre", pregunta "¿Cierra a las 8 de la noche?"
+     y se corrige con un toque (en cualquier casilla de abre/cierra: ficha, asistente, ubicación, preguntas en ruta).
+   - Los clientes que ya tienen un horario así salen en "Datos que faltan" (horMal117, en l16).
+   - Si el apodo es igual al nombre (sin importar mayúsculas ni acentos), no se repite ("Benavides" · "Benavides").
+   Las líneas de la base que muestran el horario están en ql.py (117). Si se cambia algo de esto, se cambia AQUÍ y ahí.
+   ============================================================================================ */
+function horaTxt117(t){var m=hmin(t);if(m==null||isNaN(m))return String(t||'');var h=Math.floor(m/60)%24,mi=m%60,h12=h%12||12,
+  p=h<6?'de la madrugada':h<12?'de la mañana':h===12?'del día':h<19?'de la tarde':'de la noche';return h12+(mi?':'+('0'+mi).slice(-2):'')+' '+p}
+function horRango117(c){return 'de '+horaTxt117(c.hAb)+' a '+horaTxt117(c.hCi)}
+/* cierra antes de abrir, o menos de una hora después */
+function horMal117(c){if(!c||!c.hAb||!c.hCi)return false;var a=hmin(c.hAb),b=hmin(c.hCi);return a!=null&&b!=null&&b<=a+60}
+/* lo que seguramente quiso decir: la misma hora pero de la tarde/noche, redondeada a la media hora */
+function horSug117(ab,ci){var a=hmin(ab),b=hmin(ci);if(a==null||b==null||b>a+60)return null;if(b<720&&b+720>a+60&&b+720<1440){var s=Math.round((b+720)/30)*30;if(s>=1440)s=1410;return ('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2)}return ''}
+/* apodo igual al nombre: no se repite */
+function apNorm117(x){return String(x||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9ñ]+/g,' ').trim()}
+function apLimpia117(){(S.cli||[]).forEach(function(c){if(c&&c.ap&&apNorm117(c.ap)===apNorm117(c.n))c.ap=''})}
+var _r117=render;render=function(){try{apLimpia117()}catch(e){}return _r117.apply(this,arguments)};
+/* la pregunta junto a la casilla de "cierra" */
+var HOR117_AT=['data-bind','data-wz','data-clh','id'];
+function hor117Par(el,de,a){for(var i=0;i<HOR117_AT.length;i++){var v=el.getAttribute(HOR117_AT[i]);if(v&&v.indexOf(de)>-1){var s='['+HOR117_AT[i]+'="'+v.split(de).join(a)+'"]';return {sel:s,yo:'['+HOR117_AT[i]+'="'+v+'"]'}}}return null}
+function hor117Revisa(el){var ci,ab,k;if(hor117Par(el,'hCi','hAb')){k=hor117Par(el,'hCi','hAb');ci=el;ab=document.querySelector(k.sel);k={ci:k.yo,ab:k.sel}}
+ else if(hor117Par(el,'hAb','hCi')){k=hor117Par(el,'hAb','hCi');ab=el;ci=document.querySelector(k.sel);k={ci:k.sel,ab:k.yo}}else return;
+ var vie=document.querySelector('[data-x="hor117"]');if(vie)vie.remove();if(!ab||!ci||!ab.value||!ci.value||ci._ok117===ci.value)return;var s=horSug117(ab.value,ci.value);if(s===null)return;
+ if(s&&ci.tagName==='SELECT'&&![].some.call(ci.options,function(o){return o.value===s}))s='';
+ var d=document.createElement('div');d.dataset.x='hor117';d.className='card alert';d.setAttribute('style','padding:10px 12px;margin:6px 0;border:2px solid var(--danger)');d.dataset.ci=k.ci;d.dataset.s=s;
+ d.innerHTML=s?'<div style="font-size:17px;font-weight:800">¿Cierra a las '+horaTxt117(s)+'?</div><div class="lbl">Dice que abre a las '+horaTxt117(ab.value)+' y cierra a las '+horaTxt117(ci.value)+'.</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn" data-act="hor117si" style="min-height:52px">Sí, a las '+horaTxt117(s)+'</button><button class="btn sec" data-act="hor117no" style="min-height:52px">No, así está</button></div>'
+  :'<div style="font-size:17px;font-weight:800">Revisa el horario</div><div class="lbl">Dice que cierra ('+horaTxt117(ci.value)+') antes de abrir o casi a la misma hora ('+horaTxt117(ab.value)+').</div><button class="btn sec" data-act="hor117no" style="min-height:52px;margin-top:8px">Así está</button>';
+ var f=ci.closest('.field')||ci;f.after(d)}
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.getAttribute||!(t.type==='time'||t.tagName==='SELECT'))return;if(!hor117Par(t,'hCi','hAb')&&!hor117Par(t,'hAb','hCi'))return;
+ var k=hor117Par(t,'hCi','hAb')||hor117Par(t,'hAb','hCi');setTimeout(function(){var el=document.querySelector(k.yo);if(el)hor117Revisa(el)},0)},true);
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="hor117si"],[data-act="hor117no"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
+ var d=b.closest('[data-x="hor117"]'),ci=d&&document.querySelector(d.dataset.ci);if(!ci){if(d)d.remove();return}
+ if(b.dataset.act==='hor117no'){ci._ok117=ci.value;d.remove();return}
+ ci.value=d.dataset.s;d.remove();ci.dispatchEvent(new Event('input',{bubbles:true}));ci.dispatchEvent(new Event('change',{bubbles:true}));toast('Cierra a las '+horaTxt117(ci.value))},true);
 
 
 /* ---------- Estructura ---------- */

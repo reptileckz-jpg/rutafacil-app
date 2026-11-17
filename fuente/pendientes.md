@@ -2452,3 +2452,10 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   4. **Vacaciones y aguinaldo** según la antigüedad (Ley Federal del Trabajo: 12 días de vacaciones el primer año y suben; aguinaldo mínimo 15 días, proporcional si no completa el año). Mostrarlo en la ficha y avisar en diciembre.
   5. **Fecha de baja**: "Dejó de trabajar el"; calcula su última semana proporcional + aguinaldo y vacaciones proporcionales (finiquito); queda oculto pero con su historial.
 - Dudas para cuando se haga: ¿domingo trabajado cómo se paga?; ¿días de descanso o faltas descuentan en sueldo semanal?; ¿aguinaldo sobre sueldo base o también comisiones?
+- **HECHO 117 (parte)** (sin publicar; Ricardo: "las propuestas del horario hazlas todas, igual con la de las tarjetas"). Nuevo tema `capas/tema-horario.js` (va al final) + líneas 117 en `ql.py`, `l16`, `l18`, `l41`, `l74`:
+  - Horas en palabras: "Recibe de 8 de la mañana a 8 de la noche", "Llegarías después de que cierra (8 de la noche)", "Cierra a las…".
+  - En cualquier casilla de abre/cierra (ficha, asistente, ubicación, preguntas): si cierra queda antes o menos de 1 hora después de abrir, pregunta "¿Cierra a las 8 de la noche?" → "Sí" lo corrige con un toque; "No, así está" lo deja.
+  - Los que ya están mal salen en "Datos que faltan" ("Horario de Benavides: dice que cierra a las 8:01 de la mañana, revísalo") y el asistente lo vuelve a preguntar.
+  - Apodo igual al nombre (sin importar mayúsculas ni acentos) se borra y ya no se repite.
+  - "💵 Esta entrega te deja" y "Si le cobras su deuda" dentro de la tarjeta verde: etiqueta blanca / amarilla con letra oscura (antes verde sobre verde).
+  - Prueba `t117.js` (12 OK). **Falta del 117:** la barra flotante de lo ganado (siguiente versión).

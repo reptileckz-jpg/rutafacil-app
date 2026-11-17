@@ -61,7 +61,7 @@ function dfLista(){var L=[],add=function(pr,txt,go){L.push({pr:pr,txt:txt,go:go}
    if(dfVacio(c.a))add(3,'Dirección de '+c.n,g);
    if(dfVacio(c.tel))add(3,'Teléfono de '+c.n,g);
    if(!(c.dias&&c.dias.length)&&!c.sinRuta)add(3,'Días de visita de '+c.n,{t:'clidias',id:c.id});
-   if(dfVacio(c.hAb)||dfVacio(c.hCi))add(3,'Horario de '+c.n,g);
+   if(dfVacio(c.hAb)||dfVacio(c.hCi))add(3,'Horario de '+c.n,g);else if(horMal117(c))add(3,'Horario de '+c.n+': dice que cierra a las '+horaTxt117(c.hCi)+', revísalo',g);
    if(dfVacio(c.recibe))add(4,'Quién recibe en '+c.n,g)});
   if(dfVacio(S.cfg.tel))add(3,'Teléfono del negocio',{t:'aj'});
   if(dfVacio(S.cfg.dir))add(3,'Dirección del negocio',{t:'aj'});

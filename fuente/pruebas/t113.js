@@ -39,5 +39,13 @@ ok(r.guardado===null,'113 · ya no recuerda un lente escogido antes (el blanco y
 ok(/permiso de cámara/.test(r.perm||'')&&r.llam2===1,'113 · el aviso de permiso solo sale si de verdad falta el permiso',r);
 r=await ev(()=>{var inp=document.createElement('input');inp.type='file';document.body.appendChild(inp);cam73Abre(inp);var v=document.querySelector('#cam73 video');var a={poster:v&&v.getAttribute('poster'),bg:v&&v.style.background};cam73Cierra();inp.remove();return a});
 ok(/^data:image\/gif/.test(r.poster||'')&&/0, 0, 0|#000|black/.test(r.bg||''),'113 · al abrir la cámara ya no sale el ícono gris de "reproducir" (fondo negro)',r);
+// si se cierra la cámara mientras todavía arranca, no se queda prendida en el fondo (bloqueaba las siguientes fotos)
+r=await ev(async()=>{window.__cam73Test=1;var md=navigator.mediaDevices,g0=md.getUserMedia,res=null,parada=0;
+ md.getUserMedia=function(){return new Promise(function(ok){res=ok})};
+ var inp=document.createElement('input');inp.type='file';inp.setAttribute('capture','environment');document.body.appendChild(inp);
+ cam73Abre(inp);await new Promise(r=>setTimeout(r,50));cam73Cierra();
+ var cv=document.createElement('canvas'),st=cv.captureStream();st.getTracks().forEach(function(t){var s0=t.stop.bind(t);t.stop=function(){parada++;s0()}});res(st);await new Promise(r=>setTimeout(r,100));
+ md.getUserMedia=g0;inp.remove();window.__cam73Test=0;return {parada,stream:!!CAM73.stream}});
+ok(r.parada>0&&!r.stream,'113 · si se cierra la cámara mientras arranca, se apaga y no se queda ocupada',r);
 ok(!errs.length,'sin errores de página',errs.slice(0,3));
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

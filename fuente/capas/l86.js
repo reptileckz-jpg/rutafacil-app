@@ -20,10 +20,7 @@ var _rdA86=render;render=function(){try{libSync86()}catch(e){}try{if(S.dia80&&S.
 function libSync86(){if(S.role!=='rep'||S.chofHoy==null||(S.libPide83||'')!==iso(TODAY))return;var P=S.libPide86=S.libPide86||{},o=P[S.chofHoy];if(o&&o.f===iso(TODAY))return;P[S.chofHoy]={f:iso(TODAY),de:S.dia80||S.rutaDia80||''}}
 /* rutas que el admin puede liberar: las de otros choferes Y la que tiene cargada en su celular */
 /* → movido (tema-rutadia.js) */
-function libera86(id){var hoy=iso(TODAY),propia=+id===+S.chofHoy&&!S.arOn,o=propia?arPack():(S.chSt||{})[id];if(!o)return;S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:+id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});
- if(propia)arLoad(chNuevo(+id));else S.chSt[id]=chNuevo(+id);
- S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de antes lo cuadras con él.']);
- if(S.libPide86&&S.libPide86[id])S.libPide86[id]=null;toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy')}
+/* → libera86 movido a tema-rutadia.js (95: lo que traía se guarda para recibirlo) */
 /* la tarjeta del admin (reemplaza a la de la 8.0, que no veía la ruta cargada en su celular) */
 /* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib86"],[data-act="lib86s"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id;

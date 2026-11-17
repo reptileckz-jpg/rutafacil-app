@@ -2250,3 +2250,14 @@ Decisiones:
 - HECHO (tema-rutadia.js): antes de armar la ruta nueva, ese cierre se guarda aparte en la nube ("atras93"). Al admin le sale en Rutas (y en "Hoy") "📥 Cierre del … de Danu · Recibir su cierre"; se abre la recepción de siempre con ESE cierre, sin tocar la ruta de hoy del chofer; al terminar queda en el historial como enviado y recibido, el efectivo entra a la caja de hoy y las cajas que regresaron entran a la bodega. El chofer, al mandar su cierre de ayer, ve "Tu cierre de ayer se mandó al administrador. Ya puedes empezar tu ruta de hoy".
 - Lo que se perdió en la prueba de Ricardo (ruta liberada) no se puede recuperar: la liberación guarda las entregas en el historial pero no hay cierre que recibir; las taras se corrigen contando en Bodega → Taras.
 - Prueba t94nube (16, dos celulares). Todas: 0 FAIL. SIN PUBLICAR.
+
+## 2026-11-17 · 95 · Ricardo: "¿ya no habrá problemas de ningún tipo con eso? pierde cajas, kilos y sobre todo el efectivo" → que entre todo en la 1.0.42
+Decisiones (opción múltiple): liberar → se guarda y se recibe después · salió sin entregas → se guardan las cajas para recibirlas (sin bloquearlo) · aviso → rojo en "Hoy" y numerito rojo en Rutas · si no cuadra al recibir → faltante como en un cierre normal.
+HECHO (tema-rutadia.js + tema-pantallas.js):
+- REGLA ÚNICA: ninguna ruta que traiga efectivo, entregas o cajas se reemplaza sin guardarla antes para recibirla (cambio de día en cualquier celular, mandar el cierre de ayer, liberar, salió sin entregas, entregó sin iniciar, cargó cajas sin salir).
+- Liberar (libera86, movido de l86): lo que traía queda como "📥 Lo que traía Danu del … (ruta liberada) · Recibir lo que traía"; la app calcula lo que debía entregar (efectivo cobrado y cajas) y se recibe con la pantalla de siempre.
+- Salió y no entregó nada: no se le bloquea; le sale su ruta de hoy y al admin "📥 Las cajas que traía".
+- Aviso: "URGENTE: falta recibir…" en rojo en la lista Hoy y numerito rojo en Rutas, hasta recibirlo.
+- Al recibir: el efectivo entra a la caja de hoy, las cajas a la bodega, los gastos de la ruta a Gastos, y si no cuadra queda el faltante con su motivo.
+- El ajuste de cajas de un cierre ya mandado se hace en un solo celular (nunca dos veces).
+BATERÍA t95nube (dos celulares, cuenta efectivo y cajas al final): 1 mandado 11 p.m. y recibido después de las 12 (+$600, +73 cajas) · 2 mandado 12:30 a.m. (sin bloqueo, recepción normal) · 3 7 a.m. con el chofer sin señal (+$900, +72) · 4 liberar (rojo en Hoy, numerito rojo, +$600, +73, chofer con su ruta de hoy) · 5 salió sin entregar (+75 cajas, $0) · 6 entregó $500 de $600 (entran $500 y faltante de $100). 16 OK. Ajustadas t87 y t94nube. Todas: 0 FAIL.

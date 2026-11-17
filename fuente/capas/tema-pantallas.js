@@ -47,6 +47,10 @@ var INFO92=/desgaste de .* cambió de|cambió de \$[\d.,]+ a \$[\d.,]+ por km/i;
 var _avs92=avisos;avisos=function(){var L=_avs92.apply(this,arguments);if(!adm92())return L;return L.filter(function(x){if(typeof x==='string'&&INFO92.test(x)){try{actAdd(null,x)}catch(e){}return false}return true})};
 
 var _avD92=avDestino;avDestino=function(x){var r=_avD92.apply(this,arguments);try{if(r&&r.t==='personal'&&/sin señal|última ubicación|ubicación del chofer|apagó el GPS|GPS apagado/i.test(String(x)))r.t='rutas'}catch(e){}return r};
+/* 95 · lo que falta recibir es URGENTE: rojo en "Hoy" y numerito rojo en Rutas, hasta que se reciba */
+function atrasTxt95(x){var n=chofN(x.id),d=fCorta91(x.f);return 'URGENTE: falta recibir '+(x.why==='cierre'?'el cierre del '+d+' de '+n:'lo que traía '+n+' del '+d)+' ('+money(x.ef)+')'}
+var _avs95=avisos;avisos=function(){var L=_avs95.apply(this,arguments);try{if(adm92()&&typeof atrasLista93==='function')atrasLista93().forEach(function(x){L.unshift(atrasTxt95(x))})}catch(e){}return L};
+var _avD95=avDestino;avDestino=function(x){if(/^URGENTE: falta recibir /.test(String(x)))return {t:'rutas',cli:null,sel:'[data-x="atr93c"]'};return _avD95.apply(this,arguments)};
 /* ---------- "Viaje en curso": solo en Inicio y Cargas ---------- */
 var _vb92=vwBurbuja;vwBurbuja=function(){if(adm92()&&['inicio','cargas'].indexOf(S.tab.admin)<0)return '';return _vb92.apply(this,arguments)};
 
@@ -58,7 +62,12 @@ function chEstado92(id){var sal=false,ci=null,rg=null,L=[];try{sal=salio81(id);c
  if(sal)return {t:'en ruta',c:'#DBEAFE',f:'#1E40AF',x:hechos+' de '+L.length+' entregados'};
  return {t:'no ha salido',c:'#F1F5F9',f:'#475569',x:L.length+' cliente'+(L.length===1?'':'s')+' para hoy'}}
 function rutas92(){var d=S.rut92==='man'?'man':'hoy',f=d==='hoy'?hoy81():man81(),CH=[],sc=0,n=0,partes=[];try{CH=chs81();sc=sinCh81(f).length;CH.forEach(function(c){var k=lista81(+c.id,f).L.length;n+=k;if(k)partes.push(chofN(c.id)+' '+k)})}catch(e){}
- var h='<h1>Rutas</h1>';try{h+=atrasLista93().map(function(x){return '<div class="card alert" data-x="atr93c" style="padding:12px 14px"><b style="font-size:17px">📥 Cierre del '+esc(fCorta91(x.f))+' de '+esc(chofN(x.id))+'</b><div class="lbl">Lo mandó pero no se recibió antes de cambiar de día. Entrega '+money(x.ef)+' en efectivo.</div><button class="btn" style="width:100%;margin-top:8px;min-height:50px" data-act="atr93" data-k="'+esc(x.k)+'">Recibir su cierre</button></div>'}).join('')}catch(e){}try{h+=cierreTop()}catch(e){}
+ var h='<h1>Rutas</h1>';try{h+=atrasLista93().map(function(x){var n=esc(chofN(x.id)),d=esc(fCorta91(x.f));var T={cierre:['📥 Cierre del '+d+' de '+n,'Lo mandó pero no se recibió antes de cambiar de día. Entrega '+money(x.ef)+' en efectivo.','Recibir su cierre'],
+  liberada:['📥 Lo que traía '+n+' del '+d+' (ruta liberada)','No mandó su cierre. Cobró '+money(x.ef)+' en efectivo según sus entregas: cuenta el efectivo y las cajas que llegaron.','Recibir lo que traía'],
+  sinEntregas:['📥 Las cajas que traía '+n+' del '+d,'Salió y no entregó nada. Cuenta las cajas que regresaron.','Recibir las cajas'],
+  sinSalir:['📥 Lo que traía '+n+' del '+d,'Entregó sin iniciar ruta y no mandó cierre. Cobró '+money(x.ef)+': cuenta el efectivo y las cajas que llegaron.','Recibir lo que traía'],
+  sinCierre:['📥 Lo que traía '+n+' del '+d,'No mandó su cierre. Cobró '+money(x.ef)+': cuenta el efectivo y las cajas que llegaron.','Recibir lo que traía']}[x.why]||['📥 Cierre del '+d+' de '+n,'',''];
+  return '<div class="card alert" data-x="atr93c" style="padding:12px 14px"><b style="font-size:17px">'+T[0]+'</b><div class="lbl">'+T[1]+'</div><button class="btn" style="width:100%;margin-top:8px;min-height:50px" data-act="atr93" data-k="'+esc(x.k)+'">'+(T[2]||'Recibir')+'</button></div>'}).join('')}catch(e){}try{h+=cierreTop()}catch(e){}
  h+='<div class="tabs92" role="group" aria-label="Día"><button data-act="rut92d" data-v="hoy" aria-pressed="'+(d==='hoy')+'">Hoy<small>'+esc(fCorta91(hoy81()))+'</small></button><button data-act="rut92d" data-v="man" aria-pressed="'+(d==='man')+'">Mañana<small>'+esc(fCorta91(man81()))+'</small></button></div>';
  h+='<div class="card'+(sc?' alert':'')+'" data-x="rut92s" style="padding:12px 14px"><b style="font-size:18px">'+n+' cliente'+(n===1?'':'s')+(d==='hoy'?' hoy':' mañana')+'</b><div class="lbl">'+(partes.length?esc(partes.join(' · ')):'Todavía nadie lleva clientes')+(sc?' · <b class="neg">'+sc+' sin chofer</b>':' · ninguno sin chofer')+'</div>'
   +'<button class="btn" style="width:100%;margin-top:10px;min-height:52px" data-act="rt81open" data-v="'+d+'">Ver y repartir clientes</button></div>';
@@ -132,7 +141,6 @@ function limpio92(x){return String(x||'').replace(/^URGENTE:\s*/i,'').replace(/\
 function hoyCard92(){var hoy=iso(TODAY),P=[];try{P=pendTodos92()}catch(e){}var U=P.filter(function(o){return o.u}),N=P.filter(function(o){return !o.u}),vis={},h='';
  var row=function(t,go,ok,extra){var k=t.toLowerCase().replace(/\s*[·(].*$/,'').trim();if(vis[k])return '';vis[k]=1;return '<div class="it92'+(ok?' ok':'')+'">'+(extra||'')+'<span class="t">'+t+'</span>'+go+'</div>'};
  h+=U.map(function(o){return avRow(o.x,true)}).join('');
- try{atrasLista93().forEach(function(x){h+=row('📥 Recibir el cierre del '+esc(fCorta91(x.f))+' de '+esc(chofN(x.id)),'<button class="go" data-act="atr93" data-k="'+esc(x.k)+'" style="background:none;border:0">Ir ›</button>',false,'<span class="ck92"></span>')})}catch(e){}
  var T=[];try{T=hoyTareas()}catch(e){}
  T.forEach(function(x){if(x.k==='ef')return;var go=x.k==='cb'?'<button class="go" data-act="cli92" data-v="cob" style="background:none;border:0">Ir ›</button>':'<button class="go" data-act="popgo" data-t="'+esc(x.go)+'" style="background:none;border:0">Ir ›</button>';
   h+=row(esc(x.t),go,x.ok,'<button class="ck92" data-act="hoyok" data-k="'+esc(x.k)+'" aria-pressed="'+!!x.ok+'" aria-label="Marcar como hecho">'+(x.ok?'✓':'')+'</button>')});

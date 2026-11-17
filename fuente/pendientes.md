@@ -2429,3 +2429,7 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - Al tocarla se abre el detalle de ahora (semana, vs la pasada, racha, lo que ganaría si llega a la meta).
   - Juntarla con las burbujas de arriba que ya existen (velocidad, avisos) para que no se encimen; minimizable como esas.
   - Dudas: ¿también en la entrega o se esconde ahí para no distraer del cobro? ¿mostrar dinero o solo el avance si hay un cliente viendo la pantalla?
+- Ricardo mandó foto (`fotos/117-ganado-y-te-deja.png`): en "Siguiente parada", abajo del nombre, **"💵 Esta entrega te deja ~$23" no se lee**.
+  - Causa: la etiqueta `.comtip` (`capas/l18.js`) es letra verde (`var(--accent)`) sobre fondo verde clarito, y la tarjeta de la siguiente parada es verde. Verde sobre verde. La de "Si le cobras su deuda hoy, ganas $X" (letra café sobre amarillo transparente) tiene el mismo riesgo.
+  - Arreglo propuesto: dentro de la tarjeta verde, etiqueta blanca con letra verde oscuro (o letra blanca en negritas sobre verde más oscuro); revisar en modo claro y oscuro. Va junto con la barra flotante (117).
+  - Visto en la misma foto, para revisar: abajo del nombre sale `· "Benavides"` (repite el nombre como apodo) y "Recibe de 08:00 a 08:01" (horario de un minuto: probablemente mal capturado en el cliente).

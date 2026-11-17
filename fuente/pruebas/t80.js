@@ -33,12 +33,12 @@ await ev(()=>{S.ub68=null;render()});
 // 36 · la copia dañada de la nube se repara sola
 r=await ev(()=>new Promise(res=>{var n=0;window.NUBE_AD={reparar:function(){n++;return new Promise(function(){})}};var rl=location.reload;try{Object.defineProperty(location,'reload',{value:function(){}})}catch(e){}window.__r80=()=>n;console.error('FIRESTORE INTERNAL ASSERTION FAILED: Failed to read large IndexedDB value');setTimeout(()=>res(n),900)}));ok(r===1,'36 · al ver el error de la copia dañada se repara sola',r);
 // 61 · chofer trabado en "No mandaste tu cierre"
-r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk['c:1']=true;arLoad(chNuevo(1));S.rutaDia80=iso(new Date(TODAY.getTime()-2*864e5));S.salida.ok=false;S.log=[{c:S.stops[0].c,R:1,M:0,total:300,pago:300,abono:0}];S.cierre.sent=false;S.dia80=null;S.tab.rep='ruta';S.libPide83=null;render();
+r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk['c:1']=true;arLoad(chNuevo(1));S.rutaDia80=iso(new Date(TODAY.getTime()-2*864e5));S.salida.ok=true;S.log=[{c:S.stops[0].c,R:1,M:0,total:300,pago:300,abono:0}];S.cierre.sent=false;S.dia80=null;S.tab.rep='ruta';S.libPide83=null;render();
  var o=document.getElementById('dia80'),b1=o&&o.querySelector('[data-act="dia80c"]');render();render();var b2=document.querySelector('#dia80 [data-act="dia80c"]');var mismo=b1===b2,txt=o?o.innerText:'';
  b2.click();return {mismo,antier:/Antier/.test(txt),sab:/del /.test(txt),tab:S.tab.rep,sal:S.salida.ok,ov:!!document.getElementById('dia80'),em:/Pedir que liberen/.test(txt)}});
 ok(r.mismo,'61 · la pantalla ya no se vuelve a crear en cada redibujo (el botón no desaparece bajo el dedo)',r);
 ok(!r.antier&&r.sab&&r.em,'61 · dice "del sábado" (no "del Antier sábado") y trae "Pedir que liberen mi ruta"',r);
-ok(r.tab==='cierre'&&r.sal&&!r.ov,'61 · con entregas pero sin "Iniciar", el botón sí lleva al cierre',r);
+ok(r.tab==='cierre'&&!r.ov,'61 · el botón "Mandar mi cierre" lleva al cierre (si no salió, ya ni se bloquea: ver t87)',r);
 r=await ev(()=>{S.tab.rep='ruta';render();var n0=(S.avPrecio||[]).length;document.querySelector('#dia80 [data-act="lib83"]').click();return {av:(S.avPrecio||[]).slice(n0).some(x=>/URGENTE.*Liberar su ruta/.test(x)),ya:/Ya se le pidió/.test(document.getElementById('dia80').innerText)}});
 ok(r.av&&r.ya,'61 · "Pedir que liberen mi ruta" le llega URGENTE al administrador',r);
 await ev(()=>{S.role='admin';S.chofHoy=null;render()});

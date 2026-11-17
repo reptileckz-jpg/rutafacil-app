@@ -7,7 +7,7 @@ await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.popVisto={admin:iso(TODAY)
 /* 49 */
 let r=await ev(()=>{var w=document.querySelector('.inv68');if(!w)return null;var R=w.querySelector('.pc.r'),M=w.querySelector('.pc.m');return {ban:/Toca para ver la bodega/.test(w.innerText),r:!!R,m:!!M,rbg:getComputedStyle(R.querySelector('.hd')).backgroundColor,mbg:getComputedStyle(M.querySelector('.hd')).backgroundColor,pct:/%/.test(w.innerText),alta:/Alta disponibilidad/.test(w.innerText),taras:/taras vacías/.test(R.innerText),tarM:/taras/.test(M.innerText),alc:[...w.querySelectorAll('.alc')].map(a=>a.className),bar:w.querySelectorAll('.bar').length,tiles:w.querySelectorAll('.mi').length}});
 ok(r&&r.ban&&r.r&&r.m,'49: renglón "Inventario de bodega" + dos tarjetas',r);
-ok(r&&r.rbg==='rgb(217, 119, 6)'&&r.mbg==='rgb(21, 128, 61)','49: encabezados de color sólido (ámbar y verde)',r&&[r.rbg,r.mbg]);
+ok(r&&r.rbg==='rgb(14, 116, 144)'&&r.mbg==='rgb(21, 128, 61)','49: encabezados de color sólido (azul petróleo y verde)',r&&[r.rbg,r.mbg]);
 ok(r&&!r.pct&&!r.alta&&r.taras&&!r.tarM&&r.bar===2&&r.tiles===8,'49: sin %, sin "Alta disponibilidad", taras solo en roatán, barra y 4 cuadritos');
 r=await ev(()=>{var o=[];[[6,'v'],[3,'a'],[1,'r'],[100,'v']].forEach(function(x){o.push(alc68(x[0],'roatán').indexOf('alc '+x[1])>-1)});return o});ok(r.every(Boolean),'49: aviso de días con color (verde 5+, amarillo 2–4, rojo <2)',r);
 r=await ev(()=>{S.tab.admin='inicio';render();var c=document.querySelector('[data-x="invM"]');c.click();var t=S.tab.admin;S.tab.admin='inicio';render();return t});ok(r==='bodega','49: tocar una tarjeta lleva a Bodega',r);

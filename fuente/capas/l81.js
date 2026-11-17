@@ -29,10 +29,8 @@ function pendDe81(r){if(!r)return [];var trab=r.salida&&r.salida.ok||(r.log||[])
  return L.filter(function(x,i){return L.indexOf(x)===i&&cl(+x)&&!cl(+x).oculto})}
 function rutaObj81(id){return +S.chofHoy===+id?S:(S.chSt||{})[id]}
 var PEND81={};
-var _chN81=chNuevo;chNuevo=function(id){var o=_chN81.apply(this,arguments);try{var f=hoy81(),r=rutaObj81(id),pend=r&&r.rutaDia80&&r.rutaDia80!==f?pendDe81(r):(PEND81[id]||[]);delete PEND81[id];
- o.stops=plan81(id,f,pend);if(o.cierre&&o.cierre.odoIni!=null&&typeof rutaKmEstDe==='function')o.cierre.odo=num(o.cierre.odoIni)+rutaKmEstDe(o.stops)}catch(e){console.error('l81 plan',e)}return o};
-var _cdd81=cambioDeDia;cambioDeDia=function(viejo){try{if(viejo&&viejo!==hoy81()){PEND81={};Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==hoy81())PEND81[id]=pendDe81(r)})}}catch(e){}var r=_cdd81.apply(this,arguments);
- try{var lim=iso(new Date(TODAY.getTime()-3*864e5));['rutaOv81','rq81'].forEach(function(k){var o=S[k];if(o)Object.keys(o).forEach(function(f){if(f<lim)delete o[f]})})}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 /* los pedidos "para mañana" también quedan con su chofer */
 if(typeof pedAsigna==='function'){var _pa81=pedAsigna;pedAsigna=function(c,chId,cuando){var r=_pa81.apply(this,arguments);try{if(c&&cuando&&cuando!=='hoy'&&chId!=null)ovPon81(man81(),c.id,chId)}catch(e){}return r}}
 

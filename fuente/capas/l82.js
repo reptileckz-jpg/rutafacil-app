@@ -43,9 +43,8 @@ var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.appl
  Object.keys(HIST.reduce(function(o,r){o[r.d]=1;return o},{})).forEach(function(d){if(d<d0)return;rutasDia82(d).forEach(function(r){(r.log||[]).forEach(function(l){if(l&&!l.anul)T[l.c]=(T[l.c]||0)+num(l.total)})})});
  S.cli.forEach(function(c){keep[c.id]=c.c30;c.c30=Math.round(T[c.id]||0)});try{return _rk82.apply(this,arguments)}finally{S.cli.forEach(function(c){c.c30=keep[c.id]})}};
 /* el día archivado guarda también lo que se recibió y se contó (para "¿Cuadran las cuentas?") */
-var _cdd82=cambioDeDia;cambioDeDia=function(viejo){var snap={};try{if(viejo&&viejo!==iso(TODAY)){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r)snap[id]={reg:r.cierreReg,recep:r.recep}});if(S.chofHoy!=null)snap[S.chofHoy]={reg:S.cierreReg,recep:S.recep}}}catch(e){}
- var r=_cdd82.apply(this,arguments);try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}return r};
-if(typeof rutaRenueva80==='function'){var _rr82=rutaRenueva80;rutaRenueva80=function(){var s={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length,r=_rr82.apply(this,arguments);try{(S.rutasHist||[]).slice(n).forEach(function(e){if(e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}return r}}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 
 /* ---------- 41 · retiro del dueño ---------- */
 var _fm82=fijoMes;fijoMes=function(){var keep=S.fijos;try{S.fijos=(keep||[]).filter(function(f){return !f.retiro});return _fm82.apply(this,arguments)}finally{S.fijos=keep}};
@@ -193,7 +192,7 @@ function cliHist82(){var k=(S.rutasHist||[]).length+'|'+(S.log||[]).length+'|'+i
  (S.rutasHist||[]).forEach(function(e){if(e&&e.f)pon(e.f,e.log)});rutasDia82(iso(TODAY)).forEach(function(r){if(!r.arch)pon(iso(TODAY),r.log)});cliHist82.k=k;cliHist82.m=M;return M}
 function cliSync82(){if(MODO!=='vacio')return;var M=cliHist82();(S.cli||[]).forEach(function(c){var o=M[c.id];if(!o)return;if(o.ult&&(!c.ult||o.ult>c.ult))c.ult=o.ult;if(o.pag>num(c.compras))c.compras=o.pag;if(o.mesR>num(c.mesR))c.mesR=o.mesR;if(o.mesM>num(c.mesM))c.mesM=r2(o.mesM)})}
 /* el contador "este mes" de clientes se reinicia al cambiar de mes (nadie lo hacía) */
-var _cddM82=cambioDeDia;cambioDeDia=function(viejo){var r=_cddM82.apply(this,arguments);try{if(viejo&&String(viejo).slice(0,7)!==iso(TODAY).slice(0,7)){(S.cli||[]).forEach(function(c){c.mesR=0;c.mesM=0});S.choferes.forEach(function(c){if(c.mes)c.mes={ven:0,R:0,M:0,cob:0,cred:0}})}}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
 /* 52 · textos de la demo que llegaban a la app real */
 var _cf82=typeof compFotos==='function'?compFotos:null;if(_cf82)compFotos=function(){var h=_cf82.apply(this,arguments);return MODO==='vacio'?String(h).replace('Sin fotos del vehículo en esta demo.','Este día no se tomaron las fotos del vehículo.'):h};
 function txtDemo82(){if(MODO!=='vacio')return;var m=document.querySelector('main');if(!m)return;var w=document.createTreeWalker(m,NodeFilter.SHOW_TEXT),t,R=[['Las fotos y los datos son de ejemplo. En la versión APK se guardan cifrados y solo los ve el administrador.','Las fotos y los datos del personal solo los ve el administrador.'],['No hay datos en esa fecha. Hay información hasta ayer.','No hay movimientos en esa fecha.'],['El historial de ejemplo es solo de ruta; desde hoy la venta local se guarda aparte.','La venta en bodega se suma aparte de la de ruta.'],[', hasta ayer','']];

@@ -9,6 +9,8 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
   - `patch39.py` y `ql.py`: cambios de texto sobre la base.
   - `imgs.json`: las imágenes.
   - `build.sh`: arma todo.
+  - `mapa.py`: el mapa de errores. `build.sh` pone una marca `//@@capa lNN.js` donde empieza cada capa y `mapa.py` anota en el HTML en qué renglón queda cada una. Así, cuando la app falla, el error dice "En: l80.js:57" (capa y renglón) en vez de un renglón del HTML de 3 MB. Se ve en la pantalla de "La app encontró un problema" (Ver el error) y en Ajustes → Problemas reportados.
+  - `tema-*.js`: **temas aplanados**. Lo de un tema que antes estaba repartido en envolturas de varias capas, junto y en orden en un solo archivo. El primero es `tema-rutadia.js` (la ruta del día: ruta nueva del chofer, cambio de día, "No mandaste tu cierre", liberar ruta), que se arma justo después de `l85.js`. **Si se cambia algo de un tema aplanado, se cambia en su archivo; no se agregan envolturas nuevas en otra capa.**
 - `pruebas/`: las pruebas automáticas (Playwright). Cada una imprime `N OK · N FAIL`. Las de la versión 7.2 son `t58.js` … `t63.js` y `t62xss.js` (textos peligrosos); las de la 7.5 son `t68.js`, `t69.js` (el dinero) y `t70.js`; las de la 7.6 son `t71.js` … `t76.js`; `t77.js` es la red de seguridad (7.7); las de la 7.8 son `t78.js` y `t78nube.js` (pedido asignado con dos celulares); las de la 8.0 son `t80.js` y `t80vacio.js` (la app real no trae nada de la demo); las de la 8.1 son `t81.js` y `t81nube.js` (Rutas, con dos celulares); las de la 8.2 son `t82.js` y `t82scroll.js` (la pantalla no brinca); la de la 8.5 es `t85.js` (administrador que reparte, días fijos, no visitados); las de la 8.6 son `t86.js` (taras y numeritos) y `t86nube.js` (chofer trabado y liberar, con dos celulares); la de la 8.7 es `t87.js` (bloquear solo si salió, avisos agrupados); la de la 8.8 es `t88.js` (pendientes que se resuelven y se quitan); la de la 8.9 es `t89.js` (ubicación, odómetro, pantalla del chofer, color). `t61.js` prueba los saldos con dos celulares y una nube de prueba que se porta como Firestore.
 - `pendientes.md`: la bitácora completa. Están los puntos 1–100 (ya hechos) y la lista nueva, que empieza otra vez en 1.
 - `www.sh`: copia la versión "primera vez" a `www/index.html` y agrega los scripts de Firebase, Leaflet y mapas.
@@ -19,8 +21,9 @@ Aquí está todo lo necesario para seguir trabajando en la app desde otra conver
 1. `build.sh` junta las capas en `libl.js`.
 2. `patch39.py` aplica los cambios sobre `base-v38.html` y deja `prototipo-platanos.html` (con datos de demo).
 3. De ahí sale `platanos-primera-vez.html` (la versión real, `PN_MODO="vacio"`).
-4. `www.sh` la copia a `www/index.html`.
-5. Al subir a `main`, GitHub Actions arma el APK. La versión es `1.0.<número de corrida>`.
+4. `mapa.py` anota el mapa de errores en los dos HTML (lo llama `build.sh`).
+5. `www.sh` la copia a `www/index.html` (y vuelve a anotar el mapa, porque agrega renglones).
+6. Al subir a `main`, GitHub Actions arma el APK. La versión es `1.0.<número de corrida>`.
 
 Las rutas dentro de `build.sh`, `patch39.py`, `www.sh` y las pruebas son las de la conversación original (`/tmp/claude-0/-home-claude/0fa80c8a-…/scratchpad/v40src/` y `/mnt/user-data/outputs/`). Lo más fácil es crear esas carpetas: copiar `capas/*` a `…/scratchpad/v40src/`, `base-v38.html` a `…/scratchpad/v38.bak.html`, y enlazar `/home/claude/rutafacil-app` al repositorio. Las pruebas se corren desde `/tmp` (ahí encuentra Playwright).
 

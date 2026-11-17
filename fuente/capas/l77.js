@@ -5,8 +5,12 @@
    - una ventana abierta de un viaje que ya terminó se cierra sola ("Ese viaje ya terminó")
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
+/* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
+var CAPAS77=[];/*@@MAPA*/
+function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
+function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
- var r='';try{r=(S.role||'')+' · '+(S.tab&&S.tab[S.role]||'')}catch(x){}return 'Ruta Fácil · '+donde+' · '+new Date().toLocaleString('es-MX')+'\n'+r+'\n'+m+'\n'+st}
+ var r='';try{r=(S.role||'')+' · '+(S.tab&&S.tab[S.role]||'')}catch(x){}var cp='';try{cp=capasPila77(e&&e.stack)}catch(x){}return 'Ruta Fácil · '+donde+' · '+new Date().toLocaleString('es-MX')+'\n'+r+'\n'+m+(cp?'\nEn: '+cp:'')+'\n'+st}
 function falloAnota77(e,donde){var t=falloTxt77(e,donde);FALLO77.ult=t;FALLO77.n++;try{console.error('fallo77',donde,e)}catch(x){}
  try{localStorage.setItem('pnFallo',t)}catch(x){}try{if(typeof apErr==='function')apErr('fallo',String(e&&e.message||e).slice(0,200),donde)}catch(x){}return t}
 /* pantalla de rescate: no depende de nada de la app */

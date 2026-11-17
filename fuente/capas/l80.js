@@ -13,33 +13,19 @@ function del80(f){return f===ayer80()?'de ayer':'del '+fmtF(f)}
 
 /* ---------- 35 · cada ruta sabe de qué día es ---------- */
 try{if(AR_K.indexOf('rutaDia80')<0)AR_K.push('rutaDia80')}catch(e){}
-var _chN80=chNuevo;chNuevo=function(id){var o=_chN80.apply(this,arguments);try{o.rutaDia80=iso(TODAY)}catch(e){}return o};
+/* → movido (tema-rutadia.js) */
 function cliHoy80(id){var d=TODAY.getDay();return (S.cli||[]).filter(function(c){return !c.oculto&&+c.chofer===+id&&c.dias&&c.dias.indexOf(d)>-1})}
 /* al cambiar de día: las rutas sin fecha quedan con la del día que se cierra, y a cada chofer cerrado se le arma la nueva */
-var _cdd80=cambioDeDia;cambioDeDia=function(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return _cdd80.apply(this,arguments);var antes=Object.keys(S.chSt||{});
- try{if(!S.rutaDia80)S.rutaDia80=viejo;Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&!o.rutaDia80)o.rutaDia80=viejo})}catch(e){}
- var r=_cdd80.apply(this,arguments);
- try{if(S.role==='admin'||S.role==='cont'){S.chSt=S.chSt||{};(S.choferes||[]).forEach(function(c){var id=+c.id;if(c.baja||!esCh(c)||id===+S.chofHoy)return;if(!S.chSt[id]&&(antes.indexOf(String(id))>-1||cliHoy80(id).length))S.chSt[id]=chNuevo(id)})}}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
 /* el celular del chofer revisa si su ruta es vieja */
-function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;var hoy=iso(TODAY);if(S.rutaDia80)return S.rutaDia80!==hoy?S.rutaDia80:null;
- /* rutas de antes (sin fecha): vieja si ya mandó el cierre y no trae a ninguno de sus clientes de hoy */
- var H=cliHoy80(S.chofHoy).map(function(c){return c.id});if(!H.length)return null;var st=S.stops||[];if(st.some(function(s){return H.indexOf(+s.c)>-1}))return null;return 'antes'}
-function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),env=!!(S.cierre&&S.cierre.sent);if(!env&&!rutaVacia(o)){if(v==='antes')return false;S.dia80=v;return false}
- var f=v==='antes'?ayer80():v;S.rutasHist=S.rutasHist||[];if(!rutaVacia(o)&&!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
- arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var n=(S.stops||[]).length;setTimeout(function(){try{toast(n?'Listo: ya puedes empezar tu ruta de hoy ('+n+' cliente'+(n===1?'':'s')+')':'Tu ruta de hoy está lista')}catch(e){}},80);return true}
-function dia80HTML(){if(S.role!=='rep'||!S.dia80||S.cierre&&S.cierre.sent||S.tab.rep==='cierre')return '';var n=cliHoy80(S.chofHoy).length;
- return '<div id="dia80" role="dialog" aria-label="Cierre pendiente"><div class="w"><div style="font-size:44px;text-align:center">📋</div><h1 style="font-size:23px;text-align:center">No mandaste tu cierre '+esc(del80(S.dia80))+'</h1><p style="font-size:17px;text-align:center">Para empezar tu ruta de hoy, primero mándalo.</p>'
-  +'<button class="btn big" style="width:100%;min-height:62px;font-size:19px" data-act="dia80c">Mandar mi cierre '+esc(del80(S.dia80))+'</button>'+(n?'<div class="card note" style="margin-top:14px;text-align:center;font-size:17px">Hoy te tocan <b>'+n+' cliente'+(n===1?'':'s')+'</b>. En cuanto mandes el cierre te sale tu ruta.</div>':'')+'</div></div>'}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80c"]');if(!b)return;e.stopImmediatePropagation();S.tab.rep='cierre';S.cierreP=0;render();window.scrollTo(0,0)},true);
 /* el administrador: liberar la ruta de hoy de un chofer que no mandó su cierre */
-function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var hoy=iso(TODAY),L=[];
- Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o))L.push([+id,o.rutaDia80])});if(!L.length)return;
- var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=L.map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x[0]))+' no ha mandado su cierre '+esc(del80(x[1]))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x[0]+'">Recordarle</button><button class="btn" style="flex:1" data-act="dia80l" data-id="'+x[0]+'">Liberar su ruta de hoy</button></div></div>'}).join('');m.prepend(d)}
-document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80r"],[data-act="dia80l"],[data-act="dia80ls"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,o=(S.chSt||{})[id];if(!o)return;
- if(b.dataset.act==='dia80r'){S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['Manda tu cierre '+del80(o.rutaDia80)+' para que te salga tu ruta de hoy.']);toast('Se le avisó a '+chofN(id));render();return}
- if(b.dataset.act==='dia80l'){window._d80=id;abrirModal('¿Liberar su ruta de hoy?','A '+esc(chofN(id))+' se le arma ya su ruta de hoy. Lo '+esc(del80(o.rutaDia80))+' queda pendiente para cuadrarlo con él.',[['Sí, liberarla','dia80ls',' data-id="'+id+'"']]);return}
- S.modal=null;S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});S.chSt[id]=chNuevo(id);
- S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de ayer lo cuadras con él.']);toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy');render()},true);
+/* → movido (tema-rutadia.js) */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80r"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,o=(S.chSt||{})[id];if(!o)return;
+ if(b.dataset.act==='dia80r'){S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['Manda tu cierre '+del80(o.rutaDia80)+' para que te salga tu ruta de hoy.']);toast('Se le avisó a '+chofN(id));render();return}},true);
 
 /* ---------- 36 · la copia de la nube dañada se repara sola ---------- */
 var REP80=/Failed to read large IndexedDB value|INTERNAL ASSERTION FAILED|IndexedDB.*(corrupt|failed)|internal error opening backing store/i,_rep80=false;

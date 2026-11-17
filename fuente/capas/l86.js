@@ -19,18 +19,13 @@ var _rdA86=render;render=function(){try{libSync86()}catch(e){}try{if(S.dia80&&S.
 /* el chofer pide que lo liberen: también queda en un dato propio (para la tarjeta roja del admin) */
 function libSync86(){if(S.role!=='rep'||S.chofHoy==null||(S.libPide83||'')!==iso(TODAY))return;var P=S.libPide86=S.libPide86||{},o=P[S.chofHoy];if(o&&o.f===iso(TODAY))return;P[S.chofHoy]={f:iso(TODAY),de:S.dia80||S.rutaDia80||''}}
 /* rutas que el admin puede liberar: las de otros choferes Y la que tiene cargada en su celular */
-function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
- if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!(S.cierre&&S.cierre.sent)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
+/* → movido (tema-rutadia.js) */
 function libera86(id){var hoy=iso(TODAY),propia=+id===+S.chofHoy&&!S.arOn,o=propia?arPack():(S.chSt||{})[id];if(!o)return;S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:+id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});
  if(propia)arLoad(chNuevo(+id));else S.chSt[id]=chNuevo(+id);
  S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de antes lo cuadras con él.']);
  if(S.libPide86&&S.libPide86[id])S.libPide86[id]=null;toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy')}
 /* la tarjeta del admin (reemplaza a la de la 8.0, que no veía la ruta cargada en su celular) */
-dia80Adm=function(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
- var pide=Object.keys(P).filter(function(id){return P[id]&&P[id].f===hoy});if(!L.length&&!pide.length)return;var ya={};
- var h=pide.map(function(id){ya[id]=1;var en=L.filter(function(x){return x.id===+id})[0];return '<div class="card sos86" style="padding:12px 14px"><b style="font-size:18px">🆘 '+esc(chofN(+id))+' pide que liberes su ruta</b><div class="lbl" style="font-size:15px">No puede mandar su cierre'+(P[id].de?' '+esc(del80(P[id].de)):'')+' y no le sale su ruta de hoy.</div>'+(en?'<button class="btn" style="margin-top:8px;min-height:54px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button>':'<div class="lbl" style="margin-top:6px">✓ Su ruta de hoy ya está lista. En cuanto su celular tenga señal le sale.</div>')+'</div>'}).join('');
- h+=L.filter(function(x){return !ya[x.id]}).map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x.id))+' no ha mandado su cierre '+esc(del80(x.f))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x.id+'">Recordarle</button><button class="btn" style="flex:1" data-act="lib86" data-id="'+x.id+'">Liberar su ruta de hoy</button></div></div>'}).join('');
- var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=h;m.prepend(d)};
+/* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib86"],[data-act="lib86s"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id;
  if(b.dataset.act==='lib86'){window._lb86=id;abrirModal('¿Liberar su ruta de hoy?','A '+esc(chofN(id))+' se le arma ya su ruta de hoy. Lo que quedó sin cerrar se guarda en el historial para que lo cuadren.',[['Sí, liberarla','lib86s',' data-id="'+id+'"']]);return}
  S.modal=null;libera86(id);render()},true);

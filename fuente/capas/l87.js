@@ -10,15 +10,11 @@
 function salio87(o){return !!(o&&o.salida&&o.salida.ok)}
 
 /* ---------- 71 · bloquear solo si salió ---------- */
-var _rr87=rutaRenueva80;rutaRenueva80=function(){var v=null;try{v=rutaVieja80()}catch(e){}if(!v)return _rr87.apply(this,arguments);var o=arPack(),env=!!(o.cierre&&o.cierre.sent);
- if(!env&&!salio87(o)){var f=v==='antes'?ayer80():v;try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
-   (S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' tenía '+o.log.length+' entrega'+(o.log.length===1?'':'s')+' '+del80(f)+' sin haber iniciado ruta ni mandado cierre: cuádralo con él.')}}catch(e){}
-  var rv=rutaVacia;rutaVacia=function(x){return !salio87(x)};try{return _rr87.apply(this,arguments)}finally{rutaVacia=rv}}
- return _rr87.apply(this,arguments)};
+/* → movido (tema-rutadia.js) */
 /* el admin: solo las rutas de choferes que SÍ salieron */
-var _pl87=porLib86;porLib86=function(){var hoy=iso(TODAY);return _pl87.apply(this,arguments).filter(function(x){var o=x.propia?S:(S.chSt||{})[x.id];return salio87(o)})};
+/* → movido (tema-rutadia.js) */
 /* la pantallita del chofer, tampoco si no salió */
-var _d80H87=dia80HTML;dia80HTML=function(){if(S.role==='rep'&&S.dia80&&!salio87(S)&&!(S.cierre&&S.cierre.sent)){S.dia80=null;setTimeout(function(){try{render()}catch(e){}},0);return ''}return _d80H87.apply(this,arguments)};
+/* → movido (tema-rutadia.js) */
 
 /* ---------- 74 · "X no envió su cierre": se quita solo; y su pantalla trae botones ---------- */
 function bloqueado87(nombre){return porLib86().some(function(x){return chofN(x.id)===nombre})}

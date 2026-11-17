@@ -12,6 +12,8 @@ Lee, en este orden:
 ## Dónde está todo
 - **Repositorio:** `reptileckz-jpg/rutafacil-app`, privado.
 - **Código:** `fuente/base-v38.html` + las capas `fuente/capas/l1.js…l89.js`, en orden, + `patch39.py` y `ql.py`.
+- **Temas aplanados:** `fuente/capas/tema-rutadia.js` (la ruta del día). Si se cambia algo de ese tema, se cambia ahí, sin envolturas nuevas. Poco a poco se van aplanando más temas.
+- **Errores:** cuando la app falla, el texto del error trae "En: lNN.js:renglón" (mapa de errores, `mapa.py`).
 - **Pruebas:** `fuente/pruebas`, con Playwright. Cada una imprime "N OK · N FAIL".
 - **Nativo:** está en `nativo/` (RutaNativa, RutaGps, RutaArranque, RutaAdmin y MainActivity).
 - **Reglas de Firebase:** `firestore.rules`, con su prueba en `pruebas-reglas/`.

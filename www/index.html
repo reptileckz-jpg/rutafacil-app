@@ -3301,6 +3301,7 @@ var _rK2=render;render=function(){_rK2.apply(this,arguments);singTxt($('root'))}
 /* palabras largas en botones chicos (Estacionamiento) se cortan con guion */
 try{document.documentElement.lang=document.documentElement.lang||'es';var _stK=document.createElement('style');_stK.textContent='main button{-webkit-hyphens:auto;hyphens:auto}';document.head.appendChild(_stK)}catch(e){}
 
+//@@capa l1.js
 /* ===================== v3.9 · 1. Colores, imágenes y placas ===================== */
 /* el PIN se vuelve a pedir si no se usa la app: admin y contador 5 min, chofer y venta local 30 min.
    (va aquí para que se registre antes que todo: el primer toque después de la espera solo desbloquea) */
@@ -3389,6 +3390,7 @@ var _vbL=vehBasic;vehBasic=function(v,warn){var h=_vbL.apply(this,arguments);ret
 var VEH_IMGS=[['Nissan NP300 (foto)',function(){return FOTO_NP}],['Freightliner M2 (foto)',function(){return FOTO_FL}],['Camioneta (dibujo)',function(){return vehImg('pick','#F3F3F0','#C9CCD1')}],['Camión (dibujo)',function(){return vehImg('truck','#F4F4F2','#1F4E9A')}]];
 function vehEsCamion(i){return /Cami[oó]n|M2/.test((VEH_IMGS[+i]||[''])[0])}
 
+//@@capa l2.js
 /* ===================== v3.9 · 2. Fichas en su propia pantalla, con pestañas ===================== */
 (function(){var css=[
  '#fiov{position:fixed;inset:0;z-index:33;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}',
@@ -3551,6 +3553,7 @@ window.addEventListener('popstate',function(){if($('fiov')){if(typeof borrSalir=
 /* al abrir la app, ninguna ficha abierta */
 (function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};var _frFi=fresh;fresh=function(){return cerrar(_frFi.apply(this,arguments))};cerrar(S)})();
 
+//@@capa l3.js
 /* ===================== v3.9 · 3. Pantallas de captura más claras ===================== */
 var DEMO=true; /* en la app final: false (lo obligatorio no se puede saltar) */
 (function(){var css=[
@@ -3653,6 +3656,7 @@ var _rL3=render;render=function(){_rL3.apply(this,arguments);try{
   var cv=Array.prototype.slice.call(document.querySelectorAll('main .card')).filter(function(x){var b=x.querySelector('b');return b&&b.textContent.trim()==='Cajas vacías'})[0];if(cv&&c){var lbl=Array.prototype.slice.call(cv.querySelectorAll('.lbl')).filter(function(x){return /^Debe \d+\. Pídeselas/.test(x.textContent)})[0];if(lbl)lbl.textContent='Ya debía '+c.vac+'. Si no las tiene, entrégale de todos modos.'}}
 }catch(e){console.error(e)}};
 
+//@@capa l4.js
 /* ===================== v3.9 · 4. Borradores: si sales a medio llenar ===================== */
 /* Un borrador NO cuenta en ninguna cuenta hasta que se guarda de verdad. */
 S.borr=S.borr||{};
@@ -3730,6 +3734,7 @@ function borrPend(){var L=[];var B=S.borr||{};
 function borrBanner(){var L=borrPend();if(!L.length)return '';return '<div class="card note" role="status" style="border:2px solid var(--orange)"><b>Sin terminar</b>'+L.map(function(x){return '<div class="row"><span>'+esc(x.n)+'</span><span style="display:flex;gap:6px"><button class="btn sm" style="width:auto" data-act="borrir" data-k="'+x.k+'">Continuar</button><button class="btn sm sec" style="width:auto" data-act="borrx" data-k="'+x.k+'">Borrar</button></span></div>'}).join('')+'<div class="lbl">No cuenta en ninguna cuenta hasta que lo guardes. En la app final también se guarda solo si se cierra la app o se apaga el teléfono.</div></div>'}
 var _rL4=render;render=function(){_rL4.apply(this,arguments);try{var m=document.querySelector('main');if(!m||m.querySelector('[data-borr]'))return;var h=borrBanner();if(!h)return;if(S.role==='rep'&&S.tab.rep==='entrega')return;var w=document.createElement('div');w.setAttribute('data-borr','1');w.innerHTML=h;m.insertBefore(w.firstElementChild,m.firstElementChild);m.firstElementChild.setAttribute('data-borr','1')}catch(e){}};
 
+//@@capa l5.js
 /* ===================== v3.9 · 5. Cuentas seguras ===================== */
 /* ---- 5.1 Efectivo en caja = lo que de verdad está en la caja ----
    Antes: contaba lo que cobraba el chofer como si ya estuviera en la caja, sin restar sus gastos de ruta,
@@ -3854,6 +3859,7 @@ provPagar=function(prov,m,forma,cid){var rest=num(m),tot0=rest;forma=forma||'Efe
  var man=r2(tot0-rest);if(man>0.005)S.avPrecio.push(quien()+' le pagó '+money(man)+' a '+prov+' · '+(forma==='Efectivo'?'efectivo de caja':String(forma).toLowerCase()));
  if(rest>0.005)rest=r2(rest-num(_provPagarI(prov,rest,forma,cid)||0));return r2(tot0-rest)};
 
+//@@capa l6.js
 /* ===================== v3.9 · 6. PIN, cierre de caja obligatorio, sin señal, dos administradores ===================== */
 (function(){var css=[
  '#pinov{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px}',
@@ -3955,6 +3961,7 @@ setTimeout(function(){try{if(window.CONF){delete CONF.gxdel}}catch(e){}},0);
 setTimeout(function(){try{if(window.CONF)CONF.cajacierre=1}catch(e){}},0);
 var _cmL6=confMsg;confMsg=function(D){if(D.act==='cajacierre'){if(S.cajaCnt===''||S.cajaCnt==null)return null;var ce=cajaEsp(),cc=num(S.cajaCnt),df=cc-ce;return{t:'Cierre de caja',m:'¿Registrar que contaste '+money(cc)+'? La app esperaba '+money(ce)+(Math.abs(df)<0.5?' y cuadra.':(df<0?': faltan '+money(-df)+'.':': sobran '+money(df)+'.'))}}return _cmL6.apply(this,arguments)};
 
+//@@capa l6b.js
 /* ===================== v3.9 · 6b. Datos de ejemplo completos ===================== */
 function svgU(s){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s)}
 function docImg(tit,sub,col,lines){var L=(lines||[]).map(function(t,i){return '<text x="118" y="'+(78+i*18)+'" font-size="12" fill="#333" font-family="Arial">'+esc(t)+'</text>'}).join('');
@@ -3997,6 +4004,7 @@ datosDemo(S);
 /* "con señal / sin señal" también en el mapa y el viaje */
 var _rL6b=render;render=function(){_rL6b.apply(this,arguments);try{if(S.role!=='admin')return;offIds().forEach(function(id){var n=chofN(id),c=conn(id),w=document.createTreeWalker($('root'),NodeFilter.SHOW_TEXT,null),x,L=[];while(x=w.nextNode())if(x.nodeValue.indexOf('GPS del teléfono de '+n+' · hace')>-1)L.push(x);L.forEach(function(t){t.nodeValue=t.nodeValue.replace(/GPS del teléfono de ([^·]+)· hace [^·]+/,'Sin señal desde las '+c.desde+' · última ubicación: '+(c.pos||'')+' ')})})}catch(e){}};
 
+//@@capa l7.js
 /* ===================== v3.9 · 7. Primera vez: asistente de inicio y tutorial ===================== */
 (function(){var css=[
  '#setov{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto}#setov .sw{max-width:480px;margin:0 auto;padding:16px 16px 60px;display:flex;flex-direction:column;gap:12px}',
@@ -4123,6 +4131,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* foto propia del vehículo en el asistente */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.sufoto)return;var f=t.files&&t.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var r=Math.min(1,640/Math.max(im.width,im.height)),w=Math.round(im.width*r),h=Math.round(im.height*r),cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);S.setup.vf.fotoMia=cv.toDataURL('image/jpeg',0.8);render()};im.src=fr.result};fr.readAsDataURL(f)},true);
 
+//@@capa l8.js
 /* ===================== v3.9 · 8. Arranque ===================== */
 if(window.__pnTest){S.cajaAyerSkip=true}
 else if(!(MODO==='vacio'&&S.setup&&!S.setup.fin))pinEntrar();
@@ -4133,6 +4142,7 @@ var _vhL8=vehHoy;vehHoy=function(){var v=_vhL8.apply(this,arguments);if(v)return
 /* sin historial todavía (primera vez): las estadísticas lo dicen en vez de quedarse en blanco */
 var _estL8=estadisticas;estadisticas=function(){if(HIST.length)return _estL8.apply(this,arguments);return '<h1>Estadísticas</h1><div class="card"><b>Todavía no hay historial</b><div class="lbl" style="margin-top:6px">Las ventas, ganancias, gastos y rankings aparecen aquí cuando empiecen a registrarse días de trabajo. En la app final se guardan día con día.</div></div>'+cuentasHTML()};
 
+//@@capa l9.js
 /* ===================== v4.0 · Lo que encontró Ricardo en la v3.9 ===================== */
 (function(){var css=[
  /* ficha del vehículo: foto grande arriba y placa chica junto al nombre */
@@ -4452,6 +4462,7 @@ var _rTr=render;render=function(){var antes={};OV_ANIM.forEach(function(x){antes
 var _sumT=0;document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('summary'))_sumT=Date.now()},true);
 document.addEventListener('toggle',function(e){var d=e.target;if(!d||d.tagName!=='DETAILS'||!d.open||Date.now()-_sumT>600)return;/* con animate() no se toca la clase: así el motor de pantalla no la quita y no parpadea */Array.prototype.forEach.call(d.children,function(c){if(c.tagName!=='SUMMARY'&&c.animate){try{c.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:220,easing:'ease'})}catch(er){}}})},true);
 
+//@@capa l10.js
 /* ===================== v5 · Motor: solo se actualiza lo que cambió =====================
    Antes, cada vez que algo cambiaba se borraba toda la pantalla y se volvía a crear: por eso
    brincaba, se perdía el cursor y las ventanas se volvían a armar. Ahora la pantalla nueva se
@@ -4511,6 +4522,7 @@ var _rMorph=render;render=function(){
  if(err)throw err;
  return res};
 
+//@@capa l11.js
 /* ===================== v5 · Avisos de Inicio más claros =====================
    El punto rojo que late en "Inicio" ahora lleva DIRECTO a los avisos con un solo toque (antes
    el primer toque solo abría Inicio y había que tocar otra vez). Una vez que los viste, el punto
@@ -4527,6 +4539,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(vis)setTimeout(irAvisos,60)},true);
 var _rAv=render;render=function(){var r=_rAv.apply(this,arguments);try{var sg=urgSig();document.documentElement.classList.toggle('av-visto',!!sg&&S.avVisto===sg)}catch(e){}return r};
 
+//@@capa l12.js
 /* ===================== v5 · Recepción a ciegas =====================
    Antes, al recibir lo que regresó del reparto, los campos ya venían llenos con lo que "debería"
    regresar: con solo tocar Confirmar salía "todo cuadra" sin contar nada. Ahora quien recibe cuenta
@@ -4573,6 +4586,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='recfal'){e.stopImmediatePropagation();var c2=S._recC;S.modal=null;S._recC=null;if(c2&&!S.recep)recAplicar(c2,D.m);render();return}
 },true);
 
+//@@capa l13.js
 /* ===================== v5 · Cajas que regresan sin bodeguero =====================
    A) Quien recibe el dinero, recibe las cajas: al registrar el efectivo te lleva a contarlas.
    B) Lo que regresa NO entra a bodega hasta que alguien lo cuente ("Cajas sin contar" en Inicio).
@@ -4718,6 +4732,7 @@ document.addEventListener('click',function(e){if(!S.tut||!document.getElementByI
 (function(){var st=document.createElement('style');st.textContent='@keyframes tutNo{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}#tutov .bub.tutno{animation:tutNo .3s ease}';document.head.appendChild(st)})();
 var _rTut13=render;render=function(){if(S.tut&&S.role&&S.tab&&S.tab[S.role]!==tutTab()){S.tab[S.role]=tutTab()}return _rTut13.apply(this,arguments)};
 
+//@@capa l14.js
 /* ===================== v5 · Ruta sin trampas (cancelar con motivo, tickets, cambios con foto) ===================== */
 /* cualquier foto que se toma: se vacía el campo después de leerla (si no, la ventana de "¿Confirmar?" fallaba al querer restaurarlo) */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.type==='file')setTimeout(function(){try{t.value=''}catch(er){}},0)},true);
@@ -4793,6 +4808,7 @@ var _bvH14=bienvHTML;bienvHTML=function(){var h=_bvH14.apply(this,arguments);if(
  var k=h.indexOf('<span class="lbl">Tu vehículo</span>');if(k<0)return h;var a=h.lastIndexOf('<div style="display:flex;gap:10px;align-items:center;margin-top:10px">',k);var e=h.indexOf('</span></div>',k);if(a<0||e<0)return h;
  return h.slice(0,a)+vehChofHTML(vh)+h.slice(e+'</span></div>'.length)};
 
+//@@capa l15.js
 /* ===================== v5 · Personal: "Agregar a alguien nuevo" con su propia pantalla =====================
    Antes: en Personal había un formulario chico (nombre y puesto) y al agregar te mandaba a la ficha con todas
    sus pestañas. Ahora en Personal solo está la tarjeta; al tocarla se abre una pantalla para dar de alta con todo. */
@@ -4854,6 +4870,7 @@ var _npF15=npF;npF=function(k,l,t,ph){if(/^(r1p|r2p|emp)$/.test(k))return parHTM
 /* y al editar a alguien que ya existe */
 var _fiEmp15=fiEmp;fiEmp=function(f){var h=_fiEmp15.apply(this,arguments);return h.replace(/<div class="field"><label for="ch(\d+)(r1p|r2p|emp)">Parentesco<\/label><input[^>]*><\/div>/g,function(m,id,k){return parHTML('ch:'+id+':'+k)})};
 
+//@@capa l16.js
 /* ===================== v5 · Configuración inicial completa =====================
    El asistente pide más datos (negocio, papeles del vehículo, licencia, sueldo y PIN, horario de clientes…).
    Todo se puede dejar vacío: lo que falte te lo recuerda la burbuja de "Datos que faltan". */
@@ -4956,6 +4973,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='dfmax'){e.stopImmediatePropagation();S.dfMin=false;render();return}
  if(a==='dfgo'){e.stopImmediatePropagation();var x=dfLista()[+b.dataset.i];if(x)dfIr(x);return}},true);
 
+//@@capa l17.js
 /* ===================== v5 · Ticket obligatorio cuando queda a crédito o hay abono =====================
    Si al cliente le queda deuda o dio un abono, el chofer tiene que mandarle su ticket por WhatsApp
    (va directo a su número, con "Crédito pendiente"). Si hay impresora conectada, además se le imprime.
@@ -4986,6 +5004,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* en Ajustes: en la demo se puede simular una impresora conectada */
 var _aj17=ajHTML;ajHTML=function(){var h=_aj17.apply(this,arguments);if(typeof REAL!=='undefined'&&REAL)return h.replace('>Agregar impresora (Bluetooth)</button>','>Agregar impresora (Bluetooth) · muy pronto</button>');return h.replace('<button class="btn sm sec" style="margin-top:8px" disabled>Agregar impresora (Bluetooth)</button>','<button class="btn sm '+(imprOk()?'':'sec')+'" style="margin-top:8px" data-act="imprdemo">'+(imprOk()?'✓ Impresora de prueba conectada':'Simular impresora conectada (demo)')+'</button>')};
 
+//@@capa l18.js
 /* ===================== v5 · WhatsApp del negocio en los tickets =====================
    Cada chofer manda el ticket desde su propio número, pero el ticket dice a dónde pedir: el WhatsApp del
    negocio (el de tu papá). Si un chofer captura un número de cliente que no estaba, te llega aviso para revisarlo. */
@@ -5062,6 +5081,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* demo: Danu cobra con base + comisión para que se vean los motivadores */
 (function(){try{if(typeof MODO!=='undefined'&&MODO==='vacio')return;var c=S.choferes.filter(function(x){return x.id===1})[0];if(c&&!c._comDemo){c._comDemo=1;c.sz.tipo='base';c.sz.base='1500';c.sz.comModo='unidad';c.sz.comC='5';c.sz.comK='0.5';c.sz.comP='';c.sz.cob='14200';c.sz.comAnt='520';S.racha=S.racha||{};S.racha[1]={n:3,f:''}}}catch(e){}})();
 
+//@@capa l19.js
 /* ===================== v5 · Control de crédito y mayoreo ("buró") =====================
    - Mayoreo por cliente: 2 mayoreos a mano en 10 días → aviso y se bloquea "en revisión" hasta que decidas.
    - Crédito: máximo $1,500 por cliente (excepciones solo tú) y lo que deben todos los clientes de un chofer
@@ -5131,6 +5151,7 @@ var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.in
   +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
  var i=h.indexOf('data-bind="cfg.cbBl"');if(i<0)i=h.indexOf('data-act="tutver"');var j=i>-1?h.lastIndexOf('<div class="card"',i):-1;if(j<0){var e=h.lastIndexOf('</div>');return h.slice(0,e)+x+h.slice(e)}return h.slice(0,j)+x+h.slice(j)};
 
+//@@capa l20.js
 /* ===================== v5 · Buró del chofer =====================
    Cada chofer tiene su propio tope (lo que pueden deberle todos sus clientes). Si tarda en cobrar, la app
    te SUGIERE bajarlo; si cobra bien y usa casi todo su tope, te sugiere subirlo poco a poco. Tú decides. */
@@ -5179,6 +5200,7 @@ function mayBajoHTML(){var L=S.cli.filter(function(c){return c.mayBajo&&!c.mayor
 var _perms20b=permsHTML;permsHTML=function(){return _perms20b.apply(this,arguments)+mayBajoHTML()};
 var _aj20=ajHTML;ajHTML=function(){var h=_aj20.apply(this,arguments);crCfg2();return h.replace('<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div>','<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div><div class="field"><label for="cfg_mayBaja">Si un cliente de mayoreo baja su compra más de (%)</label><input id="cfg_mayBaja" type="number" inputmode="decimal" min="0" data-bind="cfg.mayBaja" value="'+esc(S.cfg.mayBaja)+'"></div><div class="lbl">…regresa a precio normal y te aviso.</div>')};
 
+//@@capa l21.js
 /* ===================== v5 · Se guarda en el teléfono y cada chofer con su ruta =====================
    1) En la versión real ("Primera vez") todo se guarda en el teléfono (IndexedDB): si se cierra el navegador o
       se apaga el celular, al abrir sigue donde iba. La demo NO se guarda (siempre empieza igual).
@@ -5224,6 +5246,7 @@ var _cT21=cierreTop;cierreTop=function(){var h=_cT21.apply(this,arguments);if(S.
  Object.keys(S.chSt||{}).forEach(function(id){if(+id===+S.chofHoy)return;var o=S.chSt[id];if(!(o&&o.cierre&&o.cierre.sent&&!o.cierreReg))return;var r=o.cierre.res||{};
   h+='<button class="card alert" data-act="verruta" data-id="'+id+'" data-ir="cierreadm" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('cierre',20)+'</span><span class="grow"><b style="font-size:17px">'+esc(chofN(+id))+' mandó su cierre</b><br><span class="lbl">Debe entregar '+money(r.efectivo||0)+'. Recíbelo.</span></span><span style="font-size:22px">›</span></button>'});return h};
 
+//@@capa l22.js
 /* ===================== v5.1 · Arreglos de la prueba en celulares ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  /* el "+" se iba a media pantalla: la animación de cambio de pantalla dejaba un transform puesto */
@@ -5427,6 +5450,7 @@ var _vaH22=velAlertaHTML;velAlertaHTML=function(){var a=S.velAl;if(!a)return '';
  var sinGps=!DEMO&&a.cur==null&&_velSin>20;
  return h.replace('<button class="btn" style="margin-top:20px;background:#fff;color:#B3261E;min-height:60px;font-size:20px" data-act="velok">Ya bajé la velocidad</button>','<div style="font-size:16px;margin-top:16px;font-weight:700">Se quita solo cuando bajes de '+a.lim+' km/h.</div>'+(sinGps?'<button class="btn sm" style="margin-top:12px;background:#fff;color:#B3261E;width:auto" data-act="velok">Entendido</button>':''))};
 
+//@@capa l23.js
 /* ===================== v5.1 · Ficha del cliente: foto de la fachada y crédito desde el buró ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '.fihero.confoto{padding-top:0;overflow:hidden}',
@@ -5480,6 +5504,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='crcan'){e.stopImmediatePropagation();c.credOk=b.dataset.v!=='1';if(c.credOk)c.credFrz=false;crHist(c,c.credOk?'reactivó su crédito':'canceló su crédito');toast(c.credOk?'Crédito reactivado':'Crédito cancelado: solo de contado');render();return}
  if(a==='crrec'){c.recUlt=fmtF(iso(TODAY))+' '+hhmm();crHist(c,'le mandó recordatorio de pago');setTimeout(render,50)}},true);
 
+//@@capa l24.js
 /* ===================== v5.1 · Ver la foto antes de reemplazarla =====================
    Antes, al tocar una foto ya tomada (ticket, fachada, licencia, fruta mala, carga…) se abría la cámara otra vez.
    Ahora se abre la foto en grande (se puede acercar con dos dedos) con "Tomar otra para reemplazarla". */
@@ -5496,6 +5521,7 @@ document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!==
 /* atrás cierra la foto */
 var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');if(o){o.remove();return true}return _navA24.apply(this,arguments)};
 
+//@@capa l25.js
 /* ===================== v5.1 · Viaje sin báscula, barra, burbujas minimizadas y avisos al abrir ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  /* durante el viaje no se ve la barra de secciones */
@@ -5526,6 +5552,7 @@ var _r25b=render;render=function(){var r=_r25b.apply(this,arguments);if(_toastQ.
 var _cr25=cuentasRevisar;cuentasRevisar=function(){var R=_cr25.apply(this,arguments);R.forEach(function(x){if(x.n==='Ninguna caja se pierde sin registrarse'){x.n='Todas las cajas están contadas';if(!x.ok){var m=/hay (-?\d+) y deberían ser (-?\d+)/.exec(x.det||'');if(m){var d=+m[2]-+m[1];x.det=(d>0?'Faltan '+d:'Sobran '+(-d))+' cajas: deberían ser '+m[2]+' y la app cuenta '+m[1]}}}});return R};
 var _tq25=toast;toast=function(t){var m=/^⚠ Algo no cuadra: Todas las cajas están contadas/.test(t||'');if(m){try{var x=cuentasRevisar().filter(function(y){return y.n==='Todas las cajas están contadas'})[0];if(x&&x.det)t='⚠ Las cajas no cuadran. '+x.det+'. Revísalo en Estadísticas.'}catch(e){}}return _tq25.call(this,t)};
 
+//@@capa l26.js
 /* ===================== v5.1 · Guardar ubicaciones: básculas, proveedores y clientes =====================
    - El admin, al programar el viaje, puede elegir "Báscula nueva" y poner la ubicación (link de Maps o coordenadas)
      o pedirle al chofer que la guarde.
@@ -5668,6 +5695,7 @@ var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),
  h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
  return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
 
+//@@capa l27.js
 /* ===================== v5.1 · Ubicación aproximada → exacta, datos que el chofer no puede cambiar,
    teléfono confirmado y crédito por chofer =====================
    - El admin pone una ubicación aproximada del proveedor (o báscula). El chofer, al llegar, solo toca
@@ -5733,6 +5761,7 @@ function provUbIns(h){h=h.replace(/<button class="btn sm sec" style="margin:6px 
 var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
 var _pvC27=proveedoresCard;proveedoresCard=function(){return provUbIns(_pvC27.apply(this,arguments))};
 
+//@@capa l28.js
 /* ===================== v6.0 · La nube (Firebase): todos ven lo mismo =====================
    Cómo funciona:
    - El estado de la app (S) se parte en "unidades": una por cada dato del negocio (clientes, cargas, inventario…)
@@ -5864,6 +5893,7 @@ function nbLimpiaFotos(){if(!NB.on||!NB.listo||!NB.perfil||NB.perfil.rol!=='admi
  NB.ad.viejas(nbP('f'),'pe',Date.now()-30*864e5,300).then(function(ids){ids.forEach(function(id){NB.ad.borrar(nbP('f/'+id)).catch(function(){})});if(ids.length)console.log('nube: '+ids.length+' fotos viejas borradas')},function(e){console.error('nube limpiar',e)})}
 setInterval(function(){try{nbLimpiaFotos()}catch(e){}},60000);
 
+//@@capa l29.js
 /* ===================== v6.0 · Entrar a la nube y accesos desde Personal ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '#nbov{position:fixed;inset:0;z-index:200;background:#F6F1E3;color:#1E2A1A;overflow-y:auto;-webkit-overflow-scrolling:touch}',
@@ -5989,6 +6019,7 @@ document.addEventListener('focusin',function(e){if(!kbCampo(e.target))return;doc
 document.addEventListener('focusout',function(){setTimeout(function(){if(kbCampo(document.activeElement))return;document.documentElement.classList.remove('kbopen','kbesp');Array.prototype.forEach.call(document.querySelectorAll('.kbesp'),function(x){x.classList.remove('kbesp')})},200)},true);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',function(){kbProg(80)});
 
+//@@capa l30.js
 /* ===================== v6.0 · Vehículos sin "nombre": se arma con marca, modelo y año ===================== */
 function vehNomDe(f){var p=[f.marca,f.modelo,f.anio].map(function(x){return String(x==null?'':x).trim()}).filter(Boolean);return p.join(' ')}
 var VEH_TRES=function(pre,f,camp){return camp('marca','Marca','text','ej. Nissan')+camp('modelo','Modelo','text','ej. NP300')+camp('anio','Año','number','ej. 2020')};
@@ -6033,6 +6064,7 @@ TUT.rep=[['[data-act="iniciar"], [data-act="insprep"], .card.next, [data-act="ca
  A.addListener('backButton',function(){try{var vw=document.getElementById('vwov');if(vw&&!navVentana()){var x=vw.querySelector('[data-act="vwx"]');if(x){x.click();return}}if(navAtras()){ult=0;return}}catch(e){}
   var now=Date.now();if(now-ult<2500){ult=0;try{(A.minimizeApp||A.exitApp).call(A)}catch(e){}return}ult=now;toast('Toca atrás otra vez para salir')})})();
 
+//@@capa l31.js
 /* ===================== v6.0 · Pedidos: siempre responde, cliente nuevo y a quién se lo das ===================== */
 function pedChoferes(){return (S.choferes||[]).filter(function(c){return c&&!c.baja&&!c.arch&&esCh(c)})}
 function pedPos(id){var st=nbRGet(id,'stops')||[],pos=null;st.forEach(function(s){if(s.done){var c=cl(s.c);if(c&&c.lat!=null)pos=c}});var sal=nbRGet(id,'salida');return {pos:pos||BOD,activo:!!(sal&&sal.ok)}}
@@ -6068,6 +6100,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(!cl(+p.cli)){e.stopImmediatePropagation();p.err='Elige el cliente';render();return}
  if(!(num(p.R)>0||num(p.M)>0)){e.stopImmediatePropagation();p.err='Escribe cuántas cajas o kilos pidió';render();return}},true);
 
+//@@capa l32.js
 /* ===================== v6.1 · Cierre por pasos, reabrir con permiso, carga extra, fotos obligatorias, PIN ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  /* la barra de Total ya no tapa lo de abajo */
@@ -6161,6 +6194,7 @@ function sinDemo(){if(!REAL)return;var w=document.createTreeWalker(document.body
   var nv=v.replace(DEMO_RX,'');if(nv!==v)n.nodeValue=nv})}
 var _r32b=render;render=function(){var r=_r32b.apply(this,arguments);try{sinDemo()}catch(e){}return r};
 
+//@@capa l33.js
 /* ===================== v6.1 · Inicio de ruta: odómetro y tanque confirmados, revisión que se encoge ===================== */
 /* la revisión del vehículo, ya terminada, queda chiquita */
 var _iR33=inspRepHTML;inspRepHTML=function(){var r=S.inspR,h=_iR33.apply(this,arguments);if(!h||!r||!r.ok||r.preg||r.wait||S.inspVer)return h;
@@ -6180,6 +6214,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="iniciar"]');if(!b||S.role!=='rep'||!REAL)return;var s=S.salida,f='';if(!s.odoOk)f='Confirma el odómetro';else if(!s.tankOk)f='Confirma el nivel del tanque';
  if(f){e.stopImmediatePropagation();e.preventDefault();toast(f);try{vibrar([60,40,60])}catch(er){}var el=document.querySelector('[data-key="salconf"]');if(el)el.scrollIntoView({block:'center'})}},true);
 
+//@@capa l34.js
 /* ===================== v6.1 · Mapas reales (OpenStreetMap) y ubicación en vivo de los choferes =====================
    - En el APK viene Leaflet (mapas de OpenStreetMap, gratis). Si no está (página de prueba), se queda el dibujo de antes.
    - El celular del chofer manda su ubicación cada 2 minutos (o si se movió más de 200 m) mientras reparte o va de viaje.
@@ -6239,6 +6274,7 @@ function mapaCapa0(m,el,i){i=i||0;var c=MAPA_CAPAS[i];if(!c){mapaSinCalles(el);r
  t.on('tileerror',function(){mal++;if(!bien&&mal>=4&&!t._cambio){t._cambio=true;m.removeLayer(t);mapaCapa(m,el,i+1)}});t.addTo(m);el._capa=t}
 function mapaSinCalles(el){if(el.querySelector('.mapafalla'))return;var d=document.createElement('div');d.className='mapafalla';d.style.cssText='position:absolute;left:8px;right:8px;top:8px;z-index:500;background:var(--surface);border-radius:10px;padding:8px 10px;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.2)';d.textContent='No cargaron las calles (¿sin internet?). Los puntos sí están; cuando haya señal se ven las calles.';el.appendChild(d)}
 
+//@@capa l35.js
 /* ===================== v6.1 · Diseño: separación, tarjetas pintadas, menú que se desliza, Ajustes ordenado,
    fotos de personal (cámara o galería, frente y reverso), guía para empezar y avisos juntos ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -6298,6 +6334,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- avisos al abrir: uno solo que te lleva a Avisos ---------- */
 var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.length>1&&!avisoBloq()){var n=_toastQ.length;_toastQ.length=0;setTimeout(function(){toast('Tienes '+n+' avisos nuevos. Míralos en Inicio → Avisos.')},400)}return _r35b.apply(this,arguments)};
 
+//@@capa l36.js
 /* ===================== v6.2 · Acceso: huella, PIN olvidado, cambiar de usuario, sesiones, papeles y bajas ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '#pinov .pinmas{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px}#pinov .pinmas .link{min-height:40px;font-size:15px}',
@@ -6395,6 +6432,7 @@ setInterval(function(){var d=iso(new Date());if(d===_pinDia36)return;_pinDia36=d
 /* al volver a la app después de un rato: si ya pasó el tiempo, pide el PIN de una vez (sin esperar a que toque) */
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{if(pinBloq())render()}catch(e){}}});
 
+//@@capa l37.js
 /* ===================== v6.2 · Avisos: cada uno te lleva a donde se atiende · ventana de urgentes "1 de N" ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '@keyframes avFoco{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}30%,70%{box-shadow:0 0 0 4px var(--accent)}}',
@@ -6428,6 +6466,7 @@ var _avRow37=avRow;avRow=function(x,u){return _avRow37.apply(this,arguments).rep
 /* al reiniciar el PIN, se quita la petición y su aviso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pinreset"]');if(!b)return;var k=b.dataset.k;if(S.pinPide)delete S.pinPide[k];if(S.pinPista)delete S.pinPista[k];S.avPrecio=(S.avPrecio||[]).filter(function(x){return x.indexOf('[pin:'+k+']')<0})},true);
 
+//@@capa l38.js
 /* ===================== v6.2 · Compartir y archivos: imagen directo al WhatsApp, Excel de verdad, respaldo,
    borrar datos de prueba y "✓ Guardado" en los campos ===================== */
 function natPl38(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
@@ -6515,6 +6554,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
  setTimeout(function(){var f=document.getElementById(t.id)||t,cont=(f.closest&&f.closest('.field'))||f.parentNode;if(!cont)return;var l=cont.querySelector('label')||cont;var v=l.querySelector('.guardado');if(v)v.remove();v=document.createElement('span');v.className='guardado';v.textContent='✓ Guardado';l.appendChild(v);
   setTimeout(function(){v.classList.add('fuera');setTimeout(function(){v.remove()},450)},1800)},60)},true);
 
+//@@capa l39.js
 /* ===================== v6.2 · Código QR (hecho aquí, sin internet) e impresora de tickets Bluetooth (ESC/POS) ===================== */
 var QR=(function(){
  var ECC_CW=[ // [L,M] palabras de corrección por bloque, versiones 1..40
@@ -6595,6 +6635,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='imprquita'){e.stopImmediatePropagation();if(S.impr){delete S.impr.mac;delete S.impr.nom}render();return}
  if(a==='imprprueba'){e.stopImmediatePropagation();imprimirItems([{t:'c',s:S.cfg.nombre||'Ruta Fácil',b:1},{t:'c',s:'Prueba de impresión'},{t:'hr'},{t:'kv',k:'Fecha',v:fmtF(iso(TODAY))+' '+hhmm()},{t:'kv',k:'Acentos',v:'Plátano maduro'}],'Ruta Facil').then(function(){toast('Listo, ¿salió el ticket?')},function(er){toast('No se pudo imprimir: '+(er&&er.message||''))});return}},true);
 
+//@@capa l40.js
 /* ===================== v6.2 · Cierre: efectivo que de verdad entrega (con billetes opcionales), corte en foto con QR,
    tómbola, pantalla de "después del cierre", permiso por chofer, apoyo entre choferes y pasar la ruta ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -6718,6 +6759,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   apoyoPasa(p.a,p.de,ids2,quien());toast('Listo: '+chofN(p.a)+' entrega hoy '+ids2.length+' clientes de '+chofN(p.de));S.pasaR=null;render();return}},true);
 ['apoyos'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 
+//@@capa l41.js
 /* ===================== v6.2 · Entrega: pago con tarjeta / transferencia / mixto (comisión y banco), "No estaba",
    buró solo si tiene crédito, completar datos del cliente cuando sea (con horario) ===================== */
 ['bancoMov'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
@@ -6801,6 +6843,7 @@ var _fiC41=fiCli;fiCli=function(f){var h=_fiC41.apply(this,arguments),c=cl(f.id)
  var card='<div class="card note"><b>Le falta: '+esc(fl.join(', '))+'</b><div class="lbl">Puedes agregar lo que falta (lo que ya tiene no se cambia).</div><button class="btn sm" style="margin-top:8px" data-act="ubcli" data-id="'+c.id+'" data-m="'+(ubTiene(c)?'datos':'gps')+'">Completar datos</button></div>';
  var i=h.indexOf('<div class="card');return i<0?h+card:h.slice(0,i)+card+h.slice(i)};
 
+//@@capa l42.js
 /* ===================== v6.2 · Admin y encargado: precio de ayer, precio ±10%, límite de pagos, conteo doble,
    resumen por WhatsApp, sugerencia de maduración, viaje pactado vs real, gastos con factura, cerrar el mes,
    pedir al proveedor, simulador de viaje ===================== */
@@ -6903,6 +6946,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='simprog'){e.stopImmediatePropagation();var s=S.sim2;if(!s.prov)return;S.simDest=S.simDest||{};S.simDest[s.prov]={km:s.km,cas:s.cas};S.vj=S.vj||{};S.vj.cajas=s.cajas;S.vj.kgM=s.kgM;S.vj.veh=s.veh||S.vj.veh;S.vjOpen=s.prov;S.sim2=null;S.tab.admin='cargas';toast('Escoge el chofer y la fecha');render();setTimeout(function(){var x=document.querySelector('[data-act="progviaje"]');if(x)try{x.scrollIntoView({block:'center'})}catch(er){}},150);return}},true);
 if(typeof cargas==='function'){var _car42=cargas;cargas=function(){var h=_car42.apply(this,arguments);if(S.role!=='admin'||S.encOn)return h;var c='<button class="btn sec" style="margin:8px 0" data-act="simabre">🧮 Simulador de viaje</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};if(typeof VIEWS!=='undefined'&&VIEWS.cargas)VIEWS.cargas=cargas}
 
+//@@capa l43.js
 /* ===================== v6.2 · Tutorial sin parpadeo, tutorial por días y "Aprende la app", pantallas grandes,
    vehículos (placa fija y "Ya se hizo"), encargos con lugar, combustible en tarjeta ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7011,6 +7055,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  var x2=encList().filter(function(y){return y.id===r.id})[0];var pon=function(la,ln){if(!ya){ya={n:n,lat:la,lng:ln,tipo:x2?x2.tipo:''};L.push(ya)}else if(la!=null&&ya.lat==null){ya.lat=la;ya.lng=ln}if(x2)x2.lugar={n:ya.n,lat:ya.lat,lng:ya.lng}};
  if(navigator.geolocation&&!window.__pnTest)navigator.geolocation.getCurrentPosition(function(p){pon(+p.coords.latitude.toFixed(6),+p.coords.longitude.toFixed(6));render()},function(){pon(null,null)},{enableHighAccuracy:true,timeout:15000});else pon(null,null)},true);
 
+//@@capa l44.js
 /* ===================== v6.2 · QR de clientes (opción en Ajustes) y escanear el corte, modo manejo automático,
    pedido por WhatsApp paso a paso con "¿Cabe en la ruta?" ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7111,6 +7156,7 @@ function tombolaSinAbrir(){var L=[];nbRutaIds().forEach(function(id){var c=nbRGe
 var _ini44=inicio;inicio=function(){var h=_ini44.apply(this,arguments);if(S.role!=='admin')return h;var L=tombolaSinAbrir();if(!L.length)return h;
  var c='<div class="card note" data-key="tombola"><b>En la tómbola, sin abrir: '+money(sum(L,function(x){return x.m}))+'</b>'+L.map(function(x){return rw(esc(x.ch)+(x.b?' · bolsa '+esc(x.b):''),money(x.m))}).join('')+'<div class="lbl">Cuando abras la bolsa, cuéntalo en el cierre de cada chofer (sin ver cuánto dijo).</div></div>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
 
+//@@capa l45.js
 /* ===================== v6.3 · Arreglos de la prueba en celulares (puntos 54–74) ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '.cifoto{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.cifoto figure{margin:0}.cifoto img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:1px solid var(--line)}.cifoto figcaption{font-size:13px;color:var(--muted);text-align:center}',
@@ -7194,6 +7240,7 @@ var _r45e=render;render=function(){try{if(typeof NB==='undefined'||!NB.on||NB.li
 var _encSync45='';var _r45f=render;render=function(){var r=_r45f.apply(this,arguments);try{if(typeof NB!=='undefined'&&NB.on&&NB.ad&&NB.perfil&&NB.perfil.rol==='admin'&&NB.usuarios){var e=S.enc,hasta=e&&e.hasta?new Date(e.hasta+'T23:59:59').getTime():0,sig=(e?e.ch:'')+':'+hasta;if(sig!==_encSync45){_encSync45=sig;
  Object.keys(NB.usuarios).forEach(function(uid){var p=NB.usuarios[uid];if(!p||p.rol!=='chofer'||!p.activo)return;var quiero=e&&+p.chId===+e.ch?hasta:0;if(num(p.encHasta)!==quiero){p.encHasta=quiero;NB.ad.set('usuarios_app/'+uid,{encHasta:quiero},true).catch(function(){})}})}}}catch(er){}return r};
 
+//@@capa l46.js
 /* ===================== v6.3 · Diseño: todo en tarjetas (automático), campos que se ven, burbujas como pestañas,
    filtros de clientes en cuadrícula, sin textos de demo ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7261,6 +7308,7 @@ if(typeof vwBody==='function'){var _vwBo46=vwBody;vwBody=function(){return tarje
 if(typeof vwSideHTML==='function'){var _vwSi46=vwSideHTML;vwSideHTML=function(){return tarjetear(_vwSi46.apply(this,arguments))}}
 if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}
 
+//@@capa l47.js
 /* ===================== v6.3 · Altas por pasos a pantalla completa (una pregunta a la vez):
    vehículo (carga o auto), cliente, proveedor y simulador de viaje por tarjetas ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7371,6 +7419,7 @@ var _veh47=vehiculos;vehiculos=function(){var h=_veh47.apply(this,arguments);if(
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vftipo"]');if(!b||!S.vf)return;e.stopImmediatePropagation();S.vf.esAuto=b.dataset.v==='auto';S.vf.plTipo=S.vf.esAuto?'auto':'carga';render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vsave"]');if(!b||!S.vf||S.vfId==null||S.vf.esAuto==null)return;var id=S.vfId,a=!!S.vf.esAuto;setTimeout(function(){var v=vehById(id);if(v){v.esAuto=a;v.plTipo=a?'auto':'carga'}render()},20)},true);
 
+//@@capa l48.js
 /* ===================== v6.3 · Entrada: animación corta al abrir, bienvenida la primera vez, huella/cara con animación,
    permisos al primer uso ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7425,6 +7474,7 @@ var _ru48=ruta;ruta=function(){var h=_ru48.apply(this,arguments),e=S.permE;if(S.
 function permAvisoHTML(){var e=S.permE;if(S.role!=='rep'||!e||S.perm)return '';var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return '';return '<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>'}
 var _bvH48=bienvHTML;bienvHTML=function(){return permAvisoHTML()+_bvH48.apply(this,arguments)};
 
+//@@capa l49.js
 /* ===================== v6.3 · Varias bodegas en la nube y celulares del negocio (modo administrado) ===================== */
 /* ---------- varias bodegas: en la nube "inv"/"lotes" siempre son la bodega 1; las demás viajan en invBx/lotesBx ---------- */
 ['invBx','lotesBx'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
@@ -7460,6 +7510,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='cellibera'){abrirModal('¿Quitar las limitaciones?','El celular vuelve a ser normal: se pueden instalar apps y Ruta Fácil deja de administrarlo. Para volver a limitarlo hay que repetir el paso con la computadora.',[['Sí, quitarlas','celliberasi']]);return}
  if(a==='celliberasi'){S.modal=null;n.celLiberar().then(function(){S.celE=null;S.celApps=null;toast('Listo, el celular ya no está limitado');render()},function(er){toast('No se pudo: '+(er&&er.message||''))});return}},true);
 
+//@@capa l50.js
 /* ===================== v6.4 · Cierre y equipo: billetes con + y −, recepción del cierre en una tarjeta grande,
    equipo (celular, terminal, impresora, llaves) con buen/mal estado al salir y al regresar, y qué hacer con un faltante ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7563,6 +7614,7 @@ function eqAplica(){if(S.role!=='admin'||!S.eqDanos)return;S.eqDanos.forEach(fun
  b.hist.push({f:d.f,x:(d.v==='falta'?'No lo entregó ':'Mal estado ')+(d.modo==='salida'?'al recibirlo ':'al entregarlo ')+chofN(d.ch)+(d.nota?': '+d.nota:''),foto:d.foto||undefined});if(d.v==='mal')b.est='Mal estado'})}
 var _rd50=render;render=function(){try{eqAplica()}catch(e){}return _rd50.apply(this,arguments)};
 
+//@@capa l51.js
 /* ===================== v6.5 · Avisos en segunda persona cuando tú lo hiciste ("Registraste…"), y con nombre cuando fue otro ("Danu registró…") ===================== */
 ubQuien=function(){return quien()};
 var AV_VERB={'registró':'Registraste','guardó':'Guardaste','no pudo':'No pudiste','recibió':'Recibiste','entregó':'Entregaste','cambió':'Cambiaste','mandó':'Mandaste','pagó':'Pagaste','agregó':'Agregaste','borró':'Borraste','marcó':'Marcaste','asignó':'Asignaste','canceló':'Cancelaste','programó':'Programaste','autorizó':'Autorizaste','quitó':'Quitaste','dio':'Diste','anotó':'Anotaste','cobró':'Cobraste','pidió':'Pediste','subió':'Subiste','abrió':'Abriste','cerró':'Cerraste','tomó':'Tomaste','dejó':'Dejaste','sacó':'Sacaste','puso':'Pusiste','hizo':'Hiciste','corrigió':'Corregiste','reportó':'Reportaste','aceptó':'Aceptaste','rechazó':'Rechazaste','terminó':'Terminaste','empezó':'Empezaste','inició':'Iniciaste','llegó':'Llegaste','salió':'Saliste'};
@@ -7572,6 +7624,7 @@ function avYo(x){x=String(x==null?'':x);var pre='',m=/^(URGENTE: )/.exec(x);if(m
  return pre+x}
 var _avRow51=avRow;avRow=function(x,u){var h=_avRow51.apply(this,arguments),y=avYo(x);return y===x?h:h.replace('<span class="grow">'+esc(x)+'</span>','<span class="grow">'+esc(y)+'</span>')};
 
+//@@capa l52.js
 /* ===================== v6.6 · Escáner nativo (ya no se cierra la app), ubicación siempre prendida del celular del negocio,
    alertas al administrador, recorrido del día con tiempo en cada parada, y Google Maps en pantalla completa ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
@@ -7717,6 +7770,7 @@ var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _n
 /* en la ficha del chofer, pestaña "Ruta y metas": su recorrido por GPS */
 var _fiEmp52=fiEmp;fiEmp=function(f){var h=_fiEmp52.apply(this,arguments);if(S.chEdit===f.id||(S.fiTab||{})['emp:'+f.id]!=='ruta')return h;var c=(S.choferes||[]).filter(function(x){return x.id===f.id})[0];var g=c?gpsRutaHTML(c):'';if(!g)return h;return h.replace(/<\/div><\/div><\/div>$/,g+'</div></div></div>')};
 
+//@@capa l53.js
 /* ===================== v6.7 · 98: todo "falta…" te lleva al campo (rojo y se sacude) · 99: "¿Estás seguro?" en lo que no se puede deshacer ===================== */
 /* también los avisos de un dato mal escrito marcan el campo donde estabas escribiendo */
 var VALOR_RE=/^(Agrega al menos|Cada fruta necesita|Captura |El PIN debe|Las cajas de roatán son un número|Las rotas no pueden|Lo pagado al proveedor no puede|No traes suficiente|No hay tanto|Ya no hay tanto|Debe quedar al menos|Primero escribe|Revisa las fechas|Revisa los pesos|Revisa todos los puntos|Ya hay un vehículo con esas placas|Corrige lo que)/;
@@ -7738,6 +7792,7 @@ setTimeout(function(){['rcfin','rcfinsi','flt','eqok'].forEach(function(k){UNDO[
 var _rd53=render;render=function(){var r=_rd53.apply(this,arguments);try{var a=document.querySelector('[data-act="confno"]');if(a&&a.textContent!=='Regresar')a.textContent='Regresar';var o=document.querySelector('[data-act="confok"]');if(o&&o.textContent==='Sí, confirmar')o.textContent='Sí';
  var m=document.querySelector('[data-act="modalx"]');if(m&&m.textContent==='Cancelar')m.textContent='Regresar'}catch(e){}return r};
 
+//@@capa l54.js
 /* ===================== v6.8 · Simulador y viajes: "+ Otra báscula" y "+ Nuevo" ahí mismo (94), el roatán se compra por kilo (95),
    solo se pregunta lo que vende cada proveedor (96), y "Programar este viaje" sigue en la misma tarjeta con ¿Seguro? (97) ===================== */
 function provTipoOk(n){var p=S.provDir[n];return !!(p&&p.tipo&&(p.tipo!=='Ambos'||p.tipoOk))}
@@ -7812,6 +7867,7 @@ var _cf54=cfForm;cfForm=function(){var h=_cf54.apply(this,arguments);return h.re
 var _ppH54=provPideHTML;provPideHTML=function(){var h=_ppH54.apply(this,arguments);if(!h)return h;return h.replace(/href="([^"]*)">📲 ([^<]*)</g,function(m,u,n){var nm=n.replace(/&amp;/g,'&'),t=(S.provDir[nm]||{}).tipo||'Ambos',q=t==='Roatán'?'plátano roatán':(t==='Macho'?'plátano macho':'plátano roatán y macho');
  return 'href="'+u.replace(encodeURIComponent('mandar plátano?'),encodeURIComponent('mandar '+q+'? ¿A cómo el kilo?'))+'">📲 '+n+'<'})};
 
+//@@capa l55.js
 /* ===================== v6.9 · 92: lo que pide datos o decisiones se abre en tarjeta de pantalla completa ===================== */
 (function(){var st=document.createElement('style');st.textContent=[
  '.gxsheet>.pn{max-width:none!important;max-height:none!important;height:100%;border-radius:0!important;padding-top:calc(16px + var(--sbar,0px))!important}',
@@ -7840,6 +7896,7 @@ var _rpF55=rpForm;rpForm=function(){return fsDe(_rpF55.apply(this,arguments),'Pe
 var _incF55=incForm;incForm=function(){return fsDe(_incF55.apply(this,arguments),'Incidente')};
 var _corF55=corrForm;corrForm=function(){return fsDe(_corF55.apply(this,arguments),'Corrección')};
 
+//@@capa l56.js
 /* ===================== v7.0 · 93: que una persona nueva la pueda usar sola:
    tutorial desde el primer día (admin y chofer), "Hoy te toca" / "Ahora sigue", "Aprende la app" arriba,
    botón "?" en cada pantalla y la burbuja "¿Qué sigue?" si se queda quieto ===================== */
@@ -7924,6 +7981,7 @@ var _tutVez56=false;var _rd56b=render;render=function(){var r=_rd56b.apply(this,
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resdia"]');if(b)S.resHoy=iso(TODAY)},true);
 ['resHoy','hoyVisto'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 
+//@@capa l57.js
 /* ===================== v7.1 · Google Maps DENTRO de cada pantalla (ruta, viaje, mapa en vivo, fichas, recorrido)
    El mapa de Google se dibuja "debajo" de la app: la app deja un hueco transparente donde va el mapa.
    Si algo falla (o en Ajustes se apaga), se usa el mapa de antes (Leaflet). ===================== */
@@ -7987,6 +8045,7 @@ var _aj57=ajHTML;ajHTML=function(){var h=_aj57.apply(this,arguments);if(!h||h.in
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;e.stopImmediatePropagation();var no=false;try{no=localStorage.getItem('gmapsNo')==='1';localStorage.setItem('gmapsNo',no?'0':'1')}catch(er){}
  GMI.slice().forEach(gmQuita);Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){if(el._m){try{el._m.remove()}catch(er){}el._m=null;el.innerHTML=''}el._gmFail=false});toast(no?'Mapas de Google prendidos':'Se usa el mapa de antes');render()},true);
 
+//@@capa l58.js
 /* ===================== v7.2 · Lista nueva (10 nov) · parte 1: seguridad y mapas
    37 bloqueo siempre hasta arriba · 18 huella una sola vez · 24 al desbloquear regresa a Inicio/Ruta
    36 Ajustes según el puesto (logo solo admin) · 1/2 Google Maps dentro de fichas y que no se trabe el deslizar ===================== */
@@ -8113,6 +8172,7 @@ setInterval(function(){try{if(GMI.length)gmToques()}catch(e){}},1200);
 /* al apagar los mapas en Ajustes, también se barre todo */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;setTimeout(function(){try{Object.keys(GMTODOS).forEach(function(id){GMTODOS[id]=0});gmBarre()}catch(er){}},300)});
 
+//@@capa l59.js
 /* ===================== v7.2 · parte 2: pantalla
    3 billetes no se cierran · 5 un solo "?" · 6 burbuja ¿Qué sigue? solo cuando no estorba · 7 toda foto se abre en grande
    14 sin pantalla de "Comenzar" · 15 orden al abrir: PIN → avisos urgentes → tutorial · 17 tarjetas urgentes: "Atender" sí lleva ===================== */
@@ -8174,6 +8234,7 @@ var _popH59=popHTML;popHTML=function(){var P=_popPausa;if(P){var casa=S.tab[S.ro
 var _rd59d=render;render=function(){try{if(_popPausa&&S.tab[S.role]!==popCasa())_popPausa.salio=true}catch(e){}return _rd59d.apply(this,arguments)};
 setInterval(function(){try{if(_popPausa&&Date.now()-_popPausa.t>90000&&S.tab[S.role]===popCasa())render()}catch(e){}},15000);
 
+//@@capa l60.js
 /* ===================== v7.2 · parte 3: avisos
    16 ubicación: una tarjeta por celular que se actualiza y se quita sola · sin coordenadas ni [tel:] a la vista
    17 "Atender" lleva a donde se resuelve · 20 "no coincide" abre la tarjeta del faltante y se quita si ya se decidió
@@ -8352,6 +8413,7 @@ function tabBadges(){var nv=document.querySelector('nav.tabs');if(!nv)return;Arr
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('nav.tabs button[data-t]');if(!b||S.role!=='admin'||!b.querySelector('.tbadge'))return;var t=b.dataset.t;if(t==='mas'||t==='inicio')return;
  setTimeout(function(){try{var d=avSinEfecto(function(){var x=avisos().filter(function(y){var d=avDestino(y);return d&&d.t===t})[0];return x?avDestino(x):null});if(d&&d.sel)avFoco(d.sel);else if(d&&d.cli!=null)avFoco('[data-id="'+d.cli+'"]')}catch(er){}},120)},true);
 
+//@@capa l61.js
 /* ===================== v7.2 · parte 4: que los números siempre cuadren
    30 saldo y cajas de cada cliente (y cajas de cada proveedor) con sumas y restas: dos celulares ya no se borran el movimiento
    32 cambio de día aunque la app se quede abierta · 34 centavos redondeados al guardar · 35 doble toque = un solo registro ===================== */
@@ -8408,6 +8470,7 @@ var _dobleU={};
 window.addEventListener('click',function(e){if(!e.isTrusted&&!window.__dobleTest)return;var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!DOBLE_RE.test(a))return;
  var k=a+'|'+JSON.stringify(b.dataset),t=Date.now();if(_dobleU[k]&&t-_dobleU[k]<1000){e.preventDefault();e.stopImmediatePropagation();return}_dobleU[k]=t},true);
 
+//@@capa l62.js
 /* ===================== v7.2 · parte 5: mapas y rutas
    8 "Su recorrido": dónde está ahora, paradas tocables y puntos por hora · 10 ubicación de la bodega editable; el recorrido se acerca a sus puntos
    11 "Ordenar con tráfico" (Google Routes, una llamada) con hora estimada por cliente · 12 la app aprende sus tiempos y pide menos a Google ===================== */
@@ -8537,6 +8600,7 @@ function planVsRealHTML(ch,dia,G){var P=nbRGet(ch,'planDia');if(!P||P.f!==dia||!
  var pro=dif.length?Math.round(dif.reduce(function(s,x){return s+x},0)/dif.length):null;
  return '<details class="card" style="margin-top:8px"><summary><b>Estimado contra real</b><span class="lbl">'+(pro==null?'aún sin llegadas':'en promedio '+(pro>=0?'llegó '+pro+' min después':'llegó '+(-pro)+' min antes'))+'</span></summary>'+rows+'</details>'}
 
+//@@capa l63.js
 /* ===================== v7.2 · parte 6: tarjetas de pantalla completa y lo que faltaba
    13 "No estaba", pedir permiso para fiar y cerrar el mes: por pasos · 23 "Nueva nota" del dueño por pasos y notas agrupadas
    26 "Me voy de vacaciones" por pasos · 31 gastos del chofer (comida solo si se acordó; ticket obligatorio; "Entregó tickets")
@@ -8707,6 +8771,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||t.id!=='res
   if(!o||!o.datos||o.app!=='Ruta Fácil'){toast('Ese archivo no es un respaldo de Ruta Fácil');return}
   wzSeguro('Se reemplaza todo lo de este celular por el respaldo del '+esc(String(o.fecha||'').slice(0,10))+'. Lo que hiciste después se pierde. Si hay nube, también se sube.',function(){var f2=fresh(),d=o.datos;Object.keys(f2).forEach(function(k){if(!(k in d))d[k]=f2[k]});var keep={pinOk:S.pinOk,role:S.role,adminYo:S.adminYo};S=d;Object.keys(keep).forEach(function(k){S[k]=keep[k]});try{guardarYa()}catch(er){}toast('✓ Respaldo restaurado')},'Sí, restaurar')};fr.readAsText(f)},true);
 
+//@@capa l64.js
 /* ===================== v7.2.1 · entrar en otro celular (10 nov)
    - Sin sesión, la app no puede leer si el negocio ya tiene dueño (las reglas solo dejan leer con sesión):
      ya no sale el error rojo "faltan las reglas"; y "Crear la cuenta del negocio" avisa que es solo la primera vez.
@@ -8738,6 +8803,7 @@ var _nfr64=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;
    if(S.role!=='admin'||S.encOn){S.role='admin';S.encOn=false;S.tab.admin='inicio';S.pinOk={};try{pinEntrar()}catch(e){}}}}catch(e){console.error(e)}
  return _nfr64.apply(this,arguments)};
 
+//@@capa l65.js
 /* ===================== v7.3 · diseño nuevo (ideas de Ricardo, 10 nov): Inicio y Bodega primero
    Estilo: tarjetas blancas muy redondeadas, ícono en cuadrito de color, números grandes, fondo gris claro.
    Letra y botones GRANDES (para el dueño). Palabras: "caja" = llena, "tara" = vacía. Todo dentro del APK (sin internet). ===================== */
@@ -8838,6 +8904,7 @@ var _rd65=render;render=function(){var r=_rd65.apply(this,arguments);try{var m=d
 /* el tutorial y las guías apuntan a las tarjetas nuevas */
 try{if(TUT.admin&&TUT.admin[0])TUT.admin[0][0]='[data-x="precio65"], .card.deco-pl, .card.pfix'}catch(e){}
 
+//@@capa l66.js
 /* ===================== v7.4 · diseños de Ricardo (10 nov): 38 tarjeta reparto 1 · 39 datos pendientes · 40 pedidos por WhatsApp
    41 tarjetas paso a paso estilo "Viaje de carga" · 42 pantalla del PIN · 43 tarjetas de vehículos
    Se conservan los datos y palabras de siempre (caja = llena, tara = vacía). Letra y botones grandes. Sin internet. ===================== */
@@ -8943,6 +9010,7 @@ function veh43(v){var inf={};try{inf=vInfo(v)||{}}catch(e){}var fuera=!!v.fuera,
 var _rd66b=render;render=function(){var r=_rd66b.apply(this,arguments);try{if(S.role==='admin'&&S.tab.admin==='vehiculos'){Array.prototype.forEach.call(document.querySelectorAll('main button.vcard[data-act="vehopen"]'),function(bt){if(bt.classList.contains('veh43'))return;var v=(S.veh||[]).filter(function(x){return +x.id===+bt.dataset.id})[0];if(!v)return;
   var pl=bt.querySelector('svg.plate');var html=veh43(v);bt.className='vcard veh43';bt.removeAttribute('style');bt.innerHTML=html;if(pl){pl.classList.add('plate');var an=bt.querySelector('.an');if(an)an.after(pl)}})}}catch(e){console.error('43',e)}return r};
 
+//@@capa l67.js
 /* ===================== v7.4.1 · estabilidad (11 nov)
    44/45 (opción A): los mapas chicos dentro de las pantallas son siempre el mapa de antes; Google Maps solo al abrir "Ver en Google Maps"
           (el mapa de Google "debajo" de la app se desfasaba, no se veía y dejaba la app trabada en algunos celulares)
@@ -8969,6 +9037,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(t==='inicio'){var pa=Array.prototype.filter.call(document.querySelectorAll('main > .card'),function(c){var x=c.querySelector('.tt');return x&&/^Por atender/.test(x.textContent)})[0];if(pa){try{pa.scrollIntoView({block:'start',behavior:'smooth'})}catch(er){}pa.classList.remove('avfoco');void pa.offsetWidth;pa.classList.add('avfoco');setTimeout(function(){pa.classList.remove('avfoco')},3000)}return}
  var x=tabPend48(t);if(!x){toast('Ya no hay pendientes aquí');return}var g=document.createElement('button');g.dataset.act='avgo';g.dataset.k=encodeURIComponent(x);g.style.display='none';(document.querySelector('main')||document.body).appendChild(g);try{g.click()}finally{g.remove()}},true);
 
+//@@capa l68.js
 /* ===================== v7.5 · diseño (11 nov)
    49 Inicio: inventario en dos tarjetas (roatán y macho) con encabezado de color, barra de colores y "Te alcanza para N días" con color
    50 "Por atender": cada aviso en tarjeta de color según urgencia, con ícono, letra grande y flecha ›
@@ -9108,6 +9177,7 @@ tabPend48=function(t){var cas=['inicio','bodega','cargas','clientes','gastos','m
  setTimeout(function(){try{var I=avInfo68(x);toast((L.length>1?(k.i+1)+' de '+L.length+': ':'')+I.tit)}catch(e){}},250);
  return x};
 
+//@@capa l69.js
 /* ===================== v7.5 · el dinero (11 nov) · "que no se pase nada"
    54 al registrar una carga: al final del desglose, "¿Sumar el desgaste del vehículo?" y "¿Se le asignó un sueldo por este viaje?";
       el desglose trae TODOS los gastos renglón por renglón; "Costo del viaje más exacto" a la vista
@@ -9327,6 +9397,7 @@ var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{va
 /* el aviso que sale abajo también dice qué no cuadra y por cuánto */
 var _tq69=toast;toast=function(t){try{var m=/^⚠ Algo no cuadra: ([^.]+)\. Revísalo en Estadísticas\.$/.exec(t||'');if(m){var x=cuentasRevisar().filter(function(y){return !y.ok&&y.n===m[1]})[0];if(x&&x.det)t='⚠ '+x.n+'. '+x.det+'.'}}catch(e){}return _tq69.call(this,t)};
 
+//@@capa l70.js
 /* ===================== v7.5 · (11 nov)
    53 Bodega → "Fruta madura por antigüedad": cada lote se toca (o se desliza) y dice qué pasó: se tiró / se remató / ya no está / estaba buena y salió a la venta
    57 Pedidos por WhatsApp: en qué va cada pedido (recibido → chofer asignado → salió a reparto), "Asignar chofer" ahí mismo y los ya asignados chiquitos
@@ -9444,7 +9515,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* =============== 56 · reportar un problema =============== */
 try{if(NB_SH.indexOf('probs')<0)NB_SH.push('probs')}catch(e){}
 var _err70=[];function errNota70(m){try{m=String(m||'').slice(0,300);if(!m)return;_err70.push(hhmm()+' '+m);if(_err70.length>15)_err70.shift();apErr('error interno',m,dondeTxt70())}catch(e){}}
-window.addEventListener('error',function(e){errNota70((e&&e.message)||'error')});window.addEventListener('unhandledrejection',function(e){errNota70('promesa: '+((e&&e.reason&&e.reason.message)||e.reason||''))});
+window.addEventListener('error',function(e){var w='';try{w=capaDe77(e&&e.lineno)}catch(x){}errNota70(((e&&e.message)||'error')+(w?' ('+w+')':''))});window.addEventListener('unhandledrejection',function(e){errNota70('promesa: '+((e&&e.reason&&e.reason.message)||e.reason||''))});
 (function(){var ce=console.error;console.error=function(){try{var a=Array.prototype.slice.call(arguments).map(function(x){return x&&x.message?x.message:(typeof x==='string'?x:'')}).join(' ');if(a)errNota70(a)}catch(e){}return ce.apply(console,arguments)}})();
 var TABN70={inicio:'Inicio',bodega:'Bodega',cargas:'Cargas',clientes:'Clientes',gastos:'Gastos',mas:'Más',vehiculos:'Vehículos',personal:'Personal',estadisticas:'Estadísticas',bienes:'Bienes',sugerencias:'Sugerencias',ruta:'Ruta',entrega:'Entrega',cierre:'Cierre',cierreadm:'Recibir cierre'};
 function dondeTxt70(){try{var r=S.role,t=S.tab[r],L=[{admin:'Administrador',rep:'Chofer',local:'Venta local',cont:'Contador'}[r]||r,TABN70[t]||t];
@@ -9548,6 +9619,7 @@ var _rd70=render;render=function(){var r=_rd70.apply(this,arguments);try{
   var hp=document.querySelector('[aria-labelledby="hlpT"]');if(hp&&!hp.querySelector('[data-act="rp56"]')){var b2=document.createElement('button');b2.className='btn sec';b2.style.cssText='margin-top:12px;width:100%;min-height:52px';b2.dataset.act='rp56';b2.textContent='🐞 Reportar un problema';hp.appendChild(b2)}
  }catch(e){console.error('ventanas 7.5',e)}return r};
 
+//@@capa l71.js
 /* ===================== v7.6 · (12 nov) prueba de la 7.5 desde cero
    74/82 la revisión de números leía "1,900" (con coma de miles) como vacío y lo ponía en 0 → ahora lee igual que el resto de la app
          y no revisa mientras se llena la primera vez
@@ -9672,6 +9744,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 document.addEventListener('change',function(e){var t=e.target;if(!t||!(t.tagName==='INPUT'||t.tagName==='TEXTAREA')||t.id==='ub68l')return;var v=String(t.value||'').trim();if(!linkMaps71(v)||coordsDe(v))return;var nl=natPl&&natPl();if(!(nl&&nl.linkLargo))return;
  toast('Abriendo el link…');linkAbre71(v).then(function(r){if(!r.c){toast('Ese link no trae el punto. Mejor usa "Buscar el lugar" o pega las coordenadas.');return}t.value=r.c.lat+', '+r.c.lng;t.dispatchEvent(new Event('input',{bubbles:true}));t.dispatchEvent(new Event('change',{bubbles:true}));toast('✓ Ubicación leída del link')},function(){toast('No se pudo abrir el link (¿hay internet?).')})},true);
 
+//@@capa l72.js
 /* ===================== v7.6 · el chofer (12 nov)
    68 sin pedidos ni historial ya no le dice cuánto cargar (las 26 cajas y 80 kg eran de la demo)
    72 cliente nuevo: un solo alta por pasos (nombre, teléfono, ubicación, horario, días, foto) y luego la entrega normal; no se vuelve a pedir nada
@@ -9783,6 +9856,7 @@ function botones72(){}
 /* ---------- dibujo ---------- */
 var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML())}catch(e){console.error('l72',e)}return r};
 
+//@@capa l73.js
 /* ===================== v7.6 · huella y cámara (12 nov)
    67 la huella ya no se ofrece en la pantalla del PIN (ni queda trabada al volver a abrir): se ofrece ya dentro de la app;
       si dices "Ahora no", se vuelve a sugerir en 3 días (dos veces como mucho) y siempre está en Ajustes
@@ -9848,6 +9922,7 @@ document.addEventListener('backbutton',function(){if(document.getElementById('ca
 
 var _rd73=render;render=function(){var r=_rd73.apply(this,arguments);try{bioOfrece73()}catch(e){console.error('l73',e)}return r};
 
+//@@capa l74.js
 /* ===================== v7.6 · vehículos, revisión, datos del cliente, mayoreo y desgaste (12 nov)
    66 aceite: "¿qué marcaba el tablero?" o "¿hace cuántos km?" (antes se confundía) + aviso para corregir el dato que ya está mal
    71 la revisión de la semana (lunes) es paso a paso, a pantalla completa
@@ -9976,6 +10051,7 @@ var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(thi
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */
 var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
 
+//@@capa l75.js
 /* ===================== v7.6 · primera vez por pasos e importar clientes (12 nov)
    87 primera vez: en Bienvenida, Bodega y Dinero una tarjeta por pantalla (con resumen de la bodega y el mayoreo del día);
       vehículos, personal, clientes y proveedores se agregan con su alta por pasos (la misma de la app); en "Listo", "Corregir" por apartado
@@ -10128,6 +10204,7 @@ function im75Btn(){if(!(S.role==='admin'&&!S.encOn))return;var m=document.queryS
 
 var _rd75=render;render=function(){var r=_rd75.apply(this,arguments);try{suPrep75();suListas75();suListo75();im75Btn();ovPon70('im75ov',im75HTML())}catch(e){console.error('l75',e)}return r};
 
+//@@capa l76.js
 /* ===================== v7.6 · TAGs de autopista y facturas (12 nov)
    TAG por vehículo (cualquier proveedor; camioneta o camión): saldo, recargas (salen de la caja pero no son gasto todavía),
      cada cruce es gasto del viaje de ese día, importar cruces del estado de cuenta, aviso de saldo bajo
@@ -10230,6 +10307,7 @@ var _rd76=render;render=function(){var r=_rd76.apply(this,arguments);try{tagFich
 /* lo nuevo también se sube a la nube */
 try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)})}catch(e){}
 
+//@@capa l77.js
 /* ===================== v7.7 · 31 URGENTE: la app nunca se queda atorada ni en blanco (12 nov)
    - si algo se rompe al cargar los datos de la nube, la app se salta esa parte y deja entrar (con el PIN)
    - si algo se rompe al dibujar, cierra lo que estaba abierto y regresa a Inicio; si sigue fallando, enseña
@@ -10237,8 +10315,12 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - una ventana abierta de un viaje que ya terminó se cierra sola ("Ese viaje ya terminó")
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
+/* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4134,"l8.js"],[4145,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4589,"l13.js"],[4735,"l14.js"],[4811,"l15.js"],[4873,"l16.js"],[4976,"l17.js"],[5007,"l18.js"],[5084,"l19.js"],[5154,"l20.js"],[5203,"l21.js"],[5249,"l22.js"],[5453,"l23.js"],[5507,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5698,"l27.js"],[5764,"l28.js"],[5896,"l29.js"],[6022,"l30.js"],[6067,"l31.js"],[6103,"l32.js"],[6197,"l33.js"],[6217,"l34.js"],[6277,"l35.js"],[6337,"l36.js"],[6435,"l37.js"],[6469,"l38.js"],[6557,"l39.js"],[6638,"l40.js"],[6762,"l41.js"],[6846,"l42.js"],[6949,"l43.js"],[7058,"l44.js"],[7159,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7422,"l48.js"],[7477,"l49.js"],[7513,"l50.js"],[7617,"l51.js"],[7627,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8048,"l58.js"],[8175,"l59.js"],[8237,"l60.js"],[8416,"l61.js"],[8473,"l62.js"],[8603,"l63.js"],[8774,"l64.js"],[8806,"l65.js"],[8907,"l66.js"],[9013,"l67.js"],[9040,"l68.js"],[9180,"l69.js"],[9400,"l70.js"],[9622,"l71.js"],[9747,"l72.js"],[9859,"l73.js"],[9925,"l74.js"],[10054,"l75.js"],[10207,"l76.js"],[10310,"l77.js"],[10438,"l78.js"],[10580,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11221,"l83.js"],[11294,"l84.js"],[11407,"l85.js"],[11469,"tema-rutadia.js"],[11563,"l86.js"],[11626,"l87.js"],[11669,"l88.js"],[11723,"l89.js"]];/*@@MAPA*/
+function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
+function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
- var r='';try{r=(S.role||'')+' · '+(S.tab&&S.tab[S.role]||'')}catch(x){}return 'Ruta Fácil · '+donde+' · '+new Date().toLocaleString('es-MX')+'\n'+r+'\n'+m+'\n'+st}
+ var r='';try{r=(S.role||'')+' · '+(S.tab&&S.tab[S.role]||'')}catch(x){}var cp='';try{cp=capasPila77(e&&e.stack)}catch(x){}return 'Ruta Fácil · '+donde+' · '+new Date().toLocaleString('es-MX')+'\n'+r+'\n'+m+(cp?'\nEn: '+cp:'')+'\n'+st}
 function falloAnota77(e,donde){var t=falloTxt77(e,donde);FALLO77.ult=t;FALLO77.n++;try{console.error('fallo77',donde,e)}catch(x){}
  try{localStorage.setItem('pnFallo',t)}catch(x){}try{if(typeof apErr==='function')apErr('fallo',String(e&&e.message||e).slice(0,200),donde)}catch(x){}return t}
 /* pantalla de rescate: no depende de nada de la app */
@@ -10353,6 +10435,7 @@ var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var tx
 if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
   var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
 
+//@@capa l78.js
 /* ===================== v7.8 · lista nueva, puntos 15 al 30 (12 nov)
    25 los apartados que se abren y cierran ya no se cruzan con el redibujo (Moto Z)  · 25b "Aprende la app" lleva a cada cosa
    15 ubicación: la tarjeta del chofer solo si falta o es aproximada; en el alta pasa sola al siguiente paso
@@ -10494,6 +10577,7 @@ var _rd78=render;render=function(){try{vr78Pon()}catch(e){}try{if(pedToma78()){}
 var _e57_78=est57;est57=function(c){var r=_e57_78.apply(this,arguments);try{if(!r.ch&&c&&c.ped){var id=c.ped.asig78;chofsDia57().forEach(function(ch){if(r.ch)return;if(((S.pedAsig||{})[ch.id]||[]).some(function(x){return +x===+c.id})||(id!=null&&+id===+ch.id))r.ch=ch})}}catch(e){}return r};
 var _pA78=p57Asigna;p57Asigna=function(c,id){var r=_pA78.apply(this,arguments);try{if(c&&c.ped)c.ped.asig78=+id}catch(e){}return r};
 
+//@@capa l79.js
 /* ===================== v7.8 · puntos 17, 26 y 29 (12 nov)
    17 historial de revisiones del vehículo; al cierre el chofer dice si lo entrega en las mismas condiciones
    26 pedidos por WhatsApp, llamada o en persona; precio especial solo para ese pedido (el chofer pide permiso: 5 minutos)
@@ -10603,6 +10687,7 @@ function peRep79(){if(S.role!=='rep')return;var m=document.querySelector('main')
 
 var _rd79=render;render=function(){try{carg79()}catch(e){}var r=_rd79.apply(this,arguments);try{ev79Pon();revFicha79();pw79();pedTit79();rp79();peAdm79();peRep79()}catch(e){console.error('l79',e)}return r};
 
+//@@capa l80.js
 /* ===================== v8.0 · puntos 32 al 36 (14 nov)
    35 la ruta de hoy: cada ruta sabe de qué día es; al cambiar de día se arma la nueva de cada chofer (abra el celular que abra);
       si falta el cierre de ayer, el chofer ve "manda tu cierre de ayer" y al mandarlo se le arma sola la de hoy; el admin puede liberarla
@@ -10618,33 +10703,19 @@ function del80(f){return f===ayer80()?'de ayer':'del '+fmtF(f)}
 
 /* ---------- 35 · cada ruta sabe de qué día es ---------- */
 try{if(AR_K.indexOf('rutaDia80')<0)AR_K.push('rutaDia80')}catch(e){}
-var _chN80=chNuevo;chNuevo=function(id){var o=_chN80.apply(this,arguments);try{o.rutaDia80=iso(TODAY)}catch(e){}return o};
+/* → movido (tema-rutadia.js) */
 function cliHoy80(id){var d=TODAY.getDay();return (S.cli||[]).filter(function(c){return !c.oculto&&+c.chofer===+id&&c.dias&&c.dias.indexOf(d)>-1})}
 /* al cambiar de día: las rutas sin fecha quedan con la del día que se cierra, y a cada chofer cerrado se le arma la nueva */
-var _cdd80=cambioDeDia;cambioDeDia=function(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return _cdd80.apply(this,arguments);var antes=Object.keys(S.chSt||{});
- try{if(!S.rutaDia80)S.rutaDia80=viejo;Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&!o.rutaDia80)o.rutaDia80=viejo})}catch(e){}
- var r=_cdd80.apply(this,arguments);
- try{if(S.role==='admin'||S.role==='cont'){S.chSt=S.chSt||{};(S.choferes||[]).forEach(function(c){var id=+c.id;if(c.baja||!esCh(c)||id===+S.chofHoy)return;if(!S.chSt[id]&&(antes.indexOf(String(id))>-1||cliHoy80(id).length))S.chSt[id]=chNuevo(id)})}}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
 /* el celular del chofer revisa si su ruta es vieja */
-function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;var hoy=iso(TODAY);if(S.rutaDia80)return S.rutaDia80!==hoy?S.rutaDia80:null;
- /* rutas de antes (sin fecha): vieja si ya mandó el cierre y no trae a ninguno de sus clientes de hoy */
- var H=cliHoy80(S.chofHoy).map(function(c){return c.id});if(!H.length)return null;var st=S.stops||[];if(st.some(function(s){return H.indexOf(+s.c)>-1}))return null;return 'antes'}
-function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),env=!!(S.cierre&&S.cierre.sent);if(!env&&!rutaVacia(o)){if(v==='antes')return false;S.dia80=v;return false}
- var f=v==='antes'?ayer80():v;S.rutasHist=S.rutasHist||[];if(!rutaVacia(o)&&!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
- arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var n=(S.stops||[]).length;setTimeout(function(){try{toast(n?'Listo: ya puedes empezar tu ruta de hoy ('+n+' cliente'+(n===1?'':'s')+')':'Tu ruta de hoy está lista')}catch(e){}},80);return true}
-function dia80HTML(){if(S.role!=='rep'||!S.dia80||S.cierre&&S.cierre.sent||S.tab.rep==='cierre')return '';var n=cliHoy80(S.chofHoy).length;
- return '<div id="dia80" role="dialog" aria-label="Cierre pendiente"><div class="w"><div style="font-size:44px;text-align:center">📋</div><h1 style="font-size:23px;text-align:center">No mandaste tu cierre '+esc(del80(S.dia80))+'</h1><p style="font-size:17px;text-align:center">Para empezar tu ruta de hoy, primero mándalo.</p>'
-  +'<button class="btn big" style="width:100%;min-height:62px;font-size:19px" data-act="dia80c">Mandar mi cierre '+esc(del80(S.dia80))+'</button>'+(n?'<div class="card note" style="margin-top:14px;text-align:center;font-size:17px">Hoy te tocan <b>'+n+' cliente'+(n===1?'':'s')+'</b>. En cuanto mandes el cierre te sale tu ruta.</div>':'')+'</div></div>'}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80c"]');if(!b)return;e.stopImmediatePropagation();S.tab.rep='cierre';S.cierreP=0;render();window.scrollTo(0,0)},true);
 /* el administrador: liberar la ruta de hoy de un chofer que no mandó su cierre */
-function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var hoy=iso(TODAY),L=[];
- Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o))L.push([+id,o.rutaDia80])});if(!L.length)return;
- var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=L.map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x[0]))+' no ha mandado su cierre '+esc(del80(x[1]))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x[0]+'">Recordarle</button><button class="btn" style="flex:1" data-act="dia80l" data-id="'+x[0]+'">Liberar su ruta de hoy</button></div></div>'}).join('');m.prepend(d)}
-document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80r"],[data-act="dia80l"],[data-act="dia80ls"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,o=(S.chSt||{})[id];if(!o)return;
- if(b.dataset.act==='dia80r'){S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['Manda tu cierre '+del80(o.rutaDia80)+' para que te salga tu ruta de hoy.']);toast('Se le avisó a '+chofN(id));render();return}
- if(b.dataset.act==='dia80l'){window._d80=id;abrirModal('¿Liberar su ruta de hoy?','A '+esc(chofN(id))+' se le arma ya su ruta de hoy. Lo '+esc(del80(o.rutaDia80))+' queda pendiente para cuadrarlo con él.',[['Sí, liberarla','dia80ls',' data-id="'+id+'"']]);return}
- S.modal=null;S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});S.chSt[id]=chNuevo(id);
- S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de ayer lo cuadras con él.']);toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy');render()},true);
+/* → movido (tema-rutadia.js) */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80r"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,o=(S.chSt||{})[id];if(!o)return;
+ if(b.dataset.act==='dia80r'){S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['Manda tu cierre '+del80(o.rutaDia80)+' para que te salga tu ruta de hoy.']);toast('Se le avisó a '+chofN(id));render();return}},true);
 
 /* ---------- 36 · la copia de la nube dañada se repara sola ---------- */
 var REP80=/Failed to read large IndexedDB value|INTERNAL ASSERTION FAILED|IndexedDB.*(corrupt|failed)|internal error opening backing store/i,_rep80=false;
@@ -10740,6 +10811,7 @@ var CL80={t:0};function clima80(){if(MODO!=='vacio'||Date.now()-CL80.t<30*60000)
 bodNomSug78=function(dir){var p=String(dir||'').split(',').map(function(s){return s.trim()}).filter(Boolean);while(p.length>1&&(/^(México|Mexico|MX)$/i.test(p[p.length-1])||edoDe80(p[p.length-1])))p.pop();if(!p.length)return '';
  var z=p.length>=3?p[p.length-2]:p[p.length-1];z=z.replace(/^\d{5}\s*/,'').replace(/^(Col\.?|Colonia|Fracc\.?|Fraccionamiento)\s*/i,'').trim();return z?'Bodega '+z:''};
 
+//@@capa l81.js
 /* ===================== v8.1 · 39 · RUTAS del administrador (14 nov)
    Hoy / Mañana: los clientes de cada chofer; marcar varios → "Pasar a…", "Todos a un chofer"; "Hoy no";
    cambio solo ese día o para siempre; le llega al chofer al momento (si ya salió, te avisa "ya va en camino");
@@ -10771,10 +10843,8 @@ function pendDe81(r){if(!r)return [];var trab=r.salida&&r.salida.ok||(r.log||[])
  return L.filter(function(x,i){return L.indexOf(x)===i&&cl(+x)&&!cl(+x).oculto})}
 function rutaObj81(id){return +S.chofHoy===+id?S:(S.chSt||{})[id]}
 var PEND81={};
-var _chN81=chNuevo;chNuevo=function(id){var o=_chN81.apply(this,arguments);try{var f=hoy81(),r=rutaObj81(id),pend=r&&r.rutaDia80&&r.rutaDia80!==f?pendDe81(r):(PEND81[id]||[]);delete PEND81[id];
- o.stops=plan81(id,f,pend);if(o.cierre&&o.cierre.odoIni!=null&&typeof rutaKmEstDe==='function')o.cierre.odo=num(o.cierre.odoIni)+rutaKmEstDe(o.stops)}catch(e){console.error('l81 plan',e)}return o};
-var _cdd81=cambioDeDia;cambioDeDia=function(viejo){try{if(viejo&&viejo!==hoy81()){PEND81={};Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==hoy81())PEND81[id]=pendDe81(r)})}}catch(e){}var r=_cdd81.apply(this,arguments);
- try{var lim=iso(new Date(TODAY.getTime()-3*864e5));['rutaOv81','rq81'].forEach(function(k){var o=S[k];if(o)Object.keys(o).forEach(function(f){if(f<lim)delete o[f]})})}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 /* los pedidos "para mañana" también quedan con su chofer */
 if(typeof pedAsigna==='function'){var _pa81=pedAsigna;pedAsigna=function(c,chId,cuando){var r=_pa81.apply(this,arguments);try{if(c&&cuando&&cuando!=='hoy'&&chId!=null)ovPon81(man81(),c.id,chId)}catch(e){}return r}}
 
@@ -10894,6 +10964,7 @@ var _rtH81=rt81HTML;rt81HTML=function(){var h=_rtH81.apply(this,arguments);if(!h
 document.addEventListener('toggle',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.act==='rt81ay'&&S.rt81)S.rt81.ay=t.open},true);
 var _rd81b=render;render=function(){var r=_rd81b.apply(this,arguments);try{help81();aprende81();tutNuevo81()}catch(e){}return r};
 
+//@@capa l82.js
 /* ===================== v8.2 · (14 nov) lo que encontró Copilot + Ricardo
    40 ESTADÍSTICAS DE VERDAD: en la app real nunca se llenaban (solo la demo tenía días); ahora salen de las rutas de cada día,
       la venta local, los gastos, las mermas y las cargas. Rankings de clientes con lo que de verdad compraron.
@@ -10939,9 +11010,8 @@ var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.appl
  Object.keys(HIST.reduce(function(o,r){o[r.d]=1;return o},{})).forEach(function(d){if(d<d0)return;rutasDia82(d).forEach(function(r){(r.log||[]).forEach(function(l){if(l&&!l.anul)T[l.c]=(T[l.c]||0)+num(l.total)})})});
  S.cli.forEach(function(c){keep[c.id]=c.c30;c.c30=Math.round(T[c.id]||0)});try{return _rk82.apply(this,arguments)}finally{S.cli.forEach(function(c){c.c30=keep[c.id]})}};
 /* el día archivado guarda también lo que se recibió y se contó (para "¿Cuadran las cuentas?") */
-var _cdd82=cambioDeDia;cambioDeDia=function(viejo){var snap={};try{if(viejo&&viejo!==iso(TODAY)){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r)snap[id]={reg:r.cierreReg,recep:r.recep}});if(S.chofHoy!=null)snap[S.chofHoy]={reg:S.cierreReg,recep:S.recep}}}catch(e){}
- var r=_cdd82.apply(this,arguments);try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}return r};
-if(typeof rutaRenueva80==='function'){var _rr82=rutaRenueva80;rutaRenueva80=function(){var s={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length,r=_rr82.apply(this,arguments);try{(S.rutasHist||[]).slice(n).forEach(function(e){if(e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}return r}}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 
 /* ---------- 41 · retiro del dueño ---------- */
 var _fm82=fijoMes;fijoMes=function(){var keep=S.fijos;try{S.fijos=(keep||[]).filter(function(f){return !f.retiro});return _fm82.apply(this,arguments)}finally{S.fijos=keep}};
@@ -11089,7 +11159,7 @@ function cliHist82(){var k=(S.rutasHist||[]).length+'|'+(S.log||[]).length+'|'+i
  (S.rutasHist||[]).forEach(function(e){if(e&&e.f)pon(e.f,e.log)});rutasDia82(iso(TODAY)).forEach(function(r){if(!r.arch)pon(iso(TODAY),r.log)});cliHist82.k=k;cliHist82.m=M;return M}
 function cliSync82(){if(MODO!=='vacio')return;var M=cliHist82();(S.cli||[]).forEach(function(c){var o=M[c.id];if(!o)return;if(o.ult&&(!c.ult||o.ult>c.ult))c.ult=o.ult;if(o.pag>num(c.compras))c.compras=o.pag;if(o.mesR>num(c.mesR))c.mesR=o.mesR;if(o.mesM>num(c.mesM))c.mesM=r2(o.mesM)})}
 /* el contador "este mes" de clientes se reinicia al cambiar de mes (nadie lo hacía) */
-var _cddM82=cambioDeDia;cambioDeDia=function(viejo){var r=_cddM82.apply(this,arguments);try{if(viejo&&String(viejo).slice(0,7)!==iso(TODAY).slice(0,7)){(S.cli||[]).forEach(function(c){c.mesR=0;c.mesM=0});S.choferes.forEach(function(c){if(c.mes)c.mes={ven:0,R:0,M:0,cob:0,cred:0}})}}catch(e){}return r};
+/* → movido (tema-rutadia.js) */
 /* 52 · textos de la demo que llegaban a la app real */
 var _cf82=typeof compFotos==='function'?compFotos:null;if(_cf82)compFotos=function(){var h=_cf82.apply(this,arguments);return MODO==='vacio'?String(h).replace('Sin fotos del vehículo en esta demo.','Este día no se tomaron las fotos del vehículo.'):h};
 function txtDemo82(){if(MODO!=='vacio')return;var m=document.querySelector('main');if(!m)return;var w=document.createTreeWalker(m,NodeFilter.SHOW_TEXT),t,R=[['Las fotos y los datos son de ejemplo. En la versión APK se guardan cifrados y solo los ve el administrador.','Las fotos y los datos del personal solo los ve el administrador.'],['No hay datos en esa fecha. Hay información hasta ayer.','No hay movimientos en esa fecha.'],['El historial de ejemplo es solo de ruta; desde hoy la venta local se guarda aparte.','La venta en bodega se suma aparte de la de ruta.'],[', hasta ayer','']];
@@ -11148,6 +11218,7 @@ var _pI82=popItems;popItems=function(){var L=_pI82.apply(this,arguments);try{if(
 var _cu82=cuadre82;cuadre82=function(d){var F=_cu82.apply(this,arguments);try{if(sinMov82(d))F.forEach(function(o){o.e='ok';o.L=['Día sin movimientos.']})}catch(e){}return F};
 var _rdY82=render;render=function(){try{pedQVence82()}catch(e){}var r=_rdY82.apply(this,arguments);try{pedQAdm82();pedQRep82();sueltosPon82();sueltosTxt82()}catch(e){console.error('l82b',e)}return r};
 
+//@@capa l83.js
 /* ===================== v8.3 · Rutas más fácil (16 nov, Ricardo: "es muy confuso, se traba, a veces marca dos veces")
    - Marcas clientes y abajo salen DIRECTO los choferes: un toque y listo (solo hoy, o "para siempre" con un interruptor).
    - "Deshacer" unos segundos después de cada cambio.
@@ -11216,11 +11287,11 @@ var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops
 var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
 var _rdC83=render;render=function(){try{if(S.role==='rep'&&S.tab.rep==='cierre'&&S.dia80&&S.salida&&!S.salida.ok&&(S.log||[]).length&&!(S.cierre&&S.cierre.sent)){S.salida.ok=true;S.salida.tarde83=1}}catch(e){}return _rdC83.apply(this,arguments)};
 del80=function(f){if(f===ayer80())return 'de ayer';var t=String(fmtF(f)).replace(/^(Hoy|Ayer|Antier|Antes de ayer)\s+/i,'');return 'del '+t};
-var _d80H83=dia80HTML;dia80HTML=function(){var h=_d80H83.apply(this,arguments);if(!h)return h;var ya=(S.libPide83||'')===iso(TODAY);
- return h.replace(/<\/div><\/div>$/,'<div style="margin-top:22px;text-align:center"><div class="lbl" style="font-size:15px">¿No puedes mandarlo (no te deja, o ya no tienes los datos)?</div>'+(ya?'<div style="font-weight:800;margin-top:8px">✓ Ya se le pidió al administrador. En cuanto la libere, te sale tu ruta.</div>':'<button class="btn sec" style="width:100%;min-height:54px;margin-top:8px" data-act="lib83">Pedir que liberen mi ruta de hoy</button>')+'</div></div></div>')};
+/* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib83"]');if(!b)return;e.stopImmediatePropagation();S.libPide83=iso(TODAY);(S.avPrecio=S.avPrecio||[]).push('URGENTE: '+chofN(S.chofHoy)+' no puede mandar su cierre '+del80(S.dia80||ayer80())+' y no le sale su ruta de hoy. En Inicio toca "Liberar su ruta de hoy".');
  try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Pidió que liberen su ruta de hoy (no pudo mandar su cierre '+del80(S.dia80||ayer80())+')'})}catch(er){}toast('Listo: se le avisó al administrador');render()},true);
 
+//@@capa l84.js
 /* ===================== v8.4 · Rutas con el diseño de Ricardo (16 nov), letra grande, todo dentro de la app (sin internet)
    Encabezado compacto (Rutas · Hoy/Mañana · ? · ×), avisos en franja, resumen con "Asignar todos" y "Mapa", tarjetas de chofer
    con iniciales y color que se abren y cierran, buscador dentro de cada lista, renglón marcado en verde, y panel de abajo
@@ -11333,6 +11404,7 @@ setInterval(function(){try{if(S.rt81&&UNDO83&&Date.now()-UNDO83.t>=9000&&documen
 /* el interruptor "Solo hoy / Para siempre" (de la 8.3) ahora dibuja este panel */
 barPon83=function(){pon84()};
 
+//@@capa l85.js
 /* ===================== v8.5 · puntos 64–66 (16 nov) · 63 ya quedó en la 8.4
    64 El administrador NO reparte salvo que lo diga: interruptor "¿Repartes hoy?" en Inicio (apagado; se puede prender más tarde;
       al otro día se apaga solo). Apagado: no sale en Rutas, no se le arma ruta, no se le asigna nada (importar, pedidos, "Asignar todos").
@@ -11350,7 +11422,7 @@ if(typeof chofsDia57==='function'){var _cd85=chofsDia57;chofsDia57=function(){va
 /* importar: con "Chofer" vacío ya no se los da al administrador (queda al final de la lista) */
 if(typeof choferes75==='function'){var _c75=choferes75;choferes75=function(modo){var L=_c75.apply(this,arguments);if(modo==='su')return L;return L.filter(function(x){return +x.ref!==ADM85}).concat(L.filter(function(x){return +x.ref===ADM85}))}}
 /* la ruta del administrador empieza vacía (él se pasa clientes en Rutas) */
-var _chN85=chNuevo;chNuevo=function(id){var o=_chN85.apply(this,arguments);try{if(MODO==='vacio'&&+id===ADM85)o.stops=[]}catch(e){}return o};
+/* → movido (tema-rutadia.js) */
 /* "sin chofer": los clientes del administrador cuando no reparte */
 var _sc85=sinCh81;sinCh81=function(f){var L=_sc85.apply(this,arguments);if(MODO!=='vacio'||admRep85())return L;var d=dDe81(f),ya={};L.forEach(function(c){ya[c.id]=1});
  S.cli.forEach(function(c){if(c.oculto||ya[c.id]||+c.chofer!==ADM85)return;if(ovDe81(f,c.id)!==undefined)return;if(c.dias&&c.dias.indexOf(d)>-1||c.extra===f)L.push(c)});return L};
@@ -11387,13 +11459,108 @@ var _pd85=pendDe81;
 pendDe81=function(r){var L=_pd85.apply(this,arguments);if(MODO!=='vacio')return L;return L.filter(function(cid){var c=cl(+cid);if(!c)return false;var k=dHasta85(c),f=c.falla85&&num(c.falla85.n)||0;return k===0||k>=2||f>=2})};
 function fallas85(r,f0){try{if(!r||!f0)return;_pd85(r).forEach(function(cid){var c=cl(+cid);if(!c)return;var o=c.falla85||{n:0,f:''};if(o.f===f0)return;c.falla85={n:num(o.n)+1,f:f0};var k=dHasta85(c);
   if(k>=2||c.falla85.n>=2){var t=c.n+' se está quedando sin visita ('+(c.falla85.n>=2?'falló '+c.falla85.n+' visitas seguidas':'su siguiente visita es en '+(k>=99?'(sin días)':k+' días'))+'): va en la ruta de hoy.';if((S.avPrecio||[]).indexOf(t)<0)(S.avPrecio=S.avPrecio||[]).push(t)}})}catch(e){}}
-var _cdd85=cambioDeDia;cambioDeDia=function(viejo){try{if(viejo&&viejo!==iso(TODAY)){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==iso(TODAY))fallas85(r,r.rutaDia80||viejo)});if(S.chofHoy!=null&&S.rutaDia80!==iso(TODAY))fallas85(S,S.rutaDia80||viejo)}}catch(e){}return _cdd85.apply(this,arguments)};
-if(typeof rutaRenueva80==='function'){var _rr85=rutaRenueva80;rutaRenueva80=function(){try{var v=rutaVieja80();if(v)fallas85(S,v==='antes'?ayer80():v)}catch(e){}return _rr85.apply(this,arguments)}}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 /* al entregarle, se le borran las fallas */
 function fallaLimpia85(){(S.cli||[]).forEach(function(c){if(c.falla85&&c.ult&&c.ult>=c.falla85.f)c.falla85=null})}
 
 var _rd85=render;render=function(){try{mig85();fallaLimpia85()}catch(e){console.error('l85',e)}var r=_rd85.apply(this,arguments);try{admSw85()}catch(e){console.error('l85b',e)}return r};
 
+//@@capa tema-rutadia.js
+/* ===================== TEMA · La ruta del día (aplanado el 17 nov) =====================
+   Antes estaba repartido en envolturas encadenadas en l80, l81, l82, l83, l85, l86 y l87. Aquí está todo junto, en orden,
+   y hace exactamente lo mismo. Se arma justo después de l85 (en build.sh).
+   Si se cambia algo de la ruta del día, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - chNuevo: la ruta nueva de un chofer (fecha de hoy, sus clientes de hoy + pendientes, el admin no reparte).
+   - cambioDeDia: lo que pasa cuando el celular abre en un día nuevo.
+   - rutaVieja80 / rutaRenueva80: el celular del chofer cambia solo a la ruta de hoy.
+   - dia80HTML: la pantalla "No mandaste tu cierre" (solo si salió a ruta).
+   - porLib86 / dia80Adm: el administrador ve qué rutas puede liberar.
+   ============================================================================================ */
+
+/* ---------- la ruta nueva de un chofer ---------- */
+var _chNBase=chNuevo;
+chNuevo=function(id){var o=_chNBase.apply(this,arguments);
+ /* 35 · cada ruta sabe de qué día es */
+ try{o.rutaDia80=iso(TODAY)}catch(e){}
+ /* 81 · los clientes de hoy (rutas del admin) + los que quedaron pendientes de la ruta anterior */
+ try{var f=hoy81(),r=rutaObj81(id),pend=r&&r.rutaDia80&&r.rutaDia80!==f?pendDe81(r):(PEND81[id]||[]);delete PEND81[id];
+  o.stops=plan81(id,f,pend);if(o.cierre&&o.cierre.odoIni!=null&&typeof rutaKmEstDe==='function')o.cierre.odo=num(o.cierre.odoIni)+rutaKmEstDe(o.stops)}catch(e){console.error('l81 plan',e)}
+ /* 85 · el administrador no reparte */
+ try{if(MODO==='vacio'&&+id===ADM85)o.stops=[]}catch(e){}
+ return o};
+
+/* ---------- el celular abre en un día nuevo ---------- */
+var _cddBase=cambioDeDia;   /* l21 (archiva las rutas) + l28 (espera a la nube) */
+cambioDeDia=function(viejo){var hoy=iso(TODAY),nuevo=!!(viejo&&viejo!==hoy);
+ /* 85 · los clientes que no se visitaron quedan anotados */
+ try{if(nuevo){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==hoy)fallas85(r,r.rutaDia80||viejo)});if(S.chofHoy!=null&&S.rutaDia80!==hoy)fallas85(S,S.rutaDia80||viejo)}}catch(e){}
+ /* 82 · se guarda cómo se recibió cada cierre, para el historial */
+ var snap={};try{if(nuevo){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r)snap[id]={reg:r.cierreReg,recep:r.recep}});if(S.chofHoy!=null)snap[S.chofHoy]={reg:S.cierreReg,recep:S.recep}}}catch(e){}
+ /* 81 · los pendientes de cada ruta pasan a la de hoy */
+ try{if(nuevo){PEND81={};Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==hoy)PEND81[id]=pendDe81(r)})}}catch(e){}
+ var r;
+ if(!nuevo)r=_cddBase.apply(this,arguments);
+ else{var antes=Object.keys(S.chSt||{});
+  /* 35 · las rutas sin fecha quedan con la del día que se cierra */
+  try{if(!S.rutaDia80)S.rutaDia80=viejo;Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&!o.rutaDia80)o.rutaDia80=viejo})}catch(e){}
+  r=_cddBase.apply(this,arguments);
+  /* 35 · el admin: cada chofer con clientes hoy tiene su ruta nueva */
+  try{if(S.role==='admin'||S.role==='cont'){S.chSt=S.chSt||{};(S.choferes||[]).forEach(function(c){var id=+c.id;if(c.baja||!esCh(c)||id===+S.chofHoy)return;if(!S.chSt[id]&&(antes.indexOf(String(id))>-1||cliHoy80(id).length))S.chSt[id]=chNuevo(id)})}}catch(e){}}
+ /* 81 · se limpian los cambios de ruta de hace más de 3 días */
+ try{var lim=iso(new Date(TODAY.getTime()-3*864e5));['rutaOv81','rq81'].forEach(function(k){var o=S[k];if(o)Object.keys(o).forEach(function(f){if(f<lim)delete o[f]})})}catch(e){}
+ /* 82 · al historial se le pega cómo se recibió el cierre */
+ try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}
+ /* 82 · mes nuevo: los contadores del mes empiezan en 0 */
+ try{if(viejo&&String(viejo).slice(0,7)!==hoy.slice(0,7)){(S.cli||[]).forEach(function(c){c.mesR=0;c.mesM=0});S.choferes.forEach(function(c){if(c.mes)c.mes={ven:0,R:0,M:0,cob:0,cred:0}})}}catch(e){}
+ return r};
+
+/* ---------- el celular del chofer cambia solo a la ruta de hoy ---------- */
+function rutaVieja80(){if(S.role!=='rep'||S.chofHoy==null||S.arOn)return null;var hoy=iso(TODAY);if(S.rutaDia80)return S.rutaDia80!==hoy?S.rutaDia80:null;
+ /* rutas de antes (sin fecha): vieja si ya mandó el cierre y no trae a ninguno de sus clientes de hoy */
+ var H=cliHoy80(S.chofHoy).map(function(c){return c.id});if(!H.length)return null;var st=S.stops||[];if(st.some(function(s){return H.indexOf(+s.c)>-1}))return null;return 'antes'}
+function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),env=!!(o.cierre&&o.cierre.sent),f=v==='antes'?ayer80():v;
+ /* 71 · si NO salió a ruta (no tocó "Iniciar"), no se bloquea: lo de antes se archiva y al admin le llega "cuádralo con él" */
+ var sinSalir=!env&&!salio87(o),rv=rutaVacia;
+ if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
+   (S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' tenía '+o.log.length+' entrega'+(o.log.length===1?'':'s')+' '+del80(f)+' sin haber iniciado ruta ni mandado cierre: cuádralo con él.')}}catch(e){}
+  rutaVacia=function(x){return !salio87(x)}}   /* mientras se renueva, "vacía" = "no salió" */
+ try{
+  /* 85 · los clientes que no se visitaron quedan anotados */
+  try{fallas85(S,f)}catch(e){}
+  var rec={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length;
+  /* salió y no ha mandado el cierre: se bloquea con la pantalla "No mandaste tu cierre" */
+  if(!env&&!rutaVacia(o)){if(v!=='antes')S.dia80=v;return false}
+  S.rutasHist=S.rutasHist||[];if(!rutaVacia(o)&&!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
+  /* 82 · al historial se le pega cómo se recibió el cierre */
+  try{S.rutasHist.slice(n).forEach(function(e){if(e.recep82===undefined){e.cierreReg82=rec.reg||null;e.recep82=rec.recep||null}})}catch(e){}
+  arLoad(chNuevo(+S.chofHoy));S.dia80=null;S.tab.rep='ruta';var k=(S.stops||[]).length;setTimeout(function(){try{toast(k?'Listo: ya puedes empezar tu ruta de hoy ('+k+' cliente'+(k===1?'':'s')+')':'Tu ruta de hoy está lista')}catch(e){}},80);return true
+ }finally{if(sinSalir)rutaVacia=rv}}
+
+/* ---------- la pantalla del chofer "No mandaste tu cierre" ---------- */
+function dia80HTML(){
+ /* 71 · si no salió a ruta, no se bloquea */
+ if(S.role==='rep'&&S.dia80&&!salio87(S)&&!(S.cierre&&S.cierre.sent)){S.dia80=null;setTimeout(function(){try{render()}catch(e){}},0);return ''}
+ if(S.role!=='rep'||!S.dia80||S.cierre&&S.cierre.sent||S.tab.rep==='cierre')return '';var n=cliHoy80(S.chofHoy).length,ya=(S.libPide83||'')===iso(TODAY);
+ return '<div id="dia80" role="dialog" aria-label="Cierre pendiente"><div class="w"><div style="font-size:44px;text-align:center">📋</div><h1 style="font-size:23px;text-align:center">No mandaste tu cierre '+esc(del80(S.dia80))+'</h1><p style="font-size:17px;text-align:center">Para empezar tu ruta de hoy, primero mándalo.</p>'
+  +'<button class="btn big" style="width:100%;min-height:62px;font-size:19px" data-act="dia80c">Mandar mi cierre '+esc(del80(S.dia80))+'</button>'+(n?'<div class="card note" style="margin-top:14px;text-align:center;font-size:17px">Hoy te tocan <b>'+n+' cliente'+(n===1?'':'s')+'</b>. En cuanto mandes el cierre te sale tu ruta.</div>':'')
+  /* 83 · "Pedir que liberen mi ruta de hoy" */
+  +'<div style="margin-top:22px;text-align:center"><div class="lbl" style="font-size:15px">¿No puedes mandarlo (no te deja, o ya no tienes los datos)?</div>'+(ya?'<div style="font-weight:800;margin-top:8px">✓ Ya se le pidió al administrador. En cuanto la libere, te sale tu ruta.</div>':'<button class="btn sec" style="width:100%;min-height:54px;margin-top:8px" data-act="lib83">Pedir que liberen mi ruta de hoy</button>')+'</div>'
+  +'</div></div>'}
+
+/* ---------- el administrador: rutas que puede liberar ---------- */
+/* las de otros choferes Y la que tiene cargada en su celular; solo si el chofer SALIÓ y no mandó su cierre */
+function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o)&&salio87(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
+ if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!(S.cierre&&S.cierre.sent)&&salio87(S)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
+/* la tarjeta roja en Inicio (pide que la liberen / no ha mandado su cierre) */
+function dia80Adm(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
+ var pide=Object.keys(P).filter(function(id){return P[id]&&P[id].f===hoy});if(!L.length&&!pide.length)return;var ya={};
+ var h=pide.map(function(id){ya[id]=1;var en=L.filter(function(x){return x.id===+id})[0];return '<div class="card sos86" style="padding:12px 14px"><b style="font-size:18px">🆘 '+esc(chofN(+id))+' pide que liberes su ruta</b><div class="lbl" style="font-size:15px">No puede mandar su cierre'+(P[id].de?' '+esc(del80(P[id].de)):'')+' y no le sale su ruta de hoy.</div>'+(en?'<button class="btn" style="margin-top:8px;min-height:54px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button>':'<div class="lbl" style="margin-top:6px">✓ Su ruta de hoy ya está lista. En cuanto su celular tenga señal le sale.</div>')+'</div>'}).join('');
+ h+=L.filter(function(x){return !ya[x.id]}).map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x.id))+' no ha mandado su cierre '+esc(del80(x.f))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x.id+'">Recordarle</button><button class="btn" style="flex:1" data-act="lib86" data-id="'+x.id+'">Liberar su ruta de hoy</button></div></div>'}).join('');
+ var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=h;m.prepend(d)}
+
+//@@capa l86.js
 /* ===================== v8.6 · 67–70 (17 nov) lo que encontró Ricardo con la 1.0.35
    67 El chofer seguía trabado en "No mandaste tu cierre del sábado":
       - la pantalla se quedaba aunque la ruta ya fuera la de hoy (p. ej. después de liberarla): ahora se quita sola;
@@ -11415,18 +11582,13 @@ var _rdA86=render;render=function(){try{libSync86()}catch(e){}try{if(S.dia80&&S.
 /* el chofer pide que lo liberen: también queda en un dato propio (para la tarjeta roja del admin) */
 function libSync86(){if(S.role!=='rep'||S.chofHoy==null||(S.libPide83||'')!==iso(TODAY))return;var P=S.libPide86=S.libPide86||{},o=P[S.chofHoy];if(o&&o.f===iso(TODAY))return;P[S.chofHoy]={f:iso(TODAY),de:S.dia80||S.rutaDia80||''}}
 /* rutas que el admin puede liberar: las de otros choferes Y la que tiene cargada en su celular */
-function porLib86(){var hoy=iso(TODAY),L=[];Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(+id===+S.chofHoy)return;if(o&&o.rutaDia80&&o.rutaDia80!==hoy&&!(o.cierre&&o.cierre.sent)&&!rutaVacia(o))L.push({id:+id,f:o.rutaDia80,propia:false})});
- if(S.chofHoy!=null&&!S.arOn&&!esAdm({id:+S.chofHoy})&&S.rutaDia80&&S.rutaDia80!==hoy&&!(S.cierre&&S.cierre.sent)){var pk=arPack();if(!rutaVacia(pk))L.push({id:+S.chofHoy,f:S.rutaDia80,propia:true})}return L}
+/* → movido (tema-rutadia.js) */
 function libera86(id){var hoy=iso(TODAY),propia=+id===+S.chofHoy&&!S.arOn,o=propia?arPack():(S.chSt||{})[id];if(!o)return;S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:+id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});
  if(propia)arLoad(chNuevo(+id));else S.chSt[id]=chNuevo(+id);
  S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de antes lo cuadras con él.']);
  if(S.libPide86&&S.libPide86[id])S.libPide86[id]=null;toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy')}
 /* la tarjeta del admin (reemplaza a la de la 8.0, que no veía la ruta cargada en su celular) */
-dia80Adm=function(){if(!(S.role==='admin'&&!S.encOn)||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="dia80a"]'))return;var L=porLib86(),P=S.libPide86||{},hoy=iso(TODAY);
- var pide=Object.keys(P).filter(function(id){return P[id]&&P[id].f===hoy});if(!L.length&&!pide.length)return;var ya={};
- var h=pide.map(function(id){ya[id]=1;var en=L.filter(function(x){return x.id===+id})[0];return '<div class="card sos86" style="padding:12px 14px"><b style="font-size:18px">🆘 '+esc(chofN(+id))+' pide que liberes su ruta</b><div class="lbl" style="font-size:15px">No puede mandar su cierre'+(P[id].de?' '+esc(del80(P[id].de)):'')+' y no le sale su ruta de hoy.</div>'+(en?'<button class="btn" style="margin-top:8px;min-height:54px" data-act="lib86" data-id="'+id+'">Liberar su ruta de hoy</button>':'<div class="lbl" style="margin-top:6px">✓ Su ruta de hoy ya está lista. En cuanto su celular tenga señal le sale.</div>')+'</div>'}).join('');
- h+=L.filter(function(x){return !ya[x.id]}).map(function(x){return '<div class="card alert" style="padding:12px 14px"><b>'+esc(chofN(x.id))+' no ha mandado su cierre '+esc(del80(x.f))+'</b><div class="lbl">Hasta que lo mande no le sale su ruta de hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="dia80r" data-id="'+x.id+'">Recordarle</button><button class="btn" style="flex:1" data-act="lib86" data-id="'+x.id+'">Liberar su ruta de hoy</button></div></div>'}).join('');
- var d=document.createElement('div');d.dataset.x='dia80a';d.innerHTML=h;m.prepend(d)};
+/* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib86"],[data-act="lib86s"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id;
  if(b.dataset.act==='lib86'){window._lb86=id;abrirModal('¿Liberar su ruta de hoy?','A '+esc(chofN(id))+' se le arma ya su ruta de hoy. Lo que quedó sin cerrar se guarda en el historial para que lo cuadren.',[['Sí, liberarla','lib86s',' data-id="'+id+'"']]);return}
  S.modal=null;libera86(id);render()},true);
@@ -11461,6 +11623,7 @@ function pendCard86(){if(S.role!=='admin'||S.encOn)return;var t=S.tab.admin;if(!
 var _rdB86=render;render=function(){var y0=window.scrollY,t0=Date.now(),tb=S.role+'|'+(S.tab&&S.tab[S.role]);var r=_rdB86.apply(this,arguments);try{tarasCard86();pendCard86()}catch(e){console.error('l86',e)}
  try{if(S.role+'|'+(S.tab&&S.tab[S.role])===tb&&!(typeof ANC82!=='undefined'&&ANC82.t>=t0)&&y0>0&&Math.abs(window.scrollY-y0)>2){var k=ANC82.t;window.scrollTo(0,y0);ANC82.t=k}}catch(e){}return r};
 
+//@@capa l87.js
 /* ===================== v8.7 · 71–74 (17 nov) prueba de la 1.0.36
    71 Solo se pide el cierre (y se bloquea la ruta de hoy) si el chofer SALIÓ (tocó "Iniciar"). Si no salió, su ruta vieja se archiva
       sola y le sale la de hoy; si tenía entregas sin haber salido, al admin le llega "cuádralo con él".
@@ -11473,15 +11636,11 @@ var _rdB86=render;render=function(){var y0=window.scrollY,t0=Date.now(),tb=S.rol
 function salio87(o){return !!(o&&o.salida&&o.salida.ok)}
 
 /* ---------- 71 · bloquear solo si salió ---------- */
-var _rr87=rutaRenueva80;rutaRenueva80=function(){var v=null;try{v=rutaVieja80()}catch(e){}if(!v)return _rr87.apply(this,arguments);var o=arPack(),env=!!(o.cierre&&o.cierre.sent);
- if(!env&&!salio87(o)){var f=v==='antes'?ayer80():v;try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
-   (S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' tenía '+o.log.length+' entrega'+(o.log.length===1?'':'s')+' '+del80(f)+' sin haber iniciado ruta ni mandado cierre: cuádralo con él.')}}catch(e){}
-  var rv=rutaVacia;rutaVacia=function(x){return !salio87(x)};try{return _rr87.apply(this,arguments)}finally{rutaVacia=rv}}
- return _rr87.apply(this,arguments)};
+/* → movido (tema-rutadia.js) */
 /* el admin: solo las rutas de choferes que SÍ salieron */
-var _pl87=porLib86;porLib86=function(){var hoy=iso(TODAY);return _pl87.apply(this,arguments).filter(function(x){var o=x.propia?S:(S.chSt||{})[x.id];return salio87(o)})};
+/* → movido (tema-rutadia.js) */
 /* la pantallita del chofer, tampoco si no salió */
-var _d80H87=dia80HTML;dia80HTML=function(){if(S.role==='rep'&&S.dia80&&!salio87(S)&&!(S.cierre&&S.cierre.sent)){S.dia80=null;setTimeout(function(){try{render()}catch(e){}},0);return ''}return _d80H87.apply(this,arguments)};
+/* → movido (tema-rutadia.js) */
 
 /* ---------- 74 · "X no envió su cierre": se quita solo; y su pantalla trae botones ---------- */
 function bloqueado87(nombre){return porLib86().some(function(x){return chofN(x.id)===nombre})}
@@ -11507,6 +11666,7 @@ var _st87=stock72;stock72=function(){if(MODO!=='vacio')return _st87.apply(this,a
 
 var _rd87=render;render=function(){try{avChofer87();limpiaCierre87()}catch(e){console.error('l87',e)}var r=_rd87.apply(this,arguments);try{cierreAdm87()}catch(e){console.error('l87b',e)}return r};
 
+//@@capa l88.js
 /* ===================== v8.8 · 75–78 (17 nov) los pendientes se resuelven y se quitan
    75 Cada pendiente de la lista (en cada sección y en "Más"): "Ir" (te lleva a resolverlo) y "✓ Listo" (lo quita y lo guarda en
       "Lo que pasó hoy"). Los de dinero (pagar a un proveedor, faltantes, no cuadra, deudas) traen "Recordar mañana" en vez de Listo.
@@ -11560,6 +11720,7 @@ var _rd88=render;render=function(){try{ordena88()}catch(e){console.error('l88',e
 /* deslizar sobre la lista de pendientes ya no cambia de sección */
 var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
 
+//@@capa l89.js
 /* ===================== v8.9 · 79–82 (17 nov)
    80 Ubicación del cliente: si no tiene ubicación pero su dirección ES una coordenada, se toma como su ubicación (ya confirmada) y no
       se vuelve a pedir; al guardar, la coordenada nunca va a la dirección; si se escogió un punto, se guarda aunque no se confirme;

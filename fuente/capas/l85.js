@@ -15,7 +15,7 @@ if(typeof chofsDia57==='function'){var _cd85=chofsDia57;chofsDia57=function(){va
 /* importar: con "Chofer" vacío ya no se los da al administrador (queda al final de la lista) */
 if(typeof choferes75==='function'){var _c75=choferes75;choferes75=function(modo){var L=_c75.apply(this,arguments);if(modo==='su')return L;return L.filter(function(x){return +x.ref!==ADM85}).concat(L.filter(function(x){return +x.ref===ADM85}))}}
 /* la ruta del administrador empieza vacía (él se pasa clientes en Rutas) */
-var _chN85=chNuevo;chNuevo=function(id){var o=_chN85.apply(this,arguments);try{if(MODO==='vacio'&&+id===ADM85)o.stops=[]}catch(e){}return o};
+/* → movido (tema-rutadia.js) */
 /* "sin chofer": los clientes del administrador cuando no reparte */
 var _sc85=sinCh81;sinCh81=function(f){var L=_sc85.apply(this,arguments);if(MODO!=='vacio'||admRep85())return L;var d=dDe81(f),ya={};L.forEach(function(c){ya[c.id]=1});
  S.cli.forEach(function(c){if(c.oculto||ya[c.id]||+c.chofer!==ADM85)return;if(ovDe81(f,c.id)!==undefined)return;if(c.dias&&c.dias.indexOf(d)>-1||c.extra===f)L.push(c)});return L};
@@ -52,8 +52,8 @@ var _pd85=pendDe81;
 pendDe81=function(r){var L=_pd85.apply(this,arguments);if(MODO!=='vacio')return L;return L.filter(function(cid){var c=cl(+cid);if(!c)return false;var k=dHasta85(c),f=c.falla85&&num(c.falla85.n)||0;return k===0||k>=2||f>=2})};
 function fallas85(r,f0){try{if(!r||!f0)return;_pd85(r).forEach(function(cid){var c=cl(+cid);if(!c)return;var o=c.falla85||{n:0,f:''};if(o.f===f0)return;c.falla85={n:num(o.n)+1,f:f0};var k=dHasta85(c);
   if(k>=2||c.falla85.n>=2){var t=c.n+' se está quedando sin visita ('+(c.falla85.n>=2?'falló '+c.falla85.n+' visitas seguidas':'su siguiente visita es en '+(k>=99?'(sin días)':k+' días'))+'): va en la ruta de hoy.';if((S.avPrecio||[]).indexOf(t)<0)(S.avPrecio=S.avPrecio||[]).push(t)}})}catch(e){}}
-var _cdd85=cambioDeDia;cambioDeDia=function(viejo){try{if(viejo&&viejo!==iso(TODAY)){Object.keys(S.chSt||{}).forEach(function(id){var r=S.chSt[id];if(r&&r.rutaDia80!==iso(TODAY))fallas85(r,r.rutaDia80||viejo)});if(S.chofHoy!=null&&S.rutaDia80!==iso(TODAY))fallas85(S,S.rutaDia80||viejo)}}catch(e){}return _cdd85.apply(this,arguments)};
-if(typeof rutaRenueva80==='function'){var _rr85=rutaRenueva80;rutaRenueva80=function(){try{var v=rutaVieja80();if(v)fallas85(S,v==='antes'?ayer80():v)}catch(e){}return _rr85.apply(this,arguments)}}
+/* → movido (tema-rutadia.js) */
+/* → movido (tema-rutadia.js) */
 /* al entregarle, se le borran las fallas */
 function fallaLimpia85(){(S.cli||[]).forEach(function(c){if(c.falla85&&c.ult&&c.ult>=c.falla85.f)c.falla85=null})}
 

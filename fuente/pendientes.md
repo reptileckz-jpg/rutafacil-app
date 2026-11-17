@@ -2419,3 +2419,13 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - En la entrega, en "Cajas vacías": "Tus clientes te deberían N de 20 cajas" (en rojo si se pasa). Si con lo que deja se pasa, no deja guardar: "Tus clientes ya te deben N cajas vacías. Tu tope es 20: recoge vacías o cóbraselas antes de dejar más".
   - Si ya está pasado pero en esa entrega no deja cajas de más (devuelve lo mismo que le deja), sí deja entregar.
   - Prueba `t116.js` (12 OK).
+
+## 2026-11-17 · 117 · Ricardo: la tarjeta de "Hoy llevas ganado" (chofer con comisión) — PARA LA SIGUIENTE VERSIÓN (no hacer todavía)
+- Ricardo: "no me gusta mucho la interfaz de lo que lleva ganado… debería ser casi como una barra progresiva arriba que se mantenga igual flotante, tipo la burbuja de Uber". Solo idea, sin cambios.
+- Hoy: `comCardHTML()` en `capas/l18.js` (tarjeta verde "Hoy llevas ganado" que sale en lugar de la meta, en la pantalla de la ruta; se va al desplazar).
+- Propuesta (preguntarle antes de hacerla):
+  - Barra delgada fija arriba, en todas las pantallas del chofer en ruta: "💰 $640 hoy" + barra de avance hacia la meta de cajas ("12 de 20 cajas").
+  - Al guardar una entrega, el "+$45" sube animado y la barra avanza (ya existe `.comfloat`).
+  - Al tocarla se abre el detalle de ahora (semana, vs la pasada, racha, lo que ganaría si llega a la meta).
+  - Juntarla con las burbujas de arriba que ya existen (velocidad, avisos) para que no se encimen; minimizable como esas.
+  - Dudas: ¿también en la entrega o se esconde ahí para no distraer del cobro? ¿mostrar dinero o solo el avance si hay un cliente viendo la pantalla?

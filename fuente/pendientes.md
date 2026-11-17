@@ -2333,6 +2333,10 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Al INICIAR LA RUTA: la foto del ODÓMETRO sí se puede tomar, pero NO SE GUARDA. Las fotos de los lados del vehículo sí se guardan.
 - No sabe si pasa solo con el administrador que reparte o con el vehículo nuevo (o con los dos). Revisar los dos casos: admin en "Mi ruta" y chofer normal; vehículo dado de alta en el asistente/nuevo y uno viejo.
 - Pendiente: sin cambios hasta que Ricardo diga. No publicar APK.
+### HECHO (17 nov) · 106 · SIN PUBLICAR (Ricardo: "checa todos los puntos… no publiques el apk, pero sí corrige")
+- En la computadora la foto del odómetro SÍ se guarda (chofer: tomar, confirmar odómetro y tanque, iniciar). No se pudo reproducir exactamente lo del celular.
+- Causa encontrada y corregida: la cámara de la app recuerda la casilla de la foto al abrirse; si mientras está abierta la pantalla se vuelve a dibujar y esa casilla se reemplaza, la foto se le entregaba a la casilla vieja (fuera de pantalla) y se perdía SIN AVISO. Ahora se entrega a la que está en pantalla (cam73Destino; en l80, que es la versión de la cámara que se usa, y en l73; también al escoger de la galería). Prueba t106 (4): con la versión de antes, la foto se perdía; con el arreglo, se guarda.
+- Si en el siguiente APK sigue pasando: preguntar a Ricardo si fue con el administrador en "Mi ruta" o con un chofer, y si la foto se ve un momento y luego desaparece o nunca aparece.
 
 ## 2026-11-17 · 107 · Ricardo: "las notas de remisión no guardan el orden que llevan, cada día se reinician a 1"
 - CAUSA (revisada en el código, sin cambiar nada): el número de la nota es cuántas entregas lleva esa ruta HOY (base: `folio:S.log.length`). Por eso cada día empieza en 1. Además cada chofer tiene su propia ruta: dos choferes pueden dar el MISMO número el mismo día (y el administrador que reparte también).
@@ -2353,3 +2357,9 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   · Por definir al construirlo: los dos plazos (cliente y chofer) y qué pasa si el cliente paga antes de que se le descuente al chofer.
 
 ## 2026-11-17 · Ricardo: "aún no sigas con Vite, vamos a seguir puliendo la app" → Vite en pausa (503 envolturas, 11%). Siguen: 106 (anotado), 107 (hecho, sin publicar), 108 (anotado).
+
+## 2026-11-17 · 109 · Ricardo: al terminar la entrega, si el cliente YA debía taras (o dinero) antes de esa entrega
+- El aviso sí sale arriba, pero con la rapidez de la entrega no se nota. Hacerlo más visible, o al finalizar la entrega recordarle cobrar el dinero o las taras, igual que ya lo hace cuando en esa entrega el chofer deja taras prestadas (ventana del punto 78).
+
+## 2026-11-17 · 110 · Ricardo: "Cargar más" estando en ruta
+- Hoy, al tocar "Cargar más", pregunta directo cuánto más cargaste. Debería preguntar también si quiere que lo lleve a la bodega, y que salga esa parada extra en su ruta (a la bodega) y de regreso con el cliente que seguía.

@@ -2155,3 +2155,10 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 - 73 "¿Cuánto cargas hoy?" se lee en modo oscuro; si algunos (pero menos de la mitad) de los clientes de hoy tienen historial: "Todavía no hay datos suficientes" en vez de un número inflado; si ninguno: lo de siempre.
 - 74 El aviso "X no envió su cierre" se quita solo si ya no aplica (no salió, ya lo mandó, o ya se liberó); al tocarlo lleva a Inicio con "Liberar su ruta de hoy"; la pantalla del cierre del chofer trae "Recordarle" y "Liberar su ruta de hoy"; la sección se llama "Cierre del chofer" (no "cierreadm").
 - Pruebas: t87 (9); t80 ajustada a la regla nueva. Todas: 0 FAIL.
+
+### 75–78 (17 nov) Ricardo: los pendientes no se pueden quitar ni hacen nada (Más, Cargas, Clientes, Vehículos) → HECHO versión 8.8 (capa l88) · Ricardo: "sí, hazlo y arma el APK"
+- 75 Cada pendiente de la lista (cada sección y "Más"): "Ir ›" y "✓ Listo" (lo quita y lo guarda en "Lo que pasó hoy"); los de dinero (pagar a proveedor, faltantes, no cuadra, deudas): "Recordar mañana". Deslizar sobre la lista ya no cambia de sección.
+- 76 Los que solo informan ("El Rosca subió el kilo", "Danu registró una báscula nueva", "Llegó la carga", "Danu dio de alta al cliente nuevo Fruber"…) ya no son pendientes: van directo a "Lo que pasó hoy". (El de "dio de alta AL cliente nuevo" no se reconocía por la redacción.)
+- 77 "Revisa el número": se quita en cuanto confirmas el teléfono del cliente (antes seguía).
+- 78 "Salió con una falla" (ej. NP300, check engine): tarjeta con "🔧 Ya se reparó" (cuánto costó → taller del vehículo y gasto), "🏭 Mandarlo al taller" (queda fuera de servicio; se reactiva en su ficha) y "✓ Puede seguir así" (se anota en la bitácora); también sale en la ficha del vehículo.
+- Prueba t88 (9). Todas: 0 FAIL. Publicada junto con la 8.7 (APK 1.0.37).

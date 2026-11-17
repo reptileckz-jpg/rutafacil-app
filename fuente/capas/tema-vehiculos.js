@@ -52,7 +52,17 @@ vForm=function(){var h=_vFormBase.apply(this,arguments),f=S.vf;
  /* l30 · el nombre se arma solo con marca, modelo y año */
  f=S.vf||{};
  h=h.replace(vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'),vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300')+'<div class="lbl" style="margin:-2px 0 6px">Se va a llamar: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b> (con el año que pongas abajo)</div>');
+ /* 105 · "Quitar" en la foto del vehículo (también el dibujo que trae la app) y en las de sus papeles */
+ h=h.replace(/(<input id="(?:vffoto|vi_(\w+))" type="file" accept="image\/\*" data-vimg="(\w+)"[^>]*>)/g,function(all,inp,k1,k){return S.vf&&S.vf[k]?inp+quitaFotoBtn105(k):inp});
  return h};
+function quitaFotoBtn105(k){return '<button class="btn sm sec" data-act="vfquita" data-k="'+k+'" style="width:auto;margin:6px 0 0;color:var(--danger);border-color:var(--danger)">🗑 Quitar foto</button>'}
+var FOTO105={foto:'la foto del vehículo',fotoPol:'la foto de la póliza',fotoTc:'la foto de la tarjeta de circulación',fotoVer:'la foto de la verificación'};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vfquita"],[data-act="vfquitaok"]');if(!b||!S.vf)return;e.preventDefault();e.stopImmediatePropagation();var k=b.dataset.k;
+ if(b.dataset.act==='vfquita'){abrirModal('¿Quitar la foto?','Se quita '+(FOTO105[k]||'la foto')+'. Puedes poner otra cuando quieras.',[['Sí, quitarla','vfquitaok',' data-k="'+k+'"']]);return}
+ S.vf[k]=null;if(k==='foto')S.vf.sinFoto105=1;S.modal=null;render();toast('Foto quitada. Toca "Guardar" para que quede así.')},true);
+/* al guardar: si se quitó la foto del vehículo, se queda sin foto (antes se le ponía un dibujo solo) */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vsave"]');if(!b||!S.vf||!S.vf.sinFoto105)return;var id=S.vfId,n0=S.veh.length;
+ setTimeout(function(){try{var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(v&&!S.vf){v.foto=null;render()}}catch(er){}},0)},true);
 
 /* ---------- l80 · la placa dice el estado de verdad (solo hay diseño de Veracruz y Guerrero) ---------- */
 var _plateSVGBase=plateSVG;

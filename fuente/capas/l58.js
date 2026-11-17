@@ -101,8 +101,8 @@ function gmDebajo(){var hosts=[];GMI.forEach(function(x){if(x.m&&x.host!==docume
  var quiero=[];hosts.forEach(function(h){var zh=gmZ(h),n=h;while(n&&n!==document.body){var p=n.parentElement;if(!p)break;
    Array.prototype.forEach.call(p.children,function(s){if(s===n||s.classList.contains('gmhole')||/^(SCRIPT|STYLE)$/.test(s.tagName))return;var cs=getComputedStyle(s);if(cs.position==='fixed'&&gmZ(s)>zh)return;if(/^(pinov|pxov|pnov|pncubre|medov)$/.test(s.id))return;if(quiero.indexOf(s)<0)quiero.push(s)});
    if(n!==h&&quiero.indexOf(n)<0){/* ancestro: transparente */if(!n._gmN58){n._gmN58=1;n._gmBg58=n.style.background;n.style.background='transparent'}}n=p}});
- Array.prototype.forEach.call(document.querySelectorAll('.gmoc'),function(e){if(quiero.indexOf(e)<0)e.classList.remove('gmoc')});quiero.forEach(function(e){e.classList.add('gmoc')});
- if(hosts.length)document.documentElement.classList.add('gmin');
+ Array.prototype.forEach.call(document.querySelectorAll('.gmoc'),function(e){if(quiero.indexOf(e)<0)e.classList.remove('gmoc')});quiero.forEach(function(e){if(!e.classList.contains('gmoc'))e.classList.add('gmoc')});
+ if(hosts.length&&!document.documentElement.classList.contains('gmin'))document.documentElement.classList.add('gmin');
  if(!hosts.length)Array.prototype.forEach.call(document.querySelectorAll('*'),function(n){if(n._gmN58){n._gmN58=0;n.style.background=n._gmBg58||''}})}
 var _gmHu58=gmHuecos;gmHuecos=function(){var r=_gmHu58.apply(this,arguments);try{gmDebajo()}catch(e){console.error(e)}return r};
 

@@ -59,7 +59,8 @@ function vbgPon(){Array.prototype.forEach.call(document.querySelectorAll('.vcard
 /* vehBasic: pasó a tema-vehiculos.js */
 
 /* ---- Barra de abajo sin parpadeo ---- */
-function navSync(){try{if(S.tut)navHid=false;document.documentElement.classList.toggle('navhid',!!navHid)}catch(e){}}
+/* 104 · solo se toca la clase si de verdad cambia: escribirla en cada movimiento hacía que celulares lentos repintaran toda la pantalla (destello con la burbuja de arriba) */
+function navSync(){try{if(S.tut)navHid=false;var de=document.documentElement,on=!!navHid;if(de.classList.contains('navhid')!==on)de.classList.toggle('navhid',on)}catch(e){}}
 window.addEventListener('scroll',navSync,{passive:true});
 document.addEventListener('click',function(){setTimeout(navSync,0)},true);
 

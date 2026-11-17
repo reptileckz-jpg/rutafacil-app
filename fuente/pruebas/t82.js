@@ -66,7 +66,7 @@ r=await ev(()=>{S.role='rep';S.chofHoy=S.choferes.find(c=>c.n==='Chofer Uno').id
 ok(!r.rev&&!r.demo,'53 · ya no sale la "Revisión del lunes" vieja ni "en la demo"',r);
 // 55 · pedido tarde
 r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id,c=S.cli[1];S.role='admin';S.chofHoy=null;S.chSt={};S.chSt[ch]=chNuevo(ch);S.chSt[ch].cierre={sent:true,res:{}};S.chSt[ch].log=[{c:1}];c.ped={R:3,M:0,cuando:'hoy'};S.pedQ82=[];S.cfg.hPed82='23:00';
- var hh=new Date().getHours();var msg=p57Asigna(c,ch);return {hh,msg,q:(S.pedQ82||[]).length,lim:hLim82()}});
+ var d0=new Date(),hh=d0.getHours()+d0.getMinutes()/60;var msg=p57Asigna(c,ch);return {hh,msg,q:(S.pedQ82||[]).length,lim:hLim82()}});
 ok(r.lim===19*60+30,'55 · la hora límite nunca pasa de las 7:30 pm aunque Ajustes diga 23:00',r.lim);
 ok(r.hh>=19.5?/queda para mañana/.test(r.msg):(r.q===1&&/preguntó/.test(r.msg)),'55 · chofer que ya cerró: antes de la hora se le pregunta; después pasa a mañana',r);
 if(r.q===1){r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;S.tab.admin='inicio';render();var adm=!!document.querySelector('[data-x="pedq82"]');var keep=JSON.parse(JSON.stringify(S.chSt[ch]));S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;Object.keys(keep).forEach(k=>S[k]=keep[k]);S.tab.rep='ruta';render();var b=document.querySelector('[data-act="pedq82"][data-v="si"]');if(!b)return {adm,b:false};b.click();return {adm,b:true,sent:S.cierre.sent,en:S.stops.some(s=>+s.c===S.cli[1].id&&!s.done),tab:S.tab.rep}});

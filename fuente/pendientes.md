@@ -2318,3 +2318,11 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 103. "¿Sumar el desgaste del vehículo?" y "¿Se le asignó un sueldo por este viaje?": al tocar "Sí, súmalo" / "Sí" no es fácil darse cuenta si se agregó o no (arriba sí cambia el costo, pero en el momento de tocarlo no se nota).
 104. En alguna pantalla (no recuerda cuál), con una burbuja de las de arriba minimizada, al desplazar la pantalla hacia arriba o abajo DESTELLA, como si cambiara entre modo oscuro y claro; solo al moverse, quieta no.
 105. No hay opción para borrar las fotos precargadas de los vehículos.
+- Decisiones (Ricardo, opción múltiple): 102 fue en "Costo del viaje" (Atrás/Siguiente) · 103 "✓ y renglón verde" · 104 la burbuja era la de "Datos que faltan" · 105 quitar las dos (dibujo de la app y fotos tomadas).
+### HECHO (17 nov) · 102–105 · versión 9.6 · SIN PUBLICAR (para la siguiente APK, con 98 y 100)
+- 102 Encontrado: en "Costo del viaje", paso "Precio de venta", decía "Meta de ganancia (roatán y macho)" y "Poner una meta distinta para el macho" aunque la carga fuera solo de roatán. Ahora, con una sola fruta, solo "Meta de ganancia %". De paso: la tarjeta de un viaje programado ("Completar con lo que se compre") ya solo pide la fruta del viaje.
+- 103 El botón escogido dice "✓ Sí, súmalo" / "✓ No" y abajo sale en verde "✓ Se sumaron $330 al costo del viaje · +$0.97 por caja" (o "No se suma…"). En "Costo del viaje" y al registrar una carga a mano. Captura: fotos/103-sumado-despues.png.
+- 104 CAUSA: al desplazar, en cada movimiento se volvía a escribir la clase de la página completa (la de la barra de abajo, y la del mapa de Google que pone el fondo transparente), aunque no cambiara. En celulares lentos (Moto) eso repinta toda la pantalla: el destello "como de modo oscuro/claro". Ahora solo se toca cuando de verdad cambia (l9 navSync, l57/l58 mapas). Medido: de ~40 cambios por recorrido a 2.
+- 105 En "Editar datos" del vehículo: "🗑 Quitar foto" en la foto del vehículo (también el dibujo que trae la app) y en las de la póliza, tarjeta de circulación y verificación, con "¿Quitar la foto?". Al guardar se queda sin foto (antes se le ponía un dibujo solo). (tema-vehiculos.js)
+- Arreglada de paso la prueba t82 (55): contaba solo la hora, sin minutos, y fallaba entre 7:30 y 7:59 pm.
+- Prueba t102 (16). Todas: 0 FAIL.

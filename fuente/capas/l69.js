@@ -26,16 +26,20 @@ function cmX68(){var m=S.cm;if(!m.x68)m.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',i
  if(x.tasa===''){x.tasa=String(tasa68(vehById(+m.veh)))}
  if(x.sm===''){var ch=m.quien==='yo'?null:cl0(+m.quien),z=suelDia68(ch);x.sm=String(z.s+z.c||'')}
  return x}
-function ch68(act,k,opts,cur,extra){return '<div class="chips" style="margin:6px 0" role="group">'+opts.map(function(o){return '<button data-act="'+act+'" data-k="'+k+'" data-v="'+o[0]+'"'+(extra||'')+' aria-pressed="'+(cur===o[0])+'" style="min-height:56px;font-size:17px">'+o[1]+'</button>'}).join('')+'</div>'}
+function ch68(act,k,opts,cur,extra){return '<div class="chips" style="margin:6px 0" role="group">'+opts.map(function(o){return '<button data-act="'+act+'" data-k="'+k+'" data-v="'+o[0]+'"'+(extra||'')+' aria-pressed="'+(cur===o[0])+'" style="min-height:56px;font-size:17px">'+(cur===o[0]?'✓ ':'')+o[1]+'</button>'}).join('')+'</div>'}
+/* 103 · que se note que sí se sumó: renglón verde con lo que se sumó (y cuánto le toca a cada caja si es solo roatán) */
+function suma103(on,m,cajas,txtNo){if(on==='si'){var u=num(cajas)>0&&num(m)>0?' · +'+f2(num(m)/num(cajas))+' por caja':'';return '<div class="ok103" style="margin-top:8px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,var(--surface));font-weight:800;font-size:16px">✓ Se sumaron '+money(num(m))+' al costo del viaje'+u+'</div>'}
+ if(on==='no')return '<div class="lbl" style="margin-top:8px;font-size:15px">'+txtNo+'</div>';return ''}
+function caja103(c){return c&&num(c.cajas)>0&&!(num(c.kgM)>0)?num(c.cajas):0}
 function inp68(id,bind,val,lbl){return '<div class="field"><label for="'+id+'">'+lbl+'</label><input id="'+id+'" type="number" inputmode="decimal" step="any" min="0" data-bind="'+bind+'" value="'+esc(val)+'"></div>'}
 function cmCostCards68(){var m=S.cm,x=cmX68(),vh=vehById(+m.veh)||{n:'el vehículo'},quienN=m.quien==='yo'?'Tú ('+quien()+')':chofN(+m.quien),dm=Math.round(num(x.km)*num(x.tasa));
  return '<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div>'
   +'<div class="lbl" style="margin:4px 0 6px">Lo que se gasta el vehículo (llantas, aceite, reparaciones) por cada kilómetro. Entra al costo de la caja.</div>'
   +'<div class="row"><span>'+esc(vh.n)+'</span><b>'+num(x.km).toLocaleString('es-MX')+' km × '+f2(num(x.tasa))+' = '+money(dm)+'</b></div>'
-  +ch68('cm68','dOn',[['si','Sí, súmalo'],['no','No']],x.dOn)+(x.dOn==='si'?inp68('cm68km','cm.x68.km',x.km,'Kilómetros del viaje (ida y vuelta)')+'<div class="lbl">'+(num(vh.desg)?'':'Todavía no hay gastos de este vehículo: se usa $0.60 por km. ')+'Se ajusta solo con el uso.</div>':'')+'</div>'
+  +ch68('cm68','dOn',[['si','Sí, súmalo'],['no','No']],x.dOn)+suma103(x.dOn,dm,m.R&&!m.M?m.cajas:0,'No se suma el desgaste.')+(x.dOn==='si'?inp68('cm68km','cm.x68.km',x.km,'Kilómetros del viaje (ida y vuelta)')+'<div class="lbl">'+(num(vh.desg)?'':'Todavía no hay gastos de este vehículo: se usa $0.60 por km. ')+'Se ajusta solo con el uso.</div>':'')+'</div>'
   +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div>'
   +'<div class="lbl" style="margin:4px 0 6px">Fue: <b>'+esc(quienN)+'</b>. Si se le paga algo por ir, entra al costo de la caja.</div>'
-  +ch68('cm68','sOn',[['si','Sí'],['no','No']],x.sOn)+(x.sOn==='si'?inp68('cm68sm','cm.x68.sm',x.sm,'¿Cuánto por este viaje? $'):'')+'</div>'}
+  +ch68('cm68','sOn',[['si','Sí'],['no','No']],x.sOn)+(x.sOn==='si'?inp68('cm68sm','cm.x68.sm',x.sm,'¿Cuánto por este viaje? $'):'')+suma103(x.sOn,x.sm,m.R&&!m.M?m.cajas:0,'No se suma sueldo.')+'</div>'}
 function cmImpCard68(){var x=cmX68(),t=tope68();
  return '<div style="border-top:1px solid var(--line);padding:8px 0;margin-top:4px"><div style="font-weight:800">¿Hubo algún imprevisto en el camino?</div><div class="lbl">Ponchadura, talacha, grúa, refacción, mecánico…</div>'
   +ch68('cm68','impOn',[['no','No'],['si','Sí']],x.impOn)
@@ -65,9 +69,9 @@ var _trC69=trCost;trCost=function(c){var r=_trC69.apply(this,arguments);try{if(!
 var _cvD69=cvDef;cvDef=function(c){var D=_cvD69.apply(this,arguments);try{if(c.dsgOn===false)D.desgKm=0;if(c.suelOn===false){D.sueldo=0;D.com=0}else if(c.suelOn===true){D.sueldo=num(c.suelM);D.com=0}}catch(e){}return D};
 var _cvP69=cvPasoHTML;cvPasoHTML=function(c,P,wiz){var h=_cvP69.apply(this,arguments);if(P!=='costo')return h;try{var D=cvDef(c),vh=D.vh||{n:'el vehículo'},km=Math.round(num(cvCalc(c).km)),tasa=tasa68(vh),z=suelDia68(D.ch),sd=c.suelM!=null&&c.suelM!==''?c.suelM:String(z.s+z.c||''),nom=D.ch&&D.ch.id!==2?D.ch.n:'Tú';
   var dOn=c.dsgOn===true?'si':(c.dsgOn===false?'no':''),sOn=c.suelOn===true?'si':(c.suelOn===false?'no':''),at=' data-id="'+c.id+'"';
-  h+='<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div><div class="row"><span>'+esc(vh.n)+'</span><b>'+km.toLocaleString('es-MX')+' km × '+f2(tasa)+' = '+money(Math.round(km*tasa))+'</b></div>'+ch68('cv68','dOn',[['si','Sí, súmalo'],['no','No']],dOn,at)+'</div>'
+  h+='<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div><div class="row"><span>'+esc(vh.n)+'</span><b>'+km.toLocaleString('es-MX')+' km × '+f2(tasa)+' = '+money(Math.round(km*tasa))+'</b></div>'+ch68('cv68','dOn',[['si','Sí, súmalo'],['no','No']],dOn,at)+suma103(dOn,Math.round(km*tasa),caja103(c),'No se suma el desgaste.')+'</div>'
    +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div><div class="lbl">Fue: <b>'+esc(nom)+'</b></div>'+ch68('cv68','sOn',[['si','Sí'],['no','No']],sOn,at)
-   +(sOn==='si'?'<div class="field"><label for="cv68s">¿Cuánto por este viaje? $</label><input id="cv68s" type="number" inputmode="decimal" step="any" min="0" data-cf="'+c.id+':suelM" value="'+esc(sd)+'"></div>':'')+'</div>'}catch(e){console.error('cv69',e)}return h};
+   +(sOn==='si'?'<div class="field"><label for="cv68s">¿Cuánto por este viaje? $</label><input id="cv68s" type="number" inputmode="decimal" step="any" min="0" data-cf="'+c.id+':suelM" value="'+esc(sd)+'"></div>':'')+suma103(sOn,sd,caja103(c),'No se suma sueldo.')+'</div>'}catch(e){console.error('cv69',e)}return h};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cv68"]');if(!b)return;e.stopImmediatePropagation();var c=S.cargas.filter(function(x){return x.id===+b.dataset.id})[0];if(!c)return;var on=b.dataset.v==='si';
  if(b.dataset.k==='dOn')c.dsgOn=on;else{c.suelOn=on;if(on&&(c.suelM==null||c.suelM==='')){var z=suelDia68(cvDef(c).ch);c.suelM=z.s+z.c}}S.cvf&&(S.cvf._t=Date.now());render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cvpaso"][data-d="1"],[data-act="cvconfirm"]');if(!b)return;var c=S.cargas.filter(function(x){return x.id===+(b.dataset.id||S.cvOpen)})[0];if(!c)return;var f=S.cvf;if(!f||CVP[f.paso||0][0]!=='costo')return;
@@ -115,6 +119,8 @@ desg=function(c,k){var rp=rep68(30),vR=num(c.vCaja)||num(S.precio.R),vM=num(c.vK
 var _cC69=cC;cC=function(c){var o=_cC69.apply(this,arguments);try{var rp=rep68(30);o.repCaja=rp.caja;o.repKg=rp.kgc;o.sug=(o.costoCaja+rp.caja)*(1+mgR68(c)/100);o.sugM=(o.costoKgM+rp.kgc)*(1+mgM68(c)/100)}catch(e){}return o};
 /* meta de ganancia: roatán y macho (o la misma para los dos) */
 var _cf69=cfield;cfield=function(c,key,label,step){if(key!=='mg')return _cf69.apply(this,arguments);var ig=S.cfg.mgIgual!==false;
+ /* 102 · si la carga es de una sola fruta, una sola meta (sin hablar de la otra) */
+ var hayR=num(c&&c.cajas)>0||num(c&&c.kgR)>0,hayM=num(c&&c.kgM)>0;if(hayR&&!hayM)return _cf69(c,'mg','Meta de ganancia %',step);if(hayM&&!hayR)return _cf69(c,ig?'mg':'mgM','Meta de ganancia %',step);
  return _cf69(c,'mg',ig?'Meta de ganancia (roatán y macho) %':'Meta de ganancia del roatán %',step)+(ig?'':_cf69(c,'mgM','Meta de ganancia del macho %',step))
   +'<button class="btn sm sec" style="width:auto;margin-top:6px" data-act="mgigual">'+(ig?'Poner una meta distinta para el macho':'Usar la misma para los dos')+'</button>'};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mgigual"]');if(!b)return;e.stopImmediatePropagation();S.cfg.mgIgual=S.cfg.mgIgual===false?true:false;toast(S.cfg.mgIgual===false?'Ahora el macho tiene su propia meta':'La misma meta para los dos');render()},true);

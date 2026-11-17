@@ -17,7 +17,8 @@ function gmCapa(host){var c=host===document.body?document.querySelector('body>.g
 /* el hueco: toda la pantalla de color de fondo, menos donde van los mapas */
 function gmHuecos(){var hosts=[];GMI.forEach(function(x){if(hosts.indexOf(x.host)<0)hosts.push(x.host)});
  Array.prototype.forEach.call(document.querySelectorAll('.gmhole'),function(c){var h=c.parentElement;if(hosts.indexOf(h)<0)c.remove()});
- if(!GMI.length)document.documentElement.classList.remove('gmin');
+ /* 104 · solo si está puesta: quitarla en cada movimiento repintaba toda la pantalla (el fondo transparente del mapa destellaba) */
+ if(!GMI.length&&document.documentElement.classList.contains('gmin'))document.documentElement.classList.remove('gmin');
  hosts.forEach(function(h){var c=gmCapa(h),W=window.innerWidth,H=window.innerHeight,d='M0 0H'+W+'V'+H+'H0Z';
   GMI.forEach(function(x){if(x.host!==h||!x.m)return;var r=x.el.getBoundingClientRect();if(r.width<2||r.height<2||r.bottom<0||r.top>H)return;d+=' M'+r.left+' '+r.top+'H'+r.right+'V'+r.bottom+'H'+r.left+'Z'});
   c.style.clipPath="path(evenodd,'"+d+"')"})}

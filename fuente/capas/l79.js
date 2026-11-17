@@ -6,9 +6,7 @@ try{if(typeof NB_SH!=='undefined')['inspHist'].forEach(function(k){if(NB_SH.inde
 
 /* ---------- 17 · historial de revisiones ---------- */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ip74go"],[data-act="ip74todo"],[data-act="insptodo"]');if(!b)return;try{var w=b.dataset.w||(S.ip74&&S.ip74.w);var o=inspObj(w);if(!o)return;if(b.dataset.act==='ip74go'&&!o.t079)o.t079=Date.now();else if(b.dataset.act!=='ip74go')o.todo79=true}catch(er){}},true);
-var _iM79=inspMarca;inspMarca=function(vh,quien,o){var r=_iM79.apply(this,arguments);try{if(!vh||!o)return r;var L=inspLista(o.tipo),mal=inspFallas(o),uno=L.filter(function(x,i){return o.r[i]}).length;
-  S.inspHist=S.inspHist||[];var hoy=iso(TODAY);if(S.inspHist.some(function(x){return x.vid===vh.id&&x.f===hoy&&x.q===quien}))return r;
-  S.inspHist.push({id:Date.now(),vid:vh.id,f:hoy,h:hhmm(),q:quien,tipo:o.tipo||'dia',n:L.length,mal:mal,todo:!!o.todo79,dur:o.t079?Math.round((Date.now()-o.t079)/1000):null});if(S.inspHist.length>400)S.inspHist=S.inspHist.slice(-400)}catch(e){}return r};
+/* inspMarca: pasó a tema-vehiculos.js */
 function revHoy79(vid,q){var hoy=iso(TODAY);return (S.inspHist||[]).filter(function(x){return x.vid===vid&&x.f===hoy&&(!q||x.q===q)}).slice(-1)[0]||null}
 /* al cierre: "¿Lo entregas en las mismas condiciones?" */
 function ev79HTML(){var vh=vehHoy(),q=chofN(S.chofHoy),r=vh?revHoy79(vh.id,q):null,x=S.cierre.ev79||{};

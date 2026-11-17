@@ -147,9 +147,7 @@ var _gxT69=gxTipos;gxTipos=function(){return _gxT69.apply(this,arguments).replac
 var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.role==='rep'){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxtipo"][data-t="Caseta"],[data-act="gxt2"][data-t="Caseta"]'),function(b){b.remove()});if(S.gx&&S.gx.tipo==='Caseta')S.gx.tipo='Ponchadura o reparación'}}catch(e){}return r};
 
 /* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
-var _vG69=vehGastos;vehGastos=function(vh,dias){var L=_vG69.apply(this,arguments);try{var lim=iso(new Date(TODAY.getTime()-(dias||365)*864e5));
-  S.cargas.forEach(function(c){if(+c.veh!==+vh.id||String(c.fecha)<lim)return;impBig68(c).forEach(function(x){L.push({f:c.fecha,t:x.c,cat:'Imprevisto del camino',m:num(x.m)})})});
-  (S.rutasHist||[]).forEach(function(r){var g=r.res&&r.res.g68;if(!g||r.f<lim||+r.res.veh68!==+vh.id)return;(g.big||[]).forEach(function(x){L.push({f:r.f,t:x.tipo,cat:'Imprevisto del camino',m:num(x.m)})})})}catch(e){}return L};
+/* vehGastos: pasó a tema-vehiculos.js */
 function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
   vh.desg=f.tasa;var txt='El desgaste de '+vh.n+' cambió de '+f2(ant)+' a '+f2(f.tasa)+' por km (con lo que de verdad se gastó en el año)';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:txt});(S.avPrecio=S.avPrecio||[]).push(txt)})}catch(e){}}
 var _rd69d=render;render=function(){var r=_rd69d.apply(this,arguments);desgAuto68();return r};

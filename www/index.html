@@ -3385,7 +3385,7 @@ function plateSVG(v,mini){var n=String(v.pl||'').toUpperCase().trim()||'SIN PLAC
    +seal(22,'#C79AA6')+seal(278,'#C79AA6')+'<text x="150" y="143" text-anchor="middle" font-size="8.4" font-weight="800" fill="#111" '+F+'>'+plTipoTxt(v)+'</text>'}
  return '<svg class="plate'+(mini?' mini':'')+'" viewBox="0 0 300 150" role="img" aria-label="Placa '+esc(n)+' de '+e+'">'+x+'</svg>'}
 /* en la lista de vehículos la placa se ve dibujada en chiquito */
-var _vbL=vehBasic;vehBasic=function(v,warn){var h=_vbL.apply(this,arguments);return h.replace('<span class="lbl">'+esc(v.pl)+(v.color?' · '+esc(v.color):'')+'</span><br>',plateSVG(v,true)+'<span class="lbl">'+(v.color?esc(v.color):'')+'</span><br>')};
+/* vehBasic: pasó a tema-vehiculos.js */
 /* imágenes de vehículo para escoger */
 var VEH_IMGS=[['Nissan NP300 (foto)',function(){return FOTO_NP}],['Freightliner M2 (foto)',function(){return FOTO_FL}],['Camioneta (dibujo)',function(){return vehImg('pick','#F3F3F0','#C9CCD1')}],['Camión (dibujo)',function(){return vehImg('truck','#F4F4F2','#1F4E9A')}]];
 function vehEsCamion(i){return /Cami[oó]n|M2/.test((VEH_IMGS[+i]||[''])[0])}
@@ -4033,11 +4033,12 @@ function hayCostoCarga96(p){return (S.cargas||[]).some(function(x){return p==='R
 function nuevoVeh(o){var t=JSON.parse(JSON.stringify(tpl().veh.filter(function(v){return o.camion?v.id===2:v.id===1})[0]||tpl().veh[0]));var id=1+S.veh.reduce(function(m,v){return Math.max(m,v.id)},0);
  Object.assign(t,{id:id,n:o.n,anio:o.anio||'',color:o.color||'',pl:o.pl||'',plEdo:o.plEdo||edoDef80(),plTipo:o.plTipo||(o.camion?'carga':'auto'),comb:o.comb||t.comb,odo:num(o.odo)||0,acLast:num(o.odo)||0,foto:o.foto||t.foto,cred:null,hist:[],serv:[],taller:[],equipo:[],bit:[],fuera:false,baja:false,vin:'',aseg:'',pol:'',segVence:'',tcVence:'',verVence:'',fotoPol:null,fotoTc:null,fotoVer:null});
  /* 100 · sin los costos, capacidades y rendimiento de la camioneta de la demo: se piden en "Datos que faltan" */
- if(MODO==='vacio'){Object.assign(t,{valor:'',precioC:'',kmMes:'',capV:'',capVK:'',capRC:'',capRK:'',capL:'',capC:'',precio:'',rend0:'',anual:{}});delete t.parteVentas;delete t.sueldoMes}return t}
+ if(MODO==='vacio'){Object.assign(t,{valor:'',precioC:'',kmMes:'',capV:'',capVK:'',capRC:'',capRK:'',capL:'',capC:'',precio:'',rend0:'',anual:{},afDue:(o&&o.afDue)||''});delete t.parteVentas;delete t.sueldoMes}return t}
 function nuevoEmp(o){var t=JSON.parse(JSON.stringify(tpl().choferes.filter(function(c){return c.id===1})[0]));var id=Math.max(S.nextCh||4,1+S.choferes.reduce(function(m,c){return Math.max(m,c.id)},0));S.nextCh=id+1;
  Object.assign(t,{id:id,n:o.n,puesto:o.puesto||'chofer',tel:o.tel||'',mes:{ven:0,R:0,M:0,cob:0,cred:0},meta:{R:'',M:''},foto:null,lic:null,ine:null,dir:'',ing:iso(TODAY),licV:'',r1n:'',r1p:'',r1t:'',r2n:'',r2p:'',r2t:'',emn:'',emp:'',emt:'',nuevo:false});t.sz={tipo:'semana',monto:'',porDia:'',base:'',comC:'',comK:'',dias:0,cv:0,kv:0};return t}
 function nuevoCli(o){var t=JSON.parse(JSON.stringify(tpl().cli[0]));var id=S.nextCli++;
- Object.assign(t,{id:id,n:o.n,ap:'',a:o.a||'',tel:o.tel||'',dias:o.dias||[],chofer:o.chofer||null,cred:num(o.cred),credDesde:num(o.cred)>0?iso(TODAY):null,vac:num(o.vac),vacDesde:num(o.vac)>0?iso(TODAY):null,lim:MODO==='vacio'?(num(S.cfg&&S.cfg.crCli)||1500):3000,pc:MODO==='vacio'?null:70,dp:null,tag:'',credOk:true,compras:5,tipo:'',recibe:'',lat:null,lng:null,hAb:'',hCi:'',c30:0,mesR:0,mesM:0,ult:null,foto:null,mayoreo:false,prio:false,mayHist:[],ped:null,extra:null,nuevo:false,oculto:false});return t}
+ Object.assign(t,{id:id,n:o.n,ap:'',a:o.a||'',tel:o.tel||'',dias:o.dias||[],chofer:o.chofer||null,cred:num(o.cred),credDesde:num(o.cred)>0?iso(TODAY):null,vac:num(o.vac),vacDesde:num(o.vac)>0?iso(TODAY):null,lim:MODO==='vacio'?(num(S.cfg&&S.cfg.crCli)||1500):3000,pc:MODO==='vacio'?null:70,dp:null,tag:'',credOk:true,compras:5,tipo:'',recibe:'',lat:null,lng:null,hAb:'',hCi:'',c30:0,mesR:0,mesM:0,ult:null,foto:null,mayoreo:false,prio:false,mayHist:[],ped:null,extra:null,nuevo:false,oculto:false});/* (antes en l82) en la app real: sin el precio pactado de la demo, y sin su distancia de ejemplo */
+ if(MODO==='vacio'){t.pR=0;t.pM=0;if(num(t.km)===7&&num(t.min)===15){t.km=0;t.min=0}}return t}
 function setupHTML(){if(MODO!=='vacio'||!S.setup||S.setup.fin||window.__pnTest)return '';var p=S.setup.p,U=S.setup,I=S.inv,P=['Bienvenida','Bodega','Vehículos','Personal','Clientes','Proveedores','Dinero y precios','Listo'];
  var nf=function(path,l,v,ph){return '<div class="field"><label>'+l+'</label><input type="number" inputmode="decimal" min="0" step="any" data-bind="'+path+'" value="'+esc(v==null?'':v)+'"'+(ph?' placeholder="'+ph+'"':'')+'></div>'},
   tf=function(path,l,v,ph){return '<div class="field"><label>'+l+'</label><input type="text" data-bind="'+path+'" value="'+esc(v||'')+'"'+(ph?' placeholder="'+ph+'"':'')+' style="width:180px;text-align:left"></div>'};
@@ -4143,7 +4144,7 @@ else if(!(MODO==='vacio'&&S.setup&&!S.setup.fin))pinEntrar();
 function ensureS(){var D={fiTab:{},borr:{},anulados:[],entSnap:{},entCorr:[],pins:{},pinOk:{},conn:{},pendCh:{},histVisto:{},tutVisto:{},cajaCierres:[],hist:[],sinTrabajo:[]};Object.keys(D).forEach(function(k){if(S[k]==null)S[k]=D[k]});if(S.colaEnv==null)S.colaEnv=0;if(S.cierreP==null)S.cierreP=0;if(window.__pnTest&&!S.cajaAyerSkip){S.cajaAyerSkip=true}}
 var _rL8=render;render=function(){ensureS();return _rL8.apply(this,arguments)};
 /* si no hay ningún vehículo (por ejemplo, se dieron todos de baja), la app no se traba */
-var _vhL8=vehHoy;vehHoy=function(){var v=_vhL8.apply(this,arguments);if(v)return v;if(!window._noVeh){var t=VBLANK();t.id=0;t.n='Sin vehículo';t.pl='';t.comb='Gasolina Magna';t.odo=0;t.capL=60;t.rend0=10;t.precio=0;t.acInt=10000;t.acLast=0;t.hist=[];t.serv=[];t.taller=[];t.equipo=[];t.bit=[];t.anual={};t.foto=VEH_IMGS[0][1]();window._noVeh=t}return window._noVeh};
+/* vehHoy: pasó a tema-vehiculos.js */
 /* sin historial todavía (primera vez): las estadísticas lo dicen en vez de quedarse en blanco */
 var _estL8=estadisticas;estadisticas=function(){if(HIST.length)return _estL8.apply(this,arguments);return '<h1>Estadísticas</h1><div class="card"><b>Todavía no hay historial</b><div class="lbl" style="margin-top:6px">Las ventas, ganancias, gastos y rankings aparecen aquí cuando empiecen a registrarse días de trabajo. En la app final se guardan día con día.</div></div>'+cuentasHTML()};
 
@@ -4206,7 +4207,7 @@ var _vbgC={};
 function vbgMini(v){if(!v||!v.foto)return null;var k=v.id+':'+v.foto.length;if(_vbgC[k]!==undefined)return _vbgC[k];_vbgC[k]=null;
  var im=new Image();im.onload=function(){try{var cv=document.createElement('canvas');var CW=420,CH=Math.round(420*im.height/im.width);cv.width=CW;cv.height=CH;var cx=cv.getContext('2d');try{cx.filter='blur(1.5px)'}catch(e){}cx.drawImage(im,0,0,CW,CH);_vbgC[k]=cv.toDataURL('image/jpeg',.8);vbgPon()}catch(e){_vbgC[k]=v.foto;vbgPon()}};im.src=v.foto;return null}
 function vbgPon(){Array.prototype.forEach.call(document.querySelectorAll('.vcard.vbg[data-id]'),function(el){var v=S.veh.filter(function(x){return x.id===+el.dataset.id})[0];var u=vbgMini(v);if(u)el.style.setProperty('--vbg','url('+u+')')})}
-var _vbL9=vehBasic;vehBasic=function(v){var h=_vbL9.apply(this,arguments);if(v&&v.foto)h=h.replace('<button class="vcard popin"','<button class="vcard popin vbg"').replace('width:104px;height:60px','width:124px;height:84px');return h};
+/* vehBasic: pasó a tema-vehiculos.js */
 
 /* ---- Barra de abajo sin parpadeo ---- */
 function navSync(){try{if(S.tut)navHid=false;document.documentElement.classList.toggle('navhid',!!navHid)}catch(e){}}
@@ -5343,10 +5344,7 @@ var _dfL22=dfLista;dfLista=function(){return _dfL22.apply(this,arguments).filter
 
 /* ===================== Vehículo: marca, modelo, año, color, serie, capacidad, motor, llantas ===================== */
 var VEH_X=[['marca','Marca','text','ej. Nissan'],['modelo','Modelo','text','ej. NP300'],['anio','Año','number',''],['color','Color','text',''],['vin','Número de serie (VIN)','text',''],['capC','Capacidad de carga (cajas)','number',''],['capK','Capacidad de carga (kg)','number',''],['motor','Motor','text','ej. 2.5 L diésel'],['llanta','Medida de llanta','text','ej. 195/R15']];
-var _vF22=vForm;vForm=function(){var h=_vF22.apply(this,arguments),f=S.vf;['marca','modelo','motor','llanta','capK'].forEach(function(k){if(f[k]==null)f[k]=''});
- h=h.replace(vff('n','Nombre o modelo'),vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'));
- h=h.replace(vff('color','Color'),vff('color','Color')+vff('motor','Motor','text','ej. 2.5 L diésel')+vff('llanta','Medida de llanta','text','ej. 195/R15')+(h.indexOf('vf_capC')<0?vff('capC','Capacidad de carga (cajas)','number'):'')+vff('capK','Capacidad de carga (kg)','number'));
- return h};
+/* vForm: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='vsave'&&S.vf){var f=JSON.parse(JSON.stringify(S.vf)),id=S.vfId,n0=S.veh.length;setTimeout(function(){var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(!v)return;['marca','modelo','motor','llanta'].forEach(function(k){if(f[k]!=null)v[k]=String(f[k]).trim()});if(num(f.capK)>0)v.capK=num(f.capK);render()},0)}
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
@@ -5430,7 +5428,7 @@ var _rTut22=render;render=function(){var r=_rTut22.apply(this,arguments);try{if(
 
 /* ===================== Vibración ===================== */
 function vibrar(p){try{var H=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics;if(H){if(Array.isArray(p)){H.vibrate({duration:Math.min(1500,p.reduce(function(a,b){return a+b},0))})}else if(p>=200)H.vibrate({duration:p});else H.impact({style:p>=40?'MEDIUM':'LIGHT'});return}}catch(e){}try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
-var _vb22=velBeep;velBeep=function(){_vb22.apply(this,arguments);vibrar([300,150,300,150,300])};
+/* velBeep: pasó a tema-vehiculos.js */
 if(typeof fxErr==='function'){var _fe22=fxErr;fxErr=function(){try{_fe22.apply(this,arguments)}catch(e){}vibrar(250)}}
 
 /* ===================== Teclado del PIN: responde aunque se teclee rápido ===================== */
@@ -5449,10 +5447,7 @@ function velMedir(){var a=S.velAl;if(!a)return;
 function velRevisar(){var a=S.velAl;if(!a)return;var cur=a.cur==null?a.vel:a.cur;if(cur<=a.lim){_velBajo++;if(_velBajo>=2){velCerrar(true);return}}else _velBajo=0;render()}
 function velCerrar(auto){S.velAl=null;_velBajo=0;_velSin=0;if(_velW!=null){try{navigator.geolocation.clearWatch(_velW)}catch(e){}_velW=null}if(auto)toast('Gracias, ya vas a buena velocidad');render()}
 setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20)render()},1000);
-var _vaH22=velAlertaHTML;velAlertaHTML=function(){var a=S.velAl;if(!a)return '';var h=_vaH22.apply(this,arguments),cur=a.cur==null?a.vel:a.cur;
- h=h.replace(/<div style="font-size:56px;font-weight:900;line-height:1\.1;margin:10px 0">[^<]*<\/div>/,'<div style="font-size:56px;font-weight:900;line-height:1.1;margin:10px 0">'+cur+' km/h</div>');
- var sinGps=!DEMO&&a.cur==null&&_velSin>20;
- return h.replace('<button class="btn" style="margin-top:20px;background:#fff;color:#B3261E;min-height:60px;font-size:20px" data-act="velok">Ya bajé la velocidad</button>','<div style="font-size:16px;margin-top:16px;font-weight:700">Se quita solo cuando bajes de '+a.lim+' km/h.</div>'+(sinGps?'<button class="btn sm" style="margin-top:12px;background:#fff;color:#B3261E;width:auto" data-act="velok">Entendido</button>':''))};
+/* velAlertaHTML: pasó a tema-vehiculos.js */
 
 //@@capa l23.js
 /* ===================== v5.1 · Ficha del cliente: foto de la fachada y crédito desde el buró ===================== */
@@ -5517,8 +5512,7 @@ var _fvImg=null;
 window.addEventListener('pointerdown',function(e){if(e.target&&e.target.tagName==='IMG')_fvImg=e.target},true);
 function fvInput(img){if(!img)return null;var lb=img.closest('label[for]');if(lb){var i=document.getElementById(lb.getAttribute('for'));if(i&&i.type==='file')return i}
  var box=img.parentElement;for(var n=0;n<4&&box;n++){var q=box.querySelector('input[type="file"]');if(q)return q;box=box.parentElement}return null}
-var _fa24=fotoAbrir;fotoAbrir=function(src){var img=_fvImg,r=_fa24.apply(this,arguments);try{var inp=img&&(img.currentSrc||img.src)===src?fvInput(img):null,o=document.getElementById('fotov');
- if(inp&&o){var b=document.createElement('button');b.className='fvx fvotra';b.textContent='📷 Tomar otra para reemplazarla';b.addEventListener('click',function(e){e.stopPropagation();inp.click();o.remove()});o.appendChild(b)}}catch(e){}return r};
+/* fotoAbrir: pasó a tema-vehiculos.js */
 /* fotos dentro de la etiqueta de "tomar foto": antes abrían la cámara; ahora se ven */
 document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;var lb=t.closest('label[for]');if(!lb)return;var i=document.getElementById(lb.getAttribute('for'));if(!i||i.type!=='file')return;
  var src=t.currentSrc||t.getAttribute('src')||'';if(!src)return;e.preventDefault();e.stopImmediatePropagation();_fvImg=t;fotoAbrir(src)},true);
@@ -6031,8 +6025,7 @@ var VEH_TRES=function(pre,f,camp){return camp('marca','Marca','text','ej. Nissan
 var _suH30=setupHTML;setupHTML=function(){var h=_suH30.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==2)return h;var f=S.setup.vf||{};
  return h.replace(/<div class="field"><label[^>]*>Nombre o modelo<\/label>[\s\S]*?<\/div>/,VEH_TRES('setup.vf.',f,function(k,l,t,ph){return suX('setup.vf.'+k,l,f[k],t,ph)})+'<div class="lbl" style="margin:-2px 0 6px">La tarjeta del vehículo se llama así: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b></div>')};
 /* Vehículos (admin) */
-var _vF30=vForm;vForm=function(){var h=_vF30.apply(this,arguments),f=S.vf||{};
- h=h.replace(vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'),vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300')+'<div class="lbl" style="margin:-2px 0 6px">Se va a llamar: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b> (con el año que pongas abajo)</div>');return h};
+/* vForm: pasó a tema-vehiculos.js */
 /* el nombre se arma solo antes de guardar */
 function vehNomFix(){try{var U=S.setup&&S.setup.vf;if(U){var n=vehNomDe(U);if(n)U.n=n}if(S.vf){var n2=vehNomDe(S.vf);if(n2)S.vf.n=n2}}catch(e){}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;if(['suadd','sunext','vsave','sufin'].indexOf(b.dataset.act)>-1)vehNomFix()},true);
@@ -6178,7 +6171,7 @@ function sinFotoURL(mot){var t=String(mot||'').slice(0,60).replace(/[<&>]/g,'');
 function fnHTML(){var x=S.fotoNo;if(!x)return '';return '<div id="fnov" role="dialog" aria-label="No pude tomar la foto"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">¿Por qué no pudiste tomarla?</b><div class="lbl">'+esc(x.l||'')+'. Se le avisa al administrador.</div></span><button class="helpb" style="margin:0" data-act="fnx" aria-label="Cerrar">×</button></div>'
  +'<div class="chips" role="group" style="margin:10px 0">'+['No prende la cámara','Está muy oscuro','No tengo el celular a la mano','Otro'].map(function(m){return '<button data-act="fnm" data-v="'+m+'" aria-pressed="'+(x.m===m)+'">'+m+'</button>'}).join('')+'</div>'
  +(x.m==='Otro'?'<div class="field"><label for="fnt">Escribe el motivo</label><input id="fnt" type="text" data-bind="fotoNo.t" value="'+esc(x.t||'')+'" style="width:190px;text-align:left"></div>':'')+(x.err?'<div class="neg" style="font-weight:700">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="fnsave">Seguir sin foto</button></div></div>'}
-var _fT32=fotoTile;fotoTile=function(k,l,g){var h=_fT32.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS)return h;var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
+/* fotoTile: pasó a tema-vehiculos.js */
 var _vF32=vwFotoUna;vwFotoUna=function(key,l){var h=_vF32.apply(this,arguments);if(vwEsAdm()||!FOTOS_OBLIGATORIAS||S.vw[key])return h;return h+'<button class="fotono" data-act="fotono" data-vw="'+key+'" data-l="'+esc(String(l).replace(/ \((opcional|obligatoria)[^)]*\)/,''))+'">No pude tomarla</button>'};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='fotono'){e.stopImmediatePropagation();e.preventDefault();S.fotoNo={g:b.dataset.g,k:b.dataset.k,vw:b.dataset.vw,cx:b.dataset.cx,l:b.dataset.l||'Foto',m:'',t:''};render();return}
@@ -6201,8 +6194,7 @@ var _r32b=render;render=function(){var r=_r32b.apply(this,arguments);try{sinDemo
 //@@capa l33.js
 /* ===================== v6.1 · Inicio de ruta: odómetro y tanque confirmados, revisión que se encoge ===================== */
 /* la revisión del vehículo, ya terminada, queda chiquita */
-var _iR33=inspRepHTML;inspRepHTML=function(){var r=S.inspR,h=_iR33.apply(this,arguments);if(!h||!r||!r.ok||r.preg||r.wait||S.inspVer)return h;
- return '<button class="card good" data-act="inspver" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;border:0;cursor:pointer"><span style="font-size:22px">✓</span><span class="grow"><b>Revisión del vehículo lista</b><br><span class="lbl">'+(inspFallas(r).length?'Con '+inspFallas(r).length+' cosa(s) reportada(s)':'Todo está bien')+'</span></span><span class="lbl">Ver</span></button>'};
+/* inspRepHTML: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="inspver"],[data-act="inspoculta"]');if(!b)return;e.stopImmediatePropagation();S.inspVer=b.dataset.act==='inspver';render()},true);
 /* odómetro y tanque: el chofer los tiene que confirmar */
 function salConfHTML(){if(S.role!=='rep'||S.salida.ok)return '';var s=S.salida,c=S.cierre||{};
@@ -7004,7 +6996,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var _aj43=ajHTML;ajHTML=function(){var h=_aj43.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;return h.replace('data-act="tutver">Ver el tutorial otra vez</button>','data-act="tutver">Ver el tutorial otra vez</button><button class="btn sec" style="margin-top:8px" data-act="tutdias">'+(S.tutDiasOff?'Volver a prender los consejos de cada día':'Apagar los consejos de cada día')+'</button>'+(S.aprendeOff?'<button class="btn sec" style="margin-top:8px" data-act="aprendeon">Mostrar "Aprende la app"</button>':''))};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tutdias"],[data-act="aprendeon"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='tutdias')S.tutDiasOff=!S.tutDiasOff;else S.aprendeOff=false;render()},true);
 /* ---------- combustible del vehículo dentro de su tarjeta ---------- */
-var _fV43=fuelVeh;fuelVeh=function(v){return '<div class="card">'+_fV43.apply(this,arguments).replace('<div class="lbl" style="margin:12px 0 2px"><b>Combustible</b></div>','<b>Combustible y rendimiento</b>')+'</div>'};
+/* fuelVeh: pasó a tema-vehiculos.js */
 /* ---------- vehículos: la placa no se cambia en Papeles (solo en "Editar datos"); "Ya se hizo" en cada papel ---------- */
 var VDOC=[['segVence','Seguro',12,'Seguro'],['tcVence','Tarjeta de circulación / tenencia',12,'Tenencia y placas'],['verVence','Verificación',6,'Verificación']];
 function vYaHTML(v){var x=S.vya;if(!x||x.vid!==v.id)return '';var d=VDOC.filter(function(z){return z[0]===x.k})[0];
@@ -7012,11 +7004,7 @@ function vYaHTML(v){var x=S.vya;if(!x||x.vid!==v.id)return '';var d=VDOC.filter(
   +'<div class="field"><label for="vyaq">¿Quién lo llevó?</label><input id="vyaq" type="text" data-bind="vya.q" value="'+esc(x.q||'')+'" style="width:160px;text-align:left"></div><label class="btn sm sec" for="vyafo" style="display:inline-flex;align-items:center;cursor:pointer;margin-top:6px">'+(x.foto?'✓ Foto del comprobante':'📷 Foto del comprobante')+'</label><input id="vyafo" type="file" accept="image/*" capture="environment" data-vyafoto="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'
   +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:2" data-act="vyasi">Guardar</button><button class="btn sec" style="flex:1" data-act="vyano">Cancelar</button></div><div class="lbl">Se registra el gasto y se actualiza el próximo vencimiento.</div></div>'}
 function sumaMeses(f,m){var d=new Date(f+'T12:00:00');d.setMonth(d.getMonth()+m);return iso(d)}
-if(typeof fiVeh==='function'){var _fiV43=fiVeh;fiVeh=function(f){var h=_fiV43.apply(this,arguments),v=vehById(f.id);if(!v)return h;try{
- /* placa: solo se ve; se cambia en Editar datos */
- h=h.replace(/<div class="lbl" style="margin-top:6px">Estado<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">Tipo<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">El número se cambia en "Editar datos" y la placa se dibuja sola\.<\/div>/,rw('Estado',esc(plEdo(v)))+rw('Tipo',(v.plTipo||(v.id===2?'carga':'auto'))==='carga'?'Carga':'Automóvil')+'<div class="lbl">Para cambiar la placa usa "Editar datos".</div>');
- if(S.role==='admin'&&!S.encOn)VDOC.forEach(function(d){var row=vDocRow(d[1]==='Tarjeta de circulación / tenencia'?'Tarjeta de circulación':d[1],v[d[0]]);if(h.indexOf(row)>-1)h=h.replace(row,row+'<button class="btn sm sec" style="width:auto;margin:2px 0 6px" data-act="vya" data-id="'+v.id+'" data-k="'+d[0]+'">Ya se hizo</button>')});
- var y=vYaHTML(v);if(y){var i=h.indexOf('<div class="card"><b>Documentos con vencimiento</b>');if(i>-1)h=h.slice(0,i)+y+h.slice(i)}}catch(e){}return h}}
+/* fiVeh: pasó a tema-vehiculos.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.vyafoto||!S.vya)return;var f=t.files&&t.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var r=Math.min(1,900/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*r);cv.height=Math.round(im.height*r);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.vya.foto=cv.toDataURL('image/jpeg',0.7);render()};im.src=fr.result};fr.readAsDataURL(f)},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='vya'){e.stopImmediatePropagation();var d=VDOC.filter(function(z){return z[0]===b.dataset.k})[0];S.vya={vid:+b.dataset.id,k:b.dataset.k,f:iso(TODAY),c:'',v:sumaMeses(iso(TODAY),d[2]),q:'',foto:null};render();return}
@@ -7030,10 +7018,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- encargos: a dónde ir (lugar guardado o link de Maps) y el lugar se guarda ---------- */
 ['lugares'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 function lugaresL(){return S.lugares=S.lugares||[]}
-var _evh43=encVehHTML;encVehHTML=function(v){var h=_evh43.apply(this,arguments),f=S.encF;if(!f||f.vid!==v.id)return h;var L=lugaresL();
- var c='<div class="lbl" style="margin-top:6px">¿A dónde? (opcional)</div><div class="chips" role="group" aria-label="Lugar" style="margin:6px 0">'+L.map(function(l,i){return '<button data-act="enclug" data-i="'+i+'" aria-pressed="'+(f.lug===i)+'">'+esc(l.n)+'</button>'}).join('')+'<button data-act="enclug" data-i="-1" aria-pressed="'+(f.lug==null||f.lug<0)+'">Que él escoja</button></div>'
-  +'<div class="field"><label for="encml">O pega el link de Maps</label><input id="encml" type="text" data-bind="encF.link" value="'+esc(f.link||'')+'" placeholder="https://maps…" style="width:180px;text-align:left"></div>';
- return h.replace('<div class="field"><label for="encn">Nota</label>',c+'<div class="field"><label for="encn">Nota</label>')};
+/* encVehHTML: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="enclug"]');if(!b||!S.encF)return;e.stopImmediatePropagation();S.encF.lug=+b.dataset.i;render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="encsave"]');if(!b||!S.encF)return;var f=S.encF,n0=encList().length;setTimeout(function(){var L=encList();if(L.length<=n0)return;var x=L[L.length-1];
  if(f.lug!=null&&f.lug>=0){var l=lugaresL()[f.lug];if(l)x.lugar={n:l.n,lat:l.lat,lng:l.lng}}else if(f.link){var u=typeof ubParse==='function'?ubParse(f.link):null;x.lugar=u?{n:'Lugar del link',lat:u.lat,lng:u.lng}:{n:'',link:f.link}}},20)},true);
@@ -7226,10 +7211,11 @@ function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=3
  S.loteCierres=(S.loteCierres||[]).filter(function(x){return String(x.fin||'')>=antes});if(S.precio)S.precio.hist=(S.precio.hist||[]).filter(function(x){return String(x.f||'')>=antes});
  if(S.metaMes&&S.metaMes.ven==='260000'&&S.metaMes.gan==='45000')S.metaMes={ven:'',gan:''};migraDemo100();S.limpDemo=3}
 /* 100 · vehículos y clientes que se dieron de alta en el asistente con datos de la demo: se quitan los que son IGUALES a los de ejemplo
-   (costos al año, sueldo, parte de las ventas, valor, km al mes, precio de combustible, rendimiento y capacidades); lo que el usuario cambió se queda */
+   (costos al año, sueldo, parte de las ventas, fecha de afinación, valor, km al mes, precio de combustible, rendimiento y capacidades); lo que el usuario cambió se queda */
 function migraDemo100(){var T=[];try{T=tpl().veh||[]}catch(e){}var J=function(x){return JSON.stringify(x)};
  (S.veh||[]).forEach(function(v){if(!v)return;T.forEach(function(t){
   if(v.anual&&J(v.anual)===J(t.anual))v.anual={};
+  if(t.afDue&&v.afDue===t.afDue)v.afDue='';
   ['parteVentas','sueldoMes'].forEach(function(k){if(t[k]!=null&&v[k]===t[k])delete v[k]});
   ['valor','precioC','kmMes'].forEach(function(k){if(num(t[k])&&num(v[k])===num(t[k]))v[k]=''});
   if(!(v.hist&&v.hist.length)){if(num(t.precio)&&num(v.precio)===num(t.precio))v.precio='';if(num(t.rend0)&&num(v.rend0)===num(t.rend0))v.rend0=''}
@@ -7414,9 +7400,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.id==='wz_km'&&S.wz)S.wz.d._kmMano=true},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="simabre"]');if(!b)return;e.stopImmediatePropagation();S.simYa=true;wzAbre('sim',{provs:[],dias:'1',com:'300',merma:'3'})},true);
 /* "Editar datos" del vehículo: también se puede cambiar si es de carga o auto */
-var _veh47=vehiculos;vehiculos=function(){var h=_veh47.apply(this,arguments);if(S.role!=='admin'||!S.vf||S.vfId==null)return h;var v=vehById(S.vfId);if(!v)return h;if(S.vf.esAuto==null)S.vf.esAuto=!!v.esAuto;
- var c='<div class="card"><b>¿Qué tipo de vehículo es?</b><div class="chips" role="group" aria-label="Tipo de vehículo" style="margin-top:6px"><button data-act="vftipo" data-v="carga" aria-pressed="'+!S.vf.esAuto+'">🚚 De carga</button><button data-act="vftipo" data-v="auto" aria-pressed="'+!!S.vf.esAuto+'">🚗 Auto (no carga)</button></div></div>';
- var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+/* vehiculos: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vftipo"]');if(!b||!S.vf)return;e.stopImmediatePropagation();S.vf.esAuto=b.dataset.v==='auto';S.vf.plTipo=S.vf.esAuto?'auto':'carga';render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vsave"]');if(!b||!S.vf||S.vfId==null||S.vf.esAuto==null)return;var id=S.vfId,a=!!S.vf.esAuto;setTimeout(function(){var v=vehById(id);if(v){v.esAuto=a;v.plTipo=a?'auto':'carga'}render()},20)},true);
 /* 100 · cuánto te cuesta (mientras no hay ninguna carga): tarjeta paso a paso, desde "Datos que faltan" */
@@ -7878,7 +7862,7 @@ var _ppH54=provPideHTML;provPideHTML=function(){var h=_ppH54.apply(this,argument
  '.fsform>b:first-child{display:block;font-size:24px;font-weight:900;margin-bottom:10px}.fsform .btn{min-height:60px!important;font-size:18px}.fsform input,.fsform select{min-height:52px;font-size:18px}'].join('\n');document.head.appendChild(st)})();
 /* "Ya se hizo" (vehículo) y encargo al chofer: en pantalla completa */
 var _vYa55=vYaHTML;vYaHTML=function(v){var h=_vYa55.apply(this,arguments);return h?h.replace('<div class="card" style="border:2px solid var(--accent)">','<div class="card fsform" role="dialog" aria-label="Ya se hizo">'):h};
-var _encV55=encVehHTML;encVehHTML=function(v){var h=_encV55.apply(this,arguments);return h.replace('<div class="card" style="padding:10px 12px;margin:6px 0;border:2px solid var(--accent)"><b>Encargo para el chofer</b>','<div class="card fsform" role="dialog" aria-label="Encargo"><b>Encargo para el chofer</b>')};
+/* encVehHTML: pasó a tema-vehiculos.js */
 /* abono de un cliente y pago a un proveedor: por pasos */
 WZ.abc={tit:'Abono de cliente',fin:'Registrar abono',pasos:[
  {q:function(d){return '¿Cuánto abona '+cl(d.id).n+'?'},a:function(d){return 'Debe '+money(cl(d.id).cred)+'.'},c:[{k:'m',l:'Abono $',t:'number'}],ok:function(d){var m=num(d.m),c=cl(d.id);return !(m>0)?'Escribe cuánto abona':(m>c.cred+0.5?'Debe solo '+money(c.cred):'')},html:function(d){return '<div class="card">'+wzCampo({k:'m',l:'Abono $',t:'number'},d)+'</div><button class="btn sec" style="margin-top:8px" data-act="wzop" data-k="m" data-v="'+cl(d.id).cred+'">Pagó todo ('+money(cl(d.id).cred)+')</button>'}},
@@ -8202,10 +8186,7 @@ var _gL59=guiaLibre;guiaLibre=function(){if(!_gL59.apply(this,arguments))return 
 ['input','touchmove','wheel'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{var o=document.getElementById('guiab');if(o&&!o.dataset.forzada)o.remove()}catch(er){}},{capture:true,passive:true})});
 
 /* ---------- 7 · toda foto en miniatura se abre en grande (también en el cierre que recibe el admin) ---------- */
-var _fZ59=fotoZoomable;fotoZoomable=function(im){if(_fZ59.apply(this,arguments))return true;try{
- if(!im||im.tagName!=='IMG'||im.closest('#fotov,#fgov,#tutov,#pinov,#pncubre,nav,header,label,[data-act],a,.tklogo,.logo,#bienv,#arr,.bv-stage,.gmhole'))return false;
- if(im.classList.contains('tic'))return false;var s=im.getAttribute('src')||'';if(!/^(data:image\/(jpe?g|webp)|blob:|https?:)/i.test(s))return false;
- var r=im.getBoundingClientRect();return r.width>=36&&r.height>=36}catch(e){return false}};
+/* fotoZoomable: pasó a tema-vehiculos.js */
 
 /* ---------- 14 · ya no sale la pantalla de "Comenzar": entra directo ---------- */
 bienvMostrar=function(){try{if(S.setup)S.setup.bienv=true;localStorage.setItem('bienvCel','1')}catch(e){}};
@@ -9307,9 +9288,7 @@ var _gxT69=gxTipos;gxTipos=function(){return _gxT69.apply(this,arguments).replac
 var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.role==='rep'){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxtipo"][data-t="Caseta"],[data-act="gxt2"][data-t="Caseta"]'),function(b){b.remove()});if(S.gx&&S.gx.tipo==='Caseta')S.gx.tipo='Ponchadura o reparación'}}catch(e){}return r};
 
 /* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
-var _vG69=vehGastos;vehGastos=function(vh,dias){var L=_vG69.apply(this,arguments);try{var lim=iso(new Date(TODAY.getTime()-(dias||365)*864e5));
-  S.cargas.forEach(function(c){if(+c.veh!==+vh.id||String(c.fecha)<lim)return;impBig68(c).forEach(function(x){L.push({f:c.fecha,t:x.c,cat:'Imprevisto del camino',m:num(x.m)})})});
-  (S.rutasHist||[]).forEach(function(r){var g=r.res&&r.res.g68;if(!g||r.f<lim||+r.res.veh68!==+vh.id)return;(g.big||[]).forEach(function(x){L.push({f:r.f,t:x.tipo,cat:'Imprevisto del camino',m:num(x.m)})})})}catch(e){}return L};
+/* vehGastos: pasó a tema-vehiculos.js */
 function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
   vh.desg=f.tasa;var txt='El desgaste de '+vh.n+' cambió de '+f2(ant)+' a '+f2(f.tasa)+' por km (con lo que de verdad se gastó en el año)';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:txt});(S.avPrecio=S.avPrecio||[]).push(txt)})}catch(e){}}
 var _rd69d=render;render=function(){var r=_rd69d.apply(this,arguments);desgAuto68();return r};
@@ -9944,12 +9923,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(b.dataset.act==='ac74fix'){var a=num(v.acLast);v.acLast=Math.max(0,num(v.odo)-a);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Corrigió el último aceite de '+v.n+': fue hace '+a.toLocaleString('es-MX')+' km'});toast('✓ Corregido')}else{v.acOk74=v.acLast}render()},true);
 
 /* ---------- 71 · revisión de la semana paso a paso ---------- */
-var _iH74=inspHTML;inspHTML=function(o,w,titulo){var L=inspLista(o.tipo),c=inspCfgN();if(L.length<=c.dia.length)return _iH74.apply(this,arguments);
- var hechos=L.filter(function(x,i){return o.r[i]}).length,mal=L.filter(function(x,i){return o.r[i]==='mal'}).length,P=inspPartes(o.tipo);
- var sub=['revisión diaria'].concat(P.indexOf('sem')>-1?['la de la semana']:[]).concat(P.indexOf('carga')>-1?['lo del viaje de carga']:[]).concat(P.indexOf('mes')>-1?['documentos del mes']:[]);
- return '<div style="font-size:21px;font-weight:800;margin:6px 0 2px">'+titulo+'</div><div class="lbl" style="margin-bottom:8px">Hoy toca: '+sub.join(', ')+'. Son '+L.length+' puntos: te los voy pasando uno por uno.</div>'
-  +'<button class="btn" style="min-height:66px;font-size:20px" data-act="ip74go" data-w="'+w+'">'+(hechos?'Seguir la revisión ('+hechos+' de '+L.length+')':'Empezar la revisión')+'</button>'
-  +'<div class="ip74" style="margin-top:8px"><div class="bar"><i style="width:'+Math.round(hechos/L.length*100)+'%"></i></div></div><div class="lbl" style="text-align:center;margin-top:4px">'+hechos+' de '+L.length+' revisados'+(mal?' · <b class="neg">'+mal+' con falla</b>':'')+'</div>'};
+/* inspHTML: pasó a tema-vehiculos.js */
 function ip74HTML(){var x=S.ip74;if(!x)return '';var o;try{o=inspObj(x.w)}catch(e){o=null}if(!o){S.ip74=null;return ''}var L=inspLista(o.tipo),IC=inspIcos(o.tipo),c=inspCfgN(),P=inspPartes(o.tipo),nD=c.dia.length,nS=P.indexOf('sem')>-1?c.lunes.length:0,nC=P.indexOf('carga')>-1?c.carga.length:0;
  if(x.i>=L.length){var mal=L.map(function(t,i){return o.r[i]==='mal'?t.split(': ')[0]:null}).filter(Boolean);
   return ovW70('ip74ov','Revisión del vehículo','<div class="ip74"><div class="bar"><i style="width:100%"></i></div><div class="it">'+(mal.length?'Revisaste todo · '+mal.length+' con falla':'✓ Todo revisado y bien')+'</div>'+(mal.length?'<div class="card note" style="font-size:16px">'+mal.map(esc).join('<br>')+'<div class="lbl" style="margin-top:6px">Se le avisa al administrador.</div></div>':'')+'<button class="btn big" data-act="ip74fin">Listo</button><button class="btn sec big" data-act="ip74atras">Atrás</button></div>','ip74x')}
@@ -10296,7 +10270,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4139,"l8.js"],[4150,"l9.js"],[4463,"l10.js"],[4523,"l11.js"],[4540,"l12.js"],[4587,"l13.js"],[4733,"l14.js"],[4809,"l15.js"],[4871,"l16.js"],[4980,"l17.js"],[5011,"l18.js"],[5088,"l19.js"],[5158,"l20.js"],[5207,"l21.js"],[5253,"l22.js"],[5457,"l23.js"],[5511,"l24.js"],[5528,"l25.js"],[5559,"l26.js"],[5702,"l27.js"],[5768,"l28.js"],[5900,"l29.js"],[6026,"l30.js"],[6071,"l31.js"],[6107,"l32.js"],[6201,"l33.js"],[6221,"l34.js"],[6281,"l35.js"],[6341,"l36.js"],[6439,"l37.js"],[6460,"l38.js"],[6548,"l39.js"],[6629,"l40.js"],[6753,"l41.js"],[6837,"l42.js"],[6940,"l43.js"],[7049,"l44.js"],[7150,"l45.js"],[7244,"l46.js"],[7312,"l47.js"],[7428,"l48.js"],[7483,"l49.js"],[7519,"l50.js"],[7623,"l51.js"],[7633,"l52.js"],[7776,"l53.js"],[7798,"l54.js"],[7873,"l55.js"],[7902,"l56.js"],[7987,"l57.js"],[8051,"l58.js"],[8178,"l59.js"],[8240,"l60.js"],[8402,"l61.js"],[8459,"l62.js"],[8589,"l63.js"],[8760,"l64.js"],[8792,"l65.js"],[8893,"l66.js"],[8999,"l67.js"],[9026,"l68.js"],[9160,"l69.js"],[9380,"l70.js"],[9602,"l71.js"],[9727,"l72.js"],[9839,"l73.js"],[9905,"l74.js"],[10034,"l75.js"],[10187,"l76.js"],[10290,"l77.js"],[10418,"l78.js"],[10560,"l79.js"],[10670,"l80.js"],[10794,"l81.js"],[10947,"l82.js"],[11200,"l83.js"],[11269,"l84.js"],[11382,"l85.js"],[11443,"tema-rutadia.js"],[11608,"l86.js"],[11668,"l87.js"],[11711,"l88.js"],[11761,"l89.js"],[11810,"l90.js"],[11916,"tema-cobranza.js"],[12063,"tema-pantallas.js"],[12282,"tema-avisos.js"],[12444,"tema-reparte.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3393,"l2.js"],[3556,"l3.js"],[3659,"l4.js"],[3737,"l5.js"],[3862,"l6.js"],[3964,"l6b.js"],[4007,"l7.js"],[4140,"l8.js"],[4151,"l9.js"],[4464,"l10.js"],[4524,"l11.js"],[4541,"l12.js"],[4588,"l13.js"],[4734,"l14.js"],[4810,"l15.js"],[4872,"l16.js"],[4981,"l17.js"],[5012,"l18.js"],[5089,"l19.js"],[5159,"l20.js"],[5208,"l21.js"],[5254,"l22.js"],[5452,"l23.js"],[5506,"l24.js"],[5522,"l25.js"],[5553,"l26.js"],[5696,"l27.js"],[5762,"l28.js"],[5894,"l29.js"],[6020,"l30.js"],[6064,"l31.js"],[6100,"l32.js"],[6194,"l33.js"],[6213,"l34.js"],[6273,"l35.js"],[6333,"l36.js"],[6431,"l37.js"],[6452,"l38.js"],[6540,"l39.js"],[6621,"l40.js"],[6745,"l41.js"],[6829,"l42.js"],[6932,"l43.js"],[7034,"l44.js"],[7135,"l45.js"],[7230,"l46.js"],[7298,"l47.js"],[7412,"l48.js"],[7467,"l49.js"],[7503,"l50.js"],[7607,"l51.js"],[7617,"l52.js"],[7760,"l53.js"],[7782,"l54.js"],[7857,"l55.js"],[7886,"l56.js"],[7971,"l57.js"],[8035,"l58.js"],[8162,"l59.js"],[8221,"l60.js"],[8383,"l61.js"],[8440,"l62.js"],[8570,"l63.js"],[8741,"l64.js"],[8773,"l65.js"],[8874,"l66.js"],[8980,"l67.js"],[9007,"l68.js"],[9141,"l69.js"],[9359,"l70.js"],[9581,"l71.js"],[9706,"l72.js"],[9818,"l73.js"],[9884,"l74.js"],[10008,"l75.js"],[10161,"l76.js"],[10264,"l77.js"],[10392,"l78.js"],[10534,"l79.js"],[10642,"l80.js"],[10766,"l81.js"],[10919,"l82.js"],[11172,"l83.js"],[11241,"l84.js"],[11354,"l85.js"],[11415,"tema-rutadia.js"],[11580,"l86.js"],[11640,"l87.js"],[11683,"l88.js"],[11733,"l89.js"],[11782,"l90.js"],[11888,"tema-cobranza.js"],[12035,"tema-pantallas.js"],[12254,"tema-avisos.js"],[12416,"tema-reparte.js"],[12482,"tema-vehiculos.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10462,7 +10436,7 @@ var _ubH78=ub68HTML;ub68HTML=function(){var h=_ubH78.apply(this,arguments),x=S.u
  var i=h.indexOf('<button class="btn big" data-act="ub68si"');return i<0?h:h.slice(0,i)+f+h.slice(i)};
 
 /* ---------- 16 · TAG: el cruce sin viaje de carga va a Gastos del vehículo ---------- */
-var _tc78=tagCruce;tagCruce=function(v,o){var m=_tc78.apply(this,arguments);try{if(m&&!m.cid){S.gastos=S.gastos||[];S.gastos.push({t:'Casetas (TAG)',m:num(m.m),n:'TAG de '+v.n+' · '+m.cas+' ('+fmtF(m.f)+(m.h?' '+m.h:'')+')',caja:false,tag76:1,veh:v.id,f:m.f});m.gasto=1}}catch(e){}return m};
+/* tagCruce: pasó a tema-vehiculos.js */
 
 /* ---------- 24 · "Lo que pasó hoy en su ruta" minimizado ---------- */
 var _rc78=rcHTML;rcHTML=function(){var h=_rc78.apply(this,arguments);try{if(!h||h.indexOf('data-k="rcact"')<0)return h;var n=0;try{n=actDe(+S.chofHoy,iso(TODAY)).length}catch(e){}
@@ -10566,9 +10540,7 @@ try{if(typeof NB_SH!=='undefined')['inspHist'].forEach(function(k){if(NB_SH.inde
 
 /* ---------- 17 · historial de revisiones ---------- */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ip74go"],[data-act="ip74todo"],[data-act="insptodo"]');if(!b)return;try{var w=b.dataset.w||(S.ip74&&S.ip74.w);var o=inspObj(w);if(!o)return;if(b.dataset.act==='ip74go'&&!o.t079)o.t079=Date.now();else if(b.dataset.act!=='ip74go')o.todo79=true}catch(er){}},true);
-var _iM79=inspMarca;inspMarca=function(vh,quien,o){var r=_iM79.apply(this,arguments);try{if(!vh||!o)return r;var L=inspLista(o.tipo),mal=inspFallas(o),uno=L.filter(function(x,i){return o.r[i]}).length;
-  S.inspHist=S.inspHist||[];var hoy=iso(TODAY);if(S.inspHist.some(function(x){return x.vid===vh.id&&x.f===hoy&&x.q===quien}))return r;
-  S.inspHist.push({id:Date.now(),vid:vh.id,f:hoy,h:hhmm(),q:quien,tipo:o.tipo||'dia',n:L.length,mal:mal,todo:!!o.todo79,dur:o.t079?Math.round((Date.now()-o.t079)/1000):null});if(S.inspHist.length>400)S.inspHist=S.inspHist.slice(-400)}catch(e){}return r};
+/* inspMarca: pasó a tema-vehiculos.js */
 function revHoy79(vid,q){var hoy=iso(TODAY);return (S.inspHist||[]).filter(function(x){return x.vid===vid&&x.f===hoy&&(!q||x.q===q)}).slice(-1)[0]||null}
 /* al cierre: "¿Lo entregas en las mismas condiciones?" */
 function ev79HTML(){var vh=vehHoy(),q=chofN(S.chofHoy),r=vh?revHoy79(vh.id,q):null,x=S.cierre.ev79||{};
@@ -10766,7 +10738,7 @@ function limpia80(s){if(!s||MODO!=='vacio')return false;var ch=false;try{
 if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,arguments);limpia80(s);return s};limpia80(S);
  if(typeof nbAplica==='function'){var _nbA80b=nbAplica;nbAplica=function(){var r=_nbA80b.apply(this,arguments);if(limpia80(S)){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},700)}catch(e){}r=true}return r}}}
 /* la placa dice el estado de verdad (antes siempre "VERACRUZ") */
-var _pl80=plateSVG;plateSVG=function(v,mini){var h=_pl80.apply(this,arguments);var e=String(plEdo(v)||'');if(e&&e!=='Veracruz'&&e!=='Guerrero'){var E=esc(e.toUpperCase());h=h.replace('>VERACRUZ</text>','>'+E+'</text>').replace(/<text[^>]*>POR AMOR A<\/text><text[^>]*>VERACRUZ<\/text>/,'')}return h};
+/* plateSVG: pasó a tema-vehiculos.js */
 /* la entrega ya no empieza con 4 cajas y 30 kg inventados: lo de la vez pasada, o en ceros */
 if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply(this,arguments);try{if(c&&!c.rapida){var u=ultPedido(c);S.d.R=u?num(u.R):0;S.d.M=u?num(u.M):0}}catch(e){}return r}}
 /* la bodega sin ubicación: los mapas ya no usan Banderilla; mientras, se centran en tus clientes */
@@ -11097,8 +11069,8 @@ if(typeof stock72==='function'){var _st82=stock72;stock72=function(){if(MODO!=='
 function limpiaTpl82(s){if(!s||MODO!=='vacio')return false;var ch=false,B=null;try{var b=(s.bods||[])[0];if(b&&b.lat!=null)B={lat:+b.lat,lng:+b.lng}}catch(e){}
  (s.cli||[]).forEach(function(c){if(num(c.pR)===4&&num(c.pM)===30){c.pR=0;c.pM=0;ch=true}if(num(c.km)===7&&num(c.min)===15){var k=B&&c.lat!=null?kmE(B,c):null;c.km=k!=null?Math.round(k*10)/10:0;c.min=k!=null?Math.round(k*2.5):0;ch=true}});
  (s.veh||[]).forEach(function(v){if(num(v.valor)===330000){v.valor=0;ch=true}if(num(v.precioC)===385000){v.precioC=0;ch=true}if(v.afDue==='2026-12-10'){v.afDue='';ch=true}if(num(v.kmMes)===3200){v.kmMes=0;ch=true}});return ch}
-if(MODO==='vacio'){var _nc82=nuevoCli;nuevoCli=function(o){var c=_nc82.apply(this,arguments);c.pR=0;c.pM=0;if(num(c.km)===7&&num(c.min)===15){c.km=0;c.min=0}return c};
- var _nv82=nuevoVeh;nuevoVeh=function(o){var v=_nv82.apply(this,arguments);if(num(v.valor)===330000)v.valor=num(o&&o.valor)||0;if(num(v.precioC)===385000)v.precioC=num(o&&o.precioC)||0;if(v.afDue==='2026-12-10')v.afDue=(o&&o.afDue)||'';if(num(v.kmMes)===3200)v.kmMes=0;return v};
+if(MODO==='vacio'){
+ /* nuevoVeh y nuevoCli: lo de la app real pasó a su definición en l7.js */
  limpiaTpl82(S);if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
 /* un cliente al que se le pone ubicación: su distancia desde la bodega */
 var _rdKm82=render;render=function(){try{if(MODO==='vacio'){var b=(S.bods||[])[0];if(b&&b.lat!=null)(S.cli||[]).forEach(function(c){if(c.lat!=null&&!num(c.km)){var k=kmE({lat:+b.lat,lng:+b.lng},c);if(k){c.km=Math.round(k*10)/10;c.min=Math.round(k*2.5)}}})}}catch(e){}return _rdKm82.apply(this,arguments)};
@@ -11830,7 +11802,7 @@ var _rd89=render;render=function(){try{ubArregla89();odo89()}catch(e){console.er
  '.veh90oc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1.5px dashed var(--line);opacity:.75;margin-top:6px;font-size:15px}'].join('\n');document.head.appendChild(st)})();
 
 /* ---------- 85 · la foto en grande, encima de todo ---------- */
-var _fa90=fotoAbrir;fotoAbrir=function(){var r=_fa90.apply(this,arguments);try{var o=document.getElementById('fotov');if(o)o.style.zIndex='130'}catch(e){}return r};
+/* fotoAbrir: pasó a tema-vehiculos.js */
 
 /* ---------- 86 · le quitan un cliente al chofer que va en ruta ---------- */
 function vivos90(){return (S.stops||[]).filter(function(s){return s&&!s.done}).map(function(s){return +s.c})}
@@ -11892,7 +11864,7 @@ function vehIds90(){var V=S.veh;if(!Array.isArray(V)||V.length<2)return 0;var vi
  if(n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'Se arregló el número interno de '+L.join(', ')+' (estaba repetido)'})}catch(e){}
   try{var t='Se arregló: '+L.join(', ')+' tenía'+(n===1?'':'n')+' el mismo número interno que otro vehículo y la app los confundía. Revisa en Vehículos el odómetro de cada uno.';if((S.avPrecio=S.avPrecio||[]).indexOf(t)<0)S.avPrecio.push(t)}catch(e){}}return n}
 var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
-var _vl90=vehLibres;vehLibres=function(ch){return _vl90.apply(this,arguments).filter(function(v){return vehUso90(v.id,ch)==null})};
+/* vehLibres: pasó a tema-vehiculos.js */
 function quienVeh90(q){return q===-1?'un viaje de carga':(+q===ADM85?'el administrador':chofN(q))}
 /* si el que tiene puesto ya lo trae otro, se le cambia solo a uno libre (antes de salir) */
 function vehAuto90(){if(S.role!=='rep'||S.chofHoy==null||(S.salida&&S.salida.ok)||S.vehHoy==null)return;var q=vehUso90(S.vehHoy,+S.chofHoy);if(q==null)return;var v0=vehHoy(),L=vehLibres(+S.chofHoy);if(!L.length){S.vh90='Todos los vehículos están ocupados: '+(v0?v0.n:'')+' lo trae '+quienVeh90(q)+'.';return}
@@ -12506,6 +12478,140 @@ toma81=function(){
    try{natNotif('⚠️ Te quitaron '+(fuera.length===1?'un cliente':fuera.length+' clientes'),S.av90.L.map(function(x){return 'Ya no vayas con '+x.n}).join('. '))}catch(e){}}
   else if(salio)S.tab.rep='entrega'}catch(e){console.error('l90 av',e)}
  return r};
+
+//@@capa tema-vehiculos.js
+/* ===================== TEMA · Vehículos (aplanado el 17 nov) =====================
+   Antes estaba repartido en envolturas encadenadas en l1, l8, l9, l22, l24, l30, l32, l33, l43, l47, l55, l59, l69, l74,
+   l78, l79, l80 y l90. Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo. Se arma AL FINAL, en build.sh.
+   Si se cambia algo de vehículos, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - vehHoy, vehLibres: el vehículo del chofer y los que puede escoger (no los que ya trae otro).
+   - vehiculos, vehBasic, fiVeh, vForm, plateSVG: la sección, la tarjeta, la ficha, el formulario y la placa dibujada.
+   - fuelVeh, vehGastos, tagCruce: combustible y rendimiento, gastos del vehículo, cruces del TAG.
+   - inspHTML, inspRepHTML, inspMarca: la revisión del vehículo.
+   - encVehHTML: el encargo para el chofer. velAlertaHTML, velBeep: alerta de velocidad.
+   - fotoTile, fotoAbrir, fotoZoomable: fotos del vehículo y el visor de fotos.
+   Las funciones que usan los pasos (vehUso90, vYaHTML, inspLista, impBig68, lugaresL…) siguen en su capa.
+   ============================================================================================ */
+
+/* ---------- el vehículo del chofer y los que puede escoger ---------- */
+var _vehHoyBase=vehHoy;
+/* l8 · si no tiene vehículo (app recién instalada) se usa uno en blanco, para que nada se rompa */
+vehHoy=function(){var v=_vehHoyBase.apply(this,arguments);if(v)return v;if(!window._noVeh){var t=VBLANK();t.id=0;t.n='Sin vehículo';t.pl='';t.comb='Gasolina Magna';t.odo=0;t.capL=60;t.rend0=10;t.precio=0;t.acInt=10000;t.acLast=0;t.hist=[];t.serv=[];t.taller=[];t.equipo=[];t.bit=[];t.anual={};t.foto=VEH_IMGS[0][1]();window._noVeh=t}return window._noVeh};
+var _vehLibresBase=vehLibres;
+/* l90 · 89 · el que ya salió con otro (y no ha cerrado) no se puede escoger */
+vehLibres=function(ch){return _vehLibresBase.apply(this,arguments).filter(function(v){return vehUso90(v.id,ch)==null})};
+
+/* ---------- la sección y la tarjeta de cada vehículo ---------- */
+var _vehiculosBase=vehiculos;
+/* l47 · al editar: "¿Qué tipo de vehículo es?" (de carga o auto) arriba */
+vehiculos=function(){var h=_vehiculosBase.apply(this,arguments);if(S.role!=='admin'||!S.vf||S.vfId==null)return h;var v=vehById(S.vfId);if(!v)return h;if(S.vf.esAuto==null)S.vf.esAuto=!!v.esAuto;
+ var c='<div class="card"><b>¿Qué tipo de vehículo es?</b><div class="chips" role="group" aria-label="Tipo de vehículo" style="margin-top:6px"><button data-act="vftipo" data-v="carga" aria-pressed="'+!S.vf.esAuto+'">🚚 De carga</button><button data-act="vftipo" data-v="auto" aria-pressed="'+!!S.vf.esAuto+'">🚗 Auto (no carga)</button></div></div>';
+ var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+var _vehBasicBase=vehBasic;
+vehBasic=function(v,warn){var h=_vehBasicBase.apply(this,arguments);
+ /* l1 · la placa dibujada en lugar del texto */
+ h=h.replace('<span class="lbl">'+esc(v.pl)+(v.color?' · '+esc(v.color):'')+'</span><br>',plateSVG(v,true)+'<span class="lbl">'+(v.color?esc(v.color):'')+'</span><br>');
+ /* l9 · con foto, la tarjeta y la foto más grandes */
+ if(v&&v.foto)h=h.replace('<button class="vcard popin"','<button class="vcard popin vbg"').replace('width:104px;height:60px','width:124px;height:84px');
+ return h};
+
+/* ---------- l43 · la ficha: la placa solo se ve; "Ya se hizo" en cada papel; lo que ya se hizo ---------- */
+var _fiVehBase=fiVeh;
+fiVeh=function(f){var h=_fiVehBase.apply(this,arguments),v=vehById(f.id);if(!v)return h;try{
+ /* placa: solo se ve; se cambia en Editar datos */
+ h=h.replace(/<div class="lbl" style="margin-top:6px">Estado<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">Tipo<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">El número se cambia en "Editar datos" y la placa se dibuja sola\.<\/div>/,rw('Estado',esc(plEdo(v)))+rw('Tipo',(v.plTipo||(v.id===2?'carga':'auto'))==='carga'?'Carga':'Automóvil')+'<div class="lbl">Para cambiar la placa usa "Editar datos".</div>');
+ if(S.role==='admin'&&!S.encOn)VDOC.forEach(function(d){var row=vDocRow(d[1]==='Tarjeta de circulación / tenencia'?'Tarjeta de circulación':d[1],v[d[0]]);if(h.indexOf(row)>-1)h=h.replace(row,row+'<button class="btn sm sec" style="width:auto;margin:2px 0 6px" data-act="vya" data-id="'+v.id+'" data-k="'+d[0]+'">Ya se hizo</button>')});
+ var y=vYaHTML(v);if(y){var i=h.indexOf('<div class="card"><b>Documentos con vencimiento</b>');if(i>-1)h=h.slice(0,i)+y+h.slice(i)}}catch(e){}return h};
+
+/* ---------- el formulario del vehículo ---------- */
+var _vFormBase=vForm;
+vForm=function(){var h=_vFormBase.apply(this,arguments),f=S.vf;
+ /* l22 · marca, modelo, motor, medida de llanta y capacidad */
+ ['marca','modelo','motor','llanta','capK'].forEach(function(k){if(f[k]==null)f[k]=''});
+ h=h.replace(vff('n','Nombre o modelo'),vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'));
+ h=h.replace(vff('color','Color'),vff('color','Color')+vff('motor','Motor','text','ej. 2.5 L diésel')+vff('llanta','Medida de llanta','text','ej. 195/R15')+(h.indexOf('vf_capC')<0?vff('capC','Capacidad de carga (cajas)','number'):'')+vff('capK','Capacidad de carga (kg)','number'));
+ /* l30 · el nombre se arma solo con marca, modelo y año */
+ f=S.vf||{};
+ h=h.replace(vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'),vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300')+'<div class="lbl" style="margin:-2px 0 6px">Se va a llamar: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b> (con el año que pongas abajo)</div>');
+ return h};
+
+/* ---------- l80 · la placa dice el estado de verdad (solo hay diseño de Veracruz y Guerrero) ---------- */
+var _plateSVGBase=plateSVG;
+plateSVG=function(v,mini){var h=_plateSVGBase.apply(this,arguments);var e=String(plEdo(v)||'');if(e&&e!=='Veracruz'&&e!=='Guerrero'){var E=esc(e.toUpperCase());h=h.replace('>VERACRUZ</text>','>'+E+'</text>').replace(/<text[^>]*>POR AMOR A<\/text><text[^>]*>VERACRUZ<\/text>/,'')}return h};
+
+/* ---------- combustible, gastos y TAG ---------- */
+var _fuelVehBase=fuelVeh;
+/* l43 · "Combustible y rendimiento" en su propia tarjeta */
+fuelVeh=function(v){return '<div class="card">'+_fuelVehBase.apply(this,arguments).replace('<div class="lbl" style="margin:12px 0 2px"><b>Combustible</b></div>','<b>Combustible y rendimiento</b>')+'</div>'};
+var _vehGastosBase=vehGastos;
+/* l69 · también los imprevistos del camino (viajes de carga y rutas) */
+vehGastos=function(vh,dias){var L=_vehGastosBase.apply(this,arguments);try{var lim=iso(new Date(TODAY.getTime()-(dias||365)*864e5));
+  S.cargas.forEach(function(c){if(+c.veh!==+vh.id||String(c.fecha)<lim)return;impBig68(c).forEach(function(x){L.push({f:c.fecha,t:x.c,cat:'Imprevisto del camino',m:num(x.m)})})});
+  (S.rutasHist||[]).forEach(function(r){var g=r.res&&r.res.g68;if(!g||r.f<lim||+r.res.veh68!==+vh.id)return;(g.big||[]).forEach(function(x){L.push({f:r.f,t:x.tipo,cat:'Imprevisto del camino',m:num(x.m)})})})}catch(e){}return L};
+var _tagCruceBase=tagCruce;
+/* l78 · cada cruce del TAG entra como gasto (si no es de un viaje de carga) */
+tagCruce=function(v,o){var m=_tagCruceBase.apply(this,arguments);try{if(m&&!m.cid){S.gastos=S.gastos||[];S.gastos.push({t:'Casetas (TAG)',m:num(m.m),n:'TAG de '+v.n+' · '+m.cas+' ('+fmtF(m.f)+(m.h?' '+m.h:'')+')',caja:false,tag76:1,veh:v.id,f:m.f});m.gasto=1}}catch(e){}return m};
+
+/* ---------- la revisión del vehículo ---------- */
+var _inspHTMLBase=inspHTML;
+/* l74 · si son más puntos que la revisión diaria: un botón que los va pasando uno por uno */
+inspHTML=function(o,w,titulo){var L=inspLista(o.tipo),c=inspCfgN();if(L.length<=c.dia.length)return _inspHTMLBase.apply(this,arguments);
+ var hechos=L.filter(function(x,i){return o.r[i]}).length,mal=L.filter(function(x,i){return o.r[i]==='mal'}).length,P=inspPartes(o.tipo);
+ var sub=['revisión diaria'].concat(P.indexOf('sem')>-1?['la de la semana']:[]).concat(P.indexOf('carga')>-1?['lo del viaje de carga']:[]).concat(P.indexOf('mes')>-1?['documentos del mes']:[]);
+ return '<div style="font-size:21px;font-weight:800;margin:6px 0 2px">'+titulo+'</div><div class="lbl" style="margin-bottom:8px">Hoy toca: '+sub.join(', ')+'. Son '+L.length+' puntos: te los voy pasando uno por uno.</div>'
+  +'<button class="btn" style="min-height:66px;font-size:20px" data-act="ip74go" data-w="'+w+'">'+(hechos?'Seguir la revisión ('+hechos+' de '+L.length+')':'Empezar la revisión')+'</button>'
+  +'<div class="ip74" style="margin-top:8px"><div class="bar"><i style="width:'+Math.round(hechos/L.length*100)+'%"></i></div></div><div class="lbl" style="text-align:center;margin-top:4px">'+hechos+' de '+L.length+' revisados'+(mal?' · <b class="neg">'+mal+' con falla</b>':'')+'</div>'};
+var _inspRepHTMLBase=inspRepHTML;
+/* l33 · ya hecha: un renglón "Revisión del vehículo lista" que se abre */
+inspRepHTML=function(){var r=S.inspR,h=_inspRepHTMLBase.apply(this,arguments);if(!h||!r||!r.ok||r.preg||r.wait||S.inspVer)return h;
+ return '<button class="card good" data-act="inspver" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;border:0;cursor:pointer"><span style="font-size:22px">✓</span><span class="grow"><b>Revisión del vehículo lista</b><br><span class="lbl">'+(inspFallas(r).length?'Con '+inspFallas(r).length+' cosa(s) reportada(s)':'Todo está bien')+'</span></span><span class="lbl">Ver</span></button>'};
+var _inspMarcaBase=inspMarca;
+/* l79 · cada revisión queda en el historial del vehículo (una por persona al día) */
+inspMarca=function(vh,quien,o){var r=_inspMarcaBase.apply(this,arguments);try{if(!vh||!o)return r;var L=inspLista(o.tipo),mal=inspFallas(o),uno=L.filter(function(x,i){return o.r[i]}).length;
+  S.inspHist=S.inspHist||[];var hoy=iso(TODAY);if(S.inspHist.some(function(x){return x.vid===vh.id&&x.f===hoy&&x.q===quien}))return r;
+  S.inspHist.push({id:Date.now(),vid:vh.id,f:hoy,h:hhmm(),q:quien,tipo:o.tipo||'dia',n:L.length,mal:mal,todo:!!o.todo79,dur:o.t079?Math.round((Date.now()-o.t079)/1000):null});if(S.inspHist.length>400)S.inspHist=S.inspHist.slice(-400)}catch(e){}return r};
+
+/* ---------- el encargo para el chofer ---------- */
+var _encVehHTMLBase=encVehHTML;
+encVehHTML=function(v){var h=_encVehHTMLBase.apply(this,arguments),f=S.encF;
+ /* l43 · ¿a dónde? (lugares guardados o link de Maps) */
+ if(f&&f.vid===v.id){var L=lugaresL();
+  var c='<div class="lbl" style="margin-top:6px">¿A dónde? (opcional)</div><div class="chips" role="group" aria-label="Lugar" style="margin:6px 0">'+L.map(function(l,i){return '<button data-act="enclug" data-i="'+i+'" aria-pressed="'+(f.lug===i)+'">'+esc(l.n)+'</button>'}).join('')+'<button data-act="enclug" data-i="-1" aria-pressed="'+(f.lug==null||f.lug<0)+'">Que él escoja</button></div>'
+   +'<div class="field"><label for="encml">O pega el link de Maps</label><input id="encml" type="text" data-bind="encF.link" value="'+esc(f.link||'')+'" placeholder="https://maps…" style="width:180px;text-align:left"></div>';
+  h=h.replace('<div class="field"><label for="encn">Nota</label>',c+'<div class="field"><label for="encn">Nota</label>')}
+ /* l55 · en tarjeta de pantalla completa */
+ return h.replace('<div class="card" style="padding:10px 12px;margin:6px 0;border:2px solid var(--accent)"><b>Encargo para el chofer</b>','<div class="card fsform" role="dialog" aria-label="Encargo"><b>Encargo para el chofer</b>')};
+
+/* ---------- alerta de velocidad ---------- */
+var _velAlertaHTMLBase=velAlertaHTML;
+/* l22 · la velocidad de ahorita; se quita sola al bajar (el botón solo si no hay GPS) */
+velAlertaHTML=function(){var a=S.velAl;if(!a)return '';var h=_velAlertaHTMLBase.apply(this,arguments),cur=a.cur==null?a.vel:a.cur;
+ h=h.replace(/<div style="font-size:56px;font-weight:900;line-height:1\.1;margin:10px 0">[^<]*<\/div>/,'<div style="font-size:56px;font-weight:900;line-height:1.1;margin:10px 0">'+cur+' km/h</div>');
+ var sinGps=!DEMO&&a.cur==null&&_velSin>20;
+ return h.replace('<button class="btn" style="margin-top:20px;background:#fff;color:#B3261E;min-height:60px;font-size:20px" data-act="velok">Ya bajé la velocidad</button>','<div style="font-size:16px;margin-top:16px;font-weight:700">Se quita solo cuando bajes de '+a.lim+' km/h.</div>'+(sinGps?'<button class="btn sm" style="margin-top:12px;background:#fff;color:#B3261E;width:auto" data-act="velok">Entendido</button>':''))};
+var _velBeepBase=velBeep;
+/* l22 · además vibra */
+velBeep=function(){_velBeepBase.apply(this,arguments);vibrar([300,150,300,150,300])};
+
+/* ---------- fotos ---------- */
+var _fotoTileBase=fotoTile;
+/* l32 · si la foto es obligatoria y no se pudo: "No pude tomarla" */
+fotoTile=function(k,l,g){var h=_fotoTileBase.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS)return h;var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
+var _fotoAbrirBase=fotoAbrir;
+fotoAbrir=function(src){
+ /* l24 · "Tomar otra para reemplazarla" (se mira qué foto se tocó ANTES de abrirla) */
+ var img=_fvImg,r=_fotoAbrirBase.apply(this,arguments);try{var inp=img&&(img.currentSrc||img.src)===src?fvInput(img):null,o=document.getElementById('fotov');
+ if(inp&&o){var b=document.createElement('button');b.className='fvx fvotra';b.textContent='📷 Tomar otra para reemplazarla';b.addEventListener('click',function(e){e.stopPropagation();inp.click();o.remove()});o.appendChild(b)}}catch(e){}
+ /* l90 · 85 · la foto en grande, encima de todo */
+ try{var o2=document.getElementById('fotov');if(o2)o2.style.zIndex='130'}catch(e){}
+ return r};
+var _fotoZoomableBase=fotoZoomable;
+/* l59 · también se pueden abrir en grande las demás fotos de evidencia */
+fotoZoomable=function(im){if(_fotoZoomableBase.apply(this,arguments))return true;try{
+ if(!im||im.tagName!=='IMG'||im.closest('#fotov,#fgov,#tutov,#pinov,#pncubre,nav,header,label,[data-act],a,.tklogo,.logo,#bienv,#arr,.bv-stage,.gmhole'))return false;
+ if(im.classList.contains('tic'))return false;var s=im.getAttribute('src')||'';if(!/^(data:image\/(jpe?g|webp)|blob:|https?:)/i.test(s))return false;
+ var r=im.getBoundingClientRect();return r.width>=36&&r.height>=36}catch(e){return false}};
 
 
 /* ---------- Estructura ---------- */

@@ -90,10 +90,7 @@ var _dfL22=dfLista;dfLista=function(){return _dfL22.apply(this,arguments).filter
 
 /* ===================== Vehículo: marca, modelo, año, color, serie, capacidad, motor, llantas ===================== */
 var VEH_X=[['marca','Marca','text','ej. Nissan'],['modelo','Modelo','text','ej. NP300'],['anio','Año','number',''],['color','Color','text',''],['vin','Número de serie (VIN)','text',''],['capC','Capacidad de carga (cajas)','number',''],['capK','Capacidad de carga (kg)','number',''],['motor','Motor','text','ej. 2.5 L diésel'],['llanta','Medida de llanta','text','ej. 195/R15']];
-var _vF22=vForm;vForm=function(){var h=_vF22.apply(this,arguments),f=S.vf;['marca','modelo','motor','llanta','capK'].forEach(function(k){if(f[k]==null)f[k]=''});
- h=h.replace(vff('n','Nombre o modelo'),vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'));
- h=h.replace(vff('color','Color'),vff('color','Color')+vff('motor','Motor','text','ej. 2.5 L diésel')+vff('llanta','Medida de llanta','text','ej. 195/R15')+(h.indexOf('vf_capC')<0?vff('capC','Capacidad de carga (cajas)','number'):'')+vff('capK','Capacidad de carga (kg)','number'));
- return h};
+/* vForm: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='vsave'&&S.vf){var f=JSON.parse(JSON.stringify(S.vf)),id=S.vfId,n0=S.veh.length;setTimeout(function(){var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(!v)return;['marca','modelo','motor','llanta'].forEach(function(k){if(f[k]!=null)v[k]=String(f[k]).trim()});if(num(f.capK)>0)v.capK=num(f.capK);render()},0)}
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
@@ -177,7 +174,7 @@ var _rTut22=render;render=function(){var r=_rTut22.apply(this,arguments);try{if(
 
 /* ===================== Vibración ===================== */
 function vibrar(p){try{var H=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics;if(H){if(Array.isArray(p)){H.vibrate({duration:Math.min(1500,p.reduce(function(a,b){return a+b},0))})}else if(p>=200)H.vibrate({duration:p});else H.impact({style:p>=40?'MEDIUM':'LIGHT'});return}}catch(e){}try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
-var _vb22=velBeep;velBeep=function(){_vb22.apply(this,arguments);vibrar([300,150,300,150,300])};
+/* velBeep: pasó a tema-vehiculos.js */
 if(typeof fxErr==='function'){var _fe22=fxErr;fxErr=function(){try{_fe22.apply(this,arguments)}catch(e){}vibrar(250)}}
 
 /* ===================== Teclado del PIN: responde aunque se teclee rápido ===================== */
@@ -196,7 +193,4 @@ function velMedir(){var a=S.velAl;if(!a)return;
 function velRevisar(){var a=S.velAl;if(!a)return;var cur=a.cur==null?a.vel:a.cur;if(cur<=a.lim){_velBajo++;if(_velBajo>=2){velCerrar(true);return}}else _velBajo=0;render()}
 function velCerrar(auto){S.velAl=null;_velBajo=0;_velSin=0;if(_velW!=null){try{navigator.geolocation.clearWatch(_velW)}catch(e){}_velW=null}if(auto)toast('Gracias, ya vas a buena velocidad');render()}
 setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){a.cur=Math.max(a.lim-8,(a.cur==null?a.vel:a.cur)-4);velRevisar()}else if(a.cur==null&&_velSin>20)render()},1000);
-var _vaH22=velAlertaHTML;velAlertaHTML=function(){var a=S.velAl;if(!a)return '';var h=_vaH22.apply(this,arguments),cur=a.cur==null?a.vel:a.cur;
- h=h.replace(/<div style="font-size:56px;font-weight:900;line-height:1\.1;margin:10px 0">[^<]*<\/div>/,'<div style="font-size:56px;font-weight:900;line-height:1.1;margin:10px 0">'+cur+' km/h</div>');
- var sinGps=!DEMO&&a.cur==null&&_velSin>20;
- return h.replace('<button class="btn" style="margin-top:20px;background:#fff;color:#B3261E;min-height:60px;font-size:20px" data-act="velok">Ya bajé la velocidad</button>','<div style="font-size:16px;margin-top:16px;font-weight:700">Se quita solo cuando bajes de '+a.lim+' km/h.</div>'+(sinGps?'<button class="btn sm" style="margin-top:12px;background:#fff;color:#B3261E;width:auto" data-act="velok">Entendido</button>':''))};
+/* velAlertaHTML: pasó a tema-vehiculos.js */

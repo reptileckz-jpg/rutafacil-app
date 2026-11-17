@@ -1,7 +1,6 @@
 /* ===================== v6.1 · Inicio de ruta: odómetro y tanque confirmados, revisión que se encoge ===================== */
 /* la revisión del vehículo, ya terminada, queda chiquita */
-var _iR33=inspRepHTML;inspRepHTML=function(){var r=S.inspR,h=_iR33.apply(this,arguments);if(!h||!r||!r.ok||r.preg||r.wait||S.inspVer)return h;
- return '<button class="card good" data-act="inspver" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;border:0;cursor:pointer"><span style="font-size:22px">✓</span><span class="grow"><b>Revisión del vehículo lista</b><br><span class="lbl">'+(inspFallas(r).length?'Con '+inspFallas(r).length+' cosa(s) reportada(s)':'Todo está bien')+'</span></span><span class="lbl">Ver</span></button>'};
+/* inspRepHTML: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="inspver"],[data-act="inspoculta"]');if(!b)return;e.stopImmediatePropagation();S.inspVer=b.dataset.act==='inspver';render()},true);
 /* odómetro y tanque: el chofer los tiene que confirmar */
 function salConfHTML(){if(S.role!=='rep'||S.salida.ok)return '';var s=S.salida,c=S.cierre||{};

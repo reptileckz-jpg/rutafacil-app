@@ -96,7 +96,7 @@ function limpia80(s){if(!s||MODO!=='vacio')return false;var ch=false;try{
 if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,arguments);limpia80(s);return s};limpia80(S);
  if(typeof nbAplica==='function'){var _nbA80b=nbAplica;nbAplica=function(){var r=_nbA80b.apply(this,arguments);if(limpia80(S)){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},700)}catch(e){}r=true}return r}}}
 /* la placa dice el estado de verdad (antes siempre "VERACRUZ") */
-var _pl80=plateSVG;plateSVG=function(v,mini){var h=_pl80.apply(this,arguments);var e=String(plEdo(v)||'');if(e&&e!=='Veracruz'&&e!=='Guerrero'){var E=esc(e.toUpperCase());h=h.replace('>VERACRUZ</text>','>'+E+'</text>').replace(/<text[^>]*>POR AMOR A<\/text><text[^>]*>VERACRUZ<\/text>/,'')}return h};
+/* plateSVG: pasó a tema-vehiculos.js */
 /* la entrega ya no empieza con 4 cajas y 30 kg inventados: lo de la vez pasada, o en ceros */
 if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply(this,arguments);try{if(c&&!c.rapida){var u=ultPedido(c);S.d.R=u?num(u.R):0;S.d.M=u?num(u.M):0}}catch(e){}return r}}
 /* la bodega sin ubicación: los mapas ya no usan Banderilla; mientras, se centran en tus clientes */

@@ -44,7 +44,7 @@
 
 ## 3. Cómo está hecha (técnico)
 
-- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`, `tema-avisos.js`, `tema-reparte.js`).
+- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`, `tema-avisos.js`, `tema-reparte.js`, `tema-vehiculos.js`).
   - **Regla nueva:** lo de un tema aplanado se cambia en su `tema-*.js`, sin envolturas nuevas en otras capas. Avance de la migración a Vite en `fuente/migracion.md` (se mide con `bash capas/mide.sh`: envolturas que quedan; meta 0).
   - **Mapa de errores:** `build.sh` marca dónde empieza cada capa y `mapa.py` lo anota; los errores dicen "En: l80.js:57".
   - Cada capa reemplaza o envuelve funciones globales: `var _f=f; f=function(){…}`.
@@ -209,7 +209,7 @@
 | 9.0 (17 nov) | Fotos del vehículo en grande; aviso grande al chofer cuando le quitan un cliente; el administrador que reparte (contador, acceso arriba, tutorial propio, textos del cierre); vehículo ocupado; vehículos con el mismo número interno (arreglado); versión real del APK arriba |
 | 9.1 (17 nov) | **Cobranza** (`tema-cobranza.js`): quién debe y desde cuándo, plazo general y por cliente, estado de cuenta por WhatsApp, promesas de pago (aviso al admin y al chofer) |
 | 9.2 (17 nov) | **Reorganización** (`tema-pantallas.js`): barra Inicio · Rutas · Clientes · Bodega · Cargas · Más; Inicio con precio que destella, lista "Hoy", números, bodega como antes; Rutas (repartir, mapa, cierres); Clientes con pestañas Clientes · Pedidos · Cobranza; pendientes en un renglón; numeritos rojos solo si es urgente; sueldos en Personal; tutoriales al día |
-| 9.6 (17 nov, sin publicar) | **Versión real sin valores de la demo en los números:** odómetro, costo de la caja/kilo sin cargas (se pregunta en el asistente y en "Datos que faltan"), costos/capacidades de vehículos del asistente, límite y "% de contado" de clientes nuevos; proveedores y básculas con la coordenada escrita en la dirección ya no piden ubicación (98). Migración a Vite: temas avisos y quién reparte (528 envolturas) |
+| 9.6 (17 nov, sin publicar) | **Versión real sin valores de la demo en los números:** odómetro, costo de la caja/kilo sin cargas (se pregunta en el asistente y en "Datos que faltan"), costos/capacidades de vehículos del asistente, límite y "% de contado" de clientes nuevos; proveedores y básculas con la coordenada escrita en la dirección ya no piden ubicación (98). Migración a Vite: temas avisos, quién reparte y vehículos (503 envolturas) |
 | 9.3–9.5 (17 nov) | **Cambio de día sin perder nada:** de 12 a 5 a.m. el chofer sigue con su ruta; **regla única: ninguna ruta con efectivo, entregas o cajas se reemplaza sin guardarla para recibirla** ("📥 Cierre atrasado / Lo que traía", en rojo hasta recibirlo); liberar guarda lo que traía; batería con dos celulares (`t95nube`) que cuadra efectivo y cajas |
 
 ## 8. Decisiones tomadas (no volver a proponer como nuevas)

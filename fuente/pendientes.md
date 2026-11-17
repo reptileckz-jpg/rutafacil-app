@@ -2305,3 +2305,10 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Se quedan a propósito (son de la app, no de la demo): aceite cada 10,000 km en camioneta y 15,000 en camión (se cambia en la ficha), aviso de velocidad 120/105 km/h, límites de Ajustes.
 - 98 PROVEEDORES Y BÁSCULAS: si la coordenada (o un link de Google Maps) quedó escrita en la dirección, la app la toma como su ubicación ya confirmada, deja la dirección vacía y ya no la pide al ir a cargar (lo mismo que se hizo en el 80 con clientes). Queda registrado en el proveedor/báscula. Una dirección normal no se toca.
 - Prueba t100 (25). Ajustada t75 (el asistente tiene una pantalla más: "¿Cuánto te cuesta?"). Todas: 0 FAIL. Las comparaciones de Vite siguen iguales en la demo.
+
+## 2026-11-17 · 101 · Vite (Ricardo: "Sigue") · tema "vehículos"
+- HECHO (`tema-vehiculos.js`, al final del armado): el vehículo del chofer y los que puede escoger (no el que ya trae otro), la sección, tarjeta, ficha, formulario y placa dibujada, combustible y rendimiento, gastos (con imprevistos del camino), cruces del TAG como gasto, la revisión del vehículo (paso a paso y su historial), el encargo para el chofer, la alerta de velocidad (con vibración) y las fotos (no pude tomarla, tomar otra, verla en grande). Antes eran 23 envolturas en 18 capas.
+- Las 2 envolturas de l82 sobre nuevoVeh/nuevoCli (solo limpiaban valores de la demo en la app real) pasaron a la definición de esas funciones en l7.js.
+- De paso (resto del 100): un camión dado de alta en el asistente traía la fecha de afinación de la demo (2 mar 2027); ya no, y en los ya guardados se quita si es igual a la de ejemplo.
+- `pruebas/comp-vehiculos.js`: 54 casos iguales en la demo y 45 en la real (la única diferencia es la de la afinación, a propósito). t100 con un caso más (26). Todas: 0 FAIL.
+- Envolturas en capas viejas: 528 → 503 (11%). Siguiente tema: ruta y entrega del chofer.

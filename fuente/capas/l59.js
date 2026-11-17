@@ -24,10 +24,7 @@ var _gL59=guiaLibre;guiaLibre=function(){if(!_gL59.apply(this,arguments))return 
 ['input','touchmove','wheel'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{var o=document.getElementById('guiab');if(o&&!o.dataset.forzada)o.remove()}catch(er){}},{capture:true,passive:true})});
 
 /* ---------- 7 · toda foto en miniatura se abre en grande (también en el cierre que recibe el admin) ---------- */
-var _fZ59=fotoZoomable;fotoZoomable=function(im){if(_fZ59.apply(this,arguments))return true;try{
- if(!im||im.tagName!=='IMG'||im.closest('#fotov,#fgov,#tutov,#pinov,#pncubre,nav,header,label,[data-act],a,.tklogo,.logo,#bienv,#arr,.bv-stage,.gmhole'))return false;
- if(im.classList.contains('tic'))return false;var s=im.getAttribute('src')||'';if(!/^(data:image\/(jpe?g|webp)|blob:|https?:)/i.test(s))return false;
- var r=im.getBoundingClientRect();return r.width>=36&&r.height>=36}catch(e){return false}};
+/* fotoZoomable: pasó a tema-vehiculos.js */
 
 /* ---------- 14 · ya no sale la pantalla de "Comenzar": entra directo ---------- */
 bienvMostrar=function(){try{if(S.setup)S.setup.bienv=true;localStorage.setItem('bienvCel','1')}catch(e){}};

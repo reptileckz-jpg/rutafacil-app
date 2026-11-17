@@ -64,7 +64,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var _aj43=ajHTML;ajHTML=function(){var h=_aj43.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;return h.replace('data-act="tutver">Ver el tutorial otra vez</button>','data-act="tutver">Ver el tutorial otra vez</button><button class="btn sec" style="margin-top:8px" data-act="tutdias">'+(S.tutDiasOff?'Volver a prender los consejos de cada día':'Apagar los consejos de cada día')+'</button>'+(S.aprendeOff?'<button class="btn sec" style="margin-top:8px" data-act="aprendeon">Mostrar "Aprende la app"</button>':''))};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tutdias"],[data-act="aprendeon"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='tutdias')S.tutDiasOff=!S.tutDiasOff;else S.aprendeOff=false;render()},true);
 /* ---------- combustible del vehículo dentro de su tarjeta ---------- */
-var _fV43=fuelVeh;fuelVeh=function(v){return '<div class="card">'+_fV43.apply(this,arguments).replace('<div class="lbl" style="margin:12px 0 2px"><b>Combustible</b></div>','<b>Combustible y rendimiento</b>')+'</div>'};
+/* fuelVeh: pasó a tema-vehiculos.js */
 /* ---------- vehículos: la placa no se cambia en Papeles (solo en "Editar datos"); "Ya se hizo" en cada papel ---------- */
 var VDOC=[['segVence','Seguro',12,'Seguro'],['tcVence','Tarjeta de circulación / tenencia',12,'Tenencia y placas'],['verVence','Verificación',6,'Verificación']];
 function vYaHTML(v){var x=S.vya;if(!x||x.vid!==v.id)return '';var d=VDOC.filter(function(z){return z[0]===x.k})[0];
@@ -72,11 +72,7 @@ function vYaHTML(v){var x=S.vya;if(!x||x.vid!==v.id)return '';var d=VDOC.filter(
   +'<div class="field"><label for="vyaq">¿Quién lo llevó?</label><input id="vyaq" type="text" data-bind="vya.q" value="'+esc(x.q||'')+'" style="width:160px;text-align:left"></div><label class="btn sm sec" for="vyafo" style="display:inline-flex;align-items:center;cursor:pointer;margin-top:6px">'+(x.foto?'✓ Foto del comprobante':'📷 Foto del comprobante')+'</label><input id="vyafo" type="file" accept="image/*" capture="environment" data-vyafoto="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'
   +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:2" data-act="vyasi">Guardar</button><button class="btn sec" style="flex:1" data-act="vyano">Cancelar</button></div><div class="lbl">Se registra el gasto y se actualiza el próximo vencimiento.</div></div>'}
 function sumaMeses(f,m){var d=new Date(f+'T12:00:00');d.setMonth(d.getMonth()+m);return iso(d)}
-if(typeof fiVeh==='function'){var _fiV43=fiVeh;fiVeh=function(f){var h=_fiV43.apply(this,arguments),v=vehById(f.id);if(!v)return h;try{
- /* placa: solo se ve; se cambia en Editar datos */
- h=h.replace(/<div class="lbl" style="margin-top:6px">Estado<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">Tipo<\/div><div class="chips" role="group" style="margin:6px 0">[\s\S]*?<\/div><div class="lbl">El número se cambia en "Editar datos" y la placa se dibuja sola\.<\/div>/,rw('Estado',esc(plEdo(v)))+rw('Tipo',(v.plTipo||(v.id===2?'carga':'auto'))==='carga'?'Carga':'Automóvil')+'<div class="lbl">Para cambiar la placa usa "Editar datos".</div>');
- if(S.role==='admin'&&!S.encOn)VDOC.forEach(function(d){var row=vDocRow(d[1]==='Tarjeta de circulación / tenencia'?'Tarjeta de circulación':d[1],v[d[0]]);if(h.indexOf(row)>-1)h=h.replace(row,row+'<button class="btn sm sec" style="width:auto;margin:2px 0 6px" data-act="vya" data-id="'+v.id+'" data-k="'+d[0]+'">Ya se hizo</button>')});
- var y=vYaHTML(v);if(y){var i=h.indexOf('<div class="card"><b>Documentos con vencimiento</b>');if(i>-1)h=h.slice(0,i)+y+h.slice(i)}}catch(e){}return h}}
+/* fiVeh: pasó a tema-vehiculos.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.vyafoto||!S.vya)return;var f=t.files&&t.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var r=Math.min(1,900/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*r);cv.height=Math.round(im.height*r);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.vya.foto=cv.toDataURL('image/jpeg',0.7);render()};im.src=fr.result};fr.readAsDataURL(f)},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='vya'){e.stopImmediatePropagation();var d=VDOC.filter(function(z){return z[0]===b.dataset.k})[0];S.vya={vid:+b.dataset.id,k:b.dataset.k,f:iso(TODAY),c:'',v:sumaMeses(iso(TODAY),d[2]),q:'',foto:null};render();return}
@@ -90,10 +86,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- encargos: a dónde ir (lugar guardado o link de Maps) y el lugar se guarda ---------- */
 ['lugares'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 function lugaresL(){return S.lugares=S.lugares||[]}
-var _evh43=encVehHTML;encVehHTML=function(v){var h=_evh43.apply(this,arguments),f=S.encF;if(!f||f.vid!==v.id)return h;var L=lugaresL();
- var c='<div class="lbl" style="margin-top:6px">¿A dónde? (opcional)</div><div class="chips" role="group" aria-label="Lugar" style="margin:6px 0">'+L.map(function(l,i){return '<button data-act="enclug" data-i="'+i+'" aria-pressed="'+(f.lug===i)+'">'+esc(l.n)+'</button>'}).join('')+'<button data-act="enclug" data-i="-1" aria-pressed="'+(f.lug==null||f.lug<0)+'">Que él escoja</button></div>'
-  +'<div class="field"><label for="encml">O pega el link de Maps</label><input id="encml" type="text" data-bind="encF.link" value="'+esc(f.link||'')+'" placeholder="https://maps…" style="width:180px;text-align:left"></div>';
- return h.replace('<div class="field"><label for="encn">Nota</label>',c+'<div class="field"><label for="encn">Nota</label>')};
+/* encVehHTML: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="enclug"]');if(!b||!S.encF)return;e.stopImmediatePropagation();S.encF.lug=+b.dataset.i;render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="encsave"]');if(!b||!S.encF)return;var f=S.encF,n0=encList().length;setTimeout(function(){var L=encList();if(L.length<=n0)return;var x=L[L.length-1];
  if(f.lug!=null&&f.lug>=0){var l=lugaresL()[f.lug];if(l)x.lugar={n:l.n,lat:l.lat,lng:l.lng}}else if(f.link){var u=typeof ubParse==='function'?ubParse(f.link):null;x.lugar=u?{n:'Lugar del link',lat:u.lat,lng:u.lng}:{n:'',link:f.link}}},20)},true);

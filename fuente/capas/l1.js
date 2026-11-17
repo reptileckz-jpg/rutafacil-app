@@ -81,7 +81,7 @@ function plateSVG(v,mini){var n=String(v.pl||'').toUpperCase().trim()||'SIN PLAC
    +seal(22,'#C79AA6')+seal(278,'#C79AA6')+'<text x="150" y="143" text-anchor="middle" font-size="8.4" font-weight="800" fill="#111" '+F+'>'+plTipoTxt(v)+'</text>'}
  return '<svg class="plate'+(mini?' mini':'')+'" viewBox="0 0 300 150" role="img" aria-label="Placa '+esc(n)+' de '+e+'">'+x+'</svg>'}
 /* en la lista de vehículos la placa se ve dibujada en chiquito */
-var _vbL=vehBasic;vehBasic=function(v,warn){var h=_vbL.apply(this,arguments);return h.replace('<span class="lbl">'+esc(v.pl)+(v.color?' · '+esc(v.color):'')+'</span><br>',plateSVG(v,true)+'<span class="lbl">'+(v.color?esc(v.color):'')+'</span><br>')};
+/* vehBasic: pasó a tema-vehiculos.js */
 /* imágenes de vehículo para escoger */
 var VEH_IMGS=[['Nissan NP300 (foto)',function(){return FOTO_NP}],['Freightliner M2 (foto)',function(){return FOTO_FL}],['Camioneta (dibujo)',function(){return vehImg('pick','#F3F3F0','#C9CCD1')}],['Camión (dibujo)',function(){return vehImg('truck','#F4F4F2','#1F4E9A')}]];
 function vehEsCamion(i){return /Cami[oó]n|M2/.test((VEH_IMGS[+i]||[''])[0])}

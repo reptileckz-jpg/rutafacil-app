@@ -39,12 +39,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(b.dataset.act==='ac74fix'){var a=num(v.acLast);v.acLast=Math.max(0,num(v.odo)-a);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Corrigió el último aceite de '+v.n+': fue hace '+a.toLocaleString('es-MX')+' km'});toast('✓ Corregido')}else{v.acOk74=v.acLast}render()},true);
 
 /* ---------- 71 · revisión de la semana paso a paso ---------- */
-var _iH74=inspHTML;inspHTML=function(o,w,titulo){var L=inspLista(o.tipo),c=inspCfgN();if(L.length<=c.dia.length)return _iH74.apply(this,arguments);
- var hechos=L.filter(function(x,i){return o.r[i]}).length,mal=L.filter(function(x,i){return o.r[i]==='mal'}).length,P=inspPartes(o.tipo);
- var sub=['revisión diaria'].concat(P.indexOf('sem')>-1?['la de la semana']:[]).concat(P.indexOf('carga')>-1?['lo del viaje de carga']:[]).concat(P.indexOf('mes')>-1?['documentos del mes']:[]);
- return '<div style="font-size:21px;font-weight:800;margin:6px 0 2px">'+titulo+'</div><div class="lbl" style="margin-bottom:8px">Hoy toca: '+sub.join(', ')+'. Son '+L.length+' puntos: te los voy pasando uno por uno.</div>'
-  +'<button class="btn" style="min-height:66px;font-size:20px" data-act="ip74go" data-w="'+w+'">'+(hechos?'Seguir la revisión ('+hechos+' de '+L.length+')':'Empezar la revisión')+'</button>'
-  +'<div class="ip74" style="margin-top:8px"><div class="bar"><i style="width:'+Math.round(hechos/L.length*100)+'%"></i></div></div><div class="lbl" style="text-align:center;margin-top:4px">'+hechos+' de '+L.length+' revisados'+(mal?' · <b class="neg">'+mal+' con falla</b>':'')+'</div>'};
+/* inspHTML: pasó a tema-vehiculos.js */
 function ip74HTML(){var x=S.ip74;if(!x)return '';var o;try{o=inspObj(x.w)}catch(e){o=null}if(!o){S.ip74=null;return ''}var L=inspLista(o.tipo),IC=inspIcos(o.tipo),c=inspCfgN(),P=inspPartes(o.tipo),nD=c.dia.length,nS=P.indexOf('sem')>-1?c.lunes.length:0,nC=P.indexOf('carga')>-1?c.carga.length:0;
  if(x.i>=L.length){var mal=L.map(function(t,i){return o.r[i]==='mal'?t.split(': ')[0]:null}).filter(Boolean);
   return ovW70('ip74ov','Revisión del vehículo','<div class="ip74"><div class="bar"><i style="width:100%"></i></div><div class="it">'+(mal.length?'Revisaste todo · '+mal.length+' con falla':'✓ Todo revisado y bien')+'</div>'+(mal.length?'<div class="card note" style="font-size:16px">'+mal.map(esc).join('<br>')+'<div class="lbl" style="margin-top:6px">Se le avisa al administrador.</div></div>':'')+'<button class="btn big" data-act="ip74fin">Listo</button><button class="btn sec big" data-act="ip74atras">Atrás</button></div>','ip74x')}

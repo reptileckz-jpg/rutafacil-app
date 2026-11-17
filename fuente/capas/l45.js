@@ -76,10 +76,11 @@ function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=3
  S.loteCierres=(S.loteCierres||[]).filter(function(x){return String(x.fin||'')>=antes});if(S.precio)S.precio.hist=(S.precio.hist||[]).filter(function(x){return String(x.f||'')>=antes});
  if(S.metaMes&&S.metaMes.ven==='260000'&&S.metaMes.gan==='45000')S.metaMes={ven:'',gan:''};migraDemo100();S.limpDemo=3}
 /* 100 · vehículos y clientes que se dieron de alta en el asistente con datos de la demo: se quitan los que son IGUALES a los de ejemplo
-   (costos al año, sueldo, parte de las ventas, valor, km al mes, precio de combustible, rendimiento y capacidades); lo que el usuario cambió se queda */
+   (costos al año, sueldo, parte de las ventas, fecha de afinación, valor, km al mes, precio de combustible, rendimiento y capacidades); lo que el usuario cambió se queda */
 function migraDemo100(){var T=[];try{T=tpl().veh||[]}catch(e){}var J=function(x){return JSON.stringify(x)};
  (S.veh||[]).forEach(function(v){if(!v)return;T.forEach(function(t){
   if(v.anual&&J(v.anual)===J(t.anual))v.anual={};
+  if(t.afDue&&v.afDue===t.afDue)v.afDue='';
   ['parteVentas','sueldoMes'].forEach(function(k){if(t[k]!=null&&v[k]===t[k])delete v[k]});
   ['valor','precioC','kmMes'].forEach(function(k){if(num(t[k])&&num(v[k])===num(t[k]))v[k]=''});
   if(!(v.hist&&v.hist.length)){if(num(t.precio)&&num(v.precio)===num(t.precio))v.precio='';if(num(t.rend0)&&num(v.rend0)===num(t.rend0))v.rend0=''}

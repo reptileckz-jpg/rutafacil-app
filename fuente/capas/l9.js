@@ -56,7 +56,7 @@ var _vbgC={};
 function vbgMini(v){if(!v||!v.foto)return null;var k=v.id+':'+v.foto.length;if(_vbgC[k]!==undefined)return _vbgC[k];_vbgC[k]=null;
  var im=new Image();im.onload=function(){try{var cv=document.createElement('canvas');var CW=420,CH=Math.round(420*im.height/im.width);cv.width=CW;cv.height=CH;var cx=cv.getContext('2d');try{cx.filter='blur(1.5px)'}catch(e){}cx.drawImage(im,0,0,CW,CH);_vbgC[k]=cv.toDataURL('image/jpeg',.8);vbgPon()}catch(e){_vbgC[k]=v.foto;vbgPon()}};im.src=v.foto;return null}
 function vbgPon(){Array.prototype.forEach.call(document.querySelectorAll('.vcard.vbg[data-id]'),function(el){var v=S.veh.filter(function(x){return x.id===+el.dataset.id})[0];var u=vbgMini(v);if(u)el.style.setProperty('--vbg','url('+u+')')})}
-var _vbL9=vehBasic;vehBasic=function(v){var h=_vbL9.apply(this,arguments);if(v&&v.foto)h=h.replace('<button class="vcard popin"','<button class="vcard popin vbg"').replace('width:104px;height:60px','width:124px;height:84px');return h};
+/* vehBasic: pasó a tema-vehiculos.js */
 
 /* ---- Barra de abajo sin parpadeo ---- */
 function navSync(){try{if(S.tut)navHid=false;document.documentElement.classList.toggle('navhid',!!navHid)}catch(e){}}

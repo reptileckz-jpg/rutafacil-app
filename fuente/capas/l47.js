@@ -102,9 +102,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.id==='wz_km'&&S.wz)S.wz.d._kmMano=true},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="simabre"]');if(!b)return;e.stopImmediatePropagation();S.simYa=true;wzAbre('sim',{provs:[],dias:'1',com:'300',merma:'3'})},true);
 /* "Editar datos" del vehículo: también se puede cambiar si es de carga o auto */
-var _veh47=vehiculos;vehiculos=function(){var h=_veh47.apply(this,arguments);if(S.role!=='admin'||!S.vf||S.vfId==null)return h;var v=vehById(S.vfId);if(!v)return h;if(S.vf.esAuto==null)S.vf.esAuto=!!v.esAuto;
- var c='<div class="card"><b>¿Qué tipo de vehículo es?</b><div class="chips" role="group" aria-label="Tipo de vehículo" style="margin-top:6px"><button data-act="vftipo" data-v="carga" aria-pressed="'+!S.vf.esAuto+'">🚚 De carga</button><button data-act="vftipo" data-v="auto" aria-pressed="'+!!S.vf.esAuto+'">🚗 Auto (no carga)</button></div></div>';
- var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+/* vehiculos: pasó a tema-vehiculos.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vftipo"]');if(!b||!S.vf)return;e.stopImmediatePropagation();S.vf.esAuto=b.dataset.v==='auto';S.vf.plTipo=S.vf.esAuto?'auto':'carga';render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vsave"]');if(!b||!S.vf||S.vfId==null||S.vf.esAuto==null)return;var id=S.vfId,a=!!S.vf.esAuto;setTimeout(function(){var v=vehById(id);if(v){v.esAuto=a;v.plTipo=a?'auto':'carga'}render()},20)},true);
 /* 100 · cuánto te cuesta (mientras no hay ninguna carga): tarjeta paso a paso, desde "Datos que faltan" */

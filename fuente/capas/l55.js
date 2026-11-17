@@ -5,7 +5,7 @@
  '.fsform>b:first-child{display:block;font-size:24px;font-weight:900;margin-bottom:10px}.fsform .btn{min-height:60px!important;font-size:18px}.fsform input,.fsform select{min-height:52px;font-size:18px}'].join('\n');document.head.appendChild(st)})();
 /* "Ya se hizo" (vehículo) y encargo al chofer: en pantalla completa */
 var _vYa55=vYaHTML;vYaHTML=function(v){var h=_vYa55.apply(this,arguments);return h?h.replace('<div class="card" style="border:2px solid var(--accent)">','<div class="card fsform" role="dialog" aria-label="Ya se hizo">'):h};
-var _encV55=encVehHTML;encVehHTML=function(v){var h=_encV55.apply(this,arguments);return h.replace('<div class="card" style="padding:10px 12px;margin:6px 0;border:2px solid var(--accent)"><b>Encargo para el chofer</b>','<div class="card fsform" role="dialog" aria-label="Encargo"><b>Encargo para el chofer</b>')};
+/* encVehHTML: pasó a tema-vehiculos.js */
 /* abono de un cliente y pago a un proveedor: por pasos */
 WZ.abc={tit:'Abono de cliente',fin:'Registrar abono',pasos:[
  {q:function(d){return '¿Cuánto abona '+cl(d.id).n+'?'},a:function(d){return 'Debe '+money(cl(d.id).cred)+'.'},c:[{k:'m',l:'Abono $',t:'number'}],ok:function(d){var m=num(d.m),c=cl(d.id);return !(m>0)?'Escribe cuánto abona':(m>c.cred+0.5?'Debe solo '+money(c.cred):'')},html:function(d){return '<div class="card">'+wzCampo({k:'m',l:'Abono $',t:'number'},d)+'</div><button class="btn sec" style="margin-top:8px" data-act="wzop" data-k="m" data-v="'+cl(d.id).cred+'">Pagó todo ('+money(cl(d.id).cred)+')</button>'}},

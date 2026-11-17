@@ -5,8 +5,7 @@ var VEH_TRES=function(pre,f,camp){return camp('marca','Marca','text','ej. Nissan
 var _suH30=setupHTML;setupHTML=function(){var h=_suH30.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==2)return h;var f=S.setup.vf||{};
  return h.replace(/<div class="field"><label[^>]*>Nombre o modelo<\/label>[\s\S]*?<\/div>/,VEH_TRES('setup.vf.',f,function(k,l,t,ph){return suX('setup.vf.'+k,l,f[k],t,ph)})+'<div class="lbl" style="margin:-2px 0 6px">La tarjeta del vehículo se llama así: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b></div>')};
 /* Vehículos (admin) */
-var _vF30=vForm;vForm=function(){var h=_vF30.apply(this,arguments),f=S.vf||{};
- h=h.replace(vff('n','Nombre (como le dicen)','text','ej. La blanca')+vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300'),vff('marca','Marca','text','ej. Nissan')+vff('modelo','Modelo','text','ej. NP300')+'<div class="lbl" style="margin:-2px 0 6px">Se va a llamar: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b> (con el año que pongas abajo)</div>');return h};
+/* vForm: pasó a tema-vehiculos.js */
 /* el nombre se arma solo antes de guardar */
 function vehNomFix(){try{var U=S.setup&&S.setup.vf;if(U){var n=vehNomDe(U);if(n)U.n=n}if(S.vf){var n2=vehNomDe(S.vf);if(n2)S.vf.n=n2}}catch(e){}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;if(['suadd','sunext','vsave','sufin'].indexOf(b.dataset.act)>-1)vehNomFix()},true);

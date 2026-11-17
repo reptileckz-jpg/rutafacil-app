@@ -20,7 +20,7 @@
  '.veh90oc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1.5px dashed var(--line);opacity:.75;margin-top:6px;font-size:15px}'].join('\n');document.head.appendChild(st)})();
 
 /* ---------- 85 · la foto en grande, encima de todo ---------- */
-var _fa90=fotoAbrir;fotoAbrir=function(){var r=_fa90.apply(this,arguments);try{var o=document.getElementById('fotov');if(o)o.style.zIndex='130'}catch(e){}return r};
+/* fotoAbrir: pasó a tema-vehiculos.js */
 
 /* ---------- 86 · le quitan un cliente al chofer que va en ruta ---------- */
 function vivos90(){return (S.stops||[]).filter(function(s){return s&&!s.done}).map(function(s){return +s.c})}
@@ -82,7 +82,7 @@ function vehIds90(){var V=S.veh;if(!Array.isArray(V)||V.length<2)return 0;var vi
  if(n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'Se arregló el número interno de '+L.join(', ')+' (estaba repetido)'})}catch(e){}
   try{var t='Se arregló: '+L.join(', ')+' tenía'+(n===1?'':'n')+' el mismo número interno que otro vehículo y la app los confundía. Revisa en Vehículos el odómetro de cada uno.';if((S.avPrecio=S.avPrecio||[]).indexOf(t)<0)S.avPrecio.push(t)}catch(e){}}return n}
 var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
-var _vl90=vehLibres;vehLibres=function(ch){return _vl90.apply(this,arguments).filter(function(v){return vehUso90(v.id,ch)==null})};
+/* vehLibres: pasó a tema-vehiculos.js */
 function quienVeh90(q){return q===-1?'un viaje de carga':(+q===ADM85?'el administrador':chofN(q))}
 /* si el que tiene puesto ya lo trae otro, se le cambia solo a uno libre (antes de salir) */
 function vehAuto90(){if(S.role!=='rep'||S.chofHoy==null||(S.salida&&S.salida.ok)||S.vehHoy==null)return;var q=vehUso90(S.vehHoy,+S.chofHoy);if(q==null)return;var v0=vehHoy(),L=vehLibres(+S.chofHoy);if(!L.length){S.vh90='Todos los vehículos están ocupados: '+(v0?v0.n:'')+' lo trae '+quienVeh90(q)+'.';return}

@@ -150,8 +150,8 @@ if(typeof stock72==='function'){var _st82=stock72;stock72=function(){if(MODO!=='
 function limpiaTpl82(s){if(!s||MODO!=='vacio')return false;var ch=false,B=null;try{var b=(s.bods||[])[0];if(b&&b.lat!=null)B={lat:+b.lat,lng:+b.lng}}catch(e){}
  (s.cli||[]).forEach(function(c){if(num(c.pR)===4&&num(c.pM)===30){c.pR=0;c.pM=0;ch=true}if(num(c.km)===7&&num(c.min)===15){var k=B&&c.lat!=null?kmE(B,c):null;c.km=k!=null?Math.round(k*10)/10:0;c.min=k!=null?Math.round(k*2.5):0;ch=true}});
  (s.veh||[]).forEach(function(v){if(num(v.valor)===330000){v.valor=0;ch=true}if(num(v.precioC)===385000){v.precioC=0;ch=true}if(v.afDue==='2026-12-10'){v.afDue='';ch=true}if(num(v.kmMes)===3200){v.kmMes=0;ch=true}});return ch}
-if(MODO==='vacio'){var _nc82=nuevoCli;nuevoCli=function(o){var c=_nc82.apply(this,arguments);c.pR=0;c.pM=0;if(num(c.km)===7&&num(c.min)===15){c.km=0;c.min=0}return c};
- var _nv82=nuevoVeh;nuevoVeh=function(o){var v=_nv82.apply(this,arguments);if(num(v.valor)===330000)v.valor=num(o&&o.valor)||0;if(num(v.precioC)===385000)v.precioC=num(o&&o.precioC)||0;if(v.afDue==='2026-12-10')v.afDue=(o&&o.afDue)||'';if(num(v.kmMes)===3200)v.kmMes=0;return v};
+if(MODO==='vacio'){
+ /* nuevoVeh y nuevoCli: lo de la app real pasó a su definición en l7.js */
  limpiaTpl82(S);if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
 /* un cliente al que se le pone ubicación: su distancia desde la bodega */
 var _rdKm82=render;render=function(){try{if(MODO==='vacio'){var b=(S.bods||[])[0];if(b&&b.lat!=null)(S.cli||[]).forEach(function(c){if(c.lat!=null&&!num(c.km)){var k=kmE({lat:+b.lat,lng:+b.lng},c);if(k){c.km=Math.round(k*10)/10;c.min=Math.round(k*2.5)}}})}}catch(e){}return _rdKm82.apply(this,arguments)};

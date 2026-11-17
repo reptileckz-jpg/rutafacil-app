@@ -13,6 +13,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | 17 nov | 560 | 1% | Reorganización de pantallas (punto 92) hecha en `tema-pantallas.js` (sin envolturas nuevas en capas viejas) |
 | 17 nov | 537 | 5% | Tema "avisos y pendientes" (`tema-avisos.js`, −23). También se juntaron ahí las 8 envolturas de avisos que estaban en `tema-cobranza.js` y `tema-pantallas.js` |
 | 17 nov | 528 | 7% | Tema "quién reparte" (`tema-reparte.js`, −9). La comparación encontró que `mig85` usaba directo la variable de una envoltura (`_chs85`); se cambió a `_chs81Base` |
+| 17 nov | 503 | 11% | Tema "vehículos" (`tema-vehiculos.js`, −23) y las 2 envolturas de `l82` sobre `nuevoVeh`/`nuevoCli` pasaron a su definición en `l7.js` |
 
 ## Temas (de más fácil a más difícil)
 | Tema | Envolturas aprox. | Estado |
@@ -21,8 +22,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Cobranza | — | ✅ `tema-cobranza.js` (nació así) |
 | Avisos y pendientes (avisos, avDestino, avRow, avisosHTML, avFoco, numeritos, Ir/Listo) | 23 (+8 de temas) | ✅ `tema-avisos.js` (comprobado con `pruebas/comp-avisos.js`: 264 casos iguales en la demo y 246 en la real) |
 | Quién reparte (choferes del día, el administrador que reparte, cambios de Rutas al chofer: chs81, chofsDia57, pedChoferes, choferes75, sinCh81, arTiene, toma81) | 9 | ✅ `tema-reparte.js` (comprobado con `pruebas/comp-reparte.js`: 33 casos iguales en la demo y en la real). Lo de l85/l90 que envuelve `render` y `toast` se junta con esos temas |
-| Vehículos (fotos, ocupado, odómetro, revisión) | ~25 | ⏭️ sigue |
-| Ruta y entrega del chofer (ruta, entrega, hola, tarjetas) | ~40 | pendiente |
+| Vehículos (vehHoy, vehLibres, vehiculos, vehBasic, fiVeh, vForm, plateSVG, fuelVeh, vehGastos, tagCruce, inspHTML, inspRepHTML, inspMarca, encVehHTML, velAlertaHTML, velBeep, fotoTile, fotoAbrir, fotoZoomable) | 23 | ✅ `tema-vehiculos.js` (comprobado con `pruebas/comp-vehiculos.js`: 54 casos iguales en la demo y 45 en la real; la única diferencia es a propósito: un camión del asistente ya no trae la fecha de afinación de la demo) |
+| Ruta y entrega del chofer (ruta, entrega, hola, tarjetas) | ~40 | ⏭️ sigue |
 | Cierre del chofer y recibir cierre | ~30 | pendiente |
 | Inicio del administrador (inicio, cierreTop, tarjetas) | ~30 | pendiente |
 | Ajustes (ajHTML) y ventanas (setupHTML) | ~45 | pendiente |

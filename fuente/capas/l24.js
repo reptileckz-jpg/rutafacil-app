@@ -6,8 +6,7 @@ var _fvImg=null;
 window.addEventListener('pointerdown',function(e){if(e.target&&e.target.tagName==='IMG')_fvImg=e.target},true);
 function fvInput(img){if(!img)return null;var lb=img.closest('label[for]');if(lb){var i=document.getElementById(lb.getAttribute('for'));if(i&&i.type==='file')return i}
  var box=img.parentElement;for(var n=0;n<4&&box;n++){var q=box.querySelector('input[type="file"]');if(q)return q;box=box.parentElement}return null}
-var _fa24=fotoAbrir;fotoAbrir=function(src){var img=_fvImg,r=_fa24.apply(this,arguments);try{var inp=img&&(img.currentSrc||img.src)===src?fvInput(img):null,o=document.getElementById('fotov');
- if(inp&&o){var b=document.createElement('button');b.className='fvx fvotra';b.textContent='📷 Tomar otra para reemplazarla';b.addEventListener('click',function(e){e.stopPropagation();inp.click();o.remove()});o.appendChild(b)}}catch(e){}return r};
+/* fotoAbrir: pasó a tema-vehiculos.js */
 /* fotos dentro de la etiqueta de "tomar foto": antes abrían la cámara; ahora se ven */
 document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;var lb=t.closest('label[for]');if(!lb)return;var i=document.getElementById(lb.getAttribute('for'));if(!i||i.type!=='file')return;
  var src=t.currentSrc||t.getAttribute('src')||'';if(!src)return;e.preventDefault();e.stopImmediatePropagation();_fvImg=t;fotoAbrir(src)},true);

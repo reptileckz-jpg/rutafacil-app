@@ -8,10 +8,11 @@ const SETUP=(costo)=>{var U=S.setup;U.yo='Dueño Uno';U.veh=[{n:'Camioneta Uno',
 let p=await abre('platanos-primera-vez.html'),r;
 // ---- instalación nueva, sin costo
 r=await p.evaluate((SETUP)=>{eval('('+SETUP+')')(false);var v=S.veh[0],t=S.veh[1];
- return {an:v.anual,sm:v.sueldoMes,pv:v.parteVentas,pr:v.precio,rd:v.rend0,cap:[v.capV,v.capVK,v.capRC,v.capRK,v.capC],capL:v.capL,acLast:v.acLast,tan:t.anual,tval:t.valor,tkm:t.kmMes,tcap:[t.capV,t.capC],tL:t.capL,cR:costoCajaAct(),cM:costoKgMAct(),cli:[S.cli[0].lim,S.cli[0].pc]}},SETUP.toString());
+ return {an:v.anual,sm:v.sueldoMes,pv:v.parteVentas,pr:v.precio,rd:v.rend0,cap:[v.capV,v.capVK,v.capRC,v.capRK,v.capC],capL:v.capL,acLast:v.acLast,tan:t.anual,tAf:t.afDue,vAf:v.afDue,tval:t.valor,tkm:t.kmMes,tcap:[t.capV,t.capC],tL:t.capL,cR:costoCajaAct(),cM:costoKgMAct(),cli:[S.cli[0].lim,S.cli[0].pc]}},SETUP.toString());
 ok(JSON.stringify(r.an)==='{}'&&r.sm===undefined&&r.pv===undefined&&r.pr===''&&r.rd===''&&r.cap.every(x=>x===''),'100c · vehículo del asistente sin seguro, sueldo, gasolina, rendimiento ni capacidades de la demo',r);
 ok(r.capL===75&&r.acLast===900,'100c · lo que sí escribiste en el asistente (tanque, último aceite) se queda',[r.capL,r.acLast]);
 ok(JSON.stringify(r.tan)==='{}'&&r.tval===''&&r.tkm===''&&r.tcap.every(x=>x===''),'100c · el camión tampoco trae el valor, km ni costos del de la demo',r);
+ok(r.tAf===''&&r.vAf==='','100c · ni la camioneta ni el camión traen la fecha de afinación de la demo',[r.vAf,r.tAf]);
 ok(r.cR===0&&r.cM===0,'100b · sin cargas y sin costo puesto: costo $0 (ya no $190 / $14 de la demo)',[r.cR,r.cM]);
 ok(r.cli[0]===1500&&r.cli[1]===null,'100d · cliente nuevo: límite de crédito $1,500 (el de Ajustes, no $3,000) y sin "70% de contado" inventado',r.cli);
 r=await p.evaluate(()=>{S.precio.conf=iso(TODAY);S.tab.admin='inicio';render();var t=document.querySelector('main').innerText;return {t:(t.match(/cuesta[^\n]*/g)||[]).join(' | '),df:dfLista().map(x=>x.txt)}});

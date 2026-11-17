@@ -44,7 +44,7 @@ var _ubH78=ub68HTML;ub68HTML=function(){var h=_ubH78.apply(this,arguments),x=S.u
  var i=h.indexOf('<button class="btn big" data-act="ub68si"');return i<0?h:h.slice(0,i)+f+h.slice(i)};
 
 /* ---------- 16 · TAG: el cruce sin viaje de carga va a Gastos del vehículo ---------- */
-var _tc78=tagCruce;tagCruce=function(v,o){var m=_tc78.apply(this,arguments);try{if(m&&!m.cid){S.gastos=S.gastos||[];S.gastos.push({t:'Casetas (TAG)',m:num(m.m),n:'TAG de '+v.n+' · '+m.cas+' ('+fmtF(m.f)+(m.h?' '+m.h:'')+')',caja:false,tag76:1,veh:v.id,f:m.f});m.gasto=1}}catch(e){}return m};
+/* tagCruce: pasó a tema-vehiculos.js */
 
 /* ---------- 24 · "Lo que pasó hoy en su ruta" minimizado ---------- */
 var _rc78=rcHTML;rcHTML=function(){var h=_rc78.apply(this,arguments);try{if(!h||h.indexOf('data-k="rcact"')<0)return h;var n=0;try{n=actDe(+S.chofHoy,iso(TODAY)).length}catch(e){}

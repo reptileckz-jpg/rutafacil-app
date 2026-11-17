@@ -12,6 +12,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | 17 nov | 560 | 1% | Mapa de errores · tema "la ruta del día" (−15) · Cobranza ya nació como tema · la 9.0 (l90) agregó 5 |
 | 17 nov | 560 | 1% | Reorganización de pantallas (punto 92) hecha en `tema-pantallas.js` (sin envolturas nuevas en capas viejas) |
 | 17 nov | 537 | 5% | Tema "avisos y pendientes" (`tema-avisos.js`, −23). También se juntaron ahí las 8 envolturas de avisos que estaban en `tema-cobranza.js` y `tema-pantallas.js` |
+| 17 nov | 528 | 7% | Tema "quién reparte" (`tema-reparte.js`, −9). La comparación encontró que `mig85` usaba directo la variable de una envoltura (`_chs85`); se cambió a `_chs81Base` |
 
 ## Temas (de más fácil a más difícil)
 | Tema | Envolturas aprox. | Estado |
@@ -19,8 +20,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | La ruta del día | 15 | ✅ `tema-rutadia.js` |
 | Cobranza | — | ✅ `tema-cobranza.js` (nació así) |
 | Avisos y pendientes (avisos, avDestino, avRow, avisosHTML, avFoco, numeritos, Ir/Listo) | 23 (+8 de temas) | ✅ `tema-avisos.js` (comprobado con `pruebas/comp-avisos.js`: 264 casos iguales en la demo y 246 en la real) |
-| El administrador que reparte (Mi ruta, barra, textos, l85/l90) | ~15 | ⏭️ sigue |
-| Vehículos (fotos, ocupado, odómetro, revisión) | ~25 | pendiente |
+| Quién reparte (choferes del día, el administrador que reparte, cambios de Rutas al chofer: chs81, chofsDia57, pedChoferes, choferes75, sinCh81, arTiene, toma81) | 9 | ✅ `tema-reparte.js` (comprobado con `pruebas/comp-reparte.js`: 33 casos iguales en la demo y en la real). Lo de l85/l90 que envuelve `render` y `toast` se junta con esos temas |
+| Vehículos (fotos, ocupado, odómetro, revisión) | ~25 | ⏭️ sigue |
 | Ruta y entrega del chofer (ruta, entrega, hola, tarjetas) | ~40 | pendiente |
 | Cierre del chofer y recibir cierre | ~30 | pendiente |
 | Inicio del administrador (inicio, cierreTop, tarjetas) | ~30 | pendiente |
@@ -35,6 +36,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 
 ## Reglas
 - Cada tema se arma al final (después de los demás temas) y toma la función de la base; cada paso de las envolturas viejas va adentro, en el mismo orden.
+- Antes de quitar una envoltura, buscar si alguien usa su variable (`_x`) directo en otra parte (pasó con `mig85` y `_chs85`). Las pruebas de siempre no lo detectaron; la de comparación sí.
 - Cada tema se comprueba con su prueba de comparación (`pruebas/comp-tema.js`, `pruebas/comp-avisos.js`) (mismos casos antes y después = idéntico) y con todas las pruebas.
 - Lo nuevo de un tema ya juntado se escribe en su `tema-*.js`, nunca como envoltura en otra capa.
 - Arreglos urgentes primero; la migración va entre arreglo y arreglo.

@@ -56,7 +56,7 @@ WZ.veh={tit:'Vehículo nuevo',fin:'Guardar vehículo',pasos:[
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vnew"]');if(!b||S.role!=='admin')return;e.stopImmediatePropagation();wzAbre('veh',{plEdo:'Veracruz'})},true);
 /* un auto no se usa para repartir ni para "¿quién lo entrega?" */
 function vehEsAuto(v){return !!(v&&(v.esAuto||(v.plTipo==='auto'&&v.id!==1&&!num(v.capC))))}
-var _pCh47=pedChoferes;pedChoferes=function(){return _pCh47.apply(this,arguments).filter(function(ch){var vid=vehAsig(ch.id),v=vid!=null?vehById(+vid):null;return !(v&&v.esAuto)})};
+/* pedChoferes: pasó a tema-reparte.js */
 /* ---------- cliente ---------- */
 var DIAS_TXT=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 WZ.cli={tit:'Cliente nuevo',fin:'Guardar cliente',pasos:[

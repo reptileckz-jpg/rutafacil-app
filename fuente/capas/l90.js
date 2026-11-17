@@ -25,20 +25,7 @@ var _fa90=fotoAbrir;fotoAbrir=function(){var r=_fa90.apply(this,arguments);try{v
 /* ---------- 86 · le quitan un cliente al chofer que va en ruta ---------- */
 function vivos90(){return (S.stops||[]).filter(function(s){return s&&!s.done}).map(function(s){return +s.c})}
 function quien90(cid){try{var o=ovDe81(hoy81(),cid);if(o===0)return 'hoy no se visita';if(o!=null)return +o===ADM85?'lo lleva el administrador':'lo lleva '+chofN(o)}catch(e){}return 'te lo quitó el administrador'}
-var _tm90=toma81;toma81=function(){
- /* el administrador en su propia ruta también recibe los cambios */
- var ar=!!S.arOn&&S.role==='rep';if(S.arOn&&!ar)return _tm90.apply(this,arguments);
- var antes=vivos90(),i0=curStop(),sig0=i0>=0&&S.stops[i0]?+S.stops[i0].c:null,ent=S.role==='rep'&&S.tab.rep==='entrega',hoy=hoy81(),Q=(S.rq81||{})[hoy]||{},quit={};
- Object.keys(Q).forEach(function(k){var x=Q[k];if(x&&+x.ch===+S.chofHoy&&!x.hecho&&x.op!=='add')quit[+x.c]=1});
- /* si está entregándole justo a ese cliente, sale de la entrega para que se pueda quitar */
- var salio=false;if(ent&&sig0!=null&&quit[sig0]){S.tab.rep='ruta';salio=true}
- if(ar)S.arOn=false;var r;try{r=_tm90.apply(this,arguments)}finally{if(ar)S.arOn=true}
- try{var ahora=vivos90(),fuera=antes.filter(function(c){return quit[c]&&ahora.indexOf(c)<0});
-  if(fuera.length){var i1=curStop(),c1=i1>=0&&S.stops[i1]?cl(S.stops[i1].c):null;
-   S.av90={f:hoy,L:fuera.map(function(c){var x=cl(c);return {n:x?x.n:'Un cliente',q:quien90(c)}}),era:sig0!=null&&fuera.indexOf(sig0)>-1,ent:salio,sig:c1?c1.n:null,h:hhmm()};
-   try{natNotif('⚠️ Te quitaron '+(fuera.length===1?'un cliente':fuera.length+' clientes'),S.av90.L.map(function(x){return 'Ya no vayas con '+x.n}).join('. '))}catch(e){}}
-  else if(salio)S.tab.rep='entrega'}catch(e){console.error('l90 av',e)}
- return r};
+/* toma81: pasó a tema-reparte.js */
 function av90HTML(){var a=S.av90;if(!a||S.role!=='rep'||a.f!==hoy81())return '';
  return '<div id="av90" role="dialog" aria-label="Cambió tu ruta"><div class="w"><div style="font-size:46px;text-align:center">⚠️</div><h2>'+(a.L.length===1?'Ya no vayas con '+esc(a.L[0].n):'Te quitaron '+a.L.length+' clientes')+'</h2>'
   +a.L.map(function(x){return '<div class="q"><b>'+esc(x.n)+'</b> · '+esc(x.q)+'</div>'}).join('')

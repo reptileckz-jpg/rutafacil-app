@@ -9,18 +9,17 @@ var ADM85=2;
 function admRep85(){return (S.admRep85||'')===iso(TODAY)}
 try{['admRep85','mig85'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)})}catch(e){}
 /* ---------- 64 · quién cuenta como chofer ---------- */
-var _chs85=chs81;chs81=function(){var L=_chs85.apply(this,arguments);return MODO!=='vacio'||admRep85()?L:L.filter(function(c){return !esAdm(c)})};
-if(typeof pedChoferes==='function'){var _pc85=pedChoferes;pedChoferes=function(){var L=_pc85.apply(this,arguments);return MODO!=='vacio'||admRep85()?L:L.filter(function(c){return !esAdm(c)})}}
-if(typeof chofsDia57==='function'){var _cd85=chofsDia57;chofsDia57=function(){var L=_cd85.apply(this,arguments);return MODO!=='vacio'||admRep85()?L:L.filter(function(c){return !esAdm(c)})}}
+/* chs81: pasó a tema-reparte.js */
+/* pedChoferes: pasó a tema-reparte.js */
+/* chofsDia57: pasó a tema-reparte.js */
 /* importar: con "Chofer" vacío ya no se los da al administrador (queda al final de la lista) */
-if(typeof choferes75==='function'){var _c75=choferes75;choferes75=function(modo){var L=_c75.apply(this,arguments);if(modo==='su')return L;return L.filter(function(x){return +x.ref!==ADM85}).concat(L.filter(function(x){return +x.ref===ADM85}))}}
+/* choferes75: pasó a tema-reparte.js */
 /* la ruta del administrador empieza vacía (él se pasa clientes en Rutas) */
 /* → movido (tema-rutadia.js) */
 /* "sin chofer": los clientes del administrador cuando no reparte */
-var _sc85=sinCh81;sinCh81=function(f){var L=_sc85.apply(this,arguments);if(MODO!=='vacio'||admRep85())return L;var d=dDe81(f),ya={};L.forEach(function(c){ya[c.id]=1});
- S.cli.forEach(function(c){if(c.oculto||ya[c.id]||+c.chofer!==ADM85)return;if(ovDe81(f,c.id)!==undefined)return;if(c.dias&&c.dias.indexOf(d)>-1||c.extra===f)L.push(c)});return L};
+/* sinCh81: pasó a tema-reparte.js */
 /* "Mi ruta de hoy" del administrador: solo si reparte hoy, con lo que se pasó en Rutas */
-var _arT85=arTiene;arTiene=function(){if(MODO!=='vacio')return _arT85.apply(this,arguments);if(!admRep85())return !!S.arOn;return !!S.arSt||lista81(ADM85,iso(TODAY)).L.some(function(x){return !x.done})};
+/* arTiene: pasó a tema-reparte.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="arentrar"]');if(!b||MODO!=='vacio'||S.arSt)return;try{S.arStops=lista81(ADM85,iso(TODAY)).L.filter(function(x){return !x.done}).map(function(x){return x.c})}catch(er){}},true);
 /* el interruptor en Inicio */
 function admSw85(){if(MODO!=='vacio'||S.role!=='admin'||S.encOn||S.tab.admin!=='inicio'||S.rt81)return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="adm85"]'))return;var on=admRep85(),n=on?lista81(ADM85,iso(TODAY)).L.filter(function(x){return !x.done}).length:0;
@@ -32,7 +31,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  var pend=lista81(ADM85,hoy).L.filter(function(x){return !x.done});if(pend.length){S.rt81={dia:'hoy',sel:{}};pend.forEach(function(x){S.rt81.sel[x.c+'|'+ADM85]=1});toast('Tienes '+pend.length+' cliente'+(pend.length===1?'':'s')+': pásalos a otro chofer y luego apágalo');render();return}
  S.admRep85='';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Ya no reparte hoy (el administrador)'});toast('Listo: hoy no cuentas como chofer');render()},true);
 /* una vez: los clientes fijos del administrador (los puso el importador) pasan al chofer de verdad */
-function mig85(){if(MODO!=='vacio'||S.mig85||S.role!=='admin'||!(S.setup&&S.setup.fin))return;if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var D=_chs85().filter(function(c){return !esAdm(c)})[0];if(!D)return;var hoy=iso(TODAY),d=TODAY.getDay(),n=0,hoyL=[];
+function mig85(){if(MODO!=='vacio'||S.mig85||S.role!=='admin'||!(S.setup&&S.setup.fin))return;if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var D=_chs81Base().filter(function(c){return !esAdm(c)})[0];if(!D)return;var hoy=iso(TODAY),d=TODAY.getDay(),n=0,hoyL=[];
  S.cli.forEach(function(c){if(c.oculto||+c.chofer!==ADM85)return;c.chofer=+D.id;n++;if(c.dias&&c.dias.indexOf(d)>-1)hoyL.push(c.id)});
  if(!admRep85()&&hoyL.length){var r=(S.chSt||{})[ADM85];hoyL.forEach(function(cid){var hecho=r&&(r.stops||[]).some(function(s){return +s.c===cid&&s.done});if(hecho)return;ovPon81(hoy,cid,+D.id);op81(+D.id,'add',cid)});if(r&&Array.isArray(r.stops))r.stops=r.stops.filter(function(s){return s.done})}
  S.mig85=hoy;if(n){S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:n+' clientes que tenía el administrador como chofer pasaron a '+chofN(D.id)});(S.avPrecio=S.avPrecio||[]).push(n+' clientes que tenías como chofer fijo pasaron a '+chofN(D.id)+'. Si un día sales a repartir, prende "¿Repartes hoy?" en Inicio.')}}

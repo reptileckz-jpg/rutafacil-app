@@ -49,11 +49,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- el chofer: un aviso repetido ya no mete dos veces al mismo cliente ---------- */
 function loc83(){try{return JSON.parse(localStorage.getItem('rq83')||'{}')}catch(e){return {}}}
 function locPon83(o){try{var ks=Object.keys(o);if(ks.length>600){ks.slice(0,ks.length-600).forEach(function(k){delete o[k]})}localStorage.setItem('rq83',JSON.stringify(o))}catch(e){}}
-var _tm83=toma81;toma81=function(){try{if(S.chofHoy!=null){var f=hoy81(),Q=(S.rq81||{})[f],id=+S.chofHoy;if(Q){var L=loc83(),ch=false;Object.keys(Q).forEach(function(k){var x=Q[k];if(!x||+x.ch!==id||x.hecho)return;
-   if(L[k]){x.hecho=1;ch=true;return}
-   if(x.op==='add'&&(S.stops||[]).some(function(s){return +s.c===+x.c})){x.hecho=1;L[k]=1;ch=true}});if(ch)locPon83(L)}}}catch(e){}
- var r=_tm83.apply(this,arguments);
- try{if(S.chofHoy!=null){var Q2=(S.rq81||{})[hoy81()],L2=loc83(),ch2=false;if(Q2)Object.keys(Q2).forEach(function(k){var x=Q2[k];if(x&&+x.ch===+S.chofHoy&&x.hecho&&!L2[k]){L2[k]=1;ch2=true}});if(ch2)locPon83(L2)}}catch(e){}return r};
+/* toma81: pasó a tema-reparte.js */
 /* dos paradas PENDIENTES del mismo cliente se juntan en una (las ya entregadas no se tocan: un cliente sí puede pedir dos veces) */
 var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops)){var vis={},out=[],cur=S.stops[S.cur]&&S.stops[S.cur].c,cambio=false;S.stops.forEach(function(s){var k=+s.c;if(s.done){out.push(s);return}if(vis[k]!=null){cambio=true;return}vis[k]=out.length;out.push(s)});if(cambio){S.stops=out;if(cur!=null){var ni=out.map(function(s){return +s.c}).indexOf(+cur);S.cur=ni>-1?ni:Math.max(0,curStop())}}}}catch(e){}return _rd83.apply(this,arguments)};
 

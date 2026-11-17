@@ -2182,3 +2182,10 @@ Ricardo: los puntos anteriores se dan por corregidos; se empieza de cero. Primer
 83. Orden de carga al revés (lo de los últimos clientes al fondo): Ricardo "sí y no: solo aplicaría si hay otras frutas, pues todo el plátano es el mismo" → PARA DESPUÉS, solo si se venden varios productos distintos.
 - No se hacen por ahora: llegada automática por GPS, "voy en 10 minutos", focos rojos, traspaso por QR, kilo neto con tara, modo práctica.
 84. Ricardo: lo que más tiempo le quita hoy es EL SEGUIMIENTO DE CRÉDITOS → diseñar una pantalla de Cobranza (en preguntas).
+84 · DISEÑO propuesto (Ricardo: lo que más le cuesta es "saber quién debe y desde cuándo" y "recordarles y que paguen"; tarjeta en Inicio que abre "Cobranza"):
+  - Inicio: "💰 Te deben $X · N vencidos" → abre Cobranza (pantalla completa, como Rutas).
+  - Arriba: total por cobrar, cuánto está vencido y tres grupos por antigüedad: "Vencido +15 días" (rojo), "Vencido" (amarillo), "Al corriente / por vencer" (verde); filtro por chofer.
+  - Cada cliente: lo que debe, desde cuándo y días, su chofer, si ya se le avisó y cuándo, y si prometió pagar.
+  - Botones por cliente: "📲 Mandar estado de cuenta" (WhatsApp con el desglose: fecha, qué se llevó, cuánto, abonos y saldo), "🤝 Prometió pagar…" (día) → la app te lo recuerda ese día y se lo pone al chofer en su ruta, "💵 Registrar abono" (si te pagó a ti).
+  - "Mandar a todos los vencidos": uno por uno por WhatsApp, sin escribir nada.
+  - Si no pagó cuando prometió: sube a rojo y te avisa.

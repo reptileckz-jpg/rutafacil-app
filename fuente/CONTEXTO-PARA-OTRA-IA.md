@@ -1,6 +1,6 @@
 # Ruta Fácil (Plátanos Nietos): contexto completo para analizar la app
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 14 de noviembre de 2026 (versión 8.8, APK 1.0.37).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 17 de noviembre de 2026 (versión 9.5, APK 1.0.42).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -44,7 +44,9 @@
 
 ## 3. Cómo está hecha (técnico)
 
-- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **81 capas** (`fuente/capas/l1.js … l81.js`).
+- **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`).
+  - **Regla nueva:** lo de un tema aplanado se cambia en su `tema-*.js`, sin envolturas nuevas en otras capas. Avance de la migración a Vite en `fuente/migracion.md` (se mide con `bash capas/mide.sh`: envolturas que quedan; meta 0).
+  - **Mapa de errores:** `build.sh` marca dónde empieza cada capa y `mapa.py` lo anota; los errores dicen "En: l80.js:57".
   - Cada capa reemplaza o envuelve funciones globales: `var _f=f; f=function(){…}`.
   - `patch39.py` y `ql.py` hacen cambios de texto sobre la base. `build.sh` junta todo.
   - Salen dos versiones: `prototipo-platanos.html` (**demo** con datos de ejemplo) y `platanos-primera-vez.html` (**versión real**, `PN_MODO="vacio"`, sin datos de ejemplo). La real se copia a `www/index.html`.
@@ -66,7 +68,7 @@
 - **Clima:** open-meteo, con la ubicación de la bodega.
 - **Publicación:** subir a `main` hace que GitHub Actions arme el APK firmado `1.0.<número de corrida>` y lo publique en Releases. Lo que no debe armar APK lleva `[skip ci]`.
 - **Pruebas:** Playwright, ~35 archivos en `fuente/pruebas/` (cada uno imprime "N OK · N FAIL"). Hay pruebas con **dos celulares** y una nube de prueba que se porta como Firestore (`t61`, `t78nube`, `t81nube`). También una prueba que revisa que la versión real **no traiga nada de la demo** (`t80vacio`). Todas pasan en la 8.1b.
-- **Bitácora:** `fuente/pendientes.md` tiene todo el historial: puntos 1–100 de la primera lista, y la lista nueva 1–39.
+- **Bitácora:** `fuente/pendientes.md` tiene todo el historial: puntos 1–100 de la primera lista y la lista nueva (hasta el 96).
 
 ## 4. Reglas de diseño que ya se siguen (no proponerlas como nuevas)
 
@@ -203,6 +205,11 @@
 | 8.2 (14 nov) | Estadísticas con datos reales (antes solo la demo), retiro del dueño fuera de la ganancia, **¿Cuadran las cuentas?**, recontar bodega con motivo, fruta madura solo si se pasó, la pantalla ya no brinca, cuánto cargar con un solo cálculo, fotos de evidencia solo cámara + el admin las ve, rankings y datos del cliente desde las entregas, pedido tarde (hora límite), kg sueltos de venta local, taras al chofer, días sin movimientos |
 | 8.3–8.5 (16 nov) | Rutas con el diseño de Ricardo (letra grande, tarjetas de chofer, panel de abajo con Confirmar, Deshacer), el chofer ya no se traba en "No mandaste tu cierre", el administrador no reparte salvo que prenda "¿Repartes hoy?", días fijos al pasar un cliente sin días, no visitados solo si su siguiente visita está a 2+ días o fallaron 2 |
 | 8.6–8.8 (17 nov) | Chofer trabado (pantalla que no se quitaba; liberar la ruta cargada en el celular del admin; petición en rojo), taras que ya debían los clientes como saldo inicial, numeritos con su lista, bloquear solo si el chofer salió, avisos del chofer agrupados, pendientes con "Ir" / "✓ Listo" / "Recordar mañana", informativos a "Lo que pasó hoy", falla de vehículo con 3 opciones |
+| 8.9 (17 nov) | Ubicación escrita en la dirección, odómetro inicial con el último registrado, pantalla del chofer acomodada, roatán azul petróleo |
+| 9.0 (17 nov) | Fotos del vehículo en grande; aviso grande al chofer cuando le quitan un cliente; el administrador que reparte (contador, acceso arriba, tutorial propio, textos del cierre); vehículo ocupado; vehículos con el mismo número interno (arreglado); versión real del APK arriba |
+| 9.1 (17 nov) | **Cobranza** (`tema-cobranza.js`): quién debe y desde cuándo, plazo general y por cliente, estado de cuenta por WhatsApp, promesas de pago (aviso al admin y al chofer) |
+| 9.2 (17 nov) | **Reorganización** (`tema-pantallas.js`): barra Inicio · Rutas · Clientes · Bodega · Cargas · Más; Inicio con precio que destella, lista "Hoy", números, bodega como antes; Rutas (repartir, mapa, cierres); Clientes con pestañas Clientes · Pedidos · Cobranza; pendientes en un renglón; numeritos rojos solo si es urgente; sueldos en Personal; tutoriales al día |
+| 9.3–9.5 (17 nov) | **Cambio de día sin perder nada:** de 12 a 5 a.m. el chofer sigue con su ruta; **regla única: ninguna ruta con efectivo, entregas o cajas se reemplaza sin guardarla para recibirla** ("📥 Cierre atrasado / Lo que traía", en rojo hasta recibirlo); liberar guarda lo que traía; batería con dos celulares (`t95nube`) que cuadra efectivo y cajas |
 
 ## 8. Decisiones tomadas (no volver a proponer como nuevas)
 
@@ -227,7 +234,9 @@
 - **Android 8 (Samsung viejo):** debería instalarse (Capacitor 7 pide Android 6+), pero necesita actualizados "Android System WebView" y Chrome. No se ha probado.
 - **Fotos ya guardadas antes de la 8.0:** siguen pesadas. Solo las nuevas salen a 1000 px.
 - **Vehículos ya dados de alta con estado "Veracruz" por defecto:** no se cambian solos.
-- **Lo que hay que probar con dos celulares:** Rutas (pasar clientes hoy y mañana), ruta del día con cierre pendiente, pedidos, maduración con reloj real.
+- **Lo que hay que probar en celulares de verdad:** el cierre atrasado y "Recibir lo que traía" (1.0.42), la reorganización (1.0.40), la Cobranza.
+- **Viaje de carga que cruza la medianoche:** revisado y con prueba (`t96viaje`), pero sin probar un viaje completo de principio a fin.
+- **Pendientes para después (anotados en `pendientes.md`):** orden de carga solo con varias frutas (83); reglas de la nube por campo (el chofer podría sobreescribir un documento completo); mover la llave `.jks` a un secreto de GitHub; seguir la migración a Vite (siguiente tema: avisos/pendientes); mapas chicos con look de Google (opción D, segunda llave) solo si Ricardo lo pide.
 
 ## 10. Cómo ayudar mejor
 

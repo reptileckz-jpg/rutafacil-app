@@ -2312,3 +2312,9 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - De paso (resto del 100): un camión dado de alta en el asistente traía la fecha de afinación de la demo (2 mar 2027); ya no, y en los ya guardados se quita si es igual a la de ejemplo.
 - `pruebas/comp-vehiculos.js`: 54 casos iguales en la demo y 45 en la real (la única diferencia es la de la afinación, a propósito). t100 con un caso más (26). Todas: 0 FAIL.
 - Envolturas en capas viejas: 528 → 503 (11%). Siguiente tema: ruta y entrega del chofer.
+
+## 2026-11-17 · 102–105 · Ricardo: "otras correcciones para el apk" (captura: fotos/102-viaje-desgaste-sueldo.jpg, terminar un viaje de carga en el Moto)
+102. Viaje de carga de una sola fruta (ej. puro roatán): al terminar el viaje y pedir precio, costo, etc., también pide la información del macho aunque no se cargó macho.
+103. "¿Sumar el desgaste del vehículo?" y "¿Se le asignó un sueldo por este viaje?": al tocar "Sí, súmalo" / "Sí" no es fácil darse cuenta si se agregó o no (arriba sí cambia el costo, pero en el momento de tocarlo no se nota).
+104. En alguna pantalla (no recuerda cuál), con una burbuja de las de arriba minimizada, al desplazar la pantalla hacia arriba o abajo DESTELLA, como si cambiara entre modo oscuro y claro; solo al moverse, quieta no.
+105. No hay opción para borrar las fotos precargadas de los vehículos.

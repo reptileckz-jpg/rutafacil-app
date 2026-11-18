@@ -84,8 +84,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   if(o==='ok'){go();return}abrirModal('¿Seguro?',{desc:'Se le descuenta de su próximo pago y lo verá en su sueldo.',pago:'Se registra que lo pagó y entra a la caja.',nodesc:'No se le descuenta; queda como faltante de la caja.',caja:'El sobrante se queda en la caja.',chofer:'Se registra que se le regresó.'}[o]||'',[['Sí','rcfinsi',' data-o="'+o+'"']]);return}
  if(a==='rcfinsi'){e.stopImmediatePropagation();S.modal=null;var o2=b.dataset.o,ch2=+S.chofHoy;if(eqDe(ch2).length)eqGuarda(ch2,x,'regreso');rcRegistra(x,o2);S.rcv=null;S.tab.admin='cierreadm';toast('Cierre de '+chofN(ch2)+' recibido');render();window.scrollTo(0,0);return}},true);
 /* en la pantalla del cierre, arriba, el botón grande para recibir con la tarjeta */
-var _cAdm50=cierreAdm;cierreAdm=function(){var h=_cAdm50.apply(this,arguments);if(!S.cierre||!S.cierre.res||!S.cierre.sent||(S.cierreReg&&S.recep))return h;
- return '<button class="btn big" data-act="rcabre" style="margin:4px 0 10px">📥 Recibir el cierre de '+esc(chofN(S.chofHoy))+'</button>'+h};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rcabre"]');if(!b)return;e.stopImmediatePropagation();var D=rcDebe();S.rcv={p:0,R:String(D.R),M:String(D.M),V:String(D.V),E:String(D.dice!=null?D.dice:D.efe),est:{}};render();window.scrollTo(0,0)},true);
 function fCorta(d){var p=String(d).split('-');return p.length===3?p[2]+'/'+MES[+p[1]-1].toLowerCase().slice(0,3):d}
 /* en su sueldo, cada faltante con su motivo (el chofer ve por qué se le descuenta) */

@@ -34,11 +34,9 @@ if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viej
 function rutasDeHoy(){var L=[];var a={ch:+S.chofHoy,o:null,act:true};L.push(a);Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&!rutaVacia(S.chSt[id]))L.push({ch:+id,o:S.chSt[id]})});return L}
 function rutaSelHTML(){var L=rutasDeHoy();if(L.length<2||S.role!=='admin')return '';
  return '<div class="chips" role="group" aria-label="Ver la ruta de" style="margin:0 0 10px">'+L.map(function(x){var o=x.o||arPack(),env=o.cierre&&o.cierre.sent;return '<button data-act="verruta" data-id="'+x.ch+'" aria-pressed="'+!!x.act+'">'+esc(chofN(x.ch))+(env?' ✓':'')+'</button>'}).join('')+'</div>'}
-var _cA21=cierreAdm;cierreAdm=function(){return rutaSelHTML()+_cA21.apply(this,arguments)};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="verruta"]');if(!b)return;e.stopImmediatePropagation();chCambiar(+b.dataset.id);if(b.dataset.ir)S.tab.admin=b.dataset.ir;render();window.scrollTo(0,0)},true);
 /* ---- borrar los datos de prueba (para el lanzamiento) ---- */
 function borrarTodoLocal(cb){idbPut('S','',function(){cb&&cb()})}
 /* en Inicio: cierres de los otros choferes por recibir */
-var _cT21=cierreTop;cierreTop=function(){var h=_cT21.apply(this,arguments);if(S.role!=='admin')return h;
- Object.keys(S.chSt||{}).forEach(function(id){if(+id===+S.chofHoy)return;var o=S.chSt[id];if(!(o&&o.cierre&&o.cierre.sent&&!o.cierreReg))return;var r=o.cierre.res||{};
-  h+='<button class="card alert" data-act="verruta" data-id="'+id+'" data-ir="cierreadm" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('cierre',20)+'</span><span class="grow"><b style="font-size:17px">'+esc(chofN(+id))+' mandó su cierre</b><br><span class="lbl">Debe entregar '+money(r.efectivo||0)+'. Recíbelo.</span></span><span style="font-size:22px">›</span></button>'});return h};
+/* cierreTop: pasó a tema-cierre.js */

@@ -23,7 +23,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  toast('Arriba de '+money(encLim())+' necesitas el OK del administrador. Ya le avisamos.');render()},true);
 function pagoPideHTML(){if(S.role!=='admin'||S.encOn)return '';var L=(S.pagoPide||[]).filter(function(x){return x.f===iso(TODAY)&&x.est==='pend'});
  return L.map(function(x){return '<div class="card alert" data-key="pp'+x.id+'"><b style="font-size:17px">El encargado quiere pagar '+money(x.m)+'</b><div class="lbl">'+esc(x.n)+' · '+esc(x.q)+' · '+esc(x.h)+'</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="ppsi" data-id="'+x.id+'">Autorizar</button><button class="btn sec" style="flex:1" data-act="ppno" data-id="'+x.id+'">No</button></div></div>'}).join('')}
-var _cT42=cierreTop;cierreTop=function(){return pagoPideHTML()+_cT42.apply(this,arguments)};
+/* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ppsi"],[data-act="ppno"]');if(!b)return;e.stopImmediatePropagation();var x=(S.pagoPide||[]).filter(function(k){return k.id===+b.dataset.id})[0];if(!x)return;x.est=b.dataset.act==='ppsi'?'ok':'no';x.por=quien();
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(x.est==='ok'?'Autorizó':'No autorizó')+' al encargado pagar '+money(x.m)+' · '+x.n});toast(x.est==='ok'?'Autorizado':'Le avisamos que no');render()},true);
 /* ---------- conteo doble: lo que cuenta quien recibe contra lo que dijo el chofer ---------- */

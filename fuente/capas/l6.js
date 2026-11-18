@@ -97,4 +97,4 @@ setTimeout(function(){try{if(window.CONF){delete CONF.gxdel}}catch(e){}},0);
 
 /* el cierre de caja también se confirma antes de guardarse (cobros y pagos: solo confirmar, sin PIN) */
 setTimeout(function(){try{if(window.CONF)CONF.cajacierre=1}catch(e){}},0);
-var _cmL6=confMsg;confMsg=function(D){if(D.act==='cajacierre'){if(S.cajaCnt===''||S.cajaCnt==null)return null;var ce=cajaEsp(),cc=num(S.cajaCnt),df=cc-ce;return{t:'Cierre de caja',m:'¿Registrar que contaste '+money(cc)+'? La app esperaba '+money(ce)+(Math.abs(df)<0.5?' y cuadra.':(df<0?': faltan '+money(-df)+'.':': sobran '+money(df)+'.'))}}return _cmL6.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */

@@ -31,7 +31,7 @@ function corteVerifica(t){var s=String(t||'');if(s.indexOf('RF-CORTE|')!==0){toa
   +((d.may||[]).length?'<div class="lbl" style="margin-top:6px"><b>Mayoreo</b></div>'+d.may.map(function(x){return rw(esc(x.n),(x.R?x.R+' cajas a '+money(x.pr):'')+(x.M?' '+x.M+' kg a '+money(x.pm):''))}).join(''):'');
  if(!bien)S.avPrecio.push('URGENTE: el corte de '+d.ch+' ('+fmtF(d.f)+') no pasó la verificación');abrirModal('Corte escaneado',m,[])}
 function cierreAdmScanHTML(){return '<button class="btn sec" style="margin:6px 0" data-act="cortescan">📷 Escanear el ticket del corte</button>'}
-var _cT44=cierreTop;cierreTop=function(){var h=_cT44.apply(this,arguments);if(S.role!=='admin')return h;var hay=nbRutaIds().some(function(id){var c=nbRGet(id,'cierre');return c&&c.sent&&c.corte});return hay?h+cierreAdmScanHTML():h};
+/* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='qron'){e.stopImmediatePropagation();S.cfg.qrOn=b.dataset.v==='1';render();return}
  if(a==='qrpuesto'){e.stopImmediatePropagation();var c=cl(+b.dataset.id);c.qr={f:iso(TODAY),q:quien()};toast('Listo: QR pegado');render();return}

@@ -92,7 +92,7 @@ function gastosViaje68(c,k){var t=c.t||{},cv=c.cv&&c.cv.ok?c.cv:null,L=[],add=fu
 /* costo de repartir (por caja de roatán y por kilo de macho) */
 function cierreExtra68(r){try{var G=(S.gch||[]),t=tope68(),big=G.filter(function(x){return esImp68(x.tipo)&&num(x.m)>t});r.g68={tot:r2(sum(G,function(x){return num(x.m)})-sum(big,function(x){return num(x.m)})),big:big.map(function(x){return {tipo:x.tipo,m:num(x.m),nota:x.nota||''}}),comb:r2(sum(G.filter(function(x){return /combust/i.test(x.tipo)}),function(x){return num(x.m)})+sum(S.recs||[],function(x){return num(x.total||x.m)}))};
  var vh=vehHoy();r.veh68=vh?vh.id:null;r.tasa68=tasa68(vh);var z=suelDia68(cl0(+S.chofHoy));r.suel68=z.s;r.ch68=+S.chofHoy}catch(e){}return r}
-var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
+/* cierreRes: pasó a tema-cierre.js */
 function rep68(dias){dias=dias||30;var d0=iso(new Date(TODAY.getTime()-dias*864e5)),R=[];(S.rutasHist||[]).forEach(function(x){if(x.f>=d0&&x.res)R.push(x.res)});
  try{rutasOtras().forEach(function(o){if(o.cierre&&o.cierre.sent&&o.cierre.res)R.push(o.cierre.res)})}catch(e){}if(S.cierre&&S.cierre.sent&&S.cierre.res&&R.indexOf(S.cierre.res)<0)R.push(S.cierre.res);
  var o={rutas:0,cajas:0,kg:0,comb:0,otros:0,desg:0,suel:0};R.forEach(function(r){if(!(num(r.R)||num(r.M)))return;o.rutas++;o.cajas+=num(r.R);o.kg+=num(r.M);var g=r.g68||{};o.comb+=num(g.comb);o.otros+=Math.max(0,num(g.tot)-num(g.comb));o.desg+=Math.max(0,num(r.km))*(r.tasa68!=null?num(r.tasa68):0.7);o.suel+=num(r.suel68)});

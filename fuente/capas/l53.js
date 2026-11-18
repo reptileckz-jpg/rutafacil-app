@@ -12,7 +12,7 @@ var CONF53={enccancel:'Se cancela el encargo.',encquitar:'Se quita el encargo.',
  permok:'Se le autoriza fiarle hoy.',sacar:'El lote pasa a maduro.',vwpesdel:'Se borra esa pesada.',asidel:'Se quita esa nota.'};
 setTimeout(function(){Object.keys(CONF53).forEach(function(k){CONF[k]=1})},0);
 var _cfTxt53='';window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(b&&CONF53[b.dataset.act])_cfTxt53=(b.textContent||'').replace(/\s+/g,' ').trim()},true);
-var _confMsg53=confMsg;confMsg=function(D){var r=_confMsg53.apply(this,arguments);if(r||!CONF53[D.act])return r;return {t:'¿Estás seguro?',m:(_cfTxt53?'«'+_cfTxt53+'». ':'')+CONF53[D.act]}};
+/* confMsg: pasó a tema-cierre.js */
 /* y "Deshacer" en lo nuevo */
 setTimeout(function(){['rcfin','rcfinsi','flt','eqok'].forEach(function(k){UNDO[k]=1})},0);
 (function(){var st=document.createElement('style');st.textContent='[data-act="confno"],[data-act="confok"]{min-height:60px!important;font-size:18px!important}';document.head.appendChild(st)})();

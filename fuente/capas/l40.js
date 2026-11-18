@@ -22,8 +22,7 @@ function efPasoHTML(){var c=S.cierre,r=cierreRes(),deb=num(r.efectivo),ent=efEnt
   +(tombolaHay()?'<button data-act="efdest" data-v="tom" aria-pressed="'+(c.dest==='tom')+'">Meter a la tómbola</button>':'')+'<button data-act="efdest" data-v="adm" aria-pressed="'+(c.dest!=='tom')+'">Entregar al administrador</button></div>'
   +'<div class="lbl" style="margin-top:6px">El dinero va en la bolsa con su ticket del corte.</div></div>'}
 /* se mete en el paso 5 del cierre */
-var _cP40=cierrePasos;cierrePasos=function(){var r=_cP40.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==4)return r;var m=document.querySelector('main');if(!m||m.querySelector('[data-key="efpaso"]'))return r;
- if(!tombolaHay())S.cierre.dest='adm';var d=document.createElement('div');d.innerHTML=efPasoHTML();var nav=m.querySelector('.wz-nav');(nav?nav.before(d.firstChild):m.appendChild(d.firstChild))}catch(e){console.error(e)}return r};
+/* cierrePasos: pasó a tema-cierre.js */
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ef||!S.cierre)return;var c=S.cierre,k=t.dataset.ef;
  if(k==='entrega')c.entrega=t.value;else if(k==='motivo')c.efMot=t.value;else if(k==='bolsa')c.bolsa=t.value;else{c.bill=c.bill||{};c.bill[k]=t.value;c.billOn=BILLETES.some(function(d){return num(c.bill['b'+d])>0})||num(c.bill.mon)>0;var bt=document.getElementById('efbtot');if(bt)bt.textContent=money(efBillTot(c.bill))}
  var deb=num(cierreRes().efectivo),dif=r2(efEntrega(c)-deb),dd=document.getElementById('efdif'),mw=document.getElementById('efmotw');if(dd)dd.innerHTML=efDifTxt(dif);if(mw)mw.hidden=Math.abs(dif)<0.5},true);
@@ -33,8 +32,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b||!S.cierre||(S.cierreP||0)!==4||+b.dataset.v<5)return;var c=S.cierre,dif=r2(efEntrega(c)-num(cierreRes().efectivo));
  if(Math.abs(dif)>=0.5&&!String(c.efMot||'').trim()){e.stopImmediatePropagation();toast('Escribe por qué no cuadra');var i=document.getElementById('efmot');if(i)i.focus();return}},true);
 /* resumen del último paso: lo que entrega */
-var _cP40b=cierrePasos;cierrePasos=function(){var r=_cP40b.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==5)return r;var g=document.querySelector('main .card.good');if(!g||g.querySelector('[data-k="efr"]'))return r;var c=S.cierre,deb=num(cierreRes().efectivo),ent=efEntrega(c),dif=r2(ent-deb);
- var x=document.createElement('div');x.setAttribute('data-k','efr');x.innerHTML=rw('Entregas',money(ent))+(Math.abs(dif)>=0.5?rw(dif<0?'Faltan':'Sobran',money(Math.abs(dif)),'neg'):'')+rw('Dinero',c.dest==='tom'?'a la tómbola':'al administrador')+(c.bolsa?rw('Bolsa',esc(c.bolsa)):'');g.querySelector('b').after(x)}catch(e){}return r};
+/* cierrePasos: pasó a tema-cierre.js */
 /* ---------- corte: datos, imagen con QR y código, impreso y por WhatsApp al negocio ---------- */
 function corteDatos(){var c=S.cierre,r=c.res||cierreRes(),deb=num(r.efectivo),ent=efEntrega(c),may=(S.log||[]).filter(function(l){return l.may}).map(function(l){var k=cl(l.c);return {n:k?k.n:'',R:num(l.R),M:num(l.M),pr:num(l.pr),pm:num(l.pm)}});
  var tj=sum(S.log||[],function(l){return num(l.tarj)}),tr=sum(S.log||[],function(l){return num(l.trans)});

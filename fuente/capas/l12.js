@@ -31,8 +31,7 @@ recepCard=function(r){var R=S.recep;
  return '<div class="card" data-key="recep"><b>Cuenta lo que regresó a bodega</b><div class="lbl">Cuenta sin ver lo que dice la app. Al confirmar te digo si cuadra.</div>'
   +f('R','Cajas llenas de roatán')+f('M','Kilos de macho')+f('V','Cajas vacías')+'<button class="btn" style="margin-top:8px" data-act="recep">Confirmar recepción</button></div>'};
 /* que no se vea arriba lo que "regresa" mientras no se cuente */
-var _cAdmR=cierreAdm;cierreAdm=function(){var h=_cAdmR.apply(this,arguments);if(S.recep||!S.cierre.res)return h;
- return h.replace(/ · regresan -?[\d.]+/g,'').replace(/(Cajas vacías recibidas<\/span><b[^>]*>)[^<]*/,'$1se cuentan abajo')};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='recep'){e.stopImmediatePropagation();if(S.recep||!S.cierre.res)return;var c=recCnt(),fl=[['R','#rcR'],['M','#rcM'],['V','#rcV']].filter(function(x){return c[x[0]]===null});
   if(fl.length){window._faltaSel=fl[0][1];toast('Falta contar: '+fl.map(function(x){return {R:'cajas de roatán',M:'kilos de macho',V:'cajas vacías'}[x[0]]}).join(', ')+' (si no hay, escribe 0)');render();return}

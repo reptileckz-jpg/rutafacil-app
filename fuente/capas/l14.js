@@ -5,7 +5,7 @@ function fotoLeer(f,cb){var fr=new FileReader();fr.onload=function(){var im=new 
 
 /* ---- 1. Cancelar una entrega: el chofer puede, pero escribe por qué. Sale en su corte. ---- */
 function cancL(){return S.cancels||(S.cancels=[])}
-var _confM14=confMsg;confMsg=function(D){if(D&&D.act==='cancelent')return null;return _confM14.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cancelent"]');if(!b)return;var D=b.dataset,st=S.stops[+D.i];if(!st||st.logI==null)return;var l=S.log[st.logI],c=cl(st.c);
  if(!D.ok){e.stopImmediatePropagation();S._cmot=S._cmot||'';
   abrirModal('¿Por qué cancelas la entrega?','<b>'+esc(c.n)+'</b> · '+l.R+' cajas'+(l.M?', '+l.M+' kg':'')+' · '+money(l.total)+(l.pago+l.abono>0?'<br><span class="neg">Ya habías cobrado '+money(l.pago+l.abono)+'.</span>':'')+'<div class="lbl" style="margin-top:6px">Las cajas regresan a tu camión. Esto sale en tu corte y le llega al administrador.</div><div class="field" style="display:block;margin-top:8px"><label for="cmot" style="display:block;margin-bottom:4px">Escribe brevemente qué pasó</label><textarea id="cmot" data-bind="_cmot" rows="2" style="width:100%;box-sizing:border-box" placeholder="ej. me equivoqué de cliente">'+esc(S._cmot)+'</textarea></div>',[['Sí, cancelar la entrega','cancelent',' data-i="'+D.i+'" data-ok="1"']]);
@@ -18,10 +18,8 @@ function cancelsHTML(adm){var L=cancL().filter(function(x){return x.ch===+S.chof
  var h=L.length?'<div class="card'+(adm?' alert':'')+'" data-key="cancels"><b>Entregas canceladas</b>'+L.map(function(x){return '<div style="border-top:1px solid var(--line);padding:6px 0"><div class="row" style="border:0;padding:0"><span>'+esc(x.n)+'<br><span class="lbl">'+x.h+' · '+x.R+' cajas'+(x.M?', '+x.M+' kg':'')+' regresaron al camión</span></span><b>'+money(x.total)+'</b></div>'+(x.cobro>0?'<div class="neg" style="font-size:13px;font-weight:700">Ya había cobrado '+money(x.cobro)+'</div>':'')+'<div style="font-size:14px">“'+esc(x.mot)+'”</div></div>'}).join('')+'</div>':'';
  if(adm&&X.length)h+='<details class="card" data-key="cambiosft"><summary><b>Cambios de fruta a clientes</b><span class="lbl">'+X.length+' · con foto</span></summary>'+X.map(function(x){var c=cl(x.c);return '<div style="border-top:1px solid var(--line);padding:6px 0"><div>'+esc(c?c.n:'')+' · '+x.R+' cajas'+(num(x.M)?', '+x.M+' kg':'')+'</div>'+(x.foto?'<img src="'+x.foto+'" alt="Fruta que se cambió" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:4px">':'<div class="lbl neg">Sin foto</div>')+'</div>'}).join('')+'</details>';
  return h}
-var _cAdm14=cierreAdm;cierreAdm=function(){var h=_cAdm14.apply(this,arguments);if(!S.cierre.res)return h;var x=cancelsHTML(true)+gxRevHTML(true);if(!x)return h;var i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x};
-var _cier14=cierre;cierre=function(){var h=_cier14.apply(this,arguments),x=cancelsHTML(false);if(!x||S.cierre.sent)return h;
- /* va en el paso "Cajas": dentro de la tarjeta de cajas */
- return h.replace(/(<div class="card" style="padding:4px 14px"><div class="row"><span>Cajas que salieron)/,x.replace('<div class="card" data-key="cancels">','<div class="card" data-key="cancels"><span class="lbl" style="display:none">sin visitar</span>')+'$1')};
+/* cierreAdm: pasó a tema-cierre.js */
+/* cierre: pasó a tema-cierre.js */
 
 /* ---- 3. Gastos y gasolina: con foto del ticket se descuentan; sin foto quedan "por revisar" ---- */
 function gxRevL(){return S.gchRev||(S.gchRev=[])}

@@ -5,11 +5,7 @@
 function regPend(){return !!(S.cierre&&S.cierre.sent&&S.cierre.res&&!S.recep&&S.cierre.porContar)}
 function regAlgo(r){return Math.max(0,r.reg)>0||Math.max(0,r.regK)>0||r.V>0}
 /* chofer: foto en el paso "Cajas" del cierre */
-var _cierreF=cierre;cierre=function(){var h=_cierreF.apply(this,arguments),c=S.cierre;if(c.sent)return h;var r=cierreRes();if(!regAlgo(r))return h;
- var ft=c.fotoReg,blk='<div style="border-top:1px solid var(--line);margin-top:8px;padding:10px 0 6px"><b>Foto de lo que regresas</b><div class="lbl">Toma una foto donde se vean las cajas llenas y las vacías que traes en el camión. Es obligatoria para enviar el cierre.</div>'
-  +(ft?'<img src="'+ft+'" alt="Foto de lo que regresa" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px">':'')
-  +'<label for="regF" class="btn '+(ft?'sec ':'')+'sm" id="regFb" style="display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px">'+(ft?'Cambiar foto':'📷 Tomar foto')+'</label><input id="regF" type="file" accept="image/*" capture="environment" data-regf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>';
- return h.replace(/(Cajas vacías recibidas<\/span><b>-?[\d.]+<\/b><\/div>)(<\/div>)/,'$1'+blk+'$2')};
+/* cierre: pasó a tema-cierre.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.regf||!t.files||!t.files[0])return;var fr=new FileReader();
  fr.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,FOTO_PX119/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.cierre.fotoReg=cv.toDataURL('image/jpeg',FOTO_Q119);toast('Foto guardada')};im.src=fr.result};fr.readAsDataURL(t.files[0]);try{t.value=''}catch(er){}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -28,8 +24,7 @@ var _rCaj13=render;render=function(){
 var _recC13=recepCard;recepCard=function(r){var h=_recC13.apply(this,arguments),ft=S.cierre.fotoReg;if(!ft)return h;
  var img='<details style="margin-top:8px"><summary class="lbl" style="cursor:pointer">Ver la foto que tomó '+esc(chofN(S.chofHoy))+'</summary><img src="'+ft+'" alt="Foto de lo que regresó" style="width:100%;border-radius:12px;margin-top:6px" data-act="fotover"></details>';
  return h.replace(/<\/div>$/,img+'</div>')};
-var _cTop13=cierreTop;cierreTop=function(){var h=_cTop13.apply(this,arguments);if(regPend()&&!cierrePend()){var r=S.cierre.res;
- h+='<button class="card alert" data-act="vercierre" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('caja',20)+'</span><span class="grow"><b style="font-size:17px">Cajas sin contar de '+esc(chofN(S.chofHoy))+'</b><br><span class="lbl">Regresó del reparto. Cuéntalas para que entren a bodega.</span></span><span style="font-size:22px">›</span></button>'}return h};
+/* cierreTop: pasó a tema-cierre.js */
 
 /* ===================== v5 · Mayoreo con control =====================
    - En el cierre, junto a cada cliente al que se le dio mayoreo: "No darle mayoreo" o "Hacerlo cliente de mayoreo".
@@ -111,7 +106,7 @@ setInterval(function(){var L=document.querySelectorAll('[data-mayt]');if(!L.leng
 senalBanner=function(){if(S.role!=='rep')return '';var c=conn(+S.chofHoy);if(c.on)return '';return '<div class="sinconx" role="status">📶 Sin conexión <span>· tus datos se guardan</span></div>'};
 var _toast13=toast;toast=function(t){if(typeof t==='string'){if(/^Sin señal: lo que captures/.test(t)){render();return}else if(/^Volvió la señal/.test(t))t='Volvió la conexión · ya se mandó todo'}return _toast13.call(this,t)};
 /* si falta la foto, primero se avisa (antes del "¿Enviar?") */
-var _confM13=confMsg;confMsg=function(D){if(D&&D.act==='enviar'&&S.role==='rep'&&S.cierre&&!S.cierre.sent&&!S.cierre.fotoReg&&regAlgo(cierreRes()))return null;return _confM13.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */
 /* las cajas "sin contar" siguen existiendo: cuentan como en el camión hasta que alguien las cuente */
 var _cdD13=cajasDonde;cajasDonde=function(){var w=_cdD13.apply(this,arguments);if(regPend()){var r=S.cierre.res,ll=Math.max(0,num(r.reg)),vv=Math.max(0,num(r.V));/* 121 · sin el dato ya no da NaN ("Total NaN") */w.cam+=ll;w.camV=(w.camV||0)+vv;w.tot+=ll+vv;w.sinC=ll+vv}return w};
 /* "Seguir trabajando" con cajas sin contar:

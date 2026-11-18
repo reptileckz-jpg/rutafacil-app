@@ -15,8 +15,7 @@ function chCredCard(ch){var cf=crCfg(),bb=chBuro(ch),mine=S.cli.filter(function(
   +'<div class="field"><label for="chct'+ch.id+'">Tope de todos sus clientes juntos $</label><input id="chct'+ch.id+'" type="number" inputmode="decimal" min="0" data-chcr="'+ch.id+':crMax" value="'+esc(pt?ch.crMax:cf.crCh)+'"></div>'
   +'<div class="lbl" style="margin-top:4px">Sus '+mine.length+' clientes le deben '+money(bb.tot)+' de '+money(chTope(ch))+(bb.atr>0?' · '+money(bb.atr)+' atrasado':'')+' · '+['🟢 cobra bien','🟡 se atrasa','🟠 cobra mal'][bb.n]+'</div>'
   +tarCampo116(ch)+(pc||pt||pv?'<button class="link" style="margin-top:4px" data-act="chcrdef" data-id="'+ch.id+'">Usar los de Ajustes ('+money(num(cf.crCli))+' y '+money(num(cf.crCh))+')</button>':'<div class="lbl">Son los mismos de Ajustes. Si los cambias aquí, solo cambian para '+esc(ch.n)+'.</div>')+'</div>'}
-var _fiE27=fiEmp;fiEmp=function(f){var h=_fiE27.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||S.chEdit===ch.id)return h;
- if(!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');return i<0?h:h.slice(0,i)+chCredCard(ch)+h.slice(i)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.chcr)return;var pr=t.dataset.chcr.split(':'),ch=S.choferes.filter(function(x){return x.id===+pr[0]})[0];if(!ch)return;var k=pr[1],cf=crCfg(),def=num(k==='crCli'?cf.crCli:cf.crCh),ant=k==='crCli'?(ch.crCli!=null&&ch.crCli!==''?num(ch.crCli):def):chTope(ch),v=Math.max(0,num(t.value));
  ch[k]=v===def?null:String(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(k==='crCli'?'Cambió el máximo por cliente de ':'Cambió el tope total de ')+ch.n+': '+money(ant)+' → '+money(v)});
  toast((k==='crCli'?'Cada cliente de ':'Todos los clientes de ')+ch.n+': hasta '+money(v));render()},true);
@@ -27,11 +26,7 @@ var _r27=render;render=function(){limSync();return _r27.apply(this,arguments)};
 /* ---------- ficha del cliente: teléfono confirmado y límite real ---------- */
 function telConfOk(c){return !!(c.tel&&c.telConf&&digs(c.telConf.tel)===digs(c.tel))}
 function telDeChofer(c){var d=digs(c.tel);if(d.length<10)return null;return S.choferes.filter(function(x){return digs(x.tel)===d})[0]||null}
-var _fiC27=fiCli;fiCli=function(f){var h=_fiC27.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='admin')return h;try{
- var old=rw('Teléfono',c.tel?esc(c.tel):'sin registrar');if(h.indexOf(old)>-1&&c.tel){var dc=telDeChofer(c),ok=telConfOk(c);
-  var nv=rw('Teléfono',esc(c.tel))+'<div style="margin:-2px 0 8px;font-size:14px">'+(dc?'<div class="neg">⚠ Es el teléfono de '+esc(dc.n)+', no del cliente</div>':'')+(ok?'<span style="color:var(--accent)">✓ Número confirmado '+hace(c.telConf.t)+'</span>':'<span class="neg">Sin confirmar</span>'+(c.telPor?' <span class="lbl">· lo puso '+esc(chofN(c.telPor))+'</span>':'')+' <button class="btn sm" style="width:auto;margin-left:6px" data-act="telconf" data-id="'+c.id+'">Confirmar número</button>')+'</div>';
-  h=h.replace(old,nv)}
- var oldL=rw('Límite de crédito',c.lim?money(c.lim):'sin límite');if(h.indexOf(oldL)>-1){var ch=chCredDe(c);h=h.replace(oldL,rw('Límite de crédito',money(limEf(c))+'<br><span class="lbl">'+(c.limMan!=null?'excepción tuya':(ch?'el de los clientes de '+esc(ch.n):'el de Ajustes'))+(buroDe(c).n?' · bajado por el buró':'')+'</span>'))}}catch(e){}return h};
+/* fiCli: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="telconf"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c||!c.tel)return;
  var dc=telDeChofer(c);if(dc&&!b.dataset.ya){abrirModal('Ese es el teléfono de '+dc.n,'El número '+c.tel+' es el de '+dc.n+'. ¿De verdad es el del cliente? Mejor llámale para confirmarlo.',[['Sí, es del cliente','telconfya:'+c.id]]);return}
  c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado');render()},true);

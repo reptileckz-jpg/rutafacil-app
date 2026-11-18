@@ -16,7 +16,7 @@ function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
 /* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 function credActivo(c){return !!c&&!c.nuevo&&c.credOk!==false&&!c.credFrz&&(num(c.cred)>0||c.credOk===true)}
-var _mh41=mayHistHTML;mayHistHTML=function(c){var h=_mh41.apply(this,arguments);if(S.role==='admin'||!c||credActivo(c))return h;return h.replace(/^<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró<\/b>[\s\S]*?<\/div><\/div>/,'')};
+/* mayHistHTML: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b||!S.d)return;var a=b.dataset.act;
  if(a==='pforma'){e.stopImmediatePropagation();var v=b.dataset.v;if(v==='otros'){S.d.formaOtros=true;if(S.d.forma!=='trans'&&S.d.forma!=='mixto')S.d.forma='trans'}else{S.d.forma=v;if(v==='efe'||v==='tarj')S.d.formaOtros=false}render();return}
  if(a==='pmixt'){e.stopImmediatePropagation();S.d.mixT=b.dataset.v;render();return}
@@ -67,6 +67,4 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(!c.hCi&&(u.hAb||u.hCi)){if(!u.hAb||!u.hCi){e.stopImmediatePropagation();toast('Pon la hora en que abre y la hora en que cierra');return}c.hAb=u.hAb;c.hCi=u.hCi}
  if(!c.diasAbre&&u.diasAbre&&u.diasAbre.length)c.diasAbre=u.diasAbre.slice()},true);
 /* en la ficha del cliente, el chofer puede completar lo que falte cuando quiera */
-var _fiC41=fiCli;fiCli=function(f){var h=_fiC41.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='rep'||c.rapida)return h;var fl=ubCliFalta(c);if(!ubTiene(c))fl.unshift('ubicación');if(!fl.length)return h;
- var card='<div class="card note"><b>Le falta: '+esc(fl.join(', '))+'</b><div class="lbl">Puedes agregar lo que falta (lo que ya tiene no se cambia).</div><button class="btn sm" style="margin-top:8px" data-act="ubcli" data-id="'+c.id+'" data-m="'+(ubTiene(c)?'datos':'gps')+'">Completar datos</button></div>';
- var i=h.indexOf('<div class="card');return i<0?h+card:h.slice(0,i)+card+h.slice(i)};
+/* fiCli: pasó a tema-fichas.js */

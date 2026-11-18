@@ -137,4 +137,4 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
    try{p.push(m.enableCurrentLocation(true))}catch(er){}Promise.all(p).catch(function(){})},function(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')})}catch(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')}},80)},true);
 var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _navA52.apply(this,arguments)};
 /* en la ficha del chofer, pestaña "Ruta y metas": su recorrido por GPS */
-var _fiEmp52=fiEmp;fiEmp=function(f){var h=_fiEmp52.apply(this,arguments);if(S.chEdit===f.id||(S.fiTab||{})['emp:'+f.id]!=='ruta')return h;var c=(S.choferes||[]).filter(function(x){return x.id===f.id})[0];var g=c?gpsRutaHTML(c):'';if(!g)return h;return h.replace(/<\/div><\/div><\/div>$/,g+'</div></div></div>')};
+/* fiEmp: pasó a tema-fichas.js */

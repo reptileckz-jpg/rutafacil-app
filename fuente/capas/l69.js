@@ -145,9 +145,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(v.comOk===false){e.preventDefault();e.stopImmediatePropagation();toast('La comida no está autorizada en este viaje. Pídele permiso al administrador.');return}
  if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});if(ya+num(v.gxm)>num(v.comMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del máximo autorizado para comida ('+money(num(v.comMax))+'). Llévale el ticket al administrador.')}}},true);
 /* ruta de reparto: presupuesto diario de comida en la ficha del chofer */
-var _fiE69=fiEmp;fiEmp=function(f){var h=_fiE69.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!c.comida)return h;
-  var add='<div class="field" style="margin-top:6px"><label for="chcp'+c.id+'">Presupuesto diario de comida $</label><input id="chcp'+c.id+'" type="number" inputmode="decimal" min="0" data-ch68="'+c.id+'" value="'+esc(c.comidaMax==null?'':c.comidaMax)+'" placeholder="sin tope"></div>';
-  return h.replace(/(data-act="chcomida"[^>]*>[^<]*<\/button><\/div>)/,'$1'+add)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ch68)return;var c=cl0(+t.dataset.ch68);if(!c)return;var v=String(t.value).trim();c.comidaMax=v===''?null:num(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Presupuesto diario de comida de '+c.n+': '+(c.comidaMax==null?'sin tope':money(c.comidaMax))});toast('Guardado');render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"]');if(!b||S.role!=='rep'||!S.gx||!/^Comida/.test(S.gx.tipo||''))return;var c=cl0(S.chofHoy);if(!c||c.comidaMax==null)return;
  var ya=sum((S.gch||[]).filter(function(x){return /^Comida/.test(x.tipo||'')}),function(x){return num(x.m)});if(ya+num(S.gx.m)>num(c.comidaMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del presupuesto de comida de hoy ('+money(num(c.comidaMax))+'; llevas '+money(ya)+').')}},true);

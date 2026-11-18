@@ -72,9 +72,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- permiso para seguir: por chofer (nuevo = sin permiso, se reabre solo) ---------- */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="seguir"]');if(!b||S.role!=='rep'||_seguirOk||chPideSeguir(S.chofHoy))return;
  _seguirOk=true;var k=b.dataset.k||'carga';setTimeout(function(){_seguirOk=false;S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta para '+(k==='carga'?'cargar más':'dar otra vuelta'));render()},0)},true);
-var _fiE40=fiEmp;fiEmp=function(f){var h=_fiE40.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||!esCh(ch)||ch.baja||S.chEdit===ch.id||!/data-act="bjabre"/.test(h))return h;
- var c='<div class="card"><b>Después de su cierre</b><div class="lbl">Si quiere cargar más o dar otra vuelta:</div><div class="chips" role="group" aria-label="Permiso para seguir" style="margin-top:6px"><button data-act="segperm" data-id="'+ch.id+'" data-v="0" aria-pressed="'+!ch.segPerm+'">Sigue solo (te avisa)</button><button data-act="segperm" data-id="'+ch.id+'" data-v="1" aria-pressed="'+!!ch.segPerm+'">Me pide permiso</button></div></div>';
- return h.replace(/(<button class="link" style="color:var\(--danger\);margin:10px 0" data-act="bjabre")/,c+'$1')}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="segperm"]');if(!b)return;e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];if(ch){ch.segPerm=b.dataset.v==='1';toast(ch.segPerm?ch.n+' te pedirá permiso':ch.n+' puede seguir solo')}render()},true);
 /* ---------- apoyo entre choferes (solo por hoy) y pasar la ruta ---------- */
 function stopsDe(id){return nbRGet(id,'stops')||[]}
@@ -96,8 +94,7 @@ function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter
   +'<div class="card"><b>Clientes pendientes ('+L.length+')</b>'+L.map(function(s){var c=cl(s.c)||{n:''};return '<label class="row" style="cursor:pointer"><span>'+esc(c.n)+'</span><input type="checkbox" data-pasac="'+s.c+'"'+(x.sel[s.c]!==false?' checked':'')+'></label>'}).join('')+'</div>'
   +'<button class="btn" style="margin-top:12px" data-act="pasasi">Pasar'+(x.a?' a '+esc(chofN(x.a)):'')+'</button></div></div>'}
 var _suH40=setupHTML;setupHTML=function(){return pasaRutaHTML()||_suH40.apply(this,arguments)};
-var _fiE40b=fiEmp;fiEmp=function(f){var h=_fiE40b.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||ch.baja||!/data-fi="[^"]*:ruta"[^>]*aria-selected="true"|data-k="ruta"/.test(h)&&!pendDe(ch.id).length)return h;
- if(!pendDe(ch.id).length||h.indexOf('data-act="pasar"')>-1)return h;var i=h.lastIndexOf('</div></div></div>');var c='<button class="btn sec" style="margin:10px 0" data-act="pasar" data-id="'+ch.id+'">Pasar su ruta a otro chofer (solo hoy)</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pasac&&S.pasaR)S.pasaR.sel[t.dataset.pasac]=t.checked},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='apoyoofrece'){e.stopImmediatePropagation();S.apoyos=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)});S.apoyos.push({id:Date.now(),de:+S.chofHoy,f:iso(TODAY),cajas:num(S.inv.reparto),est:'ofrece'});S.avPrecio.push(chofN(S.chofHoy)+' terminó y puede apoyar a otro chofer (trae '+num(S.inv.reparto)+' cajas)');toast('Listo: a los demás choferes les sale que puedes apoyar');render();return}

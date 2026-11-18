@@ -17,7 +17,7 @@ function chBuroHTML(){if(S.role!=='admin')return '';var h='';S.choferes.forEach(
   +'<div class="lbl" style="margin-top:2px">'+(b.sug.t==='subir'?'Precaución: súbelo poco a poco y revisa que sus tickets de crédito sí se mandaron a los clientes.':'Mientras esté bajo, solo podrá fiar hasta ese tope; lo que ya deben no cambia.')+'</div>'
   +'<div style="display:flex;gap:6px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="chburook" data-id="'+ch.id+'" data-v="'+b.sug.v+'">'+(b.sug.t==='bajar'?'Bajarlo':'Subirlo')+' a '+money(b.sug.v)+'</button><button class="btn sm sec" style="flex:1" data-act="chburono" data-k="'+k+'">Dejarlo igual</button></div></div>'});
  return h?'<div class="card note" data-key="chburo" style="padding:10px 12px"><b>Tope de crédito de los choferes</b>'+h+'</div>':''}
-var _perms20=permsHTML;permsHTML=function(){return _perms20.apply(this,arguments)+chBuroHTML()};
+/* permsHTML: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='chburook'){e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];var ant=chTope(ch);ch.crMax=String(num(b.dataset.v));S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Cambió el tope de crédito de '+ch.n+': '+money(ant)+' → '+money(num(ch.crMax))});toast('Tope de '+ch.n+': '+money(num(ch.crMax)));render();return}
  if(a==='chburono'){e.stopImmediatePropagation();S.chBuroNo=S.chBuroNo||{};S.chBuroNo[b.dataset.k]=iso(TODAY);render();return}
@@ -43,5 +43,5 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){var c=cl(id);if(c&&c.mayoreo){mayBaseFijar(c);c.mayMant=false;c.mayBajo=null}},0)},true);
 function mayBajoHTML(){var L=S.cli.filter(function(c){return c.mayBajo&&!c.mayoreo&&!c.oculto&&c.mayBajo.f===iso(TODAY)});if(!L.length||S.role!=='admin')return '';
  return '<div class="card note" data-key="maybajo" style="padding:10px 12px"><b>Regresaron a precio normal</b>'+L.map(function(c){return '<div style="border-top:1px solid var(--line);padding:8px 0">'+esc(c.n)+'<div class="lbl">Compraba '+money(c.mayBajo.antes)+' en 30 días; ahora '+money(c.mayBajo.ahora)+'.</div><button class="btn sm sec" style="margin-top:6px" data-act="maymant" data-id="'+c.id+'">Mantenerle mayoreo</button></div>'}).join('')+'</div>'}
-var _perms20b=permsHTML;permsHTML=function(){return _perms20b.apply(this,arguments)+mayBajoHTML()};
+/* permsHTML: pasó a tema-fichas.js */
 var _aj20=ajHTML;ajHTML=function(){var h=_aj20.apply(this,arguments);crCfg2();return h.replace('<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div>','<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div><div class="field"><label for="cfg_mayBaja">Si un cliente de mayoreo baja su compra más de (%)</label><input id="cfg_mayBaja" type="number" inputmode="decimal" min="0" data-bind="cfg.mayBaja" value="'+esc(S.cfg.mayBaja)+'"></div><div class="lbl">…regresa a precio normal y te aviso.</div>')};

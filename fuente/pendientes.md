@@ -2586,4 +2586,6 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Tema "ruta y entrega del chofer" → `capas/tema-ruta.js` (28 envolturas: ruta 13, entrega 7, entValida 4, entregaCalc 2, credBloq 2), justo después de `l90`. 503 → **475 (16%)**.
 - Blindaje (toca la entrega = dinero): no cambia ninguna cuenta, solo el orden del código. `pruebas/comp-ruta.js` compara la app de antes y la nueva en la ruta, la entrega de cada cliente (contado, parte, crédito, abono, mayoreo, límite del cliente, tope del chofer), las cuentas, las revisiones, cuándo no se fía y guardar una entrega de verdad. Resultado: 148 casos iguales en la demo, 77 en la real. La prueba detecta un cambio hecho a propósito en el tope de crédito. Todas las pruebas en 0 FAIL.
 - Siguiente: fichas del personal y de clientes (fiEmp, fiCli, mayHistHTML, permsHTML).
+- Tema "fichas del personal y de clientes" → `capas/tema-fichas.js` (24: fiEmp 9, fiCli 5, mayHistHTML 4, permsHTML 6). 475 → **451 (20%)**. `pruebas/comp-fichas.js`: 192 casos iguales en la demo y 81 en la real, con todas las pestañas de cada ficha, buró, mayoreo y permisos pendientes. Detecta un cambio a propósito. Todas las pruebas en 0 FAIL.
+- Siguiente: cierre del chofer y recibir el cierre (toca dinero: con plan de blindaje y comparación de cortes).
 

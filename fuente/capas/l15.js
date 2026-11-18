@@ -57,4 +57,4 @@ document.addEventListener('input',function(e){var x=e.target;if(x&&x.dataset&&x.
 /* en la pantalla de alta */
 var _npF15=npF;npF=function(k,l,t,ph){if(/^(r1p|r2p|emp)$/.test(k))return parHTML('np:'+k);return _npF15.apply(this,arguments)};
 /* y al editar a alguien que ya existe */
-var _fiEmp15=fiEmp;fiEmp=function(f){var h=_fiEmp15.apply(this,arguments);return h.replace(/<div class="field"><label for="ch(\d+)(r1p|r2p|emp)">Parentesco<\/label><input[^>]*><\/div>/g,function(m,id,k){return parHTML('ch:'+id+':'+k)})};
+/* fiEmp: pasó a tema-fichas.js */

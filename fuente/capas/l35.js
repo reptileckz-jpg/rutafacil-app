@@ -36,10 +36,7 @@ var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.in
 var _chI35=chImg;chImg=function(c,k,l){var h=_chI35.apply(this,arguments),id='chi_'+c.id+k;
  return h.replace(/<label class="btn sec sm" for="chi_[^"]*"[^>]*>[^<]*<\/label>/,'<div class="chfbtn"><label class="btn sec sm" for="'+id+'c" style="display:flex;align-items:center;justify-content:center;cursor:pointer">📷 Tomar</label><label class="btn sec sm" for="'+id+'" style="display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️ Galería</label></div>')
   .replace(/<\/div>$/,'<input id="'+id+'c" type="file" accept="image/*" capture="environment" data-chimg="'+c.id+':'+k+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>')};
-var _fiE35=fiEmp;fiEmp=function(f){var h=_fiE35.apply(this,arguments),c=S.choferes.filter(function(x){return x.id===f.id})[0];if(!c||esAdm(c))return h;try{
- h=h.replace(chImg(c,'ine','INE'),chImg(c,'ine','INE (frente)')+chImg(c,'ineR','INE (reverso)')).replace(chImg(c,'lic','Licencia'),chImg(c,'lic','Licencia (frente)')+chImg(c,'licR','Licencia (reverso)'));
- h=h.replace(chView(c,'ine','INE'),chView(c,'ine','INE (frente)')+chView(c,'ineR','INE (reverso)')).replace(chView(c,'lic','Licencia de conducir'),chView(c,'lic','Licencia (frente)')+chView(c,'licR','Licencia (reverso)'));
- h=h.replace('<div style="display:flex;gap:10px;margin:8px 0">','<div class="chfotos" style="display:flex;gap:10px;margin:8px 0">').replace('<div style="display:flex;gap:10px;margin:4px 0 8px">','<div class="chfotos" style="display:flex;gap:10px;margin:4px 0 8px">')}catch(e){}return h};
+/* fiEmp: pasó a tema-fichas.js */
 /* ---------- guía para empezar (admin con la app casi vacía) ---------- */
 function guiaPasos(){var hayCh=(S.choferes||[]).some(function(c){return !c.baja&&!esAdm(c)});var acc=typeof NB!=='undefined'&&NB.on?Object.keys(NB.usuarios||{}).some(function(u){var p=NB.usuarios[u];return p&&p.activo&&p.rol==='chofer'}):hayCh;
  return [['Agrega tus clientes','Con su dirección y el día que se les visita','clientes',(S.cli||[]).some(function(c){return !c.oculto&&!c.rapida})],

@@ -10,9 +10,7 @@ function cliQR(c){return 'RF-C:'+c.id}
 var _aj44=ajHTML;ajHTML=function(){var h=_aj44.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
  var c='<details class="card" data-k="ajqr"'+(S.dOpen.ajqr?' open':'')+'><summary><b>QR de clientes</b><span class="lbl">'+(qrOn()?'prendido':'apagado')+'</span></summary><div class="lbl" style="margin-top:6px">Cada cliente tiene un código QR para pegar en su local. El chofer lo escanea y se abre su entrega. Es solo un atajo.</div><div class="chips" role="group" aria-label="QR de clientes" style="margin:8px 0"><button data-act="qron" data-v="1" aria-pressed="'+qrOn()+'">Usar QR de clientes</button><button data-act="qron" data-v="0" aria-pressed="'+!qrOn()+'">No usar</button></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
-var _fiC44=fiCli;fiCli=function(f){var h=_fiC44.apply(this,arguments),c=cl(f.id);if(!c||!qrOn()||c.rapida)return h;
- var q='<div class="card" data-key="cliqr" style="text-align:center"><b>QR de '+esc(c.n)+'</b><div style="margin:8px auto;width:150px">'+QR.svg(cliQR(c),150)+'</div>'+(c.qr?'<div class="lbl">✓ Pegado el '+fmtF(c.qr.f)+(c.qr.q?' por '+esc(c.qr.q):'')+'</div>':'<div class="lbl neg">Falta pegarlo</div>')
-  +'<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px">'+(imprOk()?'<button class="btn sm sec" style="width:auto" data-act="qrimp" data-id="'+c.id+'">Imprimir etiqueta</button>':'')+(c.qr?'':'<button class="btn sm" style="width:auto" data-act="qrpuesto" data-id="'+c.id+'">Ya lo pegué</button>')+'</div></div>';var i=h.lastIndexOf('</div></div></div>');return i<0?h+q:h.slice(0,i)+q+h.slice(i)};
+/* fiCli: pasó a tema-fichas.js */
 function qrEtiqueta(c){return [{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:c.n,b:1}]}
 /* escanear (cámara del celular; sin internet) */
 var _qs=null;

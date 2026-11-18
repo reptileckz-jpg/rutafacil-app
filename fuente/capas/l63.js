@@ -118,9 +118,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(!fuel&&S.gx&&/^Comida/.test(S.gx.tipo||'')&&!chofComida()){e.preventDefault();e.stopImmediatePropagation();toast('La comida solo se registra si el administrador te la autorizó.');return}
  var foto=fuel?(S.rc&&S.rc.foto):(S.gx&&S.gx.foto);if(!foto&&(fuel||gxTicketObl(S.gx&&S.gx.tipo))){e.preventDefault();e.stopImmediatePropagation();toast('Toma la foto del ticket: es obligatoria.');var f=document.querySelector(fuel?'label[for="rcf"]':'label[for="gxf"]')||document.getElementById(fuel?'rcf':'gxf');if(f)try{marcaFalta(f)}catch(er){}}},true);
 /* ficha del chofer: "Puede agregar comida" sí/no */
-var _fiE63=fiEmp;fiEmp=function(f){var h=_fiE63.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!esCh(c)||esAdm(c)||(S.fiTab||{})['emp:'+f.id]==='ruta')return h;
- var row='<div class="card" data-key="chcomida"><div class="row"><span><b>Puede agregar comida</b><br><span class="lbl">Solo si ya lo acordaron. Si está en No, no le sale la opción.</span></span><button class="btn sm'+(c.comida?'':' sec')+'" style="width:auto" data-act="chcomida" data-id="'+c.id+'">'+(c.comida?'Sí':'No')+'</button></div></div>';
- var i=h.lastIndexOf('</div></div></div>');return i>-1?h.slice(0,i)+row+h.slice(i):h+row}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="chcomida"]');if(!b)return;e.stopImmediatePropagation();var c=cl0(+b.dataset.id);if(!c)return;c.comida=!c.comida;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(c.comida?'Le permitió':'Le quitó')+' agregar comida a '+c.n});toast(c.comida?'Puede agregar comida':'Ya no puede agregar comida');render()},true);
 /* recepción del cierre: "Entregó los tickets" */
 function tkCuantos(){var g=(nbRGet(+S.chofHoy,'gch')||S.gch||[]).filter(function(x){return gxTicketObl(x.tipo)}).length,r=(nbRGet(+S.chofHoy,'recs')||S.recs||[]).length;return g+r}

@@ -82,9 +82,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='mayperm'){e.stopImmediatePropagation();var ch=chofById(D.id);if(!ch)return;ch.mayPerm=D.v==='1';toast(ch.mayPerm?ch.n+': mayoreo solo con tu permiso':ch.n+' ya puede dar mayoreo sin pedirte permiso');render();return}
 },true);
 /* admin: tarjeta de permisos en Inicio */
-var _perms13=permsHTML;permsHTML=function(){var h=_perms13.apply(this,arguments);if(S.role!=='admin')return h;mayVencer();var L=[];mayPideL().forEach(function(p,i){if(p.est==='pend')L.push([p,i])});if(!L.length)return h;
- return h+'<div class="card alert" style="padding:10px 12px;border-width:2px"><b class="neg">Piden permiso para mayoreo</b>'+L.map(function(x){var p=x[0],c=cl(p.c),seg=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-p.t))/1000)),pn=num(c.ppR)||num(S.precio.R),pm=num(c.ppM)||num(S.precio.M);
-  return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(chofN(p.ch))+'</b> quiere darle mayoreo a <b>'+esc(c.n)+'</b><div class="lbl">'+(p.R?p.R+' cajas a '+money(p.pR)+' (normal '+money(pn)+')':'')+(p.R&&p.M?' · ':'')+(p.M?p.M+' kg a '+f2(p.pM)+' (normal '+f2(pm)+')':'')+' · si no contestas en '+Math.ceil(seg/60)+' min se vende normal</div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="'+x[1]+'">Sí, hoy sí</button><button class="btn sm sec" style="flex:1" data-act="mayneg" data-i="'+x[1]+'">No</button></div></div>'}).join('')+'</div>'};
+/* permsHTML: pasó a tema-fichas.js */
 /* cierre: botones por cliente y sugerencia de "solo con permiso" */
 mayRepHTML=function(){var L=S.log.filter(function(l){return l.mayT});if(!L.length)return '';var G=[['chofer','Lo dio el chofer a mano'],['fijo','Cliente con mayoreo fijo (lo pusiste tú)'],['auto','Automático por más de 10 cajas']],tot=0,ch=chofById(S.chofHoy);
  var h='<div class="card" data-key="mayrep"><b>Precios de mayoreo del día</b>';G.forEach(function(g){var X=L.filter(function(l){return l.mayT===g[0]});if(!X.length)return;var st=sum(X,function(l){return (num(l.pnR)-num(l.pr))*l.R+(num(l.pnM)-num(l.pm))*l.M});tot+=st;
@@ -96,8 +94,7 @@ mayRepHTML=function(){var L=S.log.filter(function(l){return l.mayT});if(!L.lengt
   else if(n>=2)h+='<div class="card alert" style="margin:8px 0 0;padding:10px 12px"><b>'+esc(ch.n)+' lleva '+n+' mayoreos que no aprobaste en 30 días</b><div class="lbl">¿Quieres que desde ahora te pida permiso? Los clientes de mayoreo que tú pusiste no lo necesitan.</div><button class="btn sm" style="margin-top:8px" data-act="mayperm" data-id="'+ch.id+'" data-v="1">Mayoreo solo con mi permiso</button></div>'}
  return h+'</div>'};
 /* ficha del cliente: "nunca darle mayoreo" */
-var _mayH13=mayHistHTML;mayHistHTML=function(c){var h=_mayH13.apply(this,arguments);if(S.role!=='admin'||!c)return h;
- return h+(c.mayNo?'<div class="lbl" style="margin:6px 0">No se le da mayoreo · <button class="link" data-act="maysi" data-id="'+c.id+'">Permitir otra vez</button></div>':'')};
+/* mayHistHTML: pasó a tema-fichas.js */
 /* tarjeta del chofer en Personal: el interruptor */
 var _suel13=sueldos;sueldos=function(){var h=_suel13.apply(this,arguments);
  return h.replace(/<div class="field" style="margin-top:6px"><label for="adl_(\d+)"/g,function(m,id){var ch=chofById(id);if(!ch)return m;var n=mayRech30(ch.id);
@@ -106,7 +103,7 @@ var _suel13=sueldos;sueldos=function(){var h=_suel13.apply(this,arguments);
 (function(){var st=document.createElement('style');st.textContent='.mayreloj{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px;margin:4px 0}.mayreloj.poco{color:var(--danger)}';document.head.appendChild(st)})();
 function mayRelojTxt(t){var s=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-t))/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
 setInterval(function(){var L=document.querySelectorAll('[data-mayt]');if(!L.length)return;var fin=false;Array.prototype.forEach.call(L,function(el){var t=+el.getAttribute('data-mayt'),tx=mayRelojTxt(t);if(el.textContent!==tx)el.textContent=tx;el.classList.toggle('poco',Date.now()-t>MAY_ESPERA-60000);if(Date.now()-t>MAY_ESPERA)fin=true});if(fin){mayVencer();render()}},1000);
-var _perms13b=permsHTML;permsHTML=function(){return _perms13b.apply(this,arguments).replace(/ · si no contestas en \d+ min se vende normal<\/div>(<div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="(\d+)")/g,function(m,rest,i){var p=mayPideL()[+i];return '</div><div class="lbl" style="margin-top:4px">Se vende a precio normal en <b data-mayt="'+p.t+'" style="font-variant-numeric:tabular-nums">'+mayRelojTxt(p.t)+'</b></div>'+rest})};
+/* permsHTML: pasó a tema-fichas.js */
 
 /* ===================== v5 · Sin conexión: aviso corto =====================
    Antes salía una tarjeta con mucho texto. Ahora solo una barrita: "Sin conexión · tus datos se guardan". */

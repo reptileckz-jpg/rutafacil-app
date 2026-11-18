@@ -15,6 +15,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | 17 nov | 528 | 7% | Tema "quién reparte" (`tema-reparte.js`, −9). La comparación encontró que `mig85` usaba directo la variable de una envoltura (`_chs85`); se cambió a `_chs81Base` |
 | 17 nov | 503 | 11% | Tema "vehículos" (`tema-vehiculos.js`, −23) y las 2 envolturas de `l82` sobre `nuevoVeh`/`nuevoCli` pasaron a su definición en `l7.js` |
 | 18 nov | 475 | 16% | Tema "ruta y entrega del chofer" (`tema-ruta.js`, −28: ruta 13, entrega 7, entValida 4, entregaCalc 2, credBloq 2), comprobado con `pruebas/comp-ruta.js` (148 casos iguales en la demo y 77 en la real; la prueba sí detecta un cambio a propósito en el tope de crédito) |
+| 18 nov | 451 | 20% | Tema "fichas del personal y de clientes" (`tema-fichas.js`, −24: fiEmp 9, fiCli 5, mayHistHTML 4, permsHTML 6), comprobado con `pruebas/comp-fichas.js` (192 casos iguales en la demo y 81 en la real; detecta un cambio a propósito en fiCli) |
 
 ## Temas (de más fácil a más difícil)
 | Tema | Envolturas aprox. | Estado |
@@ -25,8 +26,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Quién reparte (choferes del día, el administrador que reparte, cambios de Rutas al chofer: chs81, chofsDia57, pedChoferes, choferes75, sinCh81, arTiene, toma81) | 9 | ✅ `tema-reparte.js` (comprobado con `pruebas/comp-reparte.js`: 33 casos iguales en la demo y en la real). Lo de l85/l90 que envuelve `render` y `toast` se junta con esos temas |
 | Vehículos (vehHoy, vehLibres, vehiculos, vehBasic, fiVeh, vForm, plateSVG, fuelVeh, vehGastos, tagCruce, inspHTML, inspRepHTML, inspMarca, encVehHTML, velAlertaHTML, velBeep, fotoTile, fotoAbrir, fotoZoomable) | 23 | ✅ `tema-vehiculos.js` (comprobado con `pruebas/comp-vehiculos.js`: 54 casos iguales en la demo y 45 en la real; la única diferencia es a propósito: un camión del asistente ya no trae la fecha de afinación de la demo) |
 | Ruta y entrega del chofer (ruta, entrega, entValida, entregaCalc, credBloq) | 28 | ✅ `tema-ruta.js` (va justo después de `l90`; `tema-taras` envuelve `entValida` después). Comprobado con `pruebas/comp-ruta.js` |
-| Fichas del personal y de clientes (fiEmp 9, fiCli 5, mayHistHTML 4, permsHTML 6) | 24 | ⏭️ sigue |
-| Cierre del chofer y recibir cierre (cierreTop, cierreAdm, cierre, cierrePasos, cierreRes, confMsg) | ~20 | pendiente |
+| Fichas del personal y de clientes (fiEmp 9, fiCli 5, mayHistHTML 4, permsHTML 6) | 24 | ✅ `tema-fichas.js` (después de `tema-ruta.js`). Comprobado con `pruebas/comp-fichas.js` |
+| Cierre del chofer y recibir cierre (cierreTop, cierreAdm, cierre, cierrePasos, cierreRes, confMsg) | ~20 | ⏭️ sigue (toca dinero: con plan de blindaje y prueba de comparación de cortes) |
 | Inicio del administrador (inicio, cierreTop, tarjetas) | ~30 | pendiente |
 | Ajustes (ajHTML) y ventanas (setupHTML) | ~45 | pendiente |
 | Nube (nbAplica, fresh, guardar) | ~25 | pendiente (con mucho cuidado) |
@@ -35,7 +36,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 
 ## Antes de seguir
-**Ricardo (17 nov): "aún no sigas con Vite"** → pausa en 503 (11%). **Ricardo (18 nov, después de la 9.9 / APK 1.0.46): "sigue con vite"** → se retomó el aplanado (esto es preparación dentro de las capas; NO se crean archivos de Vite ni se toca `package.json` hasta que diga "Empezamos con Vite", ver `REGLAS-NUMEROS.md`). 475 (16%).
+**Ricardo (17 nov): "aún no sigas con Vite"** → pausa en 503 (11%). **Ricardo (18 nov, después de la 9.9 / APK 1.0.46): "sigue con vite"** → se retomó el aplanado (esto es preparación dentro de las capas; NO se crean archivos de Vite ni se toca `package.json` hasta que diga "Empezamos con Vite", ver `REGLAS-NUMEROS.md`). 451 (20%).
 
 **Ricardo (17 nov): primero la reorganización de pantallas (pendiente 92), luego seguir con la migración.** ✅ Reorganización hecha y publicada. Lo que se reorganice se escribe ya en su `tema-*.js`, así que también cuenta como avance.
 

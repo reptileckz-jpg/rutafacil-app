@@ -12,16 +12,11 @@
  '#crov .acc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}'
 ].join('\n');document.head.appendChild(st)})();
 /* foto de la fachada como portada */
-var _fiCli23=fiCli;fiCli=function(f){var h=_fiCli23.apply(this,arguments),c=cl(f.id);if(!c)return h;
- var foto=c.foto,inp='<input id="fhx'+c.id+'" type="file" accept="image/*" capture="environment" data-fach="'+c.id+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">';
- if(foto)h=h.replace('<div class="fihero"><span class="avt"','<div class="fihero confoto"><div class="clifoto" style="background-image:url(\''+foto+'\')"><label class="clicam" for="fhx'+c.id+'">📷 Cambiar foto</label>'+inp+'</div><span class="avt"');
- else h=h.replace(/(<div class="fihero"><span class="avt"[^>]*>[^<]*<\/span>)/,'$1<label class="btn sm sec" for="fhx'+c.id+'" style="display:inline-flex;align-items:center;cursor:pointer;width:auto">📷 Foto de la fachada</label>'+inp);
- return h};
+/* fiCli: pasó a tema-fichas.js */
 /* "excepción tuya" solo si de verdad es distinta al máximo general */
 limBase=function(c){var d=limDefDe(c);if(c.limMan!=null&&c.limMan!==''&&num(c.limMan)===d)c.limMan=null;return c.limMan!=null&&c.limMan!==''?num(c.limMan):d};
 /* la tarjeta del buró se puede tocar */
-var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
- return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
+/* mayHistHTML: pasó a tema-fichas.js */
 /* congelar: no se le fía, pero puede pagar */
 /* credBloq: pasó a tema-ruta.js */
 /* ---- la pantalla para manejar su crédito ---- */

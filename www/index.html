@@ -4680,9 +4680,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='mayperm'){e.stopImmediatePropagation();var ch=chofById(D.id);if(!ch)return;ch.mayPerm=D.v==='1';toast(ch.mayPerm?ch.n+': mayoreo solo con tu permiso':ch.n+' ya puede dar mayoreo sin pedirte permiso');render();return}
 },true);
 /* admin: tarjeta de permisos en Inicio */
-var _perms13=permsHTML;permsHTML=function(){var h=_perms13.apply(this,arguments);if(S.role!=='admin')return h;mayVencer();var L=[];mayPideL().forEach(function(p,i){if(p.est==='pend')L.push([p,i])});if(!L.length)return h;
- return h+'<div class="card alert" style="padding:10px 12px;border-width:2px"><b class="neg">Piden permiso para mayoreo</b>'+L.map(function(x){var p=x[0],c=cl(p.c),seg=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-p.t))/1000)),pn=num(c.ppR)||num(S.precio.R),pm=num(c.ppM)||num(S.precio.M);
-  return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(chofN(p.ch))+'</b> quiere darle mayoreo a <b>'+esc(c.n)+'</b><div class="lbl">'+(p.R?p.R+' cajas a '+money(p.pR)+' (normal '+money(pn)+')':'')+(p.R&&p.M?' · ':'')+(p.M?p.M+' kg a '+f2(p.pM)+' (normal '+f2(pm)+')':'')+' · si no contestas en '+Math.ceil(seg/60)+' min se vende normal</div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="'+x[1]+'">Sí, hoy sí</button><button class="btn sm sec" style="flex:1" data-act="mayneg" data-i="'+x[1]+'">No</button></div></div>'}).join('')+'</div>'};
+/* permsHTML: pasó a tema-fichas.js */
 /* cierre: botones por cliente y sugerencia de "solo con permiso" */
 mayRepHTML=function(){var L=S.log.filter(function(l){return l.mayT});if(!L.length)return '';var G=[['chofer','Lo dio el chofer a mano'],['fijo','Cliente con mayoreo fijo (lo pusiste tú)'],['auto','Automático por más de 10 cajas']],tot=0,ch=chofById(S.chofHoy);
  var h='<div class="card" data-key="mayrep"><b>Precios de mayoreo del día</b>';G.forEach(function(g){var X=L.filter(function(l){return l.mayT===g[0]});if(!X.length)return;var st=sum(X,function(l){return (num(l.pnR)-num(l.pr))*l.R+(num(l.pnM)-num(l.pm))*l.M});tot+=st;
@@ -4694,8 +4692,7 @@ mayRepHTML=function(){var L=S.log.filter(function(l){return l.mayT});if(!L.lengt
   else if(n>=2)h+='<div class="card alert" style="margin:8px 0 0;padding:10px 12px"><b>'+esc(ch.n)+' lleva '+n+' mayoreos que no aprobaste en 30 días</b><div class="lbl">¿Quieres que desde ahora te pida permiso? Los clientes de mayoreo que tú pusiste no lo necesitan.</div><button class="btn sm" style="margin-top:8px" data-act="mayperm" data-id="'+ch.id+'" data-v="1">Mayoreo solo con mi permiso</button></div>'}
  return h+'</div>'};
 /* ficha del cliente: "nunca darle mayoreo" */
-var _mayH13=mayHistHTML;mayHistHTML=function(c){var h=_mayH13.apply(this,arguments);if(S.role!=='admin'||!c)return h;
- return h+(c.mayNo?'<div class="lbl" style="margin:6px 0">No se le da mayoreo · <button class="link" data-act="maysi" data-id="'+c.id+'">Permitir otra vez</button></div>':'')};
+/* mayHistHTML: pasó a tema-fichas.js */
 /* tarjeta del chofer en Personal: el interruptor */
 var _suel13=sueldos;sueldos=function(){var h=_suel13.apply(this,arguments);
  return h.replace(/<div class="field" style="margin-top:6px"><label for="adl_(\d+)"/g,function(m,id){var ch=chofById(id);if(!ch)return m;var n=mayRech30(ch.id);
@@ -4704,7 +4701,7 @@ var _suel13=sueldos;sueldos=function(){var h=_suel13.apply(this,arguments);
 (function(){var st=document.createElement('style');st.textContent='.mayreloj{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px;margin:4px 0}.mayreloj.poco{color:var(--danger)}';document.head.appendChild(st)})();
 function mayRelojTxt(t){var s=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-t))/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
 setInterval(function(){var L=document.querySelectorAll('[data-mayt]');if(!L.length)return;var fin=false;Array.prototype.forEach.call(L,function(el){var t=+el.getAttribute('data-mayt'),tx=mayRelojTxt(t);if(el.textContent!==tx)el.textContent=tx;el.classList.toggle('poco',Date.now()-t>MAY_ESPERA-60000);if(Date.now()-t>MAY_ESPERA)fin=true});if(fin){mayVencer();render()}},1000);
-var _perms13b=permsHTML;permsHTML=function(){return _perms13b.apply(this,arguments).replace(/ · si no contestas en \d+ min se vende normal<\/div>(<div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="(\d+)")/g,function(m,rest,i){var p=mayPideL()[+i];return '</div><div class="lbl" style="margin-top:4px">Se vende a precio normal en <b data-mayt="'+p.t+'" style="font-variant-numeric:tabular-nums">'+mayRelojTxt(p.t)+'</b></div>'+rest})};
+/* permsHTML: pasó a tema-fichas.js */
 
 /* ===================== v5 · Sin conexión: aviso corto =====================
    Antes salía una tarjeta con mucho texto. Ahora solo una barrita: "Sin conexión · tus datos se guardan". */
@@ -4796,7 +4793,7 @@ function gxRevChofer(k){var L=gxRevL().filter(function(x){return x.k===k&&x.ch==
  return '<div style="margin-top:8px">'+L.map(function(x){return '<div class="row"><span>'+esc(x.h)+' · '+esc(x.tipo)+(x.litros?' '+x.litros+' L':'')+'<br><span class="lbl '+(x.est==='no'?'neg':'')+'">'+(x.est==='no'?'No aceptado: entrega ese dinero':'Sin ticket · por revisar, no se descuenta')+'</span></span><b>'+money(x.m)+'</b></div>'}).join('')+'</div>'}
 function gxRevHTML(enCierre){var L=[];gxRevL().forEach(function(x,i){if(x.est==='pend')L.push([x,i])});if(!L.length)return '';
  return '<div class="card alert" data-key="gxrev" style="padding:10px 12px;border-width:2px"><b class="neg">Gastos sin ticket por revisar</b><div class="lbl">Si los aceptas, se le descuentan a su efectivo (o se le quita del faltante si ya entregó).</div>'+L.map(function(y){var x=y[0];return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(chofN(x.ch))+'</b> · '+esc(x.tipo)+(x.litros?' '+x.litros+' L':'')+(x.nota?' · '+esc(x.nota):'')+' · <b>'+money(x.m)+'</b><div class="lbl">'+fmtF(x.f)+' '+esc(x.h)+'</div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="gxrevok" data-i="'+y[1]+'">Aceptar</button><button class="btn sm sec" style="flex:1" data-act="gxrevno" data-i="'+y[1]+'">No aceptar</button></div></div>'}).join('')+'</div>'}
-var _perms14=permsHTML;permsHTML=function(){var h=_perms14.apply(this,arguments);if(S.role!=='admin')return h;return h+gxRevHTML(false)};
+/* permsHTML: pasó a tema-fichas.js */
 /* los litros sin ticket sí cuentan para el rendimiento */
 var _recL14=recL;recL=function(){return _recL14.apply(this,arguments)+sum(gxRevL().filter(function(x){return x.k==='rc'&&x.est!=='ok'&&x.ch===+S.chofHoy&&x.f===iso(TODAY)}),function(x){return x.litros})};
 
@@ -4873,7 +4870,7 @@ document.addEventListener('input',function(e){var x=e.target;if(x&&x.dataset&&x.
 /* en la pantalla de alta */
 var _npF15=npF;npF=function(k,l,t,ph){if(/^(r1p|r2p|emp)$/.test(k))return parHTML('np:'+k);return _npF15.apply(this,arguments)};
 /* y al editar a alguien que ya existe */
-var _fiEmp15=fiEmp;fiEmp=function(f){var h=_fiEmp15.apply(this,arguments);return h.replace(/<div class="field"><label for="ch(\d+)(r1p|r2p|emp)">Parentesco<\/label><input[^>]*><\/div>/g,function(m,id,k){return parHTML('ch:'+id+':'+k)})};
+/* fiEmp: pasó a tema-fichas.js */
 
 //@@capa l16.js
 /* ===================== v5 · Configuración inicial completa =====================
@@ -5128,8 +5125,7 @@ function buroPill(c){var b=buroDe(c),x=BURO[b.n];return '<span class="pill" styl
 /* en la entrega: su calificación, su límite y cuánto le queda al chofer */
 /* entrega: pasó a tema-ruta.js */
 /* en la ficha del cliente (admin) */
-var _mh19=mayHistHTML;mayHistHTML=function(c){var h=_mh19.apply(this,arguments);if(!c||c.oculto)return h;var b=buroDe(c),cf=crCfg();
- return '<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b> '+buroPill(c)+'<div class="lbl" style="margin-top:4px">Límite '+money(limEf(c))+(c.limMan!=null?' · excepción tuya: '+money(limBase(c)):'')+(b.porque&&b.n?' · '+esc(b.porque):'')+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es) más':'')+(b.n===3?' · sin crédito hasta que pague todo':'')+'</div>'+(S.role==='admin'&&b.n?'<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>':'')+'</div>'+h};
+/* mayHistHTML: pasó a tema-fichas.js */
 /* mayoreo por cliente: 2 veces en 10 días → en revisión */
 function mayAM(c){var cf=crCfg(),lim=iso(new Date(TODAY.getTime()-num(cf.mayD)*864e5));return (c.mayAM||[]).filter(function(f){return f>lim})}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guardar"]');if(!b||S.role!=='rep')return;var c=curCli(),n0=S.log.length;if(!c)return;
@@ -5139,7 +5135,7 @@ function mayRevHTML(){var L=S.cli.filter(function(c){return c.mayRev&&!c.oculto}
  return '<div class="card alert" data-key="mayrev" style="padding:10px 12px;border-width:2px"><b class="neg">Mayoreo en revisión</b><div class="lbl">Se les dio mayoreo a mano '+crCfg().mayN+' veces o más en '+crCfg().mayD+' días. Revisa si su consumo lo justifica.</div>'+L.map(function(c){var H=(c.mayHist||[]).slice(-3);return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(c.n)+'</b><div class="lbl">'+H.map(function(x){return fmtF(x.f)+(x.pr?' · caja '+money(x.pr):'')+(x.pm?' · kg '+f2(x.pm):'')+(x.q?' ('+esc(x.q)+')':'')}).join('<br>')+'<br>Compra en 30 días: '+money(num(c.c30))+'</div><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn sm" style="flex:1" data-act="mayrevsi" data-id="'+c.id+'">Lo justifica: cliente de mayoreo</button><button class="btn sm sec" style="flex:1" data-act="mayrevno" data-id="'+c.id+'">No darle mayoreo</button><button class="btn sm sec" style="flex:1" data-act="mayrevdes" data-id="'+c.id+'">Desbloquear</button></div></div>'}).join('')+'</div>'}
 function limRevHTML(){var L=S.cli.filter(function(c){return c.limRev&&!c.oculto});if(!L.length||S.role!=='admin')return '';
  return '<details class="card note" data-key="limrev" style="padding:10px 12px"><summary><b>Límites de crédito por decidir</b><span class="lbl">'+L.length+' cliente'+(L.length>1?'s':'')+' tenían más de '+money(num(crCfg().crCli))+'</span></summary>'+L.map(function(c){return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(c.n)+'</b> <span class="lbl">tenía '+money(c.limOld)+' · ahora '+money(limEf(c))+'</span><div style="display:flex;gap:6px;margin-top:6px"><button class="btn sm sec" style="flex:1" data-act="limexc" data-id="'+c.id+'">Dejarle '+money(c.limOld)+'</button><button class="btn sm sec" style="flex:1" data-act="limok" data-id="'+c.id+'">Que quede en '+money(num(crCfg().crCli))+'</button></div></div>'}).join('')+'</details>'}
-var _perms19=permsHTML;permsHTML=function(){return _perms19.apply(this,arguments)+mayRevHTML()+limRevHTML()};
+/* permsHTML: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
  if(a==='mayrevsi'){e.stopImmediatePropagation();c.mayRev=false;c.mayNo=false;c.mayoreo=true;c.mayAM=[];toast(c.n+' ya es cliente de mayoreo');render();return}
  if(a==='mayrevno'){e.stopImmediatePropagation();c.mayRev=false;c.mayNo=true;toast('A '+c.n+' ya no se le da mayoreo');render();return}
@@ -5178,7 +5174,7 @@ function chBuroHTML(){if(S.role!=='admin')return '';var h='';S.choferes.forEach(
   +'<div class="lbl" style="margin-top:2px">'+(b.sug.t==='subir'?'Precaución: súbelo poco a poco y revisa que sus tickets de crédito sí se mandaron a los clientes.':'Mientras esté bajo, solo podrá fiar hasta ese tope; lo que ya deben no cambia.')+'</div>'
   +'<div style="display:flex;gap:6px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="chburook" data-id="'+ch.id+'" data-v="'+b.sug.v+'">'+(b.sug.t==='bajar'?'Bajarlo':'Subirlo')+' a '+money(b.sug.v)+'</button><button class="btn sm sec" style="flex:1" data-act="chburono" data-k="'+k+'">Dejarlo igual</button></div></div>'});
  return h?'<div class="card note" data-key="chburo" style="padding:10px 12px"><b>Tope de crédito de los choferes</b>'+h+'</div>':''}
-var _perms20=permsHTML;permsHTML=function(){return _perms20.apply(this,arguments)+chBuroHTML()};
+/* permsHTML: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='chburook'){e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];var ant=chTope(ch);ch.crMax=String(num(b.dataset.v));S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Cambió el tope de crédito de '+ch.n+': '+money(ant)+' → '+money(num(ch.crMax))});toast('Tope de '+ch.n+': '+money(num(ch.crMax)));render();return}
  if(a==='chburono'){e.stopImmediatePropagation();S.chBuroNo=S.chBuroNo||{};S.chBuroNo[b.dataset.k]=iso(TODAY);render();return}
@@ -5204,7 +5200,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){var c=cl(id);if(c&&c.mayoreo){mayBaseFijar(c);c.mayMant=false;c.mayBajo=null}},0)},true);
 function mayBajoHTML(){var L=S.cli.filter(function(c){return c.mayBajo&&!c.mayoreo&&!c.oculto&&c.mayBajo.f===iso(TODAY)});if(!L.length||S.role!=='admin')return '';
  return '<div class="card note" data-key="maybajo" style="padding:10px 12px"><b>Regresaron a precio normal</b>'+L.map(function(c){return '<div style="border-top:1px solid var(--line);padding:8px 0">'+esc(c.n)+'<div class="lbl">Compraba '+money(c.mayBajo.antes)+' en 30 días; ahora '+money(c.mayBajo.ahora)+'.</div><button class="btn sm sec" style="margin-top:6px" data-act="maymant" data-id="'+c.id+'">Mantenerle mayoreo</button></div>'}).join('')+'</div>'}
-var _perms20b=permsHTML;permsHTML=function(){return _perms20b.apply(this,arguments)+mayBajoHTML()};
+/* permsHTML: pasó a tema-fichas.js */
 var _aj20=ajHTML;ajHTML=function(){var h=_aj20.apply(this,arguments);crCfg2();return h.replace('<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div>','<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div><div class="field"><label for="cfg_mayBaja">Si un cliente de mayoreo baja su compra más de (%)</label><input id="cfg_mayBaja" type="number" inputmode="decimal" min="0" data-bind="cfg.mayBaja" value="'+esc(S.cfg.mayBaja)+'"></div><div class="lbl">…regresa a precio normal y te aviso.</div>')};
 
 //@@capa l21.js
@@ -5466,16 +5462,11 @@ setInterval(function(){var a=S.velAl;if(!a)return;velMedir();_velSin++;if(DEMO){
  '#crov .acc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}'
 ].join('\n');document.head.appendChild(st)})();
 /* foto de la fachada como portada */
-var _fiCli23=fiCli;fiCli=function(f){var h=_fiCli23.apply(this,arguments),c=cl(f.id);if(!c)return h;
- var foto=c.foto,inp='<input id="fhx'+c.id+'" type="file" accept="image/*" capture="environment" data-fach="'+c.id+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">';
- if(foto)h=h.replace('<div class="fihero"><span class="avt"','<div class="fihero confoto"><div class="clifoto" style="background-image:url(\''+foto+'\')"><label class="clicam" for="fhx'+c.id+'">📷 Cambiar foto</label>'+inp+'</div><span class="avt"');
- else h=h.replace(/(<div class="fihero"><span class="avt"[^>]*>[^<]*<\/span>)/,'$1<label class="btn sm sec" for="fhx'+c.id+'" style="display:inline-flex;align-items:center;cursor:pointer;width:auto">📷 Foto de la fachada</label>'+inp);
- return h};
+/* fiCli: pasó a tema-fichas.js */
 /* "excepción tuya" solo si de verdad es distinta al máximo general */
 limBase=function(c){var d=limDefDe(c);if(c.limMan!=null&&c.limMan!==''&&num(c.limMan)===d)c.limMan=null;return c.limMan!=null&&c.limMan!==''?num(c.limMan):d};
 /* la tarjeta del buró se puede tocar */
-var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
- return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
+/* mayHistHTML: pasó a tema-fichas.js */
 /* congelar: no se le fía, pero puede pagar */
 /* credBloq: pasó a tema-ruta.js */
 /* ---- la pantalla para manejar su crédito ---- */
@@ -5708,8 +5699,7 @@ function chCredCard(ch){var cf=crCfg(),bb=chBuro(ch),mine=S.cli.filter(function(
   +'<div class="field"><label for="chct'+ch.id+'">Tope de todos sus clientes juntos $</label><input id="chct'+ch.id+'" type="number" inputmode="decimal" min="0" data-chcr="'+ch.id+':crMax" value="'+esc(pt?ch.crMax:cf.crCh)+'"></div>'
   +'<div class="lbl" style="margin-top:4px">Sus '+mine.length+' clientes le deben '+money(bb.tot)+' de '+money(chTope(ch))+(bb.atr>0?' · '+money(bb.atr)+' atrasado':'')+' · '+['🟢 cobra bien','🟡 se atrasa','🟠 cobra mal'][bb.n]+'</div>'
   +tarCampo116(ch)+(pc||pt||pv?'<button class="link" style="margin-top:4px" data-act="chcrdef" data-id="'+ch.id+'">Usar los de Ajustes ('+money(num(cf.crCli))+' y '+money(num(cf.crCh))+')</button>':'<div class="lbl">Son los mismos de Ajustes. Si los cambias aquí, solo cambian para '+esc(ch.n)+'.</div>')+'</div>'}
-var _fiE27=fiEmp;fiEmp=function(f){var h=_fiE27.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||S.chEdit===ch.id)return h;
- if(!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');return i<0?h:h.slice(0,i)+chCredCard(ch)+h.slice(i)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.chcr)return;var pr=t.dataset.chcr.split(':'),ch=S.choferes.filter(function(x){return x.id===+pr[0]})[0];if(!ch)return;var k=pr[1],cf=crCfg(),def=num(k==='crCli'?cf.crCli:cf.crCh),ant=k==='crCli'?(ch.crCli!=null&&ch.crCli!==''?num(ch.crCli):def):chTope(ch),v=Math.max(0,num(t.value));
  ch[k]=v===def?null:String(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(k==='crCli'?'Cambió el máximo por cliente de ':'Cambió el tope total de ')+ch.n+': '+money(ant)+' → '+money(v)});
  toast((k==='crCli'?'Cada cliente de ':'Todos los clientes de ')+ch.n+': hasta '+money(v));render()},true);
@@ -5720,11 +5710,7 @@ var _r27=render;render=function(){limSync();return _r27.apply(this,arguments)};
 /* ---------- ficha del cliente: teléfono confirmado y límite real ---------- */
 function telConfOk(c){return !!(c.tel&&c.telConf&&digs(c.telConf.tel)===digs(c.tel))}
 function telDeChofer(c){var d=digs(c.tel);if(d.length<10)return null;return S.choferes.filter(function(x){return digs(x.tel)===d})[0]||null}
-var _fiC27=fiCli;fiCli=function(f){var h=_fiC27.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='admin')return h;try{
- var old=rw('Teléfono',c.tel?esc(c.tel):'sin registrar');if(h.indexOf(old)>-1&&c.tel){var dc=telDeChofer(c),ok=telConfOk(c);
-  var nv=rw('Teléfono',esc(c.tel))+'<div style="margin:-2px 0 8px;font-size:14px">'+(dc?'<div class="neg">⚠ Es el teléfono de '+esc(dc.n)+', no del cliente</div>':'')+(ok?'<span style="color:var(--accent)">✓ Número confirmado '+hace(c.telConf.t)+'</span>':'<span class="neg">Sin confirmar</span>'+(c.telPor?' <span class="lbl">· lo puso '+esc(chofN(c.telPor))+'</span>':'')+' <button class="btn sm" style="width:auto;margin-left:6px" data-act="telconf" data-id="'+c.id+'">Confirmar número</button>')+'</div>';
-  h=h.replace(old,nv)}
- var oldL=rw('Límite de crédito',c.lim?money(c.lim):'sin límite');if(h.indexOf(oldL)>-1){var ch=chCredDe(c);h=h.replace(oldL,rw('Límite de crédito',money(limEf(c))+'<br><span class="lbl">'+(c.limMan!=null?'excepción tuya':(ch?'el de los clientes de '+esc(ch.n):'el de Ajustes'))+(buroDe(c).n?' · bajado por el buró':'')+'</span>'))}}catch(e){}return h};
+/* fiCli: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="telconf"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c||!c.tel)return;
  var dc=telDeChofer(c);if(dc&&!b.dataset.ya){abrirModal('Ese es el teléfono de '+dc.n,'El número '+c.tel+' es el de '+dc.n+'. ¿De verdad es el del cliente? Mejor llámale para confirmarlo.',[['Sí, es del cliente','telconfya:'+c.id]]);return}
  c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado');render()},true);
@@ -6300,10 +6286,7 @@ var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.in
 var _chI35=chImg;chImg=function(c,k,l){var h=_chI35.apply(this,arguments),id='chi_'+c.id+k;
  return h.replace(/<label class="btn sec sm" for="chi_[^"]*"[^>]*>[^<]*<\/label>/,'<div class="chfbtn"><label class="btn sec sm" for="'+id+'c" style="display:flex;align-items:center;justify-content:center;cursor:pointer">📷 Tomar</label><label class="btn sec sm" for="'+id+'" style="display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️ Galería</label></div>')
   .replace(/<\/div>$/,'<input id="'+id+'c" type="file" accept="image/*" capture="environment" data-chimg="'+c.id+':'+k+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>')};
-var _fiE35=fiEmp;fiEmp=function(f){var h=_fiE35.apply(this,arguments),c=S.choferes.filter(function(x){return x.id===f.id})[0];if(!c||esAdm(c))return h;try{
- h=h.replace(chImg(c,'ine','INE'),chImg(c,'ine','INE (frente)')+chImg(c,'ineR','INE (reverso)')).replace(chImg(c,'lic','Licencia'),chImg(c,'lic','Licencia (frente)')+chImg(c,'licR','Licencia (reverso)'));
- h=h.replace(chView(c,'ine','INE'),chView(c,'ine','INE (frente)')+chView(c,'ineR','INE (reverso)')).replace(chView(c,'lic','Licencia de conducir'),chView(c,'lic','Licencia (frente)')+chView(c,'licR','Licencia (reverso)'));
- h=h.replace('<div style="display:flex;gap:10px;margin:8px 0">','<div class="chfotos" style="display:flex;gap:10px;margin:8px 0">').replace('<div style="display:flex;gap:10px;margin:4px 0 8px">','<div class="chfotos" style="display:flex;gap:10px;margin:4px 0 8px">')}catch(e){}return h};
+/* fiEmp: pasó a tema-fichas.js */
 /* ---------- guía para empezar (admin con la app casi vacía) ---------- */
 function guiaPasos(){var hayCh=(S.choferes||[]).some(function(c){return !c.baja&&!esAdm(c)});var acc=typeof NB!=='undefined'&&NB.on?Object.keys(NB.usuarios||{}).some(function(u){var p=NB.usuarios[u];return p&&p.activo&&p.rol==='chofer'}):hayCh;
  return [['Agrega tus clientes','Con su dirección y el día que se les visita','clientes',(S.cli||[]).some(function(c){return !c.oculto&&!c.rapida})],
@@ -6403,8 +6386,7 @@ function bjHTML(){var x=S.bj;if(!x)return '';var ch=S.choferes.filter(function(c
   +(L.length?'<div class="card"><b>Sus '+L.length+' clientes: ¿a quién se los pasas?</b><div class="lbl">La app sugiere por zona (al chofer que tiene clientes más cerca) sin cargar de más una ruta. Cámbialo si quieres.</div>'+L.map(function(c){var v=x.asig[c.id];return '<div class="field"><label for="bj'+c.id+'">'+esc(c.n)+'</label><select id="bj'+c.id+'" data-bjc="'+c.id+'">'+ops.map(function(o){return '<option value="'+o.id+'"'+(+v===o.id?' selected':'')+'>'+esc(esAdm(o)?chofN(2):o.n)+'</option>'}).join('')+'</select></div>'}).join('')+'</div>':'<div class="card note">No tiene clientes asignados.</div>')
   +'<button class="btn" style="margin-top:12px;background:var(--danger)" data-act="bjsi">Dar de baja'+(L.length?' y pasar sus clientes':'')+'</button></div></div>'}
 var _suH36b=setupHTML;setupHTML=function(){return bjHTML()||_suH36b.apply(this,arguments)};
-var _fiE36=fiEmp;fiEmp=function(f){var h=_fiE36.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||S.chEdit===ch.id||!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');
- var c=ch.baja?'<div class="card note"><b>Dado de baja</b><div class="lbl">'+esc(ch.bajaF?fmtF(ch.bajaF):'')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="bjreact" data-id="'+ch.id+'">Volver a darlo de alta</button></div>':'<button class="link" style="color:var(--danger);margin:10px 0" data-act="bjabre" data-id="'+ch.id+'">Dar de baja a '+esc(ch.n)+'</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.bjc&&S.bj)S.bj.asig[t.dataset.bjc]=+t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='bjabre'){e.stopImmediatePropagation();var id=+b.dataset.id,asig={};S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)}).forEach(function(c){asig[c.id]=bjSugiere(c,id)});S.bj={id:id,asig:asig};render();return}
@@ -6684,9 +6666,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- permiso para seguir: por chofer (nuevo = sin permiso, se reabre solo) ---------- */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="seguir"]');if(!b||S.role!=='rep'||_seguirOk||chPideSeguir(S.chofHoy))return;
  _seguirOk=true;var k=b.dataset.k||'carga';setTimeout(function(){_seguirOk=false;S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta para '+(k==='carga'?'cargar más':'dar otra vuelta'));render()},0)},true);
-var _fiE40=fiEmp;fiEmp=function(f){var h=_fiE40.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||!esCh(ch)||ch.baja||S.chEdit===ch.id||!/data-act="bjabre"/.test(h))return h;
- var c='<div class="card"><b>Después de su cierre</b><div class="lbl">Si quiere cargar más o dar otra vuelta:</div><div class="chips" role="group" aria-label="Permiso para seguir" style="margin-top:6px"><button data-act="segperm" data-id="'+ch.id+'" data-v="0" aria-pressed="'+!ch.segPerm+'">Sigue solo (te avisa)</button><button data-act="segperm" data-id="'+ch.id+'" data-v="1" aria-pressed="'+!!ch.segPerm+'">Me pide permiso</button></div></div>';
- return h.replace(/(<button class="link" style="color:var\(--danger\);margin:10px 0" data-act="bjabre")/,c+'$1')}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="segperm"]');if(!b)return;e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];if(ch){ch.segPerm=b.dataset.v==='1';toast(ch.segPerm?ch.n+' te pedirá permiso':ch.n+' puede seguir solo')}render()},true);
 /* ---------- apoyo entre choferes (solo por hoy) y pasar la ruta ---------- */
 function stopsDe(id){return nbRGet(id,'stops')||[]}
@@ -6708,8 +6688,7 @@ function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter
   +'<div class="card"><b>Clientes pendientes ('+L.length+')</b>'+L.map(function(s){var c=cl(s.c)||{n:''};return '<label class="row" style="cursor:pointer"><span>'+esc(c.n)+'</span><input type="checkbox" data-pasac="'+s.c+'"'+(x.sel[s.c]!==false?' checked':'')+'></label>'}).join('')+'</div>'
   +'<button class="btn" style="margin-top:12px" data-act="pasasi">Pasar'+(x.a?' a '+esc(chofN(x.a)):'')+'</button></div></div>'}
 var _suH40=setupHTML;setupHTML=function(){return pasaRutaHTML()||_suH40.apply(this,arguments)};
-var _fiE40b=fiEmp;fiEmp=function(f){var h=_fiE40b.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||ch.baja||!/data-fi="[^"]*:ruta"[^>]*aria-selected="true"|data-k="ruta"/.test(h)&&!pendDe(ch.id).length)return h;
- if(!pendDe(ch.id).length||h.indexOf('data-act="pasar"')>-1)return h;var i=h.lastIndexOf('</div></div></div>');var c='<button class="btn sec" style="margin:10px 0" data-act="pasar" data-id="'+ch.id+'">Pasar su ruta a otro chofer (solo hoy)</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pasac&&S.pasaR)S.pasaR.sel[t.dataset.pasac]=t.checked},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='apoyoofrece'){e.stopImmediatePropagation();S.apoyos=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)});S.apoyos.push({id:Date.now(),de:+S.chofHoy,f:iso(TODAY),cajas:num(S.inv.reparto),est:'ofrece'});S.avPrecio.push(chofN(S.chofHoy)+' terminó y puede apoyar a otro chofer (trae '+num(S.inv.reparto)+' cajas)');toast('Listo: a los demás choferes les sale que puedes apoyar');render();return}
@@ -6741,7 +6720,7 @@ function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
 /* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 function credActivo(c){return !!c&&!c.nuevo&&c.credOk!==false&&!c.credFrz&&(num(c.cred)>0||c.credOk===true)}
-var _mh41=mayHistHTML;mayHistHTML=function(c){var h=_mh41.apply(this,arguments);if(S.role==='admin'||!c||credActivo(c))return h;return h.replace(/^<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró<\/b>[\s\S]*?<\/div><\/div>/,'')};
+/* mayHistHTML: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b||!S.d)return;var a=b.dataset.act;
  if(a==='pforma'){e.stopImmediatePropagation();var v=b.dataset.v;if(v==='otros'){S.d.formaOtros=true;if(S.d.forma!=='trans'&&S.d.forma!=='mixto')S.d.forma='trans'}else{S.d.forma=v;if(v==='efe'||v==='tarj')S.d.formaOtros=false}render();return}
  if(a==='pmixt'){e.stopImmediatePropagation();S.d.mixT=b.dataset.v;render();return}
@@ -6792,9 +6771,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(!c.hCi&&(u.hAb||u.hCi)){if(!u.hAb||!u.hCi){e.stopImmediatePropagation();toast('Pon la hora en que abre y la hora en que cierra');return}c.hAb=u.hAb;c.hCi=u.hCi}
  if(!c.diasAbre&&u.diasAbre&&u.diasAbre.length)c.diasAbre=u.diasAbre.slice()},true);
 /* en la ficha del cliente, el chofer puede completar lo que falte cuando quiera */
-var _fiC41=fiCli;fiCli=function(f){var h=_fiC41.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='rep'||c.rapida)return h;var fl=ubCliFalta(c);if(!ubTiene(c))fl.unshift('ubicación');if(!fl.length)return h;
- var card='<div class="card note"><b>Le falta: '+esc(fl.join(', '))+'</b><div class="lbl">Puedes agregar lo que falta (lo que ya tiene no se cambia).</div><button class="btn sm" style="margin-top:8px" data-act="ubcli" data-id="'+c.id+'" data-m="'+(ubTiene(c)?'datos':'gps')+'">Completar datos</button></div>';
- var i=h.indexOf('<div class="card');return i<0?h+card:h.slice(0,i)+card+h.slice(i)};
+/* fiCli: pasó a tema-fichas.js */
 
 //@@capa l42.js
 /* ===================== v6.2 · Admin y encargado: precio de ayer, precio ±10%, límite de pagos, conteo doble,
@@ -7014,9 +6991,7 @@ function cliQR(c){return 'RF-C:'+c.id}
 var _aj44=ajHTML;ajHTML=function(){var h=_aj44.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
  var c='<details class="card" data-k="ajqr"'+(S.dOpen.ajqr?' open':'')+'><summary><b>QR de clientes</b><span class="lbl">'+(qrOn()?'prendido':'apagado')+'</span></summary><div class="lbl" style="margin-top:6px">Cada cliente tiene un código QR para pegar en su local. El chofer lo escanea y se abre su entrega. Es solo un atajo.</div><div class="chips" role="group" aria-label="QR de clientes" style="margin:8px 0"><button data-act="qron" data-v="1" aria-pressed="'+qrOn()+'">Usar QR de clientes</button><button data-act="qron" data-v="0" aria-pressed="'+!qrOn()+'">No usar</button></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
-var _fiC44=fiCli;fiCli=function(f){var h=_fiC44.apply(this,arguments),c=cl(f.id);if(!c||!qrOn()||c.rapida)return h;
- var q='<div class="card" data-key="cliqr" style="text-align:center"><b>QR de '+esc(c.n)+'</b><div style="margin:8px auto;width:150px">'+QR.svg(cliQR(c),150)+'</div>'+(c.qr?'<div class="lbl">✓ Pegado el '+fmtF(c.qr.f)+(c.qr.q?' por '+esc(c.qr.q):'')+'</div>':'<div class="lbl neg">Falta pegarlo</div>')
-  +'<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px">'+(imprOk()?'<button class="btn sm sec" style="width:auto" data-act="qrimp" data-id="'+c.id+'">Imprimir etiqueta</button>':'')+(c.qr?'':'<button class="btn sm" style="width:auto" data-act="qrpuesto" data-id="'+c.id+'">Ya lo pegué</button>')+'</div></div>';var i=h.lastIndexOf('</div></div></div>');return i<0?h+q:h.slice(0,i)+q+h.slice(i)};
+/* fiCli: pasó a tema-fichas.js */
 function qrEtiqueta(c){return [{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:c.n,b:1}]}
 /* escanear (cámara del celular; sin internet) */
 var _qs=null;
@@ -7721,7 +7696,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
    try{p.push(m.enableCurrentLocation(true))}catch(er){}Promise.all(p).catch(function(){})},function(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')})}catch(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')}},80)},true);
 var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _navA52.apply(this,arguments)};
 /* en la ficha del chofer, pestaña "Ruta y metas": su recorrido por GPS */
-var _fiEmp52=fiEmp;fiEmp=function(f){var h=_fiEmp52.apply(this,arguments);if(S.chEdit===f.id||(S.fiTab||{})['emp:'+f.id]!=='ruta')return h;var c=(S.choferes||[]).filter(function(x){return x.id===f.id})[0];var g=c?gpsRutaHTML(c):'';if(!g)return h;return h.replace(/<\/div><\/div><\/div>$/,g+'</div></div></div>')};
+/* fiEmp: pasó a tema-fichas.js */
 
 //@@capa l53.js
 /* ===================== v6.7 · 98: todo "falta…" te lleva al campo (rojo y se sacude) · 99: "¿Estás seguro?" en lo que no se puede deshacer ===================== */
@@ -8655,9 +8630,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(!fuel&&S.gx&&/^Comida/.test(S.gx.tipo||'')&&!chofComida()){e.preventDefault();e.stopImmediatePropagation();toast('La comida solo se registra si el administrador te la autorizó.');return}
  var foto=fuel?(S.rc&&S.rc.foto):(S.gx&&S.gx.foto);if(!foto&&(fuel||gxTicketObl(S.gx&&S.gx.tipo))){e.preventDefault();e.stopImmediatePropagation();toast('Toma la foto del ticket: es obligatoria.');var f=document.querySelector(fuel?'label[for="rcf"]':'label[for="gxf"]')||document.getElementById(fuel?'rcf':'gxf');if(f)try{marcaFalta(f)}catch(er){}}},true);
 /* ficha del chofer: "Puede agregar comida" sí/no */
-var _fiE63=fiEmp;fiEmp=function(f){var h=_fiE63.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!esCh(c)||esAdm(c)||(S.fiTab||{})['emp:'+f.id]==='ruta')return h;
- var row='<div class="card" data-key="chcomida"><div class="row"><span><b>Puede agregar comida</b><br><span class="lbl">Solo si ya lo acordaron. Si está en No, no le sale la opción.</span></span><button class="btn sm'+(c.comida?'':' sec')+'" style="width:auto" data-act="chcomida" data-id="'+c.id+'">'+(c.comida?'Sí':'No')+'</button></div></div>';
- var i=h.lastIndexOf('</div></div></div>');return i>-1?h.slice(0,i)+row+h.slice(i):h+row}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="chcomida"]');if(!b)return;e.stopImmediatePropagation();var c=cl0(+b.dataset.id);if(!c)return;c.comida=!c.comida;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(c.comida?'Le permitió':'Le quitó')+' agregar comida a '+c.n});toast(c.comida?'Puede agregar comida':'Ya no puede agregar comida');render()},true);
 /* recepción del cierre: "Entregó los tickets" */
 function tkCuantos(){var g=(nbRGet(+S.chofHoy,'gch')||S.gch||[]).filter(function(x){return gxTicketObl(x.tipo)}).length,r=(nbRGet(+S.chofHoy,'recs')||S.recs||[]).length;return g+r}
@@ -9253,9 +9226,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(v.comOk===false){e.preventDefault();e.stopImmediatePropagation();toast('La comida no está autorizada en este viaje. Pídele permiso al administrador.');return}
  if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});if(ya+num(v.gxm)>num(v.comMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del máximo autorizado para comida ('+money(num(v.comMax))+'). Llévale el ticket al administrador.')}}},true);
 /* ruta de reparto: presupuesto diario de comida en la ficha del chofer */
-var _fiE69=fiEmp;fiEmp=function(f){var h=_fiE69.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!c.comida)return h;
-  var add='<div class="field" style="margin-top:6px"><label for="chcp'+c.id+'">Presupuesto diario de comida $</label><input id="chcp'+c.id+'" type="number" inputmode="decimal" min="0" data-ch68="'+c.id+'" value="'+esc(c.comidaMax==null?'':c.comidaMax)+'" placeholder="sin tope"></div>';
-  return h.replace(/(data-act="chcomida"[^>]*>[^<]*<\/button><\/div>)/,'$1'+add)}catch(e){return h}};
+/* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ch68)return;var c=cl0(+t.dataset.ch68);if(!c)return;var v=String(t.value).trim();c.comidaMax=v===''?null:num(v);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Presupuesto diario de comida de '+c.n+': '+(c.comidaMax==null?'sin tope':money(c.comidaMax))});toast('Guardado');render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"]');if(!b||S.role!=='rep'||!S.gx||!/^Comida/.test(S.gx.tipo||''))return;var c=cl0(S.chofHoy);if(!c||c.comidaMax==null)return;
  var ya=sum((S.gch||[]).filter(function(x){return /^Comida/.test(x.tipo||'')}),function(x){return num(x.m)});if(ya+num(S.gx.m)>num(c.comidaMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del presupuesto de comida de hoy ('+money(num(c.comidaMax))+'; llevas '+money(ya)+').')}},true);
@@ -9535,9 +9506,7 @@ var _suH70=setupHTML;setupHTML=function(){var h=_suH70.apply(this,arguments);try
 /* proveedores y clientes: en "Datos" */
 var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
   var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
-var _fiCl70=fiCli;fiCli=function(f){var h=_fiCl70.apply(this,arguments);try{if(S.role!=='admin'||((S.fiTab||{})['cli:'+f.id]||'cta')!=='dat')return h;var c=cl(f.id),ok=c&&c.lat!=null;
-  var cd='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?c.lat+', '+c.lng+(c.locBy?' · '+esc(c.locBy):''):'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="cli" data-id="'+f.id+'">'+(ok?'Buscar o corregir en el mapa':'Poner la ubicación')+'</button></div>';
-  var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+cd+h.slice(i):h+cd}catch(e){return h}};
+/* fiCli: pasó a tema-fichas.js */
 /* el chofer confirma la ubicación cuando está en el lugar (entrega del cliente) */
 function cfUb70(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cfub70"]'))return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;
  var d=document.createElement('div');d.className='card';d.dataset.x='cfub70';d.innerHTML='<b>📍 Ubicación de '+esc(c.n)+'</b><div class="lbl">'+(c.lat!=null?'Ya tiene. Si estás aquí y no es exacta, corrígela.':'Todavía no tiene ubicación.')+'</div><button class="btn sec" style="width:100%;margin-top:6px;min-height:52px" data-act="cfub70" data-id="'+c.id+'">Confirmar la ubicación aquí</button>';m.appendChild(d)}
@@ -10262,7 +10231,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4740,"l14.js"],[4816,"l15.js"],[4878,"l16.js"],[4987,"l17.js"],[5018,"l18.js"],[5097,"l19.js"],[5161,"l20.js"],[5210,"l21.js"],[5256,"l22.js"],[5454,"l23.js"],[5508,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5693,"l27.js"],[5759,"l28.js"],[5891,"l29.js"],[6017,"l30.js"],[6061,"l31.js"],[6097,"l32.js"],[6186,"l33.js"],[6204,"l34.js"],[6264,"l35.js"],[6324,"l36.js"],[6422,"l37.js"],[6443,"l38.js"],[6531,"l39.js"],[6612,"l40.js"],[6725,"l41.js"],[6799,"l42.js"],[6902,"l43.js"],[7004,"l44.js"],[7105,"l45.js"],[7198,"l46.js"],[7266,"l47.js"],[7380,"l48.js"],[7434,"l49.js"],[7470,"l50.js"],[7574,"l51.js"],[7584,"l52.js"],[7726,"l53.js"],[7748,"l54.js"],[7823,"l55.js"],[7852,"l56.js"],[7936,"l57.js"],[8001,"l58.js"],[8128,"l59.js"],[8188,"l60.js"],[8350,"l61.js"],[8407,"l62.js"],[8537,"l63.js"],[8708,"l64.js"],[8740,"l65.js"],[8841,"l66.js"],[8947,"l67.js"],[8974,"l68.js"],[9108,"l69.js"],[9335,"l70.js"],[9557,"l71.js"],[9682,"l72.js"],[9800,"l73.js"],[9876,"l74.js"],[10000,"l75.js"],[10153,"l76.js"],[10256,"l77.js"],[10384,"l78.js"],[10534,"l79.js"],[10642,"l80.js"],[10766,"l81.js"],[10919,"l82.js"],[11172,"l83.js"],[11241,"l84.js"],[11354,"l85.js"],[11415,"tema-rutadia.js"],[11580,"l86.js"],[11640,"l87.js"],[11683,"l88.js"],[11733,"l89.js"],[11782,"l90.js"],[11888,"tema-ruta.js"],[12035,"tema-cobranza.js"],[12182,"tema-pantallas.js"],[12403,"tema-avisos.js"],[12565,"tema-reparte.js"],[12631,"tema-vehiculos.js"],[12775,"tema-notas.js"],[12792,"tema-taras.js"],[12899,"tema-cargarmas.js"],[12938,"tema-cargas.js"],[12972,"tema-cobro.js"],[13008,"tema-horario.js"],[13047,"tema-sueldos.js"],[13189,"tema-ganado.js"],[13234,"tema-cierres.js"],[13333,"tema-finanzas.js"],[13406,"tema-cuadre.js"],[13595,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4737,"l14.js"],[4813,"l15.js"],[4875,"l16.js"],[4984,"l17.js"],[5015,"l18.js"],[5094,"l19.js"],[5157,"l20.js"],[5206,"l21.js"],[5252,"l22.js"],[5450,"l23.js"],[5499,"l24.js"],[5515,"l25.js"],[5546,"l26.js"],[5684,"l27.js"],[5745,"l28.js"],[5877,"l29.js"],[6003,"l30.js"],[6047,"l31.js"],[6083,"l32.js"],[6172,"l33.js"],[6190,"l34.js"],[6250,"l35.js"],[6307,"l36.js"],[6404,"l37.js"],[6425,"l38.js"],[6513,"l39.js"],[6594,"l40.js"],[6704,"l41.js"],[6776,"l42.js"],[6879,"l43.js"],[6981,"l44.js"],[7080,"l45.js"],[7173,"l46.js"],[7241,"l47.js"],[7355,"l48.js"],[7409,"l49.js"],[7445,"l50.js"],[7549,"l51.js"],[7559,"l52.js"],[7701,"l53.js"],[7723,"l54.js"],[7798,"l55.js"],[7827,"l56.js"],[7911,"l57.js"],[7976,"l58.js"],[8103,"l59.js"],[8163,"l60.js"],[8325,"l61.js"],[8382,"l62.js"],[8512,"l63.js"],[8681,"l64.js"],[8713,"l65.js"],[8814,"l66.js"],[8920,"l67.js"],[8947,"l68.js"],[9081,"l69.js"],[9306,"l70.js"],[9526,"l71.js"],[9651,"l72.js"],[9769,"l73.js"],[9845,"l74.js"],[9969,"l75.js"],[10122,"l76.js"],[10225,"l77.js"],[10353,"l78.js"],[10503,"l79.js"],[10611,"l80.js"],[10735,"l81.js"],[10888,"l82.js"],[11141,"l83.js"],[11210,"l84.js"],[11323,"l85.js"],[11384,"tema-rutadia.js"],[11549,"l86.js"],[11609,"l87.js"],[11652,"l88.js"],[11702,"l89.js"],[11751,"l90.js"],[11857,"tema-ruta.js"],[12004,"tema-fichas.js"],[12121,"tema-cobranza.js"],[12268,"tema-pantallas.js"],[12489,"tema-avisos.js"],[12651,"tema-reparte.js"],[12717,"tema-vehiculos.js"],[12861,"tema-notas.js"],[12878,"tema-taras.js"],[12985,"tema-cargarmas.js"],[13024,"tema-cargas.js"],[13058,"tema-cobro.js"],[13094,"tema-horario.js"],[13133,"tema-sueldos.js"],[13275,"tema-ganado.js"],[13320,"tema-cierres.js"],[13419,"tema-finanzas.js"],[13492,"tema-cuadre.js"],[13681,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -12031,6 +12000,123 @@ var _ru62=ruta;ruta=function(){var h=_ru62.apply(this,arguments);try{var c=rgCar
 
 /* entregaCalc · de l74 */
 var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
+
+//@@capa tema-fichas.js
+/* ===================== TEMA · Fichas del personal y de clientes (aplanado el 18 nov) =====================
+   Antes estaba repartido en 24 envolturas encadenadas en l13, l14, l15, l19, l20, l23, l27, l35, l36, l40, l41, l44, l52, l63, l69, l70.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-fichas.js).
+   Se arma justo después de l90 (antes de los otros temas).
+   Si se cambia algo de estas fichas, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - fiEmp: la ficha de cada empleado (datos, documentos, crédito de sus clientes, sueldo…) (9 pasos).
+   - fiCli: la ficha de cada cliente (5 pasos).
+   - mayHistHTML: el buró y el historial de mayoreo del cliente (4 pasos).
+   - permsHTML: los permisos que piden los choferes (fiar, mayoreo) (6 pasos).
+   Las funciones que usan los pasos siguen en su capa.
+   ============================================================================================ */
+
+/* permsHTML · de l13 */
+var _perms13=permsHTML;permsHTML=function(){var h=_perms13.apply(this,arguments);if(S.role!=='admin')return h;mayVencer();var L=[];mayPideL().forEach(function(p,i){if(p.est==='pend')L.push([p,i])});if(!L.length)return h;
+ return h+'<div class="card alert" style="padding:10px 12px;border-width:2px"><b class="neg">Piden permiso para mayoreo</b>'+L.map(function(x){var p=x[0],c=cl(p.c),seg=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-p.t))/1000)),pn=num(c.ppR)||num(S.precio.R),pm=num(c.ppM)||num(S.precio.M);
+  return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(chofN(p.ch))+'</b> quiere darle mayoreo a <b>'+esc(c.n)+'</b><div class="lbl">'+(p.R?p.R+' cajas a '+money(p.pR)+' (normal '+money(pn)+')':'')+(p.R&&p.M?' · ':'')+(p.M?p.M+' kg a '+f2(p.pM)+' (normal '+f2(pm)+')':'')+' · si no contestas en '+Math.ceil(seg/60)+' min se vende normal</div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="'+x[1]+'">Sí, hoy sí</button><button class="btn sm sec" style="flex:1" data-act="mayneg" data-i="'+x[1]+'">No</button></div></div>'}).join('')+'</div>'};
+
+/* mayHistHTML · de l13 */
+var _mayH13=mayHistHTML;mayHistHTML=function(c){var h=_mayH13.apply(this,arguments);if(S.role!=='admin'||!c)return h;
+ return h+(c.mayNo?'<div class="lbl" style="margin:6px 0">No se le da mayoreo · <button class="link" data-act="maysi" data-id="'+c.id+'">Permitir otra vez</button></div>':'')};
+
+/* permsHTML · de l13 */
+var _perms13b=permsHTML;permsHTML=function(){return _perms13b.apply(this,arguments).replace(/ · si no contestas en \d+ min se vende normal<\/div>(<div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="mayok" data-i="(\d+)")/g,function(m,rest,i){var p=mayPideL()[+i];return '</div><div class="lbl" style="margin-top:4px">Se vende a precio normal en <b data-mayt="'+p.t+'" style="font-variant-numeric:tabular-nums">'+mayRelojTxt(p.t)+'</b></div>'+rest})};
+
+/* permsHTML · de l14 */
+var _perms14=permsHTML;permsHTML=function(){var h=_perms14.apply(this,arguments);if(S.role!=='admin')return h;return h+gxRevHTML(false)};
+
+/* fiEmp · de l15 */
+var _fiEmp15=fiEmp;fiEmp=function(f){var h=_fiEmp15.apply(this,arguments);return h.replace(/<div class="field"><label for="ch(\d+)(r1p|r2p|emp)">Parentesco<\/label><input[^>]*><\/div>/g,function(m,id,k){return parHTML('ch:'+id+':'+k)})};
+
+/* mayHistHTML · de l19 */
+var _mh19=mayHistHTML;mayHistHTML=function(c){var h=_mh19.apply(this,arguments);if(!c||c.oculto)return h;var b=buroDe(c),cf=crCfg();
+ return '<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b> '+buroPill(c)+'<div class="lbl" style="margin-top:4px">Límite '+money(limEf(c))+(c.limMan!=null?' · excepción tuya: '+money(limBase(c)):'')+(b.porque&&b.n?' · '+esc(b.porque):'')+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es) más':'')+(b.n===3?' · sin crédito hasta que pague todo':'')+'</div>'+(S.role==='admin'&&b.n?'<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>':'')+'</div>'+h};
+
+/* permsHTML · de l19 */
+var _perms19=permsHTML;permsHTML=function(){return _perms19.apply(this,arguments)+mayRevHTML()+limRevHTML()};
+
+/* permsHTML · de l20 */
+var _perms20=permsHTML;permsHTML=function(){return _perms20.apply(this,arguments)+chBuroHTML()};
+
+/* permsHTML · de l20 */
+var _perms20b=permsHTML;permsHTML=function(){return _perms20b.apply(this,arguments)+mayBajoHTML()};
+
+/* fiCli · de l23 */
+var _fiCli23=fiCli;fiCli=function(f){var h=_fiCli23.apply(this,arguments),c=cl(f.id);if(!c)return h;
+ var foto=c.foto,inp='<input id="fhx'+c.id+'" type="file" accept="image/*" capture="environment" data-fach="'+c.id+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">';
+ if(foto)h=h.replace('<div class="fihero"><span class="avt"','<div class="fihero confoto"><div class="clifoto" style="background-image:url(\''+foto+'\')"><label class="clicam" for="fhx'+c.id+'">📷 Cambiar foto</label>'+inp+'</div><span class="avt"');
+ else h=h.replace(/(<div class="fihero"><span class="avt"[^>]*>[^<]*<\/span>)/,'$1<label class="btn sm sec" for="fhx'+c.id+'" style="display:inline-flex;align-items:center;cursor:pointer;width:auto">📷 Foto de la fachada</label>'+inp);
+ return h};
+
+/* mayHistHTML · de l23 */
+var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
+ return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
+
+/* fiEmp · de l27 */
+var _fiE27=fiEmp;fiEmp=function(f){var h=_fiE27.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||S.chEdit===ch.id)return h;
+ if(!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');return i<0?h:h.slice(0,i)+chCredCard(ch)+h.slice(i)}catch(e){return h}};
+
+/* fiCli · de l27 */
+var _fiC27=fiCli;fiCli=function(f){var h=_fiC27.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='admin')return h;try{
+ var old=rw('Teléfono',c.tel?esc(c.tel):'sin registrar');if(h.indexOf(old)>-1&&c.tel){var dc=telDeChofer(c),ok=telConfOk(c);
+  var nv=rw('Teléfono',esc(c.tel))+'<div style="margin:-2px 0 8px;font-size:14px">'+(dc?'<div class="neg">⚠ Es el teléfono de '+esc(dc.n)+', no del cliente</div>':'')+(ok?'<span style="color:var(--accent)">✓ Número confirmado '+hace(c.telConf.t)+'</span>':'<span class="neg">Sin confirmar</span>'+(c.telPor?' <span class="lbl">· lo puso '+esc(chofN(c.telPor))+'</span>':'')+' <button class="btn sm" style="width:auto;margin-left:6px" data-act="telconf" data-id="'+c.id+'">Confirmar número</button>')+'</div>';
+  h=h.replace(old,nv)}
+ var oldL=rw('Límite de crédito',c.lim?money(c.lim):'sin límite');if(h.indexOf(oldL)>-1){var ch=chCredDe(c);h=h.replace(oldL,rw('Límite de crédito',money(limEf(c))+'<br><span class="lbl">'+(c.limMan!=null?'excepción tuya':(ch?'el de los clientes de '+esc(ch.n):'el de Ajustes'))+(buroDe(c).n?' · bajado por el buró':'')+'</span>'))}}catch(e){}return h};
+
+/* fiEmp · de l35 */
+var _fiE35=fiEmp;fiEmp=function(f){var h=_fiE35.apply(this,arguments),c=S.choferes.filter(function(x){return x.id===f.id})[0];if(!c||esAdm(c))return h;try{
+ h=h.replace(chImg(c,'ine','INE'),chImg(c,'ine','INE (frente)')+chImg(c,'ineR','INE (reverso)')).replace(chImg(c,'lic','Licencia'),chImg(c,'lic','Licencia (frente)')+chImg(c,'licR','Licencia (reverso)'));
+ h=h.replace(chView(c,'ine','INE'),chView(c,'ine','INE (frente)')+chView(c,'ineR','INE (reverso)')).replace(chView(c,'lic','Licencia de conducir'),chView(c,'lic','Licencia (frente)')+chView(c,'licR','Licencia (reverso)'));
+ h=h.replace('<div style="display:flex;gap:10px;margin:8px 0">','<div class="chfotos" style="display:flex;gap:10px;margin:8px 0">').replace('<div style="display:flex;gap:10px;margin:4px 0 8px">','<div class="chfotos" style="display:flex;gap:10px;margin:4px 0 8px">')}catch(e){}return h};
+
+/* fiEmp · de l36 */
+var _fiE36=fiEmp;fiEmp=function(f){var h=_fiE36.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||S.chEdit===ch.id||!/data-fi="[^"]*:dat"/.test(h))return h;var i=h.lastIndexOf('</div></div></div>');
+ var c=ch.baja?'<div class="card note"><b>Dado de baja</b><div class="lbl">'+esc(ch.bajaF?fmtF(ch.bajaF):'')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="bjreact" data-id="'+ch.id+'">Volver a darlo de alta</button></div>':'<button class="link" style="color:var(--danger);margin:10px 0" data-act="bjabre" data-id="'+ch.id+'">Dar de baja a '+esc(ch.n)+'</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+
+/* fiEmp · de l40 */
+var _fiE40=fiEmp;fiEmp=function(f){var h=_fiE40.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||esAdm(ch)||!esCh(ch)||ch.baja||S.chEdit===ch.id||!/data-act="bjabre"/.test(h))return h;
+ var c='<div class="card"><b>Después de su cierre</b><div class="lbl">Si quiere cargar más o dar otra vuelta:</div><div class="chips" role="group" aria-label="Permiso para seguir" style="margin-top:6px"><button data-act="segperm" data-id="'+ch.id+'" data-v="0" aria-pressed="'+!ch.segPerm+'">Sigue solo (te avisa)</button><button data-act="segperm" data-id="'+ch.id+'" data-v="1" aria-pressed="'+!!ch.segPerm+'">Me pide permiso</button></div></div>';
+ return h.replace(/(<button class="link" style="color:var\(--danger\);margin:10px 0" data-act="bjabre")/,c+'$1')}catch(e){return h}};
+
+/* fiEmp · de l40 */
+var _fiE40b=fiEmp;fiEmp=function(f){var h=_fiE40b.apply(this,arguments);try{if(S.role!=='admin')return h;var ch=S.choferes.filter(function(x){return x.id===f.id})[0];if(!ch||!esCh(ch)||esAdm(ch)||ch.baja||!/data-fi="[^"]*:ruta"[^>]*aria-selected="true"|data-k="ruta"/.test(h)&&!pendDe(ch.id).length)return h;
+ if(!pendDe(ch.id).length||h.indexOf('data-act="pasar"')>-1)return h;var i=h.lastIndexOf('</div></div></div>');var c='<button class="btn sec" style="margin:10px 0" data-act="pasar" data-id="'+ch.id+'">Pasar su ruta a otro chofer (solo hoy)</button>';return i<0?h:h.slice(0,i)+c+h.slice(i)}catch(e){return h}};
+
+/* mayHistHTML · de l41 */
+var _mh41=mayHistHTML;mayHistHTML=function(c){var h=_mh41.apply(this,arguments);if(S.role==='admin'||!c||credActivo(c))return h;return h.replace(/^<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró<\/b>[\s\S]*?<\/div><\/div>/,'')};
+
+/* fiCli · de l41 */
+var _fiC41=fiCli;fiCli=function(f){var h=_fiC41.apply(this,arguments),c=cl(f.id);if(!c||S.role!=='rep'||c.rapida)return h;var fl=ubCliFalta(c);if(!ubTiene(c))fl.unshift('ubicación');if(!fl.length)return h;
+ var card='<div class="card note"><b>Le falta: '+esc(fl.join(', '))+'</b><div class="lbl">Puedes agregar lo que falta (lo que ya tiene no se cambia).</div><button class="btn sm" style="margin-top:8px" data-act="ubcli" data-id="'+c.id+'" data-m="'+(ubTiene(c)?'datos':'gps')+'">Completar datos</button></div>';
+ var i=h.indexOf('<div class="card');return i<0?h+card:h.slice(0,i)+card+h.slice(i)};
+
+/* fiCli · de l44 */
+var _fiC44=fiCli;fiCli=function(f){var h=_fiC44.apply(this,arguments),c=cl(f.id);if(!c||!qrOn()||c.rapida)return h;
+ var q='<div class="card" data-key="cliqr" style="text-align:center"><b>QR de '+esc(c.n)+'</b><div style="margin:8px auto;width:150px">'+QR.svg(cliQR(c),150)+'</div>'+(c.qr?'<div class="lbl">✓ Pegado el '+fmtF(c.qr.f)+(c.qr.q?' por '+esc(c.qr.q):'')+'</div>':'<div class="lbl neg">Falta pegarlo</div>')
+  +'<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px">'+(imprOk()?'<button class="btn sm sec" style="width:auto" data-act="qrimp" data-id="'+c.id+'">Imprimir etiqueta</button>':'')+(c.qr?'':'<button class="btn sm" style="width:auto" data-act="qrpuesto" data-id="'+c.id+'">Ya lo pegué</button>')+'</div></div>';var i=h.lastIndexOf('</div></div></div>');return i<0?h+q:h.slice(0,i)+q+h.slice(i)};
+
+/* fiEmp · de l52 */
+var _fiEmp52=fiEmp;fiEmp=function(f){var h=_fiEmp52.apply(this,arguments);if(S.chEdit===f.id||(S.fiTab||{})['emp:'+f.id]!=='ruta')return h;var c=(S.choferes||[]).filter(function(x){return x.id===f.id})[0];var g=c?gpsRutaHTML(c):'';if(!g)return h;return h.replace(/<\/div><\/div><\/div>$/,g+'</div></div></div>')};
+
+/* fiEmp · de l63 */
+var _fiE63=fiEmp;fiEmp=function(f){var h=_fiE63.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!esCh(c)||esAdm(c)||(S.fiTab||{})['emp:'+f.id]==='ruta')return h;
+ var row='<div class="card" data-key="chcomida"><div class="row"><span><b>Puede agregar comida</b><br><span class="lbl">Solo si ya lo acordaron. Si está en No, no le sale la opción.</span></span><button class="btn sm'+(c.comida?'':' sec')+'" style="width:auto" data-act="chcomida" data-id="'+c.id+'">'+(c.comida?'Sí':'No')+'</button></div></div>';
+ var i=h.lastIndexOf('</div></div></div>');return i>-1?h.slice(0,i)+row+h.slice(i):h+row}catch(e){return h}};
+
+/* fiEmp · de l69 */
+var _fiE69=fiEmp;fiEmp=function(f){var h=_fiE69.apply(this,arguments);try{if(S.role!=='admin'||S.encOn)return h;var c=cl0(f.id);if(!c||!c.comida)return h;
+  var add='<div class="field" style="margin-top:6px"><label for="chcp'+c.id+'">Presupuesto diario de comida $</label><input id="chcp'+c.id+'" type="number" inputmode="decimal" min="0" data-ch68="'+c.id+'" value="'+esc(c.comidaMax==null?'':c.comidaMax)+'" placeholder="sin tope"></div>';
+  return h.replace(/(data-act="chcomida"[^>]*>[^<]*<\/button><\/div>)/,'$1'+add)}catch(e){return h}};
+
+/* fiCli · de l70 */
+var _fiCl70=fiCli;fiCli=function(f){var h=_fiCl70.apply(this,arguments);try{if(S.role!=='admin'||((S.fiTab||{})['cli:'+f.id]||'cta')!=='dat')return h;var c=cl(f.id),ok=c&&c.lat!=null;
+  var cd='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?c.lat+', '+c.lng+(c.locBy?' · '+esc(c.locBy):''):'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="cli" data-id="'+f.id+'">'+(ok?'Buscar o corregir en el mapa':'Poner la ubicación')+'</button></div>';
+  var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+cd+h.slice(i):h+cd}catch(e){return h}};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

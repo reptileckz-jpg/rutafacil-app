@@ -3962,7 +3962,7 @@ setTimeout(function(){try{if(window.CONF){delete CONF.gxdel}}catch(e){}},0);
 
 /* el cierre de caja también se confirma antes de guardarse (cobros y pagos: solo confirmar, sin PIN) */
 setTimeout(function(){try{if(window.CONF)CONF.cajacierre=1}catch(e){}},0);
-var _cmL6=confMsg;confMsg=function(D){if(D.act==='cajacierre'){if(S.cajaCnt===''||S.cajaCnt==null)return null;var ce=cajaEsp(),cc=num(S.cajaCnt),df=cc-ce;return{t:'Cierre de caja',m:'¿Registrar que contaste '+money(cc)+'? La app esperaba '+money(ce)+(Math.abs(df)<0.5?' y cuadra.':(df<0?': faltan '+money(-df)+'.':': sobran '+money(df)+'.'))}}return _cmL6.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */
 
 //@@capa l6b.js
 /* ===================== v3.9 · 6b. Datos de ejemplo completos ===================== */
@@ -4582,8 +4582,7 @@ recepCard=function(r){var R=S.recep;
  return '<div class="card" data-key="recep"><b>Cuenta lo que regresó a bodega</b><div class="lbl">Cuenta sin ver lo que dice la app. Al confirmar te digo si cuadra.</div>'
   +f('R','Cajas llenas de roatán')+f('M','Kilos de macho')+f('V','Cajas vacías')+'<button class="btn" style="margin-top:8px" data-act="recep">Confirmar recepción</button></div>'};
 /* que no se vea arriba lo que "regresa" mientras no se cuente */
-var _cAdmR=cierreAdm;cierreAdm=function(){var h=_cAdmR.apply(this,arguments);if(S.recep||!S.cierre.res)return h;
- return h.replace(/ · regresan -?[\d.]+/g,'').replace(/(Cajas vacías recibidas<\/span><b[^>]*>)[^<]*/,'$1se cuentan abajo')};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='recep'){e.stopImmediatePropagation();if(S.recep||!S.cierre.res)return;var c=recCnt(),fl=[['R','#rcR'],['M','#rcM'],['V','#rcV']].filter(function(x){return c[x[0]]===null});
   if(fl.length){window._faltaSel=fl[0][1];toast('Falta contar: '+fl.map(function(x){return {R:'cajas de roatán',M:'kilos de macho',V:'cajas vacías'}[x[0]]}).join(', ')+' (si no hay, escribe 0)');render();return}
@@ -4603,11 +4602,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 function regPend(){return !!(S.cierre&&S.cierre.sent&&S.cierre.res&&!S.recep&&S.cierre.porContar)}
 function regAlgo(r){return Math.max(0,r.reg)>0||Math.max(0,r.regK)>0||r.V>0}
 /* chofer: foto en el paso "Cajas" del cierre */
-var _cierreF=cierre;cierre=function(){var h=_cierreF.apply(this,arguments),c=S.cierre;if(c.sent)return h;var r=cierreRes();if(!regAlgo(r))return h;
- var ft=c.fotoReg,blk='<div style="border-top:1px solid var(--line);margin-top:8px;padding:10px 0 6px"><b>Foto de lo que regresas</b><div class="lbl">Toma una foto donde se vean las cajas llenas y las vacías que traes en el camión. Es obligatoria para enviar el cierre.</div>'
-  +(ft?'<img src="'+ft+'" alt="Foto de lo que regresa" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px">':'')
-  +'<label for="regF" class="btn '+(ft?'sec ':'')+'sm" id="regFb" style="display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px">'+(ft?'Cambiar foto':'📷 Tomar foto')+'</label><input id="regF" type="file" accept="image/*" capture="environment" data-regf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>';
- return h.replace(/(Cajas vacías recibidas<\/span><b>-?[\d.]+<\/b><\/div>)(<\/div>)/,'$1'+blk+'$2')};
+/* cierre: pasó a tema-cierre.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.regf||!t.files||!t.files[0])return;var fr=new FileReader();
  fr.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,FOTO_PX119/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.cierre.fotoReg=cv.toDataURL('image/jpeg',FOTO_Q119);toast('Foto guardada')};im.src=fr.result};fr.readAsDataURL(t.files[0]);try{t.value=''}catch(er){}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -4626,8 +4621,7 @@ var _rCaj13=render;render=function(){
 var _recC13=recepCard;recepCard=function(r){var h=_recC13.apply(this,arguments),ft=S.cierre.fotoReg;if(!ft)return h;
  var img='<details style="margin-top:8px"><summary class="lbl" style="cursor:pointer">Ver la foto que tomó '+esc(chofN(S.chofHoy))+'</summary><img src="'+ft+'" alt="Foto de lo que regresó" style="width:100%;border-radius:12px;margin-top:6px" data-act="fotover"></details>';
  return h.replace(/<\/div>$/,img+'</div>')};
-var _cTop13=cierreTop;cierreTop=function(){var h=_cTop13.apply(this,arguments);if(regPend()&&!cierrePend()){var r=S.cierre.res;
- h+='<button class="card alert" data-act="vercierre" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('caja',20)+'</span><span class="grow"><b style="font-size:17px">Cajas sin contar de '+esc(chofN(S.chofHoy))+'</b><br><span class="lbl">Regresó del reparto. Cuéntalas para que entren a bodega.</span></span><span style="font-size:22px">›</span></button>'}return h};
+/* cierreTop: pasó a tema-cierre.js */
 
 /* ===================== v5 · Mayoreo con control =====================
    - En el cierre, junto a cada cliente al que se le dio mayoreo: "No darle mayoreo" o "Hacerlo cliente de mayoreo".
@@ -4709,7 +4703,7 @@ setInterval(function(){var L=document.querySelectorAll('[data-mayt]');if(!L.leng
 senalBanner=function(){if(S.role!=='rep')return '';var c=conn(+S.chofHoy);if(c.on)return '';return '<div class="sinconx" role="status">📶 Sin conexión <span>· tus datos se guardan</span></div>'};
 var _toast13=toast;toast=function(t){if(typeof t==='string'){if(/^Sin señal: lo que captures/.test(t)){render();return}else if(/^Volvió la señal/.test(t))t='Volvió la conexión · ya se mandó todo'}return _toast13.call(this,t)};
 /* si falta la foto, primero se avisa (antes del "¿Enviar?") */
-var _confM13=confMsg;confMsg=function(D){if(D&&D.act==='enviar'&&S.role==='rep'&&S.cierre&&!S.cierre.sent&&!S.cierre.fotoReg&&regAlgo(cierreRes()))return null;return _confM13.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */
 /* las cajas "sin contar" siguen existiendo: cuentan como en el camión hasta que alguien las cuente */
 var _cdD13=cajasDonde;cajasDonde=function(){var w=_cdD13.apply(this,arguments);if(regPend()){var r=S.cierre.res,ll=Math.max(0,num(r.reg)),vv=Math.max(0,num(r.V));/* 121 · sin el dato ya no da NaN ("Total NaN") */w.cam+=ll;w.camV=(w.camV||0)+vv;w.tot+=ll+vv;w.sinC=ll+vv}return w};
 /* "Seguir trabajando" con cajas sin contar:
@@ -4742,7 +4736,7 @@ function fotoLeer(f,cb){var fr=new FileReader();fr.onload=function(){var im=new 
 
 /* ---- 1. Cancelar una entrega: el chofer puede, pero escribe por qué. Sale en su corte. ---- */
 function cancL(){return S.cancels||(S.cancels=[])}
-var _confM14=confMsg;confMsg=function(D){if(D&&D.act==='cancelent')return null;return _confM14.apply(this,arguments)};
+/* confMsg: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cancelent"]');if(!b)return;var D=b.dataset,st=S.stops[+D.i];if(!st||st.logI==null)return;var l=S.log[st.logI],c=cl(st.c);
  if(!D.ok){e.stopImmediatePropagation();S._cmot=S._cmot||'';
   abrirModal('¿Por qué cancelas la entrega?','<b>'+esc(c.n)+'</b> · '+l.R+' cajas'+(l.M?', '+l.M+' kg':'')+' · '+money(l.total)+(l.pago+l.abono>0?'<br><span class="neg">Ya habías cobrado '+money(l.pago+l.abono)+'.</span>':'')+'<div class="lbl" style="margin-top:6px">Las cajas regresan a tu camión. Esto sale en tu corte y le llega al administrador.</div><div class="field" style="display:block;margin-top:8px"><label for="cmot" style="display:block;margin-bottom:4px">Escribe brevemente qué pasó</label><textarea id="cmot" data-bind="_cmot" rows="2" style="width:100%;box-sizing:border-box" placeholder="ej. me equivoqué de cliente">'+esc(S._cmot)+'</textarea></div>',[['Sí, cancelar la entrega','cancelent',' data-i="'+D.i+'" data-ok="1"']]);
@@ -4755,10 +4749,8 @@ function cancelsHTML(adm){var L=cancL().filter(function(x){return x.ch===+S.chof
  var h=L.length?'<div class="card'+(adm?' alert':'')+'" data-key="cancels"><b>Entregas canceladas</b>'+L.map(function(x){return '<div style="border-top:1px solid var(--line);padding:6px 0"><div class="row" style="border:0;padding:0"><span>'+esc(x.n)+'<br><span class="lbl">'+x.h+' · '+x.R+' cajas'+(x.M?', '+x.M+' kg':'')+' regresaron al camión</span></span><b>'+money(x.total)+'</b></div>'+(x.cobro>0?'<div class="neg" style="font-size:13px;font-weight:700">Ya había cobrado '+money(x.cobro)+'</div>':'')+'<div style="font-size:14px">“'+esc(x.mot)+'”</div></div>'}).join('')+'</div>':'';
  if(adm&&X.length)h+='<details class="card" data-key="cambiosft"><summary><b>Cambios de fruta a clientes</b><span class="lbl">'+X.length+' · con foto</span></summary>'+X.map(function(x){var c=cl(x.c);return '<div style="border-top:1px solid var(--line);padding:6px 0"><div>'+esc(c?c.n:'')+' · '+x.R+' cajas'+(num(x.M)?', '+x.M+' kg':'')+'</div>'+(x.foto?'<img src="'+x.foto+'" alt="Fruta que se cambió" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:4px">':'<div class="lbl neg">Sin foto</div>')+'</div>'}).join('')+'</details>';
  return h}
-var _cAdm14=cierreAdm;cierreAdm=function(){var h=_cAdm14.apply(this,arguments);if(!S.cierre.res)return h;var x=cancelsHTML(true)+gxRevHTML(true);if(!x)return h;var i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x};
-var _cier14=cierre;cierre=function(){var h=_cier14.apply(this,arguments),x=cancelsHTML(false);if(!x||S.cierre.sent)return h;
- /* va en el paso "Cajas": dentro de la tarjeta de cajas */
- return h.replace(/(<div class="card" style="padding:4px 14px"><div class="row"><span>Cajas que salieron)/,x.replace('<div class="card" data-key="cancels">','<div class="card" data-key="cancels"><span class="lbl" style="display:none">sin visitar</span>')+'$1')};
+/* cierreAdm: pasó a tema-cierre.js */
+/* cierre: pasó a tema-cierre.js */
 
 /* ---- 3. Gastos y gasolina: con foto del ticket se descuentan; sin foto quedan "por revisar" ---- */
 function gxRevL(){return S.gchRev||(S.gchRev=[])}
@@ -5240,14 +5232,12 @@ if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viej
 function rutasDeHoy(){var L=[];var a={ch:+S.chofHoy,o:null,act:true};L.push(a);Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&!rutaVacia(S.chSt[id]))L.push({ch:+id,o:S.chSt[id]})});return L}
 function rutaSelHTML(){var L=rutasDeHoy();if(L.length<2||S.role!=='admin')return '';
  return '<div class="chips" role="group" aria-label="Ver la ruta de" style="margin:0 0 10px">'+L.map(function(x){var o=x.o||arPack(),env=o.cierre&&o.cierre.sent;return '<button data-act="verruta" data-id="'+x.ch+'" aria-pressed="'+!!x.act+'">'+esc(chofN(x.ch))+(env?' ✓':'')+'</button>'}).join('')+'</div>'}
-var _cA21=cierreAdm;cierreAdm=function(){return rutaSelHTML()+_cA21.apply(this,arguments)};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="verruta"]');if(!b)return;e.stopImmediatePropagation();chCambiar(+b.dataset.id);if(b.dataset.ir)S.tab.admin=b.dataset.ir;render();window.scrollTo(0,0)},true);
 /* ---- borrar los datos de prueba (para el lanzamiento) ---- */
 function borrarTodoLocal(cb){idbPut('S','',function(){cb&&cb()})}
 /* en Inicio: cierres de los otros choferes por recibir */
-var _cT21=cierreTop;cierreTop=function(){var h=_cT21.apply(this,arguments);if(S.role!=='admin')return h;
- Object.keys(S.chSt||{}).forEach(function(id){if(+id===+S.chofHoy)return;var o=S.chSt[id];if(!(o&&o.cierre&&o.cierre.sent&&!o.cierreReg))return;var r=o.cierre.res||{};
-  h+='<button class="card alert" data-act="verruta" data-id="'+id+'" data-ir="cierreadm" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('cierre',20)+'</span><span class="grow"><b style="font-size:17px">'+esc(chofN(+id))+' mandó su cierre</b><br><span class="lbl">Debe entregar '+money(r.efectivo||0)+'. Recíbelo.</span></span><span style="font-size:22px">›</span></button>'});return h};
+/* cierreTop: pasó a tema-cierre.js */
 
 //@@capa l22.js
 /* ===================== v5.1 · Arreglos de la prueba en celulares ===================== */
@@ -6123,8 +6113,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* cuando el admin autoriza, en el celular del chofer se reabre y se abre la pantalla de carga */
 var _r32=render;render=function(){try{if(S.role==='rep'&&S.reab&&S.reab.est==='ok'&&S.cierre&&S.cierre.sent&&!_seguirOk){var k=S.reab.k;S.reab=null;_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta con tu permiso')}}catch(e){console.error(e)}return _r32.apply(this,arguments)};
 /* en Inicio del admin: autorizar */
-var _cT32=cierreTop;cierreTop=function(){var h=_cT32.apply(this,arguments);if(S.role!=='admin')return h;
- nbRutaIds().forEach(function(id){var r=reabDe(id);if(!r||r.est!=='pend')return;h='<div class="card alert" data-key="reab'+id+'"><b style="font-size:17px">'+esc(chofN(id))+' quiere seguir trabajando</b><div class="lbl">Ya mandó su cierre y pide '+(r.k==='carga'?'cargar más fruta':'dar otra vuelta')+' ('+esc(r.h||'')+'). Si lo autorizas, se reabre su ruta y registra lo que carga.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="reabsi" data-id="'+id+'">Autorizar</button><button class="btn sec" style="flex:1" data-act="reabno" data-id="'+id+'">No</button></div></div>'+h});return h};
+/* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="reabsi"],[data-act="reabno"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,r=reabDe(id);if(!r)return;var n=JSON.parse(JSON.stringify(r));n.est=b.dataset.act==='reabsi'?'ok':'no';n.por=quien();nbRSet(id,'reab',n);
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(n.est==='ok'?'Autorizó':'No autorizó')+' que '+chofN(id)+' siga trabajando'});toast(n.est==='ok'?'Autorizado: ya le salió para seguir':'Le avisamos que no');render()},true);
 /* ---------- 3. Carga extra: su propia pantalla (cajas, kilos y foto) ---------- */
@@ -6616,8 +6605,7 @@ function efPasoHTML(){var c=S.cierre,r=cierreRes(),deb=num(r.efectivo),ent=efEnt
   +(tombolaHay()?'<button data-act="efdest" data-v="tom" aria-pressed="'+(c.dest==='tom')+'">Meter a la tómbola</button>':'')+'<button data-act="efdest" data-v="adm" aria-pressed="'+(c.dest!=='tom')+'">Entregar al administrador</button></div>'
   +'<div class="lbl" style="margin-top:6px">El dinero va en la bolsa con su ticket del corte.</div></div>'}
 /* se mete en el paso 5 del cierre */
-var _cP40=cierrePasos;cierrePasos=function(){var r=_cP40.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==4)return r;var m=document.querySelector('main');if(!m||m.querySelector('[data-key="efpaso"]'))return r;
- if(!tombolaHay())S.cierre.dest='adm';var d=document.createElement('div');d.innerHTML=efPasoHTML();var nav=m.querySelector('.wz-nav');(nav?nav.before(d.firstChild):m.appendChild(d.firstChild))}catch(e){console.error(e)}return r};
+/* cierrePasos: pasó a tema-cierre.js */
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ef||!S.cierre)return;var c=S.cierre,k=t.dataset.ef;
  if(k==='entrega')c.entrega=t.value;else if(k==='motivo')c.efMot=t.value;else if(k==='bolsa')c.bolsa=t.value;else{c.bill=c.bill||{};c.bill[k]=t.value;c.billOn=BILLETES.some(function(d){return num(c.bill['b'+d])>0})||num(c.bill.mon)>0;var bt=document.getElementById('efbtot');if(bt)bt.textContent=money(efBillTot(c.bill))}
  var deb=num(cierreRes().efectivo),dif=r2(efEntrega(c)-deb),dd=document.getElementById('efdif'),mw=document.getElementById('efmotw');if(dd)dd.innerHTML=efDifTxt(dif);if(mw)mw.hidden=Math.abs(dif)<0.5},true);
@@ -6627,8 +6615,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b||!S.cierre||(S.cierreP||0)!==4||+b.dataset.v<5)return;var c=S.cierre,dif=r2(efEntrega(c)-num(cierreRes().efectivo));
  if(Math.abs(dif)>=0.5&&!String(c.efMot||'').trim()){e.stopImmediatePropagation();toast('Escribe por qué no cuadra');var i=document.getElementById('efmot');if(i)i.focus();return}},true);
 /* resumen del último paso: lo que entrega */
-var _cP40b=cierrePasos;cierrePasos=function(){var r=_cP40b.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==5)return r;var g=document.querySelector('main .card.good');if(!g||g.querySelector('[data-k="efr"]'))return r;var c=S.cierre,deb=num(cierreRes().efectivo),ent=efEntrega(c),dif=r2(ent-deb);
- var x=document.createElement('div');x.setAttribute('data-k','efr');x.innerHTML=rw('Entregas',money(ent))+(Math.abs(dif)>=0.5?rw(dif<0?'Faltan':'Sobran',money(Math.abs(dif)),'neg'):'')+rw('Dinero',c.dest==='tom'?'a la tómbola':'al administrador')+(c.bolsa?rw('Bolsa',esc(c.bolsa)):'');g.querySelector('b').after(x)}catch(e){}return r};
+/* cierrePasos: pasó a tema-cierre.js */
 /* ---------- corte: datos, imagen con QR y código, impreso y por WhatsApp al negocio ---------- */
 function corteDatos(){var c=S.cierre,r=c.res||cierreRes(),deb=num(r.efectivo),ent=efEntrega(c),may=(S.log||[]).filter(function(l){return l.may}).map(function(l){var k=cl(l.c);return {n:k?k.n:'',R:num(l.R),M:num(l.M),pr:num(l.pr),pm:num(l.pm)}});
  var tj=sum(S.log||[],function(l){return num(l.tarj)}),tr=sum(S.log||[],function(l){return num(l.trans)});
@@ -6734,7 +6721,7 @@ var _k41=null;window.addEventListener('click',function(e){var b=e.target.closest
   if(k.trans>0)S.bancoMov.push({f:iso(TODAY),h:hhmm(),m:k.trans,t:'Transferencia',n:k.c.n+' · '+chofN(S.chofHoy)});
   if(fee>0&&!k.comCli)S.gastos.push({t:'Comisión de tarjeta',m:fee,n:k.c.n+' · '+tarjPct()+'%',pago:'Banco',caja:false,f:iso(TODAY),h:hhmm(),q:chofN(S.chofHoy)})},40)},true);
 /* el cierre del chofer: lo de tarjeta y transferencia se ve, pero no es efectivo que entrega */
-var _cR41=cierreRes;cierreRes=function(){var r=_cR41.apply(this,arguments);if(!r)return r;var tj=r2(sum(S.log||[],function(l){return num(l.tarj)})),tr=r2(sum(S.log||[],function(l){return num(l.trans)}));r.tarj=tj;r.trans=tr;if(!r._noEfe){r.efectivo=r2(num(r.efectivo)-tj-tr);r._noEfe=true}return r};
+/* cierreRes: pasó a tema-cierre.js */
 var _efD41=efeDesgloseHTML;efeDesgloseHTML=function(r){var h=_efD41.apply(this,arguments);if(!(r.tarj||r.trans))return h;
  var x=(r.tarj?rw('Cobrado con tarjeta (va al banco)','− '+money(r.tarj),'neg'):'')+(r.trans?rw('Transferencias (van al banco)','− '+money(r.trans),'neg'):'');return h.replace('<div class="row" style="min-height:56px;border-top:2px solid var(--fg)"><b>Debes entregar</b>',x+'<div class="row" style="min-height:56px;border-top:2px solid var(--fg)"><b>Debes entregar</b>')};
 /* ---------- caja: retirar del banco ---------- */
@@ -6799,7 +6786,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  toast('Arriba de '+money(encLim())+' necesitas el OK del administrador. Ya le avisamos.');render()},true);
 function pagoPideHTML(){if(S.role!=='admin'||S.encOn)return '';var L=(S.pagoPide||[]).filter(function(x){return x.f===iso(TODAY)&&x.est==='pend'});
  return L.map(function(x){return '<div class="card alert" data-key="pp'+x.id+'"><b style="font-size:17px">El encargado quiere pagar '+money(x.m)+'</b><div class="lbl">'+esc(x.n)+' · '+esc(x.q)+' · '+esc(x.h)+'</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="ppsi" data-id="'+x.id+'">Autorizar</button><button class="btn sec" style="flex:1" data-act="ppno" data-id="'+x.id+'">No</button></div></div>'}).join('')}
-var _cT42=cierreTop;cierreTop=function(){return pagoPideHTML()+_cT42.apply(this,arguments)};
+/* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ppsi"],[data-act="ppno"]');if(!b)return;e.stopImmediatePropagation();var x=(S.pagoPide||[]).filter(function(k){return k.id===+b.dataset.id})[0];if(!x)return;x.est=b.dataset.act==='ppsi'?'ok':'no';x.por=quien();
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(x.est==='ok'?'Autorizó':'No autorizó')+' al encargado pagar '+money(x.m)+' · '+x.n});toast(x.est==='ok'?'Autorizado':'Le avisamos que no');render()},true);
 /* ---------- conteo doble: lo que cuenta quien recibe contra lo que dijo el chofer ---------- */
@@ -7012,7 +6999,7 @@ function corteVerifica(t){var s=String(t||'');if(s.indexOf('RF-CORTE|')!==0){toa
   +((d.may||[]).length?'<div class="lbl" style="margin-top:6px"><b>Mayoreo</b></div>'+d.may.map(function(x){return rw(esc(x.n),(x.R?x.R+' cajas a '+money(x.pr):'')+(x.M?' '+x.M+' kg a '+money(x.pm):''))}).join(''):'');
  if(!bien)S.avPrecio.push('URGENTE: el corte de '+d.ch+' ('+fmtF(d.f)+') no pasó la verificación');abrirModal('Corte escaneado',m,[])}
 function cierreAdmScanHTML(){return '<button class="btn sec" style="margin:6px 0" data-act="cortescan">📷 Escanear el ticket del corte</button>'}
-var _cT44=cierreTop;cierreTop=function(){var h=_cT44.apply(this,arguments);if(S.role!=='admin')return h;var hay=nbRutaIds().some(function(id){var c=nbRGet(id,'cierre');return c&&c.sent&&c.corte});return hay?h+cierreAdmScanHTML():h};
+/* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='qron'){e.stopImmediatePropagation();S.cfg.qrOn=b.dataset.v==='1';render();return}
  if(a==='qrpuesto'){e.stopImmediatePropagation();var c=cl(+b.dataset.id);c.qr={f:iso(TODAY),q:quien()};toast('Listo: QR pegado');render();return}
@@ -7094,11 +7081,7 @@ var _clk45=0;window.addEventListener('click',function(e){if(e.target.closest&&e.
 var _r45a=render;render=function(){var r=_r45a.apply(this,arguments);try{if(Date.now()-_clk45<500){var c=capaArriba(),al=c&&c.querySelector('.neg[role="alert"],[role="alert"].neg,.err[role="alert"]');if(al&&al.getClientRects().length&&FALTA_RE.test(al.textContent.trim())){_clk45=0;var t=primerVacio();if(t)marcaFalta(t);else{al.classList.remove('falta');void al.offsetWidth;al.classList.add('falta');try{vibrar(60)}catch(er){}}}}}catch(e){}return r};
 /* ---------- 54 · después de mandar el cierre, el cierre solo se ve (fotos fijas) ---------- */
 function fotoMini(src,l){return src&&!/^data:x$/.test(src)?'<figure><img src="'+esc(src)+'" alt="'+esc(l)+'" data-act="fotogr" data-src="'+esc(src)+'"><figcaption>'+esc(l)+'</figcaption></figure>':'<figure><div class="lbl" style="aspect-ratio:4/3;border:1px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center">Sin foto</div><figcaption>'+esc(l)+'</figcaption></figure>'}
-var _cie45=cierre;cierre=function(){if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return _cie45.apply(this,arguments);var c=S.cierre,d=c.corte||{},r=c.res||{},ff=(S.salida&&S.salida.fotosFin)||{};
- return '<h1>Cierre del día</h1>'
-  +'<div class="card good"><b style="font-size:18px">✓ Cierre enviado'+(S.ciEnvH?' a las '+esc(S.ciEnvH):'')+'</b><div class="lbl">Ya no se puede cambiar. Si algo está mal, avísale al administrador.</div></div>'
-  +'<div class="card"><b>Efectivo</b>'+rw('Debías entregar',money(d.deb!=null?d.deb:num(r.efectivo)))+rw('Entregas',money(d.ent!=null?d.ent:num(r.efectivo)))+(d.dif&&Math.abs(d.dif)>=0.5?rw(d.dif<0?'Faltan':'Sobran',money(Math.abs(d.dif)),'neg')+rw('Motivo',esc(d.mot||'')):'')+(d.bolsa?rw('Bolsa',esc(d.bolsa)):'')+(d.dest?rw('Dinero',d.dest==='tómbola'?'a la tómbola':'al administrador'):'')+(d.v?rw('Código del corte',esc(d.v)):'')+'</div>'
-  +'<div class="card"><b>Vehículo</b>'+(c.odo?rw('Odómetro final',num(c.odo).toLocaleString('es-MX')+' km'):'')+'<div class="cifoto">'+FOTOS.map(function(f){return fotoMini(ff[f[0]],f[1])}).join('')+(ff.odo?fotoMini(ff.odo,'Odómetro'):'')+'</div></div>'};
+/* cierre: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fotogr"],#fgov');if(!b)return;e.stopImmediatePropagation();var o=document.getElementById('fgov');if(o){o.remove();return}o=document.createElement('div');o.id='fgov';o.innerHTML='<img alt="Foto" src="'+b.dataset.src+'">';document.body.appendChild(o)},true);
 /* por si algo más intenta cambiar las fotos o reenviar con el cierre ya mandado */
 window.addEventListener('change',function(e){var t=e.target;if(S.role==='rep'&&S.cierre&&S.cierre.sent&&t&&t.type==='file'&&t.closest&&t.closest('main')&&S.tab.rep==='cierre'){e.stopImmediatePropagation();t.value='';toast('El cierre ya se mandó; las fotos se quedan como están')}},true);
@@ -7529,8 +7512,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   if(o==='ok'){go();return}abrirModal('¿Seguro?',{desc:'Se le descuenta de su próximo pago y lo verá en su sueldo.',pago:'Se registra que lo pagó y entra a la caja.',nodesc:'No se le descuenta; queda como faltante de la caja.',caja:'El sobrante se queda en la caja.',chofer:'Se registra que se le regresó.'}[o]||'',[['Sí','rcfinsi',' data-o="'+o+'"']]);return}
  if(a==='rcfinsi'){e.stopImmediatePropagation();S.modal=null;var o2=b.dataset.o,ch2=+S.chofHoy;if(eqDe(ch2).length)eqGuarda(ch2,x,'regreso');rcRegistra(x,o2);S.rcv=null;S.tab.admin='cierreadm';toast('Cierre de '+chofN(ch2)+' recibido');render();window.scrollTo(0,0);return}},true);
 /* en la pantalla del cierre, arriba, el botón grande para recibir con la tarjeta */
-var _cAdm50=cierreAdm;cierreAdm=function(){var h=_cAdm50.apply(this,arguments);if(!S.cierre||!S.cierre.res||!S.cierre.sent||(S.cierreReg&&S.recep))return h;
- return '<button class="btn big" data-act="rcabre" style="margin:4px 0 10px">📥 Recibir el cierre de '+esc(chofN(S.chofHoy))+'</button>'+h};
+/* cierreAdm: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rcabre"]');if(!b)return;e.stopImmediatePropagation();var D=rcDebe();S.rcv={p:0,R:String(D.R),M:String(D.M),V:String(D.V),E:String(D.dice!=null?D.dice:D.efe),est:{}};render();window.scrollTo(0,0)},true);
 function fCorta(d){var p=String(d).split('-');return p.length===3?p[2]+'/'+MES[+p[1]-1].toLowerCase().slice(0,3):d}
 /* en su sueldo, cada faltante con su motivo (el chofer ve por qué se le descuenta) */
@@ -7713,7 +7695,7 @@ var CONF53={enccancel:'Se cancela el encargo.',encquitar:'Se quita el encargo.',
  permok:'Se le autoriza fiarle hoy.',sacar:'El lote pasa a maduro.',vwpesdel:'Se borra esa pesada.',asidel:'Se quita esa nota.'};
 setTimeout(function(){Object.keys(CONF53).forEach(function(k){CONF[k]=1})},0);
 var _cfTxt53='';window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(b&&CONF53[b.dataset.act])_cfTxt53=(b.textContent||'').replace(/\s+/g,' ').trim()},true);
-var _confMsg53=confMsg;confMsg=function(D){var r=_confMsg53.apply(this,arguments);if(r||!CONF53[D.act])return r;return {t:'¿Estás seguro?',m:(_cfTxt53?'«'+_cfTxt53+'». ':'')+CONF53[D.act]}};
+/* confMsg: pasó a tema-cierre.js */
 /* y "Deshacer" en lo nuevo */
 setTimeout(function(){['rcfin','rcfinsi','flt','eqok'].forEach(function(k){UNDO[k]=1})},0);
 (function(){var st=document.createElement('style');st.textContent='[data-act="confno"],[data-act="confok"]{min-height:60px!important;font-size:18px!important}';document.head.appendChild(st)})();
@@ -9173,7 +9155,7 @@ function gastosViaje68(c,k){var t=c.t||{},cv=c.cv&&c.cv.ok?c.cv:null,L=[],add=fu
 /* costo de repartir (por caja de roatán y por kilo de macho) */
 function cierreExtra68(r){try{var G=(S.gch||[]),t=tope68(),big=G.filter(function(x){return esImp68(x.tipo)&&num(x.m)>t});r.g68={tot:r2(sum(G,function(x){return num(x.m)})-sum(big,function(x){return num(x.m)})),big:big.map(function(x){return {tipo:x.tipo,m:num(x.m),nota:x.nota||''}}),comb:r2(sum(G.filter(function(x){return /combust/i.test(x.tipo)}),function(x){return num(x.m)})+sum(S.recs||[],function(x){return num(x.total||x.m)}))};
  var vh=vehHoy();r.veh68=vh?vh.id:null;r.tasa68=tasa68(vh);var z=suelDia68(cl0(+S.chofHoy));r.suel68=z.s;r.ch68=+S.chofHoy}catch(e){}return r}
-var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
+/* cierreRes: pasó a tema-cierre.js */
 function rep68(dias){dias=dias||30;var d0=iso(new Date(TODAY.getTime()-dias*864e5)),R=[];(S.rutasHist||[]).forEach(function(x){if(x.f>=d0&&x.res)R.push(x.res)});
  try{rutasOtras().forEach(function(o){if(o.cierre&&o.cierre.sent&&o.cierre.res)R.push(o.cierre.res)})}catch(e){}if(S.cierre&&S.cierre.sent&&S.cierre.res&&R.indexOf(S.cierre.res)<0)R.push(S.cierre.res);
  var o={rutas:0,cajas:0,kg:0,comb:0,otros:0,desg:0,suel:0};R.forEach(function(r){if(!(num(r.R)||num(r.M)))return;o.rutas++;o.cajas+=num(r.R);o.kg+=num(r.M);var g=r.g68||{};o.comb+=num(g.comb);o.otros+=Math.max(0,num(g.tot)-num(g.comb));o.desg+=Math.max(0,num(r.km))*(r.tasa68!=null?num(r.tasa68):0.7);o.suel+=num(r.suel68)});
@@ -10231,7 +10213,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4737,"l14.js"],[4813,"l15.js"],[4875,"l16.js"],[4984,"l17.js"],[5015,"l18.js"],[5094,"l19.js"],[5157,"l20.js"],[5206,"l21.js"],[5252,"l22.js"],[5450,"l23.js"],[5499,"l24.js"],[5515,"l25.js"],[5546,"l26.js"],[5684,"l27.js"],[5745,"l28.js"],[5877,"l29.js"],[6003,"l30.js"],[6047,"l31.js"],[6083,"l32.js"],[6172,"l33.js"],[6190,"l34.js"],[6250,"l35.js"],[6307,"l36.js"],[6404,"l37.js"],[6425,"l38.js"],[6513,"l39.js"],[6594,"l40.js"],[6704,"l41.js"],[6776,"l42.js"],[6879,"l43.js"],[6981,"l44.js"],[7080,"l45.js"],[7173,"l46.js"],[7241,"l47.js"],[7355,"l48.js"],[7409,"l49.js"],[7445,"l50.js"],[7549,"l51.js"],[7559,"l52.js"],[7701,"l53.js"],[7723,"l54.js"],[7798,"l55.js"],[7827,"l56.js"],[7911,"l57.js"],[7976,"l58.js"],[8103,"l59.js"],[8163,"l60.js"],[8325,"l61.js"],[8382,"l62.js"],[8512,"l63.js"],[8681,"l64.js"],[8713,"l65.js"],[8814,"l66.js"],[8920,"l67.js"],[8947,"l68.js"],[9081,"l69.js"],[9306,"l70.js"],[9526,"l71.js"],[9651,"l72.js"],[9769,"l73.js"],[9845,"l74.js"],[9969,"l75.js"],[10122,"l76.js"],[10225,"l77.js"],[10353,"l78.js"],[10503,"l79.js"],[10611,"l80.js"],[10735,"l81.js"],[10888,"l82.js"],[11141,"l83.js"],[11210,"l84.js"],[11323,"l85.js"],[11384,"tema-rutadia.js"],[11549,"l86.js"],[11609,"l87.js"],[11652,"l88.js"],[11702,"l89.js"],[11751,"l90.js"],[11857,"tema-ruta.js"],[12004,"tema-fichas.js"],[12121,"tema-cobranza.js"],[12268,"tema-pantallas.js"],[12489,"tema-avisos.js"],[12651,"tema-reparte.js"],[12717,"tema-vehiculos.js"],[12861,"tema-notas.js"],[12878,"tema-taras.js"],[12985,"tema-cargarmas.js"],[13024,"tema-cargas.js"],[13058,"tema-cobro.js"],[13094,"tema-horario.js"],[13133,"tema-sueldos.js"],[13275,"tema-ganado.js"],[13320,"tema-cierres.js"],[13419,"tema-finanzas.js"],[13492,"tema-cuadre.js"],[13681,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4805,"l15.js"],[4867,"l16.js"],[4976,"l17.js"],[5007,"l18.js"],[5086,"l19.js"],[5149,"l20.js"],[5198,"l21.js"],[5242,"l22.js"],[5440,"l23.js"],[5489,"l24.js"],[5505,"l25.js"],[5536,"l26.js"],[5674,"l27.js"],[5735,"l28.js"],[5867,"l29.js"],[5993,"l30.js"],[6037,"l31.js"],[6073,"l32.js"],[6161,"l33.js"],[6179,"l34.js"],[6239,"l35.js"],[6296,"l36.js"],[6393,"l37.js"],[6414,"l38.js"],[6502,"l39.js"],[6583,"l40.js"],[6691,"l41.js"],[6763,"l42.js"],[6866,"l43.js"],[6968,"l44.js"],[7067,"l45.js"],[7156,"l46.js"],[7224,"l47.js"],[7338,"l48.js"],[7392,"l49.js"],[7428,"l50.js"],[7531,"l51.js"],[7541,"l52.js"],[7683,"l53.js"],[7705,"l54.js"],[7780,"l55.js"],[7809,"l56.js"],[7893,"l57.js"],[7958,"l58.js"],[8085,"l59.js"],[8145,"l60.js"],[8307,"l61.js"],[8364,"l62.js"],[8494,"l63.js"],[8663,"l64.js"],[8695,"l65.js"],[8796,"l66.js"],[8902,"l67.js"],[8929,"l68.js"],[9063,"l69.js"],[9288,"l70.js"],[9508,"l71.js"],[9633,"l72.js"],[9751,"l73.js"],[9827,"l74.js"],[9951,"l75.js"],[10104,"l76.js"],[10207,"l77.js"],[10335,"l78.js"],[10485,"l79.js"],[10593,"l80.js"],[10717,"l81.js"],[10870,"l82.js"],[11123,"l83.js"],[11192,"l84.js"],[11305,"l85.js"],[11366,"tema-rutadia.js"],[11531,"l86.js"],[11591,"l87.js"],[11634,"l88.js"],[11684,"l89.js"],[11733,"l90.js"],[11839,"tema-ruta.js"],[11986,"tema-fichas.js"],[12103,"tema-cierre.js"],[12197,"tema-cobranza.js"],[12344,"tema-pantallas.js"],[12565,"tema-avisos.js"],[12727,"tema-reparte.js"],[12793,"tema-vehiculos.js"],[12937,"tema-notas.js"],[12954,"tema-taras.js"],[13061,"tema-cargarmas.js"],[13100,"tema-cargas.js"],[13134,"tema-cobro.js"],[13170,"tema-horario.js"],[13209,"tema-sueldos.js"],[13351,"tema-ganado.js"],[13396,"tema-cierres.js"],[13495,"tema-finanzas.js"],[13568,"tema-cuadre.js"],[13757,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -12117,6 +12099,100 @@ var _fiE69=fiEmp;fiEmp=function(f){var h=_fiE69.apply(this,arguments);try{if(S.r
 var _fiCl70=fiCli;fiCli=function(f){var h=_fiCl70.apply(this,arguments);try{if(S.role!=='admin'||((S.fiTab||{})['cli:'+f.id]||'cta')!=='dat')return h;var c=cl(f.id),ok=c&&c.lat!=null;
   var cd='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?c.lat+', '+c.lng+(c.locBy?' · '+esc(c.locBy):''):'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="cli" data-id="'+f.id+'">'+(ok?'Buscar o corregir en el mapa':'Poner la ubicación')+'</button></div>';
   var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+cd+h.slice(i):h+cd}catch(e){return h}};
+
+//@@capa tema-cierre.js
+/* ===================== TEMA · Cierre del chofer y recibir el cierre (aplanado el 18 nov) =====================
+   Antes estaba repartido en 20 envolturas encadenadas en l6, l12, l13, l14, l21, l32, l40, l41, l42, l44, l45, l50, l53, l69.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-cierre.js).
+   Se arma justo después de tema-fichas.js (antes de los otros temas).
+   Si se cambia algo del cierre, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - cierre: la pantalla de cierre del chofer (pendientes, cancelaciones, resumen ya enviado) (4 pasos).
+   - cierrePasos: el cierre paso por paso (efectivo y enviar) (2 pasos; la versión base se rehízo completa en l32).
+   - cierreRes: las cuentas del cierre (tarjeta, transferencia, extras) (2 pasos).
+   - cierreTop: los avisos de arriba en Inicio (cierres por recibir, reabrir, pagos pedidos) (6 pasos).
+   - cierreAdm: la pantalla donde el admin recibe el cierre (4 pasos).
+   - confMsg: las preguntas de "¿Estás seguro?" (caja del cierre, enviar, cancelar entrega…) (4 pasos).
+   Las funciones que usan los pasos siguen en su capa.
+   ============================================================================================ */
+
+/* confMsg · de l6 */
+var _cmL6=confMsg;confMsg=function(D){if(D.act==='cajacierre'){if(S.cajaCnt===''||S.cajaCnt==null)return null;var ce=cajaEsp(),cc=num(S.cajaCnt),df=cc-ce;return{t:'Cierre de caja',m:'¿Registrar que contaste '+money(cc)+'? La app esperaba '+money(ce)+(Math.abs(df)<0.5?' y cuadra.':(df<0?': faltan '+money(-df)+'.':': sobran '+money(df)+'.'))}}return _cmL6.apply(this,arguments)};
+
+/* cierreAdm · de l12 */
+var _cAdmR=cierreAdm;cierreAdm=function(){var h=_cAdmR.apply(this,arguments);if(S.recep||!S.cierre.res)return h;
+ return h.replace(/ · regresan -?[\d.]+/g,'').replace(/(Cajas vacías recibidas<\/span><b[^>]*>)[^<]*/,'$1se cuentan abajo')};
+
+/* cierre · de l13 */
+var _cierreF=cierre;cierre=function(){var h=_cierreF.apply(this,arguments),c=S.cierre;if(c.sent)return h;var r=cierreRes();if(!regAlgo(r))return h;
+ var ft=c.fotoReg,blk='<div style="border-top:1px solid var(--line);margin-top:8px;padding:10px 0 6px"><b>Foto de lo que regresas</b><div class="lbl">Toma una foto donde se vean las cajas llenas y las vacías que traes en el camión. Es obligatoria para enviar el cierre.</div>'
+  +(ft?'<img src="'+ft+'" alt="Foto de lo que regresa" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px">':'')
+  +'<label for="regF" class="btn '+(ft?'sec ':'')+'sm" id="regFb" style="display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px">'+(ft?'Cambiar foto':'📷 Tomar foto')+'</label><input id="regF" type="file" accept="image/*" capture="environment" data-regf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none"></div>';
+ return h.replace(/(Cajas vacías recibidas<\/span><b>-?[\d.]+<\/b><\/div>)(<\/div>)/,'$1'+blk+'$2')};
+
+/* cierreTop · de l13 */
+var _cTop13=cierreTop;cierreTop=function(){var h=_cTop13.apply(this,arguments);if(regPend()&&!cierrePend()){var r=S.cierre.res;
+ h+='<button class="card alert" data-act="vercierre" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('caja',20)+'</span><span class="grow"><b style="font-size:17px">Cajas sin contar de '+esc(chofN(S.chofHoy))+'</b><br><span class="lbl">Regresó del reparto. Cuéntalas para que entren a bodega.</span></span><span style="font-size:22px">›</span></button>'}return h};
+
+/* confMsg · de l13 */
+var _confM13=confMsg;confMsg=function(D){if(D&&D.act==='enviar'&&S.role==='rep'&&S.cierre&&!S.cierre.sent&&!S.cierre.fotoReg&&regAlgo(cierreRes()))return null;return _confM13.apply(this,arguments)};
+
+/* confMsg · de l14 */
+var _confM14=confMsg;confMsg=function(D){if(D&&D.act==='cancelent')return null;return _confM14.apply(this,arguments)};
+
+/* cierreAdm · de l14 */
+var _cAdm14=cierreAdm;cierreAdm=function(){var h=_cAdm14.apply(this,arguments);if(!S.cierre.res)return h;var x=cancelsHTML(true)+gxRevHTML(true);if(!x)return h;var i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x};
+
+/* cierre · de l14 */
+var _cier14=cierre;cierre=function(){var h=_cier14.apply(this,arguments),x=cancelsHTML(false);if(!x||S.cierre.sent)return h;
+ /* va en el paso "Cajas": dentro de la tarjeta de cajas */
+ return h.replace(/(<div class="card" style="padding:4px 14px"><div class="row"><span>Cajas que salieron)/,x.replace('<div class="card" data-key="cancels">','<div class="card" data-key="cancels"><span class="lbl" style="display:none">sin visitar</span>')+'$1')};
+
+/* cierreAdm · de l21 */
+var _cA21=cierreAdm;cierreAdm=function(){return rutaSelHTML()+_cA21.apply(this,arguments)};
+
+/* cierreTop · de l21 */
+var _cT21=cierreTop;cierreTop=function(){var h=_cT21.apply(this,arguments);if(S.role!=='admin')return h;
+ Object.keys(S.chSt||{}).forEach(function(id){if(+id===+S.chofHoy)return;var o=S.chSt[id];if(!(o&&o.cierre&&o.cierre.sent&&!o.cierreReg))return;var r=o.cierre.res||{};
+  h+='<button class="card alert" data-act="verruta" data-id="'+id+'" data-ir="cierreadm" style="text-align:left;width:100%;color:inherit;display:flex;gap:12px;align-items:center;border-width:2px"><span class="ic" style="background:var(--danger);color:#fff">'+icon('cierre',20)+'</span><span class="grow"><b style="font-size:17px">'+esc(chofN(+id))+' mandó su cierre</b><br><span class="lbl">Debe entregar '+money(r.efectivo||0)+'. Recíbelo.</span></span><span style="font-size:22px">›</span></button>'});return h};
+
+/* cierreTop · de l32 */
+var _cT32=cierreTop;cierreTop=function(){var h=_cT32.apply(this,arguments);if(S.role!=='admin')return h;
+ nbRutaIds().forEach(function(id){var r=reabDe(id);if(!r||r.est!=='pend')return;h='<div class="card alert" data-key="reab'+id+'"><b style="font-size:17px">'+esc(chofN(id))+' quiere seguir trabajando</b><div class="lbl">Ya mandó su cierre y pide '+(r.k==='carga'?'cargar más fruta':'dar otra vuelta')+' ('+esc(r.h||'')+'). Si lo autorizas, se reabre su ruta y registra lo que carga.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="reabsi" data-id="'+id+'">Autorizar</button><button class="btn sec" style="flex:1" data-act="reabno" data-id="'+id+'">No</button></div></div>'+h});return h};
+
+/* cierrePasos · de l40 */
+var _cP40=cierrePasos;cierrePasos=function(){var r=_cP40.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==4)return r;var m=document.querySelector('main');if(!m||m.querySelector('[data-key="efpaso"]'))return r;
+ if(!tombolaHay())S.cierre.dest='adm';var d=document.createElement('div');d.innerHTML=efPasoHTML();var nav=m.querySelector('.wz-nav');(nav?nav.before(d.firstChild):m.appendChild(d.firstChild))}catch(e){console.error(e)}return r};
+
+/* cierrePasos · de l40 */
+var _cP40b=cierrePasos;cierrePasos=function(){var r=_cP40b.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==5)return r;var g=document.querySelector('main .card.good');if(!g||g.querySelector('[data-k="efr"]'))return r;var c=S.cierre,deb=num(cierreRes().efectivo),ent=efEntrega(c),dif=r2(ent-deb);
+ var x=document.createElement('div');x.setAttribute('data-k','efr');x.innerHTML=rw('Entregas',money(ent))+(Math.abs(dif)>=0.5?rw(dif<0?'Faltan':'Sobran',money(Math.abs(dif)),'neg'):'')+rw('Dinero',c.dest==='tom'?'a la tómbola':'al administrador')+(c.bolsa?rw('Bolsa',esc(c.bolsa)):'');g.querySelector('b').after(x)}catch(e){}return r};
+
+/* cierreRes · de l41 */
+var _cR41=cierreRes;cierreRes=function(){var r=_cR41.apply(this,arguments);if(!r)return r;var tj=r2(sum(S.log||[],function(l){return num(l.tarj)})),tr=r2(sum(S.log||[],function(l){return num(l.trans)}));r.tarj=tj;r.trans=tr;if(!r._noEfe){r.efectivo=r2(num(r.efectivo)-tj-tr);r._noEfe=true}return r};
+
+/* cierreTop · de l42 */
+var _cT42=cierreTop;cierreTop=function(){return pagoPideHTML()+_cT42.apply(this,arguments)};
+
+/* cierreTop · de l44 */
+var _cT44=cierreTop;cierreTop=function(){var h=_cT44.apply(this,arguments);if(S.role!=='admin')return h;var hay=nbRutaIds().some(function(id){var c=nbRGet(id,'cierre');return c&&c.sent&&c.corte});return hay?h+cierreAdmScanHTML():h};
+
+/* cierre · de l45 */
+var _cie45=cierre;cierre=function(){if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return _cie45.apply(this,arguments);var c=S.cierre,d=c.corte||{},r=c.res||{},ff=(S.salida&&S.salida.fotosFin)||{};
+ return '<h1>Cierre del día</h1>'
+  +'<div class="card good"><b style="font-size:18px">✓ Cierre enviado'+(S.ciEnvH?' a las '+esc(S.ciEnvH):'')+'</b><div class="lbl">Ya no se puede cambiar. Si algo está mal, avísale al administrador.</div></div>'
+  +'<div class="card"><b>Efectivo</b>'+rw('Debías entregar',money(d.deb!=null?d.deb:num(r.efectivo)))+rw('Entregas',money(d.ent!=null?d.ent:num(r.efectivo)))+(d.dif&&Math.abs(d.dif)>=0.5?rw(d.dif<0?'Faltan':'Sobran',money(Math.abs(d.dif)),'neg')+rw('Motivo',esc(d.mot||'')):'')+(d.bolsa?rw('Bolsa',esc(d.bolsa)):'')+(d.dest?rw('Dinero',d.dest==='tómbola'?'a la tómbola':'al administrador'):'')+(d.v?rw('Código del corte',esc(d.v)):'')+'</div>'
+  +'<div class="card"><b>Vehículo</b>'+(c.odo?rw('Odómetro final',num(c.odo).toLocaleString('es-MX')+' km'):'')+'<div class="cifoto">'+FOTOS.map(function(f){return fotoMini(ff[f[0]],f[1])}).join('')+(ff.odo?fotoMini(ff.odo,'Odómetro'):'')+'</div></div>'};
+
+/* cierreAdm · de l50 */
+var _cAdm50=cierreAdm;cierreAdm=function(){var h=_cAdm50.apply(this,arguments);if(!S.cierre||!S.cierre.res||!S.cierre.sent||(S.cierreReg&&S.recep))return h;
+ return '<button class="btn big" data-act="rcabre" style="margin:4px 0 10px">📥 Recibir el cierre de '+esc(chofN(S.chofHoy))+'</button>'+h};
+
+/* confMsg · de l53 */
+var _confMsg53=confMsg;confMsg=function(D){var r=_confMsg53.apply(this,arguments);if(r||!CONF53[D.act])return r;return {t:'¿Estás seguro?',m:(_cfTxt53?'«'+_cfTxt53+'». ':'')+CONF53[D.act]}};
+
+/* cierreRes · de l69 */
+var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

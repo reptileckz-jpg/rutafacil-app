@@ -2643,3 +2643,6 @@ Decidió: contado "si ya debe algo"; orden del cobro el propuesto, sin repetir "
 - Se quitó de la venta "Si te paga toda su deuda ($X), ganas $Y" (era la comisión del chofer por cobrar; en el celular de Ricardo salía con un recuadro encima).
 - Vacías y taras: si ya debe taras, sale "Ya te debe N taras. Prestar taras es una facilidad, como el crédito: entre menos, mejor…" (antes solo salía si se quedaba debiendo MÁS, en una ventana al guardar).
 - Blindaje: `comp-venta.js` 19 ventas: 16 idénticas a antes y las 3 de clientes con deuda que antes se fiaban ahora quedan de contado (a propósito, regla 127). t115 actualizada (sin permiso: de contado; con permiso del admin: puede fiar como antes). `t127.js` 6 OK. Captura `disenos/cobro-con-deuda.png`.
+
+
+## 2026-11-18 · Ricardo: "sí" → versión 10.1 (APK 1.0.48) a main con 126 y 127. Todas las pruebas en 0 FAIL antes de publicar.

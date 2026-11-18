@@ -2588,6 +2588,6 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Siguiente: fichas del personal y de clientes (fiEmp, fiCli, mayHistHTML, permsHTML).
 - Tema "fichas del personal y de clientes" → `capas/tema-fichas.js` (24: fiEmp 9, fiCli 5, mayHistHTML 4, permsHTML 6). 475 → **451 (20%)**. `pruebas/comp-fichas.js`: 192 casos iguales en la demo y 81 en la real, con todas las pestañas de cada ficha, buró, mayoreo y permisos pendientes. Detecta un cambio a propósito. Todas las pruebas en 0 FAIL.
 - Tema "cierre del chofer y recibir el cierre" → `capas/tema-cierre.js` (20: cierreTop 6, cierreAdm 4, cierre 4, confMsg 4, cierrePasos 2, cierreRes 2). 451 → **431 (24%)**. `pruebas/comp-cierre.js`: 65 casos iguales en la demo y la real (pasos 1 a 6 con efectivo exacto/faltante/sobrante, gastos y combustible, cierreRes, confirmaciones, envío, recibir y caja); detecta dos cambios a propósito. Todas las pruebas en 0 FAIL.
-- Visto al probar (no se cambió): al recibir el cierre, la app acepta un monto negativo si se escribe (el campo tiene min=0 pero no se revisa). Revisar en la fase 2.
+- 123 · Al recibir el cierre ya no se acepta efectivo negativo (antes se registraba −$50 y anotaba un faltante de más; la caja bajaba). Aviso "El efectivo recibido no puede ser negativo". Del lado del chofer ya estaba en $0 como mínimo. Líneas 123 de `ql.py`; prueba `t123.js` (falla con la versión anterior).
 - Siguiente: Inicio del administrador (tarjetas).
 

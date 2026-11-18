@@ -3000,7 +3000,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='sugdesg'&&!D.ok){e.stopImmediatePropagation();var vd=vehById(+D.id);abrirModal('¿Cambiar el desgaste?','Desgaste por km de <b>'+esc(vd.n)+'</b>: '+f2(num(vd.desg))+' → <b>'+f2(num(D.v))+'</b>.<br>Después te llevo a su tarjeta para que lo veas.',[['Sí, cambiar','sugdesg',' data-id="'+D.id+'" data-v="'+D.v+'" data-ok="1"']]);return}
  if(a==='sugdesg'&&D.ok){var vid=+D.id;setTimeout(function(){S.modal=null;S.sug=false;S.pop=null;S.role='admin';S.tab.admin='vehiculos';S.vehOpen=vid;S.hl='esgaste';render()},0)}
  /* 21 */
- if(a==='regcierre'&&!D.ok){var rr=S.cierre.res;if(S.cierreRec===''||S.cierreRec==null){e.stopImmediatePropagation();window._faltaSel='#crec';toast('Escribe cuánto efectivo recibiste');return}if(num(S.cierreRec)===0&&rr&&rr.efectivo>0.5){e.stopImmediatePropagation();abrirModal('¿Recibiste $0?','Debía entregar '+money(rr.efectivo)+'. Se le anota un faltante de '+money(rr.efectivo)+' a '+esc(chofN(S.chofHoy))+'.',[['Sí, recibí $0','regcierre',' data-ok="1"']]);return}}
+ if(a==='regcierre'&&!D.ok){var rr=S.cierre.res;if(S.cierreRec===''||S.cierreRec==null){e.stopImmediatePropagation();window._faltaSel='#crec';toast('Escribe cuánto efectivo recibiste');return}if(num(S.cierreRec)<0){e.stopImmediatePropagation();window._faltaSel='#crec';toast('El efectivo recibido no puede ser negativo');return}if(num(S.cierreRec)===0&&rr&&rr.efectivo>0.5){e.stopImmediatePropagation();abrirModal('¿Recibiste $0?','Debía entregar '+money(rr.efectivo)+'. Se le anota un faltante de '+money(rr.efectivo)+' a '+esc(chofN(S.chofHoy))+'.',[['Sí, recibí $0','regcierre',' data-ok="1"']]);return}}
  if(a==='regcierre'&&D.ok){S.modal=null}
  if(a==='cierreok0'){S.cierreRec='0';S.cierreReg={rec:0,f:null,h:hhmm()};toast('Enterado: cierre de '+chofN(S.chofHoy)+' sin efectivo por recibir');render();return}
  /* 22 */
@@ -14003,7 +14003,7 @@ document.addEventListener('click',function(e){
  else if(a==='ddia'){var dd=+D.d,ar2=S.d.dias,ix=ar2.indexOf(dd);if(ix>-1)ar2.splice(ix,1);else ar2.push(dd);ar2.sort();render()}
  else if(a==='may'){S.d.may=D.v==='1';render()}
  else if(a==='vercierre'){S.tab.admin='cierreadm';render();window.scrollTo(0,0)}
- else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}var rr=S.cierre.res,rec=num(S.cierreRec),df=rec-rr.efectivo,fi=null;
+ else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}if(num(S.cierreRec)<0){toast('El efectivo recibido no puede ser negativo');return}var rr=S.cierre.res,rec=num(S.cierreRec),df=rec-rr.efectivo,fi=null;
   if(df<-0.005){S.faltantes.push({ch:+S.chofHoy,m:-df,fecha:iso(TODAY),desc:true,pend:true});fi=S.faltantes.length-1}
   S.cierreReg={rec:rec,f:fi};toast(df<-0.005?'Faltante de '+money(-df)+' registrado':'Efectivo registrado')}
  else if(a==='faltdesc'){var fx=S.faltantes[+D.i];fx.desc=!fx.desc;render()}

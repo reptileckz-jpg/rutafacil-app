@@ -36,7 +36,7 @@ function dias118(c,ini,fin){var r={prog:0,fal:[],vac:[],tr:0};if(!ini||!fin||ini
 function diaSz118(c){var z=c.sz||{};return z.tipo==='semana'?num(z.monto)/6:(z.tipo==='base'?num(z.base)/6:(z.tipo==='dia'?num(z.porDia):0))}
 function sdLey118(c){var z=c.sz||{};return z.tipo==='semana'?num(z.monto)/7:(z.tipo==='base'?num(z.base)/7:(z.tipo==='dia'?num(z.porDia):0))}
 function logsPer118(c,ini,hasta){var L=[],hoy=iso(TODAY);if(!ini||!hasta||ini>hasta)return L;
- (S.rutasHist||[]).forEach(function(x){if(+x.ch===+c.id&&x.f>=ini&&x.f<=hasta&&x.f!==hoy)L=L.concat(x.log||[])});
+ (S.rutasHist||[]).forEach(function(x){if(+x.ch===+c.id&&x.f>=ini&&x.f<=hasta&&(x.f!==hoy||x.parcial120))L=L.concat(x.log||[])/* 120 · los cierres anteriores de hoy también cuentan */});
  if(hoy>=ini&&hoy<=hasta){var lg;try{lg=nbRGet(c.id,'log')}catch(e){lg=null}if(!lg&&String(S.chofHoy)===String(c.id))lg=S.log;L=L.concat(lg||[])}return L}
 szCalc=function(c){var z=c.sz||{},P=periodo118(c),vac=P.ini>P.hasta,D=dias118(c,P.ini,P.hasta),r=diaSz118(c),nada=z.tipo==='ninguno';
  var L=nada?[]:logsPer118(c,P.ini,P.hasta),cv=sum(L,function(l){return num(l.R)}),kv=sum(L,function(l){return num(l.M)}),cob=r2(sum(L,function(l){return num(l.pago)+num(l.abono)}));

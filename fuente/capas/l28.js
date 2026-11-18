@@ -65,7 +65,7 @@ function nbArma(u,F,viejo){if(!F||!F.k)return undefined;
 /* ---------- empujar lo local a la nube ---------- */
 function nbW(path,obj,merge){if(!NB.ad)return;NB.pend++;nbIndicador();return NB.ad.set(path,obj,merge!==false).then(function(){NB.pend--;nbIndicador()},function(e){NB.pend--;NB.err=String(e&&e.message||e);console.error('nube',path,e);nbIndicador()})}
 function nbEmpuja(){if(!NB.on||!NB.listo||!NB.ad)return;var DEL=NB.ad.del(),U=nbUnidades();
- U.forEach(function(u){var v;try{v=u.get()}catch(e){return}if(v===undefined)return;var L=nbCodifica(u,v),C=NB.C[u.id]||{},w={},hay=false;if(!L)return;
+ U.forEach(function(u){/* 120 · lo que solo el admin puede guardar: el celular del chofer no lo intenta */if(typeof nbSoloAdm120==='function'&&nbSoloAdm120(u))return;var v;try{v=u.get()}catch(e){return}if(v===undefined)return;var L=nbCodifica(u,v),C=NB.C[u.id]||{},w={},hay=false;if(!L)return;
   if(L.k!==C.k){w.k=L.k;hay=true}
   Object.keys(L).forEach(function(f){if(f==='k')return;if(f==='r'){if(L.r!==C.r){w.r=L.r;hay=true}return}var s=f[0],key=f.slice(2);
    if(s==='c'){var d=num(L[f])-num(C[f]);if(Math.abs(d)>1e-9){w.c=w.c||{};if(key==='')w.c['']=undefined;w.c[key===''?'_':key]=NB.ad.inc(d);hay=true}return}

@@ -285,8 +285,9 @@ function cntCard(){var c=S.cnt;
   +'<div class="chips" style="margin:8px 0" role="group" aria-label="Tipo de conteo">'+[['dia','Cierre del día'],['semana','Cierre de la semana'],['mes','Cierre del mes']].map(function(x){return '<button data-act="cnttipo" data-p="'+x[0]+'" aria-pressed="'+(c.tipo===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>'
   +CNT.map(function(x){return '<div class="field"><label for="cnt_'+x[0]+'">'+x[1]+' (app: '+S.inv[x[2]]+')</label><input id="cnt_'+x[0]+'" type="number" inputmode="decimal" step="any" min="0" data-bind="cnt.'+x[0]+'" value="'+esc(c[x[0]])+'"></div>'}).join('')
   +'<div id="cntRes" style="margin-top:6px">'+cntRes()+'</div><button class="btn" style="margin-top:8px" data-act="registrarcnt">Registrar conteo</button></div>'}
-function cajasDonde(){var I=S.inv,cli=sum(S.cli.filter(function(c){return !c.oculto}),function(c){return c.vac}),pv=sum(S.cargas.filter(function(c){return c.est==='Por llegar'}),function(c){return c.vacEnv||0}),llenas=I.verdes+madR()+I.maduras;
- return{vac:I.vacias,llenas:llenas,cam:I.reparto,cli:cli,pv:pv,tot:I.vacias+llenas+I.reparto+cli+pv}}
+function cajasDonde(){var I=S.inv,cli=sum(S.cli.filter(function(c){return !c.oculto}),function(c){return num(c.vac)}),pv=sum(S.cargas.filter(function(c){return c.est==='Por llegar'}),function(c){return num(c.vacEnv)}),llenas=num(I.verdes)+num(madR())+num(I.maduras);
+ /* 120 · con num(): un número guardado como texto o vacío ya no rompe la suma ("Total —") */
+ return{vac:num(I.vacias),llenas:llenas,cam:num(I.reparto),cli:cli,pv:pv,tot:num(I.vacias)+llenas+num(I.reparto)+cli+pv}}
 function cajasCard(){var w=cajasDonde(),j=S.cj,dif=j.fis===''?null:num(j.fis)-S.inv.vacias;
  var h='<div class="card"><b>Cajas</b><div style="display:flex;align-items:baseline;gap:8px;margin-top:4px"><span class="mid">'+w.tot.toLocaleString('es-MX')+'</span><span class="lbl">cajas en total</span></div>'
   +rw('Vacías en bodega',w.vac)+rw('Llenas en bodega',w.llenas)+rw('En el camión',w.cam+(w.camV?' llenas · '+w.camV+' vacías':''))+rw('Prestadas a clientes',w.cli)+rw('Con el proveedor (viaje en curso)',w.pv)
@@ -862,7 +863,7 @@ function estSec(){var sec=S.st.sec,P=S.st.per,rows=periodos(P),cur=rows[rows.len
    +(an.tipo==='anio'?'<div class="field"><label for="ananio">Año</label><select id="ananio" data-bind="an.anio" style="width:160px"><option'+(an.anio==='2026'?' selected':'')+'>2026</option><option'+(an.anio==='2025'?' selected':'')+'>2025</option></select></div>':'')
    +'<div id="anRes" style="margin-top:6px">'+analisisHTML()+'</div></div>';
   var full=agg(function(r){return r.d.slice(0,7)}).slice(0,-1).sort(function(a,b){return b.gan-a.gan}),mb=full[0],mw=full[full.length-1];
-  h+='<div class="card"><b>Comparación rápida entre meses</b><div class="lbl">Meses completos del historial.</div>'
+  if(mb)h+='<div class="card"><b>Comparación rápida entre meses</b><div class="lbl">Meses completos del historial.</div>'
    +'<div class="row"><div><div>Mes con mayor ganancia <span class="pill">Mayor</span></div><div class="lbl">'+MES[+mb.k.slice(5)-1]+' '+mb.k.slice(0,4)+'</div></div><b>'+money(mb.gan)+'</b></div>'
    +'<div class="row"><div><div>Mes con menor ganancia <span class="pill warn">Menor</span></div><div class="lbl">'+MES[+mw.k.slice(5)-1]+' '+mw.k.slice(0,4)+'</div></div><b>'+money(mw.gan)+'</b></div></div>';
   var last=agg(function(r){return r.d.slice(0,7)}).slice(-12).map(function(a){a.l=MES[+a.k.slice(5)-1];return a});
@@ -877,7 +878,7 @@ function estSec(){var sec=S.st.sec,P=S.st.per,rows=periodos(P),cur=rows[rows.len
   h+='<div class="card"><b>Registrado hoy</b>'+(Object.keys(hoy).length?Object.keys(hoy).map(function(k){return rw(esc(k),money(hoy[k]))}).join(''):'<div class="lbl">Todavía no hay gastos nuevos hoy.</div>')+'<button class="btn sm sec" style="margin-top:8px" data-act="tab" data-t="gastos">Registrar un gasto</button></div>';
  }else{
   var sc=serieCompras();
-  h+='<div class="card"><b>Precio de compra por kilo</b>'+Object.keys(sc).map(function(k){var a=sc[k].slice().sort(function(x,y){return x.p-y.p}),lo=a[0],hi=a[a.length-1],ult=sc[k].slice().sort(function(x,y){return x.d<y.d?1:-1})[0];
+  h+='<div class="card"><b>Precio de compra por kilo</b>'+Object.keys(sc).map(function(k){var a=sc[k].slice().sort(function(x,y){return x.p-y.p}),lo=a[0],hi=a[a.length-1],ult=sc[k].slice().sort(function(x,y){return x.d<y.d?1:-1})[0];if(!lo)return '';
    return '<div class="lbl" style="margin:10px 0 2px"><b>'+esc(k)+'</b></div>'+rw('Más barato',f2(lo.p)+' · '+fmtF(lo.d))+rw('Más caro',f2(hi.p)+' · '+fmtF(hi.d))+rw('Última compra',f2(ult.p)+' · '+fmtF(ult.d))}).join('')+'</div>';
  }
  return h}
@@ -1150,7 +1151,7 @@ function vlCorteCard(){var c=S.vlCorte;if(!c||c.rec!=null)return c&&c.rec!=null?
  return '<div class="card good"><b>Corte de venta local</b>'+rw('Vendido',money(c.tot)+' · '+c.n+' ventas')+'<div class="field"><label for="vlcr">Efectivo que recibiste $</label><input id="vlcr" type="number" inputmode="decimal" step="any" min="0" data-bind="vlCorteRec" value="'+esc(S.vlCorteRec)+'"></div><div id="vlcdif">'+difHTML(dif)+'</div><button class="btn sm" style="margin-top:6px" data-act="vlcorterec">Registrar efectivo</button></div>'}
 
 function contRes(){return '<div class="card note"><b>Solo lectura</b><div class="lbl">Puedes ver y filtrar, pero no cambiar nada.</div></div>'+contCostosCard()+estadisticas()}
-function contGas(){var h='<h1>Gastos</h1><div class="card"><b>Gastos de hoy</b>'+rw('Reparto y otros',money(1850+addedG()))+S.gastos.map(function(x){return rw(esc(x.t)+(x.n?' · '+esc(x.n):''),money(x.m))}).join('')+rw('Gastos de cargas',money(cargaTr()))+'</div>';
+function contGas(){var h='<h1>Gastos</h1><div class="card"><b>Gastos de hoy</b>'+gasLista120(iso(TODAY))+'</div>';
  h+='<div class="card"><b>Gastos fijos</b>'+S.fijos.map(function(f){return rw(esc(f.n)+' · '+fijoCuando(f),money(num(f.m))+(fijoPag(f)?' · pagado':' · pendiente'),fijoPag(f)?'':'neg')}).join('')+rw('<b>Total al mes</b>',money(fijoMes()))+'</div>';
  h+='<div class="card"><b>Sueldos pagados</b>'+(S.pagosSueldo.length?S.pagosSueldo.slice().reverse().map(function(x){return rw(esc(chofN(x.ch))+' · '+esc(x.n),money(x.m))}).join(''):'<div class="lbl">Sin pagos.</div>')+(S.adelantos.length?rw('Adelantos',money(sum(S.adelantos,function(x){return x.m}))):'')+'</div>';
  return h}
@@ -2071,7 +2072,7 @@ function salirHTML(){var P=S.salPer||'semana',dd={semana:7,quincena:15,mes:30}[P
 /* ---------- Gastos fáciles ---------- */
 var GTIP=[['Combustible','fuel','#E07B1A'],['Caseta','nav','#2F6DB5'],['Comida o viáticos','gastos','#138A7E'],['Carburo','box','#C99A06'],['Ponchadura o reparación','alerta','#C0392B'],['Estacionamiento','ruta','#55606E'],['Bodega (luz, agua, renta)','bodega','#4A6378'],['Retiro del dueño','personal','#8D6E63'],['Otro','mas','#7B4BB7']];
 function gtCol(t){var g=GTIP.filter(function(x){return t&&String(t).indexOf(x[0].split(' ')[0])===0})[0];return g||['Otro','gastos','#7B4BB7']}
-function gHoy(){return 1850+addedGAll()+cargaTr()}
+function gHoy(){return gasDia120(iso(TODAY)).tot}
 function addedGAll(){return sum(S.gastos,function(g){return g.m})}
 function gPer(desde){return sum(HIST.filter(function(r){return r.d>=desde}),function(r){return r.gt})+gHoy()}
 function gastoRow(x,i,tipo){var g=gtCol(x.t);return '<div data-sw2="'+tipo+':'+i+'" style="display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);touch-action:pan-y;transition:transform .15s,opacity .15s"><span style="width:36px;height:36px;border-radius:10px;background:'+g[2]+';color:#fff;display:flex;align-items:center;justify-content:center;flex:none">'+icon(g[1],18)+'</span><span class="grow"'+(tipo==='g'?' data-act="gedit" data-i="'+i+'" role="button" style="cursor:pointer"':'')+'><b>'+esc(x.t)+'</b>'+(x.n?' · '+esc(x.n):'')+'<br><span class="lbl">'+esc(x.q||'Administrador')+(x.pago?' · '+esc(x.pago):'')+(x.h?' · '+esc(x.h):'')+(x.rev?' · <b class="neg">por revisar</b>':'')+'</span>'+(x.foto?'<img src="'+x.foto+'" alt="Ticket" style="width:60px;height:40px;object-fit:cover;border-radius:6px;display:block;margin-top:4px">':'')+'</span><b>'+money(x.m)+'</b>'+(tipo==='ch'&&!x.rev?'<button class="link" style="font-size:12px" data-act="grevisar" data-i="'+i+'">Revisar</button>':'')+'</div>'}
@@ -2575,20 +2576,20 @@ function vistazo2(cash,cr,nav){var vend=sum(S.log,function(l){return l.total})+s
   +'</div>'+(cash<0?'<div class="neg" style="font-weight:800;margin-top:8px">¡La caja está en negativo! Revísala en Finanzas.</div>':'')+'</div>'}
 function finVis(){return S.finVer&&Date.now()-S.finVer<20000}
 function inicio(){
- var av=avisos(),ing=9800+logCash()+cobAdm(),gas=gHoy()+(S.cierre.sent?0:gchTot()+recTot()),cash=cajaEsp(),pd=provDeb(),pv=sum(pd,function(p){return p.pen}),cr=credTotal();
+ var av=avisos(),ing=ingDia120(iso(TODAY)).tot,gas=gasDia120(iso(TODAY)).tot,cash=cajaEsp(),pd=provDeb(),pv=sum(pd,function(p){return p.pen}),cr=credTotal();
  av=av.filter(function(x){return S.avPos[x]!==iso(TODAY)});
  var h=cierreTop()+arBtnHTML()+precioTop()+cajasTile()+vwUrgCard()+inspAdmCard()+incidHTML()+corrAdmCard()+permsHTML()+porPagarHTML()+fueraHTML()+avisosHTML(av)
   +planHTML()+hoyHTML()+lunesHTML()+vistazo2(cash,cr,av.length);
  if(false){h+='<div class="card" data-act="vercierre" role="button" tabindex="0" style="cursor:pointer;padding:10px 14px"><b>Cierre de '+esc(chofN(S.chofHoy))+' recibido</b><div class="lbl">Toca para verlo</div></div>'}
- S.cierresPrev.forEach(function(x){h+='<div class="card" style="padding:10px 14px"><span class="lbl">Cierre '+x.n+' de '+esc(chofN(S.chofHoy))+' entregado</span></div>'});
+ h+=cierresHoy120HTML();
  h+=metaLinea()+vlCorteCard()+cobrarHoyCard();
  var vis=finVis(),m=function(v){return vis?money(v):'••••••'},F=[['k-caja '+(cash<0?'c-r':'c-g'),'efectivo','efectivo en caja hoy',cash],['k-in c-g','ingresos','ingresos de hoy',ing],['k-out '+(gas>gastoUsual()*1.3?'c-o':'c-n'),'gastos','gastos de hoy',gas],['k-prov '+(pv>0.5?'c-r':'c-g'),'prov','debes a proveedores',pv],['k-fan '+(cr>0.5?'c-o':'c-g'),'cli','te deben los clientes',cr]];
  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><h2 style="font-size:17px;font-weight:800;margin:0 2px">Finanzas</h2><button class="finver" data-act="finver">'+(vis?'🙈 Ocultar':'👁 Mostrar')+'</button></div><div class="fing">'
   +F.map(function(x){return '<button class="fin '+x[0]+'" data-act="finopen" data-k="'+x[1]+'" aria-pressed="'+(vis&&S.finOpen===x[1])+'"><b>'+(x[1]==='efectivo'&&vis&&cash<0?'⚠️ ':'')+m(x[3])+'</b><span>'+x[2]+'</span></button>'}).join('')+'</div>';
  if(vis&&S.finOpen){var k=S.finOpen,b='';
   if(k==='efectivo')b='<b>Efectivo en caja hoy: '+money(cash)+'</b><div class="lbl">Sube cuando recibes el efectivo del chofer al cerrar, con los abonos que registras y con la venta local; baja con los gastos y con lo que pagues en cada carga.</div>'+(conChofer()>0.5?'<div class="lbl" style="margin-top:4px"><b>'+money(conChofer())+'</b> los trae '+esc(chofN(S.chofHoy))+' y todavía no los entrega: no cuentan en la caja.</div>':'');
-  if(k==='ingresos')b='<b>Ingresos</b>'+rw('Hoy',money(ing))+rw('Venta en ruta (cobrado)',money(logCash()))+rw('Venta local',money(sum(S.vlVentas,function(x){return x.tot}))+(S.vlCorte&&S.vlCorte.rec!=null?'':' <span class="lbl">(entra a caja con el corte)</span>'))+rw('Esta semana',money(ingDesde(mondayIso(TODAY))+ing))+rw('Este mes',money(ingDesde(iso(TODAY).slice(0,8)+'01')+ing));
-  if(k==='gastos')b='<b>Gastos</b>'+rw('Hoy',money(gas))+rw('Esta semana',money(7300+addedG()+cargaTr()))+rw('Este mes',money(29800+addedG()+cargaTr()));
+  if(k==='ingresos')b=ingPanel120();
+  if(k==='gastos')b=gasPanel120();
   if(k==='prov')b='<b>Debes a proveedores</b>'+(pd.filter(function(p){return p.pen>0.005}).map(function(p){return filaDeuda('prov',encodeURIComponent(p.n),esc(p.n),'Total '+money(p.tot)+' · abonado '+money(p.ab),p.pen)}).join('')||'<div class="lbl">No debes nada</div>');
   if(k==='cli')b='<b>Te deben los clientes</b>'+(S.cli.filter(function(c){return c.cred>0}).map(function(c){return filaDeuda('cli',String(c.id),esc(c.n),'“'+esc(c.ap)+'”',c.cred)}).join('')||'<div class="lbl">Nadie debe</div>');
   h+='<div class="card">'+b+'</div>'}
@@ -3222,11 +3223,11 @@ function esAdm(c){return c&&c.id===2}
 function esCh(c){return !!c&&(esAdm(c)||!c.puesto||c.puesto==='chofer')}
 function choferesL(){return S.choferes.filter(esCh)}
 function puestoN(c){if(esAdm(c))return 'Administrador';var p=PUESTOS.filter(function(x){return x[0]===(c.puesto||'chofer')})[0];return p?p[1]:'Chofer'}
-function persDemo(s){var D={1:{tel:'228 100 2001',dir:'Calle Hidalgo 14, Banderilla',ing:'2023-03-06',licV:'2027-05-20',r1n:'María Hernández',r1p:'Mamá',r1t:'228 155 3010',r2n:'Pedro Ruiz',r2p:'Compadre',r2t:'228 160 4471',emn:'Lucía Ramos',emp:'Esposa',emt:'228 155 9982'},
+function persDemo(s){var D=window.PN_MODO==='vacio'?{}:{1:{tel:'228 100 2001',dir:'Calle Hidalgo 14, Banderilla',ing:'2023-03-06',licV:'2027-05-20',r1n:'María Hernández',r1p:'Mamá',r1t:'228 155 3010',r2n:'Pedro Ruiz',r2p:'Compadre',r2t:'228 160 4471',emn:'Lucía Ramos',emp:'Esposa',emt:'228 155 9982'},
   3:{tel:'228 100 2003',dir:'Av. Xalapa 220, Banderilla',ing:'2026-09-14',licV:'2026-11-20',r1n:'José Martínez',r1p:'Papá',r1t:'228 171 2290',r2n:'',r2p:'',r2t:'',emn:'',emp:'',emt:''}};
  s.choferes.forEach(function(c){if(c.puesto==null)c.puesto=c.id===2?'admin':'chofer';['tel','dir','ing','licV','ine','r1p','r2p','emn','emp','emt'].forEach(function(k){if(c[k]===undefined)c[k]=(D[c.id]&&D[c.id][k]!=null)?D[c.id][k]:(k==='ine'?null:'')});if(D[c.id])['r1n','r1t','r2n','r2t'].forEach(function(k){if(!c[k])c[k]=D[c.id][k]})});
  /* datos de ejemplo que deben cuadrar entre pantallas */
- if(!s._v38){s._v38=1;
+ if(window.PN_MODO==='vacio')s._v38=1;if(!s._v38){s._v38=1;
 {var id=s.nextCh++;s.choferes.push({id:id,n:'Chava Morales',puesto:'bodega',mes:{ven:0,R:0,M:0,cob:0,cred:0},meta:{R:'',M:''},foto:avatarImg('#F3E6D3','#C68C5A','#3B2A20','#8D6E63',''),lic:null,ine:null,tel:'228 100 2004',dir:'Col. Centro, Banderilla',ing:'2024-08-01',licV:'',r1n:'Rosa Morales',r1p:'Hermana',r1t:'228 140 1188',r2n:'Don Pancho',r2p:'Exjefe',r2t:'228 140 7722',emn:'Rosa Morales',emp:'Hermana',emt:'228 140 1188',sz:{tipo:'semana',monto:'1800',porDia:'',base:'',comC:'',comK:'',dias:0,cv:0,kv:0}})}
   s.pagosSueldo=s.pagosSueldo||[];if(!s.pagosSueldo.some(function(x){return x.ch===3}))s.pagosSueldo.splice(0,0,{ch:3,f:'2026-10-17',m:2600,n:'Semana del 12 al 17 de oct'},{ch:3,f:'2026-10-24',m:2600,n:'Semana del 19 al 24 de oct'});
   (s.vlProd||[]).forEach(function(p){if(p.inv==='R'&&p.p==='9')p.p='13';if(p.inv==='M'&&p.p==='12')p.p='18'});
@@ -3743,7 +3744,7 @@ var _rL4=render;render=function(){_rL4.apply(this,arguments);try{var m=document.
    y al empezar un segundo cierre se perdía el primero. Ahora: el dinero del chofer entra a la caja cuando
    el administrador lo recibe (lo que de verdad le entregó). Mientras tanto se ve aparte: "Con el chofer". */
 function cierresCaja(){return sum(S.cierresPrev||[],function(x){return num(x.rec)})+(S.cierreReg?num(S.cierreReg.rec):0)}
-function cajaBase(){return S.cajaBase!=null?num(S.cajaBase):15290}
+function cajaBase(){return S.cajaBase!=null?num(S.cajaBase):(window.PN_MODO==='vacio'?0:15290)}
 cajaEsp=function(){return aportesTot()-(S.vjEfeOut||0)+(S.vjEfeBack||0)+cajaBase()+cierresCaja()+cobAdm()-addedG()-cargaOut()-provPagTot()-viajeAdel()+sum(S.cargas.filter(function(c){return c.viaje&&c.viaje.liq}),function(c){return c.viaje.liq.rec-c.viaje.efe+c.viaje.fin.pago+c.viaje.fin.gastos})};
 /* lo que trae el chofer y todavía no entrega */
 function conChofer(){return S.cierreReg?0:Math.max(0,logCash()-gchTot()-recTot())}
@@ -5243,7 +5244,7 @@ window.addEventListener('pagehide',guardarYa);
 /* al abrir: si hay algo guardado, se sigue de ahí */
 function rutaVacia(o){return !o||!((o.log||[]).length||(o.salida&&o.salida.ok))}
 function cambioDeDia(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return;S.rutasHist=S.rutasHist||[];var pend=[];
- function archiva(o,ch){if(rutaVacia(o))return true;var env=o.cierre&&o.cierre.sent;S.rutasHist.push({f:viejo,ch:ch,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:!!env});if(!env){pend.push(chofN(ch));return false}return true}
+ function archiva(o,ch){if(rutaVacia(o))return true;var env=o.cierre&&o.cierre.sent;S.rutasHist.push({f:viejo,ch:ch,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:!!env,corte120:o.cierre&&o.cierre.corte||null});if(!env){pend.push(chofN(ch));return false}return true}
  var act=arPack();if(archiva(act,S.chofHoy)){arLoad(chNuevo(+S.chofHoy))}
  Object.keys(S.chSt||{}).forEach(function(id){if(archiva(S.chSt[id],+id))delete S.chSt[id]});
  if(S.arSt&&archiva(S.arSt,S.arSt.chofHoy))S.arSt=null;
@@ -5839,7 +5840,7 @@ function nbArma(u,F,viejo){if(!F||!F.k)return undefined;
 /* ---------- empujar lo local a la nube ---------- */
 function nbW(path,obj,merge){if(!NB.ad)return;NB.pend++;nbIndicador();return NB.ad.set(path,obj,merge!==false).then(function(){NB.pend--;nbIndicador()},function(e){NB.pend--;NB.err=String(e&&e.message||e);console.error('nube',path,e);nbIndicador()})}
 function nbEmpuja(){if(!NB.on||!NB.listo||!NB.ad)return;var DEL=NB.ad.del(),U=nbUnidades();
- U.forEach(function(u){var v;try{v=u.get()}catch(e){return}if(v===undefined)return;var L=nbCodifica(u,v),C=NB.C[u.id]||{},w={},hay=false;if(!L)return;
+ U.forEach(function(u){/* 120 · lo que solo el admin puede guardar: el celular del chofer no lo intenta */if(typeof nbSoloAdm120==='function'&&nbSoloAdm120(u))return;var v;try{v=u.get()}catch(e){return}if(v===undefined)return;var L=nbCodifica(u,v),C=NB.C[u.id]||{},w={},hay=false;if(!L)return;
   if(L.k!==C.k){w.k=L.k;hay=true}
   Object.keys(L).forEach(function(f){if(f==='k')return;if(f==='r'){if(L.r!==C.r){w.r=L.r;hay=true}return}var s=f[0],key=f.slice(2);
    if(s==='c'){var d=num(L[f])-num(C[f]);if(Math.abs(d)>1e-9){w.c=w.c||{};if(key==='')w.c['']=undefined;w.c[key===''?'_':key]=NB.ad.inc(d);hay=true}return}
@@ -10309,7 +10310,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3558,"l3.js"],[3661,"l4.js"],[3739,"l5.js"],[3864,"l6.js"],[3966,"l6b.js"],[4009,"l7.js"],[4142,"l8.js"],[4153,"l9.js"],[4473,"l10.js"],[4533,"l11.js"],[4550,"l12.js"],[4597,"l13.js"],[4743,"l14.js"],[4819,"l15.js"],[4881,"l16.js"],[4990,"l17.js"],[5021,"l18.js"],[5101,"l19.js"],[5171,"l20.js"],[5220,"l21.js"],[5266,"l22.js"],[5464,"l23.js"],[5518,"l24.js"],[5534,"l25.js"],[5565,"l26.js"],[5708,"l27.js"],[5774,"l28.js"],[5906,"l29.js"],[6032,"l30.js"],[6076,"l31.js"],[6112,"l32.js"],[6206,"l33.js"],[6225,"l34.js"],[6285,"l35.js"],[6345,"l36.js"],[6443,"l37.js"],[6464,"l38.js"],[6552,"l39.js"],[6633,"l40.js"],[6757,"l41.js"],[6841,"l42.js"],[6944,"l43.js"],[7046,"l44.js"],[7147,"l45.js"],[7242,"l46.js"],[7310,"l47.js"],[7424,"l48.js"],[7479,"l49.js"],[7515,"l50.js"],[7619,"l51.js"],[7629,"l52.js"],[7772,"l53.js"],[7794,"l54.js"],[7869,"l55.js"],[7898,"l56.js"],[7983,"l57.js"],[8048,"l58.js"],[8175,"l59.js"],[8235,"l60.js"],[8397,"l61.js"],[8454,"l62.js"],[8584,"l63.js"],[8755,"l64.js"],[8787,"l65.js"],[8888,"l66.js"],[8994,"l67.js"],[9021,"l68.js"],[9155,"l69.js"],[9382,"l70.js"],[9604,"l71.js"],[9729,"l72.js"],[9847,"l73.js"],[9923,"l74.js"],[10047,"l75.js"],[10200,"l76.js"],[10303,"l77.js"],[10431,"l78.js"],[10581,"l79.js"],[10689,"l80.js"],[10813,"l81.js"],[10966,"l82.js"],[11219,"l83.js"],[11288,"l84.js"],[11401,"l85.js"],[11462,"tema-rutadia.js"],[11627,"l86.js"],[11687,"l87.js"],[11730,"l88.js"],[11780,"l89.js"],[11829,"l90.js"],[11935,"tema-cobranza.js"],[12082,"tema-pantallas.js"],[12303,"tema-avisos.js"],[12465,"tema-reparte.js"],[12531,"tema-vehiculos.js"],[12675,"tema-notas.js"],[12692,"tema-taras.js"],[12799,"tema-cargarmas.js"],[12838,"tema-cargas.js"],[12872,"tema-cobro.js"],[12908,"tema-horario.js"],[12947,"tema-sueldos.js"],[13089,"tema-ganado.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4744,"l14.js"],[4820,"l15.js"],[4882,"l16.js"],[4991,"l17.js"],[5022,"l18.js"],[5102,"l19.js"],[5172,"l20.js"],[5221,"l21.js"],[5267,"l22.js"],[5465,"l23.js"],[5519,"l24.js"],[5535,"l25.js"],[5566,"l26.js"],[5709,"l27.js"],[5775,"l28.js"],[5907,"l29.js"],[6033,"l30.js"],[6077,"l31.js"],[6113,"l32.js"],[6207,"l33.js"],[6226,"l34.js"],[6286,"l35.js"],[6346,"l36.js"],[6444,"l37.js"],[6465,"l38.js"],[6553,"l39.js"],[6634,"l40.js"],[6758,"l41.js"],[6842,"l42.js"],[6945,"l43.js"],[7047,"l44.js"],[7148,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7425,"l48.js"],[7480,"l49.js"],[7516,"l50.js"],[7620,"l51.js"],[7630,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8049,"l58.js"],[8176,"l59.js"],[8236,"l60.js"],[8398,"l61.js"],[8455,"l62.js"],[8585,"l63.js"],[8756,"l64.js"],[8788,"l65.js"],[8889,"l66.js"],[8995,"l67.js"],[9022,"l68.js"],[9156,"l69.js"],[9383,"l70.js"],[9605,"l71.js"],[9730,"l72.js"],[9848,"l73.js"],[9924,"l74.js"],[10048,"l75.js"],[10201,"l76.js"],[10304,"l77.js"],[10432,"l78.js"],[10582,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11220,"l83.js"],[11289,"l84.js"],[11402,"l85.js"],[11463,"tema-rutadia.js"],[11628,"l86.js"],[11688,"l87.js"],[11731,"l88.js"],[11781,"l89.js"],[11830,"l90.js"],[11936,"tema-cobranza.js"],[12083,"tema-pantallas.js"],[12304,"tema-avisos.js"],[12466,"tema-reparte.js"],[12532,"tema-vehiculos.js"],[12676,"tema-notas.js"],[12693,"tema-taras.js"],[12800,"tema-cargarmas.js"],[12839,"tema-cargas.js"],[12873,"tema-cobro.js"],[12909,"tema-horario.js"],[12948,"tema-sueldos.js"],[13090,"tema-ganado.js"],[13135,"tema-cierres.js"],[13232,"tema-finanzas.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -11506,7 +11507,7 @@ cambioDeDia=function(viejo){var hoy=iso(TODAY),nuevo=!!(viejo&&viejo!==hoy);
  /* 81 · se limpian los cambios de ruta de hace más de 3 días */
  try{var lim=iso(new Date(TODAY.getTime()-3*864e5));['rutaOv81','rq81'].forEach(function(k){var o=S[k];if(o)Object.keys(o).forEach(function(f){if(f<lim)delete o[f]})})}catch(e){}
  /* 82 · al historial se le pega cómo se recibió el cierre */
- try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}
+ try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined&&!e.parcial120){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}
  /* 82 · mes nuevo: los contadores del mes empiezan en 0 */
  try{if(viejo&&String(viejo).slice(0,7)!==hoy.slice(0,7)){(S.cli||[]).forEach(function(c){c.mesR=0;c.mesM=0});S.choferes.forEach(function(c){if(c.mes)c.mes={ven:0,R:0,M:0,cob:0,cred:0}})}}catch(e){}
  return r};
@@ -11528,7 +11529,7 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
  var sinSalir=!env&&!salio87(o),rv=rutaVacia,guardo95=false;
  /* 95 · entregó sin haber iniciado ruta: lo que traía se guarda para recibirlo */
  if(sinSalir){try{guardo95=atrasGuarda93(o,S.chofHoy,f,'sinSalir')}catch(e){}}
- if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
+ if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy&&!x.parcial120}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
    if(!guardo95)(S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' tenía '+o.log.length+' entrega'+(o.log.length===1?'':'s')+' '+del80(f)+' sin haber iniciado ruta ni mandado cierre: cuádralo con él.')}}catch(e){}
   rutaVacia=function(x){return !salio87(x)}}   /* mientras se renueva, "vacía" = "no salió" */
  try{
@@ -11537,8 +11538,8 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
   var rec={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length;
   /* salió y no ha mandado el cierre: se bloquea con la pantalla "No mandaste tu cierre" */
   if(!env&&!rutaVacia(o)&&!sinEnt95){if(v!=='antes')S.dia80=v;return false}
-  S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy})[0];
-  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
+  S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy&&!x.parcial120})[0];/* 120 · los cierres anteriores del día (parcial120) no cuentan como "ya guardada" */
+  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env,corte120:o.cierre&&o.cierre.corte||null});
   /* 93 · si al cambiar de día ya se había guardado "sin enviar" y luego SÍ mandó su cierre, se actualiza (antes se quedaba "no enviado") */
   else if(ya&&env&&!ya.enviado){ya.log=o.log;ya.res=o.cierre&&o.cierre.res||null;ya.enviado=true;ya.tarde93=1;if(ya.recep82===undefined||ya.recep82===null){ya.cierreReg82=rec.reg||null;ya.recep82=rec.recep||null}}
   /* 82 · al historial se le pega cómo se recibió el cierre */
@@ -11597,7 +11598,7 @@ function atrasAbre93(k){var e=(S.atras93||{})[k];if(!e||e.hecho||S.role!=='admin
    (S.recs||[]).forEach(function(x){S.gastos.push({t:'Combustible de reparto',m:x.total,n:chofN(S.chofHoy)+' · '+x.tipo+' '+x.litros+' L',tmp:1})});(S.gch||[]).forEach(function(x){S.gastos.push({t:'Gasto de ruta',m:x.m,n:chofN(S.chofHoy)+' · '+x.tipo+(x.nota?' · '+x.nota:''),tmp:1})});
    S.inv.reparto=0;S.inv.repartoKg=0}catch(er){console.error('95 abre',er)}}}
 function atrasSale93(recibido){var x=S.atr93;if(!x)return;var e=(S.atras93||{})[x.k];
- if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id})[0];var pk=arPack();
+ if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id&&!h.parcial120})[0];var pk=arPack();
    if(H){H.log=pk.log;H.res=pk.cierre&&pk.cierre.res||H.res;H.enviado=true;H.cierreReg82=S.cierreReg||null;H.recep82=S.recep||null;H.recibido94=1}
    else{S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:e.f,ch:+e.id,log:pk.log,res:pk.cierre&&pk.cierre.res||null,enviado:true,cierreReg82:S.cierreReg||null,recep82:S.recep||null,recibido94:1})}
    S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Recibió el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)})}catch(er){}
@@ -12983,7 +12984,7 @@ function dias118(c,ini,fin){var r={prog:0,fal:[],vac:[],tr:0};if(!ini||!fin||ini
 function diaSz118(c){var z=c.sz||{};return z.tipo==='semana'?num(z.monto)/6:(z.tipo==='base'?num(z.base)/6:(z.tipo==='dia'?num(z.porDia):0))}
 function sdLey118(c){var z=c.sz||{};return z.tipo==='semana'?num(z.monto)/7:(z.tipo==='base'?num(z.base)/7:(z.tipo==='dia'?num(z.porDia):0))}
 function logsPer118(c,ini,hasta){var L=[],hoy=iso(TODAY);if(!ini||!hasta||ini>hasta)return L;
- (S.rutasHist||[]).forEach(function(x){if(+x.ch===+c.id&&x.f>=ini&&x.f<=hasta&&x.f!==hoy)L=L.concat(x.log||[])});
+ (S.rutasHist||[]).forEach(function(x){if(+x.ch===+c.id&&x.f>=ini&&x.f<=hasta&&(x.f!==hoy||x.parcial120))L=L.concat(x.log||[])/* 120 · los cierres anteriores de hoy también cuentan */});
  if(hoy>=ini&&hoy<=hasta){var lg;try{lg=nbRGet(c.id,'log')}catch(e){lg=null}if(!lg&&String(S.chofHoy)===String(c.id))lg=S.log;L=L.concat(lg||[])}return L}
 szCalc=function(c){var z=c.sz||{},P=periodo118(c),vac=P.ini>P.hasta,D=dias118(c,P.ini,P.hasta),r=diaSz118(c),nada=z.tipo==='ninguno';
  var L=nada?[]:logsPer118(c,P.ini,P.hasta),cv=sum(L,function(l){return num(l.R)}),kv=sum(L,function(l){return num(l.M)}),cob=r2(sum(L,function(l){return num(l.pago)+num(l.abono)}));
@@ -13130,6 +13131,154 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(b.dataset&&b.dataset.act==='gan117x'){S.gan117det=false;ovPon70('gan117ov','');return}
  if(S.gan117min){S.gan117min=false;render();return}
  S.gan117det=true;ovPon70('gan117ov',gan117Det())},true);
+
+//@@capa tema-cierres.js
+/* ===================== TEMA · Cierres: varios en el mismo día, sin borrar nada (nació como tema, 18 nov · punto 120) =====================
+   Ricardo hizo dos cierres el mismo día y el primero desapareció de Estadísticas e Ingresos. Era grave:
+   - "Empezar otro cierre" (botón "seguir" con el cierre ya recibido) vaciaba las entregas del cierre anterior SIN guardarlas.
+   - Estadísticas guardaba UNA ruta por chofer por día.
+   - "Efectivo en caja" solo contaba el cierre recibido del chofer seleccionado y, al cambiar de día, ese efectivo dejaba de contar.
+   Ahora:
+   - Cada cierre (1, 2, 3, 4…) se guarda completo en el historial (rutasHist con parcial120 y n) antes de empezar el siguiente.
+   - rutasDia82 regresa TODOS los cierres del día (los guardados + la ruta abierta), sin repetir.
+   - cierresCaja cuenta TODO el efectivo recibido: los cierres anteriores, los de todas las rutas abiertas y los de días pasados.
+   - "📋 Historial de cierres": cada cierre por día, chofer y número, con su corte y sus entregas.
+   - Los cierres que se habían perdido (quedó su resumen en cierresPrev) se recuperan: el admin confirma de qué chofer y día son.
+   Si se cambia algo de esto, se cambia AQUÍ (y en las líneas 120 de tema-rutadia.js y l21.js).
+   ============================================================================================ */
+function hoy120(){return iso(TODAY)}
+/* la ruta abierta de un chofer, donde esté (en pantalla, en la nube o la del admin guardada aparte) */
+function rutaViva120(id){id=+id;if(S.chofHoy!=null&&+S.chofHoy===id&&!S.atr93)return S;/* la ruta del admin que reparte: la copia de su celular (arSt) es la buena */if(S.arSt&&+(S.arSt.chofHoy==null?ADM85:S.arSt.chofHoy)===id)return S.arSt;var o=(S.chSt||{})[id];return o||null}
+function rutaIds120(){var L=[];var pon=function(i){i=+i;if(!isNaN(i)&&L.indexOf(i)<0)L.push(i)};try{nbRutaIds().forEach(pon)}catch(e){}Object.keys(S.chSt||{}).forEach(pon);if(S.chofHoy!=null)pon(S.chofHoy);if(S.arSt)pon(S.arSt.chofHoy==null?ADM85:S.arSt.chofHoy);return L}
+function partesDe120(f,ch){return (S.rutasHist||[]).filter(function(e){return e&&e.parcial120&&e.f===f&&+e.ch===+ch})}
+/* todos los cierres de un día: guardados (cada parte y el final) + la ruta abierta; sin repetir */
+function rutasDia120(d){var hoy=hoy120(),o={},ord=[];var pon=function(k,x){if(!o[k])ord.push(k);o[k]=x};
+ (S.rutasHist||[]).forEach(function(e){if(!e||e.f!==d)return;var x={ch:+e.ch,log:e.log||[],res:e.res,sent:!!e.enviado,reg:e.cierreReg82,recep:e.recep82,arch:1,corte:e.corte120||null,n:e.n120||0,parcial:!!e.parcial120,resc:!!e.rescatado120,e:e};
+  if(e.parcial120){pon(e.ch+'|p'+e.n120+'|'+(e.id120||''),x);return}
+  var k=e.ch+'|f',a=o[k];if(!a||(!a.reg&&e.cierreReg82)||(!a.sent&&e.enviado))pon(k,x)});
+ rutaIds120().forEach(function(id){var r=rutaViva120(id);if(!r||rutaVacia(r))return;var f=r.rutaDia80||hoy;if(f!==d)return;
+  pon(id+'|f',{ch:+id,log:r.log||[],res:r.cierre&&r.cierre.res,sent:!!(r.cierre&&r.cierre.sent),reg:r.cierreReg,recep:r.recep,r:r,corte:r.cierre&&r.cierre.corte||null,vivo:1})});
+ var L=ord.map(function(k){return o[k]});
+ /* número de cierre: las partes por su número; el final después de las partes */
+ L.forEach(function(x){if(!x.parcial)x.n=partesDe120(d,x.ch).length+1});
+ return L.sort(function(a,b){return a.ch-b.ch||a.n-b.n})}
+rutasDia82=function(d){return rutasDia120(d)};
+/* lo cobrado en una parte de ruta (contado + abonos), sin lo anulado */
+function cobPart120(x){return r2(sum((x.log||[]).filter(function(l){return l&&!l.anul}),function(l){return num(l.pago)+num(l.abono)}))}
+function ventaPart120(x){return r2(sum((x.log||[]).filter(function(l){return l&&!l.anul}),function(l){return num(l.total)}))}
+
+/* ---------- "Empezar otro cierre": antes de vaciar, el cierre se guarda completo ---------- */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="seguir"]');if(!b||!S.cierreReg||!S.cierre||!S.cierre.sent)return;
+ try{var f=S.rutaDia80||hoy120(),ch=+S.chofHoy,n=partesDe120(f,ch).length+1,id=Date.now().toString(36)+'-'+ch,c=S.cierre;
+  S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:f,ch:ch,n120:n,parcial120:1,id120:id,log:JSON.parse(JSON.stringify(S.log||[])),res:c.res||null,enviado:true,corte120:c.corte||null,
+   cierreReg82:S.cierreReg?JSON.parse(JSON.stringify(S.cierreReg)):null,recep82:S.recep?JSON.parse(JSON.stringify(S.recep)):null,h120:(c.corte&&c.corte.h)||hhmm()});
+  var n0=(S.cierresPrev||[]).length;setTimeout(function(){var L=S.cierresPrev||[];if(L.length>n0){var x=L[L.length-1];x.ch=ch;x.f=f;x.n120=n;x.id120=id;x.corte120=c.corte||null}},0)}catch(er){console.error('120 seguir',er)}},true);
+
+/* ---------- el efectivo recibido de TODOS los cierres (antes: solo el del chofer en pantalla, y se perdía al cambiar de día) ---------- */
+cierresCaja=function(){var t=sum(S.cierresPrev||[],function(x){return num(x.rec)}),vivos={};
+ rutaIds120().forEach(function(id){var r=rutaViva120(id);if(!r)return;if(r.cierreReg)t+=num(r.cierreReg.rec);vivos[id+'|'+(r.rutaDia80||hoy120())]=1});
+ /* días pasados: el cierre final de cada chofer (las partes ya están en cierresPrev; los atrasados también) */
+ var vis={};(S.rutasHist||[]).forEach(function(e){if(!e||e.parcial120||e.recibido94||!e.cierreReg82)return;var k=e.ch+'|'+e.f;if(vis[k]||vivos[k])return;vis[k]=1;t+=num(e.cierreReg82.rec)});
+ return r2(t)};
+
+/* ---------- los cierres que se perdieron antes del arreglo: se recuperan de su resumen ---------- */
+function perdidos120(){return (S.cierresPrev||[]).filter(function(x){return x&&x.ch==null&&!x.atras94&&x.r120!=='ok'})}
+function rescata120(i,ch,f){var x=(S.cierresPrev||[])[i];if(!x||x.ch!=null)return;var r=x.res||{},n=partesDe120(f,ch).length+1,id='r'+Date.now().toString(36)+'-'+i;
+ var lin={R:num(r.R),M:num(r.M),pr:num(r.R)?r2(num(r.vR)/num(r.R)):0,pm:num(r.M)?r2(num(r.vM)/num(r.M)):0,total:num(r.total),pago:r2(num(r.total)-num(r.cred)),abono:num(r.ab),c:null,rescate120:1};
+ S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:f,ch:+ch,n120:n,parcial120:1,rescatado120:1,id120:id,log:[lin],res:x.res||null,enviado:true,corte120:null,cierreReg82:{rec:num(x.rec)},recep82:null});
+ x.ch=+ch;x.f=f;x.n120=n;x.id120=id;x.r120='ok';S.hist.push({t:fmtF(hoy120())+' '+hhmm(),q:quien(),x:'Recuperó el cierre '+n+' de '+chofN(+ch)+' del '+fmtF(f)+': vendió '+money(num(r.total))+', recibió '+money(num(x.rec))})}
+function perdidosHTML120(){if(S.role!=='admin')return '';var L=perdidos120();if(!L.length)return '';var all=S.cierresPrev,CH=S.choferes.filter(function(c){return esCh(c)});
+ return '<div class="card alert" data-x="perd120" style="padding:12px 14px;border:3px solid var(--danger)"><div style="font-size:18px;font-weight:900">⚠️ Cierres que no salían en las cuentas</div><div class="lbl">Se habían quitado de Estadísticas al empezar otro cierre. Su resumen sí quedó guardado. Dime de qué chofer y qué día son y se suman otra vez.</div>'
+  +L.map(function(x){var i=all.indexOf(x),r=x.res||{};return '<div style="border-top:1px solid var(--line);padding:10px 0">'+rw('Vendió',money(num(r.total)))+rw('Debía entregar',money(num(r.efectivo)))+rw('Recibiste',money(num(x.rec)))+(num(r.R)||num(r.M)?rw('Cajas y kilos',num(r.R)+' cajas · '+num(r.M)+' kg'):'')
+   +'<div class="field"><label for="pch120_'+i+'">Chofer</label><select id="pch120_'+i+'">'+CH.map(function(c){return '<option value="'+c.id+'"'+(+c.id===ADM85?' selected':'')+'>'+esc(c.n)+'</option>'}).join('')+'</select></div>'
+   +'<div class="field"><label for="pf120_'+i+'">Día</label><input id="pf120_'+i+'" type="date" max="'+hoy120()+'" value="'+hoy120()+'"></div>'
+   +'<button class="btn" style="min-height:52px;margin-top:6px" data-act="resc120" data-i="'+i+'">Sumarlo a las cuentas</button></div>'}).join('')+'</div>'}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resc120"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var i=+b.dataset.i,ch=(document.getElementById('pch120_'+i)||{}).value,f=(document.getElementById('pf120_'+i)||{}).value;
+ if(!ch||!/^\d{4}-\d\d-\d\d$/.test(f||'')){toast('Escoge el chofer y el día');return}rescata120(i,+ch,f);toast('Listo: el cierre ya se suma en '+fmtF(f));render()},true);
+
+/* ---------- Inicio: los cierres de hoy (antes "Cierre N de [el chofer en pantalla] entregado", para siempre) ---------- */
+function cierresHoy120HTML(){if(S.role!=='admin')return '';var L=rutasDia120(hoy120()).filter(function(x){return x.sent||x.parcial});var h=perdidosHTML120();
+ if(!L.length)return h;var tot=sum(L,function(x){return cobPart120(x)});
+ return h+'<div class="card" data-x="cie120" role="button" tabindex="0" data-act="cie120ver" style="padding:12px 14px;cursor:pointer"><div style="display:flex;justify-content:space-between;gap:8px"><b>📋 Cierres de hoy ('+L.length+')</b><b>'+money(tot)+'</b></div><div class="lbl">'
+  +L.map(function(x){return esc(chofN(x.ch))+' · '+x.n+(x.resc?' (recuperado)':'')}).join(' · ')+' · toca para ver el detalle</div></div>'}
+
+/* ---------- 📋 Historial de cierres ---------- */
+function cie120Dia(){var d=S.cie120d;return /^\d{4}-\d\d-\d\d$/.test(d||'')?d:hoy120()}
+function cie120Card(x){var r=x.res||{},c=x.corte||{},rec=x.reg&&x.reg.rec!=null?num(x.reg.rec):null,deb=c.deb!=null?num(c.deb):num(r.efectivo),ent=c.ent!=null?num(c.ent):null,est=x.vivo&&!x.sent?'Ruta en curso':(x.sent?(rec!=null?'Recibido':'Enviado, falta recibir'):'Sin cierre');
+ var L=(x.log||[]).filter(function(l){return l&&!l.anul}),k='cie120_'+x.ch+'_'+x.n;
+ return '<div class="card" style="padding:12px 14px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><b style="font-size:17px">'+esc(chofN(x.ch))+' · Cierre '+x.n+'</b><span class="lbl">'+esc(c.h||(x.e&&x.e.h120)||'')+'</span></div>'
+  +'<div class="lbl" style="margin-bottom:4px">'+est+(x.resc?' · recuperado de su resumen':'')+'</div>'
+  +rw('Vendió',money(x.resc?num(r.total):ventaPart120(x)))+rw('Cobrado (contado y abonos)',money(cobPart120(x)))+(num(r.cred)?rw('Quedó a crédito',money(num(r.cred))):'')
+  +rw('Debía entregar',money(deb))+(ent!=null?rw('Entregó',money(ent)):'')+(ent!=null&&Math.abs(ent-deb)>=0.5?rw(ent<deb?'Faltante':'Sobrante',money(Math.abs(ent-deb)),'neg'):'')
+  +(rec!=null?rw('Recibiste',money(rec)):'')+(c.v?rw('Código de verificación','<b>'+esc(c.v)+'</b>'):'')
+  +(L.length&&!x.resc?'<details data-k="'+k+'"'+(S.dOpen[k]?' open':'')+' style="margin-top:6px"><summary><b>Entregas ('+L.length+')</b></summary>'+L.map(function(l){var cl0=cl(l.c);return '<div class="row" style="align-items:flex-start"><div><div>'+esc(cl0?cl0.n:'Cliente')+'</div><div class="lbl">'+(num(l.R)?num(l.R)+' cajas':'')+(num(l.R)&&num(l.M)?' · ':'')+(num(l.M)?num(l.M)+' kg':'')+(num(l.total)-num(l.pago)>0.005?' · a crédito '+money(num(l.total)-num(l.pago)):'')+(num(l.abono)?' · abonó '+money(num(l.abono)):'')+'</div></div><b>'+money(num(l.total))+'</b></div>'}).join('')+'</details>'
+   :(x.resc?'<div class="lbl" style="margin-top:6px">El detalle por cliente de este cierre se borró antes del arreglo; los saldos de los clientes sí quedaron bien.</div>':''))+'</div>'}
+function cierres120(){var d=cie120Dia(),hoy=hoy120(),L=rutasDia120(d),ay=addD120(hoy,-1);
+ var h='<h1>📋 Historial de cierres</h1><div class="chips" role="group" aria-label="Día" style="margin:6px 0;flex-wrap:wrap"><button data-act="cie120d" data-v="'+hoy+'" aria-pressed="'+(d===hoy)+'">Hoy</button><button data-act="cie120d" data-v="'+ay+'" aria-pressed="'+(d===ay)+'">Ayer</button></div>'
+  +'<div class="field"><label for="cie120f">Otro día</label><input id="cie120f" type="date" max="'+hoy+'" value="'+d+'" data-cie120f="1"></div>'+perdidosHTML120();
+ if(!L.length)return h+'<div class="card"><div class="lbl">No hay cierres el '+fmtF(d)+'.</div></div>';
+ var cob=sum(L,cobPart120),rec=sum(L,function(x){return x.reg&&x.reg.rec!=null?num(x.reg.rec):0});
+ h+='<div class="card" style="padding:12px 14px"><b>'+fmtF(d)+'</b>'+rw('Cierres',String(L.length))+rw('Cobrado en ruta',money(cob))+rw('Efectivo recibido',money(rec))+'</div>';
+ return h+L.map(cie120Card).join('')}
+function addD120(s,n){var d=dOf(s);d.setDate(d.getDate()+n);return iso(d)}
+/* VIEWS se arma en la base DESPUÉS de las capas: se agrega al dibujar */
+var _r120v=render;render=function(){try{if(typeof VIEWS!=='undefined'&&!VIEWS.cierres120)VIEWS.cierres120=cierres120}catch(e){}return _r120v.apply(this,arguments)};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cie120ver"],[data-act="cie120d"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
+ if(b.dataset.act==='cie120d')S.cie120d=b.dataset.v;else S.cie120d=hoy120();S.tab.admin='cierres120';render();window.scrollTo(0,0)},true);
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.cie120f)return;if(/^\d{4}-\d\d-\d\d$/.test(t.value||'')){S.cie120d=t.value;render()}},true);
+/* en "Más", después de Estadísticas */
+if(typeof mas92==='function'){var _mas120=mas92;mas92=function(){var h=_mas120.apply(this,arguments);try{var bt='<button data-act="cie120ver" data-x="mas92-cierres"><span class="ic92">📋</span>Historial de cierres<small>cada cierre de cada chofer, día por día</small></button>',k=h.indexOf('data-x="mas92-bienes"');var i=k>-1?h.lastIndexOf('<button',k):-1;if(i>-1)h=h.slice(0,i)+bt+h.slice(i)}catch(er){}return h}}
+
+//@@capa tema-finanzas.js
+/* ===================== TEMA · Finanzas de verdad: nada de la demo (nació como tema, 18 nov · punto 120) =====================
+   En la versión real se habían quedado números fijos de la demo dentro de las cuentas:
+   ingresos de hoy +$9,800 (también en la semana y el mes), gastos de hoy +$1,850, gastos de la semana +$7,300 y del mes +$29,800,
+   y la verificación siempre $493. Además "ingresos de hoy" solo veía la ruta abierta del celular del admin y los abonos de siempre.
+   Ahora todo sale de lo que se registra, por día:
+   - Ingresos (dinero que entró) = lo cobrado en TODAS las rutas del día (cada chofer y cada cierre: contado + abonos)
+     + abonos cobrados en bodega (S.cobros con fecha) + venta local del día.
+   - Gastos = los gastos del día (S.gastos con fecha; sin "Retiro del dueño") + lo que los choferes gastaron en su ruta y no han cerrado.
+   - Semana (desde el lunes) y mes: la suma de cada día.
+   También: el celular del chofer ya no intenta cambiar los Ajustes (la nube no lo deja y salía "Missing or insufficient permissions").
+   Si se cambia algo de esto, se cambia AQUÍ y en las líneas 120 de ql.py.
+   ============================================================================================ */
+function d120(d){return /^\d{4}-\d\d-\d\d$/.test(String(d||''))}
+/* los abonos cobrados en bodega llevan fecha desde hoy (los de antes no tenían; quedan "sin fecha") */
+function cobFechas120(){if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var h=iso(TODAY),v1=!S.f120ini;(S.cobros||[]).forEach(function(x){if(x&&!x.f)x.f=v1?'?':h});if(v1)S.f120ini=h}
+function ingDia120(d){var P=[],ruta=0;try{rutasDia120(d).forEach(function(x){var m=cobPart120(x);if(m>0.005||x.sent||x.parcial)P.push({ch:x.ch,n:x.n,m:m,resc:x.resc});ruta+=m})}catch(e){console.error('ing120',e)}
+ var bod=r2(sum((S.cobros||[]).filter(function(x){return x&&x.f===d&&+x.c!==0&&x.n!=='viaje'&&x.n!=='Venta local'}),function(x){return num(x.m)})),
+  loc=r2(sum((S.vlVentas||[]).filter(function(v){return v&&v.f82===d}),function(v){return num(v.tot)}));
+ ruta=r2(ruta);return {d:d,ruta:ruta,partes:P,bod:bod,loc:loc,tot:r2(ruta+bod+loc)}}
+function gasDia120(d){var G=(S.gastos||[]).filter(function(g){return g&&(g.f||g.f82)===d&&!/^Retiro del due/i.test(String(g.t||''))}),t=sum(G,function(g){return num(g.m)}),ab=0;
+ /* lo que gastan los choferes en su ruta y todavía no cierran (al cerrar pasa a S.gastos) */
+ if(d===iso(TODAY)){try{rutaIds120().forEach(function(id){var r=rutaViva120(id);if(!r||(r.cierre&&r.cierre.sent)||(r.rutaDia80&&r.rutaDia80!==d))return;ab+=sum(r.gch||[],function(g){return num(g.m)})+sum(r.recs||[],function(x){return num(x.total)})})}catch(e){}}
+ return {d:d,G:G,abiertas:r2(ab),tot:r2(t+ab)}}
+function diasDesde120(d0){var L=[],h=iso(TODAY),d=d0,i=0;while(d<=h&&i<400){L.push(d);var x=dOf(d);x.setDate(x.getDate()+1);d=iso(x);i++}return L}
+function sumaDias120(f,d0){return r2(sum(diasDesde120(d0),function(d){return f(d).tot}))}
+function ingPanel120(){var hoy=iso(TODAY),k=ingDia120(hoy);
+ return '<b>Ingresos</b><div class="lbl">El dinero que entró: lo cobrado en las rutas (contado y abonos), los abonos en bodega y la venta local.</div>'
+  +rw('<b>Hoy</b>','<b>'+money(k.tot)+'</b>')
+  +k.partes.map(function(p){return rw('&nbsp;&nbsp;'+esc(chofN(p.ch))+' · cierre '+p.n+(p.resc?' (recuperado)':''),money(p.m))}).join('')
+  +(k.partes.length?'':rw('&nbsp;&nbsp;Cobrado en ruta',money(0)))
+  +rw('&nbsp;&nbsp;Abonos cobrados en bodega',money(k.bod))+rw('&nbsp;&nbsp;Venta local',money(k.loc))
+  +rw('Esta semana (desde el lunes)',money(sumaDias120(ingDia120,mondayIso(TODAY))))+rw('Este mes',money(sumaDias120(ingDia120,hoy.slice(0,8)+'01')))
+  +'<button class="btn sm sec" style="margin-top:8px" data-act="cie120ver">📋 Ver los cierres de hoy</button>'}
+function gasPanel120(){var hoy=iso(TODAY),k=gasDia120(hoy);
+ return '<b>Gastos</b>'+rw('<b>Hoy</b>','<b>'+money(k.tot)+'</b>')+gasFilas120(k)
+  +rw('Esta semana (desde el lunes)',money(sumaDias120(gasDia120,mondayIso(TODAY))))+rw('Este mes',money(sumaDias120(gasDia120,hoy.slice(0,8)+'01')))}
+function gasFilas120(k){return k.G.map(function(g){return rw('&nbsp;&nbsp;'+esc(g.t||'Gasto')+(g.n?' · '+esc(g.n):''),money(num(g.m)))}).join('')+(k.abiertas?rw('&nbsp;&nbsp;Gastos de ruta sin cerrar',money(k.abiertas)):'')+(!k.G.length&&!k.abiertas?'<div class="lbl">Sin gastos.</div>':'')}
+function gasLista120(d){var k=gasDia120(d);return gasFilas120(k)+rw('<b>Total</b>','<b>'+money(k.tot)+'</b>')}
+/* verificación: lo que dice el vehículo (lo que pagas al año) o se pregunta; antes siempre $493 */
+function verifCosto120(v){var a=num(v&&v.anual&&v.anual.verif);if(a>0)return a;var r=null;try{r=prompt('¿Cuánto costó la verificación de '+(v?v.n:'')+'? $','')}catch(e){r=null}if(r==null){toast('Verificación registrada sin gasto');return null}var m=num(String(r).replace(/[^\d.]/g,''));return m>0?m:null}
+var _r120f=render;render=function(){try{cobFechas120()}catch(e){}return _r120f.apply(this,arguments)};
+
+/* ---------- el celular del chofer ya no cambia los Ajustes ---------- */
+/* crCfg() rellenaba en S.cfg los límites vacíos (y la nube rechazaba el cambio): en un celular que no es del admin regresa una copia */
+var _crCfg120=crCfg;crCfg=function(){if(S.role==='admin'||S.role==='cont')return _crCfg120.apply(this,arguments);var c=S.cfg||{},o={};Object.keys(c).forEach(function(k){o[k]=c[k]});Object.keys(CR_DEF).forEach(function(k){if(o[k]==null||o[k]==='')o[k]=CR_DEF[k]});return o};
+if(typeof crCfg2==='function'){var _crCfg2120=crCfg2;crCfg2=function(){if(S.role==='admin'||S.role==='cont')return _crCfg2120.apply(this,arguments);var o=crCfg();if(o.mayBaja==null||o.mayBaja==='')o.mayBaja='30';return o}}
+/* lo que solo el administrador puede guardar en la nube (firestore.rules): el celular del chofer no lo intenta */
+var SOLO_ADM120=['precio','cfg','pagosSueldo','adelantos','bonos','fijos','metaMes','mesCerr','reglas','vehAsig','admins','bods','mayP','mayMin','cajaBase','aportes','porPagar','pagoPide','enc','vac','bienes','fijosPag','cliBase','vacPlan','fac76'];
+function nbSoloAdm120(u){try{if(!u||u.ruta!=null||SOLO_ADM120.indexOf(u.k)<0)return false;var p=NB.perfil||{};if(p.rol==='admin'||p.rol==='cont')return false;return !(num(p.encHasta)>Date.now())}catch(e){return false}}
 
 
 /* ---------- Estructura ---------- */
@@ -13362,7 +13511,7 @@ document.addEventListener('click',function(e){
  else if(a==='gxdel'){S.gch.splice(+D.i,1);render()}
  else if(a==='seguir'){var cr9=S.cierre,rr9=cr9.res;
   if(!S.cierreReg){S.inv.maduras-=Math.max(0,rr9.reg);S.inv.kgMaduro=r2(S.inv.kgMaduro-Math.max(0,rr9.regK));S.inv.reparto=Math.max(0,rr9.reg);S.inv.repartoKg=Math.max(0,rr9.regK);S.inv.vacias-=rr9.V;S.gastos=S.gastos.filter(function(g){return !g.tmp});if(rr9.fuel&&rr9.fuel.hist)vehHoy().hist.pop();cr9.sent=false;cr9.res=null;S.avPrecio.push(chofN(S.chofHoy)+' reabrió su cierre para seguir trabajando');toast('Se reabrió tu cierre. Al terminar lo vuelves a enviar')}
-  else{S.cierresPrev.push({n:S.cierresPrev.length+1,res:rr9,rec:S.cierreReg.rec});S.gastos.forEach(function(g){delete g.tmp});S.log=[];S.recs=[];S.gch=[];S.extras=[];S.cierre={odo:num(cr9.odo)+40,tank:cr9.tank,tankIni:cr9.tank,sent:false,odoIni:num(cr9.odo),salioR:0,salioM:0,res:null};S.cierreReg=null;S.cierreRec='';S.avPrecio.push(chofN(S.chofHoy)+' empezó un segundo cierre');toast('Empiezas un segundo cierre. Carga lo que vas a llevar')}
+  else{S.cierresPrev.push({n:S.cierresPrev.length+1,res:rr9,rec:S.cierreReg.rec});S.gastos.forEach(function(g){delete g.tmp});S.log=[];S.recs=[];S.gch=[];S.extras=[];S.cierre={odo:num(cr9.odo)+40,tank:cr9.tank,tankIni:cr9.tank,sent:false,odoIni:num(cr9.odo),salioR:0,salioM:0,res:null};S.cierreReg=null;S.cierreRec='';var nC120=partesDe120(S.rutaDia80||iso(TODAY),+S.chofHoy).length+1;S.avPrecio.push(chofN(S.chofHoy)+' empezó su cierre '+nC120+' de hoy');toast('Empiezas tu cierre '+nC120+'. Carga lo que vas a llevar')}
   if(D.k==='carga')S.dOpen.extra=true;render();window.scrollTo(0,0)}
  else if(a==='notawa'){var nn=S.nota;if(!nn)return;nn.img=notaImg(nn);var ok2=false;try{var b64=nn.img.split(',')[1],bin=atob(b64),arr=new Uint8Array(bin.length);for(var bi=0;bi<bin.length;bi++)arr[bi]=bin.charCodeAt(bi);var fl=new File([arr],'nota-'+nn.folio+'.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[fl]})){navigator.share({files:[fl],title:'Nota de remisión'}).catch(function(){});ok2=true}}catch(e){}
   if(!ok2){nn.waFb=true;render()}}
@@ -13578,7 +13727,7 @@ document.addEventListener('click',function(e){
  else if(a==='defsale'){S.vw.defOk=true;S.modal=null;S.avPrecio.push('Sale con DEF bajo: '+(vehById(S.vw.veh)||{}).n+' ('+chofN(S.vw.quien)+')');render();var bd=document.querySelector('button[data-act="vwnext"]');if(bd)bd.click()}
  else if(a==='defpuse'){S.vw.defPuesto=true;S.vw.def=4;toast('Listo. Al llegar anota cuántos cuadritos quedaron.');render()}
  else if(a==='defnohay'){S.avPrecio.push('No hay DEF donde cargó '+chofN(S.vw.quien)+'; el camión sigue con DEF bajo');toast('Se le avisó al administrador. Te lo recuerdo en la siguiente carga.');render()}
- else if(a==='verok'){var vo=vehById(+D.id);vo.verUlt=iso(TODAY);S.gastos.push({t:'Verificación',m:493,n:vo.n,f:iso(TODAY),h:hhmm(),q:quien(),pago:'Efectivo de caja',caja:true});toast('Verificación registrada')}
+ else if(a==='verok'){var vo=vehById(+D.id);vo.verUlt=iso(TODAY);var vm120=verifCosto120(vo);if(vm120==null)return;S.gastos.push({t:'Verificación',m:vm120,n:vo.n,f:iso(TODAY),h:hhmm(),q:quien(),pago:'Efectivo de caja',caja:true});toast('Verificación registrada')}
  else if(a==='vfdef'){S.vf.usaDef=D.v;render()}
  else if(a==='tema'){S.cfg.tema=D.v;render()}
  else if(a==='simmodo'){var sm=S.sim;sm.modo=D.v;sm.eng='0';if(D.v==='vender')sm.nuevo='0';else if(!num(sm.nuevo))sm.nuevo='525000';if(D.v==='comprar')sm.vid='';sm.paso=D.p?+D.p:1;render()}

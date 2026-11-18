@@ -44,7 +44,7 @@ cambioDeDia=function(viejo){var hoy=iso(TODAY),nuevo=!!(viejo&&viejo!==hoy);
  /* 81 · se limpian los cambios de ruta de hace más de 3 días */
  try{var lim=iso(new Date(TODAY.getTime()-3*864e5));['rutaOv81','rq81'].forEach(function(k){var o=S[k];if(o)Object.keys(o).forEach(function(f){if(f<lim)delete o[f]})})}catch(e){}
  /* 82 · al historial se le pega cómo se recibió el cierre */
- try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}
+ try{(S.rutasHist||[]).forEach(function(e){var s=snap[e.ch];if(e.f===viejo&&s&&e.recep82===undefined&&!e.parcial120){e.cierreReg82=s.reg||null;e.recep82=s.recep||null}})}catch(e){}
  /* 82 · mes nuevo: los contadores del mes empiezan en 0 */
  try{if(viejo&&String(viejo).slice(0,7)!==hoy.slice(0,7)){(S.cli||[]).forEach(function(c){c.mesR=0;c.mesM=0});S.choferes.forEach(function(c){if(c.mes)c.mes={ven:0,R:0,M:0,cob:0,cred:0}})}}catch(e){}
  return r};
@@ -66,7 +66,7 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
  var sinSalir=!env&&!salio87(o),rv=rutaVacia,guardo95=false;
  /* 95 · entregó sin haber iniciado ruta: lo que traía se guarda para recibirlo */
  if(sinSalir){try{guardo95=atrasGuarda93(o,S.chofHoy,f,'sinSalir')}catch(e){}}
- if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
+ if(sinSalir){try{if((o.log||[]).length){S.rutasHist=S.rutasHist||[];if(!S.rutasHist.some(function(x){return x.f===f&&+x.ch===+S.chofHoy&&!x.parcial120}))S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:null,enviado:false,sinSalir87:1});
    if(!guardo95)(S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' tenía '+o.log.length+' entrega'+(o.log.length===1?'':'s')+' '+del80(f)+' sin haber iniciado ruta ni mandado cierre: cuádralo con él.')}}catch(e){}
   rutaVacia=function(x){return !salio87(x)}}   /* mientras se renueva, "vacía" = "no salió" */
  try{
@@ -75,8 +75,8 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
   var rec={reg:S.cierreReg,recep:S.recep},n=(S.rutasHist||[]).length;
   /* salió y no ha mandado el cierre: se bloquea con la pantalla "No mandaste tu cierre" */
   if(!env&&!rutaVacia(o)&&!sinEnt95){if(v!=='antes')S.dia80=v;return false}
-  S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy})[0];
-  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env});
+  S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy&&!x.parcial120})[0];/* 120 · los cierres anteriores del día (parcial120) no cuentan como "ya guardada" */
+  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env,corte120:o.cierre&&o.cierre.corte||null});
   /* 93 · si al cambiar de día ya se había guardado "sin enviar" y luego SÍ mandó su cierre, se actualiza (antes se quedaba "no enviado") */
   else if(ya&&env&&!ya.enviado){ya.log=o.log;ya.res=o.cierre&&o.cierre.res||null;ya.enviado=true;ya.tarde93=1;if(ya.recep82===undefined||ya.recep82===null){ya.cierreReg82=rec.reg||null;ya.recep82=rec.recep||null}}
   /* 82 · al historial se le pega cómo se recibió el cierre */
@@ -135,7 +135,7 @@ function atrasAbre93(k){var e=(S.atras93||{})[k];if(!e||e.hecho||S.role!=='admin
    (S.recs||[]).forEach(function(x){S.gastos.push({t:'Combustible de reparto',m:x.total,n:chofN(S.chofHoy)+' · '+x.tipo+' '+x.litros+' L',tmp:1})});(S.gch||[]).forEach(function(x){S.gastos.push({t:'Gasto de ruta',m:x.m,n:chofN(S.chofHoy)+' · '+x.tipo+(x.nota?' · '+x.nota:''),tmp:1})});
    S.inv.reparto=0;S.inv.repartoKg=0}catch(er){console.error('95 abre',er)}}}
 function atrasSale93(recibido){var x=S.atr93;if(!x)return;var e=(S.atras93||{})[x.k];
- if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id})[0];var pk=arPack();
+ if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id&&!h.parcial120})[0];var pk=arPack();
    if(H){H.log=pk.log;H.res=pk.cierre&&pk.cierre.res||H.res;H.enviado=true;H.cierreReg82=S.cierreReg||null;H.recep82=S.recep||null;H.recibido94=1}
    else{S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:e.f,ch:+e.id,log:pk.log,res:pk.cierre&&pk.cierre.res||null,enviado:true,cierreReg82:S.cierreReg||null,recep82:S.recep||null,recibido94:1})}
    S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Recibió el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)})}catch(er){}

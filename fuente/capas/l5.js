@@ -4,7 +4,7 @@
    y al empezar un segundo cierre se perdía el primero. Ahora: el dinero del chofer entra a la caja cuando
    el administrador lo recibe (lo que de verdad le entregó). Mientras tanto se ve aparte: "Con el chofer". */
 function cierresCaja(){return sum(S.cierresPrev||[],function(x){return num(x.rec)})+(S.cierreReg?num(S.cierreReg.rec):0)}
-function cajaBase(){return S.cajaBase!=null?num(S.cajaBase):15290}
+function cajaBase(){return S.cajaBase!=null?num(S.cajaBase):(window.PN_MODO==='vacio'?0:15290)}
 cajaEsp=function(){return aportesTot()-(S.vjEfeOut||0)+(S.vjEfeBack||0)+cajaBase()+cierresCaja()+cobAdm()-addedG()-cargaOut()-provPagTot()-viajeAdel()+sum(S.cargas.filter(function(c){return c.viaje&&c.viaje.liq}),function(c){return c.viaje.liq.rec-c.viaje.efe+c.viaje.fin.pago+c.viaje.fin.gastos})};
 /* lo que trae el chofer y todavía no entrega */
 function conChofer(){return S.cierreReg?0:Math.max(0,logCash()-gchTot()-recTot())}

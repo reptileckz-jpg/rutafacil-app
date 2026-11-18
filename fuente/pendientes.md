@@ -2628,3 +2628,10 @@ HECHO en `capas/tema-entregapasos.js` (nació como tema, se arma al final). **Fa
 ## 2026-11-18 · Ricardo: "ármala antes de que se me acabe el uso" → versión 10.0 (APK 1.0.47) a main
 - Lleva 123 (sin efectivo negativo al recibir), 124 (iniciar el día por pasos, tarjeta "¿Cuánto cargas hoy?", llaves del vehículo que se lleva, admin omite fotos), 125 (venta por pasos) y el aplanado de Vite hasta 294 (48%). Todas las pruebas en 0 FAIL antes de publicar.
 - Pendiente de respuesta de Ricardo: mover "🚦 Ordenar con tráfico" arriba y que no desaparezca (si faltan ubicaciones, decirlo).
+
+## 2026-11-18 · 126 · Ricardo: "ya que habilité la API de Routes, el botón para organizar con Google Maps desapareció" → "sí" (moverlo arriba y que no desaparezca)
+HECHO (l62 `rgCardHTML` y tema-ruta). **Falta armar APK (preguntar antes): la 1.0.47 NO lo trae.**
+- Antes: la tarjeta salía hasta el final de la lista de clientes y solo con la ruta iniciada, sin cierre y con 2+ clientes pendientes CON ubicación; si no, desaparecía sin decir por qué.
+- Ahora: sale arriba (debajo de "Ahora sigue"); también antes de salir (en "Revisar" del inicio por pasos, para ordenar la ruta en la mañana); si hay menos de 2 con ubicación dice "A N clientes les falta la ubicación…" en lugar de esconderse; si a algunos les falta, avisa que se quedan al final. No sale con menos de 2 pendientes ni con el cierre mandado.
+- Prueba `t126.js` (9 OK); t62 sigue 22 OK. Captura `disenos/ordenar-trafico.png`.
+- APK 1.0.47 (versión 10.0) quedó armado bien (run 47, 18 nov 20:34 UTC).

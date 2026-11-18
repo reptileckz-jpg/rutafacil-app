@@ -77,8 +77,10 @@ var _etas62=etas;etas=function(){var t=S.salida.ok?S.reloj:480,p=S.pos||BOD,out=
 /* ---------- 11 · Ordenar con tráfico (Google) ---------- */
 function rgNat(){var n=natPl&&natPl();return n&&n.rutasGoogle?n:null}
 function rgPend(){return (S.stops||[]).filter(function(s){if(s.done)return false;var c=cl(s.c);return c&&c.lat!=null})}
-function rgCardHTML(){if(S.role!=='rep'||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return '';var P=rgPend();if(P.length<2)return '';var rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
- return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(rg?' Último orden: '+hmDe(rg.t)+'.':'')+'</div>'
+/* 126 · la tarjeta ya no desaparece: sale arriba de la ruta (también antes de salir) y si faltan ubicaciones lo dice (Ricardo, 18 nov) */
+function rgCardHTML(){if(S.role!=='rep'||!S.salida||(S.cierre&&S.cierre.sent))return '';var T=(S.stops||[]).filter(function(s){return !s.done&&cl(s.c)}),P=rgPend();if(T.length<2)return '';var sin=T.length-P.length,rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
+ if(P.length<2)return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Para que Google la ordene se necesitan al menos 2 clientes con ubicación. '+(sin===1?'A 1 cliente le falta':'A '+sin+' clientes les falta')+' la ubicación: se guarda sola al entregarles, o confírmala en su ficha.</div></div>';
+ return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(sin>0?' '+(sin===1?'1 cliente sin ubicación se queda':sin+' clientes sin ubicación se quedan')+' al final.':'')+(rg?' Último orden: '+hmDe(rg.t)+'.':'')+'</div>'
   +'<button class="btn sec" style="margin-top:8px" data-act="rgordena">'+(rg?'Volver a calcular':'Ordenar con tráfico')+'</button></div>'}
 /* ruta: pasó a tema-ruta.js */
 function rgCuerpo(o,P){var ll=function(p){return {location:{latLng:{latitude:+p.lat,longitude:+p.lng}}}};

@@ -140,6 +140,8 @@ var _ru56b=ruta;ruta=function(){var h=_ru56b.apply(this,arguments),a=aprendeHTML
 
 /* ruta · de l62 */
 var _ru62=ruta;ruta=function(){var h=_ru62.apply(this,arguments);try{var c=rgCardHTML();if(!c)return h;var i=h.lastIndexOf('</div>');return h+c}catch(e){return h}};
+/* 126 · la tarjeta de "Ordenar con tráfico" va arriba de la ruta (debajo de "Ahora sigue"), no hasta el final de la lista */
+var _r126=render;render=function(){var r=_r126.apply(this,arguments);try{if(S.role==='rep'&&S.tab.rep==='ruta'){var m=document.querySelector('main'),c=m&&m.querySelector(':scope>.rgcard');if(c){var a=m.querySelector(':scope>.ahora')||m.querySelector(':scope>h1');if(a&&a.nextElementSibling!==c)a.after(c)}}}catch(e){}return r};
 
 /* entregaCalc · de l74 */
 var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};

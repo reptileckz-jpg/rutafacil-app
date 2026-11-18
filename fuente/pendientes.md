@@ -2497,4 +2497,13 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - **Falla 3 (por confirmar con el flujo real):** en una prueba simplificada, al cambiar de día `S.cierreReg=null` y el efectivo recibido dejó de contar en la caja (3,850 → 0). Revisar con la recepción real del admin (l13 / tema-rutadia 143) antes de decir que es falla.
 - "Algo falló, ya queda anotado": va a Ajustes → "🐞 Problemas reportados" (automático, `S.probs`). No se reprodujo con datos de prueba: pedir captura de ese renglón.
 - Arreglo propuesto (esperar a que Ricardo diga): (1) Ingresos de hoy sin los $9,800 = lo cobrado hoy en todas las rutas de todos los choferes (abiertas, cerradas y cierres anteriores) + cobros del admin + venta local, con desglose; (2) el segundo cierre guarda las entregas del primero en el historial (fecha, chofer, número de cierre) y las estadísticas aceptan varios cierres por chofer por día; (3) recuperar el primer cierre de hoy desde `S.cierresPrev`; (4) prueba: suma de cortes del día = ingresos de hoy = estadísticas del día.
+- 120 · más diagnóstico (Ricardo mandó captura de "Problemas reportados"):
+  - **"Algo falló" en Estadísticas = "Cannot read properties of undefined (reading 'k')"** (Admin → Estadísticas, 22:46, varias veces). Reproducido: la sección **Ganancias** truena en "Mes con mayor ganancia" (`mb.k`) cuando no hay un mes que cumpla; la sección **Compras** truena (`lo.p`) cuando una fruta no tiene compras. Pasa con pocos datos (app real recién empezada).
+  - **Revisión completa de números fijos de la demo dentro de las cuentas** (la revisión del punto 100 solo vio datos de vehículos, clientes y odómetro, no las fórmulas): en la versión real siguen
+    - Ingresos de hoy: +$9,800 (`ing=9800+…`), que también infla "Esta semana" y "Este mes" de ingresos.
+    - Gastos de hoy: +$1,850 (`gHoy()=1850+…`; el arreglo de `ql.py` llamó a `gHoy()`, que también trae los 1,850) y el renglón "Reparto y otros $1,850" en Gastos de hoy.
+    - Gastos "Esta semana" +$7,300 y "Este mes" +$29,800 (y no leen el historial real).
+    - (`cajaEsp` de la base trae 15,290 pero `l5` lo reemplaza con `cajaBase()`, que en la real es 0: ese sí está bien.)
+  - Danu: "nube n/pn/d/s~cfg (y s~admins) Missing or insufficient permissions": el celular del chofer intenta guardar Ajustes/admins y la nube no lo deja (no es la ruta, pero revisar que no se pierda nada).
+  - No hay un lugar para revisar los cierres después (Ricardo quiere ver qué pasó con los $27,270 de Danu): falta un "Historial de cierres" por día/chofer/número de cierre con el corte completo (vendió, debía, entregó, faltante, código, entregas por cliente).
 

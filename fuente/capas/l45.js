@@ -53,10 +53,7 @@ function natNotif(t,x){var C=window.Capacitor,n=C&&C.Plugins&&C.Plugins.RutaNati
 var _r45c=render;render=function(){var r=_r45c.apply(this,arguments);try{if(S.role==='rep'&&S.chofHoy!=null){var av=(S.rutaAv||{})[S.chofHoy]||[],k='rutaAvN:'+S.chofHoy+':'+iso(TODAY),ant=+(localStorage.getItem(k)||0);if(av.length>ant){var nuevos=av.slice(ant);localStorage.setItem(k,String(av.length));
  if(ant>0||Date.now()-(window.__ini45||0)>5000){var t=rutaAvTit(nuevos);natNotif(t,nuevos.map(avPedTxt).join(' · '));toast(t)}}else if(av.length<ant)localStorage.setItem(k,String(av.length))}}catch(e){}return r};window.__ini45=Date.now();
 /* Ajustes: cuánto extra sugerir */
-var _aj45=ajHTML;ajHTML=function(){var h=_aj45.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajextra"'+(S.dOpen.ajextra?' open':'')+'><summary><b>Carga extra sugerida</b><span class="lbl">por si sale otro pedido</span></summary><div class="lbl" style="margin-top:6px">Cuando un chofer regresa a cargar por un pedido, la app le sugiere llevar además al menos esto (o lo que normalmente vende por cliente, lo que sea mayor).</div>'
-  +'<div class="field"><label for="cfg_extraR">Cajas de roatán extra</label><input id="cfg_extraR" type="number" inputmode="numeric" data-bind="cfg.extraR" value="'+esc(S.cfg.extraR==null?'3':S.cfg.extraR)+'"></div><div class="field"><label for="cfg_extraM">Kilos de macho extra</label><input id="cfg_extraM" type="number" inputmode="decimal" data-bind="cfg.extraM" value="'+esc(S.cfg.extraM==null?'20':S.cfg.extraM)+'"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- 68 · mover el mapa no cambia de sección ---------- */
 var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
 var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};

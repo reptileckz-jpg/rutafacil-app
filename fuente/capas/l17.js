@@ -26,4 +26,4 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='tkprint'){e.stopImmediatePropagation();tkImprimir(n);toast('Ticket impreso');render();return}
  if(a==='imprdemo'){e.stopImmediatePropagation();S.impr=S.impr||{papel:'58',auto:false};S.impr.con=!S.impr.con;toast(S.impr.con?'Impresora de prueba conectada':'Impresora desconectada');render();return}},true);
 /* en Ajustes: en la demo se puede simular una impresora conectada */
-var _aj17=ajHTML;ajHTML=function(){var h=_aj17.apply(this,arguments);if(typeof REAL!=='undefined'&&REAL)return h.replace('>Agregar impresora (Bluetooth)</button>','>Agregar impresora (Bluetooth) · muy pronto</button>');return h.replace('<button class="btn sm sec" style="margin-top:8px" disabled>Agregar impresora (Bluetooth)</button>','<button class="btn sm '+(imprOk()?'':'sec')+'" style="margin-top:8px" data-act="imprdemo">'+(imprOk()?'✓ Impresora de prueba conectada':'Simular impresora conectada (demo)')+'</button>')};
+/* ajHTML: pasó a tema-ajustes.js */

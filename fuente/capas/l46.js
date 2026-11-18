@@ -29,7 +29,7 @@ function tarjetear(h,donde){if(!h||typeof h!=='string')return h;try{var t=docume
 /* fichas: el contenido de la pestaña */
 var _fH46=fichaHTML;fichaHTML=function(f){var h=_fH46.apply(this,arguments);return tarjetear(h,'.fibody')};
 /* pantallas encima (viaje, ubicación, carga extra, pasos…) */
-var _suH46=setupHTML;setupHTML=function(){var h=_suH46.apply(this,arguments);return h?tarjetear(h,'[role="dialog"] > .w, [role="dialog"] > .fiw, .vwbody, .vwsec'):h};
+/* setupHTML: pasó a tema-ajustes.js */
 /* ---------- 57 · sin textos de demo, prueba (salvo los dos botones), web ni navegador ---------- */
 var TXT_DEMO=[[/Haz una ruta de prueba/g,'Haz tu primera ruta'],[/✓?\s*Impresora de prueba conectada/g,''],[/\s*\(solo demo\)/g,''],[/\s*En la demo puedes seguir\./g,''],[/En la app final no te dejará seguir sin esto\.\s*/g,'Llénalo para seguir. '],[/Las fotos y los datos son de ejemplo\.[^<]*/g,''],[/Datos de ejemplo hasta ayer\.\s*/g,''],[/\s*\(en la demo son opcionales\)/g,''],[/Entra a la vista de administrador para verlo en Inicio\./g,'El administrador ya lo puede ver.'],[/Prototipo:[^<]*/g,''],[/Reiniciar demo/g,''],[/\bde la demo\b/g,''],[/\ben la demo\b/gi,''],[/\bdemo\b/gi,''],[/Control de reparto · v[\d.]+/g,'Control de reparto']];
 function sinDemoTxt(root){if(typeof MODO==='undefined'||MODO!=='vacio'||!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,L=[];while(n=w.nextNode()){if(n.parentElement&&/SCRIPT|STYLE/.test(n.parentElement.tagName))continue;if(/demo|ejemplo|Prototipo|navegador|\bweb\b|ruta de prueba|Impresora de prueba/i.test(n.nodeValue))L.push(n)}

@@ -23,7 +23,7 @@ function celCardHTML(){var n=natPl49();if(!n||!n.celEstado)return '';var e=S.cel
   +CEL_R.map(function(r){var on=!!(e.restr||{})[r[0]];return '<div class="row"><span>'+r[1]+'</span><button class="btn sm'+(on?'':' sec')+'" style="width:auto" data-act="celr" data-k="'+r[0]+'" data-v="'+(on?0:1)+'">'+(on?'Sí':'No')+'</button></div>'}).join('')
   +'<div class="lbl" style="margin-top:10px"><b>Apps que se ven en el celular</b></div>'+(A?A.map(function(a){return '<div class="row"><span>'+esc(a.nombre)+'</span><button class="btn sm'+(a.oculta?' sec':'')+'" style="width:auto" data-act="celapp" data-p="'+esc(a.pkg)+'" data-v="'+(a.oculta?0:1)+'">'+(a.oculta?'Escondida':'Se ve')+'</button></div>'}).join(''):'<button class="btn sm sec" style="margin-top:6px" data-act="celapps">Ver las apps</button>')
   +'<button class="link" style="margin-top:10px;color:var(--danger)" data-act="cellibera">Quitar todas las limitaciones (y dejar de administrarlo)</button></details>'}
-var _aj49=ajHTML;ajHTML=function(){var h=_aj49.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var c=celCardHTML();if(!c)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=natPl49();if(!/^cel/.test(a)||!n)return;e.stopImmediatePropagation();
  var rev=function(){n.celEstado().then(function(r){S.celE=r;S.dOpen.ajcel=true;render()},function(er){toast('No se pudo revisar: '+(er&&er.message||''))})};
  if(a==='celrev'){rev();return}

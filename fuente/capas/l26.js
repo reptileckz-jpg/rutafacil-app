@@ -71,7 +71,7 @@ function ubHTML(){var u=S.ub;if(!u)return '';var foto=u.modo==='foto',datos=u.mo
  var listo=foto?!!u.foto:(datos?true:u.est==='ok');
  h+='<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"'+(listo?'':' disabled')+'>'+(foto?'Guardar foto':'Guardar')+'</button>'+(foto?'<button class="btn sec" style="margin-top:8px" data-act="ubx">Ahora no</button>':'');
  return h+'</div></div>'}
-var _suH26=setupHTML;setupHTML=function(){return ubHTML()||_suH26.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* GPS: en la demo (o en pruebas) se simula */
 function ubGps(){var u=S.ub;if(!u)return;u.est='buscando';render();
  var ok=function(la,ln,ac){if(!S.ub)return;S.ub.lat=+la.toFixed(6);S.ub.lng=+ln.toFixed(6);S.ub.acc=ac;vibrarSi();if(S.ub.modo==='act'){S.ub.est='ok';ubGuardar();return}S.ub.est='conf';render()},

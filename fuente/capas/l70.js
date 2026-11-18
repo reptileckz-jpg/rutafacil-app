@@ -141,7 +141,7 @@ function pr56Card(){var L=(S.probs||[]).slice().reverse(),todos=!!S.pr56all,V=to
     +'<button class="btn sm '+(p.res?'sec':'')+'" style="width:auto;margin-top:6px" data-act="pr56res" data-id="'+esc(p.id)+'">'+(p.res?'↩ Volver a pendiente':'✓ Resuelto')+'</button></div>'}).join(''):'<div class="lbl" style="margin-top:6px">Nada por aquí.</div>')
   +'<button class="link" data-act="pr56todos">'+(todos?'Ver solo los pendientes':'Ver también los resueltos')+'</button>'
   +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="pr56sacar">Sacar el registro</button><button class="btn sm sec" style="flex:1" data-act="pr56wa">Mandar por WhatsApp</button></div><div class="lbl">El archivo queda en Descargas/Ruta Facil. Pásaselo a Claude para arreglarlos por número.</div></details>'}
-var _aj70=ajHTML;ajHTML=function(){var h=_aj70.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+pr56Card()+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* =============== 58 · ubicaciones: GPS, buscar como en Uber, link; pin que se arrastra =============== */
 function ub68Obj(x){if(x.t==='bod')return (S.bods||[]).filter(function(z){return +z.id===+x.id})[0]||null;if(x.t==='prov')return provD(x.id);if(x.t==='cli')return cl(+x.id);return null}
@@ -183,9 +183,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='ub68gps'){x.err='';toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){x.lat=+p.coords.latitude.toFixed(6);x.lng=+p.coords.longitude.toFixed(6);x.p=2;render()},function(){x.err='No se pudo leer el GPS. Prende la ubicación, o busca el lugar o pega el link.';render()},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){x.err='No se pudo leer el GPS.';render()}return}
  if(a==='ub68si'){ub68Guarda();S.ub68=null;toast('✓ Ubicación guardada');render();return}},true);
 /* bodega en la primera vez (paso "Bodega" del asistente) */
-var _suH70=setupHTML;setupHTML=function(){var h=_suH70.apply(this,arguments);try{if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==1)return h;var b=bodPrincipal(),ok=b&&b.lat!=null;
-  var c='<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--danger)')+'"><b style="font-size:18px">📍 Ubicación de la bodega</b><div class="lbl">'+(ok?'Guardada: '+b.lat+', '+b.lng:'Falta. Los mapas, los kilómetros y las rutas salen de aquí.')+'</div><button class="btn" style="margin-top:8px;min-height:56px;width:100%" data-act="ub68" data-t="bod">'+(ok?'Cambiar la ubicación':'Poner la ubicación de la bodega')+'</button></div>';
-  var i=h.indexOf('<div class="card">');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* setupHTML: pasó a tema-ajustes.js */
 /* proveedores y clientes: en "Datos" */
 var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
   var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};

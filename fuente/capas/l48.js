@@ -38,7 +38,7 @@ function permHTML(){var x=S.perm;if(!x)return '';var E=x.e||{},alguno=PERM_L.som
   +'<div class="pr"><span class="ic">🖨️</span><span class="grow"><b>Bluetooth</b><div class="lbl">Se pide cuando conectes la impresora.</div></span></div></div>'
   +(alguno?'<div class="card alert"><b>Faltó dar algún permiso</b><div class="lbl">El celular ya no lo vuelve a preguntar. Ábrelo en los ajustes del celular → Permisos.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>':'')
   +'<button class="btn" style="margin-top:12px;min-height:58px" data-act="'+(x.pedido?'permlisto':'permpide')+'">'+(x.pedido?'Listo':'Dar permisos')+'</button>'+(x.pedido?'':'<button class="link" style="margin-top:6px" data-act="permlisto">Ahora no</button>')+'</div></div>'}
-var _suH48=setupHTML;setupHTML=function(){return permHTML()||_suH48.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 function permRevisa(cb){var n=natPl48();if(!n||!n.permisosEstado){cb&&cb(null);return}n.permisosEstado().then(function(e){cb&&cb(e)},function(){cb&&cb(null)})}
 var _permVez=false;var _r48b=render;render=function(){var r=_r48b.apply(this,arguments);try{if(!_permVez&&!window.__pnTest&&natPl48()&&!(_pin&&_pin.modo)&&!document.getElementById('nbov')&&!document.getElementById('setov')&&!document.getElementById('bienv')&&S.role){_permVez=true;var vis=false;try{vis=localStorage.getItem('permVisto')==='1'}catch(e){}
  permRevisa(function(e){if(!e)return;S.permE=e;var faltaImp=e.ubicacion!=='si'||e.camara!=='si';if(!vis){S.perm={e:e};render()}else if(faltaImp&&S.role==='rep')render()})}}catch(er){}return r};

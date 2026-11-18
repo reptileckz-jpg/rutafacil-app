@@ -4829,7 +4829,7 @@ function npHTML(){if(!S.np||S.role!=='admin')return '';var n=S.np,ch=n.puesto===
   +'<div class="card"><b>En caso de accidente, avisar a</b>'+npF('emn','Nombre')+npF('emp','Parentesco','text','esposa, mamá…')+npF('emt','Teléfono','tel')+'</div>'
   +'<button class="btn" style="margin-top:6px;min-height:56px" data-act="npsave">Guardar</button></div></div>'}
 /* va dentro del dibujo de la pantalla (junto al asistente), para que no se vuelva a crear en cada cambio */
-var _suH15=setupHTML;setupHTML=function(){var h=_suH15.apply(this,arguments);return h||npHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 var _pers15=personal;personal=function(){var h=_pers15.apply(this,arguments),a=h.indexOf('<div class="card"><b>Agregar a alguien del personal</b>');if(a<0)a=h.indexOf('<div class="card"><b>Agregar chofer o personal</b>');if(a<0)return h;
  var e=h.indexOf('data-act="addch"',a);e=h.indexOf('</div>',e)+6;
  return h.slice(0,a)+'<button class="card npadd" data-act="npopen"><span class="ic">+</span><span class="grow"><b style="font-size:17px">Agregar a alguien nuevo</b><br><span class="lbl">Chofer, ayudante, bodega, venta local…</span></span><span style="font-size:22px">›</span></button>'+h.slice(e)};
@@ -4869,16 +4869,7 @@ var _npF15=npF;npF=function(k,l,t,ph){if(/^(r1p|r2p|emp)$/.test(k))return parHTM
 function suX(path,l,v,t,ph){return '<div class="field"><label>'+l+'</label><input type="'+(t||'text')+'" data-bind="'+path+'" value="'+esc(v==null?'':v)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+(t==='number'?' inputmode="decimal" min="0" step="any"':'')+(t==='tel'?' inputmode="tel"':'')+(t==='pin'?'':'')+(t==='text'||!t?' style="width:180px;text-align:left"':'')+'></div>'}
 function suPin(path,l,v){return '<div class="field"><label>'+l+'</label><input type="tel" inputmode="numeric" maxlength="4" pattern="[0-9]*" data-bind="'+path+'" value="'+esc(v||'')+'" placeholder="4 números" style="width:120px;letter-spacing:6px;text-align:center"></div>'}
 var SU_NOTA='<div class="lbl" style="margin-top:6px">Si no lo tienes a la mano, déjalo vacío: te lo recuerdo después.</div>';
-var _suH16=setupHTML;setupHTML=function(){var h=_suH16.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0)return h;var U=S.setup,p=U.p;
- if(p===0){var k='a:'+S.adminYo;U.pinA=U.pinA==null?(S.pins[k]||''):U.pinA;
-  var x='<div class="card"><b>Datos del negocio</b>'+suX('cfg.tel','Teléfono',S.cfg.tel,'tel')+suX('cfg.dir','Dirección',S.cfg.dir)+suX('cfg.rfc','RFC (si facturas)',S.cfg.rfc)+suX('cfg.correo','Correo',S.cfg.correo,'email')+'</div><div class="card"><b>Tu PIN para entrar</b><div class="lbl">Así nadie más entra como administrador. No uses 1234.</div>'+suPin('setup.pinA','PIN',U.pinA)+'</div>';
-  var i=h.indexOf('<div class="card">');var j=i>-1?h.indexOf('</div>',h.indexOf('setup.yo',i)):-1;if(j>-1){j+=6;h=h.slice(0,j)+x+h.slice(j)}}
- if(p===2){var f=U.vf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">','<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>'+suX('setup.vf.aseg','Aseguradora',f.aseg)+suX('setup.vf.segVence','El seguro vence',f.segVence,'date')+suX('setup.vf.tcVence','Tarjeta de circulación vence',f.tcVence,'date')+suX('setup.vf.verVence','Próxima verificación',f.verVence,'date')
-  +'<div class="lbl" style="margin-top:12px"><b>Para sus cuentas</b></div>'+suX('setup.vf.capL','Tanque (litros)',f.capL,'number')+suX('setup.vf.acLast','Km del último cambio de aceite',f.acLast,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">')}
- if(p===3){var e=U.ef||{},ch=(e.puesto||'chofer')==='chofer';h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">',(ch?suX('setup.ef.licV','Su licencia vence',e.licV,'date'):'')+suX('setup.ef.sueldo','Sueldo por semana $',e.sueldo,'number')+suPin('setup.ef.pin','Su PIN (4 números)',e.pin)+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">')}
- if(p===4){var c=U.cf||{};h=h.replace(/(data-bind="setup\.cf\.n"[^>]*><\/div>)/,'$1'+suX('setup.cf.ap','Apodo o cómo le dicen',c.ap,'text','ej. la de la esquina verde'));h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">',suX('setup.cf.hAb','Abre a las',c.hAb,'time')+suX('setup.cf.hCi','Cierra a las',c.hCi,'time')+suX('setup.cf.recibe','¿Quién recibe?',c.recibe,'text','ej. Don Beto')+suX('setup.cf.lim','Límite de crédito $',c.lim,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">')}
- if(p===5){var pf=U.pf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">',suX('setup.pf.dir','Dirección o lugar',pf.dir)+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">')}
- return h};
+/* setupHTML: pasó a tema-ajustes.js */
 /* el PIN solo números */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.maxLength===4&&t.dataset&&/pin/i.test(t.dataset.bind||'')){var v=t.value.replace(/\D/g,'').slice(0,4);if(v!==t.value)t.value=v;var ps=t.dataset.bind.split('.'),o=S;for(var i=0;i<ps.length-1;i++){o=o[ps[i]];if(!o)return}o[ps[ps.length-1]]=v}},false);
 var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
@@ -4952,7 +4943,7 @@ function dfHTML(){if(!S.dfOpen||!dfOn())return '';var L=dfLista(),h='<div id="df
  DF_GR.forEach(function(g){var X=[];L.forEach(function(x,i){if(x.pr===g[0])X.push([x,i])});if(!X.length)return;
   h+='<div class="card"><b>'+g[1]+'</b> <span class="pill'+(g[0]<=2?' warn':'')+'">'+X.length+'</span>'+X.map(function(y){return '<button class="dfit" data-act="dfgo" data-i="'+y[1]+'"><span class="grow">'+esc(y[0].txt)+'</span><span style="font-size:20px">›</span></button>'}).join('')+'</div>'});
  return h+'</div></div>'}
-var _suH16b=setupHTML;setupHTML=function(){var h=_suH16b.apply(this,arguments);return h||dfHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 /* ir a donde se llena */
 function dfIr(x){var g=x.go;S.dfOpen=false;S.menu=false;var sel=null;
  if(g.t==='aj'){S.aj=true;sel=/PIN/.test(x.txt)?'#ajov [data-act^="pin"]':(/RFC/.test(x.txt)?'#ajov [data-bind="cfg.rfc"]':(/Teléfono/.test(x.txt)?'#ajov [data-bind="cfg.tel"]':'#ajov [data-bind="cfg.dir"]'))}
@@ -5000,14 +4991,14 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='tkprint'){e.stopImmediatePropagation();tkImprimir(n);toast('Ticket impreso');render();return}
  if(a==='imprdemo'){e.stopImmediatePropagation();S.impr=S.impr||{papel:'58',auto:false};S.impr.con=!S.impr.con;toast(S.impr.con?'Impresora de prueba conectada':'Impresora desconectada');render();return}},true);
 /* en Ajustes: en la demo se puede simular una impresora conectada */
-var _aj17=ajHTML;ajHTML=function(){var h=_aj17.apply(this,arguments);if(typeof REAL!=='undefined'&&REAL)return h.replace('>Agregar impresora (Bluetooth)</button>','>Agregar impresora (Bluetooth) · muy pronto</button>');return h.replace('<button class="btn sm sec" style="margin-top:8px" disabled>Agregar impresora (Bluetooth)</button>','<button class="btn sm '+(imprOk()?'':'sec')+'" style="margin-top:8px" data-act="imprdemo">'+(imprOk()?'✓ Impresora de prueba conectada':'Simular impresora conectada (demo)')+'</button>')};
+/* ajHTML: pasó a tema-ajustes.js */
 
 //@@capa l18.js
 /* ===================== v5 · WhatsApp del negocio en los tickets =====================
    Cada chofer manda el ticket desde su propio número, pero el ticket dice a dónde pedir: el WhatsApp del
    negocio (el de tu papá). Si un chofer captura un número de cliente que no estaba, te llega aviso para revisarlo. */
-var _aj18=ajHTML;ajHTML=function(){return _aj18.apply(this,arguments).replace(/(<label[^>]*>)Teléfono del negocio(<\/label>)/,'$1WhatsApp del negocio (sale en los tickets)$2')};
-var _suH18=setupHTML;setupHTML=function(){var h=_suH18.apply(this,arguments);return h?h.replace('<label>Teléfono</label><input type="tel" data-bind="cfg.tel"','<label>WhatsApp del negocio (sale en los tickets)</label><input type="tel" data-bind="cfg.tel"'):h};
+/* ajHTML: pasó a tema-ajustes.js */
+/* setupHTML: pasó a tema-ajustes.js */
 var _nI18=notaItems;notaItems=function(n){var it=_nI18.apply(this,arguments),t=String(S.cfg.tel||'').trim();if(!t)return it;
  it=it.filter(function(x){return !(x.t==='c'&&x.s==='Tel. '+t)});var k=it.length-1;it.splice(k,0,{t:'c',s:'Pedidos por WhatsApp:'},{t:'c',s:t,b:1});return it};
 function telNuevoAviso(c,tel,como){if(!c||!String(tel||'').replace(/\D/g,''))return;c.telPor=chofN(S.chofHoy);S.avPrecio.push('Revisa el número: '+chofN(S.chofHoy)+' capturó el WhatsApp de '+c.n+' ('+tel+')'+(como?' '+como:''))}
@@ -5138,11 +5129,7 @@ var _tst19=toast;toast=function(t){if(typeof t==='string'&&/no se le da mayoreo 
 /* regla del chofer: rechazos en los mismos días (antes 30) */
 mayRech30=function(ch){var lim=iso(new Date(TODAY.getTime()-num(crCfg().mayD)*864e5));return mayRechL().filter(function(x){return x.ch===+ch&&x.f>lim}).length};
 /* Ajustes */
-var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
- var x='<div class="card" data-key="ajcred"><b>Control de crédito y mayoreo</b>'+f('crCli','Máximo de crédito por cliente $')+f('crCh','Lo que pueden deber todos los clientes de un chofer $')
-  +'<div class="lbl" style="margin-top:10px"><b>Buró: si tarda en pagar, baja su límite</b></div>'+f('bD1','Bueno: paga en máximo (días)')+f('bD2','Regular hasta (días)')+f('bL2','Límite de Regular $')+f('bD3','Malo hasta (días); después, bloqueado')+f('bL3','Límite de Malo $')
-  +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
- var i=h.indexOf('data-bind="cfg.cbBl"');if(i<0)i=h.indexOf('data-act="tutver"');var j=i>-1?h.lastIndexOf('<div class="card"',i):-1;if(j<0){var e=h.lastIndexOf('</div>');return h.slice(0,e)+x+h.slice(e)}return h.slice(0,j)+x+h.slice(j)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 //@@capa l20.js
 /* ===================== v5 · Buró del chofer =====================
@@ -5191,7 +5178,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 function mayBajoHTML(){var L=S.cli.filter(function(c){return c.mayBajo&&!c.mayoreo&&!c.oculto&&c.mayBajo.f===iso(TODAY)});if(!L.length||S.role!=='admin')return '';
  return '<div class="card note" data-key="maybajo" style="padding:10px 12px"><b>Regresaron a precio normal</b>'+L.map(function(c){return '<div style="border-top:1px solid var(--line);padding:8px 0">'+esc(c.n)+'<div class="lbl">Compraba '+money(c.mayBajo.antes)+' en 30 días; ahora '+money(c.mayBajo.ahora)+'.</div><button class="btn sm sec" style="margin-top:6px" data-act="maymant" data-id="'+c.id+'">Mantenerle mayoreo</button></div>'}).join('')+'</div>'}
 /* permsHTML: pasó a tema-fichas.js */
-var _aj20=ajHTML;ajHTML=function(){var h=_aj20.apply(this,arguments);crCfg2();return h.replace('<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div>','<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div><div class="field"><label for="cfg_mayBaja">Si un cliente de mayoreo baja su compra más de (%)</label><input id="cfg_mayBaja" type="number" inputmode="decimal" min="0" data-bind="cfg.mayBaja" value="'+esc(S.cfg.mayBaja)+'"></div><div class="lbl">…regresa a precio normal y te aviso.</div>')};
+/* ajHTML: pasó a tema-ajustes.js */
 
 //@@capa l21.js
 /* ===================== v5 · Se guarda en el teléfono y cada chofer con su ruta =====================
@@ -5279,7 +5266,7 @@ var _bienv22=typeof bienvHTML==='function'?bienvHTML:null;
 var _rFoot22=render;render=function(){var r=_rFoot22.apply(this,arguments);if(REAL){var f=document.querySelector('main .foot');if(f&&f.style.display!=='none')f.style.display='none'}return r};
 function usrHTML(){if(!S.usrSel)return '';var L=personasEntrar();
  return '<div class="drawer" style="z-index:86" data-act="usrx"><nav role="dialog" aria-label="Cambiar de usuario" style="max-width:420px"><div style="display:flex;align-items:center"><b style="font-size:18px">¿Quién va a usar el celular?</b><button class="helpb" style="margin-left:auto" data-act="usrx" aria-label="Cerrar">×</button></div><div class="lbl">Te va a pedir el PIN de esa persona.</div>'+L.map(function(x,i){return '<button class="qa" style="margin-top:8px;width:100%;text-align:left" data-act="usrpick" data-i="'+i+'"><span class="grow"><b>'+esc(x.n)+'</b><br><span class="lbl">'+x.p+'</span></span><span style="font-size:20px">›</span></button>'}).join('')+'</nav></div>'}
-var _suH22=setupHTML;setupHTML=function(){var h=_suH22.apply(this,arguments);return h||usrHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 function entrarComo(x){var g=x.go;S.menu=false;S.usrSel=false;if(g.role==='rep'){if(+S.chofHoy!==+g.ch)chCambiar(+g.ch);S.arOn=false}if(g.role==='admin'){S.adminYo=g.adm;S.encOn=false}S.role=g.role;S.pinOk={};S.toast='';pinEntrar();render();window.scrollTo(0,0)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='usrcambia'){e.stopImmediatePropagation();S.menu=false;S.usrSel=true;render();return}
@@ -5335,9 +5322,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='vsave'&&S.vf){var f=JSON.parse(JSON.stringify(S.vf)),id=S.vfId,n0=S.veh.length;setTimeout(function(){var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(!v)return;['marca','modelo','motor','llanta'].forEach(function(k){if(f[k]!=null)v[k]=String(f[k]).trim()});if(num(f.capK)>0)v.capK=num(f.capK);render()},0)}
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
 /* en la configuración inicial */
-var _suH22b=setupHTML;setupHTML=function(){var h=_suH22b.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==2)return h;var f=S.setup.vf||{};
- var x='<div class="lbl" style="margin-top:12px"><b>Datos del vehículo</b></div>'+VEH_X.filter(function(d){return ['marca','modelo','anio'].indexOf(d[0])<0}).map(function(d){return suX('setup.vf.'+d[0],d[1],f[d[0]],d[2],d[3])}).join('');
- return h.replace('<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>',x+'<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>')};
+/* setupHTML: pasó a tema-ajustes.js */
 var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
 /* faltantes del vehículo */
 var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
@@ -5345,8 +5330,8 @@ var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S
 /* ===================== Avisos de poca fruta (desde la configuración inicial) ===================== */
 var MIN_K=[['minV','Cajas verdes de roatán','cajas','verdes','Pide carga'],['minMad','Cajas maduras de roatán','cajas','maduras','Saca a madurar'],['minKV','Kilos de macho verde','kg','kgVerde','Pide carga'],['minKMad','Kilos de macho maduro','kg','kgMaduro','Saca a madurar']];
 function minCampos(pref){return '<div class="card" data-key="mincard"><b>¿Cuándo te aviso que hay poca fruta?</b><div class="lbl">Te aviso cuando quede esto o menos. Déjalo vacío si no quieres aviso.</div>'+MIN_K.map(function(m){return '<div class="field"><label for="'+pref+m[0]+'">'+m[1]+' ('+m[2]+')</label><input id="'+pref+m[0]+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+m[0]+'" value="'+esc(S.cfg[m[0]]==null?'':S.cfg[m[0]])+'"></div>'}).join('')+'</div>'}
-var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
-var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
+/* setupHTML: pasó a tema-ajustes.js */
+/* ajHTML: pasó a tema-ajustes.js */
 function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(lim==null||lim==='')return;lim=num(lim);var hay=num(S.inv[m[3]]);if(hay<=lim)a.push('URGENTE: '+(m[2]==='kg'?'quedan pocos ':'quedan pocas ')+m[1].toLowerCase()+': '+(m[2]==='kg'?(Math.round(hay*10)/10).toLocaleString('es-MX')+' kg':hay+' cajas')+' (te aviso con '+lim+'). '+m[4]+'.')});return a}
 /* avisos: pasó a tema-avisos.js */
 
@@ -5471,7 +5456,7 @@ function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=c
   +'<div class="card"><b>Fiarle o no</b><div class="lbl">Congelar: por ahora no se le fía, pero puede pagar lo que debe. Cancelar: queda solo de contado hasta que lo reactives.</div><div class="acc">'
    +(c.credOk?(c.credFrz?'<button class="btn sm" data-act="crfrz" data-id="'+c.id+'" data-v="0">Descongelar</button>':'<button class="btn sm sec" data-act="crfrz" data-id="'+c.id+'" data-v="1">Congelar crédito</button>')+'<button class="btn sm sec" style="color:var(--danger)" data-act="crcan" data-id="'+c.id+'" data-v="1">Cancelar crédito</button>':'<button class="btn sm" data-act="crcan" data-id="'+c.id+'" data-v="0">Reactivar crédito</button>')+'</div></div>'
   +'<div class="card"><b>Últimos pagos</b>'+(pagos.length?pagos.map(function(x){return rw(fmtF(x.f||x.fecha||iso(TODAY))+(x.q?' · '+esc(x.q):''),money(num(x.m||x.monto)))}).join(''):'<div class="lbl">Todavía no hay pagos registrados.</div>')+'</div></div></div>'}
-var _suH23=setupHTML;setupHTML=function(){var h=_suH23.apply(this,arguments);return h||crHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 function crHist(c,x){S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:c.n+': '+x})}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
  if(a==='cropen'){e.stopImmediatePropagation();S.crCli=+b.dataset.id;S.crLimV=null;render();var o=document.getElementById('crov');if(o)o.scrollTop=0;return}
@@ -5605,7 +5590,7 @@ function ubHTML(){var u=S.ub;if(!u)return '';var foto=u.modo==='foto',datos=u.mo
  var listo=foto?!!u.foto:(datos?true:u.est==='ok');
  h+='<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"'+(listo?'':' disabled')+'>'+(foto?'Guardar foto':'Guardar')+'</button>'+(foto?'<button class="btn sec" style="margin-top:8px" data-act="ubx">Ahora no</button>':'');
  return h+'</div></div>'}
-var _suH26=setupHTML;setupHTML=function(){return ubHTML()||_suH26.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* GPS: en la demo (o en pruebas) se simula */
 function ubGps(){var u=S.ub;if(!u)return;u.est='buscando';render();
  var ok=function(la,ln,ac){if(!S.ub)return;S.ub.lat=+la.toFixed(6);S.ub.lng=+ln.toFixed(6);S.ub.acc=ac;vibrarSi();if(S.ub.modo==='act'){S.ub.est='ok';ubGuardar();return}S.ub.est='conf';render()},
@@ -5993,8 +5978,7 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',functio
 function vehNomDe(f){var p=[f.marca,f.modelo,f.anio].map(function(x){return String(x==null?'':x).trim()}).filter(Boolean);return p.join(' ')}
 var VEH_TRES=function(pre,f,camp){return camp('marca','Marca','text','ej. Nissan')+camp('modelo','Modelo','text','ej. NP300')+camp('anio','Año','number','ej. 2020')};
 /* configuración inicial */
-var _suH30=setupHTML;setupHTML=function(){var h=_suH30.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==2)return h;var f=S.setup.vf||{};
- return h.replace(/<div class="field"><label[^>]*>Nombre o modelo<\/label>[\s\S]*?<\/div>/,VEH_TRES('setup.vf.',f,function(k,l,t,ph){return suX('setup.vf.'+k,l,f[k],t,ph)})+'<div class="lbl" style="margin:-2px 0 6px">La tarjeta del vehículo se llama así: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b></div>')};
+/* setupHTML: pasó a tema-ajustes.js */
 /* Vehículos (admin) */
 /* vForm: pasó a tema-vehiculos.js */
 /* el nombre se arma solo antes de guardar */
@@ -6113,7 +6097,7 @@ function cxHTML(){var x=S.cx;if(!x||S.role!=='rep')return '';var f=x.foto;
   +'<div class="card">'+numStep('cx.R','Cajas de roatán que cargaste',x.R,'cxR')+kgStep('cx.M','Kilos de macho que cargaste',x.M,'cxM')+'<div class="lbl">En bodega hay '+S.inv.maduras+' cajas maduras y '+S.inv.kgMaduro+' kg de macho maduro.</div></div>'
   +'<div class="card"><b>Foto de lo que cargaste (obligatoria)</b><label class="ubfoto" for="cxF" style="display:flex;align-items:center;justify-content:center;min-height:120px;border:2px dashed var(--line);border-radius:14px;margin-top:8px;cursor:pointer;overflow:hidden">'+(f?'<img src="'+f+'" alt="Lo que cargaste" style="width:100%;max-height:220px;object-fit:cover">':'📷 Tomar foto')+'</label><input id="cxF" type="file" accept="image/*" capture="environment" data-cxf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'+(f?'':'<button class="fotono" data-act="fotono" data-cx="1">No pude tomarla</button>')+'</div>'
   +(x.err?'<div class="neg" role="alert" style="font-weight:700;margin:8px 0">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px;min-height:56px" data-act="cxsave">Guardar lo que cargué</button></div></div>'}
-var _suH32=setupHTML;setupHTML=function(){return fnHTML()||cxHTML()||_suH32.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* la tarjeta "Cargar más mercancía" ahora abre esa pantalla */
 extraCard=function(){return '<button class="btn sec" style="width:100%;margin:8px 0" data-act="cxabre">📦 Cargar más mercancía'+(S.extras&&S.extras.length?' · '+S.extras.length+' carga'+(S.extras.length>1?'s':'')+' extra':'')+'</button>'};
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||t.dataset.cxf!=='1'||!t.files||!t.files[0]||!S.cx)return;fotoLeer(t.files[0],function(u){if(S.cx){S.cx.foto=u;render()}})},true);
@@ -6261,7 +6245,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- Ajustes: crédito y "poca fruta" se abren como las demás secciones ---------- */
 function ajPliega(h,key,k,tit,sub){var w=document.createElement('div');w.innerHTML=h;var c=w.querySelector('[data-key="'+key+'"]');if(!c)return h;var d=document.createElement('details');d.className='card';d.setAttribute('data-k',k);if(S.dOpen[k])d.setAttribute('open','');
  var sm=document.createElement('summary');sm.innerHTML='<b>'+tit+'</b><span class="lbl">'+sub+'</span>';d.appendChild(sm);var b0=c.querySelector(':scope > b');if(b0)b0.remove();while(c.firstChild)d.appendChild(c.firstChild);c.replaceWith(d);return w.innerHTML}
-var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;try{h=ajPliega(h,'ajcred','ajcredd','Crédito y mayoreo','límites, buró y mayoreo');h=ajPliega(h,'mincard','ajmind','Aviso de poca fruta','cuándo te aviso')}catch(e){}return h};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- fotos de personal: tomar o subir, y frente/reverso de INE y licencia ---------- */
 var _chI35=chImg;chImg=function(c,k,l){var h=_chI35.apply(this,arguments),id='chi_'+c.id+k;
  return h.replace(/<label class="btn sec sm" for="chi_[^"]*"[^>]*>[^<]*<\/label>/,'<div class="chfbtn"><label class="btn sec sm" for="'+id+'c" style="display:flex;align-items:center;justify-content:center;cursor:pointer">📷 Tomar</label><label class="btn sec sm" for="'+id+'" style="display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️ Galería</label></div>')
@@ -6322,7 +6306,7 @@ function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(
  if(x.t==='pista')h='<b style="font-size:20px">¿Dejas una pista para tu PIN?</b><div class="lbl" style="margin-top:6px">Algo que solo tú entiendas, por si se te olvida. Ejemplo: "mi año de nacimiento al revés". Nunca pongas el PIN.</div><div class="field"><label for="pxp">Pista</label><input id="pxp" type="text" data-pxb="p" value="'+esc(x.p||'')+'" style="width:190px;text-align:left"></div>'+(x.err?'<div class="neg">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="pistasave">Guardar pista</button><button class="btn sec" style="margin-top:8px" data-act="pistano">Sin pista</button>';
  if(x.t==='bio')h='<div style="font-size:44px;text-align:center">🫆</div><b style="font-size:20px">¿Entrar con tu huella?</b><div class="lbl" style="margin-top:6px">Así ya no escribes el PIN en este celular. El PIN sigue sirviendo por si la huella falla.</div><button class="btn" style="margin-top:12px" data-act="bioactiva">Sí, usar mi huella</button><button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button>';
  return '<div id="pxov" role="dialog" aria-label="PIN"><div class="w">'+h+'</div></div>'}
-var _suH36=setupHTML;setupHTML=function(){var a=_suH36.apply(this,arguments);return a};
+/* setupHTML: pasó a tema-ajustes.js */
 var _r36b=render;render=function(){var r=_r36b.apply(this,arguments);try{var o=document.getElementById('pxov'),h=pxHTML();if(h){if(!o){o=document.createElement('div');document.body.appendChild(o)}var sig=JSON.stringify([S.px&&S.px.t,S.px&&S.px.err,(S.pinPide||{})[S.px&&S.px.k]]);if(o.dataset.sig!==sig){var v=(o.querySelector('#pxp')||{}).value;o.outerHTML=h;var n=document.getElementById('pxov');n.dataset.sig=sig;if(v&&n.querySelector('#pxp'))n.querySelector('#pxp').value=v}}else if(o)o.remove()}catch(e){console.error(e)}return r};
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pxb&&S.px)S.px[t.dataset.pxb]=t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -6344,9 +6328,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* después de entrar con PIN (sin huella activada): ofrecer la huella una vez */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pind"]');if(!b||!_pin||_pin.modo!=='entrar'||_pin.v.length!==3)return;var k=_pin.k;setTimeout(function(){if(S.pinOk[k]&&!bioActiva(k)){var no=false;try{no=localStorage.getItem(bioLlave(k)+':no')==='1'}catch(er){}if(!no)bioHay(function(si){if(si&&!S.px){S.px={t:'bio',k:k};render()}})}},80)},true);
 /* en Ajustes: quitar o poner la huella en este celular */
-var _aj36=ajHTML;ajHTML=function(){var h=_aj36.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!bioPl())return h;var on=bioActiva();
- var c='<div class="card" data-key="huella"><b>Huella en este celular</b><div class="lbl">'+(on?'Entras con tu huella. El PIN sigue sirviendo.':'Entras con tu PIN.')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="'+(on?'biooff':'bioon')+'">'+(on?'Quitar la huella':'Usar mi huella')+'</button></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- avisos del PIN olvidado: llevan a reiniciarlo ---------- */
 function avPinK(x){var m=/\[pin:([^\]]+)\]/.exec(x||'');return m?m[1]:null}
 /* ---------- sesión revocada / acceso quitado: se cierra en ese celular ---------- */
@@ -6365,7 +6347,7 @@ function bjHTML(){var x=S.bj;if(!x)return '';var ch=S.choferes.filter(function(c
  return '<div id="bjov" role="dialog" aria-label="Dar de baja"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Dar de baja a '+esc(ch.n)+'</b><div class="lbl">Ya no va a poder entrar a la app. Su historial se queda guardado.</div></span><button class="helpb" style="margin:0" data-act="bjx" aria-label="Cerrar">×</button></div>'
   +(L.length?'<div class="card"><b>Sus '+L.length+' clientes: ¿a quién se los pasas?</b><div class="lbl">La app sugiere por zona (al chofer que tiene clientes más cerca) sin cargar de más una ruta. Cámbialo si quieres.</div>'+L.map(function(c){var v=x.asig[c.id];return '<div class="field"><label for="bj'+c.id+'">'+esc(c.n)+'</label><select id="bj'+c.id+'" data-bjc="'+c.id+'">'+ops.map(function(o){return '<option value="'+o.id+'"'+(+v===o.id?' selected':'')+'>'+esc(esAdm(o)?chofN(2):o.n)+'</option>'}).join('')+'</select></div>'}).join('')+'</div>':'<div class="card note">No tiene clientes asignados.</div>')
   +'<button class="btn" style="margin-top:12px;background:var(--danger)" data-act="bjsi">Dar de baja'+(L.length?' y pasar sus clientes':'')+'</button></div></div>'}
-var _suH36b=setupHTML;setupHTML=function(){return bjHTML()||_suH36b.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.bjc&&S.bj)S.bj.asig[t.dataset.bjc]=+t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -6471,12 +6453,7 @@ var BORRA_K=['log','rutasHist','vlVentas','gastos','cargas','pagosSueldo','merma
 function borrarPrueba(){BORRA_K.forEach(function(k){if(Array.isArray(S[k]))S[k]=[]});S.cli.forEach(function(c){c.cred=0;c.vac=0});(S.prov||[]).forEach(function(p){p.tot=0;p.ab=0});
  if(S.inv){Object.keys(S.inv).forEach(function(k){if(typeof S.inv[k]==='number')S.inv[k]=0})}S.chSt={};try{arLoad(chNuevo(+S.chofHoy))}catch(e){}
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Borró los datos de prueba'});S.modal=null;toast('Listo: se borraron las ventas, gastos y movimientos de prueba. Clientes, personal y vehículos se quedan.');render()}
-var _aj38=ajHTML;ajHTML=function(){var h=_aj38.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajresp"'+(S.dOpen.ajresp?' open':'')+'><summary><b>Respaldo y datos</b><span class="lbl">descargar respaldo, Excel, borrar pruebas</span></summary>'
-  +'<div class="lbl" style="margin-top:6px">Todo se guarda en la nube al momento. El respaldo es una copia extra en tu celular (hazlo cada semana).'+(S.respUlt?' Último: '+fmtF(S.respUlt)+'.':'')+'</div>'
-  +'<button class="btn sec" style="margin-top:8px" data-act="respbaja">Descargar respaldo</button><button class="btn sec" style="margin-top:8px" data-act="exportar">Exportar a Excel</button>'
-  +'<div class="lbl" style="margin-top:12px"><b>Antes de empezar de verdad</b>: borra lo que capturaste para practicar (ventas, gastos, cargas, cierres). Se quedan clientes, proveedores, personal y vehículos.</div><button class="btn sec" style="margin-top:8px;color:var(--danger)" data-act="borrapr">Borrar datos de prueba</button></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='respbaja'){e.stopImmediatePropagation();respaldoDescargar();return}
  if(a==='borrapr'){e.stopImmediatePropagation();abrirModal('¿Borrar los datos de prueba?','Se borran ventas, gastos, cargas, cierres, deudas y movimientos. Se quedan clientes, proveedores, personal y vehículos. Antes se descarga un respaldo por si acaso. No se puede deshacer.',[['Sí, borrar','borraprsi']]);return}
@@ -6561,8 +6538,7 @@ function imprCardHTML(){if(!natPl39())return '';var im=S.impr||{},L=S.imprLista;
   +'<button class="btn sec" style="margin-top:8px" data-act="imprbusca">Buscar impresoras</button>'
   +(L&&L.length?L.map(function(d){return '<button class="btn sm'+(im.mac===d.mac?'':' sec')+'" style="margin-top:6px" data-act="imprpon" data-mac="'+esc(d.mac)+'" data-nom="'+esc(d.nombre||'')+'">'+(im.mac===d.mac?'✓ ':'')+esc(d.nombre||d.mac)+'</button>'}).join(''):(L?'<div class="lbl" style="margin-top:6px">No hay aparatos emparejados.</div>':''))
   +(im.mac?'<button class="btn sm sec" style="margin-top:8px" data-act="imprprueba">Imprimir prueba</button><button class="link" style="margin-top:4px" data-act="imprquita">Quitar impresora</button>':'')+'</details>'}
-var _aj39=ajHTML;ajHTML=function(){var h=_aj39.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;var c=imprCardHTML();if(!c)return h;
- h=h.replace(/<button[^>]*data-act="imprdemo"[^>]*>[^<]*<\/button>/,'');var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=natPl39();
  if(a==='imprbusca'){e.stopImmediatePropagation();if(!n)return;n.btLista().then(function(r){S.imprLista=r.lista||[];render()},function(er){toast(er&&er.message?er.message:'No se pudo buscar')});return}
  if(a==='imprpon'){e.stopImmediatePropagation();S.impr=S.impr||{papel:'58',auto:false};S.impr.mac=b.dataset.mac;S.impr.nom=b.dataset.nom;toast('Impresora lista: '+(b.dataset.nom||''));render();return}
@@ -6663,7 +6639,7 @@ function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter
   +'<div class="card"><b>¿A quién?</b><div class="chips" style="margin-top:6px">'+ids.filter(function(i){return i!==x.de}).map(function(i){return '<button data-act="pasaa" data-id="'+i+'" aria-pressed="'+(x.a===i)+'">'+esc(chofN(i))+'</button>'}).join('')+'</div></div>'
   +'<div class="card"><b>Clientes pendientes ('+L.length+')</b>'+L.map(function(s){var c=cl(s.c)||{n:''};return '<label class="row" style="cursor:pointer"><span>'+esc(c.n)+'</span><input type="checkbox" data-pasac="'+s.c+'"'+(x.sel[s.c]!==false?' checked':'')+'></label>'}).join('')+'</div>'
   +'<button class="btn" style="margin-top:12px" data-act="pasasi">Pasar'+(x.a?' a '+esc(chofN(x.a)):'')+'</button></div></div>'}
-var _suH40=setupHTML;setupHTML=function(){return pasaRutaHTML()||_suH40.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pasac&&S.pasaR)S.pasaR.sel[t.dataset.pasac]=t.checked},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -6725,12 +6701,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='bretno'){e.stopImmediatePropagation();S.bret=null;render();return}
  if(a==='bretsi'){e.stopImmediatePropagation();var m=num(S.bret&&S.bret.m);if(!(m>0)){toast('Escribe cuánto sacaste');return}if(m>bancoSaldo()+0.5){toast('En el banco solo hay '+money(bancoSaldo()));return}S.bancoMov.push({f:iso(TODAY),h:hhmm(),m:-m,t:'Retiro a la caja',n:quien()});S.bret=null;toast(money(m)+' pasaron del banco a la caja');render();return}},true);
 /* Ajustes: comisión de la tarjeta */
-var _aj41=ajHTML;ajHTML=function(){var h=_aj41.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajtarj"'+(S.dOpen.ajtarj?' open':'')+'><summary><b>Pagos con tarjeta</b><span class="lbl">comisión '+tarjPct()+'% · '+(comCobra()?'la paga el cliente':'la absorbe el negocio')+'</span></summary>'
-  +'<div class="field"><label for="cfg_comPct">Comisión de la terminal (con IVA) %</label><input id="cfg_comPct" type="number" inputmode="decimal" step="any" data-bind="cfg.comPct" value="'+esc(S.cfg.comPct==null?'4.06':S.cfg.comPct)+'"></div>'
-  +'<div class="chips" role="group" aria-label="Quién paga la comisión" style="margin:8px 0"><button data-act="comcobra" data-v="0" aria-pressed="'+!comCobra()+'">La absorbe el negocio</button><button data-act="comcobra" data-v="1" aria-pressed="'+comCobra()+'">Se le cobra al cliente</button></div>'
-  +'<div class="lbl">'+(comCobra()?'Al cliente se le cobra '+(100*tarjPct()/(100-tarjPct())).toFixed(2)+'% más para que llegue completo.':'La comisión entra como gasto y baja la ganancia.')+'</div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="comcobra"]');if(!b)return;e.stopImmediatePropagation();S.cfg.comCobra=b.dataset.v==='1';render()},true);
 /* ---------- completar datos del cliente en cualquier momento (y su horario) ---------- */
 var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};
@@ -6841,7 +6812,7 @@ function svHTML(){var s=S.sim2;if(!s)return '';var x=svCalc(),P=Object.keys(S.pr
   +'<div style="font-size:22px;font-weight:900;margin-top:8px;color:'+(x.gan>=0?'var(--accent)':'var(--danger)')+'">Este viaje deja '+money(x.gan)+(num(s.cajas)?' · '+money(x.porCaja)+' por caja':'')+'</div>'
   +'<div class="lbl" style="margin-top:6px">Rendimiento: '+x.rend.r.toFixed(1)+' km/L'+(x.rend.est?' (estimado: aún no hay cargas de diésel de este vehículo)':' (real)')+'. Precio de venta: el de hoy.</div></div>'
   +'<button class="btn" style="margin-top:12px" data-act="simprog"'+(s.prov?'':' disabled')+'>Programar este viaje</button></div></div>'}
-var _suH42=setupHTML;setupHTML=function(){return svHTML()||_suH42.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.sim||!S.sim2)return;S.sim2[t.dataset.sim]=t.value;if(t.tagName==='SELECT'){if(t.dataset.sim==='prov'){var d=(S.simDest||{})[t.value];if(d){S.sim2.km=d.km;S.sim2.cas=d.cas}}render();return}
  clearTimeout(window._simT);window._simT=setTimeout(function(){var a=document.activeElement&&document.activeElement.id;render();if(a){var n=document.getElementById(a);if(n){n.focus();try{var L=n.value.length;n.setSelectionRange&&n.type==='text'&&n.setSelectionRange(L,L)}catch(er){}}}},500)},true);
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.tagName==='SELECT'&&t.dataset&&t.dataset.sim&&S.sim2){S.sim2[t.dataset.sim]=t.value;render()}},true);
@@ -6915,7 +6886,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='resdia'||a==='ressem'){S.resYa=true;return}if(a==='simabre'){S.simYa=true;return}
  e.stopImmediatePropagation();if(a==='aprendeoff'){S.aprendeOff=true;render();return}S.tab[S.role]=b.dataset.t;render();window.scrollTo(0,0)},true);
 /* Ajustes: tutorial por días */
-var _aj43=ajHTML;ajHTML=function(){var h=_aj43.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;return h.replace('data-act="tutver">Ver el tutorial otra vez</button>','data-act="tutver">Ver el tutorial otra vez</button><button class="btn sec" style="margin-top:8px" data-act="tutdias">'+(S.tutDiasOff?'Volver a prender los consejos de cada día':'Apagar los consejos de cada día')+'</button>'+(S.aprendeOff?'<button class="btn sec" style="margin-top:8px" data-act="aprendeon">Mostrar "Aprende la app"</button>':''))};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tutdias"],[data-act="aprendeon"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='tutdias')S.tutDiasOff=!S.tutDiasOff;else S.aprendeOff=false;render()},true);
 /* ---------- combustible del vehículo dentro de su tarjeta ---------- */
 /* fuelVeh: pasó a tema-vehiculos.js */
@@ -6963,9 +6934,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- QR de clientes ---------- */
 function qrOn(){return !!S.cfg.qrOn}
 function cliQR(c){return 'RF-C:'+c.id}
-var _aj44=ajHTML;ajHTML=function(){var h=_aj44.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajqr"'+(S.dOpen.ajqr?' open':'')+'><summary><b>QR de clientes</b><span class="lbl">'+(qrOn()?'prendido':'apagado')+'</span></summary><div class="lbl" style="margin-top:6px">Cada cliente tiene un código QR para pegar en su local. El chofer lo escanea y se abre su entrega. Es solo un atajo.</div><div class="chips" role="group" aria-label="QR de clientes" style="margin:8px 0"><button data-act="qron" data-v="1" aria-pressed="'+qrOn()+'">Usar QR de clientes</button><button data-act="qron" data-v="0" aria-pressed="'+!qrOn()+'">No usar</button></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* fiCli: pasó a tema-fichas.js */
 function qrEtiqueta(c){return [{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:c.n,b:1}]}
 /* escanear (cámara del celular; sin internet) */
@@ -7004,7 +6973,7 @@ function mjSig(){var i=curStop();return i>=0?cl(S.stops[i].c):null}
 function mjHTML(){if(!MJ.on||!mjActivo())return '';var c=mjSig(),d=c&&MJ.ult&&c.lat!=null?kmE({lat:MJ.ult.lat,lng:MJ.ult.lng},c):null;
  return '<div id="mjov" role="dialog" aria-label="Manejando"><div class="lbl" style="font-size:16px">🛻 Manejando · '+Math.round(MJ.vel)+' km/h</div>'+(c?'<div class="lbl" style="font-size:18px">Siguiente parada</div><div class="sig">'+esc(c.n)+'</div>'+(d!=null?'<div style="font-size:20px">a '+(d<1?Math.round(d*1000)+' m':d.toFixed(1)+' km')+'</div>':''):'<div class="sig">Sin más paradas</div>')
   +(c?'<a class="btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" href="'+mapsLink(c)+'">🧭 Abrir Google Maps</a>':'')+'<button class="btn sec" data-act="mjcopi">Voy de copiloto</button><div class="lbl" style="text-align:center">Por tu seguridad, la app se esconde mientras manejas.</div></div>'}
-var _suH44=setupHTML;setupHTML=function(){return mjHTML()||pwHTML()||_suH44.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 function mjPos(p){var now=Date.now(),la=p.coords.latitude,ln=p.coords.longitude,v=p.coords.speed;if(v==null||isNaN(v)){if(MJ.ult){var dt=(now-MJ.ult.t)/1000,dk=kmE({lat:MJ.ult.lat,lng:MJ.ult.lng},{lat:la,lng:ln})/1.3;v=dt>0?dk*1000/dt:0}else v=0}var kmh=v*3.6;MJ.vel=kmh;MJ.ult={lat:la,lng:ln,t:now};
  if(kmh>15){MJ.len=0;MJ.rap=MJ.rap||now;if(!MJ.on&&now-MJ.rap>=20000){MJ.on=true;MJ.cerca=null;render()}}else if(kmh<5){MJ.rap=0;MJ.len=MJ.len||now;if(MJ.on&&now-MJ.len>=45000){MJ.on=false;render()}}else{MJ.rap=0;MJ.len=0}
  if(MJ.on&&document.getElementById('mjov'))try{var o=document.getElementById('mjov'),h=mjHTML();if(h){var w=document.createElement('div');w.innerHTML=h;o.replaceWith(w.firstElementChild)}}catch(e){}
@@ -7106,10 +7075,7 @@ function natNotif(t,x){var C=window.Capacitor,n=C&&C.Plugins&&C.Plugins.RutaNati
 var _r45c=render;render=function(){var r=_r45c.apply(this,arguments);try{if(S.role==='rep'&&S.chofHoy!=null){var av=(S.rutaAv||{})[S.chofHoy]||[],k='rutaAvN:'+S.chofHoy+':'+iso(TODAY),ant=+(localStorage.getItem(k)||0);if(av.length>ant){var nuevos=av.slice(ant);localStorage.setItem(k,String(av.length));
  if(ant>0||Date.now()-(window.__ini45||0)>5000){var t=rutaAvTit(nuevos);natNotif(t,nuevos.map(avPedTxt).join(' · '));toast(t)}}else if(av.length<ant)localStorage.setItem(k,String(av.length))}}catch(e){}return r};window.__ini45=Date.now();
 /* Ajustes: cuánto extra sugerir */
-var _aj45=ajHTML;ajHTML=function(){var h=_aj45.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajextra"'+(S.dOpen.ajextra?' open':'')+'><summary><b>Carga extra sugerida</b><span class="lbl">por si sale otro pedido</span></summary><div class="lbl" style="margin-top:6px">Cuando un chofer regresa a cargar por un pedido, la app le sugiere llevar además al menos esto (o lo que normalmente vende por cliente, lo que sea mayor).</div>'
-  +'<div class="field"><label for="cfg_extraR">Cajas de roatán extra</label><input id="cfg_extraR" type="number" inputmode="numeric" data-bind="cfg.extraR" value="'+esc(S.cfg.extraR==null?'3':S.cfg.extraR)+'"></div><div class="field"><label for="cfg_extraM">Kilos de macho extra</label><input id="cfg_extraM" type="number" inputmode="decimal" data-bind="cfg.extraM" value="'+esc(S.cfg.extraM==null?'20':S.cfg.extraM)+'"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- 68 · mover el mapa no cambia de sección ---------- */
 var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
 var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};
@@ -7171,7 +7137,7 @@ function tarjetear(h,donde){if(!h||typeof h!=='string')return h;try{var t=docume
 /* fichas: el contenido de la pestaña */
 var _fH46=fichaHTML;fichaHTML=function(f){var h=_fH46.apply(this,arguments);return tarjetear(h,'.fibody')};
 /* pantallas encima (viaje, ubicación, carga extra, pasos…) */
-var _suH46=setupHTML;setupHTML=function(){var h=_suH46.apply(this,arguments);return h?tarjetear(h,'[role="dialog"] > .w, [role="dialog"] > .fiw, .vwbody, .vwsec'):h};
+/* setupHTML: pasó a tema-ajustes.js */
 /* ---------- 57 · sin textos de demo, prueba (salvo los dos botones), web ni navegador ---------- */
 var TXT_DEMO=[[/Haz una ruta de prueba/g,'Haz tu primera ruta'],[/✓?\s*Impresora de prueba conectada/g,''],[/\s*\(solo demo\)/g,''],[/\s*En la demo puedes seguir\./g,''],[/En la app final no te dejará seguir sin esto\.\s*/g,'Llénalo para seguir. '],[/Las fotos y los datos son de ejemplo\.[^<]*/g,''],[/Datos de ejemplo hasta ayer\.\s*/g,''],[/\s*\(en la demo son opcionales\)/g,''],[/Entra a la vista de administrador para verlo en Inicio\./g,'El administrador ya lo puede ver.'],[/Prototipo:[^<]*/g,''],[/Reiniciar demo/g,''],[/\bde la demo\b/g,''],[/\ben la demo\b/gi,''],[/\bdemo\b/gi,''],[/Control de reparto · v[\d.]+/g,'Control de reparto']];
 function sinDemoTxt(root){if(typeof MODO==='undefined'||MODO!=='vacio'||!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,L=[];while(n=w.nextNode()){if(n.parentElement&&/SCRIPT|STYLE/.test(n.parentElement.tagName))continue;if(/demo|ejemplo|Prototipo|navegador|\bweb\b|ruta de prueba|Impresora de prueba/i.test(n.nodeValue))L.push(n)}
@@ -7231,7 +7197,7 @@ function wzHTML(){var w=S.wz;if(!w)return '';var D=WZ[w.k],P=wzPasos();if(w.p>=P
   +'<div class="q">'+esc(typeof p.q==='function'?p.q(d):p.q)+'</div>'+(p.a?'<div class="lbl ayuda">'+esc(typeof p.a==='function'?p.a(d):p.a)+'</div>':'')+cuerpo
   +(w.err?'<div class="neg" role="alert" style="font-weight:700;margin:10px 2px">'+esc(w.err)+'</div>':'')
   +'<div class="pie">'+(w.p>0?'<button class="btn sec" data-act="wzatras">Atrás</button>':'')+(p.saltar&&!ult?'<button class="btn sec" data-act="wzsig" data-salta="1">Saltar</button>':'')+'<button class="btn" data-act="'+(ult?'wzfin':'wzsig')+'">'+(ult?esc(D.fin||'Guardar'):'Siguiente')+'</button></div></div></div>'}
-var _suH47=setupHTML;setupHTML=function(){return wzHTML()||_suH47.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 function wzValida(p,d){if(p.ok){var e=p.ok(d);if(e)return e}var e2='';(p.c||[]).some(function(c){if(c.opc)return false;var v=d[c.k];if(v==null||String(v).trim()===''){e2=c.falta||('Escribe '+String(c.l||'').toLowerCase());return true}return false});return e2}
 function wzMarca(p){var d=S.wz.d,c=(p.c||[]).filter(function(c){return !c.opc&&(d[c.k]==null||String(d[c.k]).trim()==='')})[0];setTimeout(function(){var el=c&&document.getElementById('wz_'+c.k);if(el)marcaFalta(el);else{var a=document.querySelector('#wzov [role="alert"]');if(a)marcaFalta(a)}},30)}
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.wz||!S.wz)return;S.wz.d[t.dataset.wz]=t.value;S.wz.err='';var a=document.querySelector('#wzov [role="alert"]');if(a)a.remove()},true);
@@ -7362,7 +7328,7 @@ function permHTML(){var x=S.perm;if(!x)return '';var E=x.e||{},alguno=PERM_L.som
   +'<div class="pr"><span class="ic">🖨️</span><span class="grow"><b>Bluetooth</b><div class="lbl">Se pide cuando conectes la impresora.</div></span></div></div>'
   +(alguno?'<div class="card alert"><b>Faltó dar algún permiso</b><div class="lbl">El celular ya no lo vuelve a preguntar. Ábrelo en los ajustes del celular → Permisos.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>':'')
   +'<button class="btn" style="margin-top:12px;min-height:58px" data-act="'+(x.pedido?'permlisto':'permpide')+'">'+(x.pedido?'Listo':'Dar permisos')+'</button>'+(x.pedido?'':'<button class="link" style="margin-top:6px" data-act="permlisto">Ahora no</button>')+'</div></div>'}
-var _suH48=setupHTML;setupHTML=function(){return permHTML()||_suH48.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 function permRevisa(cb){var n=natPl48();if(!n||!n.permisosEstado){cb&&cb(null);return}n.permisosEstado().then(function(e){cb&&cb(e)},function(){cb&&cb(null)})}
 var _permVez=false;var _r48b=render;render=function(){var r=_r48b.apply(this,arguments);try{if(!_permVez&&!window.__pnTest&&natPl48()&&!(_pin&&_pin.modo)&&!document.getElementById('nbov')&&!document.getElementById('setov')&&!document.getElementById('bienv')&&S.role){_permVez=true;var vis=false;try{vis=localStorage.getItem('permVisto')==='1'}catch(e){}
  permRevisa(function(e){if(!e)return;S.permE=e;var faltaImp=e.ubicacion!=='si'||e.camara!=='si';if(!vis){S.perm={e:e};render()}else if(faltaImp&&S.role==='rep')render()})}}catch(er){}return r};
@@ -7401,7 +7367,7 @@ function celCardHTML(){var n=natPl49();if(!n||!n.celEstado)return '';var e=S.cel
   +CEL_R.map(function(r){var on=!!(e.restr||{})[r[0]];return '<div class="row"><span>'+r[1]+'</span><button class="btn sm'+(on?'':' sec')+'" style="width:auto" data-act="celr" data-k="'+r[0]+'" data-v="'+(on?0:1)+'">'+(on?'Sí':'No')+'</button></div>'}).join('')
   +'<div class="lbl" style="margin-top:10px"><b>Apps que se ven en el celular</b></div>'+(A?A.map(function(a){return '<div class="row"><span>'+esc(a.nombre)+'</span><button class="btn sm'+(a.oculta?' sec':'')+'" style="width:auto" data-act="celapp" data-p="'+esc(a.pkg)+'" data-v="'+(a.oculta?0:1)+'">'+(a.oculta?'Escondida':'Se ve')+'</button></div>'}).join(''):'<button class="btn sm sec" style="margin-top:6px" data-act="celapps">Ver las apps</button>')
   +'<button class="link" style="margin-top:10px;color:var(--danger)" data-act="cellibera">Quitar todas las limitaciones (y dejar de administrarlo)</button></details>'}
-var _aj49=ajHTML;ajHTML=function(){var h=_aj49.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var c=celCardHTML();if(!c)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=natPl49();if(!/^cel/.test(a)||!n)return;e.stopImmediatePropagation();
  var rev=function(){n.celEstado().then(function(r){S.celE=r;S.dOpen.ajcel=true;render()},function(er){toast('No se pudo revisar: '+(er&&er.message||''))})};
  if(a==='celrev'){rev();return}
@@ -7444,7 +7410,7 @@ function eqGuarda(ch,x,modo){var d=S.eqDia=S.eqDia||{},h=iso(TODAY);d[h]=d[h]||{
 function eqOvHTML(){var x=S.eqov;if(!x)return '';var ch=+S.chofHoy;
  return '<div id="eqov" role="dialog" aria-label="Equipo"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:18px">Antes de salir</b><div class="lbl">Revisa lo que te llevas</div></span><button class="helpb" style="margin:0" data-act="eqx" aria-label="Cerrar">×</button></div><div class="q">¿Cómo recibes tu equipo?</div><div class="card">'+eqHTML('salida',ch,x)+'</div>'
   +(x.err?'<div class="neg" role="alert" style="font-weight:700;margin:10px 2px">'+esc(x.err)+'</div>':'')+'<div style="margin-top:auto;padding-top:14px"><button class="btn big" data-act="eqok">Listo, ya lo revisé</button></div></div></div>'}
-var _suH50=setupHTML;setupHTML=function(){return rcHTML()||eqOvHTML()||_suH50.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="iniciar"],[data-act="bienvgo"]');if(!b||S.role!=='rep'||S.eqov)return;var ch=+S.chofHoy;if(!eqDe(ch).length||eqRegDe(ch).salida)return;e.stopImmediatePropagation();e.preventDefault();S.eqov={est:{},sig:b.dataset.act};render()},true);
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.eqn)return;var x=S.eqov||S.rcv;if(!x)return;x.est[t.dataset.eqn]=x.est[t.dataset.eqn]||{};x.est[t.dataset.eqn].nota=t.value},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.eqf)return;var x=S.eqov||S.rcv,f=t.files&&t.files[0];if(!x||!f)return;var k=t.dataset.eqf,fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var r=Math.min(1,FOTO_PX119/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*r);cv.height=Math.round(im.height*r);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);x.est[k]=x.est[k]||{};x.est[k].foto=cv.toDataURL('image/jpeg',FOTO_Q119);render()};im.src=fr.result};fr.readAsDataURL(f)},true);
@@ -7637,12 +7603,7 @@ setTimeout(function(){try{permFondoRev()}catch(e){}},4000);
 /* celular administrado: la ubicación queda fija y no se puede quitar el permiso */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="celrev"],[data-act="celr"]');if(!b)return;var n=natPl52();if(!n||!n.celGpsFijo)return;setTimeout(function(){if(S.celE&&S.celE.owner)n.celGpsFijo().catch(function(){})},1500)},true);
 /* Ajustes: a los cuántos minutos avisar */
-var _aj52=ajHTML;ajHTML=function(){var h=_aj52.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var M=gpsCfgMin();
- var c='<details class="card" data-k="ajgps"'+(S.dOpen.ajgps?' open':'')+'><summary><b>Ubicación de los celulares</b><span class="lbl">avisos si dejan de mandar</span></summary>'
-  +'<div class="field"><label for="gpsa1">Aviso si no manda en (min)</label><input id="gpsa1" type="number" inputmode="numeric" data-gpscfg="gpsA1" value="'+M.a+'" style="width:90px"></div>'
-  +'<div class="field"><label for="gpsa2">Aviso URGENTE en (min)</label><input id="gpsa2" type="number" inputmode="numeric" data-gpscfg="gpsA2" value="'+M.b+'" style="width:90px"></div>'
-  +'<div class="lbl">En ruta manda cada 30 segundos; fuera del horario, cada 5 minutos. También avisa si apagan el celular, la ubicación o cierran la sesión con la ruta abierta.</div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.gpscfg)return;S.cfg[t.dataset.gpscfg]=String(Math.max(5,Math.round(num(t.value))));toast('✓ Guardado');render()},true);
 
 /* ---------- 100 · Google Maps en pantalla completa (si la app trae la llave) ---------- */
@@ -7935,9 +7896,7 @@ setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */
 /* mapaVivoHTML: pasó a tema-inicio.js */
 /* Ajustes: interruptor (por celular) */
-var _aj57=ajHTML;ajHTML=function(){var h=_aj57.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!gmHay())return h;var no=false;try{no=localStorage.getItem('gmapsNo')==='1'}catch(e){}
- var c='<div class="card"><div class="row"><span><b>Mapas de Google</b><br><span class="lbl">Si algún mapa se ve mal en este celular, apágalo y se usa el mapa de antes.</span></span><button class="btn sm'+(no?' sec':'')+'" style="width:auto" data-act="gmswitch">'+(no?'No':'Sí')+'</button></div></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;e.stopImmediatePropagation();var no=false;try{no=localStorage.getItem('gmapsNo')==='1';localStorage.setItem('gmapsNo',no?'0':'1')}catch(er){}
  GMI.slice().forEach(gmQuita);Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){if(el._m){try{el._m.remove()}catch(er){}el._m=null;el.innerHTML=''}el._gmFail=false});toast(no?'Mapas de Google prendidos':'Se usa el mapa de antes');render()},true);
 
@@ -8414,8 +8373,7 @@ var _rd62b=render;render=function(){var r=_rd62b.apply(this,arguments);try{var o
 /* botón en la tarjeta de Bodegas y en Ajustes */
 var _bc62=bodegasCard;bodegasCard=function(){var h=_bc62.apply(this,arguments);try{var L=(S.bods||[]).map(function(b){return '<div class="row"><span>📍 '+esc(b.n)+'<br><span class="lbl">'+(b.lat!=null?'Ubicación guardada':(b===bodPrincipal()?'Banderilla (la de inicio)':'Sin ubicación'))+'</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar ubicación</button></div>'}).join('');
  var i=h.indexOf('<div class="lbl" style="margin-top:8px"><b>Agregar bodega');return i>-1?h.slice(0,i)+L+h.slice(i):h}catch(e){return h}};
-var _aj62=ajHTML;ajHTML=function(){var h=_aj62.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var b=bodPrincipal();if(!b)return h;
- var c='<div class="card"><div class="row"><span><b>Ubicación de la bodega</b><br><span class="lbl">'+esc(b.n)+(b.lat!=null?' · guardada':' · Banderilla (la de inicio)')+'. La usan los mapas, los km y las rutas.</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar</button></div></div>';var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 12 · la app aprende de sus rutas ---------- */
 try{['aprT','aprA'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});if(AR_K.indexOf('planDia')<0)AR_K.push('planDia')}catch(e){}
@@ -8633,11 +8591,7 @@ function respUlt(){try{return localStorage.getItem('respUlt')}catch(e){return nu
 setInterval(function(){try{if(window.__pnTest&&!window.__respTest)return;if(!(S.role==='admin'&&!S.encOn)||!_cargado)return;if(respUlt()===iso(new Date()))return;respHaz(false)}catch(e){}},30000);
 setTimeout(function(){try{if(window.__pnTest&&!window.__respTest)return;if(S.role==='admin'&&!S.encOn&&respUlt()!==iso(new Date()))respHaz(false)}catch(e){}},8000);
 /* avisos: pasó a tema-avisos.js */
-var _aj63=ajHTML;ajHTML=function(){var h=_aj63.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var u=respUlt(),dn='';try{dn=localStorage.getItem('respDonde')||''}catch(e){}
- var c='<div class="card" data-key="respauto"><b>Respaldo automático</b><div class="lbl">Cada día, la primera vez que abres la app, se guarda una copia en este celular (se quedan los últimos 30 días).</div>'
-  +rw('Último',u?fmtF(u):'todavía no')+(dn?rw('Dónde',esc(dn)):'')
-  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="resphaz">Respaldar ahora</button><label class="btn sm sec" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer" for="respin">Restaurar</label></div><input id="respin" type="file" accept=".json,application/json" style="position:absolute;opacity:0;width:1px;height:1px"></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resphaz"]');if(!b)return;e.stopImmediatePropagation();respHaz(true)},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||t.id!=='respin')return;var f=t.files&&t.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){var o=null;try{o=JSON.parse(fr.result)}catch(er){}t.value='';
   if(!o||!o.datos||o.app!=='Ruta Fácil'){toast('Ese archivo no es un respaldo de Ruta Fácil');return}
@@ -9400,7 +9354,7 @@ function pr56Card(){var L=(S.probs||[]).slice().reverse(),todos=!!S.pr56all,V=to
     +'<button class="btn sm '+(p.res?'sec':'')+'" style="width:auto;margin-top:6px" data-act="pr56res" data-id="'+esc(p.id)+'">'+(p.res?'↩ Volver a pendiente':'✓ Resuelto')+'</button></div>'}).join(''):'<div class="lbl" style="margin-top:6px">Nada por aquí.</div>')
   +'<button class="link" data-act="pr56todos">'+(todos?'Ver solo los pendientes':'Ver también los resueltos')+'</button>'
   +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="pr56sacar">Sacar el registro</button><button class="btn sm sec" style="flex:1" data-act="pr56wa">Mandar por WhatsApp</button></div><div class="lbl">El archivo queda en Descargas/Ruta Facil. Pásaselo a Claude para arreglarlos por número.</div></details>'}
-var _aj70=ajHTML;ajHTML=function(){var h=_aj70.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+pr56Card()+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* =============== 58 · ubicaciones: GPS, buscar como en Uber, link; pin que se arrastra =============== */
 function ub68Obj(x){if(x.t==='bod')return (S.bods||[]).filter(function(z){return +z.id===+x.id})[0]||null;if(x.t==='prov')return provD(x.id);if(x.t==='cli')return cl(+x.id);return null}
@@ -9442,9 +9396,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='ub68gps'){x.err='';toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){x.lat=+p.coords.latitude.toFixed(6);x.lng=+p.coords.longitude.toFixed(6);x.p=2;render()},function(){x.err='No se pudo leer el GPS. Prende la ubicación, o busca el lugar o pega el link.';render()},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){x.err='No se pudo leer el GPS.';render()}return}
  if(a==='ub68si'){ub68Guarda();S.ub68=null;toast('✓ Ubicación guardada');render();return}},true);
 /* bodega en la primera vez (paso "Bodega" del asistente) */
-var _suH70=setupHTML;setupHTML=function(){var h=_suH70.apply(this,arguments);try{if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==1)return h;var b=bodPrincipal(),ok=b&&b.lat!=null;
-  var c='<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--danger)')+'"><b style="font-size:18px">📍 Ubicación de la bodega</b><div class="lbl">'+(ok?'Guardada: '+b.lat+', '+b.lng:'Falta. Los mapas, los kilómetros y las rutas salen de aquí.')+'</div><button class="btn" style="margin-top:8px;min-height:56px;width:100%" data-act="ub68" data-t="bod">'+(ok?'Cambiar la ubicación':'Poner la ubicación de la bodega')+'</button></div>';
-  var i=h.indexOf('<div class="card">');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* setupHTML: pasó a tema-ajustes.js */
 /* proveedores y clientes: en "Datos" */
 var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
   var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
@@ -9681,12 +9633,7 @@ function tarEnt72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=docume
  var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>'+(typeof tarCobBtn108==='function'?tarCobBtn108(c,e):'');
  var an=m.querySelector('.card');if(an)an.after(d);else m.prepend(d)}
 /* Ajustes: precio de la tara para el descuento */
-var _aj72=ajHTML;ajHTML=function(){var h=_aj72.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var T=tarCfg72();
- var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+' (a mitad de precio las que el cliente pagó).</div>'
-  +'<div class="field"><label for="tarCob108">Días para cobrarle las taras al cliente</label><input id="tarCob108" type="number" inputmode="numeric" step="1" min="1" data-bind="cfg.tarCob108" value="'+esc(S.cfg.tarCob108==null?'25':S.cfg.tarCob108)+'"></div>'
-  +'<div class="field"><label for="tarCh116">Cajas vacías que pueden deber todos los clientes de un chofer</label><input id="tarCh116" type="number" inputmode="numeric" step="1" min="0" data-bind="cfg.tarCh116" value="'+esc(S.cfg.tarCh116==null?'20':S.cfg.tarCh116)+'"></div><div class="lbl">Vacío = sin tope.</div>'
-  +'<div class="field"><label for="taraDesc">Descuento por cada tara $</label><input id="taraDesc" type="number" inputmode="decimal" step="any" min="0" data-bind="cfg.taraDesc" value="'+esc(S.cfg.taraDesc==null?String(T.pr):S.cfg.taraDesc)+'"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 80 · pedido de un cliente (en la ruta) ---------- */
 function rp72(){var i=document.getElementById('rpR');if(!i)return;var dl=i.closest('[role="dialog"]')||i.closest('.card')||i.parentElement.parentElement;if(dl&&!dl.classList.contains('rp72'))dl.classList.add('rp72');if(i.parentElement.classList.contains('step'))return;
@@ -9899,10 +9846,7 @@ var _desg74=desg;desg=function(c,k){var h=_desg74.apply(this,arguments);if(typeo
  h=h.replace(/Desgaste del vehículo \(/g,'Desgaste al ir por la fruta (');
  if(rp.est){h=h.replace('+ Repartirla <span class="lbl">(sin rutas cerradas todavía)</span>','+ Repartirla: desgaste de la camioneta <span class="lbl">(estimado: '+rp.estKm+' km de ruta; sale real al cerrar rutas)</span>').replace('>+ Repartirlo<','>+ Repartirlo: desgaste de la camioneta <span class="lbl">(estimado)</span><')}
  else h=h.replace('>+ Repartirla<','>+ Repartirla <span class="lbl">(combustible, gastos, desgaste y sueldo de las rutas)</span><');return h};
-var _aj74=ajHTML;ajHTML=function(){var h=_aj74.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="aj74rep"'+(S.dOpen.aj74rep?' open':'')+'><summary><b>🚚 Costo de repartir (mientras no hay rutas)</b><span class="lbl">para el precio sugerido</span></summary><div class="lbl" style="margin-top:6px">Mientras no haya rutas cerradas, el costo de repartir se estima con el desgaste de la camioneta. Al cerrar rutas se usa lo real.</div>'
-  +'<div class="field"><label for="kmRuta">Kilómetros de una ruta normal</label><input id="kmRuta" type="number" inputmode="decimal" data-bind="cfg.kmRuta" value="'+esc(S.cfg.kmRuta||'')+'" placeholder="40"></div><div class="field"><label for="cajRuta">Cajas de roatán en una ruta</label><input id="cajRuta" type="number" inputmode="decimal" data-bind="cfg.cajRuta" value="'+esc(S.cfg.cajRuta||'')+'" placeholder="40"></div><div class="field"><label for="kgRuta">Kilos de macho en una ruta</label><input id="kgRuta" type="number" inputmode="decimal" data-bind="cfg.kgRuta" value="'+esc(S.cfg.kgRuta||'')+'" placeholder="150"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */
@@ -10127,7 +10071,7 @@ function facAj76(){var F=fac76(),f=function(id,b,v,l,ty){return '<div class="fie
   +f('fac76cp','fac76.cp',F.cp,'Código postal (donde se expide)')+f('fac76se','fac76.serie',F.serie,'Serie')
   +'<div class="lbl" style="margin-top:6px">Facturas hechas: '+(F.L||[]).length+' (borradores sin timbrar: '+(F.L||[]).filter(function(x){return x.est==='borrador'}).length+')</div>'
   +'<button class="btn sm sec" style="margin-top:6px;width:100%" data-act="fac76glob">Factura global del mes (público en general)</button>'+((F.L||[]).length?'<button class="btn sm sec" style="margin-top:6px;width:100%" data-act="fac76lista">Ver facturas</button>':'')+'</details>'}
-var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+facAj76()+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ventas de un cliente (hoy y rutas anteriores) */
 function ventas76(cid){var o=[];(S.rutasHist||[]).forEach(function(r){(r.log||[]).forEach(function(l,i){if(l.c===cid&&num(l.total)>0)o.push({k:r.f+'#'+i+'#'+(r.ch||''),f:r.f,l:l})})});(S.log||[]).forEach(function(l,i){if(l.c===cid&&num(l.total)>0)o.push({k:iso(TODAY)+'#'+i+'#hoy',f:iso(TODAY),l:l})});return o.reverse()}
 function facYa76(k){return (fac76().L||[]).some(function(x){return (x.ventas||[]).indexOf(k)>-1})}
@@ -10173,7 +10117,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4803,"l15.js"],[4865,"l16.js"],[4974,"l17.js"],[5005,"l18.js"],[5084,"l19.js"],[5147,"l20.js"],[5196,"l21.js"],[5240,"l22.js"],[5438,"l23.js"],[5487,"l24.js"],[5503,"l25.js"],[5534,"l26.js"],[5672,"l27.js"],[5733,"l28.js"],[5865,"l29.js"],[5991,"l30.js"],[6035,"l31.js"],[6064,"l32.js"],[6152,"l33.js"],[6170,"l34.js"],[6230,"l35.js"],[6287,"l36.js"],[6384,"l37.js"],[6403,"l38.js"],[6491,"l39.js"],[6572,"l40.js"],[6680,"l41.js"],[6752,"l42.js"],[6854,"l43.js"],[6956,"l44.js"],[7053,"l45.js"],[7142,"l46.js"],[7210,"l47.js"],[7324,"l48.js"],[7378,"l49.js"],[7414,"l50.js"],[7517,"l51.js"],[7527,"l52.js"],[7669,"l53.js"],[7691,"l54.js"],[7766,"l55.js"],[7795,"l56.js"],[7879,"l57.js"],[7944,"l58.js"],[8071,"l59.js"],[8130,"l60.js"],[8290,"l61.js"],[8347,"l62.js"],[8477,"l63.js"],[8646,"l64.js"],[8678,"l65.js"],[8779,"l66.js"],[8881,"l67.js"],[8908,"l68.js"],[9034,"l69.js"],[9259,"l70.js"],[9468,"l71.js"],[9593,"l72.js"],[9711,"l73.js"],[9787,"l74.js"],[9911,"l75.js"],[10064,"l76.js"],[10167,"l77.js"],[10295,"l78.js"],[10445,"l79.js"],[10553,"l80.js"],[10677,"l81.js"],[10830,"l82.js"],[11083,"l83.js"],[11152,"l84.js"],[11265,"l85.js"],[11326,"tema-rutadia.js"],[11491,"l86.js"],[11551,"l87.js"],[11594,"l88.js"],[11644,"l89.js"],[11693,"l90.js"],[11799,"tema-ruta.js"],[11946,"tema-fichas.js"],[12063,"tema-cierre.js"],[12157,"tema-inicio.js"],[12285,"tema-cobranza.js"],[12432,"tema-pantallas.js"],[12653,"tema-avisos.js"],[12815,"tema-reparte.js"],[12881,"tema-vehiculos.js"],[13025,"tema-notas.js"],[13042,"tema-taras.js"],[13149,"tema-cargarmas.js"],[13188,"tema-cargas.js"],[13222,"tema-cobro.js"],[13258,"tema-horario.js"],[13297,"tema-sueldos.js"],[13439,"tema-ganado.js"],[13484,"tema-cierres.js"],[13583,"tema-finanzas.js"],[13656,"tema-cuadre.js"],[13845,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4803,"l15.js"],[4865,"l16.js"],[4965,"l17.js"],[4996,"l18.js"],[5075,"l19.js"],[5134,"l20.js"],[5183,"l21.js"],[5227,"l22.js"],[5423,"l23.js"],[5472,"l24.js"],[5488,"l25.js"],[5519,"l26.js"],[5657,"l27.js"],[5718,"l28.js"],[5850,"l29.js"],[5976,"l30.js"],[6019,"l31.js"],[6048,"l32.js"],[6136,"l33.js"],[6154,"l34.js"],[6214,"l35.js"],[6271,"l36.js"],[6366,"l37.js"],[6385,"l38.js"],[6468,"l39.js"],[6548,"l40.js"],[6656,"l41.js"],[6723,"l42.js"],[6825,"l43.js"],[6927,"l44.js"],[7022,"l45.js"],[7108,"l46.js"],[7176,"l47.js"],[7290,"l48.js"],[7344,"l49.js"],[7380,"l50.js"],[7483,"l51.js"],[7493,"l52.js"],[7630,"l53.js"],[7652,"l54.js"],[7727,"l55.js"],[7756,"l56.js"],[7840,"l57.js"],[7903,"l58.js"],[8030,"l59.js"],[8089,"l60.js"],[8249,"l61.js"],[8306,"l62.js"],[8435,"l63.js"],[8600,"l64.js"],[8632,"l65.js"],[8733,"l66.js"],[8835,"l67.js"],[8862,"l68.js"],[8988,"l69.js"],[9213,"l70.js"],[9420,"l71.js"],[9545,"l72.js"],[9658,"l73.js"],[9734,"l74.js"],[9855,"l75.js"],[10008,"l76.js"],[10111,"l77.js"],[10239,"l78.js"],[10389,"l79.js"],[10497,"l80.js"],[10621,"l81.js"],[10774,"l82.js"],[11025,"l83.js"],[11094,"l84.js"],[11207,"l85.js"],[11268,"tema-rutadia.js"],[11433,"l86.js"],[11493,"l87.js"],[11536,"l88.js"],[11586,"l89.js"],[11635,"l90.js"],[11741,"tema-ruta.js"],[11888,"tema-fichas.js"],[12005,"tema-cierre.js"],[12099,"tema-inicio.js"],[12227,"tema-ajustes.js"],[12430,"tema-cobranza.js"],[12577,"tema-pantallas.js"],[12798,"tema-avisos.js"],[12960,"tema-reparte.js"],[13026,"tema-vehiculos.js"],[13170,"tema-notas.js"],[13187,"tema-taras.js"],[13294,"tema-cargarmas.js"],[13333,"tema-cargas.js"],[13367,"tema-cobro.js"],[13403,"tema-horario.js"],[13442,"tema-sueldos.js"],[13584,"tema-ganado.js"],[13629,"tema-cierres.js"],[13728,"tema-finanzas.js"],[13801,"tema-cuadre.js"],[13990,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -11053,9 +10997,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(b.dataset.v==='si'){p.est='ok';if(c){S.stops=S.stops||[];if(!S.stops.some(function(s){return +s.c===c.id&&!s.done}))S.stops.push({c:c.id,ped:true,tarde82:1});S.cierre.sent=false;S.cierre.reab82=1;S.tab.rep='ruta';S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Aceptó llevar el pedido de '+c.n+' después de su cierre'})}toast('Listo: se reabrió tu ruta solo para este pedido')}
  else{p.est='no';if(c)pedManana82(c,p.ch,'dijo que no puede');toast('Se avisó: el pedido queda para mañana')}render()},true);
 /* Ajustes: la hora límite */
-var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 56 · kilos sueltos de la venta en bodega: en Bodega y en el conteo ---------- */
 function sueltos82(){return r2(num(S.vlAbierta))}
@@ -12281,6 +12223,209 @@ var _pc70=pedidoCard;pedidoCard=function(){if(S.role!=='admin')return _pc70.appl
 
 /* popItems · de l82 */
 var _pI82=popItems;popItems=function(){var L=_pI82.apply(this,arguments);try{if(S.role==='admin'&&sinMov82(iso(TODAY))&&new Date().getHours()>=12){L=L.filter(function(x){return !(x&&x.t==='Precio de hoy')})}}catch(e){}return L};
+
+//@@capa tema-ajustes.js
+/* ===================== TEMA · Ajustes y asistente de la primera vez (aplanado el 18 nov) =====================
+   Antes estaba repartido en 44 envolturas encadenadas en l15, l16, l17, l18, l19, l20, l22, l23, l26, l30, l32, l35, l36, l38, l39, l40, l41, l42, l43, l44, l45, l46, l47, l48, l49, l50, l52, l57, l62, l63, l70, l72, l74, l76, l82.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-ajustes.js).
+   Se arma justo después de tema-inicio.js (antes de los otros temas).
+   Si se cambia algo de Ajustes o del asistente, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - ajHTML: la ventana de Ajustes (23 pasos). La versión base se rehízo completa en base-v38.html.
+   - setupHTML: el asistente de la primera vez en la versión real: bodega, vehículos, personal, clientes, proveedores, dinero y precios (21 pasos).
+   Los dos van intercalados en el orden en que se armaban.
+   Las funciones que usan los pasos siguen en su capa.
+   ============================================================================================ */
+
+/* setupHTML · de l15 */
+var _suH15=setupHTML;setupHTML=function(){var h=_suH15.apply(this,arguments);return h||npHTML()};
+
+/* setupHTML · de l16 */
+var _suH16=setupHTML;setupHTML=function(){var h=_suH16.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0)return h;var U=S.setup,p=U.p;
+ if(p===0){var k='a:'+S.adminYo;U.pinA=U.pinA==null?(S.pins[k]||''):U.pinA;
+  var x='<div class="card"><b>Datos del negocio</b>'+suX('cfg.tel','Teléfono',S.cfg.tel,'tel')+suX('cfg.dir','Dirección',S.cfg.dir)+suX('cfg.rfc','RFC (si facturas)',S.cfg.rfc)+suX('cfg.correo','Correo',S.cfg.correo,'email')+'</div><div class="card"><b>Tu PIN para entrar</b><div class="lbl">Así nadie más entra como administrador. No uses 1234.</div>'+suPin('setup.pinA','PIN',U.pinA)+'</div>';
+  var i=h.indexOf('<div class="card">');var j=i>-1?h.indexOf('</div>',h.indexOf('setup.yo',i)):-1;if(j>-1){j+=6;h=h.slice(0,j)+x+h.slice(j)}}
+ if(p===2){var f=U.vf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">','<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>'+suX('setup.vf.aseg','Aseguradora',f.aseg)+suX('setup.vf.segVence','El seguro vence',f.segVence,'date')+suX('setup.vf.tcVence','Tarjeta de circulación vence',f.tcVence,'date')+suX('setup.vf.verVence','Próxima verificación',f.verVence,'date')
+  +'<div class="lbl" style="margin-top:12px"><b>Para sus cuentas</b></div>'+suX('setup.vf.capL','Tanque (litros)',f.capL,'number')+suX('setup.vf.acLast','Km del último cambio de aceite',f.acLast,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">')}
+ if(p===3){var e=U.ef||{},ch=(e.puesto||'chofer')==='chofer';h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">',(ch?suX('setup.ef.licV','Su licencia vence',e.licV,'date'):'')+suX('setup.ef.sueldo','Sueldo por semana $',e.sueldo,'number')+suPin('setup.ef.pin','Su PIN (4 números)',e.pin)+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">')}
+ if(p===4){var c=U.cf||{};h=h.replace(/(data-bind="setup\.cf\.n"[^>]*><\/div>)/,'$1'+suX('setup.cf.ap','Apodo o cómo le dicen',c.ap,'text','ej. la de la esquina verde'));h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">',suX('setup.cf.hAb','Abre a las',c.hAb,'time')+suX('setup.cf.hCi','Cierra a las',c.hCi,'time')+suX('setup.cf.recibe','¿Quién recibe?',c.recibe,'text','ej. Don Beto')+suX('setup.cf.lim','Límite de crédito $',c.lim,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">')}
+ if(p===5){var pf=U.pf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">',suX('setup.pf.dir','Dirección o lugar',pf.dir)+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">')}
+ return h};
+
+/* setupHTML · de l16 */
+var _suH16b=setupHTML;setupHTML=function(){var h=_suH16b.apply(this,arguments);return h||dfHTML()};
+
+/* ajHTML · de l17 */
+var _aj17=ajHTML;ajHTML=function(){var h=_aj17.apply(this,arguments);if(typeof REAL!=='undefined'&&REAL)return h.replace('>Agregar impresora (Bluetooth)</button>','>Agregar impresora (Bluetooth) · muy pronto</button>');return h.replace('<button class="btn sm sec" style="margin-top:8px" disabled>Agregar impresora (Bluetooth)</button>','<button class="btn sm '+(imprOk()?'':'sec')+'" style="margin-top:8px" data-act="imprdemo">'+(imprOk()?'✓ Impresora de prueba conectada':'Simular impresora conectada (demo)')+'</button>')};
+
+/* ajHTML · de l18 */
+var _aj18=ajHTML;ajHTML=function(){return _aj18.apply(this,arguments).replace(/(<label[^>]*>)Teléfono del negocio(<\/label>)/,'$1WhatsApp del negocio (sale en los tickets)$2')};
+
+/* setupHTML · de l18 */
+var _suH18=setupHTML;setupHTML=function(){var h=_suH18.apply(this,arguments);return h?h.replace('<label>Teléfono</label><input type="tel" data-bind="cfg.tel"','<label>WhatsApp del negocio (sale en los tickets)</label><input type="tel" data-bind="cfg.tel"'):h};
+
+/* ajHTML · de l19 */
+var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
+ var x='<div class="card" data-key="ajcred"><b>Control de crédito y mayoreo</b>'+f('crCli','Máximo de crédito por cliente $')+f('crCh','Lo que pueden deber todos los clientes de un chofer $')
+  +'<div class="lbl" style="margin-top:10px"><b>Buró: si tarda en pagar, baja su límite</b></div>'+f('bD1','Bueno: paga en máximo (días)')+f('bD2','Regular hasta (días)')+f('bL2','Límite de Regular $')+f('bD3','Malo hasta (días); después, bloqueado')+f('bL3','Límite de Malo $')
+  +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
+ var i=h.indexOf('data-bind="cfg.cbBl"');if(i<0)i=h.indexOf('data-act="tutver"');var j=i>-1?h.lastIndexOf('<div class="card"',i):-1;if(j<0){var e=h.lastIndexOf('</div>');return h.slice(0,e)+x+h.slice(e)}return h.slice(0,j)+x+h.slice(j)};
+
+/* ajHTML · de l20 */
+var _aj20=ajHTML;ajHTML=function(){var h=_aj20.apply(this,arguments);crCfg2();return h.replace('<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div>','<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div><div class="field"><label for="cfg_mayBaja">Si un cliente de mayoreo baja su compra más de (%)</label><input id="cfg_mayBaja" type="number" inputmode="decimal" min="0" data-bind="cfg.mayBaja" value="'+esc(S.cfg.mayBaja)+'"></div><div class="lbl">…regresa a precio normal y te aviso.</div>')};
+
+/* setupHTML · de l22 */
+var _suH22=setupHTML;setupHTML=function(){var h=_suH22.apply(this,arguments);return h||usrHTML()};
+
+/* setupHTML · de l22 */
+var _suH22b=setupHTML;setupHTML=function(){var h=_suH22b.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==2)return h;var f=S.setup.vf||{};
+ var x='<div class="lbl" style="margin-top:12px"><b>Datos del vehículo</b></div>'+VEH_X.filter(function(d){return ['marca','modelo','anio'].indexOf(d[0])<0}).map(function(d){return suX('setup.vf.'+d[0],d[1],f[d[0]],d[2],d[3])}).join('');
+ return h.replace('<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>',x+'<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>')};
+
+/* setupHTML · de l22 */
+var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
+
+/* ajHTML · de l22 */
+var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
+
+/* setupHTML · de l23 */
+var _suH23=setupHTML;setupHTML=function(){var h=_suH23.apply(this,arguments);return h||crHTML()};
+
+/* setupHTML · de l26 */
+var _suH26=setupHTML;setupHTML=function(){return ubHTML()||_suH26.apply(this,arguments)};
+
+/* setupHTML · de l30 */
+var _suH30=setupHTML;setupHTML=function(){var h=_suH30.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==2)return h;var f=S.setup.vf||{};
+ return h.replace(/<div class="field"><label[^>]*>Nombre o modelo<\/label>[\s\S]*?<\/div>/,VEH_TRES('setup.vf.',f,function(k,l,t,ph){return suX('setup.vf.'+k,l,f[k],t,ph)})+'<div class="lbl" style="margin:-2px 0 6px">La tarjeta del vehículo se llama así: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b></div>')};
+
+/* setupHTML · de l32 */
+var _suH32=setupHTML;setupHTML=function(){return fnHTML()||cxHTML()||_suH32.apply(this,arguments)};
+
+/* ajHTML · de l35 */
+var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;try{h=ajPliega(h,'ajcred','ajcredd','Crédito y mayoreo','límites, buró y mayoreo');h=ajPliega(h,'mincard','ajmind','Aviso de poca fruta','cuándo te aviso')}catch(e){}return h};
+
+/* setupHTML · de l36 */
+var _suH36=setupHTML;setupHTML=function(){var a=_suH36.apply(this,arguments);return a};
+
+/* ajHTML · de l36 */
+var _aj36=ajHTML;ajHTML=function(){var h=_aj36.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!bioPl())return h;var on=bioActiva();
+ var c='<div class="card" data-key="huella"><b>Huella en este celular</b><div class="lbl">'+(on?'Entras con tu huella. El PIN sigue sirviendo.':'Entras con tu PIN.')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="'+(on?'biooff':'bioon')+'">'+(on?'Quitar la huella':'Usar mi huella')+'</button></div>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l36 */
+var _suH36b=setupHTML;setupHTML=function(){return bjHTML()||_suH36b.apply(this,arguments)};
+
+/* ajHTML · de l38 */
+var _aj38=ajHTML;ajHTML=function(){var h=_aj38.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="ajresp"'+(S.dOpen.ajresp?' open':'')+'><summary><b>Respaldo y datos</b><span class="lbl">descargar respaldo, Excel, borrar pruebas</span></summary>'
+  +'<div class="lbl" style="margin-top:6px">Todo se guarda en la nube al momento. El respaldo es una copia extra en tu celular (hazlo cada semana).'+(S.respUlt?' Último: '+fmtF(S.respUlt)+'.':'')+'</div>'
+  +'<button class="btn sec" style="margin-top:8px" data-act="respbaja">Descargar respaldo</button><button class="btn sec" style="margin-top:8px" data-act="exportar">Exportar a Excel</button>'
+  +'<div class="lbl" style="margin-top:12px"><b>Antes de empezar de verdad</b>: borra lo que capturaste para practicar (ventas, gastos, cargas, cierres). Se quedan clientes, proveedores, personal y vehículos.</div><button class="btn sec" style="margin-top:8px;color:var(--danger)" data-act="borrapr">Borrar datos de prueba</button></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l39 */
+var _aj39=ajHTML;ajHTML=function(){var h=_aj39.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;var c=imprCardHTML();if(!c)return h;
+ h=h.replace(/<button[^>]*data-act="imprdemo"[^>]*>[^<]*<\/button>/,'');var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l40 */
+var _suH40=setupHTML;setupHTML=function(){return pasaRutaHTML()||_suH40.apply(this,arguments)};
+
+/* ajHTML · de l41 */
+var _aj41=ajHTML;ajHTML=function(){var h=_aj41.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="ajtarj"'+(S.dOpen.ajtarj?' open':'')+'><summary><b>Pagos con tarjeta</b><span class="lbl">comisión '+tarjPct()+'% · '+(comCobra()?'la paga el cliente':'la absorbe el negocio')+'</span></summary>'
+  +'<div class="field"><label for="cfg_comPct">Comisión de la terminal (con IVA) %</label><input id="cfg_comPct" type="number" inputmode="decimal" step="any" data-bind="cfg.comPct" value="'+esc(S.cfg.comPct==null?'4.06':S.cfg.comPct)+'"></div>'
+  +'<div class="chips" role="group" aria-label="Quién paga la comisión" style="margin:8px 0"><button data-act="comcobra" data-v="0" aria-pressed="'+!comCobra()+'">La absorbe el negocio</button><button data-act="comcobra" data-v="1" aria-pressed="'+comCobra()+'">Se le cobra al cliente</button></div>'
+  +'<div class="lbl">'+(comCobra()?'Al cliente se le cobra '+(100*tarjPct()/(100-tarjPct())).toFixed(2)+'% más para que llegue completo.':'La comisión entra como gasto y baja la ganancia.')+'</div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l42 */
+var _suH42=setupHTML;setupHTML=function(){return svHTML()||_suH42.apply(this,arguments)};
+
+/* ajHTML · de l43 */
+var _aj43=ajHTML;ajHTML=function(){var h=_aj43.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;return h.replace('data-act="tutver">Ver el tutorial otra vez</button>','data-act="tutver">Ver el tutorial otra vez</button><button class="btn sec" style="margin-top:8px" data-act="tutdias">'+(S.tutDiasOff?'Volver a prender los consejos de cada día':'Apagar los consejos de cada día')+'</button>'+(S.aprendeOff?'<button class="btn sec" style="margin-top:8px" data-act="aprendeon">Mostrar "Aprende la app"</button>':''))};
+
+/* ajHTML · de l44 */
+var _aj44=ajHTML;ajHTML=function(){var h=_aj44.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="ajqr"'+(S.dOpen.ajqr?' open':'')+'><summary><b>QR de clientes</b><span class="lbl">'+(qrOn()?'prendido':'apagado')+'</span></summary><div class="lbl" style="margin-top:6px">Cada cliente tiene un código QR para pegar en su local. El chofer lo escanea y se abre su entrega. Es solo un atajo.</div><div class="chips" role="group" aria-label="QR de clientes" style="margin:8px 0"><button data-act="qron" data-v="1" aria-pressed="'+qrOn()+'">Usar QR de clientes</button><button data-act="qron" data-v="0" aria-pressed="'+!qrOn()+'">No usar</button></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l44 */
+var _suH44=setupHTML;setupHTML=function(){return mjHTML()||pwHTML()||_suH44.apply(this,arguments)};
+
+/* ajHTML · de l45 */
+var _aj45=ajHTML;ajHTML=function(){var h=_aj45.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="ajextra"'+(S.dOpen.ajextra?' open':'')+'><summary><b>Carga extra sugerida</b><span class="lbl">por si sale otro pedido</span></summary><div class="lbl" style="margin-top:6px">Cuando un chofer regresa a cargar por un pedido, la app le sugiere llevar además al menos esto (o lo que normalmente vende por cliente, lo que sea mayor).</div>'
+  +'<div class="field"><label for="cfg_extraR">Cajas de roatán extra</label><input id="cfg_extraR" type="number" inputmode="numeric" data-bind="cfg.extraR" value="'+esc(S.cfg.extraR==null?'3':S.cfg.extraR)+'"></div><div class="field"><label for="cfg_extraM">Kilos de macho extra</label><input id="cfg_extraM" type="number" inputmode="decimal" data-bind="cfg.extraM" value="'+esc(S.cfg.extraM==null?'20':S.cfg.extraM)+'"></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l46 */
+var _suH46=setupHTML;setupHTML=function(){var h=_suH46.apply(this,arguments);return h?tarjetear(h,'[role="dialog"] > .w, [role="dialog"] > .fiw, .vwbody, .vwsec'):h};
+
+/* setupHTML · de l47 */
+var _suH47=setupHTML;setupHTML=function(){return wzHTML()||_suH47.apply(this,arguments)};
+
+/* setupHTML · de l48 */
+var _suH48=setupHTML;setupHTML=function(){return permHTML()||_suH48.apply(this,arguments)};
+
+/* ajHTML · de l49 */
+var _aj49=ajHTML;ajHTML=function(){var h=_aj49.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var c=celCardHTML();if(!c)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* setupHTML · de l50 */
+var _suH50=setupHTML;setupHTML=function(){return rcHTML()||eqOvHTML()||_suH50.apply(this,arguments)};
+
+/* ajHTML · de l52 */
+var _aj52=ajHTML;ajHTML=function(){var h=_aj52.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var M=gpsCfgMin();
+ var c='<details class="card" data-k="ajgps"'+(S.dOpen.ajgps?' open':'')+'><summary><b>Ubicación de los celulares</b><span class="lbl">avisos si dejan de mandar</span></summary>'
+  +'<div class="field"><label for="gpsa1">Aviso si no manda en (min)</label><input id="gpsa1" type="number" inputmode="numeric" data-gpscfg="gpsA1" value="'+M.a+'" style="width:90px"></div>'
+  +'<div class="field"><label for="gpsa2">Aviso URGENTE en (min)</label><input id="gpsa2" type="number" inputmode="numeric" data-gpscfg="gpsA2" value="'+M.b+'" style="width:90px"></div>'
+  +'<div class="lbl">En ruta manda cada 30 segundos; fuera del horario, cada 5 minutos. También avisa si apagan el celular, la ubicación o cierran la sesión con la ruta abierta.</div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l57 */
+var _aj57=ajHTML;ajHTML=function(){var h=_aj57.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!gmHay())return h;var no=false;try{no=localStorage.getItem('gmapsNo')==='1'}catch(e){}
+ var c='<div class="card"><div class="row"><span><b>Mapas de Google</b><br><span class="lbl">Si algún mapa se ve mal en este celular, apágalo y se usa el mapa de antes.</span></span><button class="btn sm'+(no?' sec':'')+'" style="width:auto" data-act="gmswitch">'+(no?'No':'Sí')+'</button></div></div>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l62 */
+var _aj62=ajHTML;ajHTML=function(){var h=_aj62.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var b=bodPrincipal();if(!b)return h;
+ var c='<div class="card"><div class="row"><span><b>Ubicación de la bodega</b><br><span class="lbl">'+esc(b.n)+(b.lat!=null?' · guardada':' · Banderilla (la de inicio)')+'. La usan los mapas, los km y las rutas.</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar</button></div></div>';var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l63 */
+var _aj63=ajHTML;ajHTML=function(){var h=_aj63.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var u=respUlt(),dn='';try{dn=localStorage.getItem('respDonde')||''}catch(e){}
+ var c='<div class="card" data-key="respauto"><b>Respaldo automático</b><div class="lbl">Cada día, la primera vez que abres la app, se guarda una copia en este celular (se quedan los últimos 30 días).</div>'
+  +rw('Último',u?fmtF(u):'todavía no')+(dn?rw('Dónde',esc(dn)):'')
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="resphaz">Respaldar ahora</button><label class="btn sm sec" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer" for="respin">Restaurar</label></div><input id="respin" type="file" accept=".json,application/json" style="position:absolute;opacity:0;width:1px;height:1px"></div>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l70 */
+var _aj70=ajHTML;ajHTML=function(){var h=_aj70.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+pr56Card()+h.slice(i)};
+
+/* setupHTML · de l70 */
+var _suH70=setupHTML;setupHTML=function(){var h=_suH70.apply(this,arguments);try{if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==1)return h;var b=bodPrincipal(),ok=b&&b.lat!=null;
+  var c='<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--danger)')+'"><b style="font-size:18px">📍 Ubicación de la bodega</b><div class="lbl">'+(ok?'Guardada: '+b.lat+', '+b.lng:'Falta. Los mapas, los kilómetros y las rutas salen de aquí.')+'</div><button class="btn" style="margin-top:8px;min-height:56px;width:100%" data-act="ub68" data-t="bod">'+(ok?'Cambiar la ubicación':'Poner la ubicación de la bodega')+'</button></div>';
+  var i=h.indexOf('<div class="card">');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+
+/* ajHTML · de l72 */
+var _aj72=ajHTML;ajHTML=function(){var h=_aj72.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var T=tarCfg72();
+ var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+' (a mitad de precio las que el cliente pagó).</div>'
+  +'<div class="field"><label for="tarCob108">Días para cobrarle las taras al cliente</label><input id="tarCob108" type="number" inputmode="numeric" step="1" min="1" data-bind="cfg.tarCob108" value="'+esc(S.cfg.tarCob108==null?'25':S.cfg.tarCob108)+'"></div>'
+  +'<div class="field"><label for="tarCh116">Cajas vacías que pueden deber todos los clientes de un chofer</label><input id="tarCh116" type="number" inputmode="numeric" step="1" min="0" data-bind="cfg.tarCh116" value="'+esc(S.cfg.tarCh116==null?'20':S.cfg.tarCh116)+'"></div><div class="lbl">Vacío = sin tope.</div>'
+  +'<div class="field"><label for="taraDesc">Descuento por cada tara $</label><input id="taraDesc" type="number" inputmode="decimal" step="any" min="0" data-bind="cfg.taraDesc" value="'+esc(S.cfg.taraDesc==null?String(T.pr):S.cfg.taraDesc)+'"></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l74 */
+var _aj74=ajHTML;ajHTML=function(){var h=_aj74.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="aj74rep"'+(S.dOpen.aj74rep?' open':'')+'><summary><b>🚚 Costo de repartir (mientras no hay rutas)</b><span class="lbl">para el precio sugerido</span></summary><div class="lbl" style="margin-top:6px">Mientras no haya rutas cerradas, el costo de repartir se estima con el desgaste de la camioneta. Al cerrar rutas se usa lo real.</div>'
+  +'<div class="field"><label for="kmRuta">Kilómetros de una ruta normal</label><input id="kmRuta" type="number" inputmode="decimal" data-bind="cfg.kmRuta" value="'+esc(S.cfg.kmRuta||'')+'" placeholder="40"></div><div class="field"><label for="cajRuta">Cajas de roatán en una ruta</label><input id="cajRuta" type="number" inputmode="decimal" data-bind="cfg.cajRuta" value="'+esc(S.cfg.cajRuta||'')+'" placeholder="40"></div><div class="field"><label for="kgRuta">Kilos de macho en una ruta</label><input id="kgRuta" type="number" inputmode="decimal" data-bind="cfg.kgRuta" value="'+esc(S.cfg.kgRuta||'')+'" placeholder="150"></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ajHTML · de l76 */
+var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+facAj76()+h.slice(i)};
+
+/* ajHTML · de l82 */
+var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
+ var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

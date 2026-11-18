@@ -88,12 +88,7 @@ function tarEnt72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=docume
  var d=document.createElement('div');d.className='card tb72';d.dataset.x='tar72';d.innerHTML='<b style="font-size:18px">🧺 Te debe '+c.vac+' tara'+(c.vac===1?'':'s')+' desde hace '+e+' días</b><div style="font-size:16px;margin-top:4px">'+(e>=T.d3?'Ya pasaron '+T.d3+' días: se descontaron de tu sueldo. Si te las regresa, avísale al administrador.':'Pídeselas hoy. A los '+T.d3+' días ('+(T.d3-e)+' más) se descuentan de tu sueldo ('+money(T.pr)+' cada una).')+'</div>'+(typeof tarCobBtn108==='function'?tarCobBtn108(c,e):'');
  var an=m.querySelector('.card');if(an)an.after(d);else m.prepend(d)}
 /* Ajustes: precio de la tara para el descuento */
-var _aj72=ajHTML;ajHTML=function(){var h=_aj72.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var T=tarCfg72();
- var c='<details class="card" data-k="aj72tar"'+(S.dOpen.aj72tar?' open':'')+'><summary><b>🧺 Buró de taras</b><span class="lbl">días y descuento al chofer</span></summary><div class="lbl" style="margin-top:6px">Usa los mismos días del buró de crédito: aviso al chofer a los '+T.d1+' días, al administrador a los '+T.d2+' y descuento del sueldo del chofer a los '+T.d3+' (a mitad de precio las que el cliente pagó).</div>'
-  +'<div class="field"><label for="tarCob108">Días para cobrarle las taras al cliente</label><input id="tarCob108" type="number" inputmode="numeric" step="1" min="1" data-bind="cfg.tarCob108" value="'+esc(S.cfg.tarCob108==null?'25':S.cfg.tarCob108)+'"></div>'
-  +'<div class="field"><label for="tarCh116">Cajas vacías que pueden deber todos los clientes de un chofer</label><input id="tarCh116" type="number" inputmode="numeric" step="1" min="0" data-bind="cfg.tarCh116" value="'+esc(S.cfg.tarCh116==null?'20':S.cfg.tarCh116)+'"></div><div class="lbl">Vacío = sin tope.</div>'
-  +'<div class="field"><label for="taraDesc">Descuento por cada tara $</label><input id="taraDesc" type="number" inputmode="decimal" step="any" min="0" data-bind="cfg.taraDesc" value="'+esc(S.cfg.taraDesc==null?String(T.pr):S.cfg.taraDesc)+'"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 80 · pedido de un cliente (en la ruta) ---------- */
 function rp72(){var i=document.getElementById('rpR');if(!i)return;var dl=i.closest('[role="dialog"]')||i.closest('.card')||i.parentElement.parentElement;if(dl&&!dl.classList.contains('rp72'))dl.classList.add('rp72');if(i.parentElement.classList.contains('step'))return;

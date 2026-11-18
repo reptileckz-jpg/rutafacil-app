@@ -63,7 +63,7 @@ function facAj76(){var F=fac76(),f=function(id,b,v,l,ty){return '<div class="fie
   +f('fac76cp','fac76.cp',F.cp,'Código postal (donde se expide)')+f('fac76se','fac76.serie',F.serie,'Serie')
   +'<div class="lbl" style="margin-top:6px">Facturas hechas: '+(F.L||[]).length+' (borradores sin timbrar: '+(F.L||[]).filter(function(x){return x.est==='borrador'}).length+')</div>'
   +'<button class="btn sm sec" style="margin-top:6px;width:100%" data-act="fac76glob">Factura global del mes (público en general)</button>'+((F.L||[]).length?'<button class="btn sm sec" style="margin-top:6px;width:100%" data-act="fac76lista">Ver facturas</button>':'')+'</details>'}
-var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+facAj76()+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ventas de un cliente (hoy y rutas anteriores) */
 function ventas76(cid){var o=[];(S.rutasHist||[]).forEach(function(r){(r.log||[]).forEach(function(l,i){if(l.c===cid&&num(l.total)>0)o.push({k:r.f+'#'+i+'#'+(r.ch||''),f:r.f,l:l})})});(S.log||[]).forEach(function(l,i){if(l.c===cid&&num(l.total)>0)o.push({k:iso(TODAY)+'#'+i+'#hoy',f:iso(TODAY),l:l})});return o.reverse()}
 function facYa76(k){return (fac76().L||[]).some(function(x){return (x.ventas||[]).indexOf(k)>-1})}

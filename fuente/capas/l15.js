@@ -26,7 +26,7 @@ function npHTML(){if(!S.np||S.role!=='admin')return '';var n=S.np,ch=n.puesto===
   +'<div class="card"><b>En caso de accidente, avisar a</b>'+npF('emn','Nombre')+npF('emp','Parentesco','text','esposa, mamá…')+npF('emt','Teléfono','tel')+'</div>'
   +'<button class="btn" style="margin-top:6px;min-height:56px" data-act="npsave">Guardar</button></div></div>'}
 /* va dentro del dibujo de la pantalla (junto al asistente), para que no se vuelva a crear en cada cambio */
-var _suH15=setupHTML;setupHTML=function(){var h=_suH15.apply(this,arguments);return h||npHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 var _pers15=personal;personal=function(){var h=_pers15.apply(this,arguments),a=h.indexOf('<div class="card"><b>Agregar a alguien del personal</b>');if(a<0)a=h.indexOf('<div class="card"><b>Agregar chofer o personal</b>');if(a<0)return h;
  var e=h.indexOf('data-act="addch"',a);e=h.indexOf('</div>',e)+6;
  return h.slice(0,a)+'<button class="card npadd" data-act="npopen"><span class="ic">+</span><span class="grow"><b style="font-size:17px">Agregar a alguien nuevo</b><br><span class="lbl">Chofer, ayudante, bodega, venta local…</span></span><span style="font-size:22px">›</span></button>'+h.slice(e)};

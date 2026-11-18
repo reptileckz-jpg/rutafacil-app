@@ -35,7 +35,7 @@ function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(
  if(x.t==='pista')h='<b style="font-size:20px">¿Dejas una pista para tu PIN?</b><div class="lbl" style="margin-top:6px">Algo que solo tú entiendas, por si se te olvida. Ejemplo: "mi año de nacimiento al revés". Nunca pongas el PIN.</div><div class="field"><label for="pxp">Pista</label><input id="pxp" type="text" data-pxb="p" value="'+esc(x.p||'')+'" style="width:190px;text-align:left"></div>'+(x.err?'<div class="neg">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="pistasave">Guardar pista</button><button class="btn sec" style="margin-top:8px" data-act="pistano">Sin pista</button>';
  if(x.t==='bio')h='<div style="font-size:44px;text-align:center">🫆</div><b style="font-size:20px">¿Entrar con tu huella?</b><div class="lbl" style="margin-top:6px">Así ya no escribes el PIN en este celular. El PIN sigue sirviendo por si la huella falla.</div><button class="btn" style="margin-top:12px" data-act="bioactiva">Sí, usar mi huella</button><button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button>';
  return '<div id="pxov" role="dialog" aria-label="PIN"><div class="w">'+h+'</div></div>'}
-var _suH36=setupHTML;setupHTML=function(){var a=_suH36.apply(this,arguments);return a};
+/* setupHTML: pasó a tema-ajustes.js */
 var _r36b=render;render=function(){var r=_r36b.apply(this,arguments);try{var o=document.getElementById('pxov'),h=pxHTML();if(h){if(!o){o=document.createElement('div');document.body.appendChild(o)}var sig=JSON.stringify([S.px&&S.px.t,S.px&&S.px.err,(S.pinPide||{})[S.px&&S.px.k]]);if(o.dataset.sig!==sig){var v=(o.querySelector('#pxp')||{}).value;o.outerHTML=h;var n=document.getElementById('pxov');n.dataset.sig=sig;if(v&&n.querySelector('#pxp'))n.querySelector('#pxp').value=v}}else if(o)o.remove()}catch(e){console.error(e)}return r};
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pxb&&S.px)S.px[t.dataset.pxb]=t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
@@ -57,9 +57,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* después de entrar con PIN (sin huella activada): ofrecer la huella una vez */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pind"]');if(!b||!_pin||_pin.modo!=='entrar'||_pin.v.length!==3)return;var k=_pin.k;setTimeout(function(){if(S.pinOk[k]&&!bioActiva(k)){var no=false;try{no=localStorage.getItem(bioLlave(k)+':no')==='1'}catch(er){}if(!no)bioHay(function(si){if(si&&!S.px){S.px={t:'bio',k:k};render()}})}},80)},true);
 /* en Ajustes: quitar o poner la huella en este celular */
-var _aj36=ajHTML;ajHTML=function(){var h=_aj36.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!bioPl())return h;var on=bioActiva();
- var c='<div class="card" data-key="huella"><b>Huella en este celular</b><div class="lbl">'+(on?'Entras con tu huella. El PIN sigue sirviendo.':'Entras con tu PIN.')+'</div><button class="btn sm sec" style="margin-top:8px" data-act="'+(on?'biooff':'bioon')+'">'+(on?'Quitar la huella':'Usar mi huella')+'</button></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- avisos del PIN olvidado: llevan a reiniciarlo ---------- */
 function avPinK(x){var m=/\[pin:([^\]]+)\]/.exec(x||'');return m?m[1]:null}
 /* ---------- sesión revocada / acceso quitado: se cierra en ese celular ---------- */
@@ -78,7 +76,7 @@ function bjHTML(){var x=S.bj;if(!x)return '';var ch=S.choferes.filter(function(c
  return '<div id="bjov" role="dialog" aria-label="Dar de baja"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Dar de baja a '+esc(ch.n)+'</b><div class="lbl">Ya no va a poder entrar a la app. Su historial se queda guardado.</div></span><button class="helpb" style="margin:0" data-act="bjx" aria-label="Cerrar">×</button></div>'
   +(L.length?'<div class="card"><b>Sus '+L.length+' clientes: ¿a quién se los pasas?</b><div class="lbl">La app sugiere por zona (al chofer que tiene clientes más cerca) sin cargar de más una ruta. Cámbialo si quieres.</div>'+L.map(function(c){var v=x.asig[c.id];return '<div class="field"><label for="bj'+c.id+'">'+esc(c.n)+'</label><select id="bj'+c.id+'" data-bjc="'+c.id+'">'+ops.map(function(o){return '<option value="'+o.id+'"'+(+v===o.id?' selected':'')+'>'+esc(esAdm(o)?chofN(2):o.n)+'</option>'}).join('')+'</select></div>'}).join('')+'</div>':'<div class="card note">No tiene clientes asignados.</div>')
   +'<button class="btn" style="margin-top:12px;background:var(--danger)" data-act="bjsi">Dar de baja'+(L.length?' y pasar sus clientes':'')+'</button></div></div>'}
-var _suH36b=setupHTML;setupHTML=function(){return bjHTML()||_suH36b.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.bjc&&S.bj)S.bj.asig[t.dataset.bjc]=+t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;

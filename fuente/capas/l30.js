@@ -2,8 +2,7 @@
 function vehNomDe(f){var p=[f.marca,f.modelo,f.anio].map(function(x){return String(x==null?'':x).trim()}).filter(Boolean);return p.join(' ')}
 var VEH_TRES=function(pre,f,camp){return camp('marca','Marca','text','ej. Nissan')+camp('modelo','Modelo','text','ej. NP300')+camp('anio','Año','number','ej. 2020')};
 /* configuración inicial */
-var _suH30=setupHTML;setupHTML=function(){var h=_suH30.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||!S.setup||S.setup.p!==2)return h;var f=S.setup.vf||{};
- return h.replace(/<div class="field"><label[^>]*>Nombre o modelo<\/label>[\s\S]*?<\/div>/,VEH_TRES('setup.vf.',f,function(k,l,t,ph){return suX('setup.vf.'+k,l,f[k],t,ph)})+'<div class="lbl" style="margin:-2px 0 6px">La tarjeta del vehículo se llama así: <b>'+esc(vehNomDe(f)||'Marca Modelo Año')+'</b></div>')};
+/* setupHTML: pasó a tema-ajustes.js */
 /* Vehículos (admin) */
 /* vForm: pasó a tema-vehiculos.js */
 /* el nombre se arma solo antes de guardar */

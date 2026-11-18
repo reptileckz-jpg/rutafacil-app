@@ -68,12 +68,7 @@ var BORRA_K=['log','rutasHist','vlVentas','gastos','cargas','pagosSueldo','merma
 function borrarPrueba(){BORRA_K.forEach(function(k){if(Array.isArray(S[k]))S[k]=[]});S.cli.forEach(function(c){c.cred=0;c.vac=0});(S.prov||[]).forEach(function(p){p.tot=0;p.ab=0});
  if(S.inv){Object.keys(S.inv).forEach(function(k){if(typeof S.inv[k]==='number')S.inv[k]=0})}S.chSt={};try{arLoad(chNuevo(+S.chofHoy))}catch(e){}
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Borró los datos de prueba'});S.modal=null;toast('Listo: se borraron las ventas, gastos y movimientos de prueba. Clientes, personal y vehículos se quedan.');render()}
-var _aj38=ajHTML;ajHTML=function(){var h=_aj38.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajresp"'+(S.dOpen.ajresp?' open':'')+'><summary><b>Respaldo y datos</b><span class="lbl">descargar respaldo, Excel, borrar pruebas</span></summary>'
-  +'<div class="lbl" style="margin-top:6px">Todo se guarda en la nube al momento. El respaldo es una copia extra en tu celular (hazlo cada semana).'+(S.respUlt?' Último: '+fmtF(S.respUlt)+'.':'')+'</div>'
-  +'<button class="btn sec" style="margin-top:8px" data-act="respbaja">Descargar respaldo</button><button class="btn sec" style="margin-top:8px" data-act="exportar">Exportar a Excel</button>'
-  +'<div class="lbl" style="margin-top:12px"><b>Antes de empezar de verdad</b>: borra lo que capturaste para practicar (ventas, gastos, cargas, cierres). Se quedan clientes, proveedores, personal y vehículos.</div><button class="btn sec" style="margin-top:8px;color:var(--danger)" data-act="borrapr">Borrar datos de prueba</button></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='respbaja'){e.stopImmediatePropagation();respaldoDescargar();return}
  if(a==='borrapr'){e.stopImmediatePropagation();abrirModal('¿Borrar los datos de prueba?','Se borran ventas, gastos, cargas, cierres, deudas y movimientos. Se quedan clientes, proveedores, personal y vehículos. Antes se descarga un respaldo por si acaso. No se puede deshacer.',[['Sí, borrar','borraprsi']]);return}

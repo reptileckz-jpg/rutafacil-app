@@ -33,7 +33,7 @@ function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=c
   +'<div class="card"><b>Fiarle o no</b><div class="lbl">Congelar: por ahora no se le fía, pero puede pagar lo que debe. Cancelar: queda solo de contado hasta que lo reactives.</div><div class="acc">'
    +(c.credOk?(c.credFrz?'<button class="btn sm" data-act="crfrz" data-id="'+c.id+'" data-v="0">Descongelar</button>':'<button class="btn sm sec" data-act="crfrz" data-id="'+c.id+'" data-v="1">Congelar crédito</button>')+'<button class="btn sm sec" style="color:var(--danger)" data-act="crcan" data-id="'+c.id+'" data-v="1">Cancelar crédito</button>':'<button class="btn sm" data-act="crcan" data-id="'+c.id+'" data-v="0">Reactivar crédito</button>')+'</div></div>'
   +'<div class="card"><b>Últimos pagos</b>'+(pagos.length?pagos.map(function(x){return rw(fmtF(x.f||x.fecha||iso(TODAY))+(x.q?' · '+esc(x.q):''),money(num(x.m||x.monto)))}).join(''):'<div class="lbl">Todavía no hay pagos registrados.</div>')+'</div></div></div>'}
-var _suH23=setupHTML;setupHTML=function(){var h=_suH23.apply(this,arguments);return h||crHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 function crHist(c,x){S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:c.n+': '+x})}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,c=b.dataset.id!=null?cl(+b.dataset.id):null;
  if(a==='cropen'){e.stopImmediatePropagation();S.crCli=+b.dataset.id;S.crLimV=null;render();var o=document.getElementById('crov');if(o)o.scrollTop=0;return}

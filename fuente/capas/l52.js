@@ -110,12 +110,7 @@ setTimeout(function(){try{permFondoRev()}catch(e){}},4000);
 /* celular administrado: la ubicación queda fija y no se puede quitar el permiso */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="celrev"],[data-act="celr"]');if(!b)return;var n=natPl52();if(!n||!n.celGpsFijo)return;setTimeout(function(){if(S.celE&&S.celE.owner)n.celGpsFijo().catch(function(){})},1500)},true);
 /* Ajustes: a los cuántos minutos avisar */
-var _aj52=ajHTML;ajHTML=function(){var h=_aj52.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;var M=gpsCfgMin();
- var c='<details class="card" data-k="ajgps"'+(S.dOpen.ajgps?' open':'')+'><summary><b>Ubicación de los celulares</b><span class="lbl">avisos si dejan de mandar</span></summary>'
-  +'<div class="field"><label for="gpsa1">Aviso si no manda en (min)</label><input id="gpsa1" type="number" inputmode="numeric" data-gpscfg="gpsA1" value="'+M.a+'" style="width:90px"></div>'
-  +'<div class="field"><label for="gpsa2">Aviso URGENTE en (min)</label><input id="gpsa2" type="number" inputmode="numeric" data-gpscfg="gpsA2" value="'+M.b+'" style="width:90px"></div>'
-  +'<div class="lbl">En ruta manda cada 30 segundos; fuera del horario, cada 5 minutos. También avisa si apagan el celular, la ubicación o cierran la sesión con la ruta abierta.</div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.gpscfg)return;S.cfg[t.dataset.gpscfg]=String(Math.max(5,Math.round(num(t.value))));toast('✓ Guardado');render()},true);
 
 /* ---------- 100 · Google Maps en pantalla completa (si la app trae la llave) ---------- */

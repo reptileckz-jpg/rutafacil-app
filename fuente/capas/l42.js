@@ -89,7 +89,7 @@ function svHTML(){var s=S.sim2;if(!s)return '';var x=svCalc(),P=Object.keys(S.pr
   +'<div style="font-size:22px;font-weight:900;margin-top:8px;color:'+(x.gan>=0?'var(--accent)':'var(--danger)')+'">Este viaje deja '+money(x.gan)+(num(s.cajas)?' · '+money(x.porCaja)+' por caja':'')+'</div>'
   +'<div class="lbl" style="margin-top:6px">Rendimiento: '+x.rend.r.toFixed(1)+' km/L'+(x.rend.est?' (estimado: aún no hay cargas de diésel de este vehículo)':' (real)')+'. Precio de venta: el de hoy.</div></div>'
   +'<button class="btn" style="margin-top:12px" data-act="simprog"'+(s.prov?'':' disabled')+'>Programar este viaje</button></div></div>'}
-var _suH42=setupHTML;setupHTML=function(){return svHTML()||_suH42.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.sim||!S.sim2)return;S.sim2[t.dataset.sim]=t.value;if(t.tagName==='SELECT'){if(t.dataset.sim==='prov'){var d=(S.simDest||{})[t.value];if(d){S.sim2.km=d.km;S.sim2.cas=d.cas}}render();return}
  clearTimeout(window._simT);window._simT=setTimeout(function(){var a=document.activeElement&&document.activeElement.id;render();if(a){var n=document.getElementById(a);if(n){n.focus();try{var L=n.value.length;n.setSelectionRange&&n.type==='text'&&n.setSelectionRange(L,L)}catch(er){}}}},500)},true);
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.tagName==='SELECT'&&t.dataset&&t.dataset.sim&&S.sim2){S.sim2[t.dataset.sim]=t.value;render()}},true);

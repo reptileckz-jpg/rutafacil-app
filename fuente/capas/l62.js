@@ -67,8 +67,7 @@ var _rd62b=render;render=function(){var r=_rd62b.apply(this,arguments);try{var o
 /* botón en la tarjeta de Bodegas y en Ajustes */
 var _bc62=bodegasCard;bodegasCard=function(){var h=_bc62.apply(this,arguments);try{var L=(S.bods||[]).map(function(b){return '<div class="row"><span>📍 '+esc(b.n)+'<br><span class="lbl">'+(b.lat!=null?'Ubicación guardada':(b===bodPrincipal()?'Banderilla (la de inicio)':'Sin ubicación'))+'</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar ubicación</button></div>'}).join('');
  var i=h.indexOf('<div class="lbl" style="margin-top:8px"><b>Agregar bodega');return i>-1?h.slice(0,i)+L+h.slice(i):h}catch(e){return h}};
-var _aj62=ajHTML;ajHTML=function(){var h=_aj62.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var b=bodPrincipal();if(!b)return h;
- var c='<div class="card"><div class="row"><span><b>Ubicación de la bodega</b><br><span class="lbl">'+esc(b.n)+(b.lat!=null?' · guardada':' · Banderilla (la de inicio)')+'. La usan los mapas, los km y las rutas.</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar</button></div></div>';var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 12 · la app aprende de sus rutas ---------- */
 try{['aprT','aprA'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});if(AR_K.indexOf('planDia')<0)AR_K.push('planDia')}catch(e){}

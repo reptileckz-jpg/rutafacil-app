@@ -54,8 +54,4 @@ var _tst19=toast;toast=function(t){if(typeof t==='string'&&/no se le da mayoreo 
 /* regla del chofer: rechazos en los mismos días (antes 30) */
 mayRech30=function(ch){var lim=iso(new Date(TODAY.getTime()-num(crCfg().mayD)*864e5));return mayRechL().filter(function(x){return x.ch===+ch&&x.f>lim}).length};
 /* Ajustes */
-var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;crCfg();var f=function(k,l){return '<div class="field"><label for="cfg_'+k+'">'+l+'</label><input id="cfg_'+k+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+k+'" value="'+esc(S.cfg[k])+'"></div>'};
- var x='<div class="card" data-key="ajcred"><b>Control de crédito y mayoreo</b>'+f('crCli','Máximo de crédito por cliente $')+f('crCh','Lo que pueden deber todos los clientes de un chofer $')
-  +'<div class="lbl" style="margin-top:10px"><b>Buró: si tarda en pagar, baja su límite</b></div>'+f('bD1','Bueno: paga en máximo (días)')+f('bD2','Regular hasta (días)')+f('bL2','Límite de Regular $')+f('bD3','Malo hasta (días); después, bloqueado')+f('bL3','Límite de Malo $')
-  +'<div class="lbl">Sube un nivel cuando liquida 3 veces a tiempo.</div><div class="lbl" style="margin-top:10px"><b>Mayoreo a mano</b></div>'+f('mayN','Veces que se permiten')+f('mayD','En cuántos días')+'<div class="lbl">Si se pasa, se bloquea el mayoreo de ese cliente hasta que lo revises.</div></div>';
- var i=h.indexOf('data-bind="cfg.cbBl"');if(i<0)i=h.indexOf('data-act="tutver"');var j=i>-1?h.lastIndexOf('<div class="card"',i):-1;if(j<0){var e=h.lastIndexOf('</div>');return h.slice(0,e)+x+h.slice(e)}return h.slice(0,j)+x+h.slice(j)};
+/* ajHTML: pasó a tema-ajustes.js */

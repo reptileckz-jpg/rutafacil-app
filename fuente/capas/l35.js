@@ -31,7 +31,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- Ajustes: crédito y "poca fruta" se abren como las demás secciones ---------- */
 function ajPliega(h,key,k,tit,sub){var w=document.createElement('div');w.innerHTML=h;var c=w.querySelector('[data-key="'+key+'"]');if(!c)return h;var d=document.createElement('details');d.className='card';d.setAttribute('data-k',k);if(S.dOpen[k])d.setAttribute('open','');
  var sm=document.createElement('summary');sm.innerHTML='<b>'+tit+'</b><span class="lbl">'+sub+'</span>';d.appendChild(sm);var b0=c.querySelector(':scope > b');if(b0)b0.remove();while(c.firstChild)d.appendChild(c.firstChild);c.replaceWith(d);return w.innerHTML}
-var _aj35=ajHTML;ajHTML=function(){var h=_aj35.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;try{h=ajPliega(h,'ajcred','ajcredd','Crédito y mayoreo','límites, buró y mayoreo');h=ajPliega(h,'mincard','ajmind','Aviso de poca fruta','cuándo te aviso')}catch(e){}return h};
+/* ajHTML: pasó a tema-ajustes.js */
 /* ---------- fotos de personal: tomar o subir, y frente/reverso de INE y licencia ---------- */
 var _chI35=chImg;chImg=function(c,k,l){var h=_chI35.apply(this,arguments),id='chi_'+c.id+k;
  return h.replace(/<label class="btn sec sm" for="chi_[^"]*"[^>]*>[^<]*<\/label>/,'<div class="chfbtn"><label class="btn sec sm" for="'+id+'c" style="display:flex;align-items:center;justify-content:center;cursor:pointer">📷 Tomar</label><label class="btn sec sm" for="'+id+'" style="display:flex;align-items:center;justify-content:center;cursor:pointer">🖼️ Galería</label></div>')

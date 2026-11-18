@@ -56,8 +56,6 @@ setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */
 /* mapaVivoHTML: pasó a tema-inicio.js */
 /* Ajustes: interruptor (por celular) */
-var _aj57=ajHTML;ajHTML=function(){var h=_aj57.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!gmHay())return h;var no=false;try{no=localStorage.getItem('gmapsNo')==='1'}catch(e){}
- var c='<div class="card"><div class="row"><span><b>Mapas de Google</b><br><span class="lbl">Si algún mapa se ve mal en este celular, apágalo y se usa el mapa de antes.</span></span><button class="btn sm'+(no?' sec':'')+'" style="width:auto" data-act="gmswitch">'+(no?'No':'Sí')+'</button></div></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;e.stopImmediatePropagation();var no=false;try{no=localStorage.getItem('gmapsNo')==='1';localStorage.setItem('gmapsNo',no?'0':'1')}catch(er){}
  GMI.slice().forEach(gmQuita);Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){if(el._m){try{el._m.remove()}catch(er){}el._m=null;el.innerHTML=''}el._gmFail=false});toast(no?'Mapas de Google prendidos':'Se usa el mapa de antes');render()},true);

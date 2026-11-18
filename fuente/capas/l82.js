@@ -223,9 +223,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(b.dataset.v==='si'){p.est='ok';if(c){S.stops=S.stops||[];if(!S.stops.some(function(s){return +s.c===c.id&&!s.done}))S.stops.push({c:c.id,ped:true,tarde82:1});S.cierre.sent=false;S.cierre.reab82=1;S.tab.rep='ruta';S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Aceptó llevar el pedido de '+c.n+' después de su cierre'})}toast('Listo: se reabrió tu ruta solo para este pedido')}
  else{p.est='no';if(c)pedManana82(c,p.ch,'dijo que no puede');toast('Se avisó: el pedido queda para mañana')}render()},true);
 /* Ajustes: la hora límite */
-var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 56 · kilos sueltos de la venta en bodega: en Bodega y en el conteo ---------- */
 function sueltos82(){return r2(num(S.vlAbierta))}

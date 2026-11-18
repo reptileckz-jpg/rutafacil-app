@@ -45,12 +45,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='bretno'){e.stopImmediatePropagation();S.bret=null;render();return}
  if(a==='bretsi'){e.stopImmediatePropagation();var m=num(S.bret&&S.bret.m);if(!(m>0)){toast('Escribe cuánto sacaste');return}if(m>bancoSaldo()+0.5){toast('En el banco solo hay '+money(bancoSaldo()));return}S.bancoMov.push({f:iso(TODAY),h:hhmm(),m:-m,t:'Retiro a la caja',n:quien()});S.bret=null;toast(money(m)+' pasaron del banco a la caja');render();return}},true);
 /* Ajustes: comisión de la tarjeta */
-var _aj41=ajHTML;ajHTML=function(){var h=_aj41.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajtarj"'+(S.dOpen.ajtarj?' open':'')+'><summary><b>Pagos con tarjeta</b><span class="lbl">comisión '+tarjPct()+'% · '+(comCobra()?'la paga el cliente':'la absorbe el negocio')+'</span></summary>'
-  +'<div class="field"><label for="cfg_comPct">Comisión de la terminal (con IVA) %</label><input id="cfg_comPct" type="number" inputmode="decimal" step="any" data-bind="cfg.comPct" value="'+esc(S.cfg.comPct==null?'4.06':S.cfg.comPct)+'"></div>'
-  +'<div class="chips" role="group" aria-label="Quién paga la comisión" style="margin:8px 0"><button data-act="comcobra" data-v="0" aria-pressed="'+!comCobra()+'">La absorbe el negocio</button><button data-act="comcobra" data-v="1" aria-pressed="'+comCobra()+'">Se le cobra al cliente</button></div>'
-  +'<div class="lbl">'+(comCobra()?'Al cliente se le cobra '+(100*tarjPct()/(100-tarjPct())).toFixed(2)+'% más para que llegue completo.':'La comisión entra como gasto y baja la ganancia.')+'</div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="comcobra"]');if(!b)return;e.stopImmediatePropagation();S.cfg.comCobra=b.dataset.v==='1';render()},true);
 /* ---------- completar datos del cliente en cualquier momento (y su horario) ---------- */
 var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};

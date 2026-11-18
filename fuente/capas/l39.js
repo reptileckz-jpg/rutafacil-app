@@ -70,8 +70,7 @@ function imprCardHTML(){if(!natPl39())return '';var im=S.impr||{},L=S.imprLista;
   +'<button class="btn sec" style="margin-top:8px" data-act="imprbusca">Buscar impresoras</button>'
   +(L&&L.length?L.map(function(d){return '<button class="btn sm'+(im.mac===d.mac?'':' sec')+'" style="margin-top:6px" data-act="imprpon" data-mac="'+esc(d.mac)+'" data-nom="'+esc(d.nombre||'')+'">'+(im.mac===d.mac?'✓ ':'')+esc(d.nombre||d.mac)+'</button>'}).join(''):(L?'<div class="lbl" style="margin-top:6px">No hay aparatos emparejados.</div>':''))
   +(im.mac?'<button class="btn sm sec" style="margin-top:8px" data-act="imprprueba">Imprimir prueba</button><button class="link" style="margin-top:4px" data-act="imprquita">Quitar impresora</button>':'')+'</details>'}
-var _aj39=ajHTML;ajHTML=function(){var h=_aj39.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;var c=imprCardHTML();if(!c)return h;
- h=h.replace(/<button[^>]*data-act="imprdemo"[^>]*>[^<]*<\/button>/,'');var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=natPl39();
  if(a==='imprbusca'){e.stopImmediatePropagation();if(!n)return;n.btLista().then(function(r){S.imprLista=r.lista||[];render()},function(er){toast(er&&er.message?er.message:'No se pudo buscar')});return}
  if(a==='imprpon'){e.stopImmediatePropagation();S.impr=S.impr||{papel:'58',auto:false};S.impr.mac=b.dataset.mac;S.impr.nom=b.dataset.nom;toast('Impresora lista: '+(b.dataset.nom||''));render();return}

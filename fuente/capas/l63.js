@@ -156,11 +156,7 @@ function respUlt(){try{return localStorage.getItem('respUlt')}catch(e){return nu
 setInterval(function(){try{if(window.__pnTest&&!window.__respTest)return;if(!(S.role==='admin'&&!S.encOn)||!_cargado)return;if(respUlt()===iso(new Date()))return;respHaz(false)}catch(e){}},30000);
 setTimeout(function(){try{if(window.__pnTest&&!window.__respTest)return;if(S.role==='admin'&&!S.encOn&&respUlt()!==iso(new Date()))respHaz(false)}catch(e){}},8000);
 /* avisos: pasó a tema-avisos.js */
-var _aj63=ajHTML;ajHTML=function(){var h=_aj63.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!(S.role==='admin'&&!S.encOn))return h;var u=respUlt(),dn='';try{dn=localStorage.getItem('respDonde')||''}catch(e){}
- var c='<div class="card" data-key="respauto"><b>Respaldo automático</b><div class="lbl">Cada día, la primera vez que abres la app, se guarda una copia en este celular (se quedan los últimos 30 días).</div>'
-  +rw('Último',u?fmtF(u):'todavía no')+(dn?rw('Dónde',esc(dn)):'')
-  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="resphaz">Respaldar ahora</button><label class="btn sm sec" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer" for="respin">Restaurar</label></div><input id="respin" type="file" accept=".json,application/json" style="position:absolute;opacity:0;width:1px;height:1px"></div>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resphaz"]');if(!b)return;e.stopImmediatePropagation();respHaz(true)},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||t.id!=='respin')return;var f=t.files&&t.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){var o=null;try{o=JSON.parse(fr.result)}catch(er){}t.value='';
   if(!o||!o.datos||o.app!=='Ruta Fácil'){toast('Ese archivo no es un respaldo de Ruta Fácil');return}

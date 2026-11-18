@@ -61,7 +61,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='resdia'||a==='ressem'){S.resYa=true;return}if(a==='simabre'){S.simYa=true;return}
  e.stopImmediatePropagation();if(a==='aprendeoff'){S.aprendeOff=true;render();return}S.tab[S.role]=b.dataset.t;render();window.scrollTo(0,0)},true);
 /* Ajustes: tutorial por días */
-var _aj43=ajHTML;ajHTML=function(){var h=_aj43.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0)return h;return h.replace('data-act="tutver">Ver el tutorial otra vez</button>','data-act="tutver">Ver el tutorial otra vez</button><button class="btn sec" style="margin-top:8px" data-act="tutdias">'+(S.tutDiasOff?'Volver a prender los consejos de cada día':'Apagar los consejos de cada día')+'</button>'+(S.aprendeOff?'<button class="btn sec" style="margin-top:8px" data-act="aprendeon">Mostrar "Aprende la app"</button>':''))};
+/* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tutdias"],[data-act="aprendeon"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='tutdias')S.tutDiasOff=!S.tutDiasOff;else S.aprendeOff=false;render()},true);
 /* ---------- combustible del vehículo dentro de su tarjeta ---------- */
 /* fuelVeh: pasó a tema-vehiculos.js */

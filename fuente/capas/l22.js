@@ -39,7 +39,7 @@ var _bienv22=typeof bienvHTML==='function'?bienvHTML:null;
 var _rFoot22=render;render=function(){var r=_rFoot22.apply(this,arguments);if(REAL){var f=document.querySelector('main .foot');if(f&&f.style.display!=='none')f.style.display='none'}return r};
 function usrHTML(){if(!S.usrSel)return '';var L=personasEntrar();
  return '<div class="drawer" style="z-index:86" data-act="usrx"><nav role="dialog" aria-label="Cambiar de usuario" style="max-width:420px"><div style="display:flex;align-items:center"><b style="font-size:18px">¿Quién va a usar el celular?</b><button class="helpb" style="margin-left:auto" data-act="usrx" aria-label="Cerrar">×</button></div><div class="lbl">Te va a pedir el PIN de esa persona.</div>'+L.map(function(x,i){return '<button class="qa" style="margin-top:8px;width:100%;text-align:left" data-act="usrpick" data-i="'+i+'"><span class="grow"><b>'+esc(x.n)+'</b><br><span class="lbl">'+x.p+'</span></span><span style="font-size:20px">›</span></button>'}).join('')+'</nav></div>'}
-var _suH22=setupHTML;setupHTML=function(){var h=_suH22.apply(this,arguments);return h||usrHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 function entrarComo(x){var g=x.go;S.menu=false;S.usrSel=false;if(g.role==='rep'){if(+S.chofHoy!==+g.ch)chCambiar(+g.ch);S.arOn=false}if(g.role==='admin'){S.adminYo=g.adm;S.encOn=false}S.role=g.role;S.pinOk={};S.toast='';pinEntrar();render();window.scrollTo(0,0)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='usrcambia'){e.stopImmediatePropagation();S.menu=false;S.usrSel=true;render();return}
@@ -95,9 +95,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='vsave'&&S.vf){var f=JSON.parse(JSON.stringify(S.vf)),id=S.vfId,n0=S.veh.length;setTimeout(function(){var v=id!=null?vehById(id):(S.veh.length>n0?S.veh[S.veh.length-1]:null);if(!v)return;['marca','modelo','motor','llanta'].forEach(function(k){if(f[k]!=null)v[k]=String(f[k]).trim()});if(num(f.capK)>0)v.capK=num(f.capK);render()},0)}
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
 /* en la configuración inicial */
-var _suH22b=setupHTML;setupHTML=function(){var h=_suH22b.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==2)return h;var f=S.setup.vf||{};
- var x='<div class="lbl" style="margin-top:12px"><b>Datos del vehículo</b></div>'+VEH_X.filter(function(d){return ['marca','modelo','anio'].indexOf(d[0])<0}).map(function(d){return suX('setup.vf.'+d[0],d[1],f[d[0]],d[2],d[3])}).join('');
- return h.replace('<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>',x+'<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>')};
+/* setupHTML: pasó a tema-ajustes.js */
 var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
 /* faltantes del vehículo */
 var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
@@ -105,8 +103,8 @@ var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S
 /* ===================== Avisos de poca fruta (desde la configuración inicial) ===================== */
 var MIN_K=[['minV','Cajas verdes de roatán','cajas','verdes','Pide carga'],['minMad','Cajas maduras de roatán','cajas','maduras','Saca a madurar'],['minKV','Kilos de macho verde','kg','kgVerde','Pide carga'],['minKMad','Kilos de macho maduro','kg','kgMaduro','Saca a madurar']];
 function minCampos(pref){return '<div class="card" data-key="mincard"><b>¿Cuándo te aviso que hay poca fruta?</b><div class="lbl">Te aviso cuando quede esto o menos. Déjalo vacío si no quieres aviso.</div>'+MIN_K.map(function(m){return '<div class="field"><label for="'+pref+m[0]+'">'+m[1]+' ('+m[2]+')</label><input id="'+pref+m[0]+'" type="number" inputmode="decimal" min="0" data-bind="cfg.'+m[0]+'" value="'+esc(S.cfg[m[0]]==null?'':S.cfg[m[0]])+'"></div>'}).join('')+'</div>'}
-var _suH22c=setupHTML;setupHTML=function(){var h=_suH22c.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0||S.setup.p!==1)return h;var i=h.indexOf('<div class="card"><b>Macho (kilos aproximados)</b>');if(i<0)return h;var j=h.indexOf('<div class="wz-nav"',i);if(j<0)j=h.indexOf('<button class="btn" data-act="sunext"',i);return j>-1?h.slice(0,j)+minCampos('su_')+h.slice(j):h};
-var _aj22=ajHTML;ajHTML=function(){var h=_aj22.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin')return h;var i=h.indexOf('<div class="card" data-key="ajcred">');return i>-1?h.slice(0,i)+minCampos('aj_')+h.slice(i):h};
+/* setupHTML: pasó a tema-ajustes.js */
+/* ajHTML: pasó a tema-ajustes.js */
 function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(lim==null||lim==='')return;lim=num(lim);var hay=num(S.inv[m[3]]);if(hay<=lim)a.push('URGENTE: '+(m[2]==='kg'?'quedan pocos ':'quedan pocas ')+m[1].toLowerCase()+': '+(m[2]==='kg'?(Math.round(hay*10)/10).toLocaleString('es-MX')+' kg':hay+' cajas')+' (te aviso con '+lim+'). '+m[4]+'.')});return a}
 /* avisos: pasó a tema-avisos.js */
 

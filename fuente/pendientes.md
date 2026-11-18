@@ -2591,5 +2591,6 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - 123 · Al recibir el cierre ya no se acepta efectivo negativo (antes se registraba −$50 y anotaba un faltante de más; la caja bajaba). Aviso "El efectivo recibido no puede ser negativo". Del lado del chofer ya estaba en $0 como mínimo. Líneas 123 de `ql.py`; prueba `t123.js` (falla con la versión anterior).
 - Tema "Inicio del administrador y sus tarjetas" → `capas/tema-inicio.js` (24). 431 → **407 (28%)**. `pruebas/comp-inicio.js`: 123 casos iguales en la demo y 117 en la real; detecta un cambio a propósito. Todas las pruebas en 0 FAIL.
 - Fase 1 (vueltas con `vueltaId`): el plan de blindaje ya se le explicó a Ricardo (18 nov): número de vuelta desde la salida en cada venta, abono, gasto y cambio; lo viejo queda como vuelta 1 sin que brinque ningún número; revisión al cerrar (corte = suma de los registros de la vuelta). Ricardo dijo "continúa con Vite": **esperar a que diga** para empezarla.
-- Siguiente: Ajustes (ajHTML) y ventanas (setupHTML).
+- Tema "Ajustes y asistente de la primera vez" → `capas/tema-ajustes.js` (44: ajHTML 23, setupHTML 21). 407 → **363 (36%)**. `pruebas/comp-ajustes.js`: 37 casos iguales en la real y 19 en la demo; detecta cambios a propósito en los dos. Todas las pruebas en 0 FAIL.
+- Siguiente: lo que dibuja la pantalla (`render`, 118 envolturas: se parte en varios temas) y la nube (`nbAplica`, `fresh`), con mucho cuidado.
 

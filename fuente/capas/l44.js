@@ -7,9 +7,7 @@
 /* ---------- QR de clientes ---------- */
 function qrOn(){return !!S.cfg.qrOn}
 function cliQR(c){return 'RF-C:'+c.id}
-var _aj44=ajHTML;ajHTML=function(){var h=_aj44.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="ajqr"'+(S.dOpen.ajqr?' open':'')+'><summary><b>QR de clientes</b><span class="lbl">'+(qrOn()?'prendido':'apagado')+'</span></summary><div class="lbl" style="margin-top:6px">Cada cliente tiene un código QR para pegar en su local. El chofer lo escanea y se abre su entrega. Es solo un atajo.</div><div class="chips" role="group" aria-label="QR de clientes" style="margin:8px 0"><button data-act="qron" data-v="1" aria-pressed="'+qrOn()+'">Usar QR de clientes</button><button data-act="qron" data-v="0" aria-pressed="'+!qrOn()+'">No usar</button></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 /* fiCli: pasó a tema-fichas.js */
 function qrEtiqueta(c){return [{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:c.n,b:1}]}
 /* escanear (cámara del celular; sin internet) */
@@ -48,7 +46,7 @@ function mjSig(){var i=curStop();return i>=0?cl(S.stops[i].c):null}
 function mjHTML(){if(!MJ.on||!mjActivo())return '';var c=mjSig(),d=c&&MJ.ult&&c.lat!=null?kmE({lat:MJ.ult.lat,lng:MJ.ult.lng},c):null;
  return '<div id="mjov" role="dialog" aria-label="Manejando"><div class="lbl" style="font-size:16px">🛻 Manejando · '+Math.round(MJ.vel)+' km/h</div>'+(c?'<div class="lbl" style="font-size:18px">Siguiente parada</div><div class="sig">'+esc(c.n)+'</div>'+(d!=null?'<div style="font-size:20px">a '+(d<1?Math.round(d*1000)+' m':d.toFixed(1)+' km')+'</div>':''):'<div class="sig">Sin más paradas</div>')
   +(c?'<a class="btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none" target="_blank" rel="noopener" href="'+mapsLink(c)+'">🧭 Abrir Google Maps</a>':'')+'<button class="btn sec" data-act="mjcopi">Voy de copiloto</button><div class="lbl" style="text-align:center">Por tu seguridad, la app se esconde mientras manejas.</div></div>'}
-var _suH44=setupHTML;setupHTML=function(){return mjHTML()||pwHTML()||_suH44.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 function mjPos(p){var now=Date.now(),la=p.coords.latitude,ln=p.coords.longitude,v=p.coords.speed;if(v==null||isNaN(v)){if(MJ.ult){var dt=(now-MJ.ult.t)/1000,dk=kmE({lat:MJ.ult.lat,lng:MJ.ult.lng},{lat:la,lng:ln})/1.3;v=dt>0?dk*1000/dt:0}else v=0}var kmh=v*3.6;MJ.vel=kmh;MJ.ult={lat:la,lng:ln,t:now};
  if(kmh>15){MJ.len=0;MJ.rap=MJ.rap||now;if(!MJ.on&&now-MJ.rap>=20000){MJ.on=true;MJ.cerca=null;render()}}else if(kmh<5){MJ.rap=0;MJ.len=MJ.len||now;if(MJ.on&&now-MJ.len>=45000){MJ.on=false;render()}}else{MJ.rap=0;MJ.len=0}
  if(MJ.on&&document.getElementById('mjov'))try{var o=document.getElementById('mjov'),h=mjHTML();if(h){var w=document.createElement('div');w.innerHTML=h;o.replaceWith(w.firstElementChild)}}catch(e){}

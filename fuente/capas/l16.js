@@ -4,16 +4,7 @@
 function suX(path,l,v,t,ph){return '<div class="field"><label>'+l+'</label><input type="'+(t||'text')+'" data-bind="'+path+'" value="'+esc(v==null?'':v)+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+(t==='number'?' inputmode="decimal" min="0" step="any"':'')+(t==='tel'?' inputmode="tel"':'')+(t==='pin'?'':'')+(t==='text'||!t?' style="width:180px;text-align:left"':'')+'></div>'}
 function suPin(path,l,v){return '<div class="field"><label>'+l+'</label><input type="tel" inputmode="numeric" maxlength="4" pattern="[0-9]*" data-bind="'+path+'" value="'+esc(v||'')+'" placeholder="4 números" style="width:120px;letter-spacing:6px;text-align:center"></div>'}
 var SU_NOTA='<div class="lbl" style="margin-top:6px">Si no lo tienes a la mano, déjalo vacío: te lo recuerdo después.</div>';
-var _suH16=setupHTML;setupHTML=function(){var h=_suH16.apply(this,arguments);if(!h||h.indexOf('id="setov"')<0)return h;var U=S.setup,p=U.p;
- if(p===0){var k='a:'+S.adminYo;U.pinA=U.pinA==null?(S.pins[k]||''):U.pinA;
-  var x='<div class="card"><b>Datos del negocio</b>'+suX('cfg.tel','Teléfono',S.cfg.tel,'tel')+suX('cfg.dir','Dirección',S.cfg.dir)+suX('cfg.rfc','RFC (si facturas)',S.cfg.rfc)+suX('cfg.correo','Correo',S.cfg.correo,'email')+'</div><div class="card"><b>Tu PIN para entrar</b><div class="lbl">Así nadie más entra como administrador. No uses 1234.</div>'+suPin('setup.pinA','PIN',U.pinA)+'</div>';
-  var i=h.indexOf('<div class="card">');var j=i>-1?h.indexOf('</div>',h.indexOf('setup.yo',i)):-1;if(j>-1){j+=6;h=h.slice(0,j)+x+h.slice(j)}}
- if(p===2){var f=U.vf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">','<div class="lbl" style="margin-top:12px"><b>Seguro y papeles</b></div>'+suX('setup.vf.aseg','Aseguradora',f.aseg)+suX('setup.vf.segVence','El seguro vence',f.segVence,'date')+suX('setup.vf.tcVence','Tarjeta de circulación vence',f.tcVence,'date')+suX('setup.vf.verVence','Próxima verificación',f.verVence,'date')
-  +'<div class="lbl" style="margin-top:12px"><b>Para sus cuentas</b></div>'+suX('setup.vf.capL','Tanque (litros)',f.capL,'number')+suX('setup.vf.acLast','Km del último cambio de aceite',f.acLast,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="veh">')}
- if(p===3){var e=U.ef||{},ch=(e.puesto||'chofer')==='chofer';h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">',(ch?suX('setup.ef.licV','Su licencia vence',e.licV,'date'):'')+suX('setup.ef.sueldo','Sueldo por semana $',e.sueldo,'number')+suPin('setup.ef.pin','Su PIN (4 números)',e.pin)+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="per">')}
- if(p===4){var c=U.cf||{};h=h.replace(/(data-bind="setup\.cf\.n"[^>]*><\/div>)/,'$1'+suX('setup.cf.ap','Apodo o cómo le dicen',c.ap,'text','ej. la de la esquina verde'));h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">',suX('setup.cf.hAb','Abre a las',c.hAb,'time')+suX('setup.cf.hCi','Cierra a las',c.hCi,'time')+suX('setup.cf.recibe','¿Quién recibe?',c.recibe,'text','ej. Don Beto')+suX('setup.cf.lim','Límite de crédito $',c.lim,'number')+SU_NOTA+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="cli">')}
- if(p===5){var pf=U.pf||{};h=h.replace('<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">',suX('setup.pf.dir','Dirección o lugar',pf.dir)+'<button class="btn sec" style="margin-top:8px" data-act="suadd" data-k="prov">')}
- return h};
+/* setupHTML: pasó a tema-ajustes.js */
 /* el PIN solo números */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.maxLength===4&&t.dataset&&/pin/i.test(t.dataset.bind||'')){var v=t.value.replace(/\D/g,'').slice(0,4);if(v!==t.value)t.value=v;var ps=t.dataset.bind.split('.'),o=S;for(var i=0;i<ps.length-1;i++){o=o[ps[i]];if(!o)return}o[ps[ps.length-1]]=v}},false);
 var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
@@ -87,7 +78,7 @@ function dfHTML(){if(!S.dfOpen||!dfOn())return '';var L=dfLista(),h='<div id="df
  DF_GR.forEach(function(g){var X=[];L.forEach(function(x,i){if(x.pr===g[0])X.push([x,i])});if(!X.length)return;
   h+='<div class="card"><b>'+g[1]+'</b> <span class="pill'+(g[0]<=2?' warn':'')+'">'+X.length+'</span>'+X.map(function(y){return '<button class="dfit" data-act="dfgo" data-i="'+y[1]+'"><span class="grow">'+esc(y[0].txt)+'</span><span style="font-size:20px">›</span></button>'}).join('')+'</div>'});
  return h+'</div></div>'}
-var _suH16b=setupHTML;setupHTML=function(){var h=_suH16b.apply(this,arguments);return h||dfHTML()};
+/* setupHTML: pasó a tema-ajustes.js */
 /* ir a donde se llena */
 function dfIr(x){var g=x.go;S.dfOpen=false;S.menu=false;var sel=null;
  if(g.t==='aj'){S.aj=true;sel=/PIN/.test(x.txt)?'#ajov [data-act^="pin"]':(/RFC/.test(x.txt)?'#ajov [data-bind="cfg.rfc"]':(/Teléfono/.test(x.txt)?'#ajov [data-bind="cfg.tel"]':'#ajov [data-bind="cfg.dir"]'))}

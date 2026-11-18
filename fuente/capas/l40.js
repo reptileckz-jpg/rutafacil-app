@@ -91,7 +91,7 @@ function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter
   +'<div class="card"><b>¿A quién?</b><div class="chips" style="margin-top:6px">'+ids.filter(function(i){return i!==x.de}).map(function(i){return '<button data-act="pasaa" data-id="'+i+'" aria-pressed="'+(x.a===i)+'">'+esc(chofN(i))+'</button>'}).join('')+'</div></div>'
   +'<div class="card"><b>Clientes pendientes ('+L.length+')</b>'+L.map(function(s){var c=cl(s.c)||{n:''};return '<label class="row" style="cursor:pointer"><span>'+esc(c.n)+'</span><input type="checkbox" data-pasac="'+s.c+'"'+(x.sel[s.c]!==false?' checked':'')+'></label>'}).join('')+'</div>'
   +'<button class="btn" style="margin-top:12px" data-act="pasasi">Pasar'+(x.a?' a '+esc(chofN(x.a)):'')+'</button></div></div>'}
-var _suH40=setupHTML;setupHTML=function(){return pasaRutaHTML()||_suH40.apply(this,arguments)};
+/* setupHTML: pasó a tema-ajustes.js */
 /* fiEmp: pasó a tema-fichas.js */
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pasac&&S.pasaR)S.pasaR.sel[t.dataset.pasac]=t.checked},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;

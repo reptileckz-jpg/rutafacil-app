@@ -1,8 +1,8 @@
 /* ===================== v5 · WhatsApp del negocio en los tickets =====================
    Cada chofer manda el ticket desde su propio número, pero el ticket dice a dónde pedir: el WhatsApp del
    negocio (el de tu papá). Si un chofer captura un número de cliente que no estaba, te llega aviso para revisarlo. */
-var _aj18=ajHTML;ajHTML=function(){return _aj18.apply(this,arguments).replace(/(<label[^>]*>)Teléfono del negocio(<\/label>)/,'$1WhatsApp del negocio (sale en los tickets)$2')};
-var _suH18=setupHTML;setupHTML=function(){var h=_suH18.apply(this,arguments);return h?h.replace('<label>Teléfono</label><input type="tel" data-bind="cfg.tel"','<label>WhatsApp del negocio (sale en los tickets)</label><input type="tel" data-bind="cfg.tel"'):h};
+/* ajHTML: pasó a tema-ajustes.js */
+/* setupHTML: pasó a tema-ajustes.js */
 var _nI18=notaItems;notaItems=function(n){var it=_nI18.apply(this,arguments),t=String(S.cfg.tel||'').trim();if(!t)return it;
  it=it.filter(function(x){return !(x.t==='c'&&x.s==='Tel. '+t)});var k=it.length-1;it.splice(k,0,{t:'c',s:'Pedidos por WhatsApp:'},{t:'c',s:t,b:1});return it};
 function telNuevoAviso(c,tel,como){if(!c||!String(tel||'').replace(/\D/g,''))return;c.telPor=chofN(S.chofHoy);S.avPrecio.push('Revisa el número: '+chofN(S.chofHoy)+' capturó el WhatsApp de '+c.n+' ('+tel+')'+(como?' '+como:''))}

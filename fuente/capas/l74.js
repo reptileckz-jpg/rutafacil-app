@@ -112,10 +112,7 @@ var _desg74=desg;desg=function(c,k){var h=_desg74.apply(this,arguments);if(typeo
  h=h.replace(/Desgaste del vehículo \(/g,'Desgaste al ir por la fruta (');
  if(rp.est){h=h.replace('+ Repartirla <span class="lbl">(sin rutas cerradas todavía)</span>','+ Repartirla: desgaste de la camioneta <span class="lbl">(estimado: '+rp.estKm+' km de ruta; sale real al cerrar rutas)</span>').replace('>+ Repartirlo<','>+ Repartirlo: desgaste de la camioneta <span class="lbl">(estimado)</span><')}
  else h=h.replace('>+ Repartirla<','>+ Repartirla <span class="lbl">(combustible, gastos, desgaste y sueldo de las rutas)</span><');return h};
-var _aj74=ajHTML;ajHTML=function(){var h=_aj74.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
- var c='<details class="card" data-k="aj74rep"'+(S.dOpen.aj74rep?' open':'')+'><summary><b>🚚 Costo de repartir (mientras no hay rutas)</b><span class="lbl">para el precio sugerido</span></summary><div class="lbl" style="margin-top:6px">Mientras no haya rutas cerradas, el costo de repartir se estima con el desgaste de la camioneta. Al cerrar rutas se usa lo real.</div>'
-  +'<div class="field"><label for="kmRuta">Kilómetros de una ruta normal</label><input id="kmRuta" type="number" inputmode="decimal" data-bind="cfg.kmRuta" value="'+esc(S.cfg.kmRuta||'')+'" placeholder="40"></div><div class="field"><label for="cajRuta">Cajas de roatán en una ruta</label><input id="cajRuta" type="number" inputmode="decimal" data-bind="cfg.cajRuta" value="'+esc(S.cfg.cajRuta||'')+'" placeholder="40"></div><div class="field"><label for="kgRuta">Kilos de macho en una ruta</label><input id="kgRuta" type="number" inputmode="decimal" data-bind="cfg.kgRuta" value="'+esc(S.cfg.kgRuta||'')+'" placeholder="150"></div></details>';
- var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+/* ajHTML: pasó a tema-ajustes.js */
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */

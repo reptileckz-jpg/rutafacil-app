@@ -2549,3 +2549,17 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - 17 nov · Estadísticas "reading 'k'" → ARREGLADO en 120.
 - Pruebas: `t121.js` (21 OK: un día completo con todos sus números exactos, Inicio, pantalla, fotos, semana, mes, calculadora, Más); `t120.js` actualizado (24 OK); `t92` actualizado. Fotos `fotos/121-*.png`.
 
+## 2026-11-18 · 122 · Ricardo mandó "INSTRUCCIONES OBLIGATORIAS DE DESARROLLO" (reglas de los números) y decidió: "mientras se guarden los totales de ventas, gastos y netos por mes y año está bien; las rutas se pueden borrar después de 1 o 2 meses; con 60 días es suficiente". "Haz todo lo necesario para que la aplicación funcione bien."
+- Reglas guardadas en `fuente/REGLAS-NUMEROS.md` (con los ajustes: "vuelta" en lugar de "viaje", `writeBatch` y no `runTransaction` en ruta, límite de 1 MB, centavos al mostrar, `MainActivity.java`, appId y hostname). Ligadas desde instrucciones, LEEME y CONTEXTO.
+- **HECHO 122** (sin publicar):
+  - **GRAVE, encontrado al probar con dos celulares:** en la nube cada ruta del historial tenía la llave fecha + chofer. Varios cierres del mismo día se encimaban: el 2º pisaba al 1º, y al cambiar de día el final pisaba a los demás. El arreglo del 120 solo funcionaba en el mismo celular. Ahora cada cierre tiene su llave (`l28 nbElKey`). Prueba `t122nube.js` (7 OK): 3 cierres en el celular del chofer llegan completos al admin, sin mezclarse al día siguiente, y la caja del admin sube exacto ($4,400 y luego $5,500).
+  - **60 días de detalle + resúmenes para siempre** (`capas/tema-retencion.js`), solo en el celular del admin, una vez al día, con la nube cargada:
+    1. Guarda el resumen de cada día en `S.resDia` (fila de Estadísticas + Cuadre en números). Los últimos 60 días se recalculan; los viejos no se vuelven a tocar.
+    2. Quita el detalle de más de 60 días (rutas, cierres recibidos, gastos —los del vehículo 400 días—, abonos en bodega, venta en bodega, mermas) y deja en la misma lista un "arrastre" con lo que sumaba a la caja (llave fija por día: no se duplica).
+    3. La bitácora se queda con los últimos 3,000 renglones.
+    - Estadísticas, el Cuadre (día, semana, mes y **año**, con "Mes por mes") y los totales usan el resumen en los días sin detalle; el Cuadre dice "Resumen guardado".
+    - Ya no se recorta a 400 rutas en cualquier celular (`l21`).
+    - Prueba `t122.js` (14 OK): caja idéntica al centavo, Estadísticas, Cuadre del día, mes y año iguales antes y después; si se repite nada se duplica; el chofer nunca borra.
+  - **Centavos:** `money()` muestra centavos cuando los hay ($12.50, no $13).
+  - **La venta guarda** el nombre del cliente de ese momento (`cn`) y su id único (`id`). Lo revisa `t115`.
+

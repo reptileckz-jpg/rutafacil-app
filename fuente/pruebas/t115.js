@@ -30,6 +30,7 @@ ok(/Ya debía 4 · le dejas 4 · devuelve 2/.test(r[0])&&/Queda debiendo 6 cajas
 // guardar: el dinero cuadra (paga todo + liquida)
 r=await ev(async()=>{S.d.V=4;S.d.mode='todo';document.querySelector('[data-act="abono115"][data-v="1000"]').click();var c=S.cli[0],ef0=cierreRes().efectivo,cob=cobro115();S.d._deb109='no';S.d._tar72='no';
  document.querySelector('[data-act="entconf"]').click();await new Promise(r=>setTimeout(r,300));var g=document.querySelector('[data-act="guardar"]');if(g)g.click();await new Promise(r=>setTimeout(r,500));return {cob,ef:cierreRes().efectivo-ef0,cred:c.cred,log:S.log.length}});
+r.cn=await ev(()=>({cn:S.log[S.log.length-1].cn,id:S.log[S.log.length-1].id}));ok(r.cn.cn==='Doña Mary'&&/^e/.test(r.cn.id||''),'122 · la venta guarda el nombre del cliente de ese momento y su propio número',r.cn);
 ok(r.log===1&&r.cob===2100&&Math.abs(r.ef-2100)<0.01&&r.cred===0,'115 · al guardar: el efectivo del chofer sube lo que dijo "A cobrar" ($2,100) y el cliente queda en $0',r);
 ok(!errs.length,'sin errores de página',errs.slice(0,3));
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

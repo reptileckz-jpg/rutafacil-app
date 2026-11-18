@@ -128,3 +128,5 @@ R("function logCash(){return sum(S.log,function(l){return l.pago+l.abono})}","fu
 R("function cobAdm(){return sum(S.cobros,function(x){return x.m})}","function cobAdm(){return sum(S.cobros||[],function(x){return num(x&&x.m)})}")
 R("function addedG(){return sum(S.gastos,function(g){return g.caja===false?0:g.m})}","function addedG(){return sum(S.gastos||[],function(g){return !g||g.caja===false?0:num(g.m)})}")
 R("function credTotal(){return sum(S.cli,function(c){return c.cred})}","function credTotal(){return sum(S.cli||[],function(c){return num(c&&c.cred)})}")
+# 122 · el dinero con centavos cuando los hay (antes $12.50 se veía $13 y la suma de renglones podía no dar el total)
+R("money=function(n){n=Math.round(num(n));return (n<0?'−$':'$')+Math.abs(n).toLocaleString('es-MX')};","money=function(n){n=Math.round(num(n)*100)/100;var a=Math.abs(n),ent=Math.abs(a-Math.round(a))<0.005;return (n<0?'−$':'$')+(ent?Math.round(a).toLocaleString('es-MX'):a.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}))};")

@@ -3146,7 +3146,7 @@ var BAN_IC="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
 ];var st=document.createElement('style');st.textContent=css.join('\n');document.head.appendChild(st)})();
 
 /* 5. dinero negativo: −$1,234 */
-money=function(n){n=Math.round(num(n));return (n<0?'−$':'$')+Math.abs(n).toLocaleString('es-MX')};
+money=function(n){n=Math.round(num(n)*100)/100;var a=Math.abs(n),ent=Math.abs(a-Math.round(a))<0.005;return (n<0?'−$':'$')+(ent?Math.round(a).toLocaleString('es-MX'):a.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}))};
 
 /* 3. Ajustes ordenados */
 ajHTML=function(){if(!S.aj)return '';var adm=S.role==='admin'&&!S.encOn,c=S.cfg,fo=prefG('forma','auto'),vb=prefG('vib','1'),sn=prefG('snd','0'),im=S.impr||{papel:'58',auto:false},t=c.tema||'auto';
@@ -5248,7 +5248,7 @@ function cambioDeDia(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return;S.r
  var act=arPack();if(archiva(act,S.chofHoy)){arLoad(chNuevo(+S.chofHoy))}
  Object.keys(S.chSt||{}).forEach(function(id){if(archiva(S.chSt[id],+id))delete S.chSt[id]});
  if(S.arSt&&archiva(S.arSt,S.arSt.chofHoy))S.arSt=null;
- S.recep=null;S.cierreReg=null;S.cierreRec='';S.rutasHist=S.rutasHist.slice(-400);
+ S.recep=null;S.cierreReg=null;S.cierreRec='';/* 122 · ya no se recorta a 400 rutas en cualquier celular: el admin guarda el resumen y quita lo de más de 60 días (tema-retencion) */
  if(pend.length)S.avPrecio.push('URGENTE: '+pend.join(', ')+' no envió su cierre de ayer ('+fmtF(viejo)+'). Pídele que lo envíe.')}
 if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viejo=o._dia;delete o._dia;delete o._guardado;Object.keys(f).forEach(function(k){if(!(k in o))o[k]=f[k]});S=o;cambioDeDia(viejo);S.pinOk={};S.usrSel=false;S.menu=false;if(!(S.setup&&!S.setup.fin))pinEntrar();_gUlt='';render()}}catch(e){console.error('cargar',e)}_cargado=true;guardarLuego()});
 /* ---- el admin ve la ruta de cada chofer ---- */
@@ -5818,7 +5818,7 @@ function nbUnidades(){var U=[];NB_SH.forEach(function(k){U.push({id:'s~'+k,k:k,p
 function nbRGet(id,k){if(+S.chofHoy===+id){if(k==='invR')return S.inv?S.inv.reparto:undefined;if(k==='invM')return S.inv?S.inv.repartoKg:undefined;return S[k]}var o=S.chSt&&S.chSt[id];return o?o[k]:undefined}
 function nbRSet(id,k,v){if(+S.chofHoy===+id){if(k==='invR'){S.inv.reparto=num(v);return}if(k==='invM'){S.inv.repartoKg=num(v);return}S[k]=v;return}S.chSt=S.chSt||{};if(!S.chSt[id]){try{S.chSt[id]=chNuevo(+id)}catch(e){S.chSt[id]={}}}S.chSt[id][k]=v}
 /* ---------- codificar: valor → campos planos ---------- */
-function nbElKey(u,el,i,seen){if(nbEsObj(el)){if(u.k==='rutasHist'&&el.f&&el.ch!=null)return 'r'+nbEk(el.f+'_'+el.ch);if(el.id!=null&&!seen['i'+el.id]){seen['i'+el.id]=1;return 'i'+nbEk(el.id)}if(!el._k)el._k=Math.random().toString(36).slice(2,10);return 'k'+nbEk(el._k)}
+function nbElKey(u,el,i,seen){if(nbEsObj(el)){if(u.k==='rutasHist'&&el.f&&el.ch!=null)return 'r'+nbEk(el.f+'_'+el.ch+(el.parcial120?'_p'+(el.id120||el.n120):''));/* 122 · cada cierre del día con su propia llave (antes uno por chofer por día: el 2º pisaba al 1º en la nube) */if(el.id!=null&&!seen['i'+el.id]){seen['i'+el.id]=1;return 'i'+nbEk(el.id)}if(!el._k)el._k=Math.random().toString(36).slice(2,10);return 'k'+nbEk(el._k)}
  var h='h'+nbHash(nbJ(el)),n=0;while(seen[h+'_'+n])n++;seen[h+'_'+n]=1;return h+'_'+n}
 function nbCodifica(u,v){var F={};_nbPerm=u.perm;if(v===undefined)return null;
  if(u.cont){F.k=nbEsObj(v)?'c':'n';if(F.k==='n'){F['c:']=num(v);return F}Object.keys(v).forEach(function(p){if(u.k==='inv'&&(p==='reparto'||p==='repartoKg'))return;var x=v[p];if(typeof x==='number')F['c:'+nbEk(p)]=x;else F['e:'+nbEk(p)+'|=']=nbJ(x)});return F}
@@ -10310,7 +10310,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4744,"l14.js"],[4820,"l15.js"],[4882,"l16.js"],[4991,"l17.js"],[5022,"l18.js"],[5102,"l19.js"],[5172,"l20.js"],[5221,"l21.js"],[5267,"l22.js"],[5465,"l23.js"],[5519,"l24.js"],[5535,"l25.js"],[5566,"l26.js"],[5709,"l27.js"],[5775,"l28.js"],[5907,"l29.js"],[6033,"l30.js"],[6077,"l31.js"],[6113,"l32.js"],[6207,"l33.js"],[6226,"l34.js"],[6286,"l35.js"],[6346,"l36.js"],[6444,"l37.js"],[6465,"l38.js"],[6553,"l39.js"],[6634,"l40.js"],[6758,"l41.js"],[6842,"l42.js"],[6945,"l43.js"],[7047,"l44.js"],[7148,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7425,"l48.js"],[7480,"l49.js"],[7516,"l50.js"],[7620,"l51.js"],[7630,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8049,"l58.js"],[8176,"l59.js"],[8236,"l60.js"],[8398,"l61.js"],[8455,"l62.js"],[8585,"l63.js"],[8756,"l64.js"],[8788,"l65.js"],[8889,"l66.js"],[8995,"l67.js"],[9022,"l68.js"],[9156,"l69.js"],[9383,"l70.js"],[9605,"l71.js"],[9730,"l72.js"],[9848,"l73.js"],[9924,"l74.js"],[10048,"l75.js"],[10201,"l76.js"],[10304,"l77.js"],[10432,"l78.js"],[10582,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11220,"l83.js"],[11289,"l84.js"],[11402,"l85.js"],[11463,"tema-rutadia.js"],[11628,"l86.js"],[11688,"l87.js"],[11731,"l88.js"],[11781,"l89.js"],[11830,"l90.js"],[11936,"tema-cobranza.js"],[12083,"tema-pantallas.js"],[12304,"tema-avisos.js"],[12466,"tema-reparte.js"],[12532,"tema-vehiculos.js"],[12676,"tema-notas.js"],[12693,"tema-taras.js"],[12800,"tema-cargarmas.js"],[12839,"tema-cargas.js"],[12873,"tema-cobro.js"],[12909,"tema-horario.js"],[12948,"tema-sueldos.js"],[13090,"tema-ganado.js"],[13135,"tema-cierres.js"],[13234,"tema-finanzas.js"],[13307,"tema-cuadre.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4744,"l14.js"],[4820,"l15.js"],[4882,"l16.js"],[4991,"l17.js"],[5022,"l18.js"],[5102,"l19.js"],[5172,"l20.js"],[5221,"l21.js"],[5267,"l22.js"],[5465,"l23.js"],[5519,"l24.js"],[5535,"l25.js"],[5566,"l26.js"],[5709,"l27.js"],[5775,"l28.js"],[5907,"l29.js"],[6033,"l30.js"],[6077,"l31.js"],[6113,"l32.js"],[6207,"l33.js"],[6226,"l34.js"],[6286,"l35.js"],[6346,"l36.js"],[6444,"l37.js"],[6465,"l38.js"],[6553,"l39.js"],[6634,"l40.js"],[6758,"l41.js"],[6842,"l42.js"],[6945,"l43.js"],[7047,"l44.js"],[7148,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7425,"l48.js"],[7480,"l49.js"],[7516,"l50.js"],[7620,"l51.js"],[7630,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8049,"l58.js"],[8176,"l59.js"],[8236,"l60.js"],[8398,"l61.js"],[8455,"l62.js"],[8585,"l63.js"],[8756,"l64.js"],[8788,"l65.js"],[8889,"l66.js"],[8995,"l67.js"],[9022,"l68.js"],[9156,"l69.js"],[9383,"l70.js"],[9605,"l71.js"],[9730,"l72.js"],[9848,"l73.js"],[9924,"l74.js"],[10048,"l75.js"],[10201,"l76.js"],[10304,"l77.js"],[10432,"l78.js"],[10582,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11220,"l83.js"],[11289,"l84.js"],[11402,"l85.js"],[11463,"tema-rutadia.js"],[11628,"l86.js"],[11688,"l87.js"],[11731,"l88.js"],[11781,"l89.js"],[11830,"l90.js"],[11936,"tema-cobranza.js"],[12083,"tema-pantallas.js"],[12304,"tema-avisos.js"],[12466,"tema-reparte.js"],[12532,"tema-vehiculos.js"],[12676,"tema-notas.js"],[12693,"tema-taras.js"],[12800,"tema-cargarmas.js"],[12839,"tema-cargas.js"],[12873,"tema-cobro.js"],[12909,"tema-horario.js"],[12948,"tema-sueldos.js"],[13090,"tema-ganado.js"],[13135,"tema-cierres.js"],[13234,"tema-finanzas.js"],[13307,"tema-cuadre.js"],[13496,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -13386,11 +13386,11 @@ function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[];try{P=rutasDia
   deb:r2(sum(CHL,function(o){return o.deb})),ent:r2(sum(CHL,function(o){return o.ent})),rec:r2(sum(CHL,function(o){return o.rec})),cierres:sum(CHL,function(o){return o.partes.filter(function(p){return p.sent||p.parcial}).length})};
  T.sinCosto=(T.R>0&&!(num(c.R)>0))||(T.M>0&&!(num(c.M)>0));T.neto=r2(T.gan-T.op-T.desg-T.suT-T.comT-T.merma);return T}
 /* varios días juntos (semana, mes) */
-function cuadreRango121(d0,d1){var D=[],d=d0,i=0,h=iso(TODAY);if(d1>h)d1=h;while(d<=d1&&i<40){D.push(cuadreDia121(d));d=addD121(d,1);i++}
+function cuadreRango121(d0,d1){var D=[],d=d0,i=0,h=iso(TODAY);if(d1>h)d1=h;while(d<=d1&&i<370){D.push(cuadreDia121(d));d=addD121(d,1);i++}
  var A={dias:D,cat:{},venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,suT:0,comT:0,merma:0,op:0,mant:0,neto:0,deb:0,ent:0,rec:0,cierres:0,ch:{},su:{},loc:{venta:0,gan:0}};
  D.forEach(function(x){if(x.sinCosto)A.sinCosto=true;['venta','contado','cred','ab','abB','R','M','gan','km','desg','suT','comT','merma','op','mant','neto','deb','ent','rec','cierres'].forEach(function(k){A[k]=num(A[k])+num(x[k])});A.loc.venta+=x.loc.venta;A.loc.gan+=x.loc.gan;
   Object.keys(x.cat).forEach(function(k){A.cat[k]=(A.cat[k]||0)+x.cat[k]});
-  x.ch.forEach(function(o){var a=A.ch[o.ch]=A.ch[o.ch]||{ch:o.ch,n:o.n,venta:0,cred:0,gan:0,km:0,desg:0,gasT:0,sueldo:0,com:0,neto:0,cierres:0,dias:0,deb:0,ent:0,rec:0};['venta','cred','gan','km','desg','gasT','sueldo','com','neto','deb','ent','rec'].forEach(function(k){a[k]+=num(o[k])});a.cierres+=o.partes.filter(function(p){return p.sent||p.parcial}).length;a.dias++});
+  x.ch.forEach(function(o){var a=A.ch[o.ch]=A.ch[o.ch]||{ch:o.ch,n:o.n,venta:0,cred:0,gan:0,km:0,desg:0,gasT:0,sueldo:0,com:0,neto:0,cierres:0,dias:0,deb:0,ent:0,rec:0};['venta','cred','gan','km','desg','gasT','sueldo','com','neto','deb','ent','rec'].forEach(function(k){a[k]+=num(o[k])});a.cierres+=o.partes&&o.partes.length?o.partes.filter(function(p){return p.sent||p.parcial}).length:num(o.cierres);a.dias++});
   x.su.forEach(function(s){var a=A.su[s.ch]=A.su[s.ch]||{n:s.n,s:0,com:0,dias:0};a.s+=s.s;a.com+=s.com;if(s.s)a.dias++})});
  Object.keys(A).forEach(function(k){if(typeof A[k]==='number')A[k]=r2(A[k])});return A}
 
@@ -13429,25 +13429,27 @@ function choferHTML121(o){var k='cu121c'+o.ch,abierta=S.dOpen[k]!==false;
   +lst('Abonos que cobró',o.abonos,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n),money(x.m))})
   +lst('Taras',o.taras,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n),(x.neto>0?'prestó '+x.neto:'regresó '+(-x.neto)),x.neto>0?'neg':'','dejó '+x.dejo+' llenas · recogió '+x.recogio+' vacías'+(x.rotas?' ('+x.rotas+' rotas)':''))})
   +lst('Gastos de su ruta',o.gastos,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.t),money(x.m))})+'</details>'}
-function cuPer121(){return ['dia','semana','mes'].indexOf(S.cu121p)>-1?S.cu121p:'dia'}
+function cuPer121(){return ['dia','semana','mes','anio'].indexOf(S.cu121p)>-1?S.cu121p:'dia'}
 function cuDia121(){var d=S.cu121d;return /^\d{4}-\d\d-\d\d$/.test(d||'')&&d<=iso(TODAY)?d:iso(TODAY)}
 function cuadre121(){var P=cuPer121(),d=cuDia121(),hoy=iso(TODAY),h='<h1>💰 Cuadre</h1>';
- h+='<div class="chips" role="group" aria-label="Periodo" style="margin:6px 0">'+[['dia','Día'],['semana','Semana'],['mes','Mes']].map(function(x){return '<button data-act="cu121p" data-v="'+x[0]+'" aria-pressed="'+(P===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
- var d0,d1,tit;if(P==='dia'){d0=d1=d;tit=d===hoy?'Hoy · '+fC121(d):fC121(d)}else if(P==='semana'){d0=lunes121(d);d1=addD121(d0,6);tit='Semana del '+fC121(d0)+' al '+fC121(d1)}else{d0=d.slice(0,8)+'01';var x=dOf(d0);x.setMonth(x.getMonth()+1);x.setDate(0);d1=iso(x);tit=MS121[dOf(d0).getMonth()].replace(/^./,function(c){return c.toUpperCase()})+' '+d0.slice(0,4)}
- var paso=P==='dia'?1:(P==='semana'?7:0),ant=P==='mes'?(function(){var x=dOf(d0);x.setMonth(x.getMonth()-1);return iso(x)})():addD121(d,-paso),sig=P==='mes'?(function(){var x=dOf(d0);x.setMonth(x.getMonth()+1);return iso(x)})():addD121(d,paso);
+ h+='<div class="chips" role="group" aria-label="Periodo" style="margin:6px 0">'+[['dia','Día'],['semana','Semana'],['mes','Mes'],['anio','Año']].map(function(x){return '<button data-act="cu121p" data-v="'+x[0]+'" aria-pressed="'+(P===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
+ var d0,d1,tit;if(P==='dia'){d0=d1=d;tit=d===hoy?'Hoy · '+fC121(d):fC121(d)}else if(P==='semana'){d0=lunes121(d);d1=addD121(d0,6);tit='Semana del '+fC121(d0)+' al '+fC121(d1)}else if(P==='mes'){d0=d.slice(0,8)+'01';var x=dOf(d0);x.setMonth(x.getMonth()+1);x.setDate(0);d1=iso(x);tit=MS121[dOf(d0).getMonth()].replace(/^./,function(c){return c.toUpperCase()})+' '+d0.slice(0,4)}else{d0=d.slice(0,4)+'-01-01';d1=d.slice(0,4)+'-12-31';tit='Año '+d.slice(0,4)}
+ var paso=P==='dia'?1:(P==='semana'?7:0),ant=P==='mes'?(function(){var x=dOf(d0);x.setMonth(x.getMonth()-1);return iso(x)})():(P==='anio'?(+d.slice(0,4)-1)+'-12-31':addD121(d,-paso)),sig=P==='mes'?(function(){var x=dOf(d0);x.setMonth(x.getMonth()+1);return iso(x)})():(P==='anio'?(+d.slice(0,4)+1)+'-01-01':addD121(d,paso));
  h+='<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><button class="btn sec" style="width:auto;min-height:48px;padding:0 16px" data-act="cu121d" data-v="'+ant+'" aria-label="Anterior">‹</button><input type="date" data-cu121f="1" max="'+hoy+'" value="'+d+'" style="flex:1;min-height:48px" aria-label="Día"><button class="btn sec" style="width:auto;min-height:48px;padding:0 16px" data-act="cu121d" data-v="'+(sig>hoy?hoy:sig)+'" aria-label="Siguiente"'+(d1>=hoy?' disabled':'')+'>›</button>'+(d!==hoy?'<button class="btn sec" style="width:auto;min-height:48px;padding:0 12px" data-act="cu121d" data-v="'+hoy+'">Hoy</button>':'')+'</div>';
  try{h+=perdidosHTML120()}catch(e){}
- if(P==='dia'){var T=cuadreDia121(d);h+=resultadoHTML121(T,tit)+cajaHTML121(T,true);
+ if(P==='dia'){var T=cuadreDia121(d);h+=(T.resumen?'<div class="card note" style="padding:10px 12px"><b>Resumen guardado</b><div class="lbl">De este día se guardan para siempre los números. El detalle (cada cierre, fotos, clientes y taras) se guarda '+(typeof RET122!=='undefined'?RET122:60)+' días.</div></div>':'')+resultadoHTML121(T,tit)+cajaHTML121(T,true);
   if(!T.ch.length)h+='<div class="card"><div class="lbl">No hubo rutas este día.</div></div>';h+=T.ch.map(choferHTML121).join('');
   if(T.loc.n)h+='<div class="card" style="padding:12px 14px"><b>🏪 Venta en bodega</b>'+rwN121('Ventas',money(T.loc.venta),'',T.loc.n+' venta'+(T.loc.n===1?'':'s'))+rwN121('Ganancia',money(T.loc.gan))+'</div>';
   var bod=T.su.filter(function(s){return !T.ch.some(function(o){return o.ch===s.ch})});if(bod.length)h+='<div class="card" style="padding:12px 14px"><b>👷 Sueldos del día de quien no salió a ruta</b>'+bod.map(function(s){return rwN121(esc(s.n)+(s.vac?' (vacaciones)':''),money(s.s+s.com))}).join('')+'</div>';
   return h}
  var A=cuadreRango121(d0,d1);h+=resultadoHTML121(A,tit)+cajaHTML121(A,false);
- h+='<div class="card" style="padding:12px 14px"><b>Día por día</b>'+A.dias.slice().reverse().map(function(x){return '<button data-act="cu121dia" data-v="'+x.d+'" style="display:flex;justify-content:space-between;width:100%;min-height:48px;align-items:center;background:none;border:0;border-top:1px solid var(--line);color:inherit;text-align:left"><span>'+fC121(x.d)+'<br><span class="lbl">vendió '+money(x.venta)+(x.cierres?' · '+x.cierres+' cierre'+(x.cierres===1?'':'s'):'')+'</span></span><b style="color:'+(x.neto<0?'var(--danger)':'var(--accent)')+'">'+money(x.neto)+' ›</b></button>'}).join('')+'</div>';
+ if(P==='anio'){var MM={};A.dias.forEach(function(x){var m=x.d.slice(0,7),o=MM[m]=MM[m]||{venta:0,neto:0,cierres:0};o.venta+=x.venta;o.neto+=x.neto;o.cierres+=x.cierres});h+='<div class="card" style="padding:12px 14px"><b>Mes por mes</b>'+Object.keys(MM).sort().reverse().map(function(m){var o=MM[m];return '<button data-act="cu121mes" data-v="'+m+'-01" style="display:flex;justify-content:space-between;width:100%;min-height:48px;align-items:center;background:none;border:0;border-top:1px solid var(--line);color:inherit;text-align:left"><span>'+MS121[+m.slice(5)-1].replace(/^./,function(c){return c.toUpperCase()})+' '+m.slice(0,4)+'<br><span class="lbl">vendió '+money(o.venta)+(o.cierres?' · '+o.cierres+' cierres':'')+'</span></span><b style="color:'+(o.neto<0?'var(--danger)':'var(--accent)')+'">'+money(o.neto)+' ›</b></button>'}).join('')+'</div>'}
+ else h+='<div class="card" style="padding:12px 14px"><b>Día por día</b>'+A.dias.slice().reverse().map(function(x){return '<button data-act="cu121dia" data-v="'+x.d+'" style="display:flex;justify-content:space-between;width:100%;min-height:48px;align-items:center;background:none;border:0;border-top:1px solid var(--line);color:inherit;text-align:left"><span>'+fC121(x.d)+'<br><span class="lbl">vendió '+money(x.venta)+(x.cierres?' · '+x.cierres+' cierre'+(x.cierres===1?'':'s'):'')+'</span></span><b style="color:'+(x.neto<0?'var(--danger)':'var(--accent)')+'">'+money(x.neto)+' ›</b></button>'}).join('')+'</div>';
  var C=Object.keys(A.ch).map(function(k){return A.ch[k]});if(C.length)h+='<div class="card" style="padding:12px 14px"><b>Por chofer</b>'+C.map(function(o){return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(o.n)+'</b>'+rwN121('Ventas',money(o.venta),'',o.dias+' día'+(o.dias===1?'':'s')+' · '+o.cierres+' cierre'+(o.cierres===1?'':'s'))+rwN121('A crédito',money(o.cred),o.cred>0?'neg':'')+rwN121('Kilómetros y desgaste',money(o.desg),'',Math.round(o.km).toLocaleString('es-MX')+' km')+rwN121('Sueldo y comisión',money(o.sueldo+o.com))+rwN121('Lo que dejaron sus rutas',money(o.neto),o.neto<0?'neg':'')+(Math.abs(o.ent-o.deb)>=0.5?rwN121(o.ent<o.deb?'Faltó':'Sobró',money(Math.abs(o.ent-o.deb)),'neg'):'')+'</div>'}).join('')+'</div>';
  return h}
 /* VIEWS se arma en la base DESPUÉS de las capas: se agrega al dibujar */
 var _r121v=render;render=function(){try{if(typeof VIEWS!=='undefined'){VIEWS.cuadre121=cuadre121;VIEWS.cierres120=cuadre121}}catch(e){}return _r121v.apply(this,arguments)};
+document.addEventListener('click',function(e){var m=e.target.closest&&e.target.closest('[data-act="cu121mes"]');if(m){e.preventDefault();e.stopImmediatePropagation();S.cu121p='mes';S.cu121d=m.dataset.v;render();window.scrollTo(0,0)}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cu121p"],[data-act="cu121d"],[data-act="cu121dia"],[data-act="cu121ver"],[data-act="cie120ver"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.act;
  if(a==='cu121p')S.cu121p=b.dataset.v;else if(a==='cu121d')S.cu121d=b.dataset.v;else if(a==='cu121dia'){S.cu121p='dia';S.cu121d=b.dataset.v}else{S.cu121p='dia';S.cu121d=iso(TODAY)}
  S.tab.admin='cuadre121';render();window.scrollTo(0,0)},true);
@@ -13490,6 +13492,80 @@ try{if(typeof SEC92!=='undefined'&&SEC92.indexOf('cuadre121')<0)SEC92.push('cuad
 /* 121 · una sola vez: todos los vehículos empiezan en $0.70 por km (traían el 0.60 de la demo), salvo los calculados con la calculadora */
 function desgIni121(){try{if(S.role!=='admin'||window.PN_MODO!=='vacio')return;(S.veh||[]).forEach(function(v){if(!v||v.desg121||v.desgCalc120)return;v.desg121=1;v.desg=''})}catch(e){}}
 var _r121d=render;render=function(){desgIni121();return _r121d.apply(this,arguments)};
+
+//@@capa tema-retencion.js
+/* ===================== TEMA · 60 días de detalle y resúmenes para siempre (nació como tema, 18 nov · punto 122) =====================
+   Ricardo: "mientras se guarden los totales de ventas, gastos y netos por mes y año está bien; las rutas se pueden borrar después de
+   uno o dos meses; con 60 días de rutas es suficiente". Y la nube no acepta documentos de más de 1 MB (el historial de rutas va en uno).
+   Cómo queda (blindaje de los números):
+   - Solo el celular del ADMIN, una vez al día, hace esto (el chofer nunca borra nada; antes cualquier celular recortaba a 400 rutas).
+   - 1º se guarda el RESUMEN de cada día (S.resDia[día]: la fila de Estadísticas y el Cuadre en números) — para siempre.
+     Los días de los últimos 60 se recalculan cada día (por si llegó algo tarde); los de antes no se vuelven a tocar.
+   - 2º se quita el detalle de más de 60 días (rutas, cierres recibidos, gastos, abonos en bodega, venta en bodega, mermas) y,
+     EN LA MISMA LISTA (mismo documento de la nube = se guarda todo junto o nada), se agrega un registro "arrastre" con lo que
+     ese detalle sumaba a la caja. Así el efectivo en caja NO cambia ni un centavo. El arrastre tiene una llave fija por día y lista:
+     si dos celulares de admin lo hacen el mismo día, queda uno solo (no se cuenta doble).
+   - Los gastos del vehículo se quedan 400 días (el desgaste real se calcula con 12 meses).
+   - Estadísticas, el Cuadre (día, semana, mes, año) y los totales por mes y año usan el resumen guardado en los días sin detalle.
+   Si se cambia algo de esto, se cambia AQUÍ.
+   ============================================================================================ */
+var RET122=60,RETV122=400;
+try{if(typeof NB_SH!=='undefined'&&NB_SH.indexOf('resDia')<0)NB_SH.push('resDia')}catch(e){}
+function resD122(){if(!S.resDia||typeof S.resDia!=='object'||Array.isArray(S.resDia))S.resDia={};return S.resDia}
+function hasta122(){var h=S.resDia&&S.resDia._hasta;return /^\d{4}-\d\d-\d\d$/.test(h||'')?h:''}
+function corte122(n){return addD121(iso(TODAY),-(n||RET122))}
+function fGasto122(g){return g&&(g.f||g.f82)}
+function esVeh122(g){return !!(g&&(g.veh!=null||MANT121.test(String(g.t||''))||/^verificaci|mensualidad de veh|abono a capital de veh|casetas \(tag\)/i.test(String(g.t||''))))}
+/* ---------- el resumen de un día (solo números) ---------- */
+var _cuR122=cuadreDia121,_h82R122=hist82;
+function resumen122(d){var row=null;try{row=_h82R122().filter(function(r){return r.d===d})[0]||null}catch(e){}var T=null;try{T=_cuR122(d)}catch(e){T=null}if(!row&&!T)return null;
+ var cu=T?{venta:T.venta,contado:T.contado,cred:T.cred,ab:T.ab,abB:T.abB,R:T.R,M:T.M,gan:T.gan,op:T.op,mant:T.mant,desg:T.desg,km:T.km,suT:T.suT,comT:T.comT,merma:T.merma,neto:T.neto,deb:T.deb,ent:T.ent,rec:T.rec,cierres:T.cierres,cat:T.cat,loc:T.loc,sinCosto:!!T.sinCosto,
+  ch:T.ch.map(function(o){return {ch:o.ch,n:o.n,venta:r2(o.venta),cred:r2(o.cred),ab:r2(o.ab),R:o.R,M:r2(o.M),gan:r2(o.gan),gasT:r2(o.gasT),desg:r2(o.desg),km:o.km,sueldo:r2(o.sueldo||0),com:r2(o.com||0),neto:r2(o.neto),deb:r2(o.deb),ent:r2(o.ent),rec:r2(o.rec),cierres:o.partes.filter(function(p){return p.sent||p.parcial}).length}}),
+  su:T.su.map(function(s){return {ch:s.ch,n:s.n,s:s.s,com:s.com,vac:!!s.vac}})}:null;
+ return {v:1,t:Date.now(),h:row,cu:cu}}
+function hayDatos122(T){return T&&(T.venta||T.op||T.suT||T.cierres||T.merma||T.ab||T.mant)}
+/* el Cuadre de un día sin detalle sale de su resumen */
+cuadreDia121=function(d){var h=hasta122(),st=S.resDia&&S.resDia[d];if(h&&d<=h&&st&&st.cu)return cuExpande122(st.cu,d);return _cuR122(d)};
+function cuExpande122(c,d){var T=JSON.parse(JSON.stringify(c));T.d=d;T.resumen=true;T.caja=[];T.loc=T.loc||{venta:0,gan:0,n:0};T.cat=T.cat||{};T.su=T.su||[];T.ch=(T.ch||[]).map(function(o){o.partes=[];o.creditos=[];o.abonos=[];o.taras=[];o.gastos=[];o.veh={};return o});return T}
+/* Estadísticas: los días sin detalle usan su fila guardada */
+hist82=function(){var L=_h82R122(),h=hasta122(),R=S.resDia||{};if(!h)return L;var out=L.filter(function(r){return !(r.d<=h&&R[r.d]&&R[r.d].h)}),ya={};out.forEach(function(r){ya[r.d]=1});
+ Object.keys(R).forEach(function(d){if(d<=h&&R[d]&&R[d].h&&!ya[d])out.push(R[d].h)});return out.sort(function(a,b){return a.d<b.d?-1:1})};
+
+/* ---------- lo que se quita y su arrastre (en la misma lista) ---------- */
+function arr122(L,id,o){if(!L.some(function(x){return x&&x.id===id})){o.id=id;o.arr122=1;L.push(o)}}
+function poda122(){var hoy=iso(TODAY),cut=corte122(),cutV=corte122(RETV122),R=resD122(),dias={};
+ var marca=function(d){if(/^\d{4}-\d\d-\d\d$/.test(d||'')&&d<hoy)dias[d]=1};
+ (S.rutasHist||[]).forEach(function(e){marca(e&&e.f)});(S.gastos||[]).forEach(function(g){marca(fGasto122(g))});(S.cobros||[]).forEach(function(x){marca(x&&x.f)});(S.vlVentas||[]).forEach(function(v){marca(v&&v.f82)});(S.mermas||[]).forEach(function(m){marca(m&&m.fecha)});(S.cierresPrev||[]).forEach(function(x){marca(x&&x.f)});
+ var D=Object.keys(dias).sort();
+ /* 1 · los resúmenes: los últimos 60 días se recalculan; los de antes solo si no existen (nunca con menos datos) */
+ D.forEach(function(d){if(d<cut&&R[d]&&R[d].cu)return;var x=resumen122(d);if(x)R[d]=x});
+ /* 2 · el detalle de más de 60 días se quita, con su arrastre a la caja en la misma lista */
+ var viejos=D.filter(function(d){return d<cut&&R[d]});if(!viejos.length)return 0;var n=0;
+ viejos.forEach(function(d){
+  /* rutas: la caja contaba lo recibido del cierre final de cada chofer (las partes y los atrasados van en cierresPrev) */
+  var RH=S.rutasHist||[],vis={},rec=0;RH.forEach(function(e){if(!e||e.f!==d||e.parcial120||e.recibido94||!e.cierreReg82)return;if(vis[e.ch])return;vis[e.ch]=1;rec+=num(e.cierreReg82.rec)});
+  var antes=RH.length;S.rutasHist=RH.filter(function(e){return !(e&&e.f===d)});if(S.rutasHist.length<antes){n+=antes-S.rutasHist.length;if(rec)arr122(S.rutasHist,'arr122r_'+d,{rec:r2(rec),fa:d})}
+  /* cierres recibidos (los que no se han recuperado se quedan) */
+  var CP=S.cierresPrev||[],q=CP.filter(function(x){return x&&x.f===d&&x.ch!=null&&!x.arr122});if(q.length){var rc=r2(sum(q,function(x){return num(x.rec)}));S.cierresPrev=CP.filter(function(x){return q.indexOf(x)<0});n+=q.length;if(rc)arr122(S.cierresPrev,'arr122c_'+d,{rec:rc,ch:0,fa:d})}
+  /* gastos (los del vehículo se quedan 400 días) */
+  var G=S.gastos||[],qg=G.filter(function(g){return g&&!g.arr122&&fGasto122(g)===d&&(!esVeh122(g)||d<cutV)});if(qg.length){var mg=r2(sum(qg.filter(function(g){return g.caja!==false}),function(g){return num(g.m)}));S.gastos=G.filter(function(g){return qg.indexOf(g)<0});n+=qg.length;if(mg)arr122(S.gastos,'arr122g_'+d,{t:'Saldo de gastos anteriores',m:mg,caja:true,f:'arr',n:'Gastos del '+d+' (resumidos)',fa:d})}
+  /* abonos cobrados en bodega */
+  var C=S.cobros||[],qc=C.filter(function(x){return x&&!x.arr122&&x.f===d});if(qc.length){var mc=r2(sum(qc,function(x){return num(x.m)}));S.cobros=C.filter(function(x){return qc.indexOf(x)<0});n+=qc.length;if(mc)arr122(S.cobros,'arr122b_'+d,{c:-1,m:mc,f:'arr',n:'Abonos del '+d+' (resumidos)',fa:d})}
+  /* venta en bodega y mermas: no mueven la caja (la venta entra con su corte en los abonos) */
+  var nv=(S.vlVentas||[]).length;S.vlVentas=(S.vlVentas||[]).filter(function(v){return !(v&&v.f82===d)});n+=nv-S.vlVentas.length;
+  var nm=(S.mermas||[]).length;S.mermas=(S.mermas||[]).filter(function(m){return !(m&&m.fecha===d)});n+=nm-S.mermas.length});
+ var h0=hasta122(),hn=addD121(cut,-1);if(!h0||hn>h0)R._hasta=hn;
+ /* la bitácora no tiene fecha de verdad: se quedan los últimos 3,000 renglones */
+ if((S.hist||[]).length>3000){n+=S.hist.length-3000;S.hist=S.hist.slice(-3000)}
+ return n}
+function ret122(){try{if(S.role!=='admin'||S.encOn)return;if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var hoy=iso(TODAY);if(S._ret122===hoy)return;S._ret122=hoy;var n=poda122();if(n)S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'La app',x:'Se guardó el resumen de los días de hace más de '+RET122+' días y se quitó su detalle ('+n+' renglones). La caja y los totales no cambian.'})}catch(e){console.error('ret122',e)}}
+var _r122=render;render=function(){ret122();return _r122.apply(this,arguments)};
+/* la caja cuenta también los arrastres de las rutas que ya se quitaron */
+var _cC122=cierresCaja;cierresCaja=function(){return r2(_cC122.apply(this,arguments)+sum((S.rutasHist||[]).filter(function(e){return e&&e.arr122}),function(e){return num(e.rec)}))};
+
+/* ---------- 122 · cada venta guarda el nombre del cliente de ese momento y su propio número (registro con id único) ---------- */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guardar"]');if(!b||S.role!=='rep')return;var n0=(S.log||[]).length;
+ setTimeout(function(){try{if((S.log||[]).length<=n0)return;var l=S.log[S.log.length-1];if(!l)return;var c=cl(l.c);if(c&&l.cn==null)l.cn=c.n;if(l.id==null)l.id='e'+Date.now().toString(36)+'_'+S.chofHoy+'_'+Math.random().toString(36).slice(2,6)}catch(er){}},0)},true);
 
 
 /* ---------- Estructura ---------- */

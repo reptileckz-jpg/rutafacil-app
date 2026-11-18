@@ -27,7 +27,7 @@ function cambioDeDia(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return;S.r
  var act=arPack();if(archiva(act,S.chofHoy)){arLoad(chNuevo(+S.chofHoy))}
  Object.keys(S.chSt||{}).forEach(function(id){if(archiva(S.chSt[id],+id))delete S.chSt[id]});
  if(S.arSt&&archiva(S.arSt,S.arSt.chofHoy))S.arSt=null;
- S.recep=null;S.cierreReg=null;S.cierreRec='';S.rutasHist=S.rutasHist.slice(-400);
+ S.recep=null;S.cierreReg=null;S.cierreRec='';/* 122 · ya no se recorta a 400 rutas en cualquier celular: el admin guarda el resumen y quita lo de más de 60 días (tema-retencion) */
  if(pend.length)S.avPrecio.push('URGENTE: '+pend.join(', ')+' no envió su cierre de ayer ('+fmtF(viejo)+'). Pídele que lo envíe.')}
 if(PN_GUARDA)idbGet('S',function(t){try{if(t){var o=JSON.parse(t),f=fresh(),viejo=o._dia;delete o._dia;delete o._guardado;Object.keys(f).forEach(function(k){if(!(k in o))o[k]=f[k]});S=o;cambioDeDia(viejo);S.pinOk={};S.usrSel=false;S.menu=false;if(!(S.setup&&!S.setup.fin))pinEntrar();_gUlt='';render()}}catch(e){console.error('cargar',e)}_cargado=true;guardarLuego()});
 /* ---- el admin ve la ruta de cada chofer ---- */

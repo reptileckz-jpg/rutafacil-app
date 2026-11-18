@@ -43,7 +43,7 @@ function nbUnidades(){var U=[];NB_SH.forEach(function(k){U.push({id:'s~'+k,k:k,p
 function nbRGet(id,k){if(+S.chofHoy===+id){if(k==='invR')return S.inv?S.inv.reparto:undefined;if(k==='invM')return S.inv?S.inv.repartoKg:undefined;return S[k]}var o=S.chSt&&S.chSt[id];return o?o[k]:undefined}
 function nbRSet(id,k,v){if(+S.chofHoy===+id){if(k==='invR'){S.inv.reparto=num(v);return}if(k==='invM'){S.inv.repartoKg=num(v);return}S[k]=v;return}S.chSt=S.chSt||{};if(!S.chSt[id]){try{S.chSt[id]=chNuevo(+id)}catch(e){S.chSt[id]={}}}S.chSt[id][k]=v}
 /* ---------- codificar: valor → campos planos ---------- */
-function nbElKey(u,el,i,seen){if(nbEsObj(el)){if(u.k==='rutasHist'&&el.f&&el.ch!=null)return 'r'+nbEk(el.f+'_'+el.ch);if(el.id!=null&&!seen['i'+el.id]){seen['i'+el.id]=1;return 'i'+nbEk(el.id)}if(!el._k)el._k=Math.random().toString(36).slice(2,10);return 'k'+nbEk(el._k)}
+function nbElKey(u,el,i,seen){if(nbEsObj(el)){if(u.k==='rutasHist'&&el.f&&el.ch!=null)return 'r'+nbEk(el.f+'_'+el.ch+(el.parcial120?'_p'+(el.id120||el.n120):''));/* 122 · cada cierre del día con su propia llave (antes uno por chofer por día: el 2º pisaba al 1º en la nube) */if(el.id!=null&&!seen['i'+el.id]){seen['i'+el.id]=1;return 'i'+nbEk(el.id)}if(!el._k)el._k=Math.random().toString(36).slice(2,10);return 'k'+nbEk(el._k)}
  var h='h'+nbHash(nbJ(el)),n=0;while(seen[h+'_'+n])n++;seen[h+'_'+n]=1;return h+'_'+n}
 function nbCodifica(u,v){var F={};_nbPerm=u.perm;if(v===undefined)return null;
  if(u.cont){F.k=nbEsObj(v)?'c':'n';if(F.k==='n'){F['c:']=num(v);return F}Object.keys(v).forEach(function(p){if(u.k==='inv'&&(p==='reparto'||p==='repartoKg'))return;var x=v[p];if(typeof x==='number')F['c:'+nbEk(p)]=x;else F['e:'+nbEk(p)+'|=']=nbJ(x)});return F}

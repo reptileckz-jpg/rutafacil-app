@@ -3,7 +3,9 @@
 Ricardo Nieto Mejía desarrolla la app "Plátanos Nietos" para el negocio de plátanos de su papá (también se llama Ricardo). El APK se llama "Ruta Fácil" (`com.rutafacil.app`, Capacitor 7). La bodega está en Banderilla, Veracruz. Ricardo vive en Tijuana y prueba desde allá.
 
 ## Antes de empezar cualquier trabajo
-Lee, en este orden:
+**Primero, obligatorio:** `fuente/REGLAS-NUMEROS.md` (las reglas de los números que dio Ricardo: nada se pierde ni se descuadra; plan de blindaje antes de tocar dinero; todavía NO Vite).
+
+Luego lee, en este orden:
 1. `fuente/LEEME.md`: cómo se arma la app.
 2. `fuente/negocio.md`: cómo funciona el negocio.
 3. `fuente/instrucciones.md`: este archivo.

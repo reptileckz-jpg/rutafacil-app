@@ -20,24 +20,11 @@ function ubHayLuz(){var h=new Date().getHours();return h>=8&&h<18}
 function ubFotoSug(o){return !!o&&(!o.foto||(ubNoche(o.fotoH)&&ubHayLuz()))}
 var UB_LEGADO=function(){return !!window.__pnTest&&!window.__ubTest};
 /* ---- báscula nueva elegida por el admin ---- */
-var _vb26=vwBasc;vwBasc=function(p){if(p&&!vwPes(p)&&p.basId==='__nueva')return {id:null,n:String(p.nbn||'').trim()||'Báscula nueva',lat:null,lng:null,nueva:true};return _vb26.apply(this,arguments)};
+/* vwBasc: pasó a tema-viaje.js */
 /* coordenadas a partir de un link de Google Maps o de "19.54, -96.92" */
 function ubParse(s){s=String(s||'');var m=/@(-?\d+\.\d+),(-?\d+\.\d+)/.exec(s)||/[?&](?:q|query|destination|ll)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/.exec(s)||/(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})/.exec(s);if(!m)return null;var la=+m[1],ln=+m[2];if(Math.abs(la)>90||Math.abs(ln)>180)return null;return {lat:la,lng:ln}}
 /* ---- lo que ve el admin al programar el viaje ---- */
-var _pc26=vwParCfg;vwParCfg=function(p,ix){var h=_pc26.apply(this,arguments),v=S.vw;
- if(!vwPes(p)){h=h.replace(/(<select id="vwbs\d+"[\s\S]*?)<\/select>/,function(m,a){return a+'<option value="__nueva"'+(p.basId==='__nueva'?' selected':'')+'>+ Báscula nueva (el chofer la registra)</option></select>'});
-  if(p.t==='R')h='<div class="lbl" style="margin-top:6px">El roatán siempre pasa a pesar a la báscula.</div>'+h;
-  if(p.basId==='__nueva')h+='<div class="field"><label for="vwnb'+ix+'">¿Cómo se llama la báscula?</label><input id="vwnb'+ix+'" type="text" data-bind="vw.par.'+ix+'.nbn" value="'+esc(p.nbn||'')+'" placeholder="Ej. Báscula El Molo" style="width:170px;text-align:left"></div><div class="lbl">Si no sabes el nombre, déjalo vacío: el chofer lo escribe.</div>'}
- var falta=[];if(!vwPes(p)){var bs=vwBasc(p);if(bs&&!ubTiene(bs))falta.push(['bas',bs])}
- if(p.prov&&p.prov!=='__nuevo'&&!ubTiene(provD(p.prov)))falta.push(['prov',{n:p.prov}]);else if(p.prov==='__nuevo')falta.push(['provn',{n:p.np||'el proveedor nuevo'}]);
- if(!falta.length)return h;
- h+='<div class="card note" style="padding:10px 12px;margin-top:10px"><b>📍 Sin ubicación</b>';
- falta.forEach(function(f){var nm=f[1].n||'';h+='<div style="margin-top:6px">'+(f[0]==='bas'&&f[1].nueva&&!String(p.nbn||'').trim()?'La báscula nueva':esc(nm)+(f[0]==='bas'?' (báscula)':' (proveedor)'))+'</div>';
-  if(f[0]==='provn')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubnp'+ix+'" style="font-size:14px">Ubicación aproximada (link de Google Maps o coordenadas)</label><input id="ubnp'+ix+'" type="text" data-bind="vw.par.'+ix+'.nub" value="'+esc(p.nub||'')+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>';
-  if((f[0]==='bas'&&f[1].id!=null)||f[0]==='prov')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubp'+ix+f[0]+'" style="font-size:14px">Pégala aquí (link de Google Maps o coordenadas)</label><input id="ubp'+ix+f[0]+'" type="text" data-ubpega="'+f[0]+':'+(f[0]==='bas'?f[1].id:esc(nm))+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>'});
- var qn=v&&v.quien!==2?chofN(v.quien):'el chofer';
- h+='<div class="chips" role="group" aria-label="Pedirle al chofer" style="margin-top:8px"><button data-act="ubpide" data-i="'+ix+'" data-v="1" aria-pressed="'+!p.noUb+'">Que '+esc(qn)+' la guarde al llegar</button><button data-act="ubpide" data-i="'+ix+'" data-v="0" aria-pressed="'+!!p.noUb+'">No pedirla</button></div>'
-  +'<div class="lbl" style="margin-top:4px">Al llegar, la app toma la ubicación del GPS, el nombre y una foto del lugar.</div></div>';return h};
+/* vwParCfg: pasó a tema-viaje.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ubpega)return;var pr=t.dataset.ubpega.split(':'),c=ubParse(t.value);
  if(!c){toast(/goo\.gl|maps\.app/.test(t.value)?'Ese link corto no trae la ubicación. En Google Maps deja presionado el lugar y copia los números':'No encontré la ubicación en ese texto');return}
  var o=pr[0]==='bas'?S.basc.filter(function(b){return b.id===+pr[1]})[0]:provD(pr.slice(1).join(':'));if(!o)return;o.lat=c.lat;o.lng=c.lng;o.ubAprox=true;o.ubPor='';toast('Ubicación guardada');render()},true);
@@ -47,8 +34,7 @@ function ubDeNodo(v,a){if(!a||a.t==='bod')return null;var p=v.par[a.i]||{};
  var d=provD(a.n);return {k:'prov',n:a.n,pi:a.i,key:'p'+a.n,need:!ubTiene(d)||!!d.ubAprox,aprox:ubTiene(d)&&!!d.ubAprox,obj:d,noUb:!!p.noUb&&!d.ubAprox}}
 function ubFaltanViaje(v){var N=vwNodos(v),L=[],vis={};N.forEach(function(a){var r=ubDeNodo(v,a);if(r&&r.need&&!r.noUb&&!vis[r.key]){vis[r.key]=1;L.push(r.n||'la báscula nueva')}});return L}
 /* aviso al empezar el viaje */
-var _vB26=vwBody;vwBody=function(k){var h=_vB26.apply(this,arguments),v=S.vw;if(!v||(vwEsAdm()&&!vwYo())||['ruta','camino'].indexOf(k)<0)return h;var L=ubFaltanViaje(v);if(!L.length)return h;
- return '<div class="card note ubcard" style="padding:10px 12px;margin-top:8px"><b>📍 Hoy vas a '+(L.length===1?'un lugar que no tiene':'lugares que no tienen')+' ubicación</b><div style="font-size:15px;margin-top:4px">'+esc(L.join(', '))+'</div><div class="lbl" style="margin-top:4px">Cuando llegues y toques "Ya llegué", te pido guardarla: un toque al GPS, el nombre y una foto.</div></div>'+h};
+/* vwBody: pasó a tema-viaje.js */
 /* ---- la pantalla para guardar el lugar ---- */
 function ubAbrir(r,o){o=o||{};var obj=r.obj||{};
  S.ub={k:r.k,bid:r.bid,pi:r.pi,id:r.id,n:r.n||'',key:r.key,modo:o.modo||'gps',sigue:!!o.sigue,est:'',fallos:0,lat:null,lng:null,acc:null,foto:null,fotoH:null,tel:r.k==='cli'?(obj.tel||''):'',recibe:r.k==='cli'?(obj.recibe||''):'',fotoVieja:obj.foto||null,fotoViejaH:obj.fotoH||null,gpsYa:ubTiene(obj)};
@@ -130,7 +116,4 @@ function cliIdFix(){try{var mx=(S.cli||[]).reduce(function(m,c){return Math.max(
 cliIdFix();var _r26c=render;render=function(){cliIdFix();return _r26c.apply(this,arguments)};
 
 /* "Ir con Google Maps" a un lugar sin ubicación: busca por nombre y dirección en vez de mandar a un punto inventado */
-var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),v=S.vw;try{var T=vwTramo(v);if(!T)return h;var r=ubDeNodo(v,T.a);if(!r||!r.need)return h;
- var pv=provD((v.par[T.a.i]||{}).prov||''),q=r.k==='bas'?((r.obj&&r.obj.dir)||((r.n||'báscula')+' '+(pv.dir||''))):((r.obj&&r.obj.dir)||r.n);
- h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
- return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
+/* vwTramoHTML: pasó a tema-viaje.js */

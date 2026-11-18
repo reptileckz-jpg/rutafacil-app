@@ -99,8 +99,8 @@ function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n
 vwLimpia77();
 var _rd77c=render;render=function(){vwLimpia77();return _rd77c.apply(this,arguments)};
 if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
-if(typeof vwBurbuja==='function'){var _vB77=vwBurbuja;vwBurbuja=function(){try{return _vB77.apply(this,arguments)}catch(e){falloAnota77(e,'burbuja del viaje');return ''}}}
-if(typeof vwPend==='function'){var _vP77=vwPend;vwPend=function(){try{return _vP77.apply(this,arguments)}catch(e){return []}}}
+/* vwBurbuja: pasó a tema-viaje.js */
+/* vwPend: pasó a tema-viaje.js */
 
 /* la pantalla de rescate va en un cuadro aparte (iframe): nada de la app le puede quitar los toques ni el deslizar */
 var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Diagnóstico —\n'+diagTxt77();FALLO77.ult=txt;try{localStorage.setItem('pnFallo',txt)}catch(x){}

@@ -58,8 +58,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  toast('Viaje programado: '+chofN(+d.chofer)+' sale '+svFecha(d));render();window.scrollTo(0,0)},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="simabre"]');if(!b)return;e.stopImmediatePropagation();S.simYa=true;var h=new Date();h.setDate(h.getDate()+1);wzAbre('sim',{provs:[],dias:'1',com:'300',merma:'3',fecha:iso(TODAY),hora:'06:00'})},true);
 /* ---------- 97 · cancelar un viaje programado que todavía no sale ---------- */
-var _fiC54=fiCarga;fiCarga=function(f){var h=_fiC54.apply(this,arguments),c=cargaById(f.id);if(!c||S.role!=='admin'||!c.prog||!c.viaje||c.viaje.ini||c.est!=='Por llegar')return h;
- return h.replace(/<\/div><\/div><\/div>$/,'<button class="btn sec" style="margin-top:14px;color:var(--danger)" data-act="progcancel" data-id="'+c.id+'">Cancelar este viaje</button></div></div></div>')};
+/* fiCarga: pasó a tema-viaje.js */
 setTimeout(function(){CONF.progcancel=1},0);CONF53.progcancel='Se borra el viaje y se le avisa al chofer.';
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="progcancel"]');if(!b||!b.dataset.ok)return;e.stopImmediatePropagation();var c=cargaById(+b.dataset.id);if(!c)return;
  S.inv.vacias+=num(c.vacEnv);S.cargas=S.cargas.filter(function(x){return x.id!==c.id});S.openCarga=null;var ch=c.viaje&&c.viaje.chofer;
@@ -69,5 +68,4 @@ var _rCm54=null;window.addEventListener('click',function(e){var b=e.target.close
  setTimeout(function(){if(S.cargas.length>n0){provD(n);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Dio de alta al proveedor '+n});S.avPrecio.push(quien()+' registró un proveedor nuevo: '+n+' (completa sus datos)');render()}},30)},true);
 var _cf54=cfForm;cfForm=function(){var h=_cf54.apply(this,arguments);return h.replace('</datalist></div>','</datalist></div><div class="lbl" style="margin:-2px 0 6px">¿Es nuevo? Escríbelo y se agrega al guardar.</div>')};
 /* pedido por WhatsApp: solo lo que vende ese proveedor (el roatán se pide en kilos o cajas, se paga por kilo) */
-var _ppH54=provPideHTML;provPideHTML=function(){var h=_ppH54.apply(this,arguments);if(!h)return h;return h.replace(/href="([^"]*)">📲 ([^<]*)</g,function(m,u,n){var nm=n.replace(/&amp;/g,'&'),t=(S.provDir[nm]||{}).tipo||'Ambos',q=t==='Roatán'?'plátano roatán':(t==='Macho'?'plátano macho':'plátano roatán y macho');
- return 'href="'+u.replace(encodeURIComponent('mandar plátano?'),encodeURIComponent('mandar '+q+'? ¿A cómo el kilo?'))+'">📲 '+n+'<'})};
+/* provPideHTML: pasó a tema-viaje.js */

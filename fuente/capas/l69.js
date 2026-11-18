@@ -131,16 +131,9 @@ var _bP69=bigPrecio;bigPrecio=function(tit,cost,key,step,unit,mg){if(key==='M'&&
 
 /* ---------- 55 · comida autorizada antes ---------- */
 /* viaje de carga: el administrador decide al mandarlo */
-var _vwB69=vwBody;vwBody=function(k){var h=_vwB69.apply(this,arguments);try{var v=S.vw;if(!v||k!=='plan'||!h)return h;var on=v.comOk===true?'si':(v.comOk===false?'no':'');
-  var c='<div class="card c68" style="margin-top:10px;padding:12px 14px;border:2px solid var(--accent)"><div style="font-size:18px;font-weight:900">¿Tiene autorizado comer en el viaje?</div>'+ch68('vw68','comOk',[['si','Sí'],['no','No']],on)
-   +(on==='si'?'<div class="field"><label for="vw68m">¿Máximo cuánto? $</label><input id="vw68m" type="number" inputmode="decimal" min="0" data-bind="vw.comMax" value="'+esc(v.comMax==null?'':v.comMax)+'"></div>':'')+'</div>';
-  var i=h.lastIndexOf('<div style="display:flex;gap:8px');return i>-1?h.slice(0,i)+c+h.slice(i):h+c}catch(e){return h}};
+/* vwBody: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vw68"]');if(!b||!S.vw)return;e.stopImmediatePropagation();S.vw.comOk=b.dataset.v==='si';render()},true);
-var _vwS69=vwSideHTML;vwSideHTML=function(sd){var h=_vwS69.apply(this,arguments);try{var v=S.vw;if(sd!=='gasto'||!v)return h;
-  if(v.comOk===false){h=h.replace(/<button style="min-height:48px" data-act="vwgxt" data-v="Comida"[^>]*>Comida<\/button>/,'');h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">La comida no está autorizada en este viaje.</div><div class="field"><label for="vwgxm">')}
-  else if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">Comida autorizada: hasta '+money(num(v.comMax))+' (llevas '+money(ya)+').</div><div class="field"><label for="vwgxm">')}
-  /* imprevisto: grúa o refacción también */
-  h=h.replace('data-v="Reparación" aria-pressed','data-v="Reparación" aria-pressed').replace('>Reparación</button>','>Imprevisto (ponchadura, grúa, refacción)</button>')}catch(e){}return h};
+/* vwSideHTML: pasó a tema-viaje.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vwgx"]');if(!b||!S.vw)return;var v=S.vw,t=v.gxt||'Comida';if(t!=='Comida')return;
  if(v.comOk===false){e.preventDefault();e.stopImmediatePropagation();toast('La comida no está autorizada en este viaje. Pídele permiso al administrador.');return}
  if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});if(ya+num(v.gxm)>num(v.comMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del máximo autorizado para comida ('+money(num(v.comMax))+'). Llévale el ticket al administrador.')}}},true);
@@ -216,8 +209,6 @@ function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter
  d.className='card alert';d.style.cssText='padding:12px 16px;border-width:2px';d.innerHTML='<b style="font-size:18px" class="neg">⚠ Algo no cuadra</b>'+m.map(function(x){return '<div style="margin-top:8px;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--danger) 8%,var(--surface))"><b>'+esc(x.n)+'</b><div style="font-size:15px">'+esc(x.det||'')+'</div></div>'}).join('');return d}
 var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var mm=document.querySelector('main');if(mm&&S.role==='admin'&&S.tab.admin==='inicio'&&!mm.querySelector('[data-x="cuadra68"]')){var ref=mm.querySelector(':scope > details[data-k="avinfo"]')||Array.prototype.filter.call(mm.querySelectorAll(':scope > .card'),function(c){var b=c.querySelector('.tt');return b&&/^Por atender/.test(b.textContent)})[0]||mm.querySelector('.inv68');if(ref)ref.after(cuadraCard68())}}catch(e){console.error('cuadra68',e)}return r};
 /* 54 · "Costo del viaje más exacto" a la vista en la ficha de la carga (antes escondido en "Detalle") */
-var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{var c=cargaById(f.id);if(!c||S.role!=='admin'||c.est!=='Recibida'||h.indexOf('data-act="cvopen"')>-1)return h;
-  var bt='<button class="btn" style="min-height:56px;width:100%" data-act="cvopen" data-id="'+c.id+'">'+(c.cv&&c.cv.ok?'🧾 Corregir el costo del viaje':'🧾 Costo del viaje más exacto (combustible, desgaste, sueldo)')+'</button>';
-  var i=h.indexOf('<div class="card" style="display:flex;flex-direction:column;gap:8px">');if(i<0)return h;i+='<div class="card" style="display:flex;flex-direction:column;gap:8px">'.length;return h.slice(0,i)+bt+h.slice(i)}catch(e){return h}};
+/* fiCarga: pasó a tema-viaje.js */
 /* el aviso que sale abajo también dice qué no cuadra y por cuánto */
 var _tq69=toast;toast=function(t){try{var m=/^⚠ Algo no cuadra: ([^.]+)\. Revísalo en Estadísticas\.$/.exec(t||'');if(m){var x=cuentasRevisar().filter(function(y){return !y.ok&&y.n===m[1]})[0];if(x&&x.det)t='⚠ '+x.n+'. '+x.det+'.'}}catch(e){}return _tq69.call(this,t)};

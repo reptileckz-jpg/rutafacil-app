@@ -33,7 +33,7 @@ function agrupa87(L){var out=[],man=[],no=[],ya={};(L||[]).forEach(function(x){S
 function avChofer87(){if(S.role!=='rep'||S.chofHoy==null||!S.rutaAv)return;var L=S.rutaAv[S.chofHoy];if(!Array.isArray(L)||!L.length)return;var G=agrupa87(L);if(JSON.stringify(G)!==JSON.stringify(L))S.rutaAv[S.chofHoy]=G}
 
 /* ---------- 73 · cuánto cargar: sin número si faltan datos ---------- */
-var _sug87=sugCarga;sugCarga=function(){var s=_sug87.apply(this,arguments);try{if(MODO==='vacio'&&s&&s.tot&&s.n>0&&s.n*2<s.tot){s.poco87=1;s.sR=0;s.sM=0}}catch(e){}return s};
+/* sugCarga: pasó a tema-viaje.js */
 var _st87=stock72;stock72=function(){if(MODO!=='vacio')return _st87.apply(this,arguments);var s=null;try{s=sugCarga()}catch(e){}if(s&&s.poco87&&S.role==='rep'&&!S.salida.ok){var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(c&&!c.dataset.x72){c.dataset.x72='1';
   c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:800;margin-top:8px">Todavía no hay datos suficientes</div><div class="lbl" style="margin-top:4px">Solo '+s.n+' de tus '+s.tot+' clientes de hoy ya tienen entregas. Carga lo que te diga el administrador; la app aprende con cada entrega.</div>'}return}
  return _st87.apply(this,arguments)};

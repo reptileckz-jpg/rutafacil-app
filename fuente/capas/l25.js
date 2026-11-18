@@ -9,16 +9,12 @@
  '.mindock>button{pointer-events:auto;padding:7px 12px!important;font-size:14px!important;min-height:38px}'
 ].join('\n');document.head.appendChild(st)})();
 /* si no hay báscula registrada (o no tiene ubicación) el viaje sigue: antes la pantalla se quedaba en blanco */
-var _vb25=vwBasc;vwBasc=function(p){var b=_vb25.apply(this,arguments);if(b||vwPes(p))return b;return {id:null,n:'Báscula',lat:null,lng:null}};
-var _vn25=vwNodos;vwNodos=function(v){var N=_vn25.apply(this,arguments);
- N.forEach(function(x,i){if(x.lat==null||x.lng==null||isNaN(x.lat)||isNaN(x.lng)){var pr=N.filter(function(y){return y.t==='prov'&&y.i===x.i})[0];x.lat=pr&&pr.lat!=null?pr.lat-.02:BOD.lat+.28;x.lng=pr&&pr.lng!=null?pr.lng-.02:BOD.lng+.28}});return N};
+/* vwBasc: pasó a tema-viaje.js */
+/* vwNodos: pasó a tema-viaje.js */
 /* barra escondida durante el viaje */
 var _r25=render;render=function(){var vo=!!(S.vw&&S.vw.open);document.documentElement.classList.toggle('vwab',vo);return _r25.apply(this,arguments)};
 /* burbujas minimizadas juntas en una esquina */
-var _vwB25=vwBurbuja;vwBurbuja=function(){var h=_vwB25.apply(this,arguments),ch=[];
- h=h.replace(/<div class="dfmini"[^>]*>(<button[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
- h=h.replace(/<div style="display:flex;justify-content:flex-end">(<button class="popin[^"]*" data-act="bubmax"[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
- return h+(ch.length?'<div class="mindock">'+ch.join('')+'</div>':'')};
+/* vwBurbuja: pasó a tema-viaje.js */
 /* avisos: no salen antes de entrar (pantalla de carga, PIN o elegir usuario); el de "no cuadra" solo al admin y al contador */
 var _toastQ=[];
 function avisoBloq(t){if(typeof _cargado!=='undefined'&&!_cargado)return true;var auto=t==null||/^⚠|URGENTE|no cuadra/.test(t);return auto&&((typeof _pin!=='undefined'&&_pin.modo==='entrar')||!!S.usrSel)}

@@ -4777,9 +4777,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 },true);
 /* foto del ticket en la gasolina */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.rcf||!t.files||!t.files[0])return;fotoLeer(t.files[0],function(u){S.rc.foto=u;render()})},true);
-var _rcC14=recargaCard;recargaCard=function(){var h=_rcC14.apply(this,arguments),rc=S.rc||{},dis=S.cierre.sent;if(dis)return h;
- var ft=(rc.foto?'<img src="'+rc.foto+'" alt="Ticket de gasolina" style="width:100%;height:110px;object-fit:cover;border-radius:10px;margin-top:6px">':'')+'<label class="btn sm '+(rc.foto?'sec':'')+'" for="rcf" style="display:inline-flex;align-items:center;cursor:pointer;margin-top:6px">'+(rc.foto?'Cambiar foto del ticket':'📷 Foto del ticket')+'</label><input id="rcf" type="file" accept="image/*" capture="environment" data-rcf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'+(rc.foto?'':'<div class="lbl">Sin foto del ticket no se descuenta hasta que el administrador lo acepte.</div>');
- h=h.replace('<button class="btn" data-act="recargar"',ft+'<button class="btn" data-act="recargar"');return h+gxRevChofer('rc')};
+/* recargaCard: pasó a tema-viaje.js */
 var _gchC14=gchCard;gchCard=function(){var h=_gchC14.apply(this,arguments);h=h.replace('Foto del ticket (opcional)','📷 Foto del ticket').replace('<button class="btn" style="margin-top:8px" data-act="gxsave">',(S.gx&&S.gx.foto?'':'<div class="lbl" style="margin-top:4px">Sin foto del ticket no se descuenta hasta que el administrador lo acepte.</div>')+'<button class="btn" style="margin-top:8px" data-act="gxsave">');return h.replace(/<\/details>$/,gxRevChofer('gx')+'</details>')};
 function gxRevChofer(k){var L=gxRevL().filter(function(x){return x.k===k&&x.ch===+S.chofHoy&&x.f===iso(TODAY)&&x.est!=='ok'});if(!L.length)return '';
  return '<div style="margin-top:8px">'+L.map(function(x){return '<div class="row"><span>'+esc(x.h)+' · '+esc(x.tipo)+(x.litros?' '+x.litros+' L':'')+'<br><span class="lbl '+(x.est==='no'?'neg':'')+'">'+(x.est==='no'?'No aceptado: entrega ese dinero':'Sin ticket · por revisar, no se descuenta')+'</span></span><b>'+money(x.m)+'</b></div>'}).join('')+'</div>'}
@@ -4937,7 +4935,7 @@ function dfOn(){return S.role==='admin'&&!S.encOn&&!(S.setup&&!S.setup.fin)&&(!w
 function dfBurbuja(){if(!dfOn())return '';var L=dfLista();if(!L.length)return '';var x=L[0],tot=S.dfTot=Math.max(S.dfTot||0,L.length),pc=Math.round((1-L.length/tot)*100);
  if(S.dfMin)return '<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="popin" data-act="dfmax" style="display:flex;align-items:center;gap:6px;background:#3A2A08;color:#fff;border:0;border-radius:999px;padding:10px 16px;font-weight:800;box-shadow:0 6px 16px rgba(0,0,0,.25)"><span class="dfi" style="width:22px;height:22px;border-radius:50%;background:#F2C230;color:#3A2A08;display:inline-flex;align-items:center;justify-content:center;font-size:14px">!</span> Faltan '+L.length+'</button></div>';
  return '<div class="dfbub slideup" data-act="dfopen" role="button" tabindex="0" data-key="dfbub"><span class="dfi">!</span><span class="grow"><span style="font-size:12px;opacity:.85">Datos que faltan · '+L.length+' por llenar</span><br><b style="font-size:16px">'+esc(x.txt)+'</b><div class="dfbar"><i style="width:'+pc+'%"></i></div></span><span style="font-size:20px">›</span><button class="link" style="color:#fff;min-height:30px;font-size:20px" data-act="dfmin" aria-label="Minimizar">–</button></div>'}
-var _vwB16=vwBurbuja;vwBurbuja=function(){return dfBurbuja()+_vwB16.apply(this,arguments)};
+/* vwBurbuja: pasó a tema-viaje.js */
 function dfHTML(){if(!S.dfOpen||!dfOn())return '';var L=dfLista(),h='<div id="dfov" role="dialog" aria-label="Datos que faltan"><div class="fiw"><div class="fihd"><button class="fiback" data-act="dfx" aria-label="Regresar">←</button><span class="grow"><b style="font-size:19px">Datos que faltan</b><br><span class="lbl">'+(L.length?L.length+' por llenar · empieza por lo de arriba':'¡No falta nada!')+'</span></span></div>';
  if(!L.length)h+='<div class="card good"><b>Todo está completo</b><div class="lbl">Ya no te voy a recordar nada.</div></div>';
  DF_GR.forEach(function(g){var X=[];L.forEach(function(x,i){if(x.pr===g[0])X.push([x,i])});if(!X.length)return;
@@ -5497,16 +5495,12 @@ var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');
  '.mindock>button{pointer-events:auto;padding:7px 12px!important;font-size:14px!important;min-height:38px}'
 ].join('\n');document.head.appendChild(st)})();
 /* si no hay báscula registrada (o no tiene ubicación) el viaje sigue: antes la pantalla se quedaba en blanco */
-var _vb25=vwBasc;vwBasc=function(p){var b=_vb25.apply(this,arguments);if(b||vwPes(p))return b;return {id:null,n:'Báscula',lat:null,lng:null}};
-var _vn25=vwNodos;vwNodos=function(v){var N=_vn25.apply(this,arguments);
- N.forEach(function(x,i){if(x.lat==null||x.lng==null||isNaN(x.lat)||isNaN(x.lng)){var pr=N.filter(function(y){return y.t==='prov'&&y.i===x.i})[0];x.lat=pr&&pr.lat!=null?pr.lat-.02:BOD.lat+.28;x.lng=pr&&pr.lng!=null?pr.lng-.02:BOD.lng+.28}});return N};
+/* vwBasc: pasó a tema-viaje.js */
+/* vwNodos: pasó a tema-viaje.js */
 /* barra escondida durante el viaje */
 var _r25=render;render=function(){var vo=!!(S.vw&&S.vw.open);document.documentElement.classList.toggle('vwab',vo);return _r25.apply(this,arguments)};
 /* burbujas minimizadas juntas en una esquina */
-var _vwB25=vwBurbuja;vwBurbuja=function(){var h=_vwB25.apply(this,arguments),ch=[];
- h=h.replace(/<div class="dfmini"[^>]*>(<button[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
- h=h.replace(/<div style="display:flex;justify-content:flex-end">(<button class="popin[^"]*" data-act="bubmax"[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
- return h+(ch.length?'<div class="mindock">'+ch.join('')+'</div>':'')};
+/* vwBurbuja: pasó a tema-viaje.js */
 /* avisos: no salen antes de entrar (pantalla de carga, PIN o elegir usuario); el de "no cuadra" solo al admin y al contador */
 var _toastQ=[];
 function avisoBloq(t){if(typeof _cargado!=='undefined'&&!_cargado)return true;var auto=t==null||/^⚠|URGENTE|no cuadra/.test(t);return auto&&((typeof _pin!=='undefined'&&_pin.modo==='entrar')||!!S.usrSel)}
@@ -5539,24 +5533,11 @@ function ubHayLuz(){var h=new Date().getHours();return h>=8&&h<18}
 function ubFotoSug(o){return !!o&&(!o.foto||(ubNoche(o.fotoH)&&ubHayLuz()))}
 var UB_LEGADO=function(){return !!window.__pnTest&&!window.__ubTest};
 /* ---- báscula nueva elegida por el admin ---- */
-var _vb26=vwBasc;vwBasc=function(p){if(p&&!vwPes(p)&&p.basId==='__nueva')return {id:null,n:String(p.nbn||'').trim()||'Báscula nueva',lat:null,lng:null,nueva:true};return _vb26.apply(this,arguments)};
+/* vwBasc: pasó a tema-viaje.js */
 /* coordenadas a partir de un link de Google Maps o de "19.54, -96.92" */
 function ubParse(s){s=String(s||'');var m=/@(-?\d+\.\d+),(-?\d+\.\d+)/.exec(s)||/[?&](?:q|query|destination|ll)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/.exec(s)||/(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})/.exec(s);if(!m)return null;var la=+m[1],ln=+m[2];if(Math.abs(la)>90||Math.abs(ln)>180)return null;return {lat:la,lng:ln}}
 /* ---- lo que ve el admin al programar el viaje ---- */
-var _pc26=vwParCfg;vwParCfg=function(p,ix){var h=_pc26.apply(this,arguments),v=S.vw;
- if(!vwPes(p)){h=h.replace(/(<select id="vwbs\d+"[\s\S]*?)<\/select>/,function(m,a){return a+'<option value="__nueva"'+(p.basId==='__nueva'?' selected':'')+'>+ Báscula nueva (el chofer la registra)</option></select>'});
-  if(p.t==='R')h='<div class="lbl" style="margin-top:6px">El roatán siempre pasa a pesar a la báscula.</div>'+h;
-  if(p.basId==='__nueva')h+='<div class="field"><label for="vwnb'+ix+'">¿Cómo se llama la báscula?</label><input id="vwnb'+ix+'" type="text" data-bind="vw.par.'+ix+'.nbn" value="'+esc(p.nbn||'')+'" placeholder="Ej. Báscula El Molo" style="width:170px;text-align:left"></div><div class="lbl">Si no sabes el nombre, déjalo vacío: el chofer lo escribe.</div>'}
- var falta=[];if(!vwPes(p)){var bs=vwBasc(p);if(bs&&!ubTiene(bs))falta.push(['bas',bs])}
- if(p.prov&&p.prov!=='__nuevo'&&!ubTiene(provD(p.prov)))falta.push(['prov',{n:p.prov}]);else if(p.prov==='__nuevo')falta.push(['provn',{n:p.np||'el proveedor nuevo'}]);
- if(!falta.length)return h;
- h+='<div class="card note" style="padding:10px 12px;margin-top:10px"><b>📍 Sin ubicación</b>';
- falta.forEach(function(f){var nm=f[1].n||'';h+='<div style="margin-top:6px">'+(f[0]==='bas'&&f[1].nueva&&!String(p.nbn||'').trim()?'La báscula nueva':esc(nm)+(f[0]==='bas'?' (báscula)':' (proveedor)'))+'</div>';
-  if(f[0]==='provn')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubnp'+ix+'" style="font-size:14px">Ubicación aproximada (link de Google Maps o coordenadas)</label><input id="ubnp'+ix+'" type="text" data-bind="vw.par.'+ix+'.nub" value="'+esc(p.nub||'')+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>';
-  if((f[0]==='bas'&&f[1].id!=null)||f[0]==='prov')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubp'+ix+f[0]+'" style="font-size:14px">Pégala aquí (link de Google Maps o coordenadas)</label><input id="ubp'+ix+f[0]+'" type="text" data-ubpega="'+f[0]+':'+(f[0]==='bas'?f[1].id:esc(nm))+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>'});
- var qn=v&&v.quien!==2?chofN(v.quien):'el chofer';
- h+='<div class="chips" role="group" aria-label="Pedirle al chofer" style="margin-top:8px"><button data-act="ubpide" data-i="'+ix+'" data-v="1" aria-pressed="'+!p.noUb+'">Que '+esc(qn)+' la guarde al llegar</button><button data-act="ubpide" data-i="'+ix+'" data-v="0" aria-pressed="'+!!p.noUb+'">No pedirla</button></div>'
-  +'<div class="lbl" style="margin-top:4px">Al llegar, la app toma la ubicación del GPS, el nombre y una foto del lugar.</div></div>';return h};
+/* vwParCfg: pasó a tema-viaje.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.ubpega)return;var pr=t.dataset.ubpega.split(':'),c=ubParse(t.value);
  if(!c){toast(/goo\.gl|maps\.app/.test(t.value)?'Ese link corto no trae la ubicación. En Google Maps deja presionado el lugar y copia los números':'No encontré la ubicación en ese texto');return}
  var o=pr[0]==='bas'?S.basc.filter(function(b){return b.id===+pr[1]})[0]:provD(pr.slice(1).join(':'));if(!o)return;o.lat=c.lat;o.lng=c.lng;o.ubAprox=true;o.ubPor='';toast('Ubicación guardada');render()},true);
@@ -5566,8 +5547,7 @@ function ubDeNodo(v,a){if(!a||a.t==='bod')return null;var p=v.par[a.i]||{};
  var d=provD(a.n);return {k:'prov',n:a.n,pi:a.i,key:'p'+a.n,need:!ubTiene(d)||!!d.ubAprox,aprox:ubTiene(d)&&!!d.ubAprox,obj:d,noUb:!!p.noUb&&!d.ubAprox}}
 function ubFaltanViaje(v){var N=vwNodos(v),L=[],vis={};N.forEach(function(a){var r=ubDeNodo(v,a);if(r&&r.need&&!r.noUb&&!vis[r.key]){vis[r.key]=1;L.push(r.n||'la báscula nueva')}});return L}
 /* aviso al empezar el viaje */
-var _vB26=vwBody;vwBody=function(k){var h=_vB26.apply(this,arguments),v=S.vw;if(!v||(vwEsAdm()&&!vwYo())||['ruta','camino'].indexOf(k)<0)return h;var L=ubFaltanViaje(v);if(!L.length)return h;
- return '<div class="card note ubcard" style="padding:10px 12px;margin-top:8px"><b>📍 Hoy vas a '+(L.length===1?'un lugar que no tiene':'lugares que no tienen')+' ubicación</b><div style="font-size:15px;margin-top:4px">'+esc(L.join(', '))+'</div><div class="lbl" style="margin-top:4px">Cuando llegues y toques "Ya llegué", te pido guardarla: un toque al GPS, el nombre y una foto.</div></div>'+h};
+/* vwBody: pasó a tema-viaje.js */
 /* ---- la pantalla para guardar el lugar ---- */
 function ubAbrir(r,o){o=o||{};var obj=r.obj||{};
  S.ub={k:r.k,bid:r.bid,pi:r.pi,id:r.id,n:r.n||'',key:r.key,modo:o.modo||'gps',sigue:!!o.sigue,est:'',fallos:0,lat:null,lng:null,acc:null,foto:null,fotoH:null,tel:r.k==='cli'?(obj.tel||''):'',recibe:r.k==='cli'?(obj.recibe||''):'',fotoVieja:obj.foto||null,fotoViejaH:obj.fotoH||null,gpsYa:ubTiene(obj)};
@@ -5649,10 +5629,7 @@ function cliIdFix(){try{var mx=(S.cli||[]).reduce(function(m,c){return Math.max(
 cliIdFix();var _r26c=render;render=function(){cliIdFix();return _r26c.apply(this,arguments)};
 
 /* "Ir con Google Maps" a un lugar sin ubicación: busca por nombre y dirección en vez de mandar a un punto inventado */
-var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),v=S.vw;try{var T=vwTramo(v);if(!T)return h;var r=ubDeNodo(v,T.a);if(!r||!r.need)return h;
- var pv=provD((v.par[T.a.i]||{}).prov||''),q=r.k==='bas'?((r.obj&&r.obj.dir)||((r.n||'báscula')+' '+(pv.dir||''))):((r.obj&&r.obj.dir)||r.n);
- h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
- return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
+/* vwTramoHTML: pasó a tema-viaje.js */
 
 //@@capa l27.js
 /* ===================== v5.1 · Ubicación aproximada → exacta, datos que el chofer no puede cambiar,
@@ -5712,7 +5689,7 @@ function provUbTxt(d){if(!ubTiene(d))return 'sin ubicación';if(d.ubAprox)return
 function provUbPega(n){var d=provD(n);return '<div class="field"><label for="pvub">'+(ubTiene(d)&&!d.ubAprox?'Ubicación (ya es exacta; solo cámbiala si está mal)':'Ubicación aproximada (link de Google Maps o coordenadas)')+'</label><input id="pvub" type="text" data-ubpega="prov:'+esc(n)+'" placeholder="19.5432, -96.9271" style="width:190px;text-align:left"></div><div class="lbl">Ahora: '+provUbTxt(d)+'</div>'}
 function provUbIns(h){h=h.replace(/<button class="btn sm sec" style="margin:6px 0" data-act="pvedit" data-n="([^"]*)">/g,function(m,enc){var n;try{n=decodeURIComponent(enc)}catch(e){n=enc}return rw('Ubicación',provUbTxt(provD(n)))+m});
  if(S.pvEdit!=null)h=h.replace('<button class="btn sm" style="margin:6px 0" data-act="pvlisto">',provUbPega(S.pvEdit)+'<button class="btn sm" style="margin:6px 0" data-act="pvlisto">');return h}
-var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
+/* fiProv: pasó a tema-viaje.js */
 /* proveedoresCard: pasó a tema-inicio.js */
 
 //@@capa l28.js
@@ -6114,7 +6091,7 @@ function fnHTML(){var x=S.fotoNo;if(!x)return '';return '<div id="fnov" role="di
  +'<div class="chips" role="group" style="margin:10px 0">'+['No prende la cámara','Está muy oscuro','No tengo el celular a la mano','Otro'].map(function(m){return '<button data-act="fnm" data-v="'+m+'" aria-pressed="'+(x.m===m)+'">'+m+'</button>'}).join('')+'</div>'
  +(x.m==='Otro'?'<div class="field"><label for="fnt">Escribe el motivo</label><input id="fnt" type="text" data-bind="fotoNo.t" value="'+esc(x.t||'')+'" style="width:190px;text-align:left"></div>':'')+(x.err?'<div class="neg" style="font-weight:700">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="fnsave">Seguir sin foto</button></div></div>'}
 /* fotoTile: pasó a tema-vehiculos.js */
-var _vF32=vwFotoUna;vwFotoUna=function(key,l){var h=_vF32.apply(this,arguments);if(vwEsAdm()||!FOTOS_OBLIGATORIAS||S.vw[key])return h;return h+'<button class="fotono" data-act="fotono" data-vw="'+key+'" data-l="'+esc(String(l).replace(/ \((opcional|obligatoria)[^)]*\)/,''))+'">No pude tomarla</button>'};
+/* vwFotoUna: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='fotono'){e.stopImmediatePropagation();e.preventDefault();S.fotoNo={g:b.dataset.g,k:b.dataset.k,vw:b.dataset.vw,cx:b.dataset.cx,l:b.dataset.l||'Foto',m:'',t:''};render();return}
  if(a==='fnx'){e.stopImmediatePropagation();S.fotoNo=null;render();return}
@@ -6181,16 +6158,13 @@ var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta
 var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
  var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
  return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
-var _vM34=vwMapa;vwMapa=function(v,small){if(!mapaHay())return _vM34.apply(this,arguments);var N=vwNodos(v),pos=vwPos(v),seen={},pts=[];
- N.forEach(function(n,j){if(n.t==='bod'||n.lat==null)return;var k=n.lat.toFixed(4)+','+n.lng.toFixed(4);if(seen[k]){seen[k].t+=' y '+j;return}var o={lat:n.lat,lng:n.lng,t:String(j),n:(n.t==='bas'?'Báscula ':'')+n.n,col:n.t==='bas'?'var(--fg)':'var(--accent)'};seen[k]=o;pts.push(o)});
- var mk=v.started&&['reg','cv','fin','gracias','done'].indexOf(v.k)<0&&pos?[{lat:pos.lat,lng:pos.lng,t:(chofN(v.quien)||'?').slice(0,1),n:chofN(v.quien),col:'#2F6DB5'}]:[];
- return mapaVivoHTML('vw'+S.vws.indexOf(v)+(small?'s':''),{pts:pts,line:N.filter(function(n){return n.lat!=null}).map(function(n){return {lat:n.lat,lng:n.lng}}),marks:mk,bod:false},small?160:220)+'<div class="lbl" style="margin-top:4px">Los números son las paradas del viaje.'+(mk.length?' El punto azul es '+esc(v.quien===2?'tu ubicación':chofN(v.quien))+'.':'')+'</div>'};
+/* vwMapa: pasó a tema-viaje.js */
 /* ---------- ubicación real ---------- */
 function gpsReciente(id,min){var g=nbRGet(id,'gps');if(!g||g.lat==null)return null;return Date.now()-num(g.t)<(min||20)*60000?g:null}
 function haceTxt(t){var m=Math.round((Date.now()-t)/60000);return m<1?'ahora':'hace '+m+' min'}
 function gpsMarcas(){var L=[];nbRutaIds().forEach(function(id,i){var g=gpsReciente(id,30);if(!g)return;L.push({lat:g.lat,lng:g.lng,t:(chofN(id)||'?').slice(0,1),n:chofN(id),hace:haceTxt(g.t),col:['#C0392B','#2F6DB5','#8E44AD','#E07B1A'][i%4]})});return L}
 /* el viaje usa la ubicación real del chofer si es reciente */
-var _vP34=vwPos;vwPos=function(v){var g=v&&v.started?gpsReciente(v.quien,15):null;return g?{lat:g.lat,lng:g.lng}:_vP34.apply(this,arguments)};
+/* vwPos: pasó a tema-viaje.js */
 /* el admin: en "Mapa en vivo" cada chofer dice dónde está */
 var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
 /* el celular del chofer manda su ubicación */
@@ -7149,12 +7123,7 @@ var _aM46=abrirModal;abrirModal=function(t,m,b){if(typeof MODO!=='undefined'&&MO
 /* ---------- 59 · burbujas: abiertas se ven como pestañas [Viaje] [Faltan N] ---------- */
 function bubVwHay(){try{var L=vwList().filter(function(x){return x.k!=='done'});if(!L.length)return false;var v=L.indexOf(S.vw)>-1?S.vw:L[0];return !v.open}catch(e){return false}}
 function bubDfN(){try{return dfOn()?dfLista().length:0}catch(e){return 0}}
-var _vwB46=vwBurbuja;vwBurbuja=function(){var hv=bubVwHay(),nd=bubDfN();if(!(hv&&nd))return _vwB46.apply(this,arguments);
- var abierta=!S.bubMin||!S.dfMin;if(!abierta)return _vwB46.apply(this,arguments);
- var tab=S.bubTab||(!S.bubMin?'vw':'df');if(tab==='vw'&&S.bubMin&&!S.dfMin)tab='df';if(tab==='df'&&S.dfMin&&!S.bubMin)tab='vw';
- var g1=S.bubMin,g2=S.dfMin,cuerpo='';try{if(tab==='vw'){S.bubMin=false;cuerpo=_vwB16.apply(this,arguments).replace(dfBurbuja(),'')}else{S.dfMin=false;cuerpo=dfBurbuja()}}finally{S.bubMin=g1;S.dfMin=g2}
- cuerpo=cuerpo.replace(/<button class="link" style="color:#fff;min-height:30px;font-size:20px" data-act="(bubmin|dfmin)" aria-label="Minimizar">–<\/button>/,'');
- return '<div class="bubpanel"><div class="bubtabs" role="tablist"><button role="tab" data-act="bubtab" data-v="vw" aria-pressed="'+(tab==='vw')+'">🛻 Viaje</button><button role="tab" class="df" data-act="bubtab" data-v="df" aria-pressed="'+(tab==='df')+'">📝 Faltan '+nd+'</button><button class="min" data-act="bubmin2" aria-label="Minimizar">–</button></div>'+cuerpo+'</div>'};
+/* vwBurbuja: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="bubtab"],[data-act="bubmin2"],[data-act="bubmax"],[data-act="dfmax"]');if(!b)return;var a=b.dataset.act;
  if(a==='bubmax'||a==='dfmax'){S.bubTab=a==='bubmax'?'vw':'df';if(bubVwHay()&&bubDfN()){e.stopImmediatePropagation();S.bubMin=a!=='bubmax';S.dfMin=a!=='dfmax';render()}return}
  e.stopImmediatePropagation();if(a==='bubmin2'){S.bubMin=true;S.dfMin=true;render();return}S.bubTab=b.dataset.v;S.bubMin=S.bubTab!=='vw';S.dfMin=S.bubTab!=='df';render()},true);
@@ -7169,8 +7138,8 @@ var _cT46=cliTools;cliTools=function(){var h=_cT46.apply(this,arguments),fl=S.cl
  return h};
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.clich)return;S.cliCh=t.value;S.cliF=t.value?'chofer':'todos';render()},true);
 /* el viaje de carga y la pantalla de ubicación también van en tarjetas */
-if(typeof vwBody==='function'){var _vwBo46=vwBody;vwBody=function(){return tarjetear(_vwBo46.apply(this,arguments))}}
-if(typeof vwSideHTML==='function'){var _vwSi46=vwSideHTML;vwSideHTML=function(){return tarjetear(_vwSi46.apply(this,arguments))}}
+/* vwBody: pasó a tema-viaje.js */
+/* vwSideHTML: pasó a tema-viaje.js */
 if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}
 
 //@@capa l47.js
@@ -7710,8 +7679,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  toast('Viaje programado: '+chofN(+d.chofer)+' sale '+svFecha(d));render();window.scrollTo(0,0)},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="simabre"]');if(!b)return;e.stopImmediatePropagation();S.simYa=true;var h=new Date();h.setDate(h.getDate()+1);wzAbre('sim',{provs:[],dias:'1',com:'300',merma:'3',fecha:iso(TODAY),hora:'06:00'})},true);
 /* ---------- 97 · cancelar un viaje programado que todavía no sale ---------- */
-var _fiC54=fiCarga;fiCarga=function(f){var h=_fiC54.apply(this,arguments),c=cargaById(f.id);if(!c||S.role!=='admin'||!c.prog||!c.viaje||c.viaje.ini||c.est!=='Por llegar')return h;
- return h.replace(/<\/div><\/div><\/div>$/,'<button class="btn sec" style="margin-top:14px;color:var(--danger)" data-act="progcancel" data-id="'+c.id+'">Cancelar este viaje</button></div></div></div>')};
+/* fiCarga: pasó a tema-viaje.js */
 setTimeout(function(){CONF.progcancel=1},0);CONF53.progcancel='Se borra el viaje y se le avisa al chofer.';
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="progcancel"]');if(!b||!b.dataset.ok)return;e.stopImmediatePropagation();var c=cargaById(+b.dataset.id);if(!c)return;
  S.inv.vacias+=num(c.vacEnv);S.cargas=S.cargas.filter(function(x){return x.id!==c.id});S.openCarga=null;var ch=c.viaje&&c.viaje.chofer;
@@ -7721,8 +7689,7 @@ var _rCm54=null;window.addEventListener('click',function(e){var b=e.target.close
  setTimeout(function(){if(S.cargas.length>n0){provD(n);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Dio de alta al proveedor '+n});S.avPrecio.push(quien()+' registró un proveedor nuevo: '+n+' (completa sus datos)');render()}},30)},true);
 var _cf54=cfForm;cfForm=function(){var h=_cf54.apply(this,arguments);return h.replace('</datalist></div>','</datalist></div><div class="lbl" style="margin:-2px 0 6px">¿Es nuevo? Escríbelo y se agrega al guardar.</div>')};
 /* pedido por WhatsApp: solo lo que vende ese proveedor (el roatán se pide en kilos o cajas, se paga por kilo) */
-var _ppH54=provPideHTML;provPideHTML=function(){var h=_ppH54.apply(this,arguments);if(!h)return h;return h.replace(/href="([^"]*)">📲 ([^<]*)</g,function(m,u,n){var nm=n.replace(/&amp;/g,'&'),t=(S.provDir[nm]||{}).tipo||'Ambos',q=t==='Roatán'?'plátano roatán':(t==='Macho'?'plátano macho':'plátano roatán y macho');
- return 'href="'+u.replace(encodeURIComponent('mandar plátano?'),encodeURIComponent('mandar '+q+'? ¿A cómo el kilo?'))+'">📲 '+n+'<'})};
+/* provPideHTML: pasó a tema-viaje.js */
 
 //@@capa l55.js
 /* ===================== v6.9 · 92: lo que pide datos o decisiones se abre en tarjeta de pantalla completa ===================== */
@@ -9112,16 +9079,9 @@ var _bP69=bigPrecio;bigPrecio=function(tit,cost,key,step,unit,mg){if(key==='M'&&
 
 /* ---------- 55 · comida autorizada antes ---------- */
 /* viaje de carga: el administrador decide al mandarlo */
-var _vwB69=vwBody;vwBody=function(k){var h=_vwB69.apply(this,arguments);try{var v=S.vw;if(!v||k!=='plan'||!h)return h;var on=v.comOk===true?'si':(v.comOk===false?'no':'');
-  var c='<div class="card c68" style="margin-top:10px;padding:12px 14px;border:2px solid var(--accent)"><div style="font-size:18px;font-weight:900">¿Tiene autorizado comer en el viaje?</div>'+ch68('vw68','comOk',[['si','Sí'],['no','No']],on)
-   +(on==='si'?'<div class="field"><label for="vw68m">¿Máximo cuánto? $</label><input id="vw68m" type="number" inputmode="decimal" min="0" data-bind="vw.comMax" value="'+esc(v.comMax==null?'':v.comMax)+'"></div>':'')+'</div>';
-  var i=h.lastIndexOf('<div style="display:flex;gap:8px');return i>-1?h.slice(0,i)+c+h.slice(i):h+c}catch(e){return h}};
+/* vwBody: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vw68"]');if(!b||!S.vw)return;e.stopImmediatePropagation();S.vw.comOk=b.dataset.v==='si';render()},true);
-var _vwS69=vwSideHTML;vwSideHTML=function(sd){var h=_vwS69.apply(this,arguments);try{var v=S.vw;if(sd!=='gasto'||!v)return h;
-  if(v.comOk===false){h=h.replace(/<button style="min-height:48px" data-act="vwgxt" data-v="Comida"[^>]*>Comida<\/button>/,'');h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">La comida no está autorizada en este viaje.</div><div class="field"><label for="vwgxm">')}
-  else if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">Comida autorizada: hasta '+money(num(v.comMax))+' (llevas '+money(ya)+').</div><div class="field"><label for="vwgxm">')}
-  /* imprevisto: grúa o refacción también */
-  h=h.replace('data-v="Reparación" aria-pressed','data-v="Reparación" aria-pressed').replace('>Reparación</button>','>Imprevisto (ponchadura, grúa, refacción)</button>')}catch(e){}return h};
+/* vwSideHTML: pasó a tema-viaje.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="vwgx"]');if(!b||!S.vw)return;var v=S.vw,t=v.gxt||'Comida';if(t!=='Comida')return;
  if(v.comOk===false){e.preventDefault();e.stopImmediatePropagation();toast('La comida no está autorizada en este viaje. Pídele permiso al administrador.');return}
  if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});if(ya+num(v.gxm)>num(v.comMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del máximo autorizado para comida ('+money(num(v.comMax))+'). Llévale el ticket al administrador.')}}},true);
@@ -9197,9 +9157,7 @@ function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter
  d.className='card alert';d.style.cssText='padding:12px 16px;border-width:2px';d.innerHTML='<b style="font-size:18px" class="neg">⚠ Algo no cuadra</b>'+m.map(function(x){return '<div style="margin-top:8px;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--danger) 8%,var(--surface))"><b>'+esc(x.n)+'</b><div style="font-size:15px">'+esc(x.det||'')+'</div></div>'}).join('');return d}
 var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var mm=document.querySelector('main');if(mm&&S.role==='admin'&&S.tab.admin==='inicio'&&!mm.querySelector('[data-x="cuadra68"]')){var ref=mm.querySelector(':scope > details[data-k="avinfo"]')||Array.prototype.filter.call(mm.querySelectorAll(':scope > .card'),function(c){var b=c.querySelector('.tt');return b&&/^Por atender/.test(b.textContent)})[0]||mm.querySelector('.inv68');if(ref)ref.after(cuadraCard68())}}catch(e){console.error('cuadra68',e)}return r};
 /* 54 · "Costo del viaje más exacto" a la vista en la ficha de la carga (antes escondido en "Detalle") */
-var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{var c=cargaById(f.id);if(!c||S.role!=='admin'||c.est!=='Recibida'||h.indexOf('data-act="cvopen"')>-1)return h;
-  var bt='<button class="btn" style="min-height:56px;width:100%" data-act="cvopen" data-id="'+c.id+'">'+(c.cv&&c.cv.ok?'🧾 Corregir el costo del viaje':'🧾 Costo del viaje más exacto (combustible, desgaste, sueldo)')+'</button>';
-  var i=h.indexOf('<div class="card" style="display:flex;flex-direction:column;gap:8px">');if(i<0)return h;i+='<div class="card" style="display:flex;flex-direction:column;gap:8px">'.length;return h.slice(0,i)+bt+h.slice(i)}catch(e){return h}};
+/* fiCarga: pasó a tema-viaje.js */
 /* el aviso que sale abajo también dice qué no cuadra y por cuánto */
 var _tq69=toast;toast=function(t){try{var m=/^⚠ Algo no cuadra: ([^.]+)\. Revísalo en Estadísticas\.$/.exec(t||'');if(m){var x=cuentasRevisar().filter(function(y){return !y.ok&&y.n===m[1]})[0];if(x&&x.det)t='⚠ '+x.n+'. '+x.det+'.'}}catch(e){}return _tq69.call(this,t)};
 
@@ -9391,8 +9349,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* bodega en la primera vez (paso "Bodega" del asistente) */
 /* setupHTML: pasó a tema-ajustes.js */
 /* proveedores y clientes: en "Datos" */
-var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
-  var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* fiProv: pasó a tema-viaje.js */
 /* fiCli: pasó a tema-fichas.js */
 /* el chofer confirma la ubicación cuando está en el lugar (entrega del cliente) */
 function cfUb70(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cfub70"]'))return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;
@@ -10110,7 +10067,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4803,"l15.js"],[4865,"l16.js"],[4965,"l17.js"],[4996,"l18.js"],[5075,"l19.js"],[5134,"l20.js"],[5183,"l21.js"],[5227,"l22.js"],[5423,"l23.js"],[5472,"l24.js"],[5488,"l25.js"],[5519,"l26.js"],[5657,"l27.js"],[5718,"l28.js"],[5850,"l29.js"],[5976,"l30.js"],[6019,"l31.js"],[6048,"l32.js"],[6136,"l33.js"],[6154,"l34.js"],[6214,"l35.js"],[6271,"l36.js"],[6366,"l37.js"],[6385,"l38.js"],[6468,"l39.js"],[6548,"l40.js"],[6656,"l41.js"],[6723,"l42.js"],[6825,"l43.js"],[6927,"l44.js"],[7022,"l45.js"],[7108,"l46.js"],[7176,"l47.js"],[7290,"l48.js"],[7344,"l49.js"],[7380,"l50.js"],[7483,"l51.js"],[7493,"l52.js"],[7630,"l53.js"],[7652,"l54.js"],[7727,"l55.js"],[7756,"l56.js"],[7840,"l57.js"],[7903,"l58.js"],[8030,"l59.js"],[8089,"l60.js"],[8249,"l61.js"],[8305,"l62.js"],[8434,"l63.js"],[8599,"l64.js"],[8625,"l65.js"],[8726,"l66.js"],[8828,"l67.js"],[8855,"l68.js"],[8981,"l69.js"],[9206,"l70.js"],[9413,"l71.js"],[9538,"l72.js"],[9651,"l73.js"],[9727,"l74.js"],[9848,"l75.js"],[10001,"l76.js"],[10104,"l77.js"],[10229,"l78.js"],[10379,"l79.js"],[10487,"l80.js"],[10611,"l81.js"],[10764,"l82.js"],[11015,"l83.js"],[11084,"l84.js"],[11197,"l85.js"],[11258,"tema-rutadia.js"],[11423,"l86.js"],[11483,"l87.js"],[11526,"l88.js"],[11576,"l89.js"],[11625,"l90.js"],[11731,"tema-ruta.js"],[11878,"tema-fichas.js"],[11995,"tema-cierre.js"],[12089,"tema-inicio.js"],[12217,"tema-ajustes.js"],[12420,"tema-nube.js"],[12478,"tema-cobranza.js"],[12625,"tema-pantallas.js"],[12846,"tema-avisos.js"],[13008,"tema-reparte.js"],[13074,"tema-vehiculos.js"],[13218,"tema-notas.js"],[13235,"tema-taras.js"],[13342,"tema-cargarmas.js"],[13381,"tema-cargas.js"],[13415,"tema-cobro.js"],[13451,"tema-horario.js"],[13490,"tema-sueldos.js"],[13632,"tema-ganado.js"],[13677,"tema-cierres.js"],[13776,"tema-finanzas.js"],[13849,"tema-cuadre.js"],[14038,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4801,"l15.js"],[4863,"l16.js"],[4963,"l17.js"],[4994,"l18.js"],[5073,"l19.js"],[5132,"l20.js"],[5181,"l21.js"],[5225,"l22.js"],[5421,"l23.js"],[5470,"l24.js"],[5486,"l25.js"],[5513,"l26.js"],[5634,"l27.js"],[5695,"l28.js"],[5827,"l29.js"],[5953,"l30.js"],[5996,"l31.js"],[6025,"l32.js"],[6113,"l33.js"],[6131,"l34.js"],[6188,"l35.js"],[6245,"l36.js"],[6340,"l37.js"],[6359,"l38.js"],[6442,"l39.js"],[6522,"l40.js"],[6630,"l41.js"],[6697,"l42.js"],[6799,"l43.js"],[6901,"l44.js"],[6996,"l45.js"],[7082,"l46.js"],[7145,"l47.js"],[7259,"l48.js"],[7313,"l49.js"],[7349,"l50.js"],[7452,"l51.js"],[7462,"l52.js"],[7599,"l53.js"],[7621,"l54.js"],[7694,"l55.js"],[7723,"l56.js"],[7807,"l57.js"],[7870,"l58.js"],[7997,"l59.js"],[8056,"l60.js"],[8216,"l61.js"],[8272,"l62.js"],[8401,"l63.js"],[8566,"l64.js"],[8592,"l65.js"],[8693,"l66.js"],[8795,"l67.js"],[8822,"l68.js"],[8948,"l69.js"],[9164,"l70.js"],[9370,"l71.js"],[9495,"l72.js"],[9608,"l73.js"],[9684,"l74.js"],[9805,"l75.js"],[9958,"l76.js"],[10061,"l77.js"],[10186,"l78.js"],[10336,"l79.js"],[10444,"l80.js"],[10568,"l81.js"],[10721,"l82.js"],[10971,"l83.js"],[11040,"l84.js"],[11153,"l85.js"],[11214,"tema-rutadia.js"],[11379,"l86.js"],[11439,"l87.js"],[11482,"l88.js"],[11532,"l89.js"],[11581,"l90.js"],[11687,"tema-ruta.js"],[11834,"tema-fichas.js"],[11951,"tema-cierre.js"],[12045,"tema-inicio.js"],[12173,"tema-ajustes.js"],[12376,"tema-nube.js"],[12434,"tema-viaje.js"],[12575,"tema-cobranza.js"],[12722,"tema-pantallas.js"],[12943,"tema-avisos.js"],[13105,"tema-reparte.js"],[13171,"tema-vehiculos.js"],[13315,"tema-notas.js"],[13332,"tema-taras.js"],[13439,"tema-cargarmas.js"],[13478,"tema-cargas.js"],[13512,"tema-cobro.js"],[13548,"tema-horario.js"],[13587,"tema-sueldos.js"],[13729,"tema-ganado.js"],[13774,"tema-cierres.js"],[13873,"tema-finanzas.js"],[13946,"tema-cuadre.js"],[14135,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10203,8 +10160,8 @@ function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n
 vwLimpia77();
 var _rd77c=render;render=function(){vwLimpia77();return _rd77c.apply(this,arguments)};
 if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
-if(typeof vwBurbuja==='function'){var _vB77=vwBurbuja;vwBurbuja=function(){try{return _vB77.apply(this,arguments)}catch(e){falloAnota77(e,'burbuja del viaje');return ''}}}
-if(typeof vwPend==='function'){var _vP77=vwPend;vwPend=function(){try{return _vP77.apply(this,arguments)}catch(e){return []}}}
+/* vwBurbuja: pasó a tema-viaje.js */
+/* vwPend: pasó a tema-viaje.js */
 
 /* la pantalla de rescate va en un cuadro aparte (iframe): nada de la app le puede quitar los toques ni el deslizar */
 var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Diagnóstico —\n'+diagTxt77();FALLO77.ult=txt;try{localStorage.setItem('pnFallo',txt)}catch(x){}
@@ -10589,7 +10546,7 @@ if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply
 /* la bodega sin ubicación: los mapas ya no usan Banderilla; mientras, se centran en tus clientes */
 function bod80(){if(MODO!=='vacio')return;var b=null;try{b=bodPrincipal()}catch(e){}if(b&&b.lat!=null)return;var L=(S.cli||[]).filter(function(c){return !c.oculto&&c.lat!=null&&!isNaN(+c.lat)});if(!L.length)return;BOD.lat=r2c80(sum(L,function(c){return +c.lat})/L.length);BOD.lng=r2c80(sum(L,function(c){return +c.lng})/L.length);BOD.aprox80=1}
 function r2c80(x){return Math.round(x*1e5)/1e5}
-var _vN80=vwNodos;vwNodos=function(){var N=_vN80.apply(this,arguments);try{var n=bodNom80();N.forEach(function(x){if(x.t==='bod'&&x.n==='Banderilla')x.n=n.charAt(0).toUpperCase()+n.slice(1)})}catch(e){}return N};
+/* vwNodos: pasó a tema-viaje.js */
 /* los nombres de lugar salen de la ubicación de TU bodega (antes decían Banderilla / Veracruz siempre) */
 var EDO80=[['Aguascalientes','Ags'],['Baja California Sur','B\\.? ?C\\.? ?S'],['Baja California','B\\.? ?C'],['Campeche','Camp'],['Chiapas','Chis'],['Chihuahua','Chih'],['Ciudad de México','CDMX|Cd\\.? de M[ée]x'],['Coahuila','Coah'],['Colima','Col'],['Durango','Dgo'],['Guanajuato','Gto'],['Guerrero','Gro'],['Hidalgo','Hgo'],['Jalisco','Jal'],['Estado de México','Edo\\.? ?M[ée]x|M[ée]x'],['Michoacán','Mich'],['Morelos','Mor'],['Nayarit','Nay'],['Nuevo León','N\\.? ?L'],['Oaxaca','Oax'],['Puebla','Pue'],['Querétaro','Qro'],['Quintana Roo','Q\\.? ?R(oo)?'],['San Luis Potosí','S\\.? ?L\\.? ?P'],['Sinaloa','Sin'],['Sonora','Son'],['Tabasco','Tab'],['Tamaulipas','Tamps'],['Tlaxcala','Tlax'],['Veracruz','Ver'],['Yucatán','Yuc'],['Zacatecas','Zac']];
 function edoDe80(dir){var p=String(dir||'').split(',').map(function(x){return x.trim().replace(/\.$/,'')}).filter(function(x){return x&&!/^(México|Mexico|MX)$/i.test(x)});for(var k=p.length-1;k>=0&&k>=p.length-3;k--){var t=p[k].replace(/^\d{5}\s*/,'');for(var i=0;i<EDO80.length;i++){var e=EDO80[i],n=e[0].normalize('NFD').replace(/[̀-ͯ]/g,''),tn=t.normalize('NFD').replace(/[̀-ͯ]/g,'');if(new RegExp('^('+n+'|'+e[1]+')\\.?$','i').test(tn)||new RegExp('(^|\\s)'+n+'$','i').test(tn))return e[0]}}return ''}
@@ -10904,8 +10861,7 @@ sugCarga=function(){var P=MODO==='vacio'?prom82():null,L=(S.stops||[]).filter(fu
  var R=sum(L,function(c){var p=pedHoy(c);if(p){con++;return num(p.R)}if(!P)return num(c.pR);var h=P[c.id];if(h)con++;return h?h.R:0}),M=sum(L,function(c){var p=pedHoy(c);if(p)return num(p.M);if(!P)return num(c.pM);var h=P[c.id];return h?h.M:0});
  if(P)return {R:R,M:M,sR:R?R+Math.max(2,Math.ceil(R*0.1)):0,sM:M?M+Math.max(5,Math.ceil(M*0.1)):0,n:con,tot:L.length};
  return {R:R,M:M,sR:R+Math.max(5,Math.ceil(R*0.1)),sM:M+Math.max(20,Math.ceil(M*0.1)),n:L.length}};
-var _sch82=sugCargaHTML;sugCargaHTML=function(){if(MODO!=='vacio')return _sch82.apply(this,arguments);var s=sugCarga();if(!s.n||!(s.sR||s.sM))return '';
- return '<div class="card note" style="padding:10px 12px;margin:8px 0"><b>Sugerido para hoy: '+(s.sR?s.sR+' cajas':'')+(s.sR&&s.sM?' y ':'')+(s.sM?s.sM+' kg':'')+'</b><div class="lbl">'+s.n+' de tus '+s.tot+' clientes de hoy ya tienen historial o pedido: llevan ~'+(s.R?s.R+' cajas':'')+(s.R&&s.M?' y ':'')+(s.M?s.M+' kg':'')+', más un poco por si acaso.'+(s.n<s.tot?' A los otros '+(s.tot-s.n)+' todavía no se les ha entregado.':'')+'</div><button class="btn sm sec" style="margin-top:6px" data-act="usarsug">Usar lo sugerido</button></div>'};
+/* sugCargaHTML: pasó a tema-viaje.js */
 /* la tarjeta de arriba dice lo mismo */
 if(typeof stock72==='function'){var _st82=stock72;stock72=function(){if(MODO!=='vacio')return _st82.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return;var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(!c||c.dataset.x72)return;var s=sugCarga();
  if(s.n&&(s.sR||s.sM)){c.dataset.x72='1';c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:19px;font-weight:800;margin-top:8px">Sugerido: '+(s.sR?s.sR+' cajas':'')+(s.sR&&s.sM?' y ':'')+(s.sM?s.sM+' kg':'')+'</div><div class="lbl" style="margin-top:4px">Con lo que de verdad llevan tus clientes de hoy'+(s.n<s.tot?' ('+s.n+' de '+s.tot+' tienen historial)':'')+'. Abajo, en "Iniciar el día", lo puedes usar con un toque.</div>';return}
@@ -11516,7 +11472,7 @@ function agrupa87(L){var out=[],man=[],no=[],ya={};(L||[]).forEach(function(x){S
 function avChofer87(){if(S.role!=='rep'||S.chofHoy==null||!S.rutaAv)return;var L=S.rutaAv[S.chofHoy];if(!Array.isArray(L)||!L.length)return;var G=agrupa87(L);if(JSON.stringify(G)!==JSON.stringify(L))S.rutaAv[S.chofHoy]=G}
 
 /* ---------- 73 · cuánto cargar: sin número si faltan datos ---------- */
-var _sug87=sugCarga;sugCarga=function(){var s=_sug87.apply(this,arguments);try{if(MODO==='vacio'&&s&&s.tot&&s.n>0&&s.n*2<s.tot){s.poco87=1;s.sR=0;s.sM=0}}catch(e){}return s};
+/* sugCarga: pasó a tema-viaje.js */
 var _st87=stock72;stock72=function(){if(MODO!=='vacio')return _st87.apply(this,arguments);var s=null;try{s=sugCarga()}catch(e){}if(s&&s.poco87&&S.role==='rep'&&!S.salida.ok){var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(c&&!c.dataset.x72){c.dataset.x72='1';
   c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:800;margin-top:8px">Todavía no hay datos suficientes</div><div class="lbl" style="margin-top:4px">Solo '+s.n+' de tus '+s.tot+' clientes de hoy ya tienen entregas. Carga lo que te diga el administrador; la app aprende con cada entrega.</div>'}return}
  return _st87.apply(this,arguments)};
@@ -12474,6 +12430,147 @@ if(typeof nbPrimera==='function'){var _nbP77=nbPrimera;nbPrimera=function(docs){
 /* nbArma · de l77 */
 if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
   var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
+
+//@@capa tema-viaje.js
+/* ===================== TEMA · Viaje de carga al proveedor (aplanado el 18 nov) =====================
+   Antes estaba repartido en 27 envolturas encadenadas en l14, l16, l25, l26, l27, l32, l34, l46, l54, l69, l70, l77, l80, l82, l87.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-viaje.js).
+   Se arma justo después de tema-nube.js (antes de los otros temas).
+   Si se cambia algo del viaje, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - vwBody, vwSideHTML, vwBurbuja, vwNodos, vwTramoHTML, vwMapa, vwPos, vwPend, vwParCfg, vwFotoUna: la pantalla del viaje en curso,
+     su burbuja, el mapa, los tramos y las fotos.
+   - vwBasc: los pesos de la báscula.
+   - fiProv, fiCarga: las fichas del proveedor y de cada carga.
+   - recargaCard, provPideHTML, sugCarga, sugCargaHTML: la tarjeta de recargar, lo que pide el proveedor y la sugerencia de cuánto cargar.
+   NO están aquí: la última envoltura de vwBurbuja (ya vive en tema-pantallas.js, que se arma después) y "cargas" (va dentro de un bloque).
+   La versión completa de sugCarga se rehízo en l82 (antes de su envoltura). l46 sigue usando _vwB16 (la burbuja sin la de "Después").
+   ============================================================================================ */
+
+/* recargaCard · de l14 */
+var _rcC14=recargaCard;recargaCard=function(){var h=_rcC14.apply(this,arguments),rc=S.rc||{},dis=S.cierre.sent;if(dis)return h;
+ var ft=(rc.foto?'<img src="'+rc.foto+'" alt="Ticket de gasolina" style="width:100%;height:110px;object-fit:cover;border-radius:10px;margin-top:6px">':'')+'<label class="btn sm '+(rc.foto?'sec':'')+'" for="rcf" style="display:inline-flex;align-items:center;cursor:pointer;margin-top:6px">'+(rc.foto?'Cambiar foto del ticket':'📷 Foto del ticket')+'</label><input id="rcf" type="file" accept="image/*" capture="environment" data-rcf="1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">'+(rc.foto?'':'<div class="lbl">Sin foto del ticket no se descuenta hasta que el administrador lo acepte.</div>');
+ h=h.replace('<button class="btn" data-act="recargar"',ft+'<button class="btn" data-act="recargar"');return h+gxRevChofer('rc')};
+
+/* vwBurbuja · de l16 */
+var _vwB16=vwBurbuja;vwBurbuja=function(){return dfBurbuja()+_vwB16.apply(this,arguments)};
+
+/* vwBasc · de l25 */
+var _vb25=vwBasc;vwBasc=function(p){var b=_vb25.apply(this,arguments);if(b||vwPes(p))return b;return {id:null,n:'Báscula',lat:null,lng:null}};
+
+/* vwNodos · de l25 */
+var _vn25=vwNodos;vwNodos=function(v){var N=_vn25.apply(this,arguments);
+ N.forEach(function(x,i){if(x.lat==null||x.lng==null||isNaN(x.lat)||isNaN(x.lng)){var pr=N.filter(function(y){return y.t==='prov'&&y.i===x.i})[0];x.lat=pr&&pr.lat!=null?pr.lat-.02:BOD.lat+.28;x.lng=pr&&pr.lng!=null?pr.lng-.02:BOD.lng+.28}});return N};
+
+/* vwBurbuja · de l25 */
+var _vwB25=vwBurbuja;vwBurbuja=function(){var h=_vwB25.apply(this,arguments),ch=[];
+ h=h.replace(/<div class="dfmini"[^>]*>(<button[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
+ h=h.replace(/<div style="display:flex;justify-content:flex-end">(<button class="popin[^"]*" data-act="bubmax"[\s\S]*?<\/button>)<\/div>/,function(m,b){ch.push(b);return ''});
+ return h+(ch.length?'<div class="mindock">'+ch.join('')+'</div>':'')};
+
+/* vwBasc · de l26 */
+var _vb26=vwBasc;vwBasc=function(p){if(p&&!vwPes(p)&&p.basId==='__nueva')return {id:null,n:String(p.nbn||'').trim()||'Báscula nueva',lat:null,lng:null,nueva:true};return _vb26.apply(this,arguments)};
+
+/* vwParCfg · de l26 */
+var _pc26=vwParCfg;vwParCfg=function(p,ix){var h=_pc26.apply(this,arguments),v=S.vw;
+ if(!vwPes(p)){h=h.replace(/(<select id="vwbs\d+"[\s\S]*?)<\/select>/,function(m,a){return a+'<option value="__nueva"'+(p.basId==='__nueva'?' selected':'')+'>+ Báscula nueva (el chofer la registra)</option></select>'});
+  if(p.t==='R')h='<div class="lbl" style="margin-top:6px">El roatán siempre pasa a pesar a la báscula.</div>'+h;
+  if(p.basId==='__nueva')h+='<div class="field"><label for="vwnb'+ix+'">¿Cómo se llama la báscula?</label><input id="vwnb'+ix+'" type="text" data-bind="vw.par.'+ix+'.nbn" value="'+esc(p.nbn||'')+'" placeholder="Ej. Báscula El Molo" style="width:170px;text-align:left"></div><div class="lbl">Si no sabes el nombre, déjalo vacío: el chofer lo escribe.</div>'}
+ var falta=[];if(!vwPes(p)){var bs=vwBasc(p);if(bs&&!ubTiene(bs))falta.push(['bas',bs])}
+ if(p.prov&&p.prov!=='__nuevo'&&!ubTiene(provD(p.prov)))falta.push(['prov',{n:p.prov}]);else if(p.prov==='__nuevo')falta.push(['provn',{n:p.np||'el proveedor nuevo'}]);
+ if(!falta.length)return h;
+ h+='<div class="card note" style="padding:10px 12px;margin-top:10px"><b>📍 Sin ubicación</b>';
+ falta.forEach(function(f){var nm=f[1].n||'';h+='<div style="margin-top:6px">'+(f[0]==='bas'&&f[1].nueva&&!String(p.nbn||'').trim()?'La báscula nueva':esc(nm)+(f[0]==='bas'?' (báscula)':' (proveedor)'))+'</div>';
+  if(f[0]==='provn')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubnp'+ix+'" style="font-size:14px">Ubicación aproximada (link de Google Maps o coordenadas)</label><input id="ubnp'+ix+'" type="text" data-bind="vw.par.'+ix+'.nub" value="'+esc(p.nub||'')+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>';
+  if((f[0]==='bas'&&f[1].id!=null)||f[0]==='prov')h+='<div class="field" style="border:0;padding-top:2px"><label for="ubp'+ix+f[0]+'" style="font-size:14px">Pégala aquí (link de Google Maps o coordenadas)</label><input id="ubp'+ix+f[0]+'" type="text" data-ubpega="'+f[0]+':'+(f[0]==='bas'?f[1].id:esc(nm))+'" placeholder="19.5432, -96.9271" style="width:170px;text-align:left"></div>'});
+ var qn=v&&v.quien!==2?chofN(v.quien):'el chofer';
+ h+='<div class="chips" role="group" aria-label="Pedirle al chofer" style="margin-top:8px"><button data-act="ubpide" data-i="'+ix+'" data-v="1" aria-pressed="'+!p.noUb+'">Que '+esc(qn)+' la guarde al llegar</button><button data-act="ubpide" data-i="'+ix+'" data-v="0" aria-pressed="'+!!p.noUb+'">No pedirla</button></div>'
+  +'<div class="lbl" style="margin-top:4px">Al llegar, la app toma la ubicación del GPS, el nombre y una foto del lugar.</div></div>';return h};
+
+/* vwBody · de l26 */
+var _vB26=vwBody;vwBody=function(k){var h=_vB26.apply(this,arguments),v=S.vw;if(!v||(vwEsAdm()&&!vwYo())||['ruta','camino'].indexOf(k)<0)return h;var L=ubFaltanViaje(v);if(!L.length)return h;
+ return '<div class="card note ubcard" style="padding:10px 12px;margin-top:8px"><b>📍 Hoy vas a '+(L.length===1?'un lugar que no tiene':'lugares que no tienen')+' ubicación</b><div style="font-size:15px;margin-top:4px">'+esc(L.join(', '))+'</div><div class="lbl" style="margin-top:4px">Cuando llegues y toques "Ya llegué", te pido guardarla: un toque al GPS, el nombre y una foto.</div></div>'+h};
+
+/* vwTramoHTML · de l26 */
+var _tr26=vwTramoHTML;vwTramoHTML=function(k){var h=_tr26.apply(this,arguments),v=S.vw;try{var T=vwTramo(v);if(!T)return h;var r=ubDeNodo(v,T.a);if(!r||!r.need)return h;
+ var pv=provD((v.par[T.a.i]||{}).prov||''),q=r.k==='bas'?((r.obj&&r.obj.dir)||((r.n||'báscula')+' '+(pv.dir||''))):((r.obj&&r.obj.dir)||r.n);
+ h=h.replace(/href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=[^"]*"/,'href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'"');
+ return h.replace('Ir con Google Maps','Buscar en Google Maps')}catch(e){return h}};
+
+/* fiProv · de l27 */
+var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
+
+/* vwFotoUna · de l32 */
+var _vF32=vwFotoUna;vwFotoUna=function(key,l){var h=_vF32.apply(this,arguments);if(vwEsAdm()||!FOTOS_OBLIGATORIAS||S.vw[key])return h;return h+'<button class="fotono" data-act="fotono" data-vw="'+key+'" data-l="'+esc(String(l).replace(/ \((opcional|obligatoria)[^)]*\)/,''))+'">No pude tomarla</button>'};
+
+/* vwMapa · de l34 */
+var _vM34=vwMapa;vwMapa=function(v,small){if(!mapaHay())return _vM34.apply(this,arguments);var N=vwNodos(v),pos=vwPos(v),seen={},pts=[];
+ N.forEach(function(n,j){if(n.t==='bod'||n.lat==null)return;var k=n.lat.toFixed(4)+','+n.lng.toFixed(4);if(seen[k]){seen[k].t+=' y '+j;return}var o={lat:n.lat,lng:n.lng,t:String(j),n:(n.t==='bas'?'Báscula ':'')+n.n,col:n.t==='bas'?'var(--fg)':'var(--accent)'};seen[k]=o;pts.push(o)});
+ var mk=v.started&&['reg','cv','fin','gracias','done'].indexOf(v.k)<0&&pos?[{lat:pos.lat,lng:pos.lng,t:(chofN(v.quien)||'?').slice(0,1),n:chofN(v.quien),col:'#2F6DB5'}]:[];
+ return mapaVivoHTML('vw'+S.vws.indexOf(v)+(small?'s':''),{pts:pts,line:N.filter(function(n){return n.lat!=null}).map(function(n){return {lat:n.lat,lng:n.lng}}),marks:mk,bod:false},small?160:220)+'<div class="lbl" style="margin-top:4px">Los números son las paradas del viaje.'+(mk.length?' El punto azul es '+esc(v.quien===2?'tu ubicación':chofN(v.quien))+'.':'')+'</div>'};
+
+/* vwPos · de l34 */
+var _vP34=vwPos;vwPos=function(v){var g=v&&v.started?gpsReciente(v.quien,15):null;return g?{lat:g.lat,lng:g.lng}:_vP34.apply(this,arguments)};
+
+/* vwBurbuja · de l46 */
+var _vwB46=vwBurbuja;vwBurbuja=function(){var hv=bubVwHay(),nd=bubDfN();if(!(hv&&nd))return _vwB46.apply(this,arguments);
+ var abierta=!S.bubMin||!S.dfMin;if(!abierta)return _vwB46.apply(this,arguments);
+ var tab=S.bubTab||(!S.bubMin?'vw':'df');if(tab==='vw'&&S.bubMin&&!S.dfMin)tab='df';if(tab==='df'&&S.dfMin&&!S.bubMin)tab='vw';
+ var g1=S.bubMin,g2=S.dfMin,cuerpo='';try{if(tab==='vw'){S.bubMin=false;cuerpo=_vwB16.apply(this,arguments).replace(dfBurbuja(),'')}else{S.dfMin=false;cuerpo=dfBurbuja()}}finally{S.bubMin=g1;S.dfMin=g2}
+ cuerpo=cuerpo.replace(/<button class="link" style="color:#fff;min-height:30px;font-size:20px" data-act="(bubmin|dfmin)" aria-label="Minimizar">–<\/button>/,'');
+ return '<div class="bubpanel"><div class="bubtabs" role="tablist"><button role="tab" data-act="bubtab" data-v="vw" aria-pressed="'+(tab==='vw')+'">🛻 Viaje</button><button role="tab" class="df" data-act="bubtab" data-v="df" aria-pressed="'+(tab==='df')+'">📝 Faltan '+nd+'</button><button class="min" data-act="bubmin2" aria-label="Minimizar">–</button></div>'+cuerpo+'</div>'};
+
+/* vwBody · de l46 */
+if(typeof vwBody==='function'){var _vwBo46=vwBody;vwBody=function(){return tarjetear(_vwBo46.apply(this,arguments))}}
+
+/* vwSideHTML · de l46 */
+if(typeof vwSideHTML==='function'){var _vwSi46=vwSideHTML;vwSideHTML=function(){return tarjetear(_vwSi46.apply(this,arguments))}}
+
+/* fiCarga · de l54 */
+var _fiC54=fiCarga;fiCarga=function(f){var h=_fiC54.apply(this,arguments),c=cargaById(f.id);if(!c||S.role!=='admin'||!c.prog||!c.viaje||c.viaje.ini||c.est!=='Por llegar')return h;
+ return h.replace(/<\/div><\/div><\/div>$/,'<button class="btn sec" style="margin-top:14px;color:var(--danger)" data-act="progcancel" data-id="'+c.id+'">Cancelar este viaje</button></div></div></div>')};
+
+/* provPideHTML · de l54 */
+var _ppH54=provPideHTML;provPideHTML=function(){var h=_ppH54.apply(this,arguments);if(!h)return h;return h.replace(/href="([^"]*)">📲 ([^<]*)</g,function(m,u,n){var nm=n.replace(/&amp;/g,'&'),t=(S.provDir[nm]||{}).tipo||'Ambos',q=t==='Roatán'?'plátano roatán':(t==='Macho'?'plátano macho':'plátano roatán y macho');
+ return 'href="'+u.replace(encodeURIComponent('mandar plátano?'),encodeURIComponent('mandar '+q+'? ¿A cómo el kilo?'))+'">📲 '+n+'<'})};
+
+/* vwBody · de l69 */
+var _vwB69=vwBody;vwBody=function(k){var h=_vwB69.apply(this,arguments);try{var v=S.vw;if(!v||k!=='plan'||!h)return h;var on=v.comOk===true?'si':(v.comOk===false?'no':'');
+  var c='<div class="card c68" style="margin-top:10px;padding:12px 14px;border:2px solid var(--accent)"><div style="font-size:18px;font-weight:900">¿Tiene autorizado comer en el viaje?</div>'+ch68('vw68','comOk',[['si','Sí'],['no','No']],on)
+   +(on==='si'?'<div class="field"><label for="vw68m">¿Máximo cuánto? $</label><input id="vw68m" type="number" inputmode="decimal" min="0" data-bind="vw.comMax" value="'+esc(v.comMax==null?'':v.comMax)+'"></div>':'')+'</div>';
+  var i=h.lastIndexOf('<div style="display:flex;gap:8px');return i>-1?h.slice(0,i)+c+h.slice(i):h+c}catch(e){return h}};
+
+/* vwSideHTML · de l69 */
+var _vwS69=vwSideHTML;vwSideHTML=function(sd){var h=_vwS69.apply(this,arguments);try{var v=S.vw;if(sd!=='gasto'||!v)return h;
+  if(v.comOk===false){h=h.replace(/<button style="min-height:48px" data-act="vwgxt" data-v="Comida"[^>]*>Comida<\/button>/,'');h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">La comida no está autorizada en este viaje.</div><div class="field"><label for="vwgxm">')}
+  else if(v.comOk===true&&num(v.comMax)>0){var ya=sum((v.gx||[]).filter(function(x){return x.t==='Comida'}),function(x){return num(x.m)});h=h.replace('<div class="field"><label for="vwgxm">','<div class="lbl" style="margin:4px 0">Comida autorizada: hasta '+money(num(v.comMax))+' (llevas '+money(ya)+').</div><div class="field"><label for="vwgxm">')}
+  /* imprevisto: grúa o refacción también */
+  h=h.replace('data-v="Reparación" aria-pressed','data-v="Reparación" aria-pressed').replace('>Reparación</button>','>Imprevisto (ponchadura, grúa, refacción)</button>')}catch(e){}return h};
+
+/* fiCarga · de l69 */
+var _fiC69=fiCarga;fiCarga=function(f){var h=_fiC69.apply(this,arguments);try{var c=cargaById(f.id);if(!c||S.role!=='admin'||c.est!=='Recibida'||h.indexOf('data-act="cvopen"')>-1)return h;
+  var bt='<button class="btn" style="min-height:56px;width:100%" data-act="cvopen" data-id="'+c.id+'">'+(c.cv&&c.cv.ok?'🧾 Corregir el costo del viaje':'🧾 Costo del viaje más exacto (combustible, desgaste, sueldo)')+'</button>';
+  var i=h.indexOf('<div class="card" style="display:flex;flex-direction:column;gap:8px">');if(i<0)return h;i+='<div class="card" style="display:flex;flex-direction:column;gap:8px">'.length;return h.slice(0,i)+bt+h.slice(i)}catch(e){return h}};
+
+/* fiProv · de l70 */
+var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
+  var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+
+/* vwBurbuja · de l77 */
+if(typeof vwBurbuja==='function'){var _vB77=vwBurbuja;vwBurbuja=function(){try{return _vB77.apply(this,arguments)}catch(e){falloAnota77(e,'burbuja del viaje');return ''}}}
+
+/* vwPend · de l77 */
+if(typeof vwPend==='function'){var _vP77=vwPend;vwPend=function(){try{return _vP77.apply(this,arguments)}catch(e){return []}}}
+
+/* vwNodos · de l80 */
+var _vN80=vwNodos;vwNodos=function(){var N=_vN80.apply(this,arguments);try{var n=bodNom80();N.forEach(function(x){if(x.t==='bod'&&x.n==='Banderilla')x.n=n.charAt(0).toUpperCase()+n.slice(1)})}catch(e){}return N};
+
+/* sugCargaHTML · de l82 */
+var _sch82=sugCargaHTML;sugCargaHTML=function(){if(MODO!=='vacio')return _sch82.apply(this,arguments);var s=sugCarga();if(!s.n||!(s.sR||s.sM))return '';
+ return '<div class="card note" style="padding:10px 12px;margin:8px 0"><b>Sugerido para hoy: '+(s.sR?s.sR+' cajas':'')+(s.sR&&s.sM?' y ':'')+(s.sM?s.sM+' kg':'')+'</b><div class="lbl">'+s.n+' de tus '+s.tot+' clientes de hoy ya tienen historial o pedido: llevan ~'+(s.R?s.R+' cajas':'')+(s.R&&s.M?' y ':'')+(s.M?s.M+' kg':'')+', más un poco por si acaso.'+(s.n<s.tot?' A los otros '+(s.tot-s.n)+' todavía no se les ha entregado.':'')+'</div><button class="btn sm sec" style="margin-top:6px" data-act="usarsug">Usar lo sugerido</button></div>'};
+
+/* sugCarga · de l87 */
+var _sug87=sugCarga;sugCarga=function(){var s=_sug87.apply(this,arguments);try{if(MODO==='vacio'&&s&&s.tot&&s.n>0&&s.n*2<s.tot){s.poco87=1;s.sR=0;s.sM=0}}catch(e){}return s};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

@@ -66,7 +66,7 @@ function fnHTML(){var x=S.fotoNo;if(!x)return '';return '<div id="fnov" role="di
  +'<div class="chips" role="group" style="margin:10px 0">'+['No prende la cámara','Está muy oscuro','No tengo el celular a la mano','Otro'].map(function(m){return '<button data-act="fnm" data-v="'+m+'" aria-pressed="'+(x.m===m)+'">'+m+'</button>'}).join('')+'</div>'
  +(x.m==='Otro'?'<div class="field"><label for="fnt">Escribe el motivo</label><input id="fnt" type="text" data-bind="fotoNo.t" value="'+esc(x.t||'')+'" style="width:190px;text-align:left"></div>':'')+(x.err?'<div class="neg" style="font-weight:700">'+esc(x.err)+'</div>':'')+'<button class="btn" style="margin-top:12px" data-act="fnsave">Seguir sin foto</button></div></div>'}
 /* fotoTile: pasó a tema-vehiculos.js */
-var _vF32=vwFotoUna;vwFotoUna=function(key,l){var h=_vF32.apply(this,arguments);if(vwEsAdm()||!FOTOS_OBLIGATORIAS||S.vw[key])return h;return h+'<button class="fotono" data-act="fotono" data-vw="'+key+'" data-l="'+esc(String(l).replace(/ \((opcional|obligatoria)[^)]*\)/,''))+'">No pude tomarla</button>'};
+/* vwFotoUna: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='fotono'){e.stopImmediatePropagation();e.preventDefault();S.fotoNo={g:b.dataset.g,k:b.dataset.k,vw:b.dataset.vw,cx:b.dataset.cx,l:b.dataset.l||'Foto',m:'',t:''};render();return}
  if(a==='fnx'){e.stopImmediatePropagation();S.fotoNo=null;render();return}

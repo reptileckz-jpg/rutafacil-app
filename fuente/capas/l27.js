@@ -55,5 +55,5 @@ function provUbTxt(d){if(!ubTiene(d))return 'sin ubicación';if(d.ubAprox)return
 function provUbPega(n){var d=provD(n);return '<div class="field"><label for="pvub">'+(ubTiene(d)&&!d.ubAprox?'Ubicación (ya es exacta; solo cámbiala si está mal)':'Ubicación aproximada (link de Google Maps o coordenadas)')+'</label><input id="pvub" type="text" data-ubpega="prov:'+esc(n)+'" placeholder="19.5432, -96.9271" style="width:190px;text-align:left"></div><div class="lbl">Ahora: '+provUbTxt(d)+'</div>'}
 function provUbIns(h){h=h.replace(/<button class="btn sm sec" style="margin:6px 0" data-act="pvedit" data-n="([^"]*)">/g,function(m,enc){var n;try{n=decodeURIComponent(enc)}catch(e){n=enc}return rw('Ubicación',provUbTxt(provD(n)))+m});
  if(S.pvEdit!=null)h=h.replace('<button class="btn sm" style="margin:6px 0" data-act="pvlisto">',provUbPega(S.pvEdit)+'<button class="btn sm" style="margin:6px 0" data-act="pvlisto">');return h}
-var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
+/* fiProv: pasó a tema-viaje.js */
 /* proveedoresCard: pasó a tema-inicio.js */

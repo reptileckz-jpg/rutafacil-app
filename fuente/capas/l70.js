@@ -185,8 +185,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* bodega en la primera vez (paso "Bodega" del asistente) */
 /* setupHTML: pasó a tema-ajustes.js */
 /* proveedores y clientes: en "Datos" */
-var _fiP70=fiProv;fiProv=function(f){var h=_fiP70.apply(this,arguments);try{if(S.role!=='admin'||(S.fiTab||{})['prov:'+f.id]&&(S.fiTab||{})['prov:'+f.id]!=='dat')return h;if(h.indexOf('data-act="provtipo"')<0)return h;var d=provD(f.id),ok=d.lat!=null;
-  var c='<div class="card"><b>📍 Ubicación</b><div class="lbl">'+(ok?d.lat+', '+d.lng:'Sin ubicación todavía')+'</div><button class="btn sm" style="width:100%;margin-top:6px;min-height:50px" data-act="ub68" data-t="prov" data-id="'+encodeURIComponent(f.id)+'">'+(ok?'Corregir la ubicación':'Poner la ubicación')+'</button></div>';var i=h.indexOf('<div class="card"><div class="lbl">Qué te vende');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* fiProv: pasó a tema-viaje.js */
 /* fiCli: pasó a tema-fichas.js */
 /* el chofer confirma la ubicación cuando está en el lugar (entrega del cliente) */
 function cfUb70(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cfub70"]'))return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;

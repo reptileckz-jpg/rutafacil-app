@@ -27,16 +27,13 @@ var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta
 var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
  var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
  return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
-var _vM34=vwMapa;vwMapa=function(v,small){if(!mapaHay())return _vM34.apply(this,arguments);var N=vwNodos(v),pos=vwPos(v),seen={},pts=[];
- N.forEach(function(n,j){if(n.t==='bod'||n.lat==null)return;var k=n.lat.toFixed(4)+','+n.lng.toFixed(4);if(seen[k]){seen[k].t+=' y '+j;return}var o={lat:n.lat,lng:n.lng,t:String(j),n:(n.t==='bas'?'Báscula ':'')+n.n,col:n.t==='bas'?'var(--fg)':'var(--accent)'};seen[k]=o;pts.push(o)});
- var mk=v.started&&['reg','cv','fin','gracias','done'].indexOf(v.k)<0&&pos?[{lat:pos.lat,lng:pos.lng,t:(chofN(v.quien)||'?').slice(0,1),n:chofN(v.quien),col:'#2F6DB5'}]:[];
- return mapaVivoHTML('vw'+S.vws.indexOf(v)+(small?'s':''),{pts:pts,line:N.filter(function(n){return n.lat!=null}).map(function(n){return {lat:n.lat,lng:n.lng}}),marks:mk,bod:false},small?160:220)+'<div class="lbl" style="margin-top:4px">Los números son las paradas del viaje.'+(mk.length?' El punto azul es '+esc(v.quien===2?'tu ubicación':chofN(v.quien))+'.':'')+'</div>'};
+/* vwMapa: pasó a tema-viaje.js */
 /* ---------- ubicación real ---------- */
 function gpsReciente(id,min){var g=nbRGet(id,'gps');if(!g||g.lat==null)return null;return Date.now()-num(g.t)<(min||20)*60000?g:null}
 function haceTxt(t){var m=Math.round((Date.now()-t)/60000);return m<1?'ahora':'hace '+m+' min'}
 function gpsMarcas(){var L=[];nbRutaIds().forEach(function(id,i){var g=gpsReciente(id,30);if(!g)return;L.push({lat:g.lat,lng:g.lng,t:(chofN(id)||'?').slice(0,1),n:chofN(id),hace:haceTxt(g.t),col:['#C0392B','#2F6DB5','#8E44AD','#E07B1A'][i%4]})});return L}
 /* el viaje usa la ubicación real del chofer si es reciente */
-var _vP34=vwPos;vwPos=function(v){var g=v&&v.started?gpsReciente(v.quien,15):null;return g?{lat:g.lat,lng:g.lng}:_vP34.apply(this,arguments)};
+/* vwPos: pasó a tema-viaje.js */
 /* el admin: en "Mapa en vivo" cada chofer dice dónde está */
 var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
 /* el celular del chofer manda su ubicación */

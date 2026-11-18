@@ -41,12 +41,7 @@ var _aM46=abrirModal;abrirModal=function(t,m,b){if(typeof MODO!=='undefined'&&MO
 /* ---------- 59 · burbujas: abiertas se ven como pestañas [Viaje] [Faltan N] ---------- */
 function bubVwHay(){try{var L=vwList().filter(function(x){return x.k!=='done'});if(!L.length)return false;var v=L.indexOf(S.vw)>-1?S.vw:L[0];return !v.open}catch(e){return false}}
 function bubDfN(){try{return dfOn()?dfLista().length:0}catch(e){return 0}}
-var _vwB46=vwBurbuja;vwBurbuja=function(){var hv=bubVwHay(),nd=bubDfN();if(!(hv&&nd))return _vwB46.apply(this,arguments);
- var abierta=!S.bubMin||!S.dfMin;if(!abierta)return _vwB46.apply(this,arguments);
- var tab=S.bubTab||(!S.bubMin?'vw':'df');if(tab==='vw'&&S.bubMin&&!S.dfMin)tab='df';if(tab==='df'&&S.dfMin&&!S.bubMin)tab='vw';
- var g1=S.bubMin,g2=S.dfMin,cuerpo='';try{if(tab==='vw'){S.bubMin=false;cuerpo=_vwB16.apply(this,arguments).replace(dfBurbuja(),'')}else{S.dfMin=false;cuerpo=dfBurbuja()}}finally{S.bubMin=g1;S.dfMin=g2}
- cuerpo=cuerpo.replace(/<button class="link" style="color:#fff;min-height:30px;font-size:20px" data-act="(bubmin|dfmin)" aria-label="Minimizar">–<\/button>/,'');
- return '<div class="bubpanel"><div class="bubtabs" role="tablist"><button role="tab" data-act="bubtab" data-v="vw" aria-pressed="'+(tab==='vw')+'">🛻 Viaje</button><button role="tab" class="df" data-act="bubtab" data-v="df" aria-pressed="'+(tab==='df')+'">📝 Faltan '+nd+'</button><button class="min" data-act="bubmin2" aria-label="Minimizar">–</button></div>'+cuerpo+'</div>'};
+/* vwBurbuja: pasó a tema-viaje.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="bubtab"],[data-act="bubmin2"],[data-act="bubmax"],[data-act="dfmax"]');if(!b)return;var a=b.dataset.act;
  if(a==='bubmax'||a==='dfmax'){S.bubTab=a==='bubmax'?'vw':'df';if(bubVwHay()&&bubDfN()){e.stopImmediatePropagation();S.bubMin=a!=='bubmax';S.dfMin=a!=='dfmax';render()}return}
  e.stopImmediatePropagation();if(a==='bubmin2'){S.bubMin=true;S.dfMin=true;render();return}S.bubTab=b.dataset.v;S.bubMin=S.bubTab!=='vw';S.dfMin=S.bubTab!=='df';render()},true);
@@ -61,6 +56,6 @@ var _cT46=cliTools;cliTools=function(){var h=_cT46.apply(this,arguments),fl=S.cl
  return h};
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.clich)return;S.cliCh=t.value;S.cliF=t.value?'chofer':'todos';render()},true);
 /* el viaje de carga y la pantalla de ubicación también van en tarjetas */
-if(typeof vwBody==='function'){var _vwBo46=vwBody;vwBody=function(){return tarjetear(_vwBo46.apply(this,arguments))}}
-if(typeof vwSideHTML==='function'){var _vwSi46=vwSideHTML;vwSideHTML=function(){return tarjetear(_vwSi46.apply(this,arguments))}}
+/* vwBody: pasó a tema-viaje.js */
+/* vwSideHTML: pasó a tema-viaje.js */
 if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}

@@ -2,6 +2,8 @@
 
 Ricardo Nieto Mejía desarrolla la app "Plátanos Nietos" para el negocio de plátanos de su papá (también se llama Ricardo). El APK se llama "Ruta Fácil" (`com.rutafacil.app`, Capacitor 7). La bodega está en Banderilla, Veracruz. Ricardo vive en Tijuana y prueba desde allá.
 
+**Idioma: hablarle a Ricardo SIEMPRE en español (todos los mensajes).**
+
 ## Antes de empezar cualquier trabajo
 **Primero, obligatorio:** `fuente/REGLAS-NUMEROS.md` (las reglas de los números que dio Ricardo: nada se pierde ni se descuadra; plan de blindaje antes de tocar dinero; todavía NO Vite).
 
@@ -23,7 +25,7 @@ Luego lee, en este orden:
 - **Llave de Google Maps:** es el secreto `MAPS_KEY` en GitHub. **Nunca se escribe en el código.**
 
 ## Cómo trabajamos
-- Siempre contestar en **español sencillo de México**.
+- Siempre contestar en **español sencillo de México**. **SIEMPRE, en TODOS los mensajes, sin excepción** (Ricardo lo pidió dos veces el 18 nov: "háblame en español", "recuerda SIEMPRE hablarme en español"). Nunca contestarle en inglés, aunque el trabajo sea largo o técnico.
 - Si algo no está claro, **preguntar con opciones** antes de construir.
 - Nada de zips, archivos duplicados ni versiones duplicadas.
 - **Probar antes de publicar.** Hay que correr las pruebas completas, y lo nativo se arma primero en la rama `prueba-nativa`.

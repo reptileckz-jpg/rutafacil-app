@@ -44,10 +44,10 @@ r=await ev(()=>[1,2,3,4,5,6,10,11,16].map(vacLey118));ok(JSON.stringify(r)==='[1
 r=await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0];return vacInfo118(D)});ok(r.a===1&&r.tiene===12,'118 · Danu (entró mar 2025) ya tiene 12 días de vacaciones',r);
 // aguinaldo
 r=await ev(()=>{var g=n=>agui118(S.choferes.filter(c=>c.n===n)[0],2026);return {P:g('Pepe'),L:g('Lalo'),D:g('Danu')}});
-ok(Math.abs(r.P.m-15*1800/7*361/365)<0.02&&Math.abs(r.D.m-15*1200/7)<0.02,'118 · aguinaldo: 15 días de sueldo base (sin comisión), proporcional si entró en el año',r);
+ok(Math.abs(r.P.m-15*1800/7*360/365)<0.02&&Math.abs(r.D.m-15*1200/7*364/365)<0.02&&r.P.fal===1&&r.D.fal===1,'118 · aguinaldo: 15 días de sueldo base (sin comisión), proporcional si entró en el año, y las faltas lo bajan',r);
 await dia('2026-12-05');r=await ev(()=>{S.tab.admin='inicio';render();var c=document.querySelector('[data-x="agui118"]');return c&&c.innerText});ok(/Aguinaldo 2026/.test(r||'')&&/antes del 20 de diciembre/.test(r),'118 · en diciembre: aviso del aguinaldo',r);
 r=await ev(()=>{S.tab.admin='personal';S.per92='sue';S.szOpen=__ids.D;render();var g0=S.gastos.length;document.querySelector('[data-act="agui118"][data-id="'+__ids.D+'"]').click();var D=S.choferes.filter(c=>c.n==='Danu')[0];return {pag:D.agui118&&D.agui118[2026],g:S.gastos.length-g0,m:Math.round(S.gastos[S.gastos.length-1].m*100)/100}});
-ok(r.pag==='2026-12-05'&&r.g===1&&r.m===2571.43,'118 · "Pagar aguinaldo" lo registra como gasto de sueldos',r);
+ok(r.pag==='2026-12-05'&&r.g===1&&r.m===2564.38,'118 · "Pagar aguinaldo" lo registra como gasto de sueldos',r);
 // baja y finiquito
 await dia('2026-11-21');
 r=await ev(async()=>{S.szOpen=__ids.L;render();var i=document.getElementById('baja118_'+__ids.L);i.value='2026-11-21';i.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,50));var L=S.choferes.filter(c=>c.n==='Lalo')[0];var F=finiq118(L);return {baja:L.baja118,F,t:(document.querySelector('main').innerText.match(/Finiquito[\s\S]{0,300}/)||[''])[0]}});

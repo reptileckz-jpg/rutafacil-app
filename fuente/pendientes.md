@@ -2478,3 +2478,13 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - Prueba `t118.js` (24 OK). Fotos: `fotos/118-datos-de-trabajo.png`, `fotos/118-desglose-semana.png`.
   - Pendiente de decidir: faltas injustificadas que reducen aguinaldo/vacaciones (la ley lo permite en algunos casos); hoy no se descuentan.
 - 18 nov: `t80`, `t87` y `t94nube` fallaban solo de madrugada (1:52 a. m. del servidor): de 12 a 5 a. m. la app a propósito no bloquea con "No mandaste tu cierre" (93). Las pruebas ahora fijan la hora a mediodía (`window.__hora93=12`). No era error de la app.
+
+## 2026-11-18 · Ricardo: "sí, descontar del aguinaldo"; "la barra flotante pensé que ya estaba lista, me hubieras preguntado antes de armar el APK"
+- Lección: antes de armar un APK, decir qué falta de lo pedido y preguntar si se arma así.
+- **HECHO 117 · barra flotante de lo ganado** (sin publicar; decisiones: dinero y avance · se esconde al cobrar · la tarjeta grande se quita y al tocar la barra sale el detalle). Nuevo tema `capas/tema-ganado.js` (va al final):
+  - Barra fija debajo del encabezado en las pantallas del chofer con comisión ya en ruta: "💰 $60 hoy · 12 de 20 cajas" con barra amarilla hacia la meta (sin meta: "Esta semana $X"). Se queda a la vista al desplazar.
+  - En la entrega se esconde; al guardar, sube el "+$X" desde la barra.
+  - "–" la minimiza a "💰 $60"; al tocarla se abre "Lo que llevas ganado" (hoy, semana, vs la pasada, racha, meta).
+  - `metaCard` ya no dibuja la tarjeta grande para chofer con comisión. Prueba `t117b.js` (11 OK). Foto `fotos/117-barra-ganado.png`.
+- **HECHO · faltas bajan el aguinaldo** (sin publicar): `agui118` resta las faltas del año a los días trabajados ("proporcional: 360 días trabajados en el año, menos 1 falta"). `t118` actualizado.
+- Versión 9.9 lista en la rama (APP_VER 9.9), **sin armar el APK**: falta que Ricardo diga.

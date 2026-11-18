@@ -1,7 +1,7 @@
 /* 8.7 · 71–74: bloquear solo si salió, avisos agrupados, cuánto cargar sin datos, "no envió su cierre" que se quita solo */
 const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
-const p=await (await b.newContext({viewport:{width:400,height:860}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(()=>{window.__pnTest=1});
+const p=await (await b.newContext({viewport:{width:400,height:860}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(()=>{window.__pnTest=1;if(window.__hora93==null)window.__hora93=12/* la prueba no depende de la hora: de 12 a 5 a.m. no se bloquea (93) */});
 await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(900);const ev=(f,a)=>p.evaluate(f,a);let r;
 await ev(()=>{var U=S.setup;U.yo='Ricardo';U.veh=[{n:'NP300',pl:'A1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1}];U.per=[{n:'Danu',puesto:'chofer',tel:'1'}];var d=TODAY.getDay();U.cli=[0,1,2,3].map(i=>({n:'C'+i,a:'x',tel:'1',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'}));U.prov=[];S.precio.R=300;S.precio.M=20;suAplicar();window.DANU=S.choferes.find(c=>c.n==='Danu').id});
 // 71 · no salió (aunque tenga una entrega): no se bloquea; al admin le avisa

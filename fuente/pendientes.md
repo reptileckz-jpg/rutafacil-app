@@ -2477,3 +2477,4 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - **Aguinaldo**: 15 días de sueldo base (semanal ÷ 7; sin comisión), proporcional si entró o salió en el año. Del 1 al 20 de diciembre, aviso en Inicio; "Pagar aguinaldo" va a gastos de Sueldos.
   - Prueba `t118.js` (24 OK). Fotos: `fotos/118-datos-de-trabajo.png`, `fotos/118-desglose-semana.png`.
   - Pendiente de decidir: faltas injustificadas que reducen aguinaldo/vacaciones (la ley lo permite en algunos casos); hoy no se descuentan.
+- 18 nov: `t80`, `t87` y `t94nube` fallaban solo de madrugada (1:52 a. m. del servidor): de 12 a 5 a. m. la app a propósito no bloquea con "No mandaste tu cierre" (93). Las pruebas ahora fijan la hora a mediodía (`window.__hora93=12`). No era error de la app.

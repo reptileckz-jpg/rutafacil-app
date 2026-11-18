@@ -2,7 +2,7 @@
 const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,300):''))};
 const ctx=await b.newContext({viewport:{width:400,height:860}});
-const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(()=>{window.__pnTest=1});
+const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(()=>{window.__pnTest=1;if(window.__hora93==null)window.__hora93=12/* la prueba no depende de la hora: de 12 a 5 a.m. no se bloquea (93) */});
 await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(800);const ev=(f,a)=>p.evaluate(f,a);let r;
 // 35 · chofer con la ruta de ayer SIN cierre: pantalla "manda tu cierre"
 r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk['c:1']=true;S.salida.ok=true;S.log.push({t:'x'});S.cierre=S.cierre||{};S.cierre.sent=false;S.rutaDia80='2026-10-27';S.tab.rep='ruta';render();var o=document.getElementById('dia80');return {o:!!o,t:o&&o.innerText.slice(0,120),tab:S.tab.rep}});

@@ -77,7 +77,7 @@ function nbEmpuja(){if(!NB.on||!NB.listo||!NB.ad)return;var DEL=NB.ad.del(),U=nb
   var pr=nbW(nbP('d/'+u.id),w,true);if(pr&&pr.then)pr.then(function(){mios.forEach(function(f){if(fly[f]===seq)delete fly[f]})})})}
 NB.fly={};NB.seq=0;
 /* el contador sin campos (número suelto) se guarda en c._ */
-var _nbDocAPlano0=nbDocAPlano;nbDocAPlano=function(d){var F=_nbDocAPlano0(d);if(F['c:_']!==undefined&&d&&d.k==='n'){F['c:']=F['c:_'];delete F['c:_']}return F};
+/* nbDocAPlano: pasó a tema-nube.js */
 /* ---------- aplicar lo que llega de la nube ---------- */
 function nbAplica(docs,primera){var U={},cambio=false;nbUnidades().forEach(function(u){U[u.id]=u});
  docs.forEach(function(x){var id=x.id,D=nbDocAPlano(x.data);var u=U[id];if(!u){var m=/^r~(-?\d+)~(.+)$/.exec(id);if(m&&nbRutaKeys().indexOf(m[2])>-1){var rid=+m[1],rk=m[2];u={id:id,k:rk,ruta:rid,get:function(){return nbRGet(rid,rk)},set:function(v){nbRSet(rid,rk,v)}}}else{NB.C[id]=D;return}}

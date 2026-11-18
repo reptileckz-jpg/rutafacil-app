@@ -24,9 +24,8 @@ function salMigra(){if(salMig()||!(typeof NB!=='undefined'&&NB.on&&NB.listo)||!(
 /* en un celular que recién ve la migración: primero toma lo de la nube (no manda nada) */
 function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null;try{ya=localStorage.getItem('salIni')}catch(e){}if(ya===String(m))return false;salAplica();try{localStorage.setItem('salIni',String(m))}catch(e){}return true}
 /* la nube ya no sube c.cred / c.vac ni tarasProv como número final */
-var _nbCod61=nbCodifica;nbCodifica=function(u,v){if(salListo()){if(u.k==='tarasProv')return null;
-  if(u.k==='cli'&&Array.isArray(v)){v=v.map(function(c){if(!nbEsObj(c))return c;var o={};Object.keys(c).forEach(function(p){if(p!=='cred'&&p!=='vac')o[p]=c[p]});return o})}}return _nbCod61.call(this,u,v)};
-var _nbEmp61=nbEmpuja;nbEmpuja=function(){try{salMigra();if(!salPrimera())salPuente()}catch(e){console.error('saldos',e)}return _nbEmp61.apply(this,arguments)};
+/* nbCodifica: pasó a tema-nube.js */
+/* nbEmpuja: pasó a tema-nube.js */
 var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
 var _rd61a=render;render=function(){try{if(!salPrimera())salPuente()}catch(e){}return _rd61a.apply(this,arguments)};
 

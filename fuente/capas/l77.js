@@ -30,7 +30,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='nube'){if(!confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}location.reload()};
   var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{window._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}}},true);
 /* mientras se borra, que no se vuelva a guardar */
-if(typeof guardarYa==='function'){var _gY77=guardarYa;guardarYa=function(){if(window._noGuardar77)return;return _gY77.apply(this,arguments)}}
+/* guardarYa: pasó a tema-nube.js */
 /* deja la pantalla en un lugar seguro: cierra todo lo abierto y regresa a Inicio */
 function falloSeguro77(){try{var r=S.role;['fi','openCarga','vehOpen','openCli','openProv','openCh','modal','wz','ub68','lt53','tag76','im75','ip74','pe74','fv76','fl76','may71','tar72','cvOpen','vjOpen','px','ub','gx','cm','rcv','rp','dfOpen','blov','p57','rp56'].forEach(function(k){if(S[k]!=null&&S[k]!==false)S[k]=k==='dfOpen'?false:null});
  S.aj=false;S.menu=false;if(S.vws&&S.vw&&S.vws.indexOf(S.vw)<0)S.vw=null;if(S.tab&&r)S.tab[r]=r==='rep'?'ruta':'inicio'}catch(x){}}
@@ -41,9 +41,7 @@ var _rd77=render;render=function(){if(FALLO77.enRender)return;try{vwVivo77()}cat
  try{return _rd77.apply(this,arguments)}catch(e){var t=falloAnota77(e,'al dibujar');FALLO77.enRender=true;
   try{falloSeguro77();_rd77.apply(this,arguments);FALLO77.enRender=false;setTimeout(function(){try{toast('Algo falló y se cerró lo que estaba abierto. Ya quedó anotado.')}catch(x){}},60);return}catch(e2){FALLO77.enRender=false;falloPantalla77(falloAnota77(e2,'al dibujar (otra vez)'))}}};
 /* la carga de la nube: si algo se rompe, se salta y deja entrar */
-if(typeof nbPrimera==='function'){var _nbP77=nbPrimera;nbPrimera=function(docs){try{return _nbP77.apply(this,arguments)}catch(e){falloAnota77(e,'al cargar la nube');
-  try{NB.listo=true;NB.est='listo'}catch(x){}try{nbForzarRol()}catch(x){}try{S.diaNube=iso(TODAY)}catch(x){}try{S.pinOk={};if(!(S.setup&&!S.setup.fin))pinEntrar()}catch(x){falloAnota77(x,'al pedir el PIN')}
-  try{falloSeguro77();nbRender()}catch(x){falloPantalla77(falloAnota77(x,'al dibujar después de cargar'))}try{nbEmpuja()}catch(x){}}}}
+/* nbPrimera: pasó a tema-nube.js */
 if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
 /* si la carga se queda más de 25 segundos en "Cargando…", ofrece salir */
 (function(){var t0=Date.now();var iv=setInterval(function(){try{if(typeof NB==='undefined'||!NB.on){if(Date.now()-t0>120000)clearInterval(iv);return}if(NB.est==='listo'){clearInterval(iv);return}
@@ -122,5 +120,4 @@ var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var tx
 /* la causa: un viaje que el chofer borró y que el celular del administrador "revivió" al escribir un solo dato (p. ej. que tenía
    abierta la ruta en vivo). En la nube quedaba un pedazo sin su orden ni sus demás datos. Al armar listas desde la nube,
    los pedazos sueltos (sin orden ni marca de elemento) ya no se convierten en elementos. */
-if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
-  var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
+/* nbArma: pasó a tema-nube.js */

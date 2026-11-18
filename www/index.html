@@ -5795,7 +5795,7 @@ function nbEmpuja(){if(!NB.on||!NB.listo||!NB.ad)return;var DEL=NB.ad.del(),U=nb
   var pr=nbW(nbP('d/'+u.id),w,true);if(pr&&pr.then)pr.then(function(){mios.forEach(function(f){if(fly[f]===seq)delete fly[f]})})})}
 NB.fly={};NB.seq=0;
 /* el contador sin campos (número suelto) se guarda en c._ */
-var _nbDocAPlano0=nbDocAPlano;nbDocAPlano=function(d){var F=_nbDocAPlano0(d);if(F['c:_']!==undefined&&d&&d.k==='n'){F['c:']=F['c:_'];delete F['c:_']}return F};
+/* nbDocAPlano: pasó a tema-nube.js */
 /* ---------- aplicar lo que llega de la nube ---------- */
 function nbAplica(docs,primera){var U={},cambio=false;nbUnidades().forEach(function(u){U[u.id]=u});
  docs.forEach(function(x){var id=x.id,D=nbDocAPlano(x.data);var u=U[id];if(!u){var m=/^r~(-?\d+)~(.+)$/.exec(id);if(m&&nbRutaKeys().indexOf(m[2])>-1){var rid=+m[1],rk=m[2];u={id:id,k:rk,ruta:rid,get:function(){return nbRGet(rid,rk)},set:function(v){nbRSet(rid,rk,v)}}}else{NB.C[id]=D;return}}
@@ -6334,11 +6334,11 @@ function avPinK(x){var m=/\[pin:([^\]]+)\]/.exec(x||'');return m?m[1]:null}
 /* ---------- sesión revocada / acceso quitado: se cierra en ese celular ---------- */
 function nbSesionIni(){try{var t=+localStorage.getItem('nbSesion');if(!t){t=Date.now();localStorage.setItem('nbSesion',String(t))}return t}catch(e){return 0}}
 function nbRevisaSesion(p){if(!p||!NB.user)return;var ini=nbSesionIni();if(p.activo===false||(p.corte&&p.corte>ini)){try{localStorage.removeItem('nbSesion')}catch(e){}toast('Tu sesión se cerró en este celular');setTimeout(function(){NB.ad.salir().then(function(){location.reload()})},800)}}
-if(typeof nbEmpezarSync==='function'){var _nes36=nbEmpezarSync;nbEmpezarSync=function(){var r=_nes36.apply(this,arguments);try{nbSesionIni();if(NB.ad&&NB.user&&!NB._unp){var path='usuarios_app/'+NB.user.uid;if(NB.ad.watchDoc)NB._unp=NB.ad.watchDoc(path,function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}});else{NB._unp=setInterval(function(){NB.ad.get(path).then(function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}},function(){})},60000)}}}catch(e){}return r}}
+/* nbEmpezarSync: pasó a tema-nube.js */
 /* el administrador cierra la sesión de alguien en todos sus celulares (por si perdió el celular) */
 function nbCorte(uid){var t=Date.now();return NB.ad.set('usuarios_app/'+uid,{corte:t},true).then(function(){if(NB.usuarios[uid])NB.usuarios[uid].corte=t})}
 /* ---------- papeles: encargado, contador y venta local ---------- */
-var _nfr36=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='encargado'){S.role='admin';S.encOn=true;if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}return}if(p.rol==='cont'){S.role='cont';return}if(p.rol==='local'){S.role='local';return}return _nfr36.apply(this,arguments)};
+/* nbForzarRol: pasó a tema-nube.js */
 var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
 /* ---------- baja de un chofer: se le quita el acceso y sus clientes se pasan por zona ---------- */
 function bjCentro(id){var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)&&c.lat!=null});if(!L.length)return null;return {lat:sum(L,function(c){return c.lat})/L.length,lng:sum(L,function(c){return c.lng})/L.length,n:L.length}}
@@ -8273,9 +8273,8 @@ function salMigra(){if(salMig()||!(typeof NB!=='undefined'&&NB.on&&NB.listo)||!(
 /* en un celular que recién ve la migración: primero toma lo de la nube (no manda nada) */
 function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null;try{ya=localStorage.getItem('salIni')}catch(e){}if(ya===String(m))return false;salAplica();try{localStorage.setItem('salIni',String(m))}catch(e){}return true}
 /* la nube ya no sube c.cred / c.vac ni tarasProv como número final */
-var _nbCod61=nbCodifica;nbCodifica=function(u,v){if(salListo()){if(u.k==='tarasProv')return null;
-  if(u.k==='cli'&&Array.isArray(v)){v=v.map(function(c){if(!nbEsObj(c))return c;var o={};Object.keys(c).forEach(function(p){if(p!=='cred'&&p!=='vac')o[p]=c[p]});return o})}}return _nbCod61.call(this,u,v)};
-var _nbEmp61=nbEmpuja;nbEmpuja=function(){try{salMigra();if(!salPrimera())salPuente()}catch(e){console.error('saldos',e)}return _nbEmp61.apply(this,arguments)};
+/* nbCodifica: pasó a tema-nube.js */
+/* nbEmpuja: pasó a tema-nube.js */
 var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
 var _rd61a=render;render=function(){try{if(!salPrimera())salPuente()}catch(e){}return _rd61a.apply(this,arguments)};
 
@@ -8604,9 +8603,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||t.id!=='res
    - Si alguien crea "la cuenta del negocio" cuando ya existe: se borra esa cuenta nueva y se explica cómo entrar.
    - "Olvidé mi contraseña" con usuario (sin @): si es un administrador con correo real, se le manda el correo. ===================== */
 function nbEsPermiso(x){return /permission|insufficient/i.test(String(x||''))}
-var _nbPan64=nbPantalla;nbPantalla=function(){try{if(nbEsPermiso(NB.revErr)){NB.revErr='';NB.duenioHay=null}}catch(e){}var r=_nbPan64.apply(this,arguments);
- try{var o=document.getElementById('nbov');if(o){Array.prototype.forEach.call(o.querySelectorAll('.nbcard'),function(c){if(c.dataset.p64||!/primera vez/i.test(c.textContent))return;c.dataset.p64='1';
-  var d=document.createElement('div');d.className='lbl';d.style.cssText='margin-top:8px;font-weight:700;color:var(--danger)';d.textContent='Solo si el negocio NUNCA ha usado la app. Si ya la usan, toca "Entrar" arriba con el correo o usuario del administrador.';c.appendChild(d)})}}catch(e){}return r};
+/* nbPantalla: pasó a tema-nube.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#nbov [data-nb="crear"],#nbov [data-nb="olvide"]');if(!b)return;var ad=NB.ad;if(!ad)return;var a=b.dataset.nb;
  if(a==='olvide'){var u=nbV('nbu');if(!u||u.indexOf('@')>-1)return;e.preventDefault();e.stopImmediatePropagation();NBF.u=u;NBF.err='';NBF.msg='';
   ad.get('usuarios/'+nbSlug(u)).then(function(d){var em=d&&d.email;if(!em||/@rutafacil\.app$/i.test(em)){NBF.err='Ese usuario no tiene correo propio. Pídele al administrador una contraseña nueva (desde Personal).';nbPantalla();return}
@@ -8623,11 +8620,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- cada cuenta abre con su puesto: si entra la cuenta del administrador, el celular abre como administrador
    (antes, si ese celular estaba guardado como chofer, se quedaba como chofer). El admin todavía puede "entrar como" otro desde el menú. ---------- */
 var _rolUid64=null;
-var _nfr64=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;
- try{if(p&&NB.listo&&p.rol==='admin'&&NB.user&&_rolUid64!==NB.user.uid){_rolUid64=NB.user.uid;
-   if(p.adm&&(S.admins||[]).some(function(a){return a.k===p.adm}))S.adminYo=p.adm;
-   if(S.role!=='admin'||S.encOn){S.role='admin';S.encOn=false;S.tab.admin='inicio';S.pinOk={};try{pinEntrar()}catch(e){}}}}catch(e){console.error(e)}
- return _nfr64.apply(this,arguments)};
+/* nbForzarRol: pasó a tema-nube.js */
 
 //@@capa l65.js
 /* ===================== v7.3 · diseño nuevo (ideas de Ricardo, 10 nov): Inicio y Bodega primero
@@ -10117,7 +10110,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4803,"l15.js"],[4865,"l16.js"],[4965,"l17.js"],[4996,"l18.js"],[5075,"l19.js"],[5134,"l20.js"],[5183,"l21.js"],[5227,"l22.js"],[5423,"l23.js"],[5472,"l24.js"],[5488,"l25.js"],[5519,"l26.js"],[5657,"l27.js"],[5718,"l28.js"],[5850,"l29.js"],[5976,"l30.js"],[6019,"l31.js"],[6048,"l32.js"],[6136,"l33.js"],[6154,"l34.js"],[6214,"l35.js"],[6271,"l36.js"],[6366,"l37.js"],[6385,"l38.js"],[6468,"l39.js"],[6548,"l40.js"],[6656,"l41.js"],[6723,"l42.js"],[6825,"l43.js"],[6927,"l44.js"],[7022,"l45.js"],[7108,"l46.js"],[7176,"l47.js"],[7290,"l48.js"],[7344,"l49.js"],[7380,"l50.js"],[7483,"l51.js"],[7493,"l52.js"],[7630,"l53.js"],[7652,"l54.js"],[7727,"l55.js"],[7756,"l56.js"],[7840,"l57.js"],[7903,"l58.js"],[8030,"l59.js"],[8089,"l60.js"],[8249,"l61.js"],[8306,"l62.js"],[8435,"l63.js"],[8600,"l64.js"],[8632,"l65.js"],[8733,"l66.js"],[8835,"l67.js"],[8862,"l68.js"],[8988,"l69.js"],[9213,"l70.js"],[9420,"l71.js"],[9545,"l72.js"],[9658,"l73.js"],[9734,"l74.js"],[9855,"l75.js"],[10008,"l76.js"],[10111,"l77.js"],[10239,"l78.js"],[10389,"l79.js"],[10497,"l80.js"],[10621,"l81.js"],[10774,"l82.js"],[11025,"l83.js"],[11094,"l84.js"],[11207,"l85.js"],[11268,"tema-rutadia.js"],[11433,"l86.js"],[11493,"l87.js"],[11536,"l88.js"],[11586,"l89.js"],[11635,"l90.js"],[11741,"tema-ruta.js"],[11888,"tema-fichas.js"],[12005,"tema-cierre.js"],[12099,"tema-inicio.js"],[12227,"tema-ajustes.js"],[12430,"tema-cobranza.js"],[12577,"tema-pantallas.js"],[12798,"tema-avisos.js"],[12960,"tema-reparte.js"],[13026,"tema-vehiculos.js"],[13170,"tema-notas.js"],[13187,"tema-taras.js"],[13294,"tema-cargarmas.js"],[13333,"tema-cargas.js"],[13367,"tema-cobro.js"],[13403,"tema-horario.js"],[13442,"tema-sueldos.js"],[13584,"tema-ganado.js"],[13629,"tema-cierres.js"],[13728,"tema-finanzas.js"],[13801,"tema-cuadre.js"],[13990,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4803,"l15.js"],[4865,"l16.js"],[4965,"l17.js"],[4996,"l18.js"],[5075,"l19.js"],[5134,"l20.js"],[5183,"l21.js"],[5227,"l22.js"],[5423,"l23.js"],[5472,"l24.js"],[5488,"l25.js"],[5519,"l26.js"],[5657,"l27.js"],[5718,"l28.js"],[5850,"l29.js"],[5976,"l30.js"],[6019,"l31.js"],[6048,"l32.js"],[6136,"l33.js"],[6154,"l34.js"],[6214,"l35.js"],[6271,"l36.js"],[6366,"l37.js"],[6385,"l38.js"],[6468,"l39.js"],[6548,"l40.js"],[6656,"l41.js"],[6723,"l42.js"],[6825,"l43.js"],[6927,"l44.js"],[7022,"l45.js"],[7108,"l46.js"],[7176,"l47.js"],[7290,"l48.js"],[7344,"l49.js"],[7380,"l50.js"],[7483,"l51.js"],[7493,"l52.js"],[7630,"l53.js"],[7652,"l54.js"],[7727,"l55.js"],[7756,"l56.js"],[7840,"l57.js"],[7903,"l58.js"],[8030,"l59.js"],[8089,"l60.js"],[8249,"l61.js"],[8305,"l62.js"],[8434,"l63.js"],[8599,"l64.js"],[8625,"l65.js"],[8726,"l66.js"],[8828,"l67.js"],[8855,"l68.js"],[8981,"l69.js"],[9206,"l70.js"],[9413,"l71.js"],[9538,"l72.js"],[9651,"l73.js"],[9727,"l74.js"],[9848,"l75.js"],[10001,"l76.js"],[10104,"l77.js"],[10229,"l78.js"],[10379,"l79.js"],[10487,"l80.js"],[10611,"l81.js"],[10764,"l82.js"],[11015,"l83.js"],[11084,"l84.js"],[11197,"l85.js"],[11258,"tema-rutadia.js"],[11423,"l86.js"],[11483,"l87.js"],[11526,"l88.js"],[11576,"l89.js"],[11625,"l90.js"],[11731,"tema-ruta.js"],[11878,"tema-fichas.js"],[11995,"tema-cierre.js"],[12089,"tema-inicio.js"],[12217,"tema-ajustes.js"],[12420,"tema-nube.js"],[12478,"tema-cobranza.js"],[12625,"tema-pantallas.js"],[12846,"tema-avisos.js"],[13008,"tema-reparte.js"],[13074,"tema-vehiculos.js"],[13218,"tema-notas.js"],[13235,"tema-taras.js"],[13342,"tema-cargarmas.js"],[13381,"tema-cargas.js"],[13415,"tema-cobro.js"],[13451,"tema-horario.js"],[13490,"tema-sueldos.js"],[13632,"tema-ganado.js"],[13677,"tema-cierres.js"],[13776,"tema-finanzas.js"],[13849,"tema-cuadre.js"],[14038,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10141,7 +10134,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='nube'){if(!confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}location.reload()};
   var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{window._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}}},true);
 /* mientras se borra, que no se vuelva a guardar */
-if(typeof guardarYa==='function'){var _gY77=guardarYa;guardarYa=function(){if(window._noGuardar77)return;return _gY77.apply(this,arguments)}}
+/* guardarYa: pasó a tema-nube.js */
 /* deja la pantalla en un lugar seguro: cierra todo lo abierto y regresa a Inicio */
 function falloSeguro77(){try{var r=S.role;['fi','openCarga','vehOpen','openCli','openProv','openCh','modal','wz','ub68','lt53','tag76','im75','ip74','pe74','fv76','fl76','may71','tar72','cvOpen','vjOpen','px','ub','gx','cm','rcv','rp','dfOpen','blov','p57','rp56'].forEach(function(k){if(S[k]!=null&&S[k]!==false)S[k]=k==='dfOpen'?false:null});
  S.aj=false;S.menu=false;if(S.vws&&S.vw&&S.vws.indexOf(S.vw)<0)S.vw=null;if(S.tab&&r)S.tab[r]=r==='rep'?'ruta':'inicio'}catch(x){}}
@@ -10152,9 +10145,7 @@ var _rd77=render;render=function(){if(FALLO77.enRender)return;try{vwVivo77()}cat
  try{return _rd77.apply(this,arguments)}catch(e){var t=falloAnota77(e,'al dibujar');FALLO77.enRender=true;
   try{falloSeguro77();_rd77.apply(this,arguments);FALLO77.enRender=false;setTimeout(function(){try{toast('Algo falló y se cerró lo que estaba abierto. Ya quedó anotado.')}catch(x){}},60);return}catch(e2){FALLO77.enRender=false;falloPantalla77(falloAnota77(e2,'al dibujar (otra vez)'))}}};
 /* la carga de la nube: si algo se rompe, se salta y deja entrar */
-if(typeof nbPrimera==='function'){var _nbP77=nbPrimera;nbPrimera=function(docs){try{return _nbP77.apply(this,arguments)}catch(e){falloAnota77(e,'al cargar la nube');
-  try{NB.listo=true;NB.est='listo'}catch(x){}try{nbForzarRol()}catch(x){}try{S.diaNube=iso(TODAY)}catch(x){}try{S.pinOk={};if(!(S.setup&&!S.setup.fin))pinEntrar()}catch(x){falloAnota77(x,'al pedir el PIN')}
-  try{falloSeguro77();nbRender()}catch(x){falloPantalla77(falloAnota77(x,'al dibujar después de cargar'))}try{nbEmpuja()}catch(x){}}}}
+/* nbPrimera: pasó a tema-nube.js */
 if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
 /* si la carga se queda más de 25 segundos en "Cargando…", ofrece salir */
 (function(){var t0=Date.now();var iv=setInterval(function(){try{if(typeof NB==='undefined'||!NB.on){if(Date.now()-t0>120000)clearInterval(iv);return}if(NB.est==='listo'){clearInterval(iv);return}
@@ -10233,8 +10224,7 @@ var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var tx
 /* la causa: un viaje que el chofer borró y que el celular del administrador "revivió" al escribir un solo dato (p. ej. que tenía
    abierta la ruta en vivo). En la nube quedaba un pedazo sin su orden ni sus demás datos. Al armar listas desde la nube,
    los pedazos sueltos (sin orden ni marca de elemento) ya no se convierten en elementos. */
-if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
-  var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
+/* nbArma: pasó a tema-nube.js */
 
 //@@capa l78.js
 /* ===================== v7.8 · lista nueva, puntos 15 al 30 (12 nov)
@@ -12426,6 +12416,64 @@ var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.in
 var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
  var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+//@@capa tema-nube.js
+/* ===================== TEMA · Nube: subir y bajar los datos (aplanado el 18 nov) =====================
+   Antes estaba repartido en 10 envolturas encadenadas en l28, l36, l61, l64, l77.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-nube.js
+   y con las pruebas de varios celulares t61, t94nube, t122nube y t123nube).
+   Se arma justo después de tema-ajustes.js (antes de los otros temas).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - nbDocAPlano, nbCodifica, nbArma: cómo se convierte cada dato para la nube y de regreso.
+   - nbEmpuja, nbPrimera: subir lo del celular y la primera bajada.
+   - nbEmpezarSync, nbForzarRol, nbPantalla: arrancar la sincronización, el papel de cada quien y la pantalla de la nube.
+   - guardarYa: guardar en el celular.
+   NO están aquí (se quedan en su capa a propósito):
+   - fresh (l2, l5, l6b, l7, l45, l72, l80): van dentro de bloques que también cambian S al cargar, y l7 usa la copia de l6b.
+   - nbAplica (l61, l77, l80, l82): dos de sus envolturas van dentro de bloques; mover solo una parte cambiaría el orden
+     (la pausa del diagnóstico de l77 se saltaría la limpieza de l80/l82).
+   ============================================================================================ */
+
+/* nbDocAPlano · de l28 */
+var _nbDocAPlano0=nbDocAPlano;nbDocAPlano=function(d){var F=_nbDocAPlano0(d);if(F['c:_']!==undefined&&d&&d.k==='n'){F['c:']=F['c:_'];delete F['c:_']}return F};
+
+/* nbEmpezarSync · de l36 */
+if(typeof nbEmpezarSync==='function'){var _nes36=nbEmpezarSync;nbEmpezarSync=function(){var r=_nes36.apply(this,arguments);try{nbSesionIni();if(NB.ad&&NB.user&&!NB._unp){var path='usuarios_app/'+NB.user.uid;if(NB.ad.watchDoc)NB._unp=NB.ad.watchDoc(path,function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}});else{NB._unp=setInterval(function(){NB.ad.get(path).then(function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}},function(){})},60000)}}}catch(e){}return r}}
+
+/* nbForzarRol · de l36 */
+var _nfr36=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='encargado'){S.role='admin';S.encOn=true;if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}return}if(p.rol==='cont'){S.role='cont';return}if(p.rol==='local'){S.role='local';return}return _nfr36.apply(this,arguments)};
+
+/* nbCodifica · de l61 */
+var _nbCod61=nbCodifica;nbCodifica=function(u,v){if(salListo()){if(u.k==='tarasProv')return null;
+  if(u.k==='cli'&&Array.isArray(v)){v=v.map(function(c){if(!nbEsObj(c))return c;var o={};Object.keys(c).forEach(function(p){if(p!=='cred'&&p!=='vac')o[p]=c[p]});return o})}}return _nbCod61.call(this,u,v)};
+
+/* nbEmpuja · de l61 */
+var _nbEmp61=nbEmpuja;nbEmpuja=function(){try{salMigra();if(!salPrimera())salPuente()}catch(e){console.error('saldos',e)}return _nbEmp61.apply(this,arguments)};
+
+/* nbPantalla · de l64 */
+var _nbPan64=nbPantalla;nbPantalla=function(){try{if(nbEsPermiso(NB.revErr)){NB.revErr='';NB.duenioHay=null}}catch(e){}var r=_nbPan64.apply(this,arguments);
+ try{var o=document.getElementById('nbov');if(o){Array.prototype.forEach.call(o.querySelectorAll('.nbcard'),function(c){if(c.dataset.p64||!/primera vez/i.test(c.textContent))return;c.dataset.p64='1';
+  var d=document.createElement('div');d.className='lbl';d.style.cssText='margin-top:8px;font-weight:700;color:var(--danger)';d.textContent='Solo si el negocio NUNCA ha usado la app. Si ya la usan, toca "Entrar" arriba con el correo o usuario del administrador.';c.appendChild(d)})}}catch(e){}return r};
+
+/* nbForzarRol · de l64 */
+var _nfr64=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;
+ try{if(p&&NB.listo&&p.rol==='admin'&&NB.user&&_rolUid64!==NB.user.uid){_rolUid64=NB.user.uid;
+   if(p.adm&&(S.admins||[]).some(function(a){return a.k===p.adm}))S.adminYo=p.adm;
+   if(S.role!=='admin'||S.encOn){S.role='admin';S.encOn=false;S.tab.admin='inicio';S.pinOk={};try{pinEntrar()}catch(e){}}}}catch(e){console.error(e)}
+ return _nfr64.apply(this,arguments)};
+
+/* guardarYa · de l77 */
+if(typeof guardarYa==='function'){var _gY77=guardarYa;guardarYa=function(){if(window._noGuardar77)return;return _gY77.apply(this,arguments)}}
+
+/* nbPrimera · de l77 */
+if(typeof nbPrimera==='function'){var _nbP77=nbPrimera;nbPrimera=function(docs){try{return _nbP77.apply(this,arguments)}catch(e){falloAnota77(e,'al cargar la nube');
+  try{NB.listo=true;NB.est='listo'}catch(x){}try{nbForzarRol()}catch(x){}try{S.diaNube=iso(TODAY)}catch(x){}try{S.pinOk={};if(!(S.setup&&!S.setup.fin))pinEntrar()}catch(x){falloAnota77(x,'al pedir el PIN')}
+  try{falloSeguro77();nbRender()}catch(x){falloPantalla77(falloAnota77(x,'al dibujar después de cargar'))}try{nbEmpuja()}catch(x){}}}}
+
+/* nbArma · de l77 */
+if(typeof nbArma==='function'){var _nbAr77=nbArma;nbArma=function(u,F,viejo){try{if(F&&(F.k==='a'||F.k==='m')){var ord={},G={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='o:')ord[f.slice(2)]=1;else if(f.slice(0,2)==='e:'){var r=f.slice(2),i=r.indexOf('|');G[r.slice(0,i)]=G[r.slice(0,i)]||{};G[r.slice(0,i)][r.slice(i+1)]=1}});
+  var suelto={};Object.keys(G).forEach(function(K){if((F.k==='m'||!ord[K])&&!G[K]['#']&&!G[K]['='])suelto[K]=1});if(Object.keys(suelto).length){var F2={};Object.keys(F).forEach(function(f){if(f.slice(0,2)==='e:'){var r=f.slice(2),K=r.slice(0,r.indexOf('|'));if(suelto[K])return}F2[f]=F[f]});F=F2}}}catch(e){}return _nbAr77.call(this,u,F,viejo)}}
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

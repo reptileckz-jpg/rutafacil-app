@@ -4,9 +4,7 @@
    - Si alguien crea "la cuenta del negocio" cuando ya existe: se borra esa cuenta nueva y se explica cómo entrar.
    - "Olvidé mi contraseña" con usuario (sin @): si es un administrador con correo real, se le manda el correo. ===================== */
 function nbEsPermiso(x){return /permission|insufficient/i.test(String(x||''))}
-var _nbPan64=nbPantalla;nbPantalla=function(){try{if(nbEsPermiso(NB.revErr)){NB.revErr='';NB.duenioHay=null}}catch(e){}var r=_nbPan64.apply(this,arguments);
- try{var o=document.getElementById('nbov');if(o){Array.prototype.forEach.call(o.querySelectorAll('.nbcard'),function(c){if(c.dataset.p64||!/primera vez/i.test(c.textContent))return;c.dataset.p64='1';
-  var d=document.createElement('div');d.className='lbl';d.style.cssText='margin-top:8px;font-weight:700;color:var(--danger)';d.textContent='Solo si el negocio NUNCA ha usado la app. Si ya la usan, toca "Entrar" arriba con el correo o usuario del administrador.';c.appendChild(d)})}}catch(e){}return r};
+/* nbPantalla: pasó a tema-nube.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#nbov [data-nb="crear"],#nbov [data-nb="olvide"]');if(!b)return;var ad=NB.ad;if(!ad)return;var a=b.dataset.nb;
  if(a==='olvide'){var u=nbV('nbu');if(!u||u.indexOf('@')>-1)return;e.preventDefault();e.stopImmediatePropagation();NBF.u=u;NBF.err='';NBF.msg='';
   ad.get('usuarios/'+nbSlug(u)).then(function(d){var em=d&&d.email;if(!em||/@rutafacil\.app$/i.test(em)){NBF.err='Ese usuario no tiene correo propio. Pídele al administrador una contraseña nueva (desde Personal).';nbPantalla();return}
@@ -23,8 +21,4 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- cada cuenta abre con su puesto: si entra la cuenta del administrador, el celular abre como administrador
    (antes, si ese celular estaba guardado como chofer, se quedaba como chofer). El admin todavía puede "entrar como" otro desde el menú. ---------- */
 var _rolUid64=null;
-var _nfr64=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;
- try{if(p&&NB.listo&&p.rol==='admin'&&NB.user&&_rolUid64!==NB.user.uid){_rolUid64=NB.user.uid;
-   if(p.adm&&(S.admins||[]).some(function(a){return a.k===p.adm}))S.adminYo=p.adm;
-   if(S.role!=='admin'||S.encOn){S.role='admin';S.encOn=false;S.tab.admin='inicio';S.pinOk={};try{pinEntrar()}catch(e){}}}}catch(e){console.error(e)}
- return _nfr64.apply(this,arguments)};
+/* nbForzarRol: pasó a tema-nube.js */

@@ -63,11 +63,11 @@ function avPinK(x){var m=/\[pin:([^\]]+)\]/.exec(x||'');return m?m[1]:null}
 /* ---------- sesión revocada / acceso quitado: se cierra en ese celular ---------- */
 function nbSesionIni(){try{var t=+localStorage.getItem('nbSesion');if(!t){t=Date.now();localStorage.setItem('nbSesion',String(t))}return t}catch(e){return 0}}
 function nbRevisaSesion(p){if(!p||!NB.user)return;var ini=nbSesionIni();if(p.activo===false||(p.corte&&p.corte>ini)){try{localStorage.removeItem('nbSesion')}catch(e){}toast('Tu sesión se cerró en este celular');setTimeout(function(){NB.ad.salir().then(function(){location.reload()})},800)}}
-if(typeof nbEmpezarSync==='function'){var _nes36=nbEmpezarSync;nbEmpezarSync=function(){var r=_nes36.apply(this,arguments);try{nbSesionIni();if(NB.ad&&NB.user&&!NB._unp){var path='usuarios_app/'+NB.user.uid;if(NB.ad.watchDoc)NB._unp=NB.ad.watchDoc(path,function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}});else{NB._unp=setInterval(function(){NB.ad.get(path).then(function(d){if(d){NB.perfil=d;nbRevisaSesion(d)}},function(){})},60000)}}}catch(e){}return r}}
+/* nbEmpezarSync: pasó a tema-nube.js */
 /* el administrador cierra la sesión de alguien en todos sus celulares (por si perdió el celular) */
 function nbCorte(uid){var t=Date.now();return NB.ad.set('usuarios_app/'+uid,{corte:t},true).then(function(){if(NB.usuarios[uid])NB.usuarios[uid].corte=t})}
 /* ---------- papeles: encargado, contador y venta local ---------- */
-var _nfr36=nbForzarRol;nbForzarRol=function(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='encargado'){S.role='admin';S.encOn=true;if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}return}if(p.rol==='cont'){S.role='cont';return}if(p.rol==='local'){S.role='local';return}return _nfr36.apply(this,arguments)};
+/* nbForzarRol: pasó a tema-nube.js */
 var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
 /* ---------- baja de un chofer: se le quita el acceso y sus clientes se pasan por zona ---------- */
 function bjCentro(id){var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)&&c.lat!=null});if(!L.length)return null;return {lat:sum(L,function(c){return c.lat})/L.length,lng:sum(L,function(c){return c.lng})/L.length,n:L.length}}

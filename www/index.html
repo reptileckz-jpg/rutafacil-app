@@ -14384,8 +14384,14 @@ var _vehRep124=vehRepHTML;vehRepHTML=function(){if(S.role!=='rep'||!S.salida||S.
  return h};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="veh124otro"],[data-act="veh124asig"]');if(!b)return;e.stopImmediatePropagation();
  if(b.dataset.act==='veh124otro')S.vehOtro124={ch:+S.chofHoy,d:iso(TODAY),de:(S.vehAsig||{})[+S.chofHoy]};else S.vehOtro124=null;render()},true);
-/* el equipo: las llaves son las del vehículo que se lleva hoy (si cambió el asignado por otro) */
-if(typeof eqDe==='function'){var _eqDe124=eqDe;eqDe=function(ch){var L=_eqDe124.apply(this,arguments);try{if(+ch===+S.chofHoy&&vehOtro124()&&vehHoy()){var v=vehHoy();L=L.filter(function(it){return it.vid==null});L.push({k:'v'+v.id,n:'Llaves de '+v.n,vid:v.id})}}catch(e){}return L}}
+/* el equipo: las llaves son las del vehículo que se llevó HOY, no las del asignado (al salir y al regresar, en cualquier celular).
+   De dónde se sabe, en este orden:
+   1) lo que el chofer registró al recibir su equipo hoy (S.eqDia, va en la nube): la llave "v<id>" que se llevó;
+   2) si es la ruta que está abierta en este celular (S.chofHoy) y ya tiene vehículo: ese (S.vehHoy; también si l90 le dio otro por estar ocupado);
+   3) si no, el asignado (como antes). Solo cambia si el chofer TIENE vehículo asignado (si no, no hay llaves en su equipo). */
+function eqVehDia124(ch){try{var sa=(eqRegDe(ch)||{}).salida,est=sa&&sa.est;if(est){var k=Object.keys(est).filter(function(x){return /^v\d+$/.test(x)})[0];if(k&&vehById(+k.slice(1)))return +k.slice(1)}}catch(e){}
+ try{if(+ch===+S.chofHoy&&S.vehHoy!=null&&vehById(+S.vehHoy))return +S.vehHoy}catch(e){}return null}
+if(typeof eqDe==='function'){var _eqDe124=eqDe;eqDe=function(ch){var L=_eqDe124.apply(this,arguments);try{var i=-1;L.forEach(function(it,j){if(it.vid!=null)i=j});if(i<0)return L;var vid=eqVehDia124(ch);if(vid==null||+vid===+L[i].vid)return L;var v=vehById(+vid);L=L.slice();L[i]={k:'v'+v.id,n:'Llaves de '+v.n,vid:v.id}}catch(e){}return L}}
 /* el equipo se pregunta al seguir del paso Vehículo (antes salía al tocar "Iniciar ruta", sin vehículo escogido); lo usa l50 */
 function salEqTarde124(b){return !!(b&&b.dataset&&b.dataset.act==='bienvgo'&&S.role==='rep'&&S.salida&&!S.salida.ok)}
 function salEqFalta124(){try{var ch=+S.chofHoy;return eqDe(ch).length>0&&!eqRegDe(ch).salida}catch(e){return false}}

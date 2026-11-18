@@ -23,10 +23,9 @@ function ubArregla89(){var n=0;(S.cli||[]).forEach(function(c){if(!c||c.oculto)r
  try{Object.keys(S.provDir||{}).forEach(function(p){fija(S.provDir[p])});(S.basc||[]).forEach(fija)}catch(e){}
  return n}
 /* al guardar con la ventana nueva: la coordenada no va a la dirección */
-var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var a0=o?o.a:null,lat0=o?o.lat:null;var r=_u68G89.apply(this,arguments);
- try{if(x&&x.t==='cli'&&o){if(coords89(o.a)&&!coords89(a0))o.a=a0||'';var k=coords89(o.a);if(k&&!ubTiene(o)){o.lat=k.lat;o.lng=k.lng;o.a=''}if(ubTiene(o)&&(o.lat!==lat0)){ubLog89(o,'ventana de ubicación');o.locConf=o.locConf||iso(TODAY)}}}catch(e){}return r};
+/* ub68Guarda: pasó a tema-ubica.js */
 /* ventana vieja (la de "Guardar ubicación aquí" en la entrega): si ya se escogió el punto, se guarda aunque no se tocara "Sí, es aquí" */
-var _ubG89=ubGuardar;ubGuardar=function(){var u=S.ub;try{if(u&&u.k==='cli'&&u.lat!=null&&u.lng!=null&&u.est!=='ok'&&u.modo!=='foto'){var c0=cl(u.id);if(c0&&!ubTiene(c0))u.est='ok'}}catch(e){}var c=u&&u.k==='cli'?cl(u.id):null,lat0=c?c.lat:null;var r=_ubG89.apply(this,arguments);try{if(c&&ubTiene(c)&&c.lat!==lat0){ubLog89(c,'Guardar ubicación aquí');c.locConf=c.locConf||iso(TODAY)}}catch(e){}return r};
+/* ubGuardar: pasó a tema-ubica.js */
 /* la tarjeta de abajo ("Ubicación de X") no sale si ya está la de "Guarda la ubicación" o si ya tiene ubicación confirmada */
 function ubDup89(){var m=document.querySelector('main');if(!m)return;var a=m.querySelector('.ubcard'),b=m.querySelector('[data-x="cfub70"]');if(a&&b)b.remove()}
 

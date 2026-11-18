@@ -2594,5 +2594,6 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Tema "Ajustes y asistente de la primera vez" → `capas/tema-ajustes.js` (44: ajHTML 23, setupHTML 21). 407 → **363 (36%)**. `pruebas/comp-ajustes.js`: 37 casos iguales en la real y 19 en la demo; detecta cambios a propósito en los dos. Todas las pruebas en 0 FAIL.
 - Tema "Nube" → `capas/tema-nube.js` (10). 363 → **353 (37%)**. `pruebas/comp-nube.js`: 999 casos iguales en la real y 1086 en la demo; todas las pruebas de nube y varios celulares en 0 FAIL. `fresh` y `nbAplica` se quedan en sus capas (dentro de bloques que corren al cargar).
 - Tema "Viaje de carga" → `capas/tema-viaje.js` (27). 353 → **326 (42%)**. `pruebas/comp-viaje.js`: 261 casos iguales en la demo y 146 en la real. Todas las pruebas en 0 FAIL.
-- Siguiente: las piezas sueltas por área (ubicaciones, personal y sueldos…) y al final `render` (118).
+- Tema "Ubicaciones y mapas" → `capas/tema-ubica.js` (21). 326 → **305 (46%)**. `pruebas/comp-ubica.js`: 113 casos iguales en la demo y 105 en la real. Todas las pruebas en 0 FAIL.
+- Siguiente: las piezas sueltas por área (personal y sueldos, vehículos…) y al final `render` (118).
 

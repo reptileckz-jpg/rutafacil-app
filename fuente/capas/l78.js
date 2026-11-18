@@ -18,8 +18,7 @@ window.addEventListener('click',function(e){var sm=e.target.closest&&e.target.cl
 /* ---------- 15 · ubicación ---------- */
 /* (a) entrega del chofer: solo si no tiene ubicación o si es aproximada (de link, búsqueda o Excel, sin confirmar en el lugar) */
 function ubAprox78(c){return !!c&&c.lat!=null&&!c.locConf}
-var _cf78=cfUb70;cfUb70=function(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;if(c.lat!=null&&!ubAprox78(c))return;_cf78.apply(this,arguments);
- var d=document.querySelector('[data-x="cfub70"]');if(d&&c.lat!=null){var l=d.querySelector('.lbl');if(l)l.textContent='La que tiene es aproximada (de un link o la búsqueda). Si estás en el negocio, confírmala aquí.'}};
+/* cfUb70: pasó a tema-ubica.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c)return;
  toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){var la=+p.coords.latitude.toFixed(6),ln=+p.coords.longitude.toFixed(6),tenia=c.lat!=null;
    c.lat=la;c.lng=ln;c.locConf=iso(TODAY);c.locBy=chofN(S.chofHoy);c.locF=iso(TODAY);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Confirmó la ubicación de '+c.n+' estando ahí'});
@@ -31,17 +30,13 @@ function cfMas78(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var st=S.stop
 /* (b) en las altas por pasos: al guardar la ubicación pasa solo al siguiente paso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='wz')return;setTimeout(function(){try{if(!S.wz)return;var P=wzPasos(),p=P[S.wz.p];if(p&&/¿Dónde está/.test(p.q)&&S.wz.d.lat!=null&&S.wz.p<P.length-1){S.wz.p++;S.wz.err='';render()}}catch(er){}},30)},true);
 /* lo que se pone con link, búsqueda o Excel queda como aproximado hasta que el chofer lo confirme */
-var _ubG78=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var r=_ubG78.apply(this,arguments);try{if(x&&x.t==='cli'&&o){o.locConf=null}
- if(x&&x.t==='bod'&&o){if(x.dir78)o.dir=x.dir78;if(String(x.nm78||'').trim())o.n=String(x.nm78).trim();else if(!o.n||o.n==='Bodega'||o.n==='Bodega Banderilla')o.n=bodNomSug78(x.dir78)||o.n||'Bodega';o.dem78=1}
- if(x&&x.t==='cli'&&o&&x.dir78&&!String(o.a||'').trim())o.a=x.dir78}catch(e){}return r};
+/* ub68Guarda: pasó a tema-ubica.js */
 
 /* ---------- 21/22 · bodega: nombre y dirección de verdad ---------- */
 function bodNomSug78(dir){var p=String(dir||'').split(',').map(function(s){return s.trim()}).filter(Boolean);if(!p.length)return '';var z=p.length>2?p[p.length-3]:p[0];z=z.replace(/^\d{5}\s*/,'').replace(/^(Col\.?|Colonia)\s*/i,'');return z?'Bodega '+z:''}
 (function(){try{if(MODO!=='vacio')return;var b=(S.bods||[])[0];if(b&&!b.dem78&&b.n==='Bodega Banderilla'&&b.dir==='Banderilla, Veracruz'){b.n='Bodega';b.dir='';b.dem78=1}if(S.cfg&&S.cfg.dir==='Banderilla, Veracruz')S.cfg.dir=''}catch(e){}})();
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68sel"]');if(!b||!S.ub68)return;var r=(S.ub68.res||[])[+b.dataset.i];if(r){S.ub68.dir78=r.d||'';if(S.ub68.t==='bod'&&!String(S.ub68.nm78||'').trim())S.ub68.nm78=bodNomSug78(r.d)}},true);
-var _ubH78=ub68HTML;ub68HTML=function(){var h=_ubH78.apply(this,arguments),x=S.ub68;if(!h||!x||x.p!==2||x.t!=='bod')return h;var o=ub68Obj(x)||{};if(x.nm78==null)x.nm78=o.n&&o.n!=='Bodega'&&o.n!=='Bodega Banderilla'?o.n:'';if(x.dir78==null)x.dir78=o.dem78?(o.dir||''):'';
- var f='<div class="card" style="margin-top:10px"><div class="field"><label for="ub78n">Nombre de la bodega</label><input id="ub78n" type="text" data-bind="ub68.nm78" value="'+esc(x.nm78)+'" placeholder="Ej. Bodega Centro" style="width:100%;text-align:left"></div><div class="field"><label for="ub78d">Dirección</label><input id="ub78d" type="text" data-bind="ub68.dir78" value="'+esc(x.dir78)+'" placeholder="Calle, colonia y ciudad" style="width:100%;text-align:left"></div></div>';
- var i=h.indexOf('<button class="btn big" data-act="ub68si"');return i<0?h:h.slice(0,i)+f+h.slice(i)};
+/* ub68HTML: pasó a tema-ubica.js */
 
 /* ---------- 16 · TAG: el cruce sin viaje de carga va a Gastos del vehículo ---------- */
 /* tagCruce: pasó a tema-vehiculos.js */

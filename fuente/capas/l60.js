@@ -102,7 +102,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var _rcH60=rcHTML;rcHTML=function(){var h=_rcH60.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0)return h;var a=actDiaHTML(iso(TODAY),+S.chofHoy,'Lo que pasó hoy en su ruta');if(!a)return h;
  var i=h.indexOf('<div style="margin-top:auto');return i>-1?h.slice(0,i)+'<div class="card" data-k="rcact">'+a+'</div>'+h.slice(i):h}catch(e){return h}};
 /* ficha del chofer → Ruta y metas: lo que pasó ese día */
-var _gpsR60=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR60.apply(this,arguments);try{if(!h)return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),a=actDiaHTML(dia,c.id,'Lo que pasó ese día');if(!a)return h;var i=h.lastIndexOf('</div>');return i>-1?h.slice(0,i)+a+h.slice(i):h}catch(e){return h}};
+/* gpsRutaHTML: pasó a tema-ubica.js */
 
 /* ---------- 28 · avisos del chofer: sin repetidos (y lo que se canceló, se quita) ---------- */
 function chAvLimpia(){var R=S.rutaAv;if(!R)return false;var cam=false;Object.keys(R).forEach(function(ch){var L=R[ch];if(!L||!L.length)return;var out=[],vis={};

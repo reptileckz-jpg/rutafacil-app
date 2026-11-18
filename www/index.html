@@ -5666,21 +5666,10 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado');render()},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act||'';if(a.indexOf('telconfya:')!==0)return;e.stopImmediatePropagation();var c=cl(+a.split(':')[1]);S.modal=null;if(c&&c.tel){c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado')}render()},true);
 /* ---------- el chofer agrega datos, no los cambia ---------- */
-var _ubH27=ubHTML;ubHTML=function(){var u=S.ub;if(!u)return '';
- if(u.modo==='act'){var nm=esc(ubNom());return '<div id="ubov" role="dialog" aria-label="Actualizar ubicación"><div class="ubw"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Actualiza la ubicación de '+nm+'</b><div class="lbl">La que hay es aproximada. Ya estás con '+(u.k==='bas'?'la báscula':'él')+': la app guarda la exacta sola.</div></span></div>'
-  +(u.est==='buscando'?'<div class="card" style="padding:14px;margin-top:12px;font-size:17px">Buscando tu ubicación…</div>':(u.est==='err'?'<div class="neg" style="margin-top:10px">'+esc(u.err||'')+'</div>':'')+'<button class="btn ubgps" style="margin-top:14px" data-act="ubgps">📍 Estoy con '+nm+': actualizar ubicación</button>'+(u.est==='err'&&u.fallos>=2?'<button class="btn sm sec" style="margin-top:8px" data-act="ubskip">Seguir sin actualizar (le aviso al administrador)</button>':''))
-  +'</div></div>'}
- var h=_ubH27();if(u.k==='cli'&&S.role!=='admin'){var c=cl(u.id);if(c){
-  if(String(c.tel||'').trim())h=h.replace(/<input id="ubtel"[^>]*>/,'<b style="font-size:16px">'+esc(c.tel)+'</b>');
-  if(String(c.recibe||'').trim())h=h.replace(/<input id="ubrec"[^>]*>/,'<b style="font-size:16px">'+esc(c.recibe)+'</b>')}}
- return h};
-var _ubG27=ubGuardar;ubGuardar=function(){var u=S.ub;if(!u)return;var c=u.k==='cli'?cl(u.id):null,telAntes=c?String(c.tel||'').trim():'';
- if(c&&S.role!=='admin'){if(telAntes)u.tel=c.tel;if(String(c.recibe||'').trim())u.recibe=c.recibe;if(ubTiene(c)&&u.modo!=='foto'){u.est=u.est==='ok'?'':u.est}}
- var nm=ubNom(),act=u.modo==='act',r=_ubG27.apply(this,arguments);
- if(c&&!telAntes&&String(c.tel||'').trim()&&S.role!=='admin'){c.telPor=+S.chofHoy;c.telConf=null;if(!c.rapida)S.avPrecio.push(chofN(+S.chofHoy)+' agregó el teléfono de '+c.n+': '+c.tel+'. Confírmalo en su ficha.')}
- if(act&&r!==false)toast('Ubicación de '+nm+' actualizada');return r};
+/* ubHTML: pasó a tema-ubica.js */
+/* ubGuardar: pasó a tema-ubica.js */
 /* básculas con ubicación aproximada también se actualizan */
-var _ubN27=ubDeNodo;ubDeNodo=function(v,a){var r=_ubN27.apply(this,arguments);if(r&&r.k==='bas'&&r.obj&&ubTiene(r.obj)&&r.obj.ubAprox){r.need=true;r.aprox=true;r.noUb=false}return r};
+/* ubDeNodo: pasó a tema-ubica.js */
 /* proveedor nuevo del viaje: su ubicación aproximada */
 var _r27b=render;render=function(){try{(S.vws||[]).forEach(function(v){(v.par||[]).forEach(function(p){if(p.nub&&p.prov&&p.prov!=='__nuevo'){var c=ubParse(p.nub),d=provD(p.prov);if(c&&!ubTiene(d)){d.lat=c.lat;d.lng=c.lng;d.ubAprox=true}p.nub=''}})});
  (S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&c.tel&&c.telPor==null)c.telPor=c.porCh})}catch(e){}return _r27b.apply(this,arguments)};
@@ -6155,9 +6144,7 @@ function mapaMonta(){if(!mapaHay())return;Array.prototype.forEach.call(document.
  if(!el._fit||d.refit){if(B.length>1)el._m.fitBounds(B,{padding:[28,28],maxZoom:15});else if(B.length)el._m.setView(B[0],14);el._fit=true}setTimeout(function(){try{el._m.invalidateSize()}catch(e){}},60)})}
 var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta()}catch(e){console.error(e)}return r};
 /* el dibujo de siempre → mapa real */
-var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
- var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
- return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
+/* mapaSVG: pasó a tema-ubica.js */
 /* vwMapa: pasó a tema-viaje.js */
 /* ---------- ubicación real ---------- */
 function gpsReciente(id,min){var g=nbRGet(id,'gps');if(!g||g.lat==null)return null;return Date.now()-num(g.t)<(min||20)*60000?g:null}
@@ -6166,7 +6153,7 @@ function gpsMarcas(){var L=[];nbRutaIds().forEach(function(id,i){var g=gpsRecien
 /* el viaje usa la ubicación real del chofer si es reciente */
 /* vwPos: pasó a tema-viaje.js */
 /* el admin: en "Mapa en vivo" cada chofer dice dónde está */
-var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
+/* mapaVivo: pasó a tema-ubica.js */
 /* el celular del chofer manda su ubicación */
 var _gpsW=null,_gpsU=0,_gpsL=null;
 function gpsDebe(){if(!REAL||S.role!=='rep'||!navigator.geolocation)return false;var ruta=S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent);var viaje=(S.vws||[]).some(function(x){return x.quien===+S.chofHoy&&x.started&&['done','fin','gracias','cv'].indexOf(x.k)<0});return ruta||viaje}
@@ -6678,15 +6665,8 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="comcobra"]');if(!b)return;e.stopImmediatePropagation();S.cfg.comCobra=b.dataset.v==='1';render()},true);
 /* ---------- completar datos del cliente en cualquier momento (y su horario) ---------- */
-var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};
-var _ubH41=ubHTML;ubHTML=function(){var h=_ubH41.apply(this,arguments),u=S.ub;if(!h||!u||u.k!=='cli'||u.modo!=='datos')return h;var c=cl(u.id);if(!c)return h;
- var hor=c.hCi?'<div class="row"><span>Horario</span><b>'+esc(horRango117(c))+'</b></div>':'<div class="field"><label for="ubab">Abre a las</label><input id="ubab" type="time" data-bind="ub.hAb" value="'+esc(u.hAb||'')+'"></div><div class="field"><label for="ubci">Cierra a las</label><input id="ubci" type="time" data-bind="ub.hCi" value="'+esc(u.hCi||'')+'"></div>';
- var D=['D','L','M','M','J','V','S'],da=c.diasAbre||u.diasAbre||[];var dias=c.diasAbre?'<div class="lbl">Abre: '+c.diasAbre.map(function(i){return ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][i]}).join(', ')+'</div>':'<div class="lbl" style="margin-top:6px">¿Qué días abre?</div><div class="chips" role="group" aria-label="Días que abre">'+D.map(function(x,i){return '<button data-act="ubdia" data-v="'+i+'" aria-pressed="'+(da.indexOf(i)>-1)+'">'+x+'</button>'}).join('')+'</div>';
- var card='<div class="card" style="padding:8px 12px;margin-top:10px"><b>Horario del negocio</b>'+hor+dias+'</div>';
- /* lo que ya tiene no se cambia: el teléfono y quién recibe se enseñan fijos */
- if(String(c.tel||'').trim())h=h.replace(/<div class="field"><label for="ubtel">Teléfono<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Teléfono</span><b>'+esc(c.tel)+'</b></div>');
- if(String(c.recibe||'').trim())h=h.replace(/<div class="field"><label for="ubrec">¿Quién recibe\?<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Quién recibe</span><b>'+esc(c.recibe)+'</b></div>');
- var i=h.indexOf('<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"');return i<0?h:h.slice(0,i)+card+h.slice(i)};
+/* ubCliFalta: pasó a tema-ubica.js */
+/* ubHTML: pasó a tema-ubica.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ubdia"]');if(!b||!S.ub)return;e.stopImmediatePropagation();var v=+b.dataset.v,L=S.ub.diasAbre=S.ub.diasAbre||[];var i=L.indexOf(v);if(i>-1)L.splice(i,1);else L.push(v);L.sort();render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ubsave"]');if(!b||!S.ub||S.ub.k!=='cli'||S.ub.modo!=='datos')return;var u=S.ub,c=cl(u.id);if(!c)return;
  if(!c.hCi&&(u.hAb||u.hCi)){if(!u.hAb||!u.hCi){e.stopImmediatePropagation();toast('Pon la hora en que abre y la hora en que cierra');return}c.hAb=u.hAb;c.hCi=u.hCi}
@@ -7140,7 +7120,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
 /* el viaje de carga y la pantalla de ubicación también van en tarjetas */
 /* vwBody: pasó a tema-viaje.js */
 /* vwSideHTML: pasó a tema-viaje.js */
-if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}
+/* ubHTML: pasó a tema-ubica.js */
 
 //@@capa l47.js
 /* ===================== v6.3 · Altas por pasos a pantalla completa (una pregunta a la vez):
@@ -7856,8 +7836,7 @@ function gmRevisa(){if(!window.GMAPA)return;
  Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){if(el._gmFail)return;var r=el.getBoundingClientRect();if(r.width<10||r.height<10)return;
   if(!el._gm){gmMonta(el);return}var x=el._gm,dd=document.querySelector('[data-mapdata="'+el.getAttribute('data-vivo')+'"]'),j=dd&&dd.getAttribute('data-j');if(j&&j!==x.j){x.j=j;try{gmDatos(x,JSON.parse(j))}catch(e){}}});gmPinta()}
 /* el montaje de Leaflet se salta los mapas que ya son de Google */
-var _mM57=mapaMonta;mapaMonta=function(){var L=gmInHay()?Array.prototype.filter.call(document.querySelectorAll('[data-vivo]'),function(el){return !el._gmFail}):[];
- L.forEach(function(el){el.setAttribute('data-gvivo',el.getAttribute('data-vivo'));el.removeAttribute('data-vivo')});try{return _mM57.apply(this,arguments)}finally{L.forEach(function(el){el.setAttribute('data-vivo',el.getAttribute('data-gvivo'));el.removeAttribute('data-gvivo')})}};
+/* mapaMonta: pasó a tema-ubica.js */
 var _rd57=render;render=function(){var r=_rd57.apply(this,arguments);try{gmRevisa()}catch(e){console.error(e)}return r};
 setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */
@@ -8158,7 +8137,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var _rcH60=rcHTML;rcHTML=function(){var h=_rcH60.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0)return h;var a=actDiaHTML(iso(TODAY),+S.chofHoy,'Lo que pasó hoy en su ruta');if(!a)return h;
  var i=h.indexOf('<div style="margin-top:auto');return i>-1?h.slice(0,i)+'<div class="card" data-k="rcact">'+a+'</div>'+h.slice(i):h}catch(e){return h}};
 /* ficha del chofer → Ruta y metas: lo que pasó ese día */
-var _gpsR60=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR60.apply(this,arguments);try{if(!h)return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),a=actDiaHTML(dia,c.id,'Lo que pasó ese día');if(!a)return h;var i=h.lastIndexOf('</div>');return i>-1?h.slice(0,i)+a+h.slice(i):h}catch(e){return h}};
+/* gpsRutaHTML: pasó a tema-ubica.js */
 
 /* ---------- 28 · avisos del chofer: sin repetidos (y lo que se canceló, se quita) ---------- */
 function chAvLimpia(){var R=S.rutaAv;if(!R)return false;var cam=false;Object.keys(R).forEach(function(ch){var L=R[ch];if(!L||!L.length)return;var out=[],vis={};
@@ -8290,24 +8269,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 function gpsAhora(ch){var best=null;try{Object.keys(GPS.devs||{}).forEach(function(dev){var d=GPS.devs[dev];if(+d.ch!==+ch)return;var u=gpsUlt(d);if(u.lat==null)return;if(!best||num(u.t)>num(best.u.t))best={u:u,d:d}})}catch(e){}return best}
 function haceTxt62(t){var m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?'ahorita':(m<60?'hace '+m+' min':'hace '+minTxt(m*60000))}
 function irLink(lat,lng){return 'https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng}
-var _gpsR62=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR62.apply(this,arguments);try{if(!h||!esCh(c)||esAdm(c))return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),mid='gps'+c.id+dia.replace(/-/g,''),extra='';
- /* a) dónde está ahora */
- var A0=gpsAhora(c.id);if(A0&&dia===iso(TODAY)){var u=A0.u,bat=A0.d.bat!=null&&num(A0.d.bat)>=0?' · batería '+A0.d.bat+'%':'';
-  extra+='<div class="gpsahora"><b>📍 Dónde está ahora</b><div class="lbl">Última ubicación: '+hmDe(u.t)+' ('+haceTxt62(num(u.t))+')'+bat+'</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
-   +'<button class="btn sm sec" style="width:auto" data-act="gpsir" data-map="'+mid+'" data-lat="'+u.lat+'" data-lng="'+u.lng+'">Ver en el mapa</button><a class="btn sm" style="width:auto;display:inline-flex;align-items:center" href="'+irLink(u.lat,u.lng)+'" target="_blank" rel="noopener">🚗 Cómo llegar</a></div></div>'}
- var G=GPS.dia&&GPS.dia[c.id+'|'+dia];if(G&&G.est==='ok'&&G.pts.length){var An=gpsAnaliza(G.pts),VE=An.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000}),k=0;
-  /* b) cada parada se puede tocar: centra el mapa; con botón "Ir" */
-  h=h.replace(/<div class="gpsst( raro)?">/g,function(m,raro){var e=VE[k++];if(!e)return m;return '<div class="gpsst'+(raro||'')+'" data-act="gpsir" data-map="'+mid+'" data-lat="'+e.lat+'" data-lng="'+e.lng+'" role="button" tabindex="0">'});
-  h=h.replace(/(<div class="gpsst[^>]*data-lat="(-?[\d.]+)" data-lng="(-?[\d.]+)"[^>]*>)([\s\S]*?)(<\/div>)/g,function(m,a,lat,lng,body,cierra){return a+body+(/>Ir</.test(body)?'':' <a class="link" href="'+irLink(lat,lng)+'" target="_blank" rel="noopener">Ir</a>')+cierra});
-  /* c) puntos por hora: dónde estuvo a tal hora */
-  var H={};G.pts.forEach(function(p){if(p.lat==null)return;var d=new Date(+p.t),hh=d.getHours(),mm=('0'+d.getMinutes()).slice(-2),key=hh+':'+mm;(H[hh]=H[hh]||{});if(!H[hh][key])H[hh][key]=p});
-  var hs=Object.keys(H).map(Number).sort(function(a,b){return a-b});
-  if(hs.length)extra+='<div style="margin-top:10px"><b>¿Dónde estuvo a tal hora?</b><div class="lbl">Toca una hora y luego el minuto: el mapa se va a ese punto.</div>'+hs.map(function(hh){var M=H[hh],ks=Object.keys(M);return '<details class="gpsh"><summary><b>'+('0'+hh).slice(-2)+':00 a '+('0'+hh).slice(-2)+':59</b><span class="lbl">'+ks.length+' puntos</span></summary><div class="chips" role="group">'
-   +ks.map(function(kk){var p=M[kk];return '<button data-act="gpsir" data-map="'+mid+'" data-lat="'+p.lat+'" data-lng="'+p.lng+'">'+('0'+kk).slice(-5)+'</button>'}).join('')+'</div></details>'}).join('')+'</div>'}
- /* 12 · estimado contra real */
- extra+=planVsRealHTML(c.id,dia,G);
- if(!extra)return h;var i=h.indexOf('<div class="mapviv"');if(i<0)i=h.lastIndexOf('</div>');var ah=extra.split('<div style="margin-top:10px"><b>¿Dónde')[0],resto=extra.slice(ah.length);
- h=h.slice(0,i)+ah+h.slice(i);var j=h.lastIndexOf('</div>');return h.slice(0,j)+resto+h.slice(j)}catch(e){console.error(e);return h}};
+/* gpsRutaHTML: pasó a tema-ubica.js */
 /* 10 b · el mapa del recorrido se acerca a los puntos del día (no mete la bodega si está lejos) */
 /* mapaVivoHTML: pasó a tema-inicio.js */
 
@@ -9474,10 +9436,7 @@ ub68Busca=function(){var x=S.ub68,n=natPl&&natPl();if(!String(x.q||'').trim()){t
   if(r.status>=400){x.err=placesMsg71(r,j);try{apErr('places',x.err,'ubicaciones')}catch(er){}render();return}
   x.res=(j.places||[]).filter(function(p){return p.location}).map(function(p){return {n:(p.displayName&&p.displayName.text)||'Lugar',d:p.formattedAddress||'',lat:p.location.latitude,lng:p.location.longitude}});if(!x.res.length)x.err='No encontré ese lugar. Prueba con otras palabras o con la dirección.';render()})
  .catch(function(er){x.busy=false;x.err='Sin conexión con Google. Revisa el internet.';render()})};
-var _ubH71=ub68HTML;ub68HTML=function(){var h=_ubH71.apply(this,arguments);if(!h)return h;
- return h.replace('<small>Como en Uber: escribe el nombre o la dirección</small>','<small>Escribe el nombre del lugar o la dirección</small>')
-  .replace('<b>🔗 Pegar el link de Google Maps</b>','<b>🔗 Pegar el link de Google Maps o las coordenadas</b><div class="lbl">Sirve el link que sale en Google Maps con "Compartir", o los números como 32.5149, -117.0382</div>')
-  .replace('>Usar el link</button>','>Usar el link o las coordenadas</button>')};
+/* ub68HTML: pasó a tema-ubica.js */
 /* "Usar el link": si el link no trae el punto, se busca el lugar por su nombre */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68link"]');if(!b||!S.ub68)return;e.stopImmediatePropagation();e.preventDefault();var x=S.ub68,lk=String(x.link||'').trim();
  if(!lk){x.err='Pega el link de Google Maps o las coordenadas.';render();return}
@@ -9519,8 +9478,8 @@ function stock72(){if(S.role!=='rep'||S.salida.ok)return;var m=document.querySel
  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:700;margin-top:8px">Todavía no hay con qué calcularlo: no tienes pedidos ni días anteriores.</div><div class="lbl" style="margin-top:4px">Carga lo que te diga el administrador. Al iniciar el día capturas lo que de verdad llevas.</div>'}
 
 /* ---------- 72 · cliente nuevo del chofer: un solo alta por pasos ---------- */
-var _ubO72=ub68Obj;ub68Obj=function(x){if(x&&x.t==='wz')return S.wz&&S.wz.d||null;return _ubO72.apply(this,arguments)};
-var _ubN72=ub68Nom;ub68Nom=function(x){if(x&&x.t==='wz'){var d=S.wz&&S.wz.d||{};return String(d.n||'').trim()||'el cliente'}return _ubN72.apply(this,arguments)};
+/* ub68Obj: pasó a tema-ubica.js */
+/* ub68Nom: pasó a tema-ubica.js */
 function ubWz72(d){var ok=d.lat!=null&&d.lat!=='';return '<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--line)')+'"><b style="font-size:18px">'+(ok?'✓ Ubicación guardada':'Todavía sin ubicación')+'</b>'+(ok?'<div class="lbl">'+d.lat+', '+d.lng+'</div>':'<div class="lbl">Si estás en el negocio, usa "Estoy aquí".</div>')
  +'<button class="btn" style="margin-top:10px;min-height:58px;width:100%" data-act="wz72gps">📍 Estoy aquí (GPS)</button><button class="btn sec" style="margin-top:8px;min-height:54px;width:100%" data-act="wz72ub">🔎 Buscar el lugar o pegar el link</button></div>'}
 var HORAS72=function(){var o=[];for(var h=5;h<=22;h++){o.push([String(h).padStart(2,'0')+':00',(h%12||12)+':00 '+(h<12?'am':'pm')])}return o};
@@ -9549,7 +9508,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){S.ub68={t:'wz',id:'wz',p:2,lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6)};render()},function(){toast('No se pudo leer el GPS. Prende la ubicación o busca el lugar.')},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){toast('No se pudo leer el GPS.')}},true);
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.wz==='tel'&&S.wz)S.wz.d.telNo=false},true);
 /* lo que ya se pidió en el alta no se vuelve a pedir en la entrega */
-var _ucf72=ubCliFalta;ubCliFalta=function(c){var f=_ucf72.apply(this,arguments);if(!c)return f;return f.filter(function(x){if(x==='teléfono'&&c.telNo)return false;if(x==='foto de la fachada'&&c.fotoSkip===iso(TODAY))return false;return true})};
+/* ubCliFalta: pasó a tema-ubica.js */
 
 /* ---------- 73 · sin "cuántas vienen rotas" ---------- */
 function rotas72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m)return;Array.prototype.forEach.call(m.querySelectorAll('label,span,div'),function(el){if(el.children.length>3)return;if(/^De esas, cuántas vienen rotas/.test((el.textContent||'').trim())){var f=el.closest('.field')||el.parentElement;if(f&&f!==m)f.remove()}});if(S.d&&num(S.d.Vr))S.d.Vr=0}
@@ -10067,7 +10026,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4801,"l15.js"],[4863,"l16.js"],[4963,"l17.js"],[4994,"l18.js"],[5073,"l19.js"],[5132,"l20.js"],[5181,"l21.js"],[5225,"l22.js"],[5421,"l23.js"],[5470,"l24.js"],[5486,"l25.js"],[5513,"l26.js"],[5634,"l27.js"],[5695,"l28.js"],[5827,"l29.js"],[5953,"l30.js"],[5996,"l31.js"],[6025,"l32.js"],[6113,"l33.js"],[6131,"l34.js"],[6188,"l35.js"],[6245,"l36.js"],[6340,"l37.js"],[6359,"l38.js"],[6442,"l39.js"],[6522,"l40.js"],[6630,"l41.js"],[6697,"l42.js"],[6799,"l43.js"],[6901,"l44.js"],[6996,"l45.js"],[7082,"l46.js"],[7145,"l47.js"],[7259,"l48.js"],[7313,"l49.js"],[7349,"l50.js"],[7452,"l51.js"],[7462,"l52.js"],[7599,"l53.js"],[7621,"l54.js"],[7694,"l55.js"],[7723,"l56.js"],[7807,"l57.js"],[7870,"l58.js"],[7997,"l59.js"],[8056,"l60.js"],[8216,"l61.js"],[8272,"l62.js"],[8401,"l63.js"],[8566,"l64.js"],[8592,"l65.js"],[8693,"l66.js"],[8795,"l67.js"],[8822,"l68.js"],[8948,"l69.js"],[9164,"l70.js"],[9370,"l71.js"],[9495,"l72.js"],[9608,"l73.js"],[9684,"l74.js"],[9805,"l75.js"],[9958,"l76.js"],[10061,"l77.js"],[10186,"l78.js"],[10336,"l79.js"],[10444,"l80.js"],[10568,"l81.js"],[10721,"l82.js"],[10971,"l83.js"],[11040,"l84.js"],[11153,"l85.js"],[11214,"tema-rutadia.js"],[11379,"l86.js"],[11439,"l87.js"],[11482,"l88.js"],[11532,"l89.js"],[11581,"l90.js"],[11687,"tema-ruta.js"],[11834,"tema-fichas.js"],[11951,"tema-cierre.js"],[12045,"tema-inicio.js"],[12173,"tema-ajustes.js"],[12376,"tema-nube.js"],[12434,"tema-viaje.js"],[12575,"tema-cobranza.js"],[12722,"tema-pantallas.js"],[12943,"tema-avisos.js"],[13105,"tema-reparte.js"],[13171,"tema-vehiculos.js"],[13315,"tema-notas.js"],[13332,"tema-taras.js"],[13439,"tema-cargarmas.js"],[13478,"tema-cargas.js"],[13512,"tema-cobro.js"],[13548,"tema-horario.js"],[13587,"tema-sueldos.js"],[13729,"tema-ganado.js"],[13774,"tema-cierres.js"],[13873,"tema-finanzas.js"],[13946,"tema-cuadre.js"],[14135,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4731,"l14.js"],[4801,"l15.js"],[4863,"l16.js"],[4963,"l17.js"],[4994,"l18.js"],[5073,"l19.js"],[5132,"l20.js"],[5181,"l21.js"],[5225,"l22.js"],[5421,"l23.js"],[5470,"l24.js"],[5486,"l25.js"],[5513,"l26.js"],[5634,"l27.js"],[5684,"l28.js"],[5816,"l29.js"],[5942,"l30.js"],[5985,"l31.js"],[6014,"l32.js"],[6102,"l33.js"],[6120,"l34.js"],[6175,"l35.js"],[6232,"l36.js"],[6327,"l37.js"],[6346,"l38.js"],[6429,"l39.js"],[6509,"l40.js"],[6617,"l41.js"],[6677,"l42.js"],[6779,"l43.js"],[6881,"l44.js"],[6976,"l45.js"],[7062,"l46.js"],[7125,"l47.js"],[7239,"l48.js"],[7293,"l49.js"],[7329,"l50.js"],[7432,"l51.js"],[7442,"l52.js"],[7579,"l53.js"],[7601,"l54.js"],[7674,"l55.js"],[7703,"l56.js"],[7787,"l57.js"],[7849,"l58.js"],[7976,"l59.js"],[8035,"l60.js"],[8195,"l61.js"],[8251,"l62.js"],[8363,"l63.js"],[8528,"l64.js"],[8554,"l65.js"],[8655,"l66.js"],[8757,"l67.js"],[8784,"l68.js"],[8910,"l69.js"],[9126,"l70.js"],[9332,"l71.js"],[9454,"l72.js"],[9567,"l73.js"],[9643,"l74.js"],[9764,"l75.js"],[9917,"l76.js"],[10020,"l77.js"],[10145,"l78.js"],[10290,"l79.js"],[10398,"l80.js"],[10521,"l81.js"],[10674,"l82.js"],[10924,"l83.js"],[10993,"l84.js"],[11106,"l85.js"],[11167,"tema-rutadia.js"],[11332,"l86.js"],[11392,"l87.js"],[11435,"l88.js"],[11485,"l89.js"],[11533,"l90.js"],[11639,"tema-ruta.js"],[11786,"tema-fichas.js"],[11903,"tema-cierre.js"],[11997,"tema-inicio.js"],[12125,"tema-ajustes.js"],[12328,"tema-nube.js"],[12386,"tema-viaje.js"],[12527,"tema-ubica.js"],[12652,"tema-cobranza.js"],[12799,"tema-pantallas.js"],[13020,"tema-avisos.js"],[13182,"tema-reparte.js"],[13248,"tema-vehiculos.js"],[13392,"tema-notas.js"],[13409,"tema-taras.js"],[13516,"tema-cargarmas.js"],[13555,"tema-cargas.js"],[13589,"tema-cobro.js"],[13625,"tema-horario.js"],[13664,"tema-sueldos.js"],[13806,"tema-ganado.js"],[13851,"tema-cierres.js"],[13950,"tema-finanzas.js"],[14023,"tema-cuadre.js"],[14212,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10204,8 +10163,7 @@ window.addEventListener('click',function(e){var sm=e.target.closest&&e.target.cl
 /* ---------- 15 · ubicación ---------- */
 /* (a) entrega del chofer: solo si no tiene ubicación o si es aproximada (de link, búsqueda o Excel, sin confirmar en el lugar) */
 function ubAprox78(c){return !!c&&c.lat!=null&&!c.locConf}
-var _cf78=cfUb70;cfUb70=function(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;if(c.lat!=null&&!ubAprox78(c))return;_cf78.apply(this,arguments);
- var d=document.querySelector('[data-x="cfub70"]');if(d&&c.lat!=null){var l=d.querySelector('.lbl');if(l)l.textContent='La que tiene es aproximada (de un link o la búsqueda). Si estás en el negocio, confírmala aquí.'}};
+/* cfUb70: pasó a tema-ubica.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c)return;
  toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){var la=+p.coords.latitude.toFixed(6),ln=+p.coords.longitude.toFixed(6),tenia=c.lat!=null;
    c.lat=la;c.lng=ln;c.locConf=iso(TODAY);c.locBy=chofN(S.chofHoy);c.locF=iso(TODAY);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Confirmó la ubicación de '+c.n+' estando ahí'});
@@ -10217,17 +10175,13 @@ function cfMas78(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var st=S.stop
 /* (b) en las altas por pasos: al guardar la ubicación pasa solo al siguiente paso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='wz')return;setTimeout(function(){try{if(!S.wz)return;var P=wzPasos(),p=P[S.wz.p];if(p&&/¿Dónde está/.test(p.q)&&S.wz.d.lat!=null&&S.wz.p<P.length-1){S.wz.p++;S.wz.err='';render()}}catch(er){}},30)},true);
 /* lo que se pone con link, búsqueda o Excel queda como aproximado hasta que el chofer lo confirme */
-var _ubG78=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var r=_ubG78.apply(this,arguments);try{if(x&&x.t==='cli'&&o){o.locConf=null}
- if(x&&x.t==='bod'&&o){if(x.dir78)o.dir=x.dir78;if(String(x.nm78||'').trim())o.n=String(x.nm78).trim();else if(!o.n||o.n==='Bodega'||o.n==='Bodega Banderilla')o.n=bodNomSug78(x.dir78)||o.n||'Bodega';o.dem78=1}
- if(x&&x.t==='cli'&&o&&x.dir78&&!String(o.a||'').trim())o.a=x.dir78}catch(e){}return r};
+/* ub68Guarda: pasó a tema-ubica.js */
 
 /* ---------- 21/22 · bodega: nombre y dirección de verdad ---------- */
 function bodNomSug78(dir){var p=String(dir||'').split(',').map(function(s){return s.trim()}).filter(Boolean);if(!p.length)return '';var z=p.length>2?p[p.length-3]:p[0];z=z.replace(/^\d{5}\s*/,'').replace(/^(Col\.?|Colonia)\s*/i,'');return z?'Bodega '+z:''}
 (function(){try{if(MODO!=='vacio')return;var b=(S.bods||[])[0];if(b&&!b.dem78&&b.n==='Bodega Banderilla'&&b.dir==='Banderilla, Veracruz'){b.n='Bodega';b.dir='';b.dem78=1}if(S.cfg&&S.cfg.dir==='Banderilla, Veracruz')S.cfg.dir=''}catch(e){}})();
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68sel"]');if(!b||!S.ub68)return;var r=(S.ub68.res||[])[+b.dataset.i];if(r){S.ub68.dir78=r.d||'';if(S.ub68.t==='bod'&&!String(S.ub68.nm78||'').trim())S.ub68.nm78=bodNomSug78(r.d)}},true);
-var _ubH78=ub68HTML;ub68HTML=function(){var h=_ubH78.apply(this,arguments),x=S.ub68;if(!h||!x||x.p!==2||x.t!=='bod')return h;var o=ub68Obj(x)||{};if(x.nm78==null)x.nm78=o.n&&o.n!=='Bodega'&&o.n!=='Bodega Banderilla'?o.n:'';if(x.dir78==null)x.dir78=o.dem78?(o.dir||''):'';
- var f='<div class="card" style="margin-top:10px"><div class="field"><label for="ub78n">Nombre de la bodega</label><input id="ub78n" type="text" data-bind="ub68.nm78" value="'+esc(x.nm78)+'" placeholder="Ej. Bodega Centro" style="width:100%;text-align:left"></div><div class="field"><label for="ub78d">Dirección</label><input id="ub78d" type="text" data-bind="ub68.dir78" value="'+esc(x.dir78)+'" placeholder="Calle, colonia y ciudad" style="width:100%;text-align:left"></div></div>';
- var i=h.indexOf('<button class="btn big" data-act="ub68si"');return i<0?h:h.slice(0,i)+f+h.slice(i)};
+/* ub68HTML: pasó a tema-ubica.js */
 
 /* ---------- 16 · TAG: el cruce sin viaje de carga va a Gastos del vehículo ---------- */
 /* tagCruce: pasó a tema-vehiculos.js */
@@ -10495,8 +10449,7 @@ setInterval(function(){try{pend80()}catch(e){}},3000);
 function bodDirGps80(x){var n=natPl&&natPl();if(!n||!n.lugaresGoogle||x.lat==null)return;x.busca80=1;var cuerpo={locationRestriction:{circle:{center:{latitude:+x.lat,longitude:+x.lng},radius:60}},maxResultCount:1,languageCode:'es',regionCode:'MX'};
  n.lugaresGoogle({cuerpo:JSON.stringify(cuerpo),modo:'cerca'}).then(function(r){var j={};try{j=JSON.parse(r.json||'{}')}catch(e){}var p=(j.places||[])[0];x.busca80=2;if(p&&p.formattedAddress){x.dir78=x.dir78||p.formattedAddress;try{if(S.cfg&&!String(S.cfg.dir||'').trim())S.cfg.dir=p.formattedAddress}catch(e){}if(!String(x.nm78||'').trim())x.nm78=bodNomSug78(p.formattedAddress)}render()},function(){x.busca80=2;render()})}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68gps"]');if(!b||!S.ub68)return;var x=S.ub68;x.gps80=1;x.busca80=0},true);
-var _ubH80=ub68HTML;ub68HTML=function(){var x=S.ub68;if(x&&x.p===2&&x.t==='bod'&&x.gps80&&!x.busca80)setTimeout(function(){bodDirGps80(x)},0);var h=_ubH80.apply(this,arguments);if(!h||!x||x.p!==2||x.t!=='bod')return h;
- if(x.busca80===1)h=h.replace('<label for="ub78n">Nombre de la bodega</label>','<label for="ub78n">Nombre de la bodega <span class="lbl">(buscando la colonia…)</span></label>');return h};
+/* ub68HTML: pasó a tema-ubica.js */
 /* sin nombre no se guarda (si no, se quedaba el viejo) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='bod')return;var x=S.ub68,nm=String(x.nm78||'').trim();if(!nm&&!bodNomSug78(x.dir78||'')){e.preventDefault();e.stopImmediatePropagation();toast('Escribe el nombre de la bodega (ej. "Bodega Otay")');var i=document.getElementById('ub78n');if(i){try{marcaFalta(i)}catch(er){}try{i.focus()}catch(er){}}}},true);
 /* el nombre de la demo también se limpia después de bajar la nube (y se sube corregido) */
@@ -11555,10 +11508,9 @@ function ubArregla89(){var n=0;(S.cli||[]).forEach(function(c){if(!c||c.oculto)r
  try{Object.keys(S.provDir||{}).forEach(function(p){fija(S.provDir[p])});(S.basc||[]).forEach(fija)}catch(e){}
  return n}
 /* al guardar con la ventana nueva: la coordenada no va a la dirección */
-var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var a0=o?o.a:null,lat0=o?o.lat:null;var r=_u68G89.apply(this,arguments);
- try{if(x&&x.t==='cli'&&o){if(coords89(o.a)&&!coords89(a0))o.a=a0||'';var k=coords89(o.a);if(k&&!ubTiene(o)){o.lat=k.lat;o.lng=k.lng;o.a=''}if(ubTiene(o)&&(o.lat!==lat0)){ubLog89(o,'ventana de ubicación');o.locConf=o.locConf||iso(TODAY)}}}catch(e){}return r};
+/* ub68Guarda: pasó a tema-ubica.js */
 /* ventana vieja (la de "Guardar ubicación aquí" en la entrega): si ya se escogió el punto, se guarda aunque no se tocara "Sí, es aquí" */
-var _ubG89=ubGuardar;ubGuardar=function(){var u=S.ub;try{if(u&&u.k==='cli'&&u.lat!=null&&u.lng!=null&&u.est!=='ok'&&u.modo!=='foto'){var c0=cl(u.id);if(c0&&!ubTiene(c0))u.est='ok'}}catch(e){}var c=u&&u.k==='cli'?cl(u.id):null,lat0=c?c.lat:null;var r=_ubG89.apply(this,arguments);try{if(c&&ubTiene(c)&&c.lat!==lat0){ubLog89(c,'Guardar ubicación aquí');c.locConf=c.locConf||iso(TODAY)}}catch(e){}return r};
+/* ubGuardar: pasó a tema-ubica.js */
 /* la tarjeta de abajo ("Ubicación de X") no sale si ya está la de "Guarda la ubicación" o si ya tiene ubicación confirmada */
 function ubDup89(){var m=document.querySelector('main');if(!m)return;var a=m.querySelector('.ubcard'),b=m.querySelector('[data-x="cfub70"]');if(a&&b)b.remove()}
 
@@ -12571,6 +12523,131 @@ var _sch82=sugCargaHTML;sugCargaHTML=function(){if(MODO!=='vacio')return _sch82.
 
 /* sugCarga · de l87 */
 var _sug87=sugCarga;sugCarga=function(){var s=_sug87.apply(this,arguments);try{if(MODO==='vacio'&&s&&s.tot&&s.n>0&&s.n*2<s.tot){s.poco87=1;s.sR=0;s.sM=0}}catch(e){}return s};
+
+//@@capa tema-ubica.js
+/* ===================== TEMA · Ubicaciones y mapas (aplanado el 18 nov) =====================
+   Antes estaba repartido en 21 envolturas encadenadas en l27, l34, l41, l46, l57, l60, l62, l71, l72, l78, l80, l89.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-ubica.js).
+   Se arma justo después de tema-viaje.js (antes de los otros temas).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - ubHTML, ubGuardar, ubCliFalta, ubDeNodo: la ventana para guardar el lugar de un cliente, bodega o proveedor (GPS, foto de la fachada, datos).
+   - ub68HTML, ub68Guarda, ub68Obj, ub68Nom: corregir la ubicación en el mapa (cliente, bodega, proveedor y la del asistente).
+   - cfUb70: el aviso para confirmar la ubicación en la entrega.
+   - mapaVivo, mapaSVG, mapaMonta, gpsRutaHTML: el mapa de choferes y clientes, el dibujo sin internet y el recorrido GPS de cada chofer.
+   Las funciones que usan los pasos siguen en su capa.
+   ============================================================================================ */
+
+/* ubHTML · de l27 */
+var _ubH27=ubHTML;ubHTML=function(){var u=S.ub;if(!u)return '';
+ if(u.modo==='act'){var nm=esc(ubNom());return '<div id="ubov" role="dialog" aria-label="Actualizar ubicación"><div class="ubw"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Actualiza la ubicación de '+nm+'</b><div class="lbl">La que hay es aproximada. Ya estás con '+(u.k==='bas'?'la báscula':'él')+': la app guarda la exacta sola.</div></span></div>'
+  +(u.est==='buscando'?'<div class="card" style="padding:14px;margin-top:12px;font-size:17px">Buscando tu ubicación…</div>':(u.est==='err'?'<div class="neg" style="margin-top:10px">'+esc(u.err||'')+'</div>':'')+'<button class="btn ubgps" style="margin-top:14px" data-act="ubgps">📍 Estoy con '+nm+': actualizar ubicación</button>'+(u.est==='err'&&u.fallos>=2?'<button class="btn sm sec" style="margin-top:8px" data-act="ubskip">Seguir sin actualizar (le aviso al administrador)</button>':''))
+  +'</div></div>'}
+ var h=_ubH27();if(u.k==='cli'&&S.role!=='admin'){var c=cl(u.id);if(c){
+  if(String(c.tel||'').trim())h=h.replace(/<input id="ubtel"[^>]*>/,'<b style="font-size:16px">'+esc(c.tel)+'</b>');
+  if(String(c.recibe||'').trim())h=h.replace(/<input id="ubrec"[^>]*>/,'<b style="font-size:16px">'+esc(c.recibe)+'</b>')}}
+ return h};
+
+/* ubGuardar · de l27 */
+var _ubG27=ubGuardar;ubGuardar=function(){var u=S.ub;if(!u)return;var c=u.k==='cli'?cl(u.id):null,telAntes=c?String(c.tel||'').trim():'';
+ if(c&&S.role!=='admin'){if(telAntes)u.tel=c.tel;if(String(c.recibe||'').trim())u.recibe=c.recibe;if(ubTiene(c)&&u.modo!=='foto'){u.est=u.est==='ok'?'':u.est}}
+ var nm=ubNom(),act=u.modo==='act',r=_ubG27.apply(this,arguments);
+ if(c&&!telAntes&&String(c.tel||'').trim()&&S.role!=='admin'){c.telPor=+S.chofHoy;c.telConf=null;if(!c.rapida)S.avPrecio.push(chofN(+S.chofHoy)+' agregó el teléfono de '+c.n+': '+c.tel+'. Confírmalo en su ficha.')}
+ if(act&&r!==false)toast('Ubicación de '+nm+' actualizada');return r};
+
+/* ubDeNodo · de l27 */
+var _ubN27=ubDeNodo;ubDeNodo=function(v,a){var r=_ubN27.apply(this,arguments);if(r&&r.k==='bas'&&r.obj&&ubTiene(r.obj)&&r.obj.ubAprox){r.need=true;r.aprox=true;r.noUb=false}return r};
+
+/* mapaSVG · de l34 */
+var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
+ var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
+ return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
+
+/* mapaVivo · de l34 */
+var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
+
+/* ubCliFalta · de l41 */
+var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};
+
+/* ubHTML · de l41 */
+var _ubH41=ubHTML;ubHTML=function(){var h=_ubH41.apply(this,arguments),u=S.ub;if(!h||!u||u.k!=='cli'||u.modo!=='datos')return h;var c=cl(u.id);if(!c)return h;
+ var hor=c.hCi?'<div class="row"><span>Horario</span><b>'+esc(horRango117(c))+'</b></div>':'<div class="field"><label for="ubab">Abre a las</label><input id="ubab" type="time" data-bind="ub.hAb" value="'+esc(u.hAb||'')+'"></div><div class="field"><label for="ubci">Cierra a las</label><input id="ubci" type="time" data-bind="ub.hCi" value="'+esc(u.hCi||'')+'"></div>';
+ var D=['D','L','M','M','J','V','S'],da=c.diasAbre||u.diasAbre||[];var dias=c.diasAbre?'<div class="lbl">Abre: '+c.diasAbre.map(function(i){return ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][i]}).join(', ')+'</div>':'<div class="lbl" style="margin-top:6px">¿Qué días abre?</div><div class="chips" role="group" aria-label="Días que abre">'+D.map(function(x,i){return '<button data-act="ubdia" data-v="'+i+'" aria-pressed="'+(da.indexOf(i)>-1)+'">'+x+'</button>'}).join('')+'</div>';
+ var card='<div class="card" style="padding:8px 12px;margin-top:10px"><b>Horario del negocio</b>'+hor+dias+'</div>';
+ /* lo que ya tiene no se cambia: el teléfono y quién recibe se enseñan fijos */
+ if(String(c.tel||'').trim())h=h.replace(/<div class="field"><label for="ubtel">Teléfono<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Teléfono</span><b>'+esc(c.tel)+'</b></div>');
+ if(String(c.recibe||'').trim())h=h.replace(/<div class="field"><label for="ubrec">¿Quién recibe\?<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Quién recibe</span><b>'+esc(c.recibe)+'</b></div>');
+ var i=h.indexOf('<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"');return i<0?h:h.slice(0,i)+card+h.slice(i)};
+
+/* ubHTML · de l46 */
+if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}
+
+/* mapaMonta · de l57 */
+var _mM57=mapaMonta;mapaMonta=function(){var L=gmInHay()?Array.prototype.filter.call(document.querySelectorAll('[data-vivo]'),function(el){return !el._gmFail}):[];
+ L.forEach(function(el){el.setAttribute('data-gvivo',el.getAttribute('data-vivo'));el.removeAttribute('data-vivo')});try{return _mM57.apply(this,arguments)}finally{L.forEach(function(el){el.setAttribute('data-vivo',el.getAttribute('data-gvivo'));el.removeAttribute('data-gvivo')})}};
+
+/* gpsRutaHTML · de l60 */
+var _gpsR60=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR60.apply(this,arguments);try{if(!h)return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),a=actDiaHTML(dia,c.id,'Lo que pasó ese día');if(!a)return h;var i=h.lastIndexOf('</div>');return i>-1?h.slice(0,i)+a+h.slice(i):h}catch(e){return h}};
+
+/* gpsRutaHTML · de l62 */
+var _gpsR62=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR62.apply(this,arguments);try{if(!h||!esCh(c)||esAdm(c))return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),mid='gps'+c.id+dia.replace(/-/g,''),extra='';
+ /* a) dónde está ahora */
+ var A0=gpsAhora(c.id);if(A0&&dia===iso(TODAY)){var u=A0.u,bat=A0.d.bat!=null&&num(A0.d.bat)>=0?' · batería '+A0.d.bat+'%':'';
+  extra+='<div class="gpsahora"><b>📍 Dónde está ahora</b><div class="lbl">Última ubicación: '+hmDe(u.t)+' ('+haceTxt62(num(u.t))+')'+bat+'</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
+   +'<button class="btn sm sec" style="width:auto" data-act="gpsir" data-map="'+mid+'" data-lat="'+u.lat+'" data-lng="'+u.lng+'">Ver en el mapa</button><a class="btn sm" style="width:auto;display:inline-flex;align-items:center" href="'+irLink(u.lat,u.lng)+'" target="_blank" rel="noopener">🚗 Cómo llegar</a></div></div>'}
+ var G=GPS.dia&&GPS.dia[c.id+'|'+dia];if(G&&G.est==='ok'&&G.pts.length){var An=gpsAnaliza(G.pts),VE=An.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000}),k=0;
+  /* b) cada parada se puede tocar: centra el mapa; con botón "Ir" */
+  h=h.replace(/<div class="gpsst( raro)?">/g,function(m,raro){var e=VE[k++];if(!e)return m;return '<div class="gpsst'+(raro||'')+'" data-act="gpsir" data-map="'+mid+'" data-lat="'+e.lat+'" data-lng="'+e.lng+'" role="button" tabindex="0">'});
+  h=h.replace(/(<div class="gpsst[^>]*data-lat="(-?[\d.]+)" data-lng="(-?[\d.]+)"[^>]*>)([\s\S]*?)(<\/div>)/g,function(m,a,lat,lng,body,cierra){return a+body+(/>Ir</.test(body)?'':' <a class="link" href="'+irLink(lat,lng)+'" target="_blank" rel="noopener">Ir</a>')+cierra});
+  /* c) puntos por hora: dónde estuvo a tal hora */
+  var H={};G.pts.forEach(function(p){if(p.lat==null)return;var d=new Date(+p.t),hh=d.getHours(),mm=('0'+d.getMinutes()).slice(-2),key=hh+':'+mm;(H[hh]=H[hh]||{});if(!H[hh][key])H[hh][key]=p});
+  var hs=Object.keys(H).map(Number).sort(function(a,b){return a-b});
+  if(hs.length)extra+='<div style="margin-top:10px"><b>¿Dónde estuvo a tal hora?</b><div class="lbl">Toca una hora y luego el minuto: el mapa se va a ese punto.</div>'+hs.map(function(hh){var M=H[hh],ks=Object.keys(M);return '<details class="gpsh"><summary><b>'+('0'+hh).slice(-2)+':00 a '+('0'+hh).slice(-2)+':59</b><span class="lbl">'+ks.length+' puntos</span></summary><div class="chips" role="group">'
+   +ks.map(function(kk){var p=M[kk];return '<button data-act="gpsir" data-map="'+mid+'" data-lat="'+p.lat+'" data-lng="'+p.lng+'">'+('0'+kk).slice(-5)+'</button>'}).join('')+'</div></details>'}).join('')+'</div>'}
+ /* 12 · estimado contra real */
+ extra+=planVsRealHTML(c.id,dia,G);
+ if(!extra)return h;var i=h.indexOf('<div class="mapviv"');if(i<0)i=h.lastIndexOf('</div>');var ah=extra.split('<div style="margin-top:10px"><b>¿Dónde')[0],resto=extra.slice(ah.length);
+ h=h.slice(0,i)+ah+h.slice(i);var j=h.lastIndexOf('</div>');return h.slice(0,j)+resto+h.slice(j)}catch(e){console.error(e);return h}};
+
+/* ub68HTML · de l71 */
+var _ubH71=ub68HTML;ub68HTML=function(){var h=_ubH71.apply(this,arguments);if(!h)return h;
+ return h.replace('<small>Como en Uber: escribe el nombre o la dirección</small>','<small>Escribe el nombre del lugar o la dirección</small>')
+  .replace('<b>🔗 Pegar el link de Google Maps</b>','<b>🔗 Pegar el link de Google Maps o las coordenadas</b><div class="lbl">Sirve el link que sale en Google Maps con "Compartir", o los números como 32.5149, -117.0382</div>')
+  .replace('>Usar el link</button>','>Usar el link o las coordenadas</button>')};
+
+/* ub68Obj · de l72 */
+var _ubO72=ub68Obj;ub68Obj=function(x){if(x&&x.t==='wz')return S.wz&&S.wz.d||null;return _ubO72.apply(this,arguments)};
+
+/* ub68Nom · de l72 */
+var _ubN72=ub68Nom;ub68Nom=function(x){if(x&&x.t==='wz'){var d=S.wz&&S.wz.d||{};return String(d.n||'').trim()||'el cliente'}return _ubN72.apply(this,arguments)};
+
+/* ubCliFalta · de l72 */
+var _ucf72=ubCliFalta;ubCliFalta=function(c){var f=_ucf72.apply(this,arguments);if(!c)return f;return f.filter(function(x){if(x==='teléfono'&&c.telNo)return false;if(x==='foto de la fachada'&&c.fotoSkip===iso(TODAY))return false;return true})};
+
+/* cfUb70 · de l78 */
+var _cf78=cfUb70;cfUb70=function(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;if(c.lat!=null&&!ubAprox78(c))return;_cf78.apply(this,arguments);
+ var d=document.querySelector('[data-x="cfub70"]');if(d&&c.lat!=null){var l=d.querySelector('.lbl');if(l)l.textContent='La que tiene es aproximada (de un link o la búsqueda). Si estás en el negocio, confírmala aquí.'}};
+
+/* ub68Guarda · de l78 */
+var _ubG78=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var r=_ubG78.apply(this,arguments);try{if(x&&x.t==='cli'&&o){o.locConf=null}
+ if(x&&x.t==='bod'&&o){if(x.dir78)o.dir=x.dir78;if(String(x.nm78||'').trim())o.n=String(x.nm78).trim();else if(!o.n||o.n==='Bodega'||o.n==='Bodega Banderilla')o.n=bodNomSug78(x.dir78)||o.n||'Bodega';o.dem78=1}
+ if(x&&x.t==='cli'&&o&&x.dir78&&!String(o.a||'').trim())o.a=x.dir78}catch(e){}return r};
+
+/* ub68HTML · de l78 */
+var _ubH78=ub68HTML;ub68HTML=function(){var h=_ubH78.apply(this,arguments),x=S.ub68;if(!h||!x||x.p!==2||x.t!=='bod')return h;var o=ub68Obj(x)||{};if(x.nm78==null)x.nm78=o.n&&o.n!=='Bodega'&&o.n!=='Bodega Banderilla'?o.n:'';if(x.dir78==null)x.dir78=o.dem78?(o.dir||''):'';
+ var f='<div class="card" style="margin-top:10px"><div class="field"><label for="ub78n">Nombre de la bodega</label><input id="ub78n" type="text" data-bind="ub68.nm78" value="'+esc(x.nm78)+'" placeholder="Ej. Bodega Centro" style="width:100%;text-align:left"></div><div class="field"><label for="ub78d">Dirección</label><input id="ub78d" type="text" data-bind="ub68.dir78" value="'+esc(x.dir78)+'" placeholder="Calle, colonia y ciudad" style="width:100%;text-align:left"></div></div>';
+ var i=h.indexOf('<button class="btn big" data-act="ub68si"');return i<0?h:h.slice(0,i)+f+h.slice(i)};
+
+/* ub68HTML · de l80 */
+var _ubH80=ub68HTML;ub68HTML=function(){var x=S.ub68;if(x&&x.p===2&&x.t==='bod'&&x.gps80&&!x.busca80)setTimeout(function(){bodDirGps80(x)},0);var h=_ubH80.apply(this,arguments);if(!h||!x||x.p!==2||x.t!=='bod')return h;
+ if(x.busca80===1)h=h.replace('<label for="ub78n">Nombre de la bodega</label>','<label for="ub78n">Nombre de la bodega <span class="lbl">(buscando la colonia…)</span></label>');return h};
+
+/* ub68Guarda · de l89 */
+var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x)}catch(e){}var a0=o?o.a:null,lat0=o?o.lat:null;var r=_u68G89.apply(this,arguments);
+ try{if(x&&x.t==='cli'&&o){if(coords89(o.a)&&!coords89(a0))o.a=a0||'';var k=coords89(o.a);if(k&&!ubTiene(o)){o.lat=k.lat;o.lng=k.lng;o.a=''}if(ubTiene(o)&&(o.lat!==lat0)){ubLog89(o,'ventana de ubicación');o.locConf=o.locConf||iso(TODAY)}}}catch(e){}return r};
+
+/* ubGuardar · de l89 */
+var _ubG89=ubGuardar;ubGuardar=function(){var u=S.ub;try{if(u&&u.k==='cli'&&u.lat!=null&&u.lng!=null&&u.est!=='ok'&&u.modo!=='foto'){var c0=cl(u.id);if(c0&&!ubTiene(c0))u.est='ok'}}catch(e){}var c=u&&u.k==='cli'?cl(u.id):null,lat0=c?c.lat:null;var r=_ubG89.apply(this,arguments);try{if(c&&ubTiene(c)&&c.lat!==lat0){ubLog89(c,'Guardar ubicación aquí');c.locConf=c.locConf||iso(TODAY)}}catch(e){}return r};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

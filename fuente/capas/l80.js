@@ -51,8 +51,7 @@ setInterval(function(){try{pend80()}catch(e){}},3000);
 function bodDirGps80(x){var n=natPl&&natPl();if(!n||!n.lugaresGoogle||x.lat==null)return;x.busca80=1;var cuerpo={locationRestriction:{circle:{center:{latitude:+x.lat,longitude:+x.lng},radius:60}},maxResultCount:1,languageCode:'es',regionCode:'MX'};
  n.lugaresGoogle({cuerpo:JSON.stringify(cuerpo),modo:'cerca'}).then(function(r){var j={};try{j=JSON.parse(r.json||'{}')}catch(e){}var p=(j.places||[])[0];x.busca80=2;if(p&&p.formattedAddress){x.dir78=x.dir78||p.formattedAddress;try{if(S.cfg&&!String(S.cfg.dir||'').trim())S.cfg.dir=p.formattedAddress}catch(e){}if(!String(x.nm78||'').trim())x.nm78=bodNomSug78(p.formattedAddress)}render()},function(){x.busca80=2;render()})}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68gps"]');if(!b||!S.ub68)return;var x=S.ub68;x.gps80=1;x.busca80=0},true);
-var _ubH80=ub68HTML;ub68HTML=function(){var x=S.ub68;if(x&&x.p===2&&x.t==='bod'&&x.gps80&&!x.busca80)setTimeout(function(){bodDirGps80(x)},0);var h=_ubH80.apply(this,arguments);if(!h||!x||x.p!==2||x.t!=='bod')return h;
- if(x.busca80===1)h=h.replace('<label for="ub78n">Nombre de la bodega</label>','<label for="ub78n">Nombre de la bodega <span class="lbl">(buscando la colonia…)</span></label>');return h};
+/* ub68HTML: pasó a tema-ubica.js */
 /* sin nombre no se guarda (si no, se quedaba el viejo) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='bod')return;var x=S.ub68,nm=String(x.nm78||'').trim();if(!nm&&!bodNomSug78(x.dir78||'')){e.preventDefault();e.stopImmediatePropagation();toast('Escribe el nombre de la bodega (ej. "Bodega Otay")');var i=document.getElementById('ub78n');if(i){try{marcaFalta(i)}catch(er){}try{i.focus()}catch(er){}}}},true);
 /* el nombre de la demo también se limpia después de bajar la nube (y se sube corregido) */

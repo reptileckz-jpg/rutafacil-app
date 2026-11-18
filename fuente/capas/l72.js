@@ -24,8 +24,8 @@ function stock72(){if(S.role!=='rep'||S.salida.ok)return;var m=document.querySel
  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:700;margin-top:8px">Todavía no hay con qué calcularlo: no tienes pedidos ni días anteriores.</div><div class="lbl" style="margin-top:4px">Carga lo que te diga el administrador. Al iniciar el día capturas lo que de verdad llevas.</div>'}
 
 /* ---------- 72 · cliente nuevo del chofer: un solo alta por pasos ---------- */
-var _ubO72=ub68Obj;ub68Obj=function(x){if(x&&x.t==='wz')return S.wz&&S.wz.d||null;return _ubO72.apply(this,arguments)};
-var _ubN72=ub68Nom;ub68Nom=function(x){if(x&&x.t==='wz'){var d=S.wz&&S.wz.d||{};return String(d.n||'').trim()||'el cliente'}return _ubN72.apply(this,arguments)};
+/* ub68Obj: pasó a tema-ubica.js */
+/* ub68Nom: pasó a tema-ubica.js */
 function ubWz72(d){var ok=d.lat!=null&&d.lat!=='';return '<div class="card" style="border:2px solid '+(ok?'var(--accent)':'var(--line)')+'"><b style="font-size:18px">'+(ok?'✓ Ubicación guardada':'Todavía sin ubicación')+'</b>'+(ok?'<div class="lbl">'+d.lat+', '+d.lng+'</div>':'<div class="lbl">Si estás en el negocio, usa "Estoy aquí".</div>')
  +'<button class="btn" style="margin-top:10px;min-height:58px;width:100%" data-act="wz72gps">📍 Estoy aquí (GPS)</button><button class="btn sec" style="margin-top:8px;min-height:54px;width:100%" data-act="wz72ub">🔎 Buscar el lugar o pegar el link</button></div>'}
 var HORAS72=function(){var o=[];for(var h=5;h<=22;h++){o.push([String(h).padStart(2,'0')+':00',(h%12||12)+':00 '+(h<12?'am':'pm')])}return o};
@@ -54,7 +54,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){S.ub68={t:'wz',id:'wz',p:2,lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6)};render()},function(){toast('No se pudo leer el GPS. Prende la ubicación o busca el lugar.')},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){toast('No se pudo leer el GPS.')}},true);
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.wz==='tel'&&S.wz)S.wz.d.telNo=false},true);
 /* lo que ya se pidió en el alta no se vuelve a pedir en la entrega */
-var _ucf72=ubCliFalta;ubCliFalta=function(c){var f=_ucf72.apply(this,arguments);if(!c)return f;return f.filter(function(x){if(x==='teléfono'&&c.telNo)return false;if(x==='foto de la fachada'&&c.fotoSkip===iso(TODAY))return false;return true})};
+/* ubCliFalta: pasó a tema-ubica.js */
 
 /* ---------- 73 · sin "cuántas vienen rotas" ---------- */
 function rotas72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m)return;Array.prototype.forEach.call(m.querySelectorAll('label,span,div'),function(el){if(el.children.length>3)return;if(/^De esas, cuántas vienen rotas/.test((el.textContent||'').trim())){var f=el.closest('.field')||el.parentElement;if(f&&f!==m)f.remove()}});if(S.d&&num(S.d.Vr))S.d.Vr=0}

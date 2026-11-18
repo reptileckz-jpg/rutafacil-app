@@ -49,8 +49,7 @@ function gmRevisa(){if(!window.GMAPA)return;
  Array.prototype.forEach.call(document.querySelectorAll('[data-vivo]'),function(el){if(el._gmFail)return;var r=el.getBoundingClientRect();if(r.width<10||r.height<10)return;
   if(!el._gm){gmMonta(el);return}var x=el._gm,dd=document.querySelector('[data-mapdata="'+el.getAttribute('data-vivo')+'"]'),j=dd&&dd.getAttribute('data-j');if(j&&j!==x.j){x.j=j;try{gmDatos(x,JSON.parse(j))}catch(e){}}});gmPinta()}
 /* el montaje de Leaflet se salta los mapas que ya son de Google */
-var _mM57=mapaMonta;mapaMonta=function(){var L=gmInHay()?Array.prototype.filter.call(document.querySelectorAll('[data-vivo]'),function(el){return !el._gmFail}):[];
- L.forEach(function(el){el.setAttribute('data-gvivo',el.getAttribute('data-vivo'));el.removeAttribute('data-vivo')});try{return _mM57.apply(this,arguments)}finally{L.forEach(function(el){el.setAttribute('data-vivo',el.getAttribute('data-gvivo'));el.removeAttribute('data-gvivo')})}};
+/* mapaMonta: pasó a tema-ubica.js */
 var _rd57=render;render=function(){var r=_rd57.apply(this,arguments);try{gmRevisa()}catch(e){console.error(e)}return r};
 setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */

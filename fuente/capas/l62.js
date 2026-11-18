@@ -18,24 +18,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 function gpsAhora(ch){var best=null;try{Object.keys(GPS.devs||{}).forEach(function(dev){var d=GPS.devs[dev];if(+d.ch!==+ch)return;var u=gpsUlt(d);if(u.lat==null)return;if(!best||num(u.t)>num(best.u.t))best={u:u,d:d}})}catch(e){}return best}
 function haceTxt62(t){var m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?'ahorita':(m<60?'hace '+m+' min':'hace '+minTxt(m*60000))}
 function irLink(lat,lng){return 'https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng}
-var _gpsR62=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR62.apply(this,arguments);try{if(!h||!esCh(c)||esAdm(c))return h;var dia=(S.gpsVer||{})[c.id]||iso(TODAY),mid='gps'+c.id+dia.replace(/-/g,''),extra='';
- /* a) dónde está ahora */
- var A0=gpsAhora(c.id);if(A0&&dia===iso(TODAY)){var u=A0.u,bat=A0.d.bat!=null&&num(A0.d.bat)>=0?' · batería '+A0.d.bat+'%':'';
-  extra+='<div class="gpsahora"><b>📍 Dónde está ahora</b><div class="lbl">Última ubicación: '+hmDe(u.t)+' ('+haceTxt62(num(u.t))+')'+bat+'</div><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'
-   +'<button class="btn sm sec" style="width:auto" data-act="gpsir" data-map="'+mid+'" data-lat="'+u.lat+'" data-lng="'+u.lng+'">Ver en el mapa</button><a class="btn sm" style="width:auto;display:inline-flex;align-items:center" href="'+irLink(u.lat,u.lng)+'" target="_blank" rel="noopener">🚗 Cómo llegar</a></div></div>'}
- var G=GPS.dia&&GPS.dia[c.id+'|'+dia];if(G&&G.est==='ok'&&G.pts.length){var An=gpsAnaliza(G.pts),VE=An.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000}),k=0;
-  /* b) cada parada se puede tocar: centra el mapa; con botón "Ir" */
-  h=h.replace(/<div class="gpsst( raro)?">/g,function(m,raro){var e=VE[k++];if(!e)return m;return '<div class="gpsst'+(raro||'')+'" data-act="gpsir" data-map="'+mid+'" data-lat="'+e.lat+'" data-lng="'+e.lng+'" role="button" tabindex="0">'});
-  h=h.replace(/(<div class="gpsst[^>]*data-lat="(-?[\d.]+)" data-lng="(-?[\d.]+)"[^>]*>)([\s\S]*?)(<\/div>)/g,function(m,a,lat,lng,body,cierra){return a+body+(/>Ir</.test(body)?'':' <a class="link" href="'+irLink(lat,lng)+'" target="_blank" rel="noopener">Ir</a>')+cierra});
-  /* c) puntos por hora: dónde estuvo a tal hora */
-  var H={};G.pts.forEach(function(p){if(p.lat==null)return;var d=new Date(+p.t),hh=d.getHours(),mm=('0'+d.getMinutes()).slice(-2),key=hh+':'+mm;(H[hh]=H[hh]||{});if(!H[hh][key])H[hh][key]=p});
-  var hs=Object.keys(H).map(Number).sort(function(a,b){return a-b});
-  if(hs.length)extra+='<div style="margin-top:10px"><b>¿Dónde estuvo a tal hora?</b><div class="lbl">Toca una hora y luego el minuto: el mapa se va a ese punto.</div>'+hs.map(function(hh){var M=H[hh],ks=Object.keys(M);return '<details class="gpsh"><summary><b>'+('0'+hh).slice(-2)+':00 a '+('0'+hh).slice(-2)+':59</b><span class="lbl">'+ks.length+' puntos</span></summary><div class="chips" role="group">'
-   +ks.map(function(kk){var p=M[kk];return '<button data-act="gpsir" data-map="'+mid+'" data-lat="'+p.lat+'" data-lng="'+p.lng+'">'+('0'+kk).slice(-5)+'</button>'}).join('')+'</div></details>'}).join('')+'</div>'}
- /* 12 · estimado contra real */
- extra+=planVsRealHTML(c.id,dia,G);
- if(!extra)return h;var i=h.indexOf('<div class="mapviv"');if(i<0)i=h.lastIndexOf('</div>');var ah=extra.split('<div style="margin-top:10px"><b>¿Dónde')[0],resto=extra.slice(ah.length);
- h=h.slice(0,i)+ah+h.slice(i);var j=h.lastIndexOf('</div>');return h.slice(0,j)+resto+h.slice(j)}catch(e){console.error(e);return h}};
+/* gpsRutaHTML: pasó a tema-ubica.js */
 /* 10 b · el mapa del recorrido se acerca a los puntos del día (no mete la bodega si está lejos) */
 /* mapaVivoHTML: pasó a tema-inicio.js */
 

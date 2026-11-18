@@ -32,21 +32,10 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado');render()},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act||'';if(a.indexOf('telconfya:')!==0)return;e.stopImmediatePropagation();var c=cl(+a.split(':')[1]);S.modal=null;if(c&&c.tel){c.telConf={tel:c.tel,t:Date.now(),q:quien()};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Confirmó el teléfono de '+c.n+': '+c.tel});toast('Número confirmado')}render()},true);
 /* ---------- el chofer agrega datos, no los cambia ---------- */
-var _ubH27=ubHTML;ubHTML=function(){var u=S.ub;if(!u)return '';
- if(u.modo==='act'){var nm=esc(ubNom());return '<div id="ubov" role="dialog" aria-label="Actualizar ubicación"><div class="ubw"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Actualiza la ubicación de '+nm+'</b><div class="lbl">La que hay es aproximada. Ya estás con '+(u.k==='bas'?'la báscula':'él')+': la app guarda la exacta sola.</div></span></div>'
-  +(u.est==='buscando'?'<div class="card" style="padding:14px;margin-top:12px;font-size:17px">Buscando tu ubicación…</div>':(u.est==='err'?'<div class="neg" style="margin-top:10px">'+esc(u.err||'')+'</div>':'')+'<button class="btn ubgps" style="margin-top:14px" data-act="ubgps">📍 Estoy con '+nm+': actualizar ubicación</button>'+(u.est==='err'&&u.fallos>=2?'<button class="btn sm sec" style="margin-top:8px" data-act="ubskip">Seguir sin actualizar (le aviso al administrador)</button>':''))
-  +'</div></div>'}
- var h=_ubH27();if(u.k==='cli'&&S.role!=='admin'){var c=cl(u.id);if(c){
-  if(String(c.tel||'').trim())h=h.replace(/<input id="ubtel"[^>]*>/,'<b style="font-size:16px">'+esc(c.tel)+'</b>');
-  if(String(c.recibe||'').trim())h=h.replace(/<input id="ubrec"[^>]*>/,'<b style="font-size:16px">'+esc(c.recibe)+'</b>')}}
- return h};
-var _ubG27=ubGuardar;ubGuardar=function(){var u=S.ub;if(!u)return;var c=u.k==='cli'?cl(u.id):null,telAntes=c?String(c.tel||'').trim():'';
- if(c&&S.role!=='admin'){if(telAntes)u.tel=c.tel;if(String(c.recibe||'').trim())u.recibe=c.recibe;if(ubTiene(c)&&u.modo!=='foto'){u.est=u.est==='ok'?'':u.est}}
- var nm=ubNom(),act=u.modo==='act',r=_ubG27.apply(this,arguments);
- if(c&&!telAntes&&String(c.tel||'').trim()&&S.role!=='admin'){c.telPor=+S.chofHoy;c.telConf=null;if(!c.rapida)S.avPrecio.push(chofN(+S.chofHoy)+' agregó el teléfono de '+c.n+': '+c.tel+'. Confírmalo en su ficha.')}
- if(act&&r!==false)toast('Ubicación de '+nm+' actualizada');return r};
+/* ubHTML: pasó a tema-ubica.js */
+/* ubGuardar: pasó a tema-ubica.js */
 /* básculas con ubicación aproximada también se actualizan */
-var _ubN27=ubDeNodo;ubDeNodo=function(v,a){var r=_ubN27.apply(this,arguments);if(r&&r.k==='bas'&&r.obj&&ubTiene(r.obj)&&r.obj.ubAprox){r.need=true;r.aprox=true;r.noUb=false}return r};
+/* ubDeNodo: pasó a tema-ubica.js */
 /* proveedor nuevo del viaje: su ubicación aproximada */
 var _r27b=render;render=function(){try{(S.vws||[]).forEach(function(v){(v.par||[]).forEach(function(p){if(p.nub&&p.prov&&p.prov!=='__nuevo'){var c=ubParse(p.nub),d=provD(p.prov);if(c&&!ubTiene(d)){d.lat=c.lat;d.lng=c.lng;d.ubAprox=true}p.nub=''}})});
  (S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&c.tel&&c.telPor==null)c.telPor=c.porCh})}catch(e){}return _r27b.apply(this,arguments)};

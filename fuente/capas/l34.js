@@ -24,9 +24,7 @@ function mapaMonta(){if(!mapaHay())return;Array.prototype.forEach.call(document.
  if(!el._fit||d.refit){if(B.length>1)el._m.fitBounds(B,{padding:[28,28],maxZoom:15});else if(B.length)el._m.setView(B[0],14);el._fit=true}setTimeout(function(){try{el._m.invalidateSize()}catch(e){}},60)})}
 var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta()}catch(e){console.error(e)}return r};
 /* el dibujo de siempre → mapa real */
-var _mS34=mapaSVG;mapaSVG=function(pts,line,marks,lbl){if(!mapaHay())return _mS34.apply(this,arguments);var id='m'+nbHash(String(lbl||'').replace(/\d+/g,''));
- var mk=(marks||[]).map(function(o){return {lat:o.lat,lng:o.lng,t:o.t,yo:o.t==='Tú'}});if(lbl==='Mapa de choferes y clientes')mk=gpsMarcas();
- return mapaVivoHTML(id,{pts:pts,line:line,marks:mk},lbl==='Mapa de choferes y clientes'?260:220)};
+/* mapaSVG: pasó a tema-ubica.js */
 /* vwMapa: pasó a tema-viaje.js */
 /* ---------- ubicación real ---------- */
 function gpsReciente(id,min){var g=nbRGet(id,'gps');if(!g||g.lat==null)return null;return Date.now()-num(g.t)<(min||20)*60000?g:null}
@@ -35,7 +33,7 @@ function gpsMarcas(){var L=[];nbRutaIds().forEach(function(id,i){var g=gpsRecien
 /* el viaje usa la ubicación real del chofer si es reciente */
 /* vwPos: pasó a tema-viaje.js */
 /* el admin: en "Mapa en vivo" cada chofer dice dónde está */
-var _mV34=mapaVivo;mapaVivo=function(){var h=_mV34.apply(this,arguments);try{choferesL().forEach(function(ch){var g=gpsReciente(ch.id,30);if(!g)return;var nm=esc(ch.n);h=h.replace(new RegExp('(<i class="dot"[^>]*></i>'+nm.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</span><span class="lbl" style="text-align:right">)([^<]*)'),function(m,a,b){return a+'📍 '+haceTxt(g.t)+' · '+b})})}catch(e){}return h.replace('En el APK la posición se actualiza en vivo con el GPS del teléfono.','La ubicación de cada chofer se actualiza sola cada 2 minutos mientras trabaja.')};
+/* mapaVivo: pasó a tema-ubica.js */
 /* el celular del chofer manda su ubicación */
 var _gpsW=null,_gpsU=0,_gpsL=null;
 function gpsDebe(){if(!REAL||S.role!=='rep'||!navigator.geolocation)return false;var ruta=S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent);var viaje=(S.vws||[]).some(function(x){return x.quien===+S.chofHoy&&x.started&&['done','fin','gracias','cv'].indexOf(x.k)<0});return ruta||viaje}

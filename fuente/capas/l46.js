@@ -58,4 +58,4 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
 /* el viaje de carga y la pantalla de ubicación también van en tarjetas */
 /* vwBody: pasó a tema-viaje.js */
 /* vwSideHTML: pasó a tema-viaje.js */
-if(typeof ubHTML==='function'){var _ubH46=ubHTML;ubHTML=function(){var h=_ubH46.apply(this,arguments);return h?tarjetear(h,'#ubov > div, #ubov .w, #ubov .fiw'):h}}
+/* ubHTML: pasó a tema-ubica.js */

@@ -104,10 +104,7 @@ ub68Busca=function(){var x=S.ub68,n=natPl&&natPl();if(!String(x.q||'').trim()){t
   if(r.status>=400){x.err=placesMsg71(r,j);try{apErr('places',x.err,'ubicaciones')}catch(er){}render();return}
   x.res=(j.places||[]).filter(function(p){return p.location}).map(function(p){return {n:(p.displayName&&p.displayName.text)||'Lugar',d:p.formattedAddress||'',lat:p.location.latitude,lng:p.location.longitude}});if(!x.res.length)x.err='No encontré ese lugar. Prueba con otras palabras o con la dirección.';render()})
  .catch(function(er){x.busy=false;x.err='Sin conexión con Google. Revisa el internet.';render()})};
-var _ubH71=ub68HTML;ub68HTML=function(){var h=_ubH71.apply(this,arguments);if(!h)return h;
- return h.replace('<small>Como en Uber: escribe el nombre o la dirección</small>','<small>Escribe el nombre del lugar o la dirección</small>')
-  .replace('<b>🔗 Pegar el link de Google Maps</b>','<b>🔗 Pegar el link de Google Maps o las coordenadas</b><div class="lbl">Sirve el link que sale en Google Maps con "Compartir", o los números como 32.5149, -117.0382</div>')
-  .replace('>Usar el link</button>','>Usar el link o las coordenadas</button>')};
+/* ub68HTML: pasó a tema-ubica.js */
 /* "Usar el link": si el link no trae el punto, se busca el lugar por su nombre */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68link"]');if(!b||!S.ub68)return;e.stopImmediatePropagation();e.preventDefault();var x=S.ub68,lk=String(x.link||'').trim();
  if(!lk){x.err='Pega el link de Google Maps o las coordenadas.';render();return}

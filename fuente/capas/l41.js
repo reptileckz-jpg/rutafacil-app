@@ -48,15 +48,8 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ajHTML: pasó a tema-ajustes.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="comcobra"]');if(!b)return;e.stopImmediatePropagation();S.cfg.comCobra=b.dataset.v==='1';render()},true);
 /* ---------- completar datos del cliente en cualquier momento (y su horario) ---------- */
-var _ucf41=ubCliFalta;ubCliFalta=function(c){var f=_ucf41.apply(this,arguments);if(c&&!c.rapida&&!c.hCi)f.push('horario');return f};
-var _ubH41=ubHTML;ubHTML=function(){var h=_ubH41.apply(this,arguments),u=S.ub;if(!h||!u||u.k!=='cli'||u.modo!=='datos')return h;var c=cl(u.id);if(!c)return h;
- var hor=c.hCi?'<div class="row"><span>Horario</span><b>'+esc(horRango117(c))+'</b></div>':'<div class="field"><label for="ubab">Abre a las</label><input id="ubab" type="time" data-bind="ub.hAb" value="'+esc(u.hAb||'')+'"></div><div class="field"><label for="ubci">Cierra a las</label><input id="ubci" type="time" data-bind="ub.hCi" value="'+esc(u.hCi||'')+'"></div>';
- var D=['D','L','M','M','J','V','S'],da=c.diasAbre||u.diasAbre||[];var dias=c.diasAbre?'<div class="lbl">Abre: '+c.diasAbre.map(function(i){return ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][i]}).join(', ')+'</div>':'<div class="lbl" style="margin-top:6px">¿Qué días abre?</div><div class="chips" role="group" aria-label="Días que abre">'+D.map(function(x,i){return '<button data-act="ubdia" data-v="'+i+'" aria-pressed="'+(da.indexOf(i)>-1)+'">'+x+'</button>'}).join('')+'</div>';
- var card='<div class="card" style="padding:8px 12px;margin-top:10px"><b>Horario del negocio</b>'+hor+dias+'</div>';
- /* lo que ya tiene no se cambia: el teléfono y quién recibe se enseñan fijos */
- if(String(c.tel||'').trim())h=h.replace(/<div class="field"><label for="ubtel">Teléfono<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Teléfono</span><b>'+esc(c.tel)+'</b></div>');
- if(String(c.recibe||'').trim())h=h.replace(/<div class="field"><label for="ubrec">¿Quién recibe\?<\/label>[\s\S]*?<\/div>/,'<div class="row"><span>Quién recibe</span><b>'+esc(c.recibe)+'</b></div>');
- var i=h.indexOf('<button class="btn" style="margin-top:14px;min-height:56px" data-act="ubsave"');return i<0?h:h.slice(0,i)+card+h.slice(i)};
+/* ubCliFalta: pasó a tema-ubica.js */
+/* ubHTML: pasó a tema-ubica.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ubdia"]');if(!b||!S.ub)return;e.stopImmediatePropagation();var v=+b.dataset.v,L=S.ub.diasAbre=S.ub.diasAbre||[];var i=L.indexOf(v);if(i>-1)L.splice(i,1);else L.push(v);L.sort();render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ubsave"]');if(!b||!S.ub||S.ub.k!=='cli'||S.ub.modo!=='datos')return;var u=S.ub,c=cl(u.id);if(!c)return;
  if(!c.hCi&&(u.hAb||u.hCi)){if(!u.hAb||!u.hCi){e.stopImmediatePropagation();toast('Pon la hora en que abre y la hora en que cierra');return}c.hAb=u.hAb;c.hCi=u.hCi}

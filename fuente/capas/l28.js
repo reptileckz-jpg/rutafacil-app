@@ -33,7 +33,7 @@ function nbSubirFoto(id,d,perm){NB.subidas[id]=1;nbGuardaSubidas();var o={d:d,t:
 function nbGuardaSubidas(){try{localStorage.setItem('nbSub',JSON.stringify(Object.keys(NB.subidas).slice(-3000)))}catch(e){}}
 try{(JSON.parse(localStorage.getItem('nbSub')||'[]')||[]).forEach(function(i){NB.subidas[i]=1})}catch(e){}
 function nbTraerFotos(){var L=Object.keys(NB.faltan);if(!L.length||!NB.ad)return;L.slice(0,20).forEach(function(id){delete NB.faltan[id];if(NB._trayendo&&NB._trayendo[id])return;NB._trayendo=NB._trayendo||{};NB._trayendo[id]=1;
- NB.ad.get(nbP('f/'+id)).then(function(d){delete NB._trayendo[id];var url=d&&d.d;if(!url){var t=parseInt(id.split('-')[0],36);if(t&&Date.now()-t>29*864e5)url=FOTO_BORRADA;else return}NB.fotos[id]=url;nbPonFoto(FOTO_MARCA+id+'⟧',url)}).catch(function(){delete NB._trayendo[id]})})}
+ NB.ad.get(nbP('f/'+id)).then(function(d){delete NB._trayendo[id];var url=d&&d.d;if(!url){var t=parseInt(id.split('-')[0],36);if(t&&Date.now()-t>59*864e5)url=FOTO_BORRADA;else return}NB.fotos[id]=url;nbPonFoto(FOTO_MARCA+id+'⟧',url)}).catch(function(){delete NB._trayendo[id]})})}
 function nbPonFoto(m,url){var cambio=false;(function rec(o){if(!o||typeof o!=='object')return;for(var k in o){var x=o[k];if(x===m){o[k]=url;cambio=true}else if(x&&typeof x==='object')rec(x)}})(S);if(cambio)nbRender()}
 /* ---------- unidades ---------- */
 function nbRutaIds(){var L=[];(S.choferes||[]).forEach(function(c){if(c&&!c.baja&&esCh(c))L.push(+c.id)});Object.keys(S.chSt||{}).forEach(function(i){if(L.indexOf(+i)<0)L.push(+i)});if(S.chofHoy!=null&&L.indexOf(+S.chofHoy)<0)L.push(+S.chofHoy);return L}
@@ -124,7 +124,7 @@ function rutasOtras(){var L=[];Object.keys(S.chSt||{}).forEach(function(id){if(+
 var _cd28=cajasDonde;cajasDonde=function(){var w=_cd28.apply(this,arguments);try{rutasOtras().forEach(function(o){var cam=num(o.invR),v=0,ll=0,vv=0,c=o.cierre;if(c&&!c.sent)v=sum(o.log||[],function(l){return num(l.V)-num(l.Vr)});
  if(c&&c.sent&&c.res&&!o.recep&&c.porContar){ll=Math.max(0,num(c.res.reg));vv=Math.max(0,num(c.res.V))}w.cam+=cam+ll;w.camV=(w.camV||0)+v+vv;w.tot+=cam+v+ll+vv})}catch(e){}return w};
 var _ce28=cajasEsperadas;cajasEsperadas=function(){var x=_ce28.apply(this,arguments);try{rutasOtras().forEach(function(o){if(o.cierre&&!o.cierre.sent)x-=sum(o.log||[],function(l){return num(l.Vr)})})}catch(e){}return x};
-/* ---------- fotos de evidencia: se borran de la nube a los 30 días (lo hace el celular del admin, una vez al día) ---------- */
+/* ---------- fotos de evidencia: se borran de la nube a los 60 días (antes 30; lo hace el celular del admin, una vez al día) ---------- */
 function nbLimpiaFotos(){if(!NB.on||!NB.listo||!NB.perfil||NB.perfil.rol!=='admin'||!NB.ad.viejas)return;var hoy=iso(TODAY);try{if(localStorage.getItem('nbLimp')===hoy)return;localStorage.setItem('nbLimp',hoy)}catch(e){}
- NB.ad.viejas(nbP('f'),'pe',Date.now()-30*864e5,300).then(function(ids){ids.forEach(function(id){NB.ad.borrar(nbP('f/'+id)).catch(function(){})});if(ids.length)console.log('nube: '+ids.length+' fotos viejas borradas')},function(e){console.error('nube limpiar',e)})}
+ NB.ad.viejas(nbP('f'),'pe',Date.now()-60*864e5,300)/* 122 · 60 días, igual que el detalle de las rutas (decisión de Ricardo) */.then(function(ids){ids.forEach(function(id){NB.ad.borrar(nbP('f/'+id)).catch(function(){})});if(ids.length)console.log('nube: '+ids.length+' fotos viejas borradas')},function(e){console.error('nube limpiar',e)})}
 setInterval(function(){try{nbLimpiaFotos()}catch(e){}},60000);

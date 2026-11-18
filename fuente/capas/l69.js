@@ -17,7 +17,7 @@ function mgM68(c){return (S.cfg.mgIgual===false&&c&&c.mgM!=null&&c.mgM!=='')?num
 function mgR68(c){return num(c&&c.mg||30)}
 function kmProvs68(P){var km=0;(P||[]).forEach(function(p){var d=null;try{d=provD(p)}catch(e){}km=Math.max(km,num(d&&d.km)||150)});return Math.round(km*2+40*Math.max(0,(P||[]).length-1))}
 /* registro de problemas (lo usa el 56; aquí se anotan solos los errores de la app) */
-function apErr(tipo,txt,donde){try{S.probs=S.probs||[];var k=tipo+'|'+txt;if(S.probs.some(function(p){return p.auto&&p.k===k&&p.f===iso(TODAY)}))return;S.probs.push({id:Date.now()+Math.random().toString(36).slice(2,6),k:k,auto:true,f:iso(TODAY),h:hhmm(),q:(function(){try{return quien()}catch(e){return ''}})(),donde:donde||'',g:'App',txt:txt,v:(typeof PN_VER!=='undefined'?PN_VER:'')});if(S.probs.length>300)S.probs=S.probs.slice(-300)}catch(e){}}
+function apErr(tipo,txt,donde){try{S.probs=S.probs||[];var k=tipo+'|'+txt;if(S.probs.some(function(p){return p.auto&&p.k===k&&p.f===iso(TODAY)&&!p.res}))return;/* 122 · si ya se había marcado resuelto y vuelve a pasar, se anota otra vez */S.probs.push({id:Date.now()+Math.random().toString(36).slice(2,6),k:k,auto:true,f:iso(TODAY),h:hhmm(),q:(function(){try{return quien()}catch(e){return ''}})(),donde:donde||'',g:'App',txt:txt,v:(typeof PN_VER!=='undefined'?PN_VER:'')});if(S.probs.length>300)S.probs=S.probs.slice(-300)}catch(e){}}
 
 /* ---------- 54 · registrar carga: desgaste, sueldo e imprevisto ---------- */
 var _cmN69=cmNuevo;cmNuevo=function(){var r=_cmN69.apply(this,arguments);if(S.cm)S.cm.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',impOn:'',impT:'Ponchadura',impM:''};return r};

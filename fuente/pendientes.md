@@ -2562,4 +2562,10 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
     - Prueba `t122.js` (14 OK): caja idéntica al centavo, Estadísticas, Cuadre del día, mes y año iguales antes y después; si se repite nada se duplica; el chofer nunca borra.
   - **Centavos:** `money()` muestra centavos cuando los hay ($12.50, no $13).
   - **La venta guarda** el nombre del cliente de ese momento (`cn`) y su id único (`id`). Lo revisa `t115`.
+- Antes de armar la 9.9 (Ricardo: "¿dudas, sugerencias, ideas?"):
+  - El desgaste a $0.70 solo cambia los vehículos con el 0.60 de la demo o vacíos; si Ricardo lo puso o la app lo ajustó con gastos reales, se respeta.
+  - **Fotos de evidencia: 60 días** (antes 30), igual que el detalle de las rutas (`l28`, `tema-cuadre`).
+  - **Una vez: "🔎 Cuenta tu efectivo"** en Inicio (arriba, junto al Cuadre), porque "Efectivo en caja" sube al contar lo recibido de días pasados. "Contar ahora" abre "Cierre de caja"; desaparece al registrar el conteo o con "Después no".
+  - **"Problemas reportados":** los automáticos ya arreglados quedan "Resuelto" (permisos, mapa, "CH:", forEach, 'k', 'p', NaN, taras, "viaje a medias", "Faltaba un número"). El de 'R' no, porque no se pudo reproducir. Si uno vuelve a pasar, se anota otra vez el mismo día (`l69 apErr`).
+  - `t122` ahora con 16 OK; `t92` actualizado.
 

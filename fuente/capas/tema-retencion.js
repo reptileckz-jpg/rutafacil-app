@@ -70,3 +70,20 @@ var _cC122=cierresCaja;cierresCaja=function(){return r2(_cC122.apply(this,argume
 /* ---------- 122 · cada venta guarda el nombre del cliente de ese momento y su propio número (registro con id único) ---------- */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guardar"]');if(!b||S.role!=='rep')return;var n0=(S.log||[]).length;
  setTimeout(function(){try{if((S.log||[]).length<=n0)return;var l=S.log[S.log.length-1];if(!l)return;var c=cl(l.c);if(c&&l.cn==null)l.cn=c.n;if(l.id==null)l.id='e'+Date.now().toString(36)+'_'+S.chofHoy+'_'+Math.random().toString(36).slice(2,6)}catch(er){}},0)},true);
+
+/* ---------- 122 · una sola vez: contar el efectivo (con esta versión "Efectivo en caja" cuenta lo recibido de días pasados) ---------- */
+function cuenta122HTML(){if(S.role!=='admin')return '';var o=S._cta122=S._cta122||{};if(o.x)return '';if(!o.ini)o.ini=iso(TODAY);
+ if((S.cajaCierres||[]).some(function(x){return x&&x.f>=o.ini})){o.x='contada';return ''}
+ return '<div class="card" data-x="cta122" style="padding:14px;border:2px solid #D97706"><div style="font-size:18px;font-weight:900">🔎 Cuenta tu efectivo una vez</div>'
+  +'<div style="font-size:15px;margin-top:4px">Con esta versión, "Efectivo en caja" ya cuenta todo lo que recibiste de los cierres (antes se dejaba de contar al otro día). La app dice que debe haber <b>'+money(cajaEsp())+'</b>.</div>'
+  +'<div class="lbl" style="margin-top:4px">Cuenta lo que tienes y regístralo en "Cierre de caja": si no coincide, queda anotada la diferencia.</div>'
+  +'<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" style="min-height:52px;width:auto;padding:0 16px" data-act="cta122">Contar ahora</button><button class="btn sec" style="min-height:52px;width:auto;padding:0 16px" data-act="cta122x">Después no</button></div></div>'}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cta122"],[data-act="cta122x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
+ if(b.dataset.act==='cta122x'){S._cta122=S._cta122||{};S._cta122.x='despues';render();return}
+ S.dOpen.cajadia=true;render();setTimeout(function(){var k=document.querySelector('[data-k="cajadia"]');if(k){k.open=true;k.scrollIntoView({block:'center'})}var i=document.getElementById('cajacnt');if(i)try{i.focus()}catch(er){}},60)},true);
+
+/* ---------- 122 · "Problemas reportados": los automáticos que se arreglaron en la 9.9 quedan como resueltos (si vuelven a pasar, salen otra vez) ---------- */
+var ARREG122=/Missing or insufficient permissions|Map container is already initialized|is not a valid selector|reading 'forEach'|reading 'k'|reading 'p'|Total NaN|Total —|Falta un número en las cuentas|Las taras no cuadran por lugar|viaje a medias quitado|Faltaba un número y se puso en 0/;
+function probs122(){try{if(S.role!=='admin'||S._probs122)return;if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;S._probs122=iso(TODAY);var h=iso(TODAY);
+ (S.probs||[]).forEach(function(p){if(p&&p.auto&&!p.res&&p.f<=h&&ARREG122.test(String(p.txt||'')+' '+String(p.k||''))){p.res=h;p.resNota='Arreglado en la versión 9.9'}})}catch(e){}}
+var _r122p=render;render=function(){probs122();return _r122p.apply(this,arguments)};

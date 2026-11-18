@@ -56,7 +56,7 @@ Revisar y explicar qué pasa en cada caso. Cada caso nuevo lleva su prueba.
 |---|---|
 | Varias vueltas el mismo día | Ninguna pisa a otra. Corte del día = suma de todas (`t120`, `t122nube`) |
 | Sin señal | Se guarda en el celular y se sube completo después. No usar transacciones en ruta |
-| Dos celulares a la vez | Llaves únicas por registro, incrementos, sin documentos que se sobrescriban (`t61`, `t122nube`) |
+| Dos o más celulares a la vez | Llaves únicas por registro, incrementos, sin documentos que se sobrescriban (`t61`, `t122nube`, `t123nube` con 4 celulares). Un celular no sube nada hasta bajar primero lo de la nube |
 | Medianoche / cambio de día | La vuelta abierta se queda en su día. Lo recibido sigue en caja (`t120`) |
 | Reabrir, cancelar, anular | Nada se borra. Lo anulado no suma |
 | Recepción atrasada | Se cuenta una sola vez (`t94nube`) |
@@ -71,7 +71,8 @@ Revisar y explicar qué pasa en cada caso. Cada caso nuevo lleva su prueba.
 - `t118` (sueldos);
 - `t120`, `t120b` (varios cierres; app en blanco sin nada de la demo);
 - `t121` (Cuadre);
-- `t122`, `t122nube` (60 días; cierres con dos celulares).
+- `t122`, `t122nube` (60 días; cierres con dos celulares);
+- `t123nube` (cuatro celulares a la vez: dos administradores y dos choferes).
 
 Sin ningún dato de la demo en la versión real (`t120b` revisa todas las pantallas).
 

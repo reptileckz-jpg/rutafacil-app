@@ -2569,3 +2569,15 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - **"Problemas reportados":** los automáticos ya arreglados quedan "Resuelto" (permisos, mapa, "CH:", forEach, 'k', 'p', NaN, taras, "viaje a medias", "Faltaba un número"). El de 'R' no, porque no se pudo reproducir. Si uno vuelve a pasar, se anota otra vez el mismo día (`l69 apErr`).
   - `t122` ahora con 16 OK; `t92` actualizado.
 
+## 2026-11-18 · Ricardo: "¿También sirve para más de 2 celulares?"
+- Sí. Prueba `t123nube.js` (12 OK) con **4 celulares a la vez**: dos administradores (Ricardo y su papá) y dos choferes (Danu y Rafa).
+  - Los dos choferes le fían al mismo cliente y regresan taras al mismo tiempo: el saldo suma lo de los dos en los 4 celulares (+$800, +6 taras).
+  - Inventario exacto: 63 + 5 + 7 = 75 en los 4.
+  - Cada chofer hace 2 cierres recibidos y deja un 3º abierto: los 4 celulares tienen los 4 cierres completos y los administradores ven los 3 de cada uno.
+  - Los dos administradores guardan un gasto al mismo tiempo: están los dos.
+  - La caja de los dos administradores es igual y exacta.
+  - Los dos administradores hacen la limpieza de 60 días el mismo día: la caja no cambia, un solo arrastre por lista.
+  - Al final, los 4 celulares tienen los mismos números.
+- Nota: la primera versión de la prueba dio el inventario doble. Era la prueba: encendía la nube en cada celular como si ya hubiera bajado, y el chofer subía el inventario de la demo antes de bajar. La app real no sube nada hasta bajar primero (`nbEmpuja` espera `NB.listo`, que pone `nbPrimera` después de aplicar la nube). La prueba ya baja primero, como la app.
+- Límite práctico: la nube recomienda alrededor de 1 escritura por segundo sostenida por documento. Con unos 10 celulares no hay problema; si un día fueran muchos más, se reparten las listas en más documentos (va con la migración a Vite).
+

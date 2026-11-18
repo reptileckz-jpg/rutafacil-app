@@ -12,7 +12,7 @@ await ev(()=>{var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja Cali
 r=await ev(()=>{var f=cl(S.stops[0].c),card=document.querySelector('[data-x="tar72"]');var difA=Math.round(cajasDonde().tot-cajasEsperadas()),efA=cierreRes().efectivo;
  return {card:card&&card.innerText,btn:!!document.querySelector('[data-act="tar108"]'),difA,efA,cred:f.cred,vac:f.vac}});
 const r0dif=r.difA;ok(r.btn&&/Ya pasaron 25 días: cóbrale las taras/.test(r.card),'108 · a los 25 días la entrega dice "Ya pasaron 25 días: cóbrale las taras" con su botón',r.card&&r.card.slice(0,200));
-await p.click('[data-act="tar108"]');await p.waitForTimeout(200);
+await ev(()=>{if(typeof entPon125==='function')entPon125(2);render()});/* 125: las taras van en el paso 3 de la venta */await p.click('[data-act="tar108"]');await p.waitForTimeout(200);
 r=await ev(()=>{var o=document.getElementById('tar108ov');return o&&o.innerText});ok(/¿Cuántas le cobras\?/.test(r)&&/5 × \$/.test(r),'108 · tarjeta de pantalla completa: cuántas le cobras (empieza con todas)',r&&r.slice(0,160));
 await p.click('[data-act="tar108n"][data-d="-1"]');await p.click('[data-act="tar108n"][data-d="-1"]');await p.waitForTimeout(100);
 const pr=await ev(()=>tarPr108());

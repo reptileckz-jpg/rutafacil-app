@@ -2612,3 +2612,14 @@ Decidió: "hacerlo ya"; vehículo asignado: "confirma y puede cambiar". HECHO en
 - Tarjeta "¿Cuánto cargas hoy?": la tarjeta no tiene relleno propio y los avisos "Todavía no hay datos suficientes" / "Todavía no hay con qué calcularlo" (l72, l87) se pegaban a la orilla y la última línea se cortaba con la esquina. Ahora todo lo de adentro lleva 16 px a los lados y abajo (regla CSS en tema-iniciodia.js; sirve para cualquier aviso nuevo).
 - Pruebas: `t124.js` (41 OK: orden, cada paso, que no avance sin lo suyo, inventario, asignado + aviso, equipo después del vehículo con las llaves correctas, administrador por pasos omitiendo fotos, texto dentro del cuadro; falla si se quita el arreglo del cuadro). t72, t82, t87 ahora van al paso "Carga" para leer la sugerencia. Todas en 0 FAIL. Capturas: `disenos/inicio-dia-por-pasos.png`.
 - (Resuelto) El equipo salía antes de escoger el vehículo y con las llaves del asignado.
+
+## 2026-11-18 · 125 · Ricardo: "¿será conveniente también crear una pantalla por pasos para la venta en ruta?" → "Hacerlo ya"; el de vacías "que se brinque" si no debe
+HECHO en `capas/tema-entregapasos.js` (nació como tema, se arma al final). **Falta armar APK (preguntar antes).**
+- Antes la entrega medía ~3 pantallas y media (41 botones) con todos los avisos juntos arriba.
+- Ahora: 1 Qué le dejas ("¿Qué le dejas?" primero, luego datos del cliente, "Más opciones", "No estaba") → 2 Cobro (aviso de lo que debía, "no se le puede fiar", cobro) → 3 Cajas vacías y taras (se brinca si no debe vacías ni taras; venta en la calle y cliente nuevo también; entonces las vacías salen con el cobro) → "Revisar y guardar" = la MISMA ventana "¿Guardar la entrega?" que ya existía (no se duplicó el resumen ni se agregó un toque).
+- Arriba siempre "Parada X de Y" y el nombre; abajo la barra con lo que se cobra (su botón dice "Siguiente"; en el último paso "Revisar y guardar"). "← Atrás" junto al título del paso.
+- Siguiente revisa con la MISMA `entValida` lo de ese paso; si en el último falta algo de un paso anterior, "Revisar y guardar" lleva a ese paso con el aviso.
+- Blindaje: las cuentas y el guardado no cambian (entregaCalc, entValida, entconf → guardar). `pruebas/comp-venta.js`: 17 ventas (contado, abono, vacías, rotas, fiado, pago en parte, mayoreo, centavos, venta en la calle, y las que NO deben guardarse: sin nada, de más, pago mayor, pasa el límite, mayoreo sin precio, tope de vacías) → cada venta guardada, el inventario, la deuda y vacías del cliente iguales que antes (solo cambia el `id` de la venta, que sale de la hora y es único). Detecta un cambio a propósito de $1 en el cobro.
+- `t125.js` (12 OK). t108 y t115 ahora van al paso que toca (taras / cobro).
+- Encontrado y corregido al probar: el botón Siguiente de la barra salía escondido (heredaba lo escondido del de Guardar).
+- Capturas: `disenos/venta-por-pasos.png`.

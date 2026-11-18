@@ -8,7 +8,7 @@ await ev(()=>{var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja Cali
  var c=S.cli[0];c.cred=1000;c.credDesde=iso(TODAY);c.vac=4;c.vacDesde=iso(TODAY);c.credOk=true;S.stops=[{c:c.id}];S.cur=0;S.tab.rep='entrega';resetDraft(c);S.d.R=4;S.d.V=4;render()});
 const bar=()=>ev(()=>{var b=document.querySelector('#entbt');return b&&b.innerText.replace(/\n/g,' | ')});
 r=await bar();ok(/A cobrar en efectivo/.test(r)&&/\$1,100/.test(r)&&/Queda debiendo \$1,000/.test(r),'115 · abajo: "A cobrar en efectivo $1,100 · Queda debiendo $1,000" (antes decía "Total")',r);
-r=await ev(()=>{var t=document.querySelector('main').innerText;return {esta:/Esta entrega: \$1,100/.test(t),debia:/Lo que ya debía: \$1,000/.test(t),buro:/Buró:/.test(t),bills:[...document.querySelectorAll('[data-act="entcon"]')].map(x=>x.innerText)}});
+r=await ev(()=>{if(typeof entPon125==='function')entPon125(1);render();var t=document.querySelector('main').innerText;return {esta:/Esta entrega: \$1,100/.test(t),debia:/Lo que ya debía: \$1,000/.test(t),buro:/Buró:/.test(t),bills:[...document.querySelectorAll('[data-act="entcon"]')].map(x=>x.innerText)}});
 ok(r.esta&&r.debia,'115 · "Esta entrega: $1,100" y "Lo que ya debía: $1,000" separados',r);
 ok(!r.buro,'115 · si paga todo, el buró no estorba');
 ok(JSON.stringify(r.bills)===JSON.stringify(['$1,200','$1,500','$2,000','Exacto']),'115 · billetes según lo que hay que cobrar ($1,100): $1,200, $1,500, $2,000 y Exacto',r.bills);

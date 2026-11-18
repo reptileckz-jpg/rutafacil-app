@@ -121,9 +121,7 @@ var _rd60a=render;render=function(){try{avOrdenaLuego();faLimpia();chAvLimpia()}
 /* ---------- 22 · "Hoy te toca": cada renglón hace algo o dice por qué todavía no ---------- */
 function cierresHoy(){var ids=nbRutaIdsSeguro(),L=[];ids.forEach(function(id){var sa=nbRGet(id,'salida'),ci=nbRGet(id,'cierre'),rg=nbRGet(id,'cierreReg'),rc=nbRGet(id,'recep');if(!(sa&&sa.ok)&&!(ci&&ci.sent))return;
  L.push({id:+id,n:chofN(+id),env:!!(ci&&ci.sent),rec:!!(rg&&rc)})});return L}
-var _hoyI60=hoyItems;hoyItems=function(){var L=_hoyI60.apply(this,arguments),hoy=iso(TODAY);try{var C=cierresHoy(),env=C.filter(function(x){return x.env}),rec=C.filter(function(x){return x.rec}),porRec=env.filter(function(x){return !x.rec}),falt=C.filter(function(x){return !x.rec});
- L.forEach(function(x){if(/^Recibir los cierres/.test(x[0])){x[0]='Recibir los cierres · '+(C.length?env.length+' de '+C.length+' mandados'+(rec.length?' · '+rec.length+' recibido'+(rec.length>1?'s':''):''):'nadie salió hoy');x[1]=C.length>0&&rec.length===C.length;x[4]='cierres'}
-  if(/^Mandarte el resumen/.test(x[0])){x[1]=S.resHoy===hoy;x[4]='resumen';if(!x[1]&&falt.length)x[0]='Mandarte el resumen del día · faltan '+falt.length+' cierre'+(falt.length>1?'s':'')}})}catch(e){}return L};
+/* hoyItems: pasó a tema-guia.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="hoyir"]');if(!b)return;var x=hoyItems()[+b.dataset.i];if(!x||!x[4])return;e.preventDefault();e.stopImmediatePropagation();
  var C=cierresHoy();
  if(x[4]==='cierres'){var pr=C.filter(function(z){return z.env&&!z.rec})[0];
@@ -134,8 +132,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(x[4]==='resumen'){var f=C.filter(function(z){return !z.rec});if(f.length){toast('El resumen se manda cuando recibas los cierres del día (faltan '+f.length+': '+f.map(function(z){return z.n}).join(', ')+')');return}
   S.resHoy=iso(TODAY);var t=document.createElement('button');t.dataset.act='resdia';t.style.display='none';document.body.appendChild(t);try{t.click()}finally{t.remove()}render();return}},true);
 /* "Muéstrame dónde" / Hoy te toca: si lo que hay que tocar todavía no está, decirlo */
-var _gMu60=guiaMuestra;guiaMuestra=function(sel){var hay=String(sel||'main').split(/,\s*/).some(function(s){try{var el=document.querySelector(s);return el&&el.getClientRects().length}catch(e){return false}});
- if(!hay){toast('Eso todavía no aparece en esta pantalla. Sale cuando haya algo que hacer ahí.');return}return _gMu60.apply(this,arguments)};
+/* guiaMuestra: pasó a tema-guia.js */
 
 /* ---------- 25 · numerito en la barra de abajo por sección (solo parpadea el más importante) ---------- */
 /* calcular a dónde lleva un aviso SIN cambiar nada de la pantalla (avDestino a veces abre fichas o secciones) */

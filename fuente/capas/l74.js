@@ -106,12 +106,8 @@ try{if(typeof CLIK!=='undefined'&&CLIK.push)['ppUna','mayoreo','acOk74'].forEach
 /* ---------- 86 · desgaste al ir por la fruta y al repartirla ---------- */
 function vehRep74(){var L=(S.veh||[]).filter(function(v){return !v.baja&&!vehEsAuto(v)});return L[0]||vehHoy()}
 function dsgVj74(){(S.cargas||[]).forEach(function(c){if(!c.vw||c.est==='Por llegar'||c.dsgM!=null||(c.cv&&c.cv.ok))return;try{var km=num(cvCalc(c).km);if(!(km>0))return;var vh=vehById(+(c.viaje&&c.viaje.veh));c.dsgKm=Math.round(km);c.dsgM=Math.round(km*tasa68(vh));c.dsgOn=true;c.dsg74=1}catch(e){}})}
-var _rep74=rep68;rep68=function(dias){var o=_rep74.apply(this,arguments);if(o.rutas)return o;try{var vh=vehRep74(),km=num(S.cfg.kmRuta)||40,cj=num(S.cfg.cajRuta)||num(vh&&vh.capC)||40,kg=num(S.cfg.kgRuta)||150,d=km*tasa68(vh),kc=o.kc||20,wR=cj*kc,wM=kg,w=wR+wM;
-  o.est=true;o.desg=d;o.estKm=km;o.caja=w?d*wR/w/cj:0;o.kgc=w?d*wM/w/kg:0}catch(e){}return o};
-var _desg74=desg;desg=function(c,k){var h=_desg74.apply(this,arguments);if(typeof h!=='string')return h;var rp=rep68(30);
- h=h.replace(/Desgaste del vehículo \(/g,'Desgaste al ir por la fruta (');
- if(rp.est){h=h.replace('+ Repartirla <span class="lbl">(sin rutas cerradas todavía)</span>','+ Repartirla: desgaste de la camioneta <span class="lbl">(estimado: '+rp.estKm+' km de ruta; sale real al cerrar rutas)</span>').replace('>+ Repartirlo<','>+ Repartirlo: desgaste de la camioneta <span class="lbl">(estimado)</span><')}
- else h=h.replace('>+ Repartirla<','>+ Repartirla <span class="lbl">(combustible, gastos, desgaste y sueldo de las rutas)</span><');return h};
+/* rep68: pasó a tema-estadisticas.js */
+/* desg: pasó a tema-estadisticas.js */
 /* ajHTML: pasó a tema-ajustes.js */
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};

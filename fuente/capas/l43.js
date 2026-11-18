@@ -10,15 +10,7 @@
  '.aprende .it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:9px 0;color:inherit;font-size:16px}.aprende .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;font-weight:800}.aprende .it.ok .ck{background:var(--accent);border-color:var(--accent);color:#fff}.aprende .it.ok .t{color:var(--muted);text-decoration:line-through}'].join('\n');document.head.appendChild(st)})();
 /* ---------- tutorial: se acomoda UNA vez por paso; en cada redibujo se reusa lo mismo (sin parpadeo) ---------- */
 function tutClave(){var t=S.tut;return t?t.k+':'+t.i:''}
-var _tutH43=tutHTML;tutHTML=function(quieto){var t=S.tut;if(!t)return '';var L=TUT[t.k],st=L&&L[t.i];if(!st){S.tut=null;return ''}
- /* paso "Gastos": el botón real de Gasto está en Ruta */
- 
- var h=_tutH43.call(this,quieto),el=st[3]==='swipe'?null:tutBlanco(st);if(!h)return h;
- if(!el||st[3]==='swipe'){/* lo que señala no está: globo al centro, sin hueco (en "deslizar", la manita al centro de la pantalla) */
-  h=h.replace('<div class="hole"','<div class="hole sinhueco"');if(st[3]!=='swipe')h=h.replace(/<svg class="hand"[\s\S]*?<\/svg>/,'');
-  h=h.replace(/<div class="bub" style="[^"]*"/,'<div class="bub" style="top:50%;transform:translateY(-50%)"');
-  if(st[3]==='swipe')h=h.replace(/(<svg class="hand"[^>]*style=")[^"]*"/,'$1left:'+(innerWidth/2-20)+'px;top:'+(innerHeight*0.32)+'px;animation:pnSwipe 1.6s ease-in-out infinite"')}
- return h};
+/* tutHTML: pasó a tema-guia.js */
 /* el globo se pinta aparte y solo cambia cuando cambia el paso: los redibujos de la app ya no lo tocan */
 function tutPinta(){var de=document.documentElement,on=!!S.tut&&!(_pin&&_pin.modo)&&!document.getElementById('setov')&&!document.getElementById('nbov');de.classList.toggle('tuton',on);var o=document.getElementById('tutov');
  if(!on){if(o)o.remove();return}de.classList.remove('navhid');try{navHid=false}catch(e){}

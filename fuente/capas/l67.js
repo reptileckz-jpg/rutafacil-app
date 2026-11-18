@@ -3,7 +3,7 @@
           (el mapa de Google "debajo" de la app se desfasaba, no se veía y dejaba la app trabada en algunos celulares)
    44 no se selecciona texto al tocar o mantener presionado (solo en los campos donde se escribe)
    46 la barra de abajo no se rehace si no cambió nada (parpadeaba al deslizar) ===================== */
-var _gmIn67=gmInHay;gmInHay=function(){return window.__gmInline?_gmIn67.apply(this,arguments):false};
+/* gmInHay: pasó a tema-ubica.js */
 /* quitar los mapas de Google chicos que hubieran quedado */
 try{setTimeout(function(){try{GMI.slice().forEach(gmQuita)}catch(e){}},0)}catch(e){}
 /* el interruptor "Mapas de Google" de Ajustes ya no hace falta */

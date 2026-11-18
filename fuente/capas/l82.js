@@ -37,17 +37,15 @@ function histPon82(){if(MODO!=='vacio'||typeof HIST==='undefined')return;var L=h
 /* fechas que faltaban: venta local y gastos sin día */
 /* la primera vez (ya con los datos de la nube) lo viejo sin fecha queda como "sin fecha" ('?') y no se cuenta; de ahí en adelante lo nuevo recibe el día */
 function fechas82(){if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var h=iso(TODAY),v1=!S.f82ini;(S.vlVentas||[]).forEach(function(v){if(v&&!v.f82)v.f82=v1?'?':h});(S.gastos||[]).forEach(function(g){if(g&&!g.f&&!g.f82)g.f82=v1?'?':h});if(v1)S.f82ini=h}
-var _est82=estadisticas;estadisticas=function(){var h=_est82.apply(this,arguments);if(MODO==='vacio')h=String(h).replace('Datos de ejemplo hasta ayer. Lo de hoy se suma al cerrar el día.','Con lo que se registra en la app (rutas, venta en bodega, gastos y mermas). Lo de hoy se va sumando.');if(MODO==='vacio')h=String(h).replace(' En la app final se guardan día con día.',' Se guardan solos, día con día.');return h};
+/* estadisticas: pasó a tema-estadisticas.js */
 /* rankings: lo que de verdad compró cada cliente en 30 días */
-var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.apply(this,arguments);var d0=iso(new Date(TODAY.getTime()-30*864e5)),T={},keep={};
- Object.keys(HIST.reduce(function(o,r){o[r.d]=1;return o},{})).forEach(function(d){if(d<d0)return;rutasDia82(d).forEach(function(r){(r.log||[]).forEach(function(l){if(l&&!l.anul)T[l.c]=(T[l.c]||0)+num(l.total)})})});
- S.cli.forEach(function(c){keep[c.id]=c.c30;c.c30=Math.round(T[c.id]||0)});try{return _rk82.apply(this,arguments)}finally{S.cli.forEach(function(c){c.c30=keep[c.id]})}};
+/* rankingHTML: pasó a tema-estadisticas.js */
 /* el día archivado guarda también lo que se recibió y se contó (para "¿Cuadran las cuentas?") */
 /* → movido (tema-rutadia.js) */
 /* → movido (tema-rutadia.js) */
 
 /* ---------- 41 · retiro del dueño ---------- */
-var _fm82=fijoMes;fijoMes=function(){var keep=S.fijos;try{S.fijos=(keep||[]).filter(function(f){return !f.retiro});return _fm82.apply(this,arguments)}finally{S.fijos=keep}};
+/* fijoMes: pasó a tema-estadisticas.js */
 function gtip82(){try{if(GTIP._82)return;var i=GTIP.map(function(x){return x[0]}).indexOf('Retiro del dueño');GTIP.splice(i<0?GTIP.length-1:i,0,['Para un vehículo','ruta','#2F6DB5']);GTIP._82=1}catch(e){}}
 function retiroNota82(){var b=[].filter.call(document.querySelectorAll('button[aria-pressed="true"]'),function(x){return /^\s*Retiro del dueño\s*$/.test(x.textContent)})[0];if(!b)return;var g=b.closest('.chips')||b.parentElement;if(!g||(g.nextElementSibling&&g.nextElementSibling.dataset&&g.nextElementSibling.dataset.x==='ret82'))return;
  var d=document.createElement('div');d.dataset.x='ret82';d.className='lbl';d.style.margin='6px 0';d.innerHTML='💡 El retiro baja la caja pero <b>no cuenta como gasto</b> del negocio (no baja la ganancia). Si es para comprarle algo a un vehículo, escoge <b>"Para un vehículo"</b>.';g.after(d)}
@@ -207,9 +205,7 @@ function tarde82(){var d=new Date();return d.getHours()*60+d.getMinutes()>=hLim8
 function cerro82(id){try{var c=nbRGet(id,'cierre');return !!(c&&c.sent)}catch(e){return false}}
 function pedManana82(c,id,por){ovPon81(man81(),c.id,id);if(c.ped)c.ped.cuando='mañana';S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'El pedido de '+c.n+' pasó a mañana con '+chofN(id)+' ('+por+')'});
  (S.avPrecio=S.avPrecio||[]).push('El pedido de '+c.n+' quedó para MAÑANA con '+chofN(id)+' ('+por+'). Si urge hoy, pásalo a otro chofer en Rutas.');try{rutaAviso(id,'Pedido para mañana: '+c.n)}catch(e){}}
-var _p57A82=p57Asigna;p57Asigna=function(c,id){if(MODO!=='vacio'||!cerro82(id)||S.p57&&S.p57.fz82===+id)return _p57A82.apply(this,arguments);
- if(tarde82()){pedManana82(c,id,'ya cerró y pasa de la hora límite');return 'Ya es tarde: '+chofN(id)+' cerró, así que el pedido de '+c.n+' queda para mañana'}
- /* buena hora: se le pregunta al chofer */ S.pedQ82=S.pedQ82||[];S.pedQ82.push({id:Date.now(),c:c.id,ch:+id,t:Date.now(),f:iso(TODAY),est:'pend'});S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le preguntó a '+chofN(id)+' si puede llevar el pedido de '+c.n+' (ya cerró)'});return 'Se le preguntó a '+chofN(id)+' si puede llevarlo (ya cerró). Si no contesta en 5 min, queda para mañana.'};
+/* p57Asigna: pasó a tema-rutas.js */
 try{if(NB_SH.indexOf('pedQ82')<0)NB_SH.push('pedQ82')}catch(e){}
 function pedQVence82(){var ch=false;(S.pedQ82||[]).forEach(function(p){if(p.est==='pend'&&Date.now()-p.t>PE_ESPERA){p.est='tiempo';ch=true;var c=cl(p.c);if(c&&(S.role==='admin'||S.encOn))pedManana82(c,p.ch,'no contestó')}});return ch}
 /* el admin ve la espera */
@@ -244,5 +240,5 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function sinMov82(d){var hay=false;try{rutasDia82(d).forEach(function(r){if(!rutaVacia(r.r||{log:r.log,salida:{ok:false}})||(r.log||[]).length)hay=true});if((S.vlVentas||[]).some(function(v){return v.f82===d}))hay=true;if((S.gastos||[]).some(function(g){return (g.f||g.f82)===d&&!/Retiro/.test(g.t||'')}))hay=true;if((S.cargas||[]).some(function(c){return c.fecha===d&&c.est!=='Por llegar'}))hay=true}catch(e){return false}return !hay}
 /* cajaAyerPend: pasó a tema-cajas.js */
 /* popItems: pasó a tema-inicio.js */
-var _cu82=cuadre82;cuadre82=function(d){var F=_cu82.apply(this,arguments);try{if(sinMov82(d))F.forEach(function(o){o.e='ok';o.L=['Día sin movimientos.']})}catch(e){}return F};
+/* cuadre82: pasó a tema-estadisticas.js */
 var _rdY82=render;render=function(){try{pedQVence82()}catch(e){}var r=_rdY82.apply(this,arguments);try{pedQAdm82();pedQRep82();sueltosPon82();sueltosTxt82()}catch(e){console.error('l82b',e)}return r};

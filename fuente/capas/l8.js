@@ -6,4 +6,4 @@ var _rL8=render;render=function(){ensureS();return _rL8.apply(this,arguments)};
 /* si no hay ningún vehículo (por ejemplo, se dieron todos de baja), la app no se traba */
 /* vehHoy: pasó a tema-vehiculos.js */
 /* sin historial todavía (primera vez): las estadísticas lo dicen en vez de quedarse en blanco */
-var _estL8=estadisticas;estadisticas=function(){if(HIST.length)return _estL8.apply(this,arguments);return '<h1>Estadísticas</h1><div class="card"><b>Todavía no hay historial</b><div class="lbl" style="margin-top:6px">Las ventas, ganancias, gastos y rankings aparecen aquí cuando empiecen a registrarse días de trabajo. En la app final se guardan día con día.</div></div>'+cuentasHTML()};
+/* estadisticas: pasó a tema-estadisticas.js */

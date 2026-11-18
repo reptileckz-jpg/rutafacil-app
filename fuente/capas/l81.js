@@ -130,13 +130,13 @@ TUT['n:rt81']=[['[data-x="rt81e"]','Nuevo: Rutas','Aquí ves cuántos clientes l
  ['[data-x="rt81e"] [data-act="rt81open"][data-v="hoy"]','Ver y repartir','Marca uno o varios clientes y toca "Pasar a…". Escoges el chofer y si es solo por hoy o para siempre. Si ya salió, le llega un aviso al momento.'],
  ['[data-x="rt81e"] [data-act="rt81open"][data-v="man"]','Mañana','Lo mismo para mañana: la ruta se le arma sola con tus cambios. Con "Mañana no" saltas a un cliente solo ese día.']];
 TUT['n:rt81rep']=[['nav.tabs button[data-t="ruta"], nav.tabs','Tu ruta puede cambiar','Si el administrador te pasa un cliente o te quita uno, te llega un aviso y tu lista se acomoda sola. El orden lo pones tú con "Ordenar con tráfico".']];
-var _tI81=tutIniciar;tutIniciar=function(k){try{if(k==='admin')S.tutVisto['n:rt81']=true;if(k==='rep')S.tutVisto['n:rt81rep']=true}catch(e){}return _tI81.apply(this,arguments)};
+/* tutIniciar: pasó a tema-guia.js */
 function tutNuevo81(){if(window.__pnTest||!REAL||S.tut||window.__tutAct||(typeof _pin!=='undefined'&&_pin&&_pin.modo)||document.getElementById('nbov')||document.getElementById('setov')||S.rt81)return;S.tutVisto=S.tutVisto||{};
  var k=S.role==='admin'&&!S.encOn&&S.tab.admin==='inicio'&&document.querySelector('[data-x="rt81e"]')?'n:rt81':(S.role==='rep'?'n:rt81rep':null);if(!k||S.tutVisto[k]||!S.tutVisto[S.role==='rep'?'rep':'admin'])return;
  S.tutVisto[k]=true;setTimeout(function(){if(S.tut)return;S.tut={k:k,i:0,prev:{tab:S.tab[S.role]},tab:S.tab[S.role]};render()},1200)}
 /* "Aprende la app": Repartir las rutas */
-var _ai81=aprendeItems;aprendeItems=function(){var L=_ai81.apply(this,arguments);try{if(S.role!=='rep')L.push(['Repartir las rutas','inicio',!!S.rt81Ya])}catch(e){}return L};
-var _ap81=aplica81;aplica81=function(){S.rt81Ya=1;return _ap81.apply(this,arguments)};
+/* aprendeItems: pasó a tema-guia.js */
+/* aplica81: pasó a tema-rutas.js */
 function aprende81(){Array.prototype.forEach.call(document.querySelectorAll('[data-act="aprendeir"]'),function(b){if(/Repartir las rutas/.test(b.textContent)){b.dataset.act='rt81open';b.dataset.v='hoy'}})}
 /* botón "?" */
 function help81(){try{if(HELP._81)return;HELP.inicio[1]+=' En "Rutas de hoy" ves qué clientes lleva cada chofer y los repartes.';HELP.personal[1]+=' Para repartir los clientes de hoy o mañana usa "Rutas de hoy".';HELP._81=1}catch(e){}}

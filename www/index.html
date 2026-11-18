@@ -4149,7 +4149,7 @@ var _rL8=render;render=function(){ensureS();return _rL8.apply(this,arguments)};
 /* si no hay ningún vehículo (por ejemplo, se dieron todos de baja), la app no se traba */
 /* vehHoy: pasó a tema-vehiculos.js */
 /* sin historial todavía (primera vez): las estadísticas lo dicen en vez de quedarse en blanco */
-var _estL8=estadisticas;estadisticas=function(){if(HIST.length)return _estL8.apply(this,arguments);return '<h1>Estadísticas</h1><div class="card"><b>Todavía no hay historial</b><div class="lbl" style="margin-top:6px">Las ventas, ganancias, gastos y rankings aparecen aquí cuando empiecen a registrarse días de trabajo. En la app final se guardan día con día.</div></div>'+cuentasHTML()};
+/* estadisticas: pasó a tema-estadisticas.js */
 
 //@@capa l9.js
 /* ===================== v4.0 · Lo que encontró Ricardo en la v3.9 ===================== */
@@ -6736,15 +6736,7 @@ if(typeof cargas==='function'){var _car42=cargas;cargas=function(){var h=_car42.
  '.aprende .it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:9px 0;color:inherit;font-size:16px}.aprende .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;font-weight:800}.aprende .it.ok .ck{background:var(--accent);border-color:var(--accent);color:#fff}.aprende .it.ok .t{color:var(--muted);text-decoration:line-through}'].join('\n');document.head.appendChild(st)})();
 /* ---------- tutorial: se acomoda UNA vez por paso; en cada redibujo se reusa lo mismo (sin parpadeo) ---------- */
 function tutClave(){var t=S.tut;return t?t.k+':'+t.i:''}
-var _tutH43=tutHTML;tutHTML=function(quieto){var t=S.tut;if(!t)return '';var L=TUT[t.k],st=L&&L[t.i];if(!st){S.tut=null;return ''}
- /* paso "Gastos": el botón real de Gasto está en Ruta */
- 
- var h=_tutH43.call(this,quieto),el=st[3]==='swipe'?null:tutBlanco(st);if(!h)return h;
- if(!el||st[3]==='swipe'){/* lo que señala no está: globo al centro, sin hueco (en "deslizar", la manita al centro de la pantalla) */
-  h=h.replace('<div class="hole"','<div class="hole sinhueco"');if(st[3]!=='swipe')h=h.replace(/<svg class="hand"[\s\S]*?<\/svg>/,'');
-  h=h.replace(/<div class="bub" style="[^"]*"/,'<div class="bub" style="top:50%;transform:translateY(-50%)"');
-  if(st[3]==='swipe')h=h.replace(/(<svg class="hand"[^>]*style=")[^"]*"/,'$1left:'+(innerWidth/2-20)+'px;top:'+(innerHeight*0.32)+'px;animation:pnSwipe 1.6s ease-in-out infinite"')}
- return h};
+/* tutHTML: pasó a tema-guia.js */
 /* el globo se pinta aparte y solo cambia cuando cambia el paso: los redibujos de la app ya no lo tocan */
 function tutPinta(){var de=document.documentElement,on=!!S.tut&&!(_pin&&_pin.modo)&&!document.getElementById('setov')&&!document.getElementById('nbov');de.classList.toggle('tuton',on);var o=document.getElementById('tutov');
  if(!on){if(o)o.remove();return}de.classList.remove('navhid');try{navHid=false}catch(e){}
@@ -7810,8 +7802,8 @@ var PN_LIBRE='#pinov,#pxov,#pnov,#permov,#nbov,#setov,#arr,[data-kp]';
   if(e.cancelable)e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false})});
 /* al bloquearse: cerrar los mapas de Google (los dibuja Android y quedarían encima) */
 function pnQuitaMapas(){try{if(typeof gmCierra==='function'&&GM)gmCierra()}catch(e){}try{if(typeof GMI!=='undefined')GMI.slice().forEach(gmQuita)}catch(e){}}
-var _gmIn58=gmInHay;gmInHay=function(){if(pnBloqueada())return false;return _gmIn58.apply(this,arguments)};
-var _gmH58=gmHay;gmHay=function(){if(pnBloqueada())return false;return _gmH58.apply(this,arguments)};
+/* gmInHay: pasó a tema-ubica.js */
+/* gmHay: pasó a tema-ubica.js */
 /* al irse al fondo: si hay PIN, tapar la pantalla (así "apps recientes" no enseña datos) */
 function pnTapa(){if(document.getElementById('pncubre'))return;var o=document.createElement('div');o.id='pncubre';o.setAttribute('aria-hidden','true');o.innerHTML='<img src="'+(typeof LOGO_IC!=='undefined'?LOGO_IC:'')+'" alt="">';document.body.appendChild(o)}
 function pnDestapa(){var o=document.getElementById('pncubre');if(o)o.remove()}
@@ -7898,7 +7890,7 @@ function gmDebajo(){var hosts=[];GMI.forEach(function(x){if(x.m&&x.host!==docume
  Array.prototype.forEach.call(document.querySelectorAll('.gmoc'),function(e){if(quiero.indexOf(e)<0)e.classList.remove('gmoc')});quiero.forEach(function(e){if(!e.classList.contains('gmoc'))e.classList.add('gmoc')});
  if(hosts.length&&!document.documentElement.classList.contains('gmin'))document.documentElement.classList.add('gmin');
  if(!hosts.length)Array.prototype.forEach.call(document.querySelectorAll('*'),function(n){if(n._gmN58){n._gmN58=0;n.style.background=n._gmBg58||''}})}
-var _gmHu58=gmHuecos;gmHuecos=function(){var r=_gmHu58.apply(this,arguments);try{gmDebajo()}catch(e){console.error(e)}return r};
+/* gmHuecos: pasó a tema-ubica.js */
 
 /* ---------- 2 · que ningún mapa de Google quede "agarrando" los toques ---------- */
 /* todos los mapas que se piden quedan anotados; el que ya no está en pantalla se destruye aunque haya fallado al crearse */
@@ -7913,7 +7905,7 @@ setInterval(function(){try{gmBarre()}catch(e){}},4000);
 function gmToques(){if(!window.GMAPA_PL||!window.GMAPA_PL.disableTouch)return;GMI.forEach(function(x){if(!x.m)return;var r=x.el.getBoundingClientRect(),on=false;
   if(r.width>4&&r.height>4&&r.bottom>0&&r.top<innerHeight){var el=document.elementFromPoint(Math.min(innerWidth-2,Math.max(1,r.left+r.width/2)),Math.min(innerHeight-2,Math.max(1,r.top+r.height/2)));on=!!(el&&(el===x.el||x.el.contains(el)))}
   if(x.toq!==on){x.toq=on;try{var p=on?window.GMAPA_PL.enableTouch({id:x.id}):window.GMAPA_PL.disableTouch({id:x.id});if(p&&p.catch)p.catch(function(){})}catch(e){}}})}
-var _gmMu58=gmMueve;gmMueve=function(){var r=_gmMu58.apply(this,arguments);try{gmToques()}catch(e){}return r};
+/* gmMueve: pasó a tema-ubica.js */
 setInterval(function(){try{if(GMI.length)gmToques()}catch(e){}},1200);
 /* al apagar los mapas en Ajustes, también se barre todo */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;setTimeout(function(){try{Object.keys(GMTODOS).forEach(function(id){GMTODOS[id]=0});gmBarre()}catch(er){}},300)});
@@ -7935,12 +7927,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- 6 · la burbuja no sale mientras haces algo, y nunca tapa los botones de abajo ---------- */
 (function(){var st=document.createElement('style');st.textContent='#guiab{top:calc(74px + var(--sbar,0px));bottom:auto!important}';document.head.appendChild(st)})();
 ['pointerdown','touchmove','wheel','focusin'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{_guiaT=Date.now()}catch(er){}},{capture:true,passive:true})});
-var _gL59=guiaLibre;guiaLibre=function(){if(!_gL59.apply(this,arguments))return false;try{
- if(!pnArranqueListo())return false;
- var a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return false;
- if(document.querySelector('.wz-nav,#medov,#fotov,#fgov,#tutov'))return false;
- if(S.role==='rep'&&/^(entrega|cierre)$/.test(S.tab.rep))return false;
- return true}catch(e){return false}};
+/* guiaLibre: pasó a tema-guia.js */
 /* si empieza a escribir o deslizar con la burbuja puesta, se quita sola */
 ['input','touchmove','wheel'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{var o=document.getElementById('guiab');if(o&&!o.dataset.forzada)o.remove()}catch(er){}},{capture:true,passive:true})});
 
@@ -7970,8 +7957,7 @@ var _popSigT=0,_popPausa=null,_popUlt='';
 window.addEventListener('pointerdown',function(e){var b=e.target.closest&&e.target.closest('[data-pop],[data-act="popdesp"]');if(b)_popUlt=b.dataset.act},true);
 window.addEventListener('keydown',function(e){var b=e.target.closest&&e.target.closest('[data-pop],[data-act="popdesp"]');if(b)_popUlt=b.dataset.act},true);
 function popCasa(){return (typeof NAV_CASA!=='undefined'&&NAV_CASA[S.role])||'inicio'}
-var _popS59=popSig;popSig=function(){if(Date.now()-_popSigT<450)return;_popSigT=Date.now();
- if(!/^(popdesp|precioayer|inspok|inspno)$/.test(_popUlt||''))_popPausa={t:Date.now(),salio:false};_popUlt='';return _popS59.apply(this,arguments)};
+/* popSig: pasó a tema-guia.js */
 /* la siguiente tarjeta sale hasta que regresa a Inicio (o, si lo mandó a Inicio mismo, después de un rato) */
 /* popHTML: pasó a tema-inicio.js */
 var _rd59d=render;render=function(){try{if(_popPausa&&S.tab[S.role]!==popCasa())_popPausa.salio=true}catch(e){}return _rd59d.apply(this,arguments)};
@@ -8101,9 +8087,7 @@ var _rd60a=render;render=function(){try{avOrdenaLuego();faLimpia();chAvLimpia()}
 /* ---------- 22 · "Hoy te toca": cada renglón hace algo o dice por qué todavía no ---------- */
 function cierresHoy(){var ids=nbRutaIdsSeguro(),L=[];ids.forEach(function(id){var sa=nbRGet(id,'salida'),ci=nbRGet(id,'cierre'),rg=nbRGet(id,'cierreReg'),rc=nbRGet(id,'recep');if(!(sa&&sa.ok)&&!(ci&&ci.sent))return;
  L.push({id:+id,n:chofN(+id),env:!!(ci&&ci.sent),rec:!!(rg&&rc)})});return L}
-var _hoyI60=hoyItems;hoyItems=function(){var L=_hoyI60.apply(this,arguments),hoy=iso(TODAY);try{var C=cierresHoy(),env=C.filter(function(x){return x.env}),rec=C.filter(function(x){return x.rec}),porRec=env.filter(function(x){return !x.rec}),falt=C.filter(function(x){return !x.rec});
- L.forEach(function(x){if(/^Recibir los cierres/.test(x[0])){x[0]='Recibir los cierres · '+(C.length?env.length+' de '+C.length+' mandados'+(rec.length?' · '+rec.length+' recibido'+(rec.length>1?'s':''):''):'nadie salió hoy');x[1]=C.length>0&&rec.length===C.length;x[4]='cierres'}
-  if(/^Mandarte el resumen/.test(x[0])){x[1]=S.resHoy===hoy;x[4]='resumen';if(!x[1]&&falt.length)x[0]='Mandarte el resumen del día · faltan '+falt.length+' cierre'+(falt.length>1?'s':'')}})}catch(e){}return L};
+/* hoyItems: pasó a tema-guia.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="hoyir"]');if(!b)return;var x=hoyItems()[+b.dataset.i];if(!x||!x[4])return;e.preventDefault();e.stopImmediatePropagation();
  var C=cierresHoy();
  if(x[4]==='cierres'){var pr=C.filter(function(z){return z.env&&!z.rec})[0];
@@ -8114,8 +8098,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(x[4]==='resumen'){var f=C.filter(function(z){return !z.rec});if(f.length){toast('El resumen se manda cuando recibas los cierres del día (faltan '+f.length+': '+f.map(function(z){return z.n}).join(', ')+')');return}
   S.resHoy=iso(TODAY);var t=document.createElement('button');t.dataset.act='resdia';t.style.display='none';document.body.appendChild(t);try{t.click()}finally{t.remove()}render();return}},true);
 /* "Muéstrame dónde" / Hoy te toca: si lo que hay que tocar todavía no está, decirlo */
-var _gMu60=guiaMuestra;guiaMuestra=function(sel){var hay=String(sel||'main').split(/,\s*/).some(function(s){try{var el=document.querySelector(s);return el&&el.getClientRects().length}catch(e){return false}});
- if(!hay){toast('Eso todavía no aparece en esta pantalla. Sale cuando haya algo que hacer ahí.');return}return _gMu60.apply(this,arguments)};
+/* guiaMuestra: pasó a tema-guia.js */
 
 /* ---------- 25 · numerito en la barra de abajo por sección (solo parpadea el más importante) ---------- */
 /* calcular a dónde lleva un aviso SIN cambiar nada de la pantalla (avDestino a veces abre fichas o secciones) */
@@ -8263,12 +8246,7 @@ function aprAprende(){if(S.role!=='rep'||!S.salida||!S.salida.ok)return false;va
   if(!x.aprA&&x.sal&&x.sal>x.lleg){var ma=(x.sal-x.lleg)/60000;if(ma>=0.5&&ma<=120)aprPon(S.aprA,o.c,ma);x.aprA=1;cam=true}});return cam}
 var _rd62c=render;render=function(){try{aprAprende()}catch(e){}return _rd62c.apply(this,arguments)};
 /* hora estimada = manejo (aprendido, o lo de Google, o el cálculo de siempre) + tiempo de atención de cada cliente */
-var _etas62=etas;etas=function(){var t=S.salida.ok?S.reloj:480,p=S.pos||BOD,out={},prev=null,rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
- (S.stops||[]).forEach(function(st){if(st.done)prev=String(st.c)});var ahora=Date.now();
- S.stops.forEach(function(st,i){if(st.done)return;var c=cl(st.c);if(!c)return;var k=String(st.c),man=null;
-  if(prev)man=aprTramo(prev,k,ahora);if(man==null&&rg&&rg.legs)man=rg.legs[(prev||'yo')+'>'+k];if(man==null)man=tMin(p,c);t+=Math.round(man);
-  var ci=hmin(c.hCi);out[i]={eta:t,late:!!(ci&&t>ci&&!c.conf)};var at=aprAten(k);t+=at!=null?Math.round(at):10;if(c.lat!=null)p=c;prev=k});
- var vb=prev?aprTramo(prev,'B',ahora):null;if(vb==null&&rg&&rg.legs&&prev)vb=rg.legs[prev+'>B'];out.fin=t+(vb!=null?Math.round(vb):0);return out};
+/* etas: pasó a tema-rutas.js */
 
 /* ---------- 11 · Ordenar con tráfico (Google) ---------- */
 function rgNat(){var n=natPl&&natPl();return n&&n.rutasGoogle?n:null}
@@ -8706,7 +8684,7 @@ var _rd66b=render;render=function(){var r=_rd66b.apply(this,arguments);try{if(S.
           (el mapa de Google "debajo" de la app se desfasaba, no se veía y dejaba la app trabada en algunos celulares)
    44 no se selecciona texto al tocar o mantener presionado (solo en los campos donde se escribe)
    46 la barra de abajo no se rehace si no cambió nada (parpadeaba al deslizar) ===================== */
-var _gmIn67=gmInHay;gmInHay=function(){return window.__gmInline?_gmIn67.apply(this,arguments):false};
+/* gmInHay: pasó a tema-ubica.js */
 /* quitar los mapas de Google chicos que hubieran quedado */
 try{setTimeout(function(){try{GMI.slice().forEach(gmQuita)}catch(e){}},0)}catch(e){}
 /* el interruptor "Mapas de Google" de Ajustes ya no hace falta */
@@ -9695,12 +9673,8 @@ try{if(typeof CLIK!=='undefined'&&CLIK.push)['ppUna','mayoreo','acOk74'].forEach
 /* ---------- 86 · desgaste al ir por la fruta y al repartirla ---------- */
 function vehRep74(){var L=(S.veh||[]).filter(function(v){return !v.baja&&!vehEsAuto(v)});return L[0]||vehHoy()}
 function dsgVj74(){(S.cargas||[]).forEach(function(c){if(!c.vw||c.est==='Por llegar'||c.dsgM!=null||(c.cv&&c.cv.ok))return;try{var km=num(cvCalc(c).km);if(!(km>0))return;var vh=vehById(+(c.viaje&&c.viaje.veh));c.dsgKm=Math.round(km);c.dsgM=Math.round(km*tasa68(vh));c.dsgOn=true;c.dsg74=1}catch(e){}})}
-var _rep74=rep68;rep68=function(dias){var o=_rep74.apply(this,arguments);if(o.rutas)return o;try{var vh=vehRep74(),km=num(S.cfg.kmRuta)||40,cj=num(S.cfg.cajRuta)||num(vh&&vh.capC)||40,kg=num(S.cfg.kgRuta)||150,d=km*tasa68(vh),kc=o.kc||20,wR=cj*kc,wM=kg,w=wR+wM;
-  o.est=true;o.desg=d;o.estKm=km;o.caja=w?d*wR/w/cj:0;o.kgc=w?d*wM/w/kg:0}catch(e){}return o};
-var _desg74=desg;desg=function(c,k){var h=_desg74.apply(this,arguments);if(typeof h!=='string')return h;var rp=rep68(30);
- h=h.replace(/Desgaste del vehículo \(/g,'Desgaste al ir por la fruta (');
- if(rp.est){h=h.replace('+ Repartirla <span class="lbl">(sin rutas cerradas todavía)</span>','+ Repartirla: desgaste de la camioneta <span class="lbl">(estimado: '+rp.estKm+' km de ruta; sale real al cerrar rutas)</span>').replace('>+ Repartirlo<','>+ Repartirlo: desgaste de la camioneta <span class="lbl">(estimado)</span><')}
- else h=h.replace('>+ Repartirla<','>+ Repartirla <span class="lbl">(combustible, gastos, desgaste y sueldo de las rutas)</span><');return h};
+/* rep68: pasó a tema-estadisticas.js */
+/* desg: pasó a tema-estadisticas.js */
 /* ajHTML: pasó a tema-ajustes.js */
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
@@ -9969,7 +9943,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4466,"l10.js"],[4526,"l11.js"],[4543,"l12.js"],[4589,"l13.js"],[4721,"l14.js"],[4791,"l15.js"],[4851,"l16.js"],[4945,"l17.js"],[4969,"l18.js"],[5040,"l19.js"],[5099,"l20.js"],[5146,"l21.js"],[5190,"l22.js"],[5372,"l23.js"],[5421,"l24.js"],[5437,"l25.js"],[5464,"l26.js"],[5585,"l27.js"],[5635,"l28.js"],[5766,"l29.js"],[5892,"l30.js"],[5935,"l31.js"],[5964,"l32.js"],[6052,"l33.js"],[6070,"l34.js"],[6125,"l35.js"],[6182,"l36.js"],[6274,"l37.js"],[6293,"l38.js"],[6376,"l39.js"],[6456,"l40.js"],[6564,"l41.js"],[6624,"l42.js"],[6726,"l43.js"],[6828,"l44.js"],[6923,"l45.js"],[7009,"l46.js"],[7072,"l47.js"],[7186,"l48.js"],[7240,"l49.js"],[7276,"l50.js"],[7378,"l51.js"],[7388,"l52.js"],[7524,"l53.js"],[7546,"l54.js"],[7619,"l55.js"],[7648,"l56.js"],[7732,"l57.js"],[7794,"l58.js"],[7921,"l59.js"],[7980,"l60.js"],[8140,"l61.js"],[8196,"l62.js"],[8310,"l63.js"],[8474,"l64.js"],[8500,"l65.js"],[8601,"l66.js"],[8703,"l67.js"],[8730,"l68.js"],[8856,"l69.js"],[9072,"l70.js"],[9278,"l71.js"],[9400,"l72.js"],[9513,"l73.js"],[9589,"l74.js"],[9710,"l75.js"],[9860,"l76.js"],[9963,"l77.js"],[10088,"l78.js"],[10224,"l79.js"],[10332,"l80.js"],[10455,"l81.js"],[10608,"l82.js"],[10858,"l83.js"],[10927,"l84.js"],[11040,"l85.js"],[11101,"tema-rutadia.js"],[11266,"l86.js"],[11326,"l87.js"],[11369,"l88.js"],[11419,"l89.js"],[11467,"l90.js"],[11573,"tema-ruta.js"],[11726,"tema-fichas.js"],[11843,"tema-cierre.js"],[11937,"tema-inicio.js"],[12065,"tema-ajustes.js"],[12291,"tema-nube.js"],[12349,"tema-viaje.js"],[12490,"tema-ubica.js"],[12615,"tema-personal.js"],[12678,"tema-pin.js"],[12747,"tema-navega.js"],[12776,"tema-cajas.js"],[12812,"tema-camara.js"],[12844,"tema-cobranza.js"],[12991,"tema-pantallas.js"],[13212,"tema-avisos.js"],[13374,"tema-reparte.js"],[13440,"tema-vehiculos.js"],[13584,"tema-notas.js"],[13639,"tema-taras.js"],[13746,"tema-cargarmas.js"],[13785,"tema-cargas.js"],[13819,"tema-cobro.js"],[13855,"tema-horario.js"],[13894,"tema-sueldos.js"],[14036,"tema-ganado.js"],[14081,"tema-cierres.js"],[14180,"tema-finanzas.js"],[14253,"tema-cuadre.js"],[14442,"tema-retencion.js"],[14533,"tema-iniciodia.js"],[14638,"tema-entregapasos.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4466,"l10.js"],[4526,"l11.js"],[4543,"l12.js"],[4589,"l13.js"],[4721,"l14.js"],[4791,"l15.js"],[4851,"l16.js"],[4945,"l17.js"],[4969,"l18.js"],[5040,"l19.js"],[5099,"l20.js"],[5146,"l21.js"],[5190,"l22.js"],[5372,"l23.js"],[5421,"l24.js"],[5437,"l25.js"],[5464,"l26.js"],[5585,"l27.js"],[5635,"l28.js"],[5766,"l29.js"],[5892,"l30.js"],[5935,"l31.js"],[5964,"l32.js"],[6052,"l33.js"],[6070,"l34.js"],[6125,"l35.js"],[6182,"l36.js"],[6274,"l37.js"],[6293,"l38.js"],[6376,"l39.js"],[6456,"l40.js"],[6564,"l41.js"],[6624,"l42.js"],[6726,"l43.js"],[6820,"l44.js"],[6915,"l45.js"],[7001,"l46.js"],[7064,"l47.js"],[7178,"l48.js"],[7232,"l49.js"],[7268,"l50.js"],[7370,"l51.js"],[7380,"l52.js"],[7516,"l53.js"],[7538,"l54.js"],[7611,"l55.js"],[7640,"l56.js"],[7724,"l57.js"],[7786,"l58.js"],[7913,"l59.js"],[7966,"l60.js"],[8123,"l61.js"],[8179,"l62.js"],[8288,"l63.js"],[8452,"l64.js"],[8478,"l65.js"],[8579,"l66.js"],[8681,"l67.js"],[8708,"l68.js"],[8834,"l69.js"],[9050,"l70.js"],[9256,"l71.js"],[9378,"l72.js"],[9491,"l73.js"],[9567,"l74.js"],[9684,"l75.js"],[9834,"l76.js"],[9937,"l77.js"],[10062,"l78.js"],[10196,"l79.js"],[10304,"l80.js"],[10427,"l81.js"],[10580,"l82.js"],[10826,"l83.js"],[10895,"l84.js"],[11008,"l85.js"],[11069,"tema-rutadia.js"],[11234,"l86.js"],[11294,"l87.js"],[11337,"l88.js"],[11387,"l89.js"],[11435,"l90.js"],[11541,"tema-ruta.js"],[11694,"tema-fichas.js"],[11811,"tema-cierre.js"],[11905,"tema-inicio.js"],[12033,"tema-ajustes.js"],[12259,"tema-nube.js"],[12317,"tema-viaje.js"],[12458,"tema-ubica.js"],[12599,"tema-personal.js"],[12662,"tema-pin.js"],[12731,"tema-navega.js"],[12764,"tema-cajas.js"],[12800,"tema-camara.js"],[12832,"tema-rutas.js"],[12872,"tema-estadisticas.js"],[12913,"tema-guia.js"],[12963,"tema-cobranza.js"],[13110,"tema-pantallas.js"],[13331,"tema-avisos.js"],[13493,"tema-reparte.js"],[13559,"tema-vehiculos.js"],[13703,"tema-notas.js"],[13758,"tema-taras.js"],[13865,"tema-cargarmas.js"],[13904,"tema-cargas.js"],[13938,"tema-cobro.js"],[13974,"tema-horario.js"],[14013,"tema-sueldos.js"],[14155,"tema-ganado.js"],[14200,"tema-cierres.js"],[14299,"tema-finanzas.js"],[14372,"tema-cuadre.js"],[14561,"tema-retencion.js"],[14652,"tema-iniciodia.js"],[14757,"tema-entregapasos.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10154,9 +10128,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- 27 · el pedido asignado le llega al chofer al momento ---------- */
 /* el administrador lo deja en la nube (pedAsig) y el celular del chofer lo mete a su ruta en cuanto lo recibe */
 try{if(typeof NB_SH!=='undefined')['pedAsig','pePide'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)})}catch(e){}
-var _p57S78=p57Stops;p57Stops=function(id){if(+id===+S.chofHoy&&!S.arOn&&S.role==='rep')return S.stops;/* desde el celular del administrador, siempre por la nube */var o=(S.chSt||{})[id];if(o)return o.stops=o.stops||[];
- /* la ruta de otro chofer: va a la nube y él la toma */
- return {_asig78:id,some:function(f){return (S.pedAsig&&S.pedAsig[id]||[]).some(function(c){return f({c:c,done:false})})},push:function(s){S.pedAsig=S.pedAsig||{};S.pedAsig[id]=(S.pedAsig[id]||[]).filter(function(x){return +x!==+s.c}).concat([s.c])},length:0,splice:function(){}}};
+/* p57Stops: pasó a tema-rutas.js */
 function pedToma78(){if(S.role!=='rep'||S.chofHoy==null)return false;var L=(S.pedAsig||{})[S.chofHoy];if(!L||!L.length)return false;var ch=false;
  L.forEach(function(cid){if(!(S.stops||[]).some(function(s){return +s.c===+cid&&!s.done})){S.stops.push({c:+cid,ped:true});ch=true}});S.pedAsig[S.chofHoy]=[];if(ch&&S.cierre&&S.cierre.sent){try{S.tab.rep='ruta'}catch(e){}}return ch}
 /* al volver de segundo plano también se revisa */
@@ -10219,7 +10191,7 @@ var _vr78=null;function vr78Pon(){if(_vr78||typeof VIEWS==='undefined'||!VIEWS.r
 var _rd78=render;render=function(){try{vr78Pon()}catch(e){}try{if(pedToma78()){}}catch(e){}var r=_rd78.apply(this,arguments);try{cfMas78();defPreg78();thumbs78()}catch(e){console.error('l78',e)}return r};
 /* el estado del pedido reconoce lo asignado por la nube */
 var _e57_78=est57;est57=function(c){var r=_e57_78.apply(this,arguments);try{if(!r.ch&&c&&c.ped){var id=c.ped.asig78;chofsDia57().forEach(function(ch){if(r.ch)return;if(((S.pedAsig||{})[ch.id]||[]).some(function(x){return +x===+c.id})||(id!=null&&+id===+ch.id))r.ch=ch})}}catch(e){}return r};
-var _pA78=p57Asigna;p57Asigna=function(c,id){var r=_pA78.apply(this,arguments);try{if(c&&c.ped)c.ped.asig78=+id}catch(e){}return r};
+/* p57Asigna: pasó a tema-rutas.js */
 
 //@@capa l79.js
 /* ===================== v7.8 · puntos 17, 26 y 29 (12 nov)
@@ -10585,13 +10557,13 @@ TUT['n:rt81']=[['[data-x="rt81e"]','Nuevo: Rutas','Aquí ves cuántos clientes l
  ['[data-x="rt81e"] [data-act="rt81open"][data-v="hoy"]','Ver y repartir','Marca uno o varios clientes y toca "Pasar a…". Escoges el chofer y si es solo por hoy o para siempre. Si ya salió, le llega un aviso al momento.'],
  ['[data-x="rt81e"] [data-act="rt81open"][data-v="man"]','Mañana','Lo mismo para mañana: la ruta se le arma sola con tus cambios. Con "Mañana no" saltas a un cliente solo ese día.']];
 TUT['n:rt81rep']=[['nav.tabs button[data-t="ruta"], nav.tabs','Tu ruta puede cambiar','Si el administrador te pasa un cliente o te quita uno, te llega un aviso y tu lista se acomoda sola. El orden lo pones tú con "Ordenar con tráfico".']];
-var _tI81=tutIniciar;tutIniciar=function(k){try{if(k==='admin')S.tutVisto['n:rt81']=true;if(k==='rep')S.tutVisto['n:rt81rep']=true}catch(e){}return _tI81.apply(this,arguments)};
+/* tutIniciar: pasó a tema-guia.js */
 function tutNuevo81(){if(window.__pnTest||!REAL||S.tut||window.__tutAct||(typeof _pin!=='undefined'&&_pin&&_pin.modo)||document.getElementById('nbov')||document.getElementById('setov')||S.rt81)return;S.tutVisto=S.tutVisto||{};
  var k=S.role==='admin'&&!S.encOn&&S.tab.admin==='inicio'&&document.querySelector('[data-x="rt81e"]')?'n:rt81':(S.role==='rep'?'n:rt81rep':null);if(!k||S.tutVisto[k]||!S.tutVisto[S.role==='rep'?'rep':'admin'])return;
  S.tutVisto[k]=true;setTimeout(function(){if(S.tut)return;S.tut={k:k,i:0,prev:{tab:S.tab[S.role]},tab:S.tab[S.role]};render()},1200)}
 /* "Aprende la app": Repartir las rutas */
-var _ai81=aprendeItems;aprendeItems=function(){var L=_ai81.apply(this,arguments);try{if(S.role!=='rep')L.push(['Repartir las rutas','inicio',!!S.rt81Ya])}catch(e){}return L};
-var _ap81=aplica81;aplica81=function(){S.rt81Ya=1;return _ap81.apply(this,arguments)};
+/* aprendeItems: pasó a tema-guia.js */
+/* aplica81: pasó a tema-rutas.js */
 function aprende81(){Array.prototype.forEach.call(document.querySelectorAll('[data-act="aprendeir"]'),function(b){if(/Repartir las rutas/.test(b.textContent)){b.dataset.act='rt81open';b.dataset.v='hoy'}})}
 /* botón "?" */
 function help81(){try{if(HELP._81)return;HELP.inicio[1]+=' En "Rutas de hoy" ves qué clientes lleva cada chofer y los repartes.';HELP.personal[1]+=' Para repartir los clientes de hoy o mañana usa "Rutas de hoy".';HELP._81=1}catch(e){}}
@@ -10645,17 +10617,15 @@ function histPon82(){if(MODO!=='vacio'||typeof HIST==='undefined')return;var L=h
 /* fechas que faltaban: venta local y gastos sin día */
 /* la primera vez (ya con los datos de la nube) lo viejo sin fecha queda como "sin fecha" ('?') y no se cuenta; de ahí en adelante lo nuevo recibe el día */
 function fechas82(){if(typeof NB!=='undefined'&&NB.on&&!NB.listo)return;var h=iso(TODAY),v1=!S.f82ini;(S.vlVentas||[]).forEach(function(v){if(v&&!v.f82)v.f82=v1?'?':h});(S.gastos||[]).forEach(function(g){if(g&&!g.f&&!g.f82)g.f82=v1?'?':h});if(v1)S.f82ini=h}
-var _est82=estadisticas;estadisticas=function(){var h=_est82.apply(this,arguments);if(MODO==='vacio')h=String(h).replace('Datos de ejemplo hasta ayer. Lo de hoy se suma al cerrar el día.','Con lo que se registra en la app (rutas, venta en bodega, gastos y mermas). Lo de hoy se va sumando.');if(MODO==='vacio')h=String(h).replace(' En la app final se guardan día con día.',' Se guardan solos, día con día.');return h};
+/* estadisticas: pasó a tema-estadisticas.js */
 /* rankings: lo que de verdad compró cada cliente en 30 días */
-var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.apply(this,arguments);var d0=iso(new Date(TODAY.getTime()-30*864e5)),T={},keep={};
- Object.keys(HIST.reduce(function(o,r){o[r.d]=1;return o},{})).forEach(function(d){if(d<d0)return;rutasDia82(d).forEach(function(r){(r.log||[]).forEach(function(l){if(l&&!l.anul)T[l.c]=(T[l.c]||0)+num(l.total)})})});
- S.cli.forEach(function(c){keep[c.id]=c.c30;c.c30=Math.round(T[c.id]||0)});try{return _rk82.apply(this,arguments)}finally{S.cli.forEach(function(c){c.c30=keep[c.id]})}};
+/* rankingHTML: pasó a tema-estadisticas.js */
 /* el día archivado guarda también lo que se recibió y se contó (para "¿Cuadran las cuentas?") */
 /* → movido (tema-rutadia.js) */
 /* → movido (tema-rutadia.js) */
 
 /* ---------- 41 · retiro del dueño ---------- */
-var _fm82=fijoMes;fijoMes=function(){var keep=S.fijos;try{S.fijos=(keep||[]).filter(function(f){return !f.retiro});return _fm82.apply(this,arguments)}finally{S.fijos=keep}};
+/* fijoMes: pasó a tema-estadisticas.js */
 function gtip82(){try{if(GTIP._82)return;var i=GTIP.map(function(x){return x[0]}).indexOf('Retiro del dueño');GTIP.splice(i<0?GTIP.length-1:i,0,['Para un vehículo','ruta','#2F6DB5']);GTIP._82=1}catch(e){}}
 function retiroNota82(){var b=[].filter.call(document.querySelectorAll('button[aria-pressed="true"]'),function(x){return /^\s*Retiro del dueño\s*$/.test(x.textContent)})[0];if(!b)return;var g=b.closest('.chips')||b.parentElement;if(!g||(g.nextElementSibling&&g.nextElementSibling.dataset&&g.nextElementSibling.dataset.x==='ret82'))return;
  var d=document.createElement('div');d.dataset.x='ret82';d.className='lbl';d.style.margin='6px 0';d.innerHTML='💡 El retiro baja la caja pero <b>no cuenta como gasto</b> del negocio (no baja la ganancia). Si es para comprarle algo a un vehículo, escoge <b>"Para un vehículo"</b>.';g.after(d)}
@@ -10815,9 +10785,7 @@ function tarde82(){var d=new Date();return d.getHours()*60+d.getMinutes()>=hLim8
 function cerro82(id){try{var c=nbRGet(id,'cierre');return !!(c&&c.sent)}catch(e){return false}}
 function pedManana82(c,id,por){ovPon81(man81(),c.id,id);if(c.ped)c.ped.cuando='mañana';S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'El pedido de '+c.n+' pasó a mañana con '+chofN(id)+' ('+por+')'});
  (S.avPrecio=S.avPrecio||[]).push('El pedido de '+c.n+' quedó para MAÑANA con '+chofN(id)+' ('+por+'). Si urge hoy, pásalo a otro chofer en Rutas.');try{rutaAviso(id,'Pedido para mañana: '+c.n)}catch(e){}}
-var _p57A82=p57Asigna;p57Asigna=function(c,id){if(MODO!=='vacio'||!cerro82(id)||S.p57&&S.p57.fz82===+id)return _p57A82.apply(this,arguments);
- if(tarde82()){pedManana82(c,id,'ya cerró y pasa de la hora límite');return 'Ya es tarde: '+chofN(id)+' cerró, así que el pedido de '+c.n+' queda para mañana'}
- /* buena hora: se le pregunta al chofer */ S.pedQ82=S.pedQ82||[];S.pedQ82.push({id:Date.now(),c:c.id,ch:+id,t:Date.now(),f:iso(TODAY),est:'pend'});S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le preguntó a '+chofN(id)+' si puede llevar el pedido de '+c.n+' (ya cerró)'});return 'Se le preguntó a '+chofN(id)+' si puede llevarlo (ya cerró). Si no contesta en 5 min, queda para mañana.'};
+/* p57Asigna: pasó a tema-rutas.js */
 try{if(NB_SH.indexOf('pedQ82')<0)NB_SH.push('pedQ82')}catch(e){}
 function pedQVence82(){var ch=false;(S.pedQ82||[]).forEach(function(p){if(p.est==='pend'&&Date.now()-p.t>PE_ESPERA){p.est='tiempo';ch=true;var c=cl(p.c);if(c&&(S.role==='admin'||S.encOn))pedManana82(c,p.ch,'no contestó')}});return ch}
 /* el admin ve la espera */
@@ -10852,7 +10820,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function sinMov82(d){var hay=false;try{rutasDia82(d).forEach(function(r){if(!rutaVacia(r.r||{log:r.log,salida:{ok:false}})||(r.log||[]).length)hay=true});if((S.vlVentas||[]).some(function(v){return v.f82===d}))hay=true;if((S.gastos||[]).some(function(g){return (g.f||g.f82)===d&&!/Retiro/.test(g.t||'')}))hay=true;if((S.cargas||[]).some(function(c){return c.fecha===d&&c.est!=='Por llegar'}))hay=true}catch(e){return false}return !hay}
 /* cajaAyerPend: pasó a tema-cajas.js */
 /* popItems: pasó a tema-inicio.js */
-var _cu82=cuadre82;cuadre82=function(d){var F=_cu82.apply(this,arguments);try{if(sinMov82(d))F.forEach(function(o){o.e='ok';o.L=['Día sin movimientos.']})}catch(e){}return F};
+/* cuadre82: pasó a tema-estadisticas.js */
 var _rdY82=render;render=function(){try{pedQVence82()}catch(e){}var r=_rdY82.apply(this,arguments);try{pedQAdm82();pedQRep82();sueltosPon82();sueltosTxt82()}catch(e){console.error('l82b',e)}return r};
 
 //@@capa l83.js
@@ -10917,7 +10885,7 @@ var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops
    (2) si ese día hubo entregas pero nunca se tocó "Iniciar", el cierre te regresaba a "Iniciar el día": ahora deja hacer el cierre.
    (3) salida de emergencia: "Pedir que liberen mi ruta" (le llega URGENTE al administrador).
    (4) "del Antier sábado" → "del sábado". */
-var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
+/* ovPon70: pasó a tema-navega.js */
 var _rdC83=render;render=function(){try{if(S.role==='rep'&&S.tab.rep==='cierre'&&S.dia80&&S.salida&&!S.salida.ok&&(S.log||[]).length&&!(S.cierre&&S.cierre.sent)){S.salida.ok=true;S.salida.tarde83=1}}catch(e){}return _rdC83.apply(this,arguments)};
 del80=function(f){if(f===ayer80())return 'de ayer';var t=String(fmtF(f)).replace(/^(Hoy|Ayer|Antier|Antes de ayer)\s+/i,'');return 'del '+t};
 /* → movido (tema-rutadia.js) */
@@ -11083,7 +11051,7 @@ var _sh85=sheet84;sheet84=function(){var h=_sh85.apply(this,arguments),L=sinD85(
  var blk='<div class="vg84" style="margin-top:4px">¿Qué días le tocan'+(L.length===1?' a '+esc(L[0].n):' ('+L.length+' sin días)')+'?</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px">'+DS85.map(function(x){var on=D.indexOf(x[0])>-1;return '<button data-act="rt85d" data-v="'+x[0]+'" aria-pressed="'+on+'" style="min-height:48px;border-radius:12px;font-weight:900;font-size:15px;border:2px solid '+(on?'var(--accent)':'var(--line)')+';background:'+(on?'var(--accent)':'var(--surface)')+';color:'+(on?'#fff':'var(--fg)')+'">'+x[1]+'</button>'}).join('')+'</div><div class="lbl" style="margin-bottom:10px">Quedan fijos con el chofer que escojas; el aviso de "sin días" se quita.</div>';
  h=h.replace('<div class="vg84">Vigencia del cambio</div>',blk+'<div class="vg84">Vigencia del cambio</div>');if(!D.length)h=h.replace('<button class="si" data-act="rt84ok">','<button class="si" data-act="rt84ok" disabled>');return h};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#rt81 [data-act="rt85d"]');if(!b||!S.rt81)return;e.preventDefault();e.stopImmediatePropagation();var R=S.rt81,v=+b.dataset.v;R.dias85=R.dias85||[];var i=R.dias85.indexOf(v);if(i>-1)R.dias85.splice(i,1);else R.dias85.push(v);pon84()},true);
-var _ap85=aplica83;aplica83=function(dest){try{var R=S.rt81,D=(R.dias85||[]).slice().sort();if(D.length)sinD85().forEach(function(c){c.dias=D.slice();c.chofer=+dest;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le puso días a '+c.n+' ('+D.map(function(x){return DSEM[x]}).join(', ')+') con '+chofN(dest)})});R.dias85=[]}catch(e){}return _ap85.apply(this,arguments)};
+/* aplica83: pasó a tema-rutas.js */
 
 /* ---------- 66 · no visitados: solo si su siguiente visita está lejos o ya falló 2 veces ---------- */
 function dHasta85(c){if(!c||!c.dias||!c.dias.length)return 99;var d=TODAY.getDay();for(var k=0;k<7;k++)if(c.dias.indexOf((d+k)%7)>-1)return k;return 99}
@@ -12612,6 +12580,22 @@ var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x
 /* ubGuardar · de l89 */
 var _ubG89=ubGuardar;ubGuardar=function(){var u=S.ub;try{if(u&&u.k==='cli'&&u.lat!=null&&u.lng!=null&&u.est!=='ok'&&u.modo!=='foto'){var c0=cl(u.id);if(c0&&!ubTiene(c0))u.est='ok'}}catch(e){}var c=u&&u.k==='cli'?cl(u.id):null,lat0=c?c.lat:null;var r=_ubG89.apply(this,arguments);try{if(c&&ubTiene(c)&&c.lat!==lat0){ubLog89(c,'Guardar ubicación aquí');c.locConf=c.locConf||iso(TODAY)}}catch(e){}return r};
 
+/* ---------- Mapa grande de Google (gmInHay, gmHay, gmHuecos, gmMueve; aplanado el 18 nov, antes en l58 y l67, en el mismo orden): no se muestra con la pantalla bloqueada, huecos y toques ---------- */
+/* gmInHay · de l58 */
+var _gmIn58=gmInHay;gmInHay=function(){if(pnBloqueada())return false;return _gmIn58.apply(this,arguments)};
+
+/* gmHay · de l58 */
+var _gmH58=gmHay;gmHay=function(){if(pnBloqueada())return false;return _gmH58.apply(this,arguments)};
+
+/* gmHuecos · de l58 */
+var _gmHu58=gmHuecos;gmHuecos=function(){var r=_gmHu58.apply(this,arguments);try{gmDebajo()}catch(e){console.error(e)}return r};
+
+/* gmMueve · de l58 */
+var _gmMu58=gmMueve;gmMueve=function(){var r=_gmMu58.apply(this,arguments);try{gmToques()}catch(e){}return r};
+
+/* gmInHay · de l67 */
+var _gmIn67=gmInHay;gmInHay=function(){return window.__gmInline?_gmIn67.apply(this,arguments):false};
+
 //@@capa tema-personal.js
 /* ===================== TEMA · Personal y cuentas de sueldo (aplanado el 18 nov) =====================
    Antes estaba repartido en 11 envolturas encadenadas en l13, l15, l18, l20, l29, l46, l50, l52.
@@ -12773,6 +12757,10 @@ var _swB82=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="antig6
 /* swBloq · de l88 */
 var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
 
+/* ---------- ovPon70 (aplanado el 18 nov, antes en l83): una ventana no se vuelve a dibujar si no cambió ---------- */
+/* ovPon70 · de l83 */
+var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
+
 //@@capa tema-cajas.js
 /* ===================== TEMA · Cajas y caja de dinero: dónde están las cajas, cuántas debería haber, efectivo esperado (aplanado el 18 nov) =====================
    Antes estaba repartido en 7 envolturas encadenadas en l5, l13, l28, l41, l76, l82.
@@ -12840,6 +12828,137 @@ var _cg82=cam73Galeria;cam73Galeria=function(){if(CAM73.solo82){toast('Esta foto
 
 /* cam73Prende · de l82 */
 var _cp82=cam73Prende;cam73Prende=function(){var r=_cp82.apply(this,arguments);if(CAM73.solo82)setTimeout(function(){var m=document.querySelector('#cam73 .msg');if(m&&/Galer/.test(m.innerHTML))m.innerHTML='No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Dale permiso de cámara a la app: Ajustes del celular → Apps → Ruta Fácil → Permisos → Cámara.</span>'},1500);return r};
+
+//@@capa tema-rutas.js
+/* ===================== TEMA · Rutas de los choferes: asignar pedidos, paradas, aplicar los cambios de Rutas, horas de llegada (aplanado el 18 nov) =====================
+   Antes estaba repartido en 6 envolturas encadenadas en l62, l78, l81, l82, l85.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con su prueba de comparación).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   Se arma justo después de tema-camara.js. (rt81HTML NO se movió: l84 la rehace completa y sus envolturas de l81–l83 no se usan; pedAsigna va dentro de un bloque.)
+   - p57Asigna: asignar un pedido a un chofer (queda anotado; si ya cerró, queda para mañana).
+   - p57Stops: las paradas de un chofer (la de otro chofer va por la nube).
+   - aplica81 / aplica83: aplicar los cambios de la pantalla Rutas (días fijos).
+   - etas: a qué hora llega a cada cliente (con lo aprendido de cada tramo).
+   ============================================================================================ */
+
+/* etas · de l62 */
+var _etas62=etas;etas=function(){var t=S.salida.ok?S.reloj:480,p=S.pos||BOD,out={},prev=null,rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
+ (S.stops||[]).forEach(function(st){if(st.done)prev=String(st.c)});var ahora=Date.now();
+ S.stops.forEach(function(st,i){if(st.done)return;var c=cl(st.c);if(!c)return;var k=String(st.c),man=null;
+  if(prev)man=aprTramo(prev,k,ahora);if(man==null&&rg&&rg.legs)man=rg.legs[(prev||'yo')+'>'+k];if(man==null)man=tMin(p,c);t+=Math.round(man);
+  var ci=hmin(c.hCi);out[i]={eta:t,late:!!(ci&&t>ci&&!c.conf)};var at=aprAten(k);t+=at!=null?Math.round(at):10;if(c.lat!=null)p=c;prev=k});
+ var vb=prev?aprTramo(prev,'B',ahora):null;if(vb==null&&rg&&rg.legs&&prev)vb=rg.legs[prev+'>B'];out.fin=t+(vb!=null?Math.round(vb):0);return out};
+
+/* p57Stops · de l78 */
+var _p57S78=p57Stops;p57Stops=function(id){if(+id===+S.chofHoy&&!S.arOn&&S.role==='rep')return S.stops;/* desde el celular del administrador, siempre por la nube */var o=(S.chSt||{})[id];if(o)return o.stops=o.stops||[];
+ /* la ruta de otro chofer: va a la nube y él la toma */
+ return {_asig78:id,some:function(f){return (S.pedAsig&&S.pedAsig[id]||[]).some(function(c){return f({c:c,done:false})})},push:function(s){S.pedAsig=S.pedAsig||{};S.pedAsig[id]=(S.pedAsig[id]||[]).filter(function(x){return +x!==+s.c}).concat([s.c])},length:0,splice:function(){}}};
+
+/* p57Asigna · de l78 */
+var _pA78=p57Asigna;p57Asigna=function(c,id){var r=_pA78.apply(this,arguments);try{if(c&&c.ped)c.ped.asig78=+id}catch(e){}return r};
+
+/* aplica81 · de l81 */
+var _ap81=aplica81;aplica81=function(){S.rt81Ya=1;return _ap81.apply(this,arguments)};
+
+/* p57Asigna · de l82 */
+var _p57A82=p57Asigna;p57Asigna=function(c,id){if(MODO!=='vacio'||!cerro82(id)||S.p57&&S.p57.fz82===+id)return _p57A82.apply(this,arguments);
+ if(tarde82()){pedManana82(c,id,'ya cerró y pasa de la hora límite');return 'Ya es tarde: '+chofN(id)+' cerró, así que el pedido de '+c.n+' queda para mañana'}
+ /* buena hora: se le pregunta al chofer */ S.pedQ82=S.pedQ82||[];S.pedQ82.push({id:Date.now(),c:c.id,ch:+id,t:Date.now(),f:iso(TODAY),est:'pend'});S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le preguntó a '+chofN(id)+' si puede llevar el pedido de '+c.n+' (ya cerró)'});return 'Se le preguntó a '+chofN(id)+' si puede llevarlo (ya cerró). Si no contesta en 5 min, queda para mañana.'};
+
+/* aplica83 · de l85 */
+var _ap85=aplica83;aplica83=function(dest){try{var R=S.rt81,D=(R.dias85||[]).slice().sort();if(D.length)sinD85().forEach(function(c){c.dias=D.slice();c.chofer=+dest;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le puso días a '+c.n+' ('+D.map(function(x){return DSEM[x]}).join(', ')+') con '+chofN(dest)})});R.dias85=[]}catch(e){}return _ap85.apply(this,arguments)};
+
+//@@capa tema-estadisticas.js
+/* ===================== TEMA · Estadísticas, rankings, cuadre del día archivado, gastos fijos y desgaste por ruta (aplanado el 18 nov) =====================
+   Antes estaba repartido en 7 envolturas encadenadas en l8, l74, l82.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con su prueba de comparación).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   Se arma justo después de tema-rutas.js. TOCA NÚMEROS (gastos fijos, desgaste): solo se movió, las cuentas son las mismas (pruebas/comp-estad.js).
+   - estadisticas: sin historial lo dice; en la real sin "datos de ejemplo".
+   - rankingHTML: en la real, lo que de verdad compró cada cliente en 30 días.
+   - cuadre82: el día sin movimientos no pide cuadre.
+   - fijoMes: los gastos fijos del mes sin el "retiro del dueño".
+   - rep68 / desg: el desgaste del vehículo por ruta (estimado con km si no hay rutas).
+   ============================================================================================ */
+
+/* estadisticas · de l8 */
+var _estL8=estadisticas;estadisticas=function(){if(HIST.length)return _estL8.apply(this,arguments);return '<h1>Estadísticas</h1><div class="card"><b>Todavía no hay historial</b><div class="lbl" style="margin-top:6px">Las ventas, ganancias, gastos y rankings aparecen aquí cuando empiecen a registrarse días de trabajo. En la app final se guardan día con día.</div></div>'+cuentasHTML()};
+
+/* rep68 · de l74 */
+var _rep74=rep68;rep68=function(dias){var o=_rep74.apply(this,arguments);if(o.rutas)return o;try{var vh=vehRep74(),km=num(S.cfg.kmRuta)||40,cj=num(S.cfg.cajRuta)||num(vh&&vh.capC)||40,kg=num(S.cfg.kgRuta)||150,d=km*tasa68(vh),kc=o.kc||20,wR=cj*kc,wM=kg,w=wR+wM;
+  o.est=true;o.desg=d;o.estKm=km;o.caja=w?d*wR/w/cj:0;o.kgc=w?d*wM/w/kg:0}catch(e){}return o};
+
+/* desg · de l74 */
+var _desg74=desg;desg=function(c,k){var h=_desg74.apply(this,arguments);if(typeof h!=='string')return h;var rp=rep68(30);
+ h=h.replace(/Desgaste del vehículo \(/g,'Desgaste al ir por la fruta (');
+ if(rp.est){h=h.replace('+ Repartirla <span class="lbl">(sin rutas cerradas todavía)</span>','+ Repartirla: desgaste de la camioneta <span class="lbl">(estimado: '+rp.estKm+' km de ruta; sale real al cerrar rutas)</span>').replace('>+ Repartirlo<','>+ Repartirlo: desgaste de la camioneta <span class="lbl">(estimado)</span><')}
+ else h=h.replace('>+ Repartirla<','>+ Repartirla <span class="lbl">(combustible, gastos, desgaste y sueldo de las rutas)</span><');return h};
+
+/* estadisticas · de l82 */
+var _est82=estadisticas;estadisticas=function(){var h=_est82.apply(this,arguments);if(MODO==='vacio')h=String(h).replace('Datos de ejemplo hasta ayer. Lo de hoy se suma al cerrar el día.','Con lo que se registra en la app (rutas, venta en bodega, gastos y mermas). Lo de hoy se va sumando.');if(MODO==='vacio')h=String(h).replace(' En la app final se guardan día con día.',' Se guardan solos, día con día.');return h};
+
+/* rankingHTML · de l82 */
+var _rk82=rankingHTML;rankingHTML=function(){if(MODO!=='vacio')return _rk82.apply(this,arguments);var d0=iso(new Date(TODAY.getTime()-30*864e5)),T={},keep={};
+ Object.keys(HIST.reduce(function(o,r){o[r.d]=1;return o},{})).forEach(function(d){if(d<d0)return;rutasDia82(d).forEach(function(r){(r.log||[]).forEach(function(l){if(l&&!l.anul)T[l.c]=(T[l.c]||0)+num(l.total)})})});
+ S.cli.forEach(function(c){keep[c.id]=c.c30;c.c30=Math.round(T[c.id]||0)});try{return _rk82.apply(this,arguments)}finally{S.cli.forEach(function(c){c.c30=keep[c.id]})}};
+
+/* fijoMes · de l82 */
+var _fm82=fijoMes;fijoMes=function(){var keep=S.fijos;try{S.fijos=(keep||[]).filter(function(f){return !f.retiro});return _fm82.apply(this,arguments)}finally{S.fijos=keep}};
+
+/* cuadre82 · de l82 */
+var _cu82=cuadre82;cuadre82=function(d){var F=_cu82.apply(this,arguments);try{if(sinMov82(d))F.forEach(function(o){o.e='ok';o.L=['Día sin movimientos.']})}catch(e){}return F};
+
+//@@capa tema-guia.js
+/* ===================== TEMA · Guía, tutoriales y "Hoy te toca" (aplanado el 18 nov) =====================
+   Antes estaba repartido en 7 envolturas encadenadas en l43, l59, l60, l81.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con su prueba de comparación).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   Se arma justo después de tema-estadisticas.js (tema-pantallas.js se arma después y sigue envolviendo tutIniciar y hoyItems).
+   - tutHTML: el globo del tutorial. tutIniciar: tutoriales nuevos de Rutas ya vistos.
+   - guiaLibre / guiaMuestra: la burbuja de guía y "Muéstrame dónde".
+   - aprendeItems: "Aprende la app" (Repartir las rutas). popSig: la siguiente tarjeta. hoyItems: "Hoy te toca" (cierres).
+   ============================================================================================ */
+
+/* tutHTML · de l43 */
+var _tutH43=tutHTML;tutHTML=function(quieto){var t=S.tut;if(!t)return '';var L=TUT[t.k],st=L&&L[t.i];if(!st){S.tut=null;return ''}
+ /* paso "Gastos": el botón real de Gasto está en Ruta */
+ 
+ var h=_tutH43.call(this,quieto),el=st[3]==='swipe'?null:tutBlanco(st);if(!h)return h;
+ if(!el||st[3]==='swipe'){/* lo que señala no está: globo al centro, sin hueco (en "deslizar", la manita al centro de la pantalla) */
+  h=h.replace('<div class="hole"','<div class="hole sinhueco"');if(st[3]!=='swipe')h=h.replace(/<svg class="hand"[\s\S]*?<\/svg>/,'');
+  h=h.replace(/<div class="bub" style="[^"]*"/,'<div class="bub" style="top:50%;transform:translateY(-50%)"');
+  if(st[3]==='swipe')h=h.replace(/(<svg class="hand"[^>]*style=")[^"]*"/,'$1left:'+(innerWidth/2-20)+'px;top:'+(innerHeight*0.32)+'px;animation:pnSwipe 1.6s ease-in-out infinite"')}
+ return h};
+
+/* guiaLibre · de l59 */
+var _gL59=guiaLibre;guiaLibre=function(){if(!_gL59.apply(this,arguments))return false;try{
+ if(!pnArranqueListo())return false;
+ var a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return false;
+ if(document.querySelector('.wz-nav,#medov,#fotov,#fgov,#tutov'))return false;
+ if(S.role==='rep'&&/^(entrega|cierre)$/.test(S.tab.rep))return false;
+ return true}catch(e){return false}};
+
+/* popSig · de l59 */
+var _popS59=popSig;popSig=function(){if(Date.now()-_popSigT<450)return;_popSigT=Date.now();
+ if(!/^(popdesp|precioayer|inspok|inspno)$/.test(_popUlt||''))_popPausa={t:Date.now(),salio:false};_popUlt='';return _popS59.apply(this,arguments)};
+
+/* hoyItems · de l60 */
+var _hoyI60=hoyItems;hoyItems=function(){var L=_hoyI60.apply(this,arguments),hoy=iso(TODAY);try{var C=cierresHoy(),env=C.filter(function(x){return x.env}),rec=C.filter(function(x){return x.rec}),porRec=env.filter(function(x){return !x.rec}),falt=C.filter(function(x){return !x.rec});
+ L.forEach(function(x){if(/^Recibir los cierres/.test(x[0])){x[0]='Recibir los cierres · '+(C.length?env.length+' de '+C.length+' mandados'+(rec.length?' · '+rec.length+' recibido'+(rec.length>1?'s':''):''):'nadie salió hoy');x[1]=C.length>0&&rec.length===C.length;x[4]='cierres'}
+  if(/^Mandarte el resumen/.test(x[0])){x[1]=S.resHoy===hoy;x[4]='resumen';if(!x[1]&&falt.length)x[0]='Mandarte el resumen del día · faltan '+falt.length+' cierre'+(falt.length>1?'s':'')}})}catch(e){}return L};
+
+/* guiaMuestra · de l60 */
+var _gMu60=guiaMuestra;guiaMuestra=function(sel){var hay=String(sel||'main').split(/,\s*/).some(function(s){try{var el=document.querySelector(s);return el&&el.getClientRects().length}catch(e){return false}});
+ if(!hay){toast('Eso todavía no aparece en esta pantalla. Sale cuando haya algo que hacer ahí.');return}return _gMu60.apply(this,arguments)};
+
+/* tutIniciar · de l81 */
+var _tI81=tutIniciar;tutIniciar=function(k){try{if(k==='admin')S.tutVisto['n:rt81']=true;if(k==='rep')S.tutVisto['n:rt81rep']=true}catch(e){}return _tI81.apply(this,arguments)};
+
+/* aprendeItems · de l81 */
+var _ai81=aprendeItems;aprendeItems=function(){var L=_ai81.apply(this,arguments);try{if(S.role!=='rep')L.push(['Repartir las rutas','inicio',!!S.rt81Ya])}catch(e){}return L};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

@@ -16,8 +16,8 @@ var PN_LIBRE='#pinov,#pxov,#pnov,#permov,#nbov,#setov,#arr,[data-kp]';
   if(e.cancelable)e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false})});
 /* al bloquearse: cerrar los mapas de Google (los dibuja Android y quedarían encima) */
 function pnQuitaMapas(){try{if(typeof gmCierra==='function'&&GM)gmCierra()}catch(e){}try{if(typeof GMI!=='undefined')GMI.slice().forEach(gmQuita)}catch(e){}}
-var _gmIn58=gmInHay;gmInHay=function(){if(pnBloqueada())return false;return _gmIn58.apply(this,arguments)};
-var _gmH58=gmHay;gmHay=function(){if(pnBloqueada())return false;return _gmH58.apply(this,arguments)};
+/* gmInHay: pasó a tema-ubica.js */
+/* gmHay: pasó a tema-ubica.js */
 /* al irse al fondo: si hay PIN, tapar la pantalla (así "apps recientes" no enseña datos) */
 function pnTapa(){if(document.getElementById('pncubre'))return;var o=document.createElement('div');o.id='pncubre';o.setAttribute('aria-hidden','true');o.innerHTML='<img src="'+(typeof LOGO_IC!=='undefined'?LOGO_IC:'')+'" alt="">';document.body.appendChild(o)}
 function pnDestapa(){var o=document.getElementById('pncubre');if(o)o.remove()}
@@ -104,7 +104,7 @@ function gmDebajo(){var hosts=[];GMI.forEach(function(x){if(x.m&&x.host!==docume
  Array.prototype.forEach.call(document.querySelectorAll('.gmoc'),function(e){if(quiero.indexOf(e)<0)e.classList.remove('gmoc')});quiero.forEach(function(e){if(!e.classList.contains('gmoc'))e.classList.add('gmoc')});
  if(hosts.length&&!document.documentElement.classList.contains('gmin'))document.documentElement.classList.add('gmin');
  if(!hosts.length)Array.prototype.forEach.call(document.querySelectorAll('*'),function(n){if(n._gmN58){n._gmN58=0;n.style.background=n._gmBg58||''}})}
-var _gmHu58=gmHuecos;gmHuecos=function(){var r=_gmHu58.apply(this,arguments);try{gmDebajo()}catch(e){console.error(e)}return r};
+/* gmHuecos: pasó a tema-ubica.js */
 
 /* ---------- 2 · que ningún mapa de Google quede "agarrando" los toques ---------- */
 /* todos los mapas que se piden quedan anotados; el que ya no está en pantalla se destruye aunque haya fallado al crearse */
@@ -119,7 +119,7 @@ setInterval(function(){try{gmBarre()}catch(e){}},4000);
 function gmToques(){if(!window.GMAPA_PL||!window.GMAPA_PL.disableTouch)return;GMI.forEach(function(x){if(!x.m)return;var r=x.el.getBoundingClientRect(),on=false;
   if(r.width>4&&r.height>4&&r.bottom>0&&r.top<innerHeight){var el=document.elementFromPoint(Math.min(innerWidth-2,Math.max(1,r.left+r.width/2)),Math.min(innerHeight-2,Math.max(1,r.top+r.height/2)));on=!!(el&&(el===x.el||x.el.contains(el)))}
   if(x.toq!==on){x.toq=on;try{var p=on?window.GMAPA_PL.enableTouch({id:x.id}):window.GMAPA_PL.disableTouch({id:x.id});if(p&&p.catch)p.catch(function(){})}catch(e){}}})}
-var _gmMu58=gmMueve;gmMueve=function(){var r=_gmMu58.apply(this,arguments);try{gmToques()}catch(e){}return r};
+/* gmMueve: pasó a tema-ubica.js */
 setInterval(function(){try{if(GMI.length)gmToques()}catch(e){}},1200);
 /* al apagar los mapas en Ajustes, también se barre todo */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gmswitch"]');if(!b)return;setTimeout(function(){try{Object.keys(GMTODOS).forEach(function(id){GMTODOS[id]=0});gmBarre()}catch(er){}},300)});

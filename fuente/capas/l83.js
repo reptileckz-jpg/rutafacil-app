@@ -59,7 +59,7 @@ var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops
    (2) si ese día hubo entregas pero nunca se tocó "Iniciar", el cierre te regresaba a "Iniciar el día": ahora deja hacer el cierre.
    (3) salida de emergencia: "Pedir que liberen mi ruta" (le llega URGENTE al administrador).
    (4) "del Antier sábado" → "del sábado". */
-var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
+/* ovPon70: pasó a tema-navega.js */
 var _rdC83=render;render=function(){try{if(S.role==='rep'&&S.tab.rep==='cierre'&&S.dia80&&S.salida&&!S.salida.ok&&(S.log||[]).length&&!(S.cierre&&S.cierre.sent)){S.salida.ok=true;S.salida.tarde83=1}}catch(e){}return _rdC83.apply(this,arguments)};
 del80=function(f){if(f===ayer80())return 'de ayer';var t=String(fmtF(f)).replace(/^(Hoy|Ayer|Antier|Antes de ayer)\s+/i,'');return 'del '+t};
 /* → movido (tema-rutadia.js) */

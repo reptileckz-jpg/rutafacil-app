@@ -25,3 +25,7 @@ var _swB82=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="antig6
 
 /* swBloq · de l88 */
 var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
+
+/* ---------- ovPon70 (aplanado el 18 nov, antes en l83): una ventana no se vuelve a dibujar si no cambió ---------- */
+/* ovPon70 · de l83 */
+var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};

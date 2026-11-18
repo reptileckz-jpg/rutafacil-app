@@ -66,9 +66,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- 27 · el pedido asignado le llega al chofer al momento ---------- */
 /* el administrador lo deja en la nube (pedAsig) y el celular del chofer lo mete a su ruta en cuanto lo recibe */
 try{if(typeof NB_SH!=='undefined')['pedAsig','pePide'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)})}catch(e){}
-var _p57S78=p57Stops;p57Stops=function(id){if(+id===+S.chofHoy&&!S.arOn&&S.role==='rep')return S.stops;/* desde el celular del administrador, siempre por la nube */var o=(S.chSt||{})[id];if(o)return o.stops=o.stops||[];
- /* la ruta de otro chofer: va a la nube y él la toma */
- return {_asig78:id,some:function(f){return (S.pedAsig&&S.pedAsig[id]||[]).some(function(c){return f({c:c,done:false})})},push:function(s){S.pedAsig=S.pedAsig||{};S.pedAsig[id]=(S.pedAsig[id]||[]).filter(function(x){return +x!==+s.c}).concat([s.c])},length:0,splice:function(){}}};
+/* p57Stops: pasó a tema-rutas.js */
 function pedToma78(){if(S.role!=='rep'||S.chofHoy==null)return false;var L=(S.pedAsig||{})[S.chofHoy];if(!L||!L.length)return false;var ch=false;
  L.forEach(function(cid){if(!(S.stops||[]).some(function(s){return +s.c===+cid&&!s.done})){S.stops.push({c:+cid,ped:true});ch=true}});S.pedAsig[S.chofHoy]=[];if(ch&&S.cierre&&S.cierre.sent){try{S.tab.rep='ruta'}catch(e){}}return ch}
 /* al volver de segundo plano también se revisa */
@@ -131,4 +129,4 @@ var _vr78=null;function vr78Pon(){if(_vr78||typeof VIEWS==='undefined'||!VIEWS.r
 var _rd78=render;render=function(){try{vr78Pon()}catch(e){}try{if(pedToma78()){}}catch(e){}var r=_rd78.apply(this,arguments);try{cfMas78();defPreg78();thumbs78()}catch(e){console.error('l78',e)}return r};
 /* el estado del pedido reconoce lo asignado por la nube */
 var _e57_78=est57;est57=function(c){var r=_e57_78.apply(this,arguments);try{if(!r.ch&&c&&c.ped){var id=c.ped.asig78;chofsDia57().forEach(function(ch){if(r.ch)return;if(((S.pedAsig||{})[ch.id]||[]).some(function(x){return +x===+c.id})||(id!=null&&+id===+ch.id))r.ch=ch})}}catch(e){}return r};
-var _pA78=p57Asigna;p57Asigna=function(c,id){var r=_pA78.apply(this,arguments);try{if(c&&c.ped)c.ped.asig78=+id}catch(e){}return r};
+/* p57Asigna: pasó a tema-rutas.js */

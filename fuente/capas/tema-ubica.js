@@ -121,3 +121,19 @@ var _u68G89=ub68Guarda;ub68Guarda=function(){var x=S.ub68,o=null;try{o=ub68Obj(x
 
 /* ubGuardar · de l89 */
 var _ubG89=ubGuardar;ubGuardar=function(){var u=S.ub;try{if(u&&u.k==='cli'&&u.lat!=null&&u.lng!=null&&u.est!=='ok'&&u.modo!=='foto'){var c0=cl(u.id);if(c0&&!ubTiene(c0))u.est='ok'}}catch(e){}var c=u&&u.k==='cli'?cl(u.id):null,lat0=c?c.lat:null;var r=_ubG89.apply(this,arguments);try{if(c&&ubTiene(c)&&c.lat!==lat0){ubLog89(c,'Guardar ubicación aquí');c.locConf=c.locConf||iso(TODAY)}}catch(e){}return r};
+
+/* ---------- Mapa grande de Google (gmInHay, gmHay, gmHuecos, gmMueve; aplanado el 18 nov, antes en l58 y l67, en el mismo orden): no se muestra con la pantalla bloqueada, huecos y toques ---------- */
+/* gmInHay · de l58 */
+var _gmIn58=gmInHay;gmInHay=function(){if(pnBloqueada())return false;return _gmIn58.apply(this,arguments)};
+
+/* gmHay · de l58 */
+var _gmH58=gmHay;gmHay=function(){if(pnBloqueada())return false;return _gmH58.apply(this,arguments)};
+
+/* gmHuecos · de l58 */
+var _gmHu58=gmHuecos;gmHuecos=function(){var r=_gmHu58.apply(this,arguments);try{gmDebajo()}catch(e){console.error(e)}return r};
+
+/* gmMueve · de l58 */
+var _gmMu58=gmMueve;gmMueve=function(){var r=_gmMu58.apply(this,arguments);try{gmToques()}catch(e){}return r};
+
+/* gmInHay · de l67 */
+var _gmIn67=gmInHay;gmInHay=function(){return window.__gmInline?_gmIn67.apply(this,arguments):false};

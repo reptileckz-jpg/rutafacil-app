@@ -67,12 +67,7 @@ function aprAprende(){if(S.role!=='rep'||!S.salida||!S.salida.ok)return false;va
   if(!x.aprA&&x.sal&&x.sal>x.lleg){var ma=(x.sal-x.lleg)/60000;if(ma>=0.5&&ma<=120)aprPon(S.aprA,o.c,ma);x.aprA=1;cam=true}});return cam}
 var _rd62c=render;render=function(){try{aprAprende()}catch(e){}return _rd62c.apply(this,arguments)};
 /* hora estimada = manejo (aprendido, o lo de Google, o el cálculo de siempre) + tiempo de atención de cada cliente */
-var _etas62=etas;etas=function(){var t=S.salida.ok?S.reloj:480,p=S.pos||BOD,out={},prev=null,rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
- (S.stops||[]).forEach(function(st){if(st.done)prev=String(st.c)});var ahora=Date.now();
- S.stops.forEach(function(st,i){if(st.done)return;var c=cl(st.c);if(!c)return;var k=String(st.c),man=null;
-  if(prev)man=aprTramo(prev,k,ahora);if(man==null&&rg&&rg.legs)man=rg.legs[(prev||'yo')+'>'+k];if(man==null)man=tMin(p,c);t+=Math.round(man);
-  var ci=hmin(c.hCi);out[i]={eta:t,late:!!(ci&&t>ci&&!c.conf)};var at=aprAten(k);t+=at!=null?Math.round(at):10;if(c.lat!=null)p=c;prev=k});
- var vb=prev?aprTramo(prev,'B',ahora):null;if(vb==null&&rg&&rg.legs&&prev)vb=rg.legs[prev+'>B'];out.fin=t+(vb!=null?Math.round(vb):0);return out};
+/* etas: pasó a tema-rutas.js */
 
 /* ---------- 11 · Ordenar con tráfico (Google) ---------- */
 function rgNat(){var n=natPl&&natPl();return n&&n.rutasGoogle?n:null}

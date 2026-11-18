@@ -14,12 +14,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* ---------- 6 · la burbuja no sale mientras haces algo, y nunca tapa los botones de abajo ---------- */
 (function(){var st=document.createElement('style');st.textContent='#guiab{top:calc(74px + var(--sbar,0px));bottom:auto!important}';document.head.appendChild(st)})();
 ['pointerdown','touchmove','wheel','focusin'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{_guiaT=Date.now()}catch(er){}},{capture:true,passive:true})});
-var _gL59=guiaLibre;guiaLibre=function(){if(!_gL59.apply(this,arguments))return false;try{
- if(!pnArranqueListo())return false;
- var a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return false;
- if(document.querySelector('.wz-nav,#medov,#fotov,#fgov,#tutov'))return false;
- if(S.role==='rep'&&/^(entrega|cierre)$/.test(S.tab.rep))return false;
- return true}catch(e){return false}};
+/* guiaLibre: pasó a tema-guia.js */
 /* si empieza a escribir o deslizar con la burbuja puesta, se quita sola */
 ['input','touchmove','wheel'].forEach(function(ev){window.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest('#guiab'))return;try{var o=document.getElementById('guiab');if(o&&!o.dataset.forzada)o.remove()}catch(er){}},{capture:true,passive:true})});
 
@@ -49,8 +44,7 @@ var _popSigT=0,_popPausa=null,_popUlt='';
 window.addEventListener('pointerdown',function(e){var b=e.target.closest&&e.target.closest('[data-pop],[data-act="popdesp"]');if(b)_popUlt=b.dataset.act},true);
 window.addEventListener('keydown',function(e){var b=e.target.closest&&e.target.closest('[data-pop],[data-act="popdesp"]');if(b)_popUlt=b.dataset.act},true);
 function popCasa(){return (typeof NAV_CASA!=='undefined'&&NAV_CASA[S.role])||'inicio'}
-var _popS59=popSig;popSig=function(){if(Date.now()-_popSigT<450)return;_popSigT=Date.now();
- if(!/^(popdesp|precioayer|inspok|inspno)$/.test(_popUlt||''))_popPausa={t:Date.now(),salio:false};_popUlt='';return _popS59.apply(this,arguments)};
+/* popSig: pasó a tema-guia.js */
 /* la siguiente tarjeta sale hasta que regresa a Inicio (o, si lo mandó a Inicio mismo, después de un rato) */
 /* popHTML: pasó a tema-inicio.js */
 var _rd59d=render;render=function(){try{if(_popPausa&&S.tab[S.role]!==popCasa())_popPausa.salio=true}catch(e){}return _rd59d.apply(this,arguments)};

@@ -28,7 +28,7 @@ bioEntrar=function(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;
   setTimeout(function(){var cb=_pin.cb,m=_pin.modo;S.pinOk[k]=true;_pinAct=Date.now();if(S.pinF)delete S.pinF[k];_pin={v:'',modo:null};document.documentElement.classList.add('bioentra');bioAnim('fuera');render();setTimeout(function(){document.documentElement.classList.remove('bioentra')},500);if(m!=='entrar'&&cb)setTimeout(cb,0)},650)},
  function(er){_bioEnCurso=false;var cancel=er&&/^(10|13|5)$/.test(String(er.code||''));if(cancel){bioAnim('fuera');return}bioAnim('mal');try{vibrar([60,40,60])}catch(e){}setTimeout(function(){bioAnim('fuera');toast('Usa tu PIN')},900)})};
 /* textos: huella o cara */
-var _pH48=pinHTML;pinHTML=function(){var h=_pH48.apply(this,arguments);return h?h.replace('🫆 Entrar con mi huella','🫆 Entrar con mi huella o cara'):h};
+/* pinHTML: pasó a tema-pin.js */
 /* ---------- 69 · permisos la primera vez (y si falta uno importante, se avisa) ---------- */
 function natPl48(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
 var PERM_L=[['ubicacion','📍','Ubicación','Para la ruta, el mapa y guardar dónde están los clientes (solo mientras usas la app).'],['camara','📷','Cámara','Para las fotos (tickets, vehículo, entregas) y leer códigos QR.'],['notif','🔔','Avisos','Para que te lleguen entregas nuevas y avisos del administrador.']];

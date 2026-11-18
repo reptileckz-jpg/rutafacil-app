@@ -110,7 +110,7 @@ document.addEventListener('input',function(e){var t=e.target;if(!t||!/^cnt_/.tes
 var _an82=antig65;antig65=function(){var d=_an82.apply(this,arguments);if(!d)return d;var v=3;try{v=vidaDias()}catch(e){}var mal=(S.madL||[]).filter(function(x){var e=0;try{e=madEdad(x)}catch(er){}return num(x.q)>0&&v-e<=0});if(!mal.length)return null;
  try{delete d.dataset.sw80;d.style.transform='';Array.prototype.forEach.call(d.querySelectorAll('.lote'),function(el){var x=(S.madL||[])[+el.dataset.k];if(!x||v-madEdad(x)>0)el.remove()});var tt=d.querySelector('.hd .tt');if(tt)tt.textContent='Fruta madura pasada de tiempo';
   var st=d.querySelector('.hd .st');if(st)st.textContent='Toca cada una para decir qué pasó (se tiró, se remató o salió a la venta)';var al=d.querySelector('.alc');if(al)al.remove()}catch(e){}return d};
-var _swB82=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="antig65"],.lote,[data-sw80]'))return true;return _swB82.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */
 
 var _rd82=render;render=function(){try{fechas82();gtip82();if(S.role==='admin'||S.role==='cont'||S.encOn)histPon82()}catch(e){console.error('l82 hist',e)}var r=_rd82.apply(this,arguments);try{retiroNota82();cuEntrada82();cu82Pon()}catch(e){console.error('l82',e)}return r};
 

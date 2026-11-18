@@ -2646,3 +2646,11 @@ Decidió: contado "si ya debe algo"; orden del cobro el propuesto, sin repetir "
 
 
 ## 2026-11-18 · Ricardo: "sí" → versión 10.1 (APK 1.0.48) a main con 126 y 127. Todas las pruebas en 0 FAIL antes de publicar.
+
+## 2026-11-18 · Ricardo: "sigue con vite" (después de la 10.1 / APK 1.0.48)
+- Tema "Entrar con PIN" → `capas/tema-pin.js` (12: pinHTML 4, pinDe 2, personasEntrar 2, pinRow, pinLimMin, pinEntrar, entrarComo), después de `tema-personal.js`. 294 → **282 (50%)**. `pruebas/comp-pin.js`: 99 casos iguales en la demo y en la real; detecta un cambio a propósito en el bloqueo por intentos.
+- `suAplicar` (4) → al final de `tema-ajustes.js` (es el asistente de la primera vez) y tema "Atrás y deslizar" → `capas/tema-navega.js` (6: navAtras 3, swBloq 3). 282 → **272 (52%)**. `pruebas/comp-navega.js`: 31 casos iguales en la demo y en la real; `comp-ajustes.js` sigue idéntico; detecta un cambio a propósito en el asistente y en el deslizar.
+- No toca dinero ni mercancía: solo cambia dónde está el código. Todas las pruebas en 0 FAIL (incluidas t61, t115, t118, t120, t120b, t121, t122, t122nube, t123nube).
+  - `tk.js` (vieja, de tickets en la entrega) ya fallaba con la 10.1 publicada: quedó desfasada con la venta por pasos (125). No es de las obligatorias; queda anotada para revisarla.
+- Siguiente: más piezas sueltas (cajas: cajasDonde 3 / cajaEsp 2 / cajasEsperadas; notas: notaBlock 3 / notasDe / notaItems / notaImg; cámara: cam73Prende 2 / cam73Galeria / cam73Abre) y al final `render` (118).
+

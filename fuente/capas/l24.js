@@ -11,4 +11,4 @@ function fvInput(img){if(!img)return null;var lb=img.closest('label[for]');if(lb
 document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;var lb=t.closest('label[for]');if(!lb)return;var i=document.getElementById(lb.getAttribute('for'));if(!i||i.type!=='file')return;
  var src=t.currentSrc||t.getAttribute('src')||'';if(!src)return;e.preventDefault();e.stopImmediatePropagation();_fvImg=t;fotoAbrir(src)},true);
 /* atrás cierra la foto */
-var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');if(o){o.remove();return true}return _navA24.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */

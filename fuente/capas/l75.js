@@ -65,10 +65,7 @@ WZ.suProv={tit:'Proveedor',fin:'Agregar proveedor',pasos:[
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="su75add"]');if(!b||!S.setup)return;e.stopImmediatePropagation();var k=b.dataset.k;
  if(k==='veh')wzAbre('suVeh',{plEdo:'Veracruz'});else if(k==='per')wzAbre('suPer',{puesto:(S.setup.per||[]).some(function(x){return x.puesto==='chofer'})?'':'chofer'});else if(k==='cli')wzAbre('suCli',{dias:[]});else wzAbre('suProv',{})},true);
 /* al terminar: lo que se capturó en los pasos también se guarda (aceite, capacidad, ubicación, horario…) */
-var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(function(v){return v.ex75||null}),ec=(U.cli||[]).map(function(c){return [c.n,c.ex75||null]}),ep=(U.prov||[]).map(function(p){return [p.n,p.ex75||null]});var r=_suA75.apply(this,arguments);
- try{ev.forEach(function(x,i){var v=S.veh[i];if(!x||!v)return;Object.keys(x).forEach(function(k){if(x[k]!==undefined&&x[k]!=='')v[k]=x[k]});if(x.acLast!=null)v.acLast=num(x.acLast);if(x.acInt)v.acInt=num(x.acInt);if(x.capC){v.capC=num(x.capC);v.capRC=num(x.capC)}});
-  ec.forEach(function(x){if(!x[1])return;var c=S.cli.filter(function(z){return z.n===x[0]})[0];if(!c)return;if(x[1].lat!=null&&x[1].lat!==''){c.lat=+x[1].lat;c.lng=+x[1].lng}if(x[1].hAb){c.hAb=x[1].hAb;c.hCi=x[1].hCi}});
-  ep.forEach(function(x){if(!x[1])return;var d=provD(x[0]);if(x[1].lat!=null&&x[1].lat!==''){d.lat=+x[1].lat;d.lng=+x[1].lng}})}catch(e){console.error('suA75',e)}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* "Listo": corregir cada apartado */
 function suListo75(){var U=S.setup,o=document.getElementById('setov');if(!U||!o||U.p!==7||S.wz)return;var sw=o.querySelector('.sw');if(!sw||sw.querySelector('[data-x75="cor"]'))return;var d=document.createElement('div');d.className='card';d.dataset.x75='cor';
  d.innerHTML='<b>¿Algo que corregir?</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">'+[[0,'Negocio'],[1,'Bodega'],[2,'Vehículos'],[3,'Personal'],[4,'Clientes'],[5,'Proveedores'],[6,'Dinero y precios']].map(function(x){return '<button class="btn sec" style="min-height:50px" data-act="su75ir" data-v="'+x[0]+'">✎ '+x[1]+'</button>'}).join('')+'</div>';

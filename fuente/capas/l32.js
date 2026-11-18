@@ -75,7 +75,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   if(x.vw&&S.vw)S.vw[x.vw]=u;else if(x.cx&&S.cx)S.cx.foto=u;else if(x.k){S.salida[x.g]=S.salida[x.g]||{};S.salida[x.g][x.k]=u}
   S.avPrecio.push(chofN(S.chofHoy)+' no tomó la foto "'+(x.l||'')+'": '+mot);S.fotoNo=null;render();return}},true);
 /* ---------- 5. PIN: nada de "saltar" en la versión real ---------- */
-var _pH32=pinHTML;pinHTML=function(){var h=_pH32.apply(this,arguments);if(!REAL||!h)return h;return h.replace(/<div[^>]*>En la demo el PIN de todos es 1234\.?<\/div>/,'').replace(/<button[^>]*data-act="pinskip"[^>]*>[^<]*<\/button>/,'')};
+/* pinHTML: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pinskip"]');if(b&&REAL){e.stopImmediatePropagation();e.preventDefault()}},true);
 /* ---------- 6. Versión real: fuera textos y botones "de la demo" ---------- */
 var DEMO_RX=/\s*\((?:opcional )?en la demo[^)]*\)|\s*\(demo\)|\s*\(solo en la demo\)/g;

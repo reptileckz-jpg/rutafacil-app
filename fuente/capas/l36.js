@@ -9,7 +9,7 @@
 ['pinPista','pinPide','encargos','enc','atiende','vac','hoyOk','inspHoy','inspMes','inspSem','recep','recepPrev','reglas','cajaBase','chBuroNo','provPagT','mayRech','primerDia'].forEach(function(k){if(typeof NB_SH!=='undefined'&&NB_SH.indexOf(k)<0)NB_SH.push(k)});
 ['ciEnvH','stopsOrig'].forEach(function(k){if(AR_K.indexOf(k)<0)AR_K.push(k)});
 /* ---------- sesión: chofer 40 min sin usar → PIN ---------- */
-var _plm36=pinLimMin;pinLimMin=function(k){k=k||pinKey();if(/^c:/.test(k)||k==='local')return 40;return _plm36.apply(this,arguments)};
+/* pinLimMin: pasó a tema-pin.js */
 /* ---------- huella ---------- */
 function natPl(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
 function bioPl(){var C=window.Capacitor;if(C&&C.Plugins&&C.Plugins.NativeBiometric)return C.Plugins.NativeBiometric;var n=natPl();if(!n)return null;
@@ -23,10 +23,7 @@ function bioEntrar(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;
 /* al abrir la pantalla del PIN con huella activada, se pide sola */
 var _bioUltK='';var _r36a=render;render=function(){var r=_r36a.apply(this,arguments);try{if(_pin&&_pin.modo==='entrar'&&bioActiva(_pin.k)&&!document.getElementById('pnov')){var sig=_pin.k+':'+(_pin.bloq||0)+':'+(S.pinF&&S.pinF[_pin.k]?S.pinF[_pin.k].hasta:'');if(sig!==_bioUltK){_bioUltK=sig;setTimeout(bioEntrar,350)}}else if(!_pin||!_pin.modo)_bioUltK=''}catch(e){}return r};
 /* ---------- pantalla del PIN: huella, olvidé mi PIN, cambiar de usuario ---------- */
-var _pH36=pinHTML;pinHTML=function(){var h=_pH36.apply(this,arguments);if(!h||!_pin||_pin.modo!=='entrar')return h;var k=_pin.k,nm=esc(pinNom(k)),mas='';h=h.replace(/<button class="link" data-act="usrcambia">[^<]*<\/button>/,'');
- if(bioActiva(k)&&bioPl())mas+='<button class="huella" data-act="biousar">🫆 Entrar con mi huella</button>';
- mas+='<div class="pinmas"><button class="link" data-act="pinolv">Olvidé mi PIN</button><button class="link" data-act="pinotro">No soy '+nm+' · cambiar de usuario</button></div>';
- return h.replace(/<\/div><\/div>$/,mas+'</div></div>')};
+/* pinHTML: pasó a tema-pin.js */
 function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(S.pinPista||{})[k],pend=(S.pinPide||{})[k],h='';
  if(x.t==='olv')h='<b style="font-size:20px">¿Olvidaste tu PIN?</b>'+(pista?'<div class="card note" style="margin-top:10px"><div class="lbl">Tu pista</div><b style="font-size:18px">'+esc(pista)+'</b></div>':'<div class="lbl" style="margin-top:6px">No dejaste pista.</div>')
   +(pend?'<div class="card good" style="margin-top:10px"><b>Ya le pediste al administrador que lo reinicie</b><div class="lbl">Cuando lo haga, cierra y abre la app: te va a pedir crear uno nuevo.</div></div>':'<button class="btn" style="margin-top:12px" data-act="pinpide">Pedirle al administrador que lo reinicie</button>')+'<button class="btn sec" style="margin-top:8px" data-act="pxx">Regresar</button>';
@@ -68,7 +65,7 @@ function nbRevisaSesion(p){if(!p||!NB.user)return;var ini=nbSesionIni();if(p.act
 function nbCorte(uid){var t=Date.now();return NB.ad.set('usuarios_app/'+uid,{corte:t},true).then(function(){if(NB.usuarios[uid])NB.usuarios[uid].corte=t})}
 /* ---------- papeles: encargado, contador y venta local ---------- */
 /* nbForzarRol: pasó a tema-nube.js */
-var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
+/* personasEntrar: pasó a tema-pin.js */
 /* ---------- baja de un chofer: se le quita el acceso y sus clientes se pasan por zona ---------- */
 function bjCentro(id){var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)&&c.lat!=null});if(!L.length)return null;return {lat:sum(L,function(c){return c.lat})/L.length,lng:sum(L,function(c){return c.lng})/L.length,n:L.length}}
 function bjSugiere(c,quita){var mejor=null,dm=1e9;choferesL().forEach(function(ch){if(ch.baja||+ch.id===+quita)return;var ce=bjCentro(ch.id);var d=c.lat!=null&&ce?kmE(ce,c):null;var carga=S.cli.filter(function(x){return !x.oculto&&String(x.chofer)===String(ch.id)}).length;var score=(d==null?50:d)+carga*0.15;if(score<dm){dm=score;mejor=ch.id}});return mejor}

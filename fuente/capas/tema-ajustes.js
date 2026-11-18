@@ -7,6 +7,7 @@
    - ajHTML: la ventana de Ajustes (23 pasos). La versión base se rehízo completa en base-v38.html.
    - setupHTML: el asistente de la primera vez en la versión real: bodega, vehículos, personal, clientes, proveedores, dinero y precios (21 pasos).
    Los dos van intercalados en el orden en que se armaban.
+   - suAplicar (al final, 4 más): lo que se capturó en el asistente pasa a la app (seguros, licencias, sueldos, horarios, ubicaciones, PIN del admin, número de cada vehículo).
    Las funciones que usan los pasos siguen en su capa.
    ============================================================================================ */
 
@@ -199,3 +200,25 @@ var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.in
 var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
  var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ---------- suAplicar: lo que se captura en el asistente de la primera vez pasa a la app (aplanado el 18 nov; antes en l16, l22, l75, l90, en el mismo orden) ---------- */
+/* suAplicar · de l16 */
+var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
+ try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['aseg','segVence','tcVence','verVence'].forEach(function(k){if(v[k])o[k]=v[k]});if(num(v.capL)>0)o.capL=num(v.capL);if(num(v.acLast)>0)o.acLast=num(v.acLast)});
+  var emps=S.choferes.slice(nC0);U.per.forEach(function(x,i){var c=emps[i];if(!c)return;if(x.licV)c.licV=x.licV;if(num(x.sueldo)>0)c.sz.monto=String(num(x.sueldo));if(/^\d{4}$/.test(String(x.pin||''))&&x.pin!=='1234')S.pins['c:'+c.id]=String(x.pin)});
+  var cls=S.cli.slice(nCl0);U.cli.forEach(function(x,i){var c=cls[i];if(!c)return;['ap','hAb','hCi','recibe'].forEach(function(k){if(x[k])c[k]=x[k]});if(num(x.lim)>0){c.lim=num(x.lim);c.limMan=num(x.lim)}});
+  U.prov.forEach(function(x){if(x.dir)provD(x.n).dir=x.dir});
+  if(/^\d{4}$/.test(String(U.pinA||''))&&U.pinA!=='1234')S.pins['a:'+S.adminYo]=String(U.pinA)}catch(e){console.error(e)}
+ return r};
+
+/* suAplicar · de l22 */
+var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
+
+/* suAplicar · de l75 */
+var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(function(v){return v.ex75||null}),ec=(U.cli||[]).map(function(c){return [c.n,c.ex75||null]}),ep=(U.prov||[]).map(function(p){return [p.n,p.ex75||null]});var r=_suA75.apply(this,arguments);
+ try{ev.forEach(function(x,i){var v=S.veh[i];if(!x||!v)return;Object.keys(x).forEach(function(k){if(x[k]!==undefined&&x[k]!=='')v[k]=x[k]});if(x.acLast!=null)v.acLast=num(x.acLast);if(x.acInt)v.acInt=num(x.acInt);if(x.capC){v.capC=num(x.capC);v.capRC=num(x.capC)}});
+  ec.forEach(function(x){if(!x[1])return;var c=S.cli.filter(function(z){return z.n===x[0]})[0];if(!c)return;if(x[1].lat!=null&&x[1].lat!==''){c.lat=+x[1].lat;c.lng=+x[1].lng}if(x[1].hAb){c.hAb=x[1].hAb;c.hCi=x[1].hCi}});
+  ep.forEach(function(x){if(!x[1])return;var d=provD(x[0]);if(x[1].lat!=null&&x[1].lat!==''){d.lat=+x[1].lat;d.lng=+x[1].lng}})}catch(e){console.error('suA75',e)}return r};
+
+/* suAplicar · de l90 */
+var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};

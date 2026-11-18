@@ -129,6 +129,6 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){try{window.GMAPA.create({id:'pn-gm',element:el,apiKey:'nativo',forceCreate:true,config:{center:v.c,zoom:v.z}}).then(function(m){if(!GM){try{m.destroy()}catch(er){}return}GM.m=m;
    var p=[];if(mk.length)p.push(m.addMarkers(mk));if(d.line&&d.line.length>1)p.push(m.addPolylines([{path:d.line.map(function(o){return {lat:o.lat,lng:o.lng}}),strokeColor:'#2F7D32',strokeWidth:6}]));
    try{p.push(m.enableCurrentLocation(true))}catch(er){}Promise.all(p).catch(function(){})},function(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')})}catch(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')}},80)},true);
-var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _navA52.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */
 /* en la ficha del chofer, pestaña "Ruta y metas": su recorrido por GPS */
 /* fiEmp: pasó a tema-fichas.js */

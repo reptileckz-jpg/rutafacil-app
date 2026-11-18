@@ -118,7 +118,7 @@ function nbPrimera(docs){NB.vaciaNube=!docs.filter(function(x){return !x.removed
 var _nbDiaOk=false,_cdd28=cambioDeDia;cambioDeDia=function(){if(NB.on&&!_nbDiaOk)return;_nbDiaOk=false;return _cdd28.apply(this,arguments)};
 /* cada celular es de quien entró: el chofer solo ve su ruta */
 function nbForzarRol(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='chofer'){S.role='rep';if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}}else if(p.rol==='admin'&&p.adm&&S.adminYo!==p.adm&&!(S.admins||[]).every(function(a){return a.k!==p.adm}))S.adminYo=p.adm}
-var _pe28=personasEntrar;personasEntrar=function(){var L=_pe28.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='chofer')return L.filter(function(x){return x.go&&x.go.role==='rep'&&+x.go.ch===+p.chId});return L.filter(function(x){return !(x.go&&x.go.role==='admin'&&x.go.adm!==p.adm)})};
+/* personasEntrar: pasó a tema-pin.js */
 /* ---------- cajas: también cuentan las que van en los camiones de las otras rutas ---------- */
 function rutasOtras(){var L=[];Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&S.chSt[id])L.push(S.chSt[id])});return L}
 var _cd28=cajasDonde;cajasDonde=function(){var w=_cd28.apply(this,arguments);try{rutasOtras().forEach(function(o){var cam=num(o.invR),v=0,ll=0,vv=0,c=o.cierre;if(c&&!c.sent)v=sum(o.log||[],function(l){return num(l.V)-num(l.Vr)});

@@ -50,17 +50,9 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ===================== PIN: crear el propio, cambiarlo, reiniciarlo, bloqueo por intentos ===================== */
 /* nadie entra con 1234: si no tiene PIN, lo crea al entrar */
 function pinTiene(k){return !!S.pins[k]}
-var _pd22=pinDe;pinDe=function(k){if(REAL&&!S.pins[k])return '\u0000';return _pd22.apply(this,arguments)};
+/* pinDe: pasó a tema-pin.js */
 var _pnew={k:null,v:'',v1:null};
-var _pinH22=pinHTML;pinHTML=function(){if(!_pin.modo)return '';var k=_pin.k;
- if(REAL&&!pinTiene(k)){if(_pnew.k!==k)_pnew={k:k,v:'',v1:null};var p2=_pnew.v1!=null;
-  return '<div id="pinov" role="dialog" aria-label="Crea tu PIN"><div class="pw"><b style="font-size:20px">Hola, '+esc(pinNom(k))+'</b><div class="lbl">'+(p2?'Escríbelo otra vez para confirmar':'Crea tu PIN de 4 números. Con él vas a entrar a la app. No uses 1234 ni tu fecha de nacimiento.')+'</div>'
-   +(_pnew.err?'<div class="neg" role="alert" style="font-weight:700;font-size:16px;margin:8px 0 0">'+esc(_pnew.err)+'</div>':'')+'<div class="dots">'+[0,1,2,3].map(function(i){return '<i class="'+(i<_pnew.v.length?'on':'')+'"></i>'}).join('')+'</div>'
-   +'<div class="kp">'+[1,2,3,4,5,6,7,8,9].map(function(n){return '<button data-act="pnd" data-v="'+n+'">'+n+'</button>'}).join('')+'<button data-act="pnx" style="font-size:15px">'+(p2?'Volver':'')+'</button><button data-act="pnd" data-v="0">0</button><button data-act="pnb" aria-label="Borrar" style="font-size:20px">⌫</button></div>'+(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1?'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button>':'')+'</div></div>'}
- var bl=pinBloqueo(k),h=_pinH22.apply(this,arguments);
- if(bl)h=h.replace(/<div class="dots">/,'<div class="neg" style="font-weight:700;margin:6px 0">Demasiados intentos. Espera '+bl+'.</div><div class="dots">');
- if(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1)h=h.replace(/<\/div><\/div>$/,'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button></div></div>');
- return h};
+/* pinHTML: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd"],[data-act="pnb"],[data-act="pnx"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;
  if(a==='pnb'){_pnew.v=_pnew.v.slice(0,-1);render();return}
  if(a==='pnx'){if(_pnew.v1!=null){_pnew.v1=null;_pnew.v=''}render();return}
@@ -72,16 +64,10 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var PIN_ESP=[1,5,15];
 function pinFallas(k){S.pinF=S.pinF||{};return S.pinF[k]||(S.pinF[k]={n:0,nivel:0,hasta:0})}
 function pinBloqueo(k){var f=pinFallas(k),r=f.hasta-Date.now();if(r<=0)return '';var s=Math.ceil(r/1000);return s>=60?Math.ceil(s/60)+' min':s+' s'}
-var _pd22b=pinDe;pinDe=function(k){var real=_pd22b.apply(this,arguments);if(!_pin||_pin.v.length!==4||_pin.k!==k)return real;
- if(pinBloqueo(k))return '\u0001';
- var f=pinFallas(k);if(_pin.v===real){f.n=0;return real}
- f.n++;if(f.n>=5){var min=PIN_ESP[Math.min(f.nivel,PIN_ESP.length-1)];f.hasta=Date.now()+min*60000;f.nivel++;f.n=0;
-  S.avPrecio.push('URGENTE: alguien escribió mal 5 veces el PIN de '+pinNom(k)+' ('+hhmm()+'). Se bloqueó '+min+' min.');setTimeout(render,50)}
- return real};
+/* pinDe: pasó a tema-pin.js */
 setInterval(function(){if(_pin&&_pin.modo&&_pin.k&&S.pinF&&S.pinF[_pin.k]&&S.pinF[_pin.k].hasta>Date.now()-1500)render()},1000);
 /* "Cambiar" mi PIN pide el actual; el admin puede reiniciar el de otros */
-var _pinRow22=pinRow;pinRow=function(k){var h=_pinRow22.apply(this,arguments).replace('el de inicio (1234)',REAL?'todavía no lo crea (lo crea al entrar)':'el de inicio (1234)');
- if(S.role==='admin'&&!S.encOn&&k!==pinKey()&&pinTiene(k))h=h.replace('</button></div>','</button><button class="btn sm sec" style="width:auto;margin-left:6px" data-act="pinreset" data-k="'+k+'">Reiniciar</button></div>');return h};
+/* pinRow: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,k=b.dataset.k;
  if(a==='pincambia'&&k===pinKey()&&pinTiene(k)&&!b.dataset.ok){e.stopImmediatePropagation();_pin={v:'',modo:'conf',k:k,motivo:'Escribe tu PIN actual',cb:function(){var x=document.createElement('button');x.dataset.act='pincambia';x.dataset.k=k;x.dataset.ok='1';x.style.display='none';document.body.appendChild(x);x.click();x.remove()}};render();return}
  if(a==='pinreset'){e.stopImmediatePropagation();delete S.pins[k];if(S.pinF)delete S.pinF[k];S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Reinició el PIN de '+pinNom(k)});toast('Listo: '+pinNom(k)+' va a crear un PIN nuevo la próxima vez que entre');render();return}},true);
@@ -96,7 +82,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
 /* en la configuración inicial */
 /* setupHTML: pasó a tema-ajustes.js */
-var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* faltantes del vehículo */
 var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
 

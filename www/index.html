@@ -4866,13 +4866,7 @@ var SU_NOTA='<div class="lbl" style="margin-top:6px">Si no lo tienes a la mano, 
 /* setupHTML: pasó a tema-ajustes.js */
 /* el PIN solo números */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.maxLength===4&&t.dataset&&/pin/i.test(t.dataset.bind||'')){var v=t.value.replace(/\D/g,'').slice(0,4);if(v!==t.value)t.value=v;var ps=t.dataset.bind.split('.'),o=S;for(var i=0;i<ps.length-1;i++){o=o[ps[i]];if(!o)return}o[ps[ps.length-1]]=v}},false);
-var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
- try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['aseg','segVence','tcVence','verVence'].forEach(function(k){if(v[k])o[k]=v[k]});if(num(v.capL)>0)o.capL=num(v.capL);if(num(v.acLast)>0)o.acLast=num(v.acLast)});
-  var emps=S.choferes.slice(nC0);U.per.forEach(function(x,i){var c=emps[i];if(!c)return;if(x.licV)c.licV=x.licV;if(num(x.sueldo)>0)c.sz.monto=String(num(x.sueldo));if(/^\d{4}$/.test(String(x.pin||''))&&x.pin!=='1234')S.pins['c:'+c.id]=String(x.pin)});
-  var cls=S.cli.slice(nCl0);U.cli.forEach(function(x,i){var c=cls[i];if(!c)return;['ap','hAb','hCi','recibe'].forEach(function(k){if(x[k])c[k]=x[k]});if(num(x.lim)>0){c.lim=num(x.lim);c.limMan=num(x.lim)}});
-  U.prov.forEach(function(x){if(x.dir)provD(x.n).dir=x.dir});
-  if(/^\d{4}$/.test(String(U.pinA||''))&&U.pinA!=='1234')S.pins['a:'+S.adminYo]=String(U.pinA)}catch(e){console.error(e)}
- return r};
+/* suAplicar: pasó a tema-ajustes.js */
 
 /* ===================== v5 · Datos que faltan =====================
    Una burbuja (como la del viaje) que muestra UNO a la vez: el más importante. Al tocarla se abre
@@ -5262,17 +5256,9 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ===================== PIN: crear el propio, cambiarlo, reiniciarlo, bloqueo por intentos ===================== */
 /* nadie entra con 1234: si no tiene PIN, lo crea al entrar */
 function pinTiene(k){return !!S.pins[k]}
-var _pd22=pinDe;pinDe=function(k){if(REAL&&!S.pins[k])return '\u0000';return _pd22.apply(this,arguments)};
+/* pinDe: pasó a tema-pin.js */
 var _pnew={k:null,v:'',v1:null};
-var _pinH22=pinHTML;pinHTML=function(){if(!_pin.modo)return '';var k=_pin.k;
- if(REAL&&!pinTiene(k)){if(_pnew.k!==k)_pnew={k:k,v:'',v1:null};var p2=_pnew.v1!=null;
-  return '<div id="pinov" role="dialog" aria-label="Crea tu PIN"><div class="pw"><b style="font-size:20px">Hola, '+esc(pinNom(k))+'</b><div class="lbl">'+(p2?'Escríbelo otra vez para confirmar':'Crea tu PIN de 4 números. Con él vas a entrar a la app. No uses 1234 ni tu fecha de nacimiento.')+'</div>'
-   +(_pnew.err?'<div class="neg" role="alert" style="font-weight:700;font-size:16px;margin:8px 0 0">'+esc(_pnew.err)+'</div>':'')+'<div class="dots">'+[0,1,2,3].map(function(i){return '<i class="'+(i<_pnew.v.length?'on':'')+'"></i>'}).join('')+'</div>'
-   +'<div class="kp">'+[1,2,3,4,5,6,7,8,9].map(function(n){return '<button data-act="pnd" data-v="'+n+'">'+n+'</button>'}).join('')+'<button data-act="pnx" style="font-size:15px">'+(p2?'Volver':'')+'</button><button data-act="pnd" data-v="0">0</button><button data-act="pnb" aria-label="Borrar" style="font-size:20px">⌫</button></div>'+(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1?'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button>':'')+'</div></div>'}
- var bl=pinBloqueo(k),h=_pinH22.apply(this,arguments);
- if(bl)h=h.replace(/<div class="dots">/,'<div class="neg" style="font-weight:700;margin:6px 0">Demasiados intentos. Espera '+bl+'.</div><div class="dots">');
- if(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1)h=h.replace(/<\/div><\/div>$/,'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button></div></div>');
- return h};
+/* pinHTML: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pnd"],[data-act="pnb"],[data-act="pnx"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;
  if(a==='pnb'){_pnew.v=_pnew.v.slice(0,-1);render();return}
  if(a==='pnx'){if(_pnew.v1!=null){_pnew.v1=null;_pnew.v=''}render();return}
@@ -5284,16 +5270,10 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 var PIN_ESP=[1,5,15];
 function pinFallas(k){S.pinF=S.pinF||{};return S.pinF[k]||(S.pinF[k]={n:0,nivel:0,hasta:0})}
 function pinBloqueo(k){var f=pinFallas(k),r=f.hasta-Date.now();if(r<=0)return '';var s=Math.ceil(r/1000);return s>=60?Math.ceil(s/60)+' min':s+' s'}
-var _pd22b=pinDe;pinDe=function(k){var real=_pd22b.apply(this,arguments);if(!_pin||_pin.v.length!==4||_pin.k!==k)return real;
- if(pinBloqueo(k))return '\u0001';
- var f=pinFallas(k);if(_pin.v===real){f.n=0;return real}
- f.n++;if(f.n>=5){var min=PIN_ESP[Math.min(f.nivel,PIN_ESP.length-1)];f.hasta=Date.now()+min*60000;f.nivel++;f.n=0;
-  S.avPrecio.push('URGENTE: alguien escribió mal 5 veces el PIN de '+pinNom(k)+' ('+hhmm()+'). Se bloqueó '+min+' min.');setTimeout(render,50)}
- return real};
+/* pinDe: pasó a tema-pin.js */
 setInterval(function(){if(_pin&&_pin.modo&&_pin.k&&S.pinF&&S.pinF[_pin.k]&&S.pinF[_pin.k].hasta>Date.now()-1500)render()},1000);
 /* "Cambiar" mi PIN pide el actual; el admin puede reiniciar el de otros */
-var _pinRow22=pinRow;pinRow=function(k){var h=_pinRow22.apply(this,arguments).replace('el de inicio (1234)',REAL?'todavía no lo crea (lo crea al entrar)':'el de inicio (1234)');
- if(S.role==='admin'&&!S.encOn&&k!==pinKey()&&pinTiene(k))h=h.replace('</button></div>','</button><button class="btn sm sec" style="width:auto;margin-left:6px" data-act="pinreset" data-k="'+k+'">Reiniciar</button></div>');return h};
+/* pinRow: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,k=b.dataset.k;
  if(a==='pincambia'&&k===pinKey()&&pinTiene(k)&&!b.dataset.ok){e.stopImmediatePropagation();_pin={v:'',modo:'conf',k:k,motivo:'Escribe tu PIN actual',cb:function(){var x=document.createElement('button');x.dataset.act='pincambia';x.dataset.k=k;x.dataset.ok='1';x.style.display='none';document.body.appendChild(x);x.click();x.remove()}};render();return}
  if(a==='pinreset'){e.stopImmediatePropagation();delete S.pins[k];if(S.pinF)delete S.pinF[k];S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Reinició el PIN de '+pinNom(k)});toast('Listo: '+pinNom(k)+' va a crear un PIN nuevo la próxima vez que entre');render();return}},true);
@@ -5308,7 +5288,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='vedit'){var vid=+b.dataset.id;setTimeout(function(){var v=vehById(vid);if(v&&S.vf){['marca','modelo','motor','llanta','capK'].forEach(function(k){if(v[k]!=null)S.vf[k]=v[k]});render()}},0)}},true);
 /* en la configuración inicial */
 /* setupHTML: pasó a tema-ajustes.js */
-var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* faltantes del vehículo */
 var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
 
@@ -5468,7 +5448,7 @@ function fvInput(img){if(!img)return null;var lb=img.closest('label[for]');if(lb
 document.addEventListener('click',function(e){var t=e.target;if(!t||t.tagName!=='IMG')return;var lb=t.closest('label[for]');if(!lb)return;var i=document.getElementById(lb.getAttribute('for'));if(!i||i.type!=='file')return;
  var src=t.currentSrc||t.getAttribute('src')||'';if(!src)return;e.preventDefault();e.stopImmediatePropagation();_fvImg=t;fotoAbrir(src)},true);
 /* atrás cierra la foto */
-var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');if(o){o.remove();return true}return _navA24.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */
 
 //@@capa l25.js
 /* ===================== v5.1 · Viaje sin báscula, barra, burbujas minimizadas y avisos al abrir ===================== */
@@ -5599,7 +5579,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   S.avPrecio.push(ubQuien()+' no pudo guardar la ubicación de '+nm2+' (el GPS no funcionó)');var sg=u.sigue;S.ub=null;render();if(sg)ubSeguir();return}
  if(a==='ubx'){e.stopImmediatePropagation();var sg2=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg2)ubSeguir();return}},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||t.dataset.ubf!=='1'||!t.files||!t.files[0]||!S.ub)return;fotoLeer(t.files[0],function(u){if(!S.ub)return;S.ub.foto=u;S.ub.fotoH=Date.now();render()})},true);
-var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('fotov')){var sg=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg)ubSeguir();return true}return _navA26.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */
 /* ---- reparto: la ubicación del cliente es obligatoria; luego se completan sus datos ---- */
 function ubCliAplica(c){return !!c&&!(c.rapida&&!(S.d&&S.d.reg))&&!UB_LEGADO()}
 function ubCliFalta(c){var f=[];if(!c.foto)f.push('foto de la fachada');if(!String(c.tel||'').trim()&&!(c.rapida&&S.d&&String(S.d.rtel||'').trim()))f.push('teléfono');return f}
@@ -5789,7 +5769,7 @@ function nbPrimera(docs){NB.vaciaNube=!docs.filter(function(x){return !x.removed
 var _nbDiaOk=false,_cdd28=cambioDeDia;cambioDeDia=function(){if(NB.on&&!_nbDiaOk)return;_nbDiaOk=false;return _cdd28.apply(this,arguments)};
 /* cada celular es de quien entró: el chofer solo ve su ruta */
 function nbForzarRol(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='chofer'){S.role='rep';if(+S.chofHoy!==+p.chId){try{chCambiar(+p.chId)}catch(e){S.chofHoy=+p.chId}}}else if(p.rol==='admin'&&p.adm&&S.adminYo!==p.adm&&!(S.admins||[]).every(function(a){return a.k!==p.adm}))S.adminYo=p.adm}
-var _pe28=personasEntrar;personasEntrar=function(){var L=_pe28.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='chofer')return L.filter(function(x){return x.go&&x.go.role==='rep'&&+x.go.ch===+p.chId});return L.filter(function(x){return !(x.go&&x.go.role==='admin'&&x.go.adm!==p.adm)})};
+/* personasEntrar: pasó a tema-pin.js */
 /* ---------- cajas: también cuentan las que van en los camiones de las otras rutas ---------- */
 function rutasOtras(){var L=[];Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&S.chSt[id])L.push(S.chSt[id])});return L}
 var _cd28=cajasDonde;cajasDonde=function(){var w=_cd28.apply(this,arguments);try{rutasOtras().forEach(function(o){var cam=num(o.invR),v=0,ll=0,vv=0,c=o.cierre;if(c&&!c.sent)v=sum(o.log||[],function(l){return num(l.V)-num(l.Vr)});
@@ -6076,7 +6056,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   if(x.vw&&S.vw)S.vw[x.vw]=u;else if(x.cx&&S.cx)S.cx.foto=u;else if(x.k){S.salida[x.g]=S.salida[x.g]||{};S.salida[x.g][x.k]=u}
   S.avPrecio.push(chofN(S.chofHoy)+' no tomó la foto "'+(x.l||'')+'": '+mot);S.fotoNo=null;render();return}},true);
 /* ---------- 5. PIN: nada de "saltar" en la versión real ---------- */
-var _pH32=pinHTML;pinHTML=function(){var h=_pH32.apply(this,arguments);if(!REAL||!h)return h;return h.replace(/<div[^>]*>En la demo el PIN de todos es 1234\.?<\/div>/,'').replace(/<button[^>]*data-act="pinskip"[^>]*>[^<]*<\/button>/,'')};
+/* pinHTML: pasó a tema-pin.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pinskip"]');if(b&&REAL){e.stopImmediatePropagation();e.preventDefault()}},true);
 /* ---------- 6. Versión real: fuera textos y botones "de la demo" ---------- */
 var DEMO_RX=/\s*\((?:opcional )?en la demo[^)]*\)|\s*\(demo\)|\s*\(solo en la demo\)/g;
@@ -6228,7 +6208,7 @@ var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.leng
 ['pinPista','pinPide','encargos','enc','atiende','vac','hoyOk','inspHoy','inspMes','inspSem','recep','recepPrev','reglas','cajaBase','chBuroNo','provPagT','mayRech','primerDia'].forEach(function(k){if(typeof NB_SH!=='undefined'&&NB_SH.indexOf(k)<0)NB_SH.push(k)});
 ['ciEnvH','stopsOrig'].forEach(function(k){if(AR_K.indexOf(k)<0)AR_K.push(k)});
 /* ---------- sesión: chofer 40 min sin usar → PIN ---------- */
-var _plm36=pinLimMin;pinLimMin=function(k){k=k||pinKey();if(/^c:/.test(k)||k==='local')return 40;return _plm36.apply(this,arguments)};
+/* pinLimMin: pasó a tema-pin.js */
 /* ---------- huella ---------- */
 function natPl(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
 function bioPl(){var C=window.Capacitor;if(C&&C.Plugins&&C.Plugins.NativeBiometric)return C.Plugins.NativeBiometric;var n=natPl();if(!n)return null;
@@ -6242,10 +6222,7 @@ function bioEntrar(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;
 /* al abrir la pantalla del PIN con huella activada, se pide sola */
 var _bioUltK='';var _r36a=render;render=function(){var r=_r36a.apply(this,arguments);try{if(_pin&&_pin.modo==='entrar'&&bioActiva(_pin.k)&&!document.getElementById('pnov')){var sig=_pin.k+':'+(_pin.bloq||0)+':'+(S.pinF&&S.pinF[_pin.k]?S.pinF[_pin.k].hasta:'');if(sig!==_bioUltK){_bioUltK=sig;setTimeout(bioEntrar,350)}}else if(!_pin||!_pin.modo)_bioUltK=''}catch(e){}return r};
 /* ---------- pantalla del PIN: huella, olvidé mi PIN, cambiar de usuario ---------- */
-var _pH36=pinHTML;pinHTML=function(){var h=_pH36.apply(this,arguments);if(!h||!_pin||_pin.modo!=='entrar')return h;var k=_pin.k,nm=esc(pinNom(k)),mas='';h=h.replace(/<button class="link" data-act="usrcambia">[^<]*<\/button>/,'');
- if(bioActiva(k)&&bioPl())mas+='<button class="huella" data-act="biousar">🫆 Entrar con mi huella</button>';
- mas+='<div class="pinmas"><button class="link" data-act="pinolv">Olvidé mi PIN</button><button class="link" data-act="pinotro">No soy '+nm+' · cambiar de usuario</button></div>';
- return h.replace(/<\/div><\/div>$/,mas+'</div></div>')};
+/* pinHTML: pasó a tema-pin.js */
 function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(S.pinPista||{})[k],pend=(S.pinPide||{})[k],h='';
  if(x.t==='olv')h='<b style="font-size:20px">¿Olvidaste tu PIN?</b>'+(pista?'<div class="card note" style="margin-top:10px"><div class="lbl">Tu pista</div><b style="font-size:18px">'+esc(pista)+'</b></div>':'<div class="lbl" style="margin-top:6px">No dejaste pista.</div>')
   +(pend?'<div class="card good" style="margin-top:10px"><b>Ya le pediste al administrador que lo reinicie</b><div class="lbl">Cuando lo haga, cierra y abre la app: te va a pedir crear uno nuevo.</div></div>':'<button class="btn" style="margin-top:12px" data-act="pinpide">Pedirle al administrador que lo reinicie</button>')+'<button class="btn sec" style="margin-top:8px" data-act="pxx">Regresar</button>';
@@ -6287,7 +6264,7 @@ function nbRevisaSesion(p){if(!p||!NB.user)return;var ini=nbSesionIni();if(p.act
 function nbCorte(uid){var t=Date.now();return NB.ad.set('usuarios_app/'+uid,{corte:t},true).then(function(){if(NB.usuarios[uid])NB.usuarios[uid].corte=t})}
 /* ---------- papeles: encargado, contador y venta local ---------- */
 /* nbForzarRol: pasó a tema-nube.js */
-var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
+/* personasEntrar: pasó a tema-pin.js */
 /* ---------- baja de un chofer: se le quita el acceso y sus clientes se pasan por zona ---------- */
 function bjCentro(id){var L=S.cli.filter(function(c){return !c.oculto&&String(c.chofer)===String(id)&&c.lat!=null});if(!L.length)return null;return {lat:sum(L,function(c){return c.lat})/L.length,lng:sum(L,function(c){return c.lng})/L.length,n:L.length}}
 function bjSugiere(c,quita){var mejor=null,dm=1e9;choferesL().forEach(function(ch){if(ch.baja||+ch.id===+quita)return;var ce=bjCentro(ch.id);var d=c.lat!=null&&ce?kmE(ce,c):null;var carga=S.cli.filter(function(x){return !x.oculto&&String(x.chofer)===String(ch.id)}).length;var score=(d==null?50:d)+carga*0.15;if(score<dm){dm=score;mejor=ch.id}});return mejor}
@@ -7018,7 +6995,7 @@ var _r45c=render;render=function(){var r=_r45c.apply(this,arguments);try{if(S.ro
 /* Ajustes: cuánto extra sugerir */
 /* ajHTML: pasó a tema-ajustes.js */
 /* ---------- 68 · mover el mapa no cambia de sección ---------- */
-var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */
 var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};
 /* ---------- 74 · nada de la demo en la app real ---------- */
 function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}
@@ -7254,7 +7231,7 @@ bioEntrar=function(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;
   setTimeout(function(){var cb=_pin.cb,m=_pin.modo;S.pinOk[k]=true;_pinAct=Date.now();if(S.pinF)delete S.pinF[k];_pin={v:'',modo:null};document.documentElement.classList.add('bioentra');bioAnim('fuera');render();setTimeout(function(){document.documentElement.classList.remove('bioentra')},500);if(m!=='entrar'&&cb)setTimeout(cb,0)},650)},
  function(er){_bioEnCurso=false;var cancel=er&&/^(10|13|5)$/.test(String(er.code||''));if(cancel){bioAnim('fuera');return}bioAnim('mal');try{vibrar([60,40,60])}catch(e){}setTimeout(function(){bioAnim('fuera');toast('Usa tu PIN')},900)})};
 /* textos: huella o cara */
-var _pH48=pinHTML;pinHTML=function(){var h=_pH48.apply(this,arguments);return h?h.replace('🫆 Entrar con mi huella','🫆 Entrar con mi huella o cara'):h};
+/* pinHTML: pasó a tema-pin.js */
 /* ---------- 69 · permisos la primera vez (y si falta uno importante, se avisa) ---------- */
 function natPl48(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
 var PERM_L=[['ubicacion','📍','Ubicación','Para la ruta, el mapa y guardar dónde están los clientes (solo mientras usas la app).'],['camara','📷','Cámara','Para las fotos (tickets, vehículo, entregas) y leer códigos QR.'],['notif','🔔','Avisos','Para que te lleguen entregas nuevas y avisos del administrador.']];
@@ -7557,7 +7534,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){try{window.GMAPA.create({id:'pn-gm',element:el,apiKey:'nativo',forceCreate:true,config:{center:v.c,zoom:v.z}}).then(function(m){if(!GM){try{m.destroy()}catch(er){}return}GM.m=m;
    var p=[];if(mk.length)p.push(m.addMarkers(mk));if(d.line&&d.line.length>1)p.push(m.addPolylines([{path:d.line.map(function(o){return {lat:o.lat,lng:o.lng}}),strokeColor:'#2F7D32',strokeWidth:6}]));
    try{p.push(m.enableCurrentLocation(true))}catch(er){}Promise.all(p).catch(function(){})},function(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')})}catch(er){gmCierra();toast('No abrió Google Maps; se queda el mapa de siempre.')}},80)},true);
-var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _navA52.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */
 /* en la ficha del chofer, pestaña "Ruta y metas": su recorrido por GPS */
 /* fiEmp: pasó a tema-fichas.js */
 
@@ -7867,7 +7844,7 @@ var _rd58=render;render=function(){var r=_rd58.apply(this,arguments);try{if(pnBl
 var _pinAuth={},_pnCarga=Date.now();
 /* solo al abrir la app (cuando termina de cargar lo guardado o la nube); en pruebas solo si se pide */
 function pnGracia(k){if(window.__pnTest&&!window.__pnGracia)return false;return !!(_pinAuth[k]&&Date.now()-_pinAuth[k]<120000&&Date.now()-_pnCarga<180000)}
-var _pinEnt58=pinEntrar;pinEntrar=function(){var k=pinKey();if(pnGracia(k)){S.pinOk[k]=true;return false}return _pinEnt58.apply(this,arguments)};
+/* pinEntrar: pasó a tema-pin.js */
 var _pinModoAnt=null,_pinKAnt=null;
 var _rd58b=render;render=function(){
  try{if(_pin&&_pin.modo==='entrar'&&pnGracia(_pin.k)&&!_pin.bloq){S.pinOk[_pin.k]=true;_pin={v:'',modo:null}}}catch(e){}
@@ -7875,7 +7852,7 @@ var _rd58b=render;render=function(){
  try{/* solo cuenta como "ya entró" si pasó por la pantalla del PIN o la huella */var k=pinKey(),m=_pin&&_pin.modo;if(_pinModoAnt==='entrar'&&!m&&S.pinOk&&S.pinOk[_pinKAnt])_pinAuth[_pinKAnt]=Date.now();_pinModoAnt=m;_pinKAnt=_pin&&_pin.k}catch(e){}return r};
 /* salir, cambiar de usuario o cerrar el día sí borran el permiso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;if(/^(usrsalir|pinotrosi|role|chofsel|adminyo|encentrar|encsalir|usrgo|nbsalir|enviar)$/.test(b.dataset.act))_pinAuth={}},true);
-var _entC58=entrarComo;entrarComo=function(){_pinAuth={};return _entC58.apply(this,arguments)};
+/* entrarComo: pasó a tema-pin.js */
 
 /* ---------- 24 · al desbloquear, regresa a Inicio (admin) o a su Ruta (chofer) ---------- */
 function pnCasa(){var r=S.role;return (typeof NAV_CASA!=='undefined'&&NAV_CASA[r])||S.tab[r]}
@@ -9816,10 +9793,7 @@ WZ.suProv={tit:'Proveedor',fin:'Agregar proveedor',pasos:[
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="su75add"]');if(!b||!S.setup)return;e.stopImmediatePropagation();var k=b.dataset.k;
  if(k==='veh')wzAbre('suVeh',{plEdo:'Veracruz'});else if(k==='per')wzAbre('suPer',{puesto:(S.setup.per||[]).some(function(x){return x.puesto==='chofer'})?'':'chofer'});else if(k==='cli')wzAbre('suCli',{dias:[]});else wzAbre('suProv',{})},true);
 /* al terminar: lo que se capturó en los pasos también se guarda (aceite, capacidad, ubicación, horario…) */
-var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(function(v){return v.ex75||null}),ec=(U.cli||[]).map(function(c){return [c.n,c.ex75||null]}),ep=(U.prov||[]).map(function(p){return [p.n,p.ex75||null]});var r=_suA75.apply(this,arguments);
- try{ev.forEach(function(x,i){var v=S.veh[i];if(!x||!v)return;Object.keys(x).forEach(function(k){if(x[k]!==undefined&&x[k]!=='')v[k]=x[k]});if(x.acLast!=null)v.acLast=num(x.acLast);if(x.acInt)v.acInt=num(x.acInt);if(x.capC){v.capC=num(x.capC);v.capRC=num(x.capC)}});
-  ec.forEach(function(x){if(!x[1])return;var c=S.cli.filter(function(z){return z.n===x[0]})[0];if(!c)return;if(x[1].lat!=null&&x[1].lat!==''){c.lat=+x[1].lat;c.lng=+x[1].lng}if(x[1].hAb){c.hAb=x[1].hAb;c.hCi=x[1].hCi}});
-  ep.forEach(function(x){if(!x[1])return;var d=provD(x[0]);if(x[1].lat!=null&&x[1].lat!==''){d.lat=+x[1].lat;d.lng=+x[1].lng}})}catch(e){console.error('suA75',e)}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* "Listo": corregir cada apartado */
 function suListo75(){var U=S.setup,o=document.getElementById('setov');if(!U||!o||U.p!==7||S.wz)return;var sw=o.querySelector('.sw');if(!sw||sw.querySelector('[data-x75="cor"]'))return;var d=document.createElement('div');d.className='card';d.dataset.x75='cor';
  d.innerHTML='<b>¿Algo que corregir?</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">'+[[0,'Negocio'],[1,'Bodega'],[2,'Vehículos'],[3,'Personal'],[4,'Clientes'],[5,'Proveedores'],[6,'Dinero y precios']].map(function(x){return '<button class="btn sec" style="min-height:50px" data-act="su75ir" data-v="'+x[0]+'">✎ '+x[1]+'</button>'}).join('')+'</div>';
@@ -10013,7 +9987,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4729,"l14.js"],[4799,"l15.js"],[4859,"l16.js"],[4959,"l17.js"],[4990,"l18.js"],[5062,"l19.js"],[5121,"l20.js"],[5168,"l21.js"],[5212,"l22.js"],[5408,"l23.js"],[5457,"l24.js"],[5473,"l25.js"],[5500,"l26.js"],[5621,"l27.js"],[5671,"l28.js"],[5803,"l29.js"],[5929,"l30.js"],[5972,"l31.js"],[6001,"l32.js"],[6089,"l33.js"],[6107,"l34.js"],[6162,"l35.js"],[6219,"l36.js"],[6314,"l37.js"],[6333,"l38.js"],[6416,"l39.js"],[6496,"l40.js"],[6604,"l41.js"],[6664,"l42.js"],[6766,"l43.js"],[6868,"l44.js"],[6963,"l45.js"],[7049,"l46.js"],[7112,"l47.js"],[7226,"l48.js"],[7280,"l49.js"],[7316,"l50.js"],[7418,"l51.js"],[7428,"l52.js"],[7564,"l53.js"],[7586,"l54.js"],[7659,"l55.js"],[7688,"l56.js"],[7772,"l57.js"],[7834,"l58.js"],[7961,"l59.js"],[8020,"l60.js"],[8180,"l61.js"],[8236,"l62.js"],[8350,"l63.js"],[8515,"l64.js"],[8541,"l65.js"],[8642,"l66.js"],[8744,"l67.js"],[8771,"l68.js"],[8897,"l69.js"],[9113,"l70.js"],[9319,"l71.js"],[9441,"l72.js"],[9554,"l73.js"],[9630,"l74.js"],[9751,"l75.js"],[9904,"l76.js"],[10007,"l77.js"],[10132,"l78.js"],[10277,"l79.js"],[10385,"l80.js"],[10508,"l81.js"],[10661,"l82.js"],[10911,"l83.js"],[10980,"l84.js"],[11093,"l85.js"],[11154,"tema-rutadia.js"],[11319,"l86.js"],[11379,"l87.js"],[11422,"l88.js"],[11472,"l89.js"],[11520,"l90.js"],[11626,"tema-ruta.js"],[11779,"tema-fichas.js"],[11896,"tema-cierre.js"],[11990,"tema-inicio.js"],[12118,"tema-ajustes.js"],[12321,"tema-nube.js"],[12379,"tema-viaje.js"],[12520,"tema-ubica.js"],[12645,"tema-personal.js"],[12708,"tema-cobranza.js"],[12855,"tema-pantallas.js"],[13076,"tema-avisos.js"],[13238,"tema-reparte.js"],[13304,"tema-vehiculos.js"],[13448,"tema-notas.js"],[13465,"tema-taras.js"],[13572,"tema-cargarmas.js"],[13611,"tema-cargas.js"],[13645,"tema-cobro.js"],[13681,"tema-horario.js"],[13720,"tema-sueldos.js"],[13862,"tema-ganado.js"],[13907,"tema-cierres.js"],[14006,"tema-finanzas.js"],[14079,"tema-cuadre.js"],[14268,"tema-retencion.js"],[14359,"tema-iniciodia.js"],[14464,"tema-entregapasos.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4597,"l13.js"],[4729,"l14.js"],[4799,"l15.js"],[4859,"l16.js"],[4953,"l17.js"],[4984,"l18.js"],[5056,"l19.js"],[5115,"l20.js"],[5162,"l21.js"],[5206,"l22.js"],[5388,"l23.js"],[5437,"l24.js"],[5453,"l25.js"],[5480,"l26.js"],[5601,"l27.js"],[5651,"l28.js"],[5783,"l29.js"],[5909,"l30.js"],[5952,"l31.js"],[5981,"l32.js"],[6069,"l33.js"],[6087,"l34.js"],[6142,"l35.js"],[6199,"l36.js"],[6291,"l37.js"],[6310,"l38.js"],[6393,"l39.js"],[6473,"l40.js"],[6581,"l41.js"],[6641,"l42.js"],[6743,"l43.js"],[6845,"l44.js"],[6940,"l45.js"],[7026,"l46.js"],[7089,"l47.js"],[7203,"l48.js"],[7257,"l49.js"],[7293,"l50.js"],[7395,"l51.js"],[7405,"l52.js"],[7541,"l53.js"],[7563,"l54.js"],[7636,"l55.js"],[7665,"l56.js"],[7749,"l57.js"],[7811,"l58.js"],[7938,"l59.js"],[7997,"l60.js"],[8157,"l61.js"],[8213,"l62.js"],[8327,"l63.js"],[8492,"l64.js"],[8518,"l65.js"],[8619,"l66.js"],[8721,"l67.js"],[8748,"l68.js"],[8874,"l69.js"],[9090,"l70.js"],[9296,"l71.js"],[9418,"l72.js"],[9531,"l73.js"],[9607,"l74.js"],[9728,"l75.js"],[9878,"l76.js"],[9981,"l77.js"],[10106,"l78.js"],[10251,"l79.js"],[10359,"l80.js"],[10482,"l81.js"],[10635,"l82.js"],[10885,"l83.js"],[10954,"l84.js"],[11067,"l85.js"],[11128,"tema-rutadia.js"],[11293,"l86.js"],[11353,"l87.js"],[11396,"l88.js"],[11446,"l89.js"],[11494,"l90.js"],[11600,"tema-ruta.js"],[11753,"tema-fichas.js"],[11870,"tema-cierre.js"],[11964,"tema-inicio.js"],[12092,"tema-ajustes.js"],[12318,"tema-nube.js"],[12376,"tema-viaje.js"],[12517,"tema-ubica.js"],[12642,"tema-personal.js"],[12705,"tema-pin.js"],[12774,"tema-navega.js"],[12803,"tema-cobranza.js"],[12950,"tema-pantallas.js"],[13171,"tema-avisos.js"],[13333,"tema-reparte.js"],[13399,"tema-vehiculos.js"],[13543,"tema-notas.js"],[13560,"tema-taras.js"],[13667,"tema-cargarmas.js"],[13706,"tema-cargas.js"],[13740,"tema-cobro.js"],[13776,"tema-horario.js"],[13815,"tema-sueldos.js"],[13957,"tema-ganado.js"],[14002,"tema-cierres.js"],[14101,"tema-finanzas.js"],[14174,"tema-cuadre.js"],[14363,"tema-retencion.js"],[14454,"tema-iniciodia.js"],[14559,"tema-entregapasos.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -10771,7 +10745,7 @@ document.addEventListener('input',function(e){var t=e.target;if(!t||!/^cnt_/.tes
 var _an82=antig65;antig65=function(){var d=_an82.apply(this,arguments);if(!d)return d;var v=3;try{v=vidaDias()}catch(e){}var mal=(S.madL||[]).filter(function(x){var e=0;try{e=madEdad(x)}catch(er){}return num(x.q)>0&&v-e<=0});if(!mal.length)return null;
  try{delete d.dataset.sw80;d.style.transform='';Array.prototype.forEach.call(d.querySelectorAll('.lote'),function(el){var x=(S.madL||[])[+el.dataset.k];if(!x||v-madEdad(x)>0)el.remove()});var tt=d.querySelector('.hd .tt');if(tt)tt.textContent='Fruta madura pasada de tiempo';
   var st=d.querySelector('.hd .st');if(st)st.textContent='Toca cada una para decir qué pasó (se tiró, se remató o salió a la venta)';var al=d.querySelector('.alc');if(al)al.remove()}catch(e){}return d};
-var _swB82=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="antig65"],.lote,[data-sw80]'))return true;return _swB82.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */
 
 var _rd82=render;render=function(){try{fechas82();gtip82();if(S.role==='admin'||S.role==='cont'||S.encOn)histPon82()}catch(e){console.error('l82 hist',e)}var r=_rd82.apply(this,arguments);try{retiroNota82();cuEntrada82();cu82Pon()}catch(e){console.error('l82',e)}return r};
 
@@ -11467,7 +11441,7 @@ function fichaFalla88(){var o=document.getElementById('fiov');if(!o||S.vehOpen==
 
 var _rd88=render;render=function(){try{ordena88()}catch(e){console.error('l88',e)}var r=_rd88.apply(this,arguments);try{fichaFalla88()}catch(e){console.error('l88b',e)}return r};
 /* deslizar sobre la lista de pendientes ya no cambia de sección */
-var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */
 
 //@@capa l89.js
 /* ===================== v8.9 · 79–82 (17 nov)
@@ -11601,7 +11575,7 @@ function vehIds90(){var V=S.veh;if(!Array.isArray(V)||V.length<2)return 0;var vi
  V.forEach(function(v){if(!v)return;if(vis[v.id]){v.id=++mx;n++;L.push(v.n)}vis[v.id]=1});
  if(n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'Se arregló el número interno de '+L.join(', ')+' (estaba repetido)'})}catch(e){}
   try{var t='Se arregló: '+L.join(', ')+' tenía'+(n===1?'':'n')+' el mismo número interno que otro vehículo y la app los confundía. Revisa en Vehículos el odómetro de cada uno.';if((S.avPrecio=S.avPrecio||[]).indexOf(t)<0)S.avPrecio.push(t)}catch(e){}}return n}
-var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* vehLibres: pasó a tema-vehiculos.js */
 function quienVeh90(q){return q===-1?'un viaje de carga':(+q===ADM85?'el administrador':chofN(q))}
 /* si el que tiene puesto ya lo trae otro, se le cambia solo a uno libre (antes de salir) */
@@ -12125,6 +12099,7 @@ var _pI82=popItems;popItems=function(){var L=_pI82.apply(this,arguments);try{if(
    - ajHTML: la ventana de Ajustes (23 pasos). La versión base se rehízo completa en base-v38.html.
    - setupHTML: el asistente de la primera vez en la versión real: bodega, vehículos, personal, clientes, proveedores, dinero y precios (21 pasos).
    Los dos van intercalados en el orden en que se armaban.
+   - suAplicar (al final, 4 más): lo que se capturó en el asistente pasa a la app (seguros, licencias, sueldos, horarios, ubicaciones, PIN del admin, número de cada vehículo).
    Las funciones que usan los pasos siguen en su capa.
    ============================================================================================ */
 
@@ -12317,6 +12292,28 @@ var _aj76=ajHTML;ajHTML=function(){var h=_aj76.apply(this,arguments);if(!h||h.in
 var _ajP82=ajHTML;ajHTML=function(){var h=_ajP82.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||S.role!=='admin'||S.encOn)return h;
  var c='<details class="card" data-k="ajped82"'+(S.dOpen.ajped82?' open':'')+'><summary><b>Pedidos tarde</b><span class="lbl">hasta qué hora se mandan hoy</span></summary><div class="lbl" style="margin-top:6px">Si un chofer ya mandó su cierre y le asignas un pedido para hoy antes de esta hora, se le pregunta si puede llevarlo. Después de esta hora (y siempre después de las 7:30 pm) el pedido pasa a mañana.</div><div class="field"><label for="cfg_hPed82">Hora límite</label><input id="cfg_hPed82" type="time" data-bind="cfg.hPed82" value="'+esc(S.cfg.hPed82||'17:00')+'" max="19:30"></div></details>';
  var i=h.lastIndexOf('</div></div>');return i<0?h:h.slice(0,i)+c+h.slice(i)};
+
+/* ---------- suAplicar: lo que se captura en el asistente de la primera vez pasa a la app (aplanado el 18 nov; antes en l16, l22, l75, l90, en el mismo orden) ---------- */
+/* suAplicar · de l16 */
+var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
+ try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['aseg','segVence','tcVence','verVence'].forEach(function(k){if(v[k])o[k]=v[k]});if(num(v.capL)>0)o.capL=num(v.capL);if(num(v.acLast)>0)o.acLast=num(v.acLast)});
+  var emps=S.choferes.slice(nC0);U.per.forEach(function(x,i){var c=emps[i];if(!c)return;if(x.licV)c.licV=x.licV;if(num(x.sueldo)>0)c.sz.monto=String(num(x.sueldo));if(/^\d{4}$/.test(String(x.pin||''))&&x.pin!=='1234')S.pins['c:'+c.id]=String(x.pin)});
+  var cls=S.cli.slice(nCl0);U.cli.forEach(function(x,i){var c=cls[i];if(!c)return;['ap','hAb','hCi','recibe'].forEach(function(k){if(x[k])c[k]=x[k]});if(num(x.lim)>0){c.lim=num(x.lim);c.limMan=num(x.lim)}});
+  U.prov.forEach(function(x){if(x.dir)provD(x.n).dir=x.dir});
+  if(/^\d{4}$/.test(String(U.pinA||''))&&U.pinA!=='1234')S.pins['a:'+S.adminYo]=String(U.pinA)}catch(e){console.error(e)}
+ return r};
+
+/* suAplicar · de l22 */
+var _suAp22=suAplicar;suAplicar=function(){var U=S.setup,r=_suAp22.apply(this,arguments);try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['marca','modelo','color','vin','motor','llanta'].forEach(function(k){if(v[k])o[k]=String(v[k]).trim()});if(v.anio)o.anio=String(v.anio);if(num(v.capC)>0)o.capC=num(v.capC);if(num(v.capK)>0)o.capK=num(v.capK)})}catch(e){}return r};
+
+/* suAplicar · de l75 */
+var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(function(v){return v.ex75||null}),ec=(U.cli||[]).map(function(c){return [c.n,c.ex75||null]}),ep=(U.prov||[]).map(function(p){return [p.n,p.ex75||null]});var r=_suA75.apply(this,arguments);
+ try{ev.forEach(function(x,i){var v=S.veh[i];if(!x||!v)return;Object.keys(x).forEach(function(k){if(x[k]!==undefined&&x[k]!=='')v[k]=x[k]});if(x.acLast!=null)v.acLast=num(x.acLast);if(x.acInt)v.acInt=num(x.acInt);if(x.capC){v.capC=num(x.capC);v.capRC=num(x.capC)}});
+  ec.forEach(function(x){if(!x[1])return;var c=S.cli.filter(function(z){return z.n===x[0]})[0];if(!c)return;if(x[1].lat!=null&&x[1].lat!==''){c.lat=+x[1].lat;c.lng=+x[1].lng}if(x[1].hAb){c.hAb=x[1].hAb;c.hCi=x[1].hCi}});
+  ep.forEach(function(x){if(!x[1])return;var d=provD(x[0]);if(x[1].lat!=null&&x[1].lat!==''){d.lat=+x[1].lat;d.lng=+x[1].lng}})}catch(e){console.error('suA75',e)}return r};
+
+/* suAplicar · de l90 */
+var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
 
 //@@capa tema-nube.js
 /* ===================== TEMA · Nube: subir y bajar los datos (aplanado el 18 nov) =====================
@@ -12704,6 +12701,104 @@ var _szRes50=szRes;szRes=function(c){var h=_szRes50.apply(this,arguments),L=(S.f
 /* personal · de l52 */
 var _pers52=personal;personal=function(){var h=_pers52.apply(this,arguments);if(S.openCh==null)return h;var c=(S.choferes||[]).filter(function(x){return x.id===S.openCh})[0];if(!c)return h;var g=gpsRutaHTML(c);if(!g)return h;
  var m='<div class="lbl" style="margin-top:10px"><b>Referencias</b></div>',i=h.indexOf(m);return i<0?h:h.slice(0,i)+g+h.slice(i)};
+
+//@@capa tema-pin.js
+/* ===================== TEMA · Entrar con PIN (crear, escribir, bloqueo, huella, quién puede entrar) (aplanado el 18 nov) =====================
+   Antes estaba repartido en 12 envolturas encadenadas en l22, l28, l32, l36, l48, l58.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con su prueba de comparación).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   Se arma justo después de tema-personal.js.
+   - pinDe: el PIN de cada quien (en la real no hay "1234"); cuenta los intentos fallidos y bloquea 5 veces mal.
+   - pinHTML: la pantalla del PIN (crear el PIN la primera vez, bloqueo, sin "saltar" en la real, huella o cara, olvidé mi PIN, cambiar de usuario).
+   - pinRow: el renglón "PIN para entrar" en Ajustes y fichas (Reiniciar para el admin).
+   - pinLimMin: cuántos minutos sin usar antes de pedir el PIN otra vez (chofer y venta local 40).
+   - pinEntrar: si acaba de entrar hace poco (gracia), no lo vuelve a pedir.
+   - personasEntrar: quién puede entrar en este celular según su cuenta de la nube.
+   - entrarComo: al cambiar de usuario se borra la gracia.
+   ============================================================================================ */
+
+/* pinDe · de l22 */
+var _pd22=pinDe;pinDe=function(k){if(REAL&&!S.pins[k])return '\u0000';return _pd22.apply(this,arguments)};
+
+/* pinHTML · de l22 */
+var _pinH22=pinHTML;pinHTML=function(){if(!_pin.modo)return '';var k=_pin.k;
+ if(REAL&&!pinTiene(k)){if(_pnew.k!==k)_pnew={k:k,v:'',v1:null};var p2=_pnew.v1!=null;
+  return '<div id="pinov" role="dialog" aria-label="Crea tu PIN"><div class="pw"><b style="font-size:20px">Hola, '+esc(pinNom(k))+'</b><div class="lbl">'+(p2?'Escríbelo otra vez para confirmar':'Crea tu PIN de 4 números. Con él vas a entrar a la app. No uses 1234 ni tu fecha de nacimiento.')+'</div>'
+   +(_pnew.err?'<div class="neg" role="alert" style="font-weight:700;font-size:16px;margin:8px 0 0">'+esc(_pnew.err)+'</div>':'')+'<div class="dots">'+[0,1,2,3].map(function(i){return '<i class="'+(i<_pnew.v.length?'on':'')+'"></i>'}).join('')+'</div>'
+   +'<div class="kp">'+[1,2,3,4,5,6,7,8,9].map(function(n){return '<button data-act="pnd" data-v="'+n+'">'+n+'</button>'}).join('')+'<button data-act="pnx" style="font-size:15px">'+(p2?'Volver':'')+'</button><button data-act="pnd" data-v="0">0</button><button data-act="pnb" aria-label="Borrar" style="font-size:20px">⌫</button></div>'+(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1?'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button>':'')+'</div></div>'}
+ var bl=pinBloqueo(k),h=_pinH22.apply(this,arguments);
+ if(bl)h=h.replace(/<div class="dots">/,'<div class="neg" style="font-weight:700;margin:6px 0">Demasiados intentos. Espera '+bl+'.</div><div class="dots">');
+ if(REAL&&_pin.modo==='entrar'&&personasEntrar().length>1)h=h.replace(/<\/div><\/div>$/,'<button class="link" data-act="usrcambia">No soy '+esc(pinNom(k))+'</button></div></div>');
+ return h};
+
+/* pinDe · de l22 */
+var _pd22b=pinDe;pinDe=function(k){var real=_pd22b.apply(this,arguments);if(!_pin||_pin.v.length!==4||_pin.k!==k)return real;
+ if(pinBloqueo(k))return '\u0001';
+ var f=pinFallas(k);if(_pin.v===real){f.n=0;return real}
+ f.n++;if(f.n>=5){var min=PIN_ESP[Math.min(f.nivel,PIN_ESP.length-1)];f.hasta=Date.now()+min*60000;f.nivel++;f.n=0;
+  S.avPrecio.push('URGENTE: alguien escribió mal 5 veces el PIN de '+pinNom(k)+' ('+hhmm()+'). Se bloqueó '+min+' min.');setTimeout(render,50)}
+ return real};
+
+/* pinRow · de l22 */
+var _pinRow22=pinRow;pinRow=function(k){var h=_pinRow22.apply(this,arguments).replace('el de inicio (1234)',REAL?'todavía no lo crea (lo crea al entrar)':'el de inicio (1234)');
+ if(S.role==='admin'&&!S.encOn&&k!==pinKey()&&pinTiene(k))h=h.replace('</button></div>','</button><button class="btn sm sec" style="width:auto;margin-left:6px" data-act="pinreset" data-k="'+k+'">Reiniciar</button></div>');return h};
+
+/* personasEntrar · de l28 */
+var _pe28=personasEntrar;personasEntrar=function(){var L=_pe28.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='chofer')return L.filter(function(x){return x.go&&x.go.role==='rep'&&+x.go.ch===+p.chId});return L.filter(function(x){return !(x.go&&x.go.role==='admin'&&x.go.adm!==p.adm)})};
+
+/* pinHTML · de l32 */
+var _pH32=pinHTML;pinHTML=function(){var h=_pH32.apply(this,arguments);if(!REAL||!h)return h;return h.replace(/<div[^>]*>En la demo el PIN de todos es 1234\.?<\/div>/,'').replace(/<button[^>]*data-act="pinskip"[^>]*>[^<]*<\/button>/,'')};
+
+/* pinLimMin · de l36 */
+var _plm36=pinLimMin;pinLimMin=function(k){k=k||pinKey();if(/^c:/.test(k)||k==='local')return 40;return _plm36.apply(this,arguments)};
+
+/* pinHTML · de l36 */
+var _pH36=pinHTML;pinHTML=function(){var h=_pH36.apply(this,arguments);if(!h||!_pin||_pin.modo!=='entrar')return h;var k=_pin.k,nm=esc(pinNom(k)),mas='';h=h.replace(/<button class="link" data-act="usrcambia">[^<]*<\/button>/,'');
+ if(bioActiva(k)&&bioPl())mas+='<button class="huella" data-act="biousar">🫆 Entrar con mi huella</button>';
+ mas+='<div class="pinmas"><button class="link" data-act="pinolv">Olvidé mi PIN</button><button class="link" data-act="pinotro">No soy '+nm+' · cambiar de usuario</button></div>';
+ return h.replace(/<\/div><\/div>$/,mas+'</div></div>')};
+
+/* personasEntrar · de l36 */
+var _pe36=personasEntrar;personasEntrar=function(){var L=_pe36.apply(this,arguments),p=NB.perfil;if(!NB.on||!p)return L;if(p.rol==='cont')return L.filter(function(x){return x.k==='cont'});if(p.rol==='local')return L.filter(function(x){return x.go&&x.go.role==='local'});return L};
+
+/* pinHTML · de l48 */
+var _pH48=pinHTML;pinHTML=function(){var h=_pH48.apply(this,arguments);return h?h.replace('🫆 Entrar con mi huella','🫆 Entrar con mi huella o cara'):h};
+
+/* pinEntrar · de l58 */
+var _pinEnt58=pinEntrar;pinEntrar=function(){var k=pinKey();if(pnGracia(k)){S.pinOk[k]=true;return false}return _pinEnt58.apply(this,arguments)};
+
+/* entrarComo · de l58 */
+var _entC58=entrarComo;entrarComo=function(){_pinAuth={};return _entC58.apply(this,arguments)};
+
+//@@capa tema-navega.js
+/* ===================== TEMA · Atrás y deslizar entre pantallas (aplanado el 18 nov) =====================
+   Antes estaba repartido en 6 envolturas encadenadas en l24, l26, l45, l52, l82, l88.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con su prueba de comparación).
+   Si se cambia algo de esto, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   Se arma justo después de tema-pin.js.
+   - navAtras: el botón o gesto de "atrás" (cierra la foto abierta, la ventana de ubicación, el mapa grande; si no, la pantalla anterior). La base está en l22.
+   - swBloq: dónde NO se cambia de pantalla al deslizar (mapas, antigüedad de saldos, lotes, pendientes, días, taras).
+   ============================================================================================ */
+
+/* navAtras · de l24 */
+var _navA24=navAtras;navAtras=function(){var o=document.getElementById('fotov');if(o){o.remove();return true}return _navA24.apply(this,arguments)};
+
+/* navAtras · de l26 */
+var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('fotov')){var sg=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg)ubSeguir();return true}return _navA26.apply(this,arguments)};
+
+/* swBloq · de l45 */
+var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
+
+/* navAtras · de l52 */
+var _navA52=navAtras;navAtras=function(){if(GM){gmCierra();return true}return _navA52.apply(this,arguments)};
+
+/* swBloq · de l82 */
+var _swB82=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="antig65"],.lote,[data-sw80]'))return true;return _swB82.apply(this,arguments)};
+
+/* swBloq · de l88 */
+var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

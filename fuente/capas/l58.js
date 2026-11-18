@@ -33,7 +33,7 @@ var _rd58=render;render=function(){var r=_rd58.apply(this,arguments);try{if(pnBl
 var _pinAuth={},_pnCarga=Date.now();
 /* solo al abrir la app (cuando termina de cargar lo guardado o la nube); en pruebas solo si se pide */
 function pnGracia(k){if(window.__pnTest&&!window.__pnGracia)return false;return !!(_pinAuth[k]&&Date.now()-_pinAuth[k]<120000&&Date.now()-_pnCarga<180000)}
-var _pinEnt58=pinEntrar;pinEntrar=function(){var k=pinKey();if(pnGracia(k)){S.pinOk[k]=true;return false}return _pinEnt58.apply(this,arguments)};
+/* pinEntrar: pasó a tema-pin.js */
 var _pinModoAnt=null,_pinKAnt=null;
 var _rd58b=render;render=function(){
  try{if(_pin&&_pin.modo==='entrar'&&pnGracia(_pin.k)&&!_pin.bloq){S.pinOk[_pin.k]=true;_pin={v:'',modo:null}}}catch(e){}
@@ -41,7 +41,7 @@ var _rd58b=render;render=function(){
  try{/* solo cuenta como "ya entró" si pasó por la pantalla del PIN o la huella */var k=pinKey(),m=_pin&&_pin.modo;if(_pinModoAnt==='entrar'&&!m&&S.pinOk&&S.pinOk[_pinKAnt])_pinAuth[_pinKAnt]=Date.now();_pinModoAnt=m;_pinKAnt=_pin&&_pin.k}catch(e){}return r};
 /* salir, cambiar de usuario o cerrar el día sí borran el permiso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;if(/^(usrsalir|pinotrosi|role|chofsel|adminyo|encentrar|encsalir|usrgo|nbsalir|enviar)$/.test(b.dataset.act))_pinAuth={}},true);
-var _entC58=entrarComo;entrarComo=function(){_pinAuth={};return _entC58.apply(this,arguments)};
+/* entrarComo: pasó a tema-pin.js */
 
 /* ---------- 24 · al desbloquear, regresa a Inicio (admin) o a su Ruta (chofer) ---------- */
 function pnCasa(){var r=S.role;return (typeof NAV_CASA!=='undefined'&&NAV_CASA[r])||S.tab[r]}

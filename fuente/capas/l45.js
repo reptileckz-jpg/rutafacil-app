@@ -55,7 +55,7 @@ var _r45c=render;render=function(){var r=_r45c.apply(this,arguments);try{if(S.ro
 /* Ajustes: cuánto extra sugerir */
 /* ajHTML: pasó a tema-ajustes.js */
 /* ---------- 68 · mover el mapa no cambia de sección ---------- */
-var _swB45=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('.leaflet-container,[data-vivo],.mapa,[data-mapa]'))return true;return _swB45.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */
 var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};
 /* ---------- 74 · nada de la demo en la app real ---------- */
 function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}

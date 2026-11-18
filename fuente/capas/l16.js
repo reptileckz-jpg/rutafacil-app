@@ -7,13 +7,7 @@ var SU_NOTA='<div class="lbl" style="margin-top:6px">Si no lo tienes a la mano, 
 /* setupHTML: pasó a tema-ajustes.js */
 /* el PIN solo números */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.maxLength===4&&t.dataset&&/pin/i.test(t.dataset.bind||'')){var v=t.value.replace(/\D/g,'').slice(0,4);if(v!==t.value)t.value=v;var ps=t.dataset.bind.split('.'),o=S;for(var i=0;i<ps.length-1;i++){o=o[ps[i]];if(!o)return}o[ps[ps.length-1]]=v}},false);
-var _suAp16=suAplicar;suAplicar=function(){var U=S.setup,nC0=S.choferes.length,nCl0=S.cli.length;var r=_suAp16.apply(this,arguments);
- try{U.veh.forEach(function(v,i){var o=S.veh[i];if(!o)return;['aseg','segVence','tcVence','verVence'].forEach(function(k){if(v[k])o[k]=v[k]});if(num(v.capL)>0)o.capL=num(v.capL);if(num(v.acLast)>0)o.acLast=num(v.acLast)});
-  var emps=S.choferes.slice(nC0);U.per.forEach(function(x,i){var c=emps[i];if(!c)return;if(x.licV)c.licV=x.licV;if(num(x.sueldo)>0)c.sz.monto=String(num(x.sueldo));if(/^\d{4}$/.test(String(x.pin||''))&&x.pin!=='1234')S.pins['c:'+c.id]=String(x.pin)});
-  var cls=S.cli.slice(nCl0);U.cli.forEach(function(x,i){var c=cls[i];if(!c)return;['ap','hAb','hCi','recibe'].forEach(function(k){if(x[k])c[k]=x[k]});if(num(x.lim)>0){c.lim=num(x.lim);c.limMan=num(x.lim)}});
-  U.prov.forEach(function(x){if(x.dir)provD(x.n).dir=x.dir});
-  if(/^\d{4}$/.test(String(U.pinA||''))&&U.pinA!=='1234')S.pins['a:'+S.adminYo]=String(U.pinA)}catch(e){console.error(e)}
- return r};
+/* suAplicar: pasó a tema-ajustes.js */
 
 /* ===================== v5 · Datos que faltan =====================
    Una burbuja (como la del viaje) que muestra UNO a la vez: el más importante. Al tocarla se abre

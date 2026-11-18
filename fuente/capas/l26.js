@@ -99,7 +99,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
   S.avPrecio.push(ubQuien()+' no pudo guardar la ubicación de '+nm2+' (el GPS no funcionó)');var sg=u.sigue;S.ub=null;render();if(sg)ubSeguir();return}
  if(a==='ubx'){e.stopImmediatePropagation();var sg2=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg2)ubSeguir();return}},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||t.dataset.ubf!=='1'||!t.files||!t.files[0]||!S.ub)return;fotoLeer(t.files[0],function(u){if(!S.ub)return;S.ub.foto=u;S.ub.fotoH=Date.now();render()})},true);
-var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('fotov')){var sg=S.ub.sigue&&S.ub.modo==='foto';S.ub=null;render();if(sg)ubSeguir();return true}return _navA26.apply(this,arguments)};
+/* navAtras: pasó a tema-navega.js */
 /* ---- reparto: la ubicación del cliente es obligatoria; luego se completan sus datos ---- */
 function ubCliAplica(c){return !!c&&!(c.rapida&&!(S.d&&S.d.reg))&&!UB_LEGADO()}
 function ubCliFalta(c){var f=[];if(!c.foto)f.push('foto de la fachada');if(!String(c.tel||'').trim()&&!(c.rapida&&S.d&&String(S.d.rtel||'').trim()))f.push('teléfono');return f}

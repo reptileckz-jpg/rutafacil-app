@@ -81,7 +81,7 @@ function vehIds90(){var V=S.veh;if(!Array.isArray(V)||V.length<2)return 0;var vi
  V.forEach(function(v){if(!v)return;if(vis[v.id]){v.id=++mx;n++;L.push(v.n)}vis[v.id]=1});
  if(n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'Se arregló el número interno de '+L.join(', ')+' (estaba repetido)'})}catch(e){}
   try{var t='Se arregló: '+L.join(', ')+' tenía'+(n===1?'':'n')+' el mismo número interno que otro vehículo y la app los confundía. Revisa en Vehículos el odómetro de cada uno.';if((S.avPrecio=S.avPrecio||[]).indexOf(t)<0)S.avPrecio.push(t)}catch(e){}}return n}
-var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
+/* suAplicar: pasó a tema-ajustes.js */
 /* vehLibres: pasó a tema-vehiculos.js */
 function quienVeh90(q){return q===-1?'un viaje de carga':(+q===ADM85?'el administrador':chofN(q))}
 /* si el que tiene puesto ya lo trae otro, se le cambia solo a uno libre (antes de salir) */

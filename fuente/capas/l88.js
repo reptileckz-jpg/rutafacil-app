@@ -45,4 +45,4 @@ function fichaFalla88(){var o=document.getElementById('fiov');if(!o||S.vehOpen==
 
 var _rd88=render;render=function(){try{ordena88()}catch(e){console.error('l88',e)}var r=_rd88.apply(this,arguments);try{fichaFalla88()}catch(e){console.error('l88b',e)}return r};
 /* deslizar sobre la lista de pendientes ya no cambia de sección */
-var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"],[data-x="dia80a"],[data-x="tar86"]'))return true;return _swB88.apply(this,arguments)};
+/* swBloq: pasó a tema-navega.js */

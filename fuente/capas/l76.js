@@ -10,7 +10,7 @@ function tagDe(v){return v&&v.tag76||null}
 function tagSaldo(v){var t=tagDe(v);if(!t)return 0;return r2(num(t.ini)+sum(t.mov||[],function(m){return m.t==='rec'?num(m.m):(m.t==='cru'?-num(m.m):0)}))}
 /* la recarga sale de la caja (si se pagó en efectivo) pero no es gasto: el gasto es cada cruce */
 function tagRecCaja(){var s=0;(S.veh||[]).forEach(function(v){var t=tagDe(v);if(t)(t.mov||[]).forEach(function(m){if(m.t==='rec'&&m.de==='caja')s+=num(m.m)})});return s}
-var _cE76=cajaEsp;cajaEsp=function(){return _cE76.apply(this,arguments)-tagRecCaja()};
+/* cajaEsp: pasó a tema-cajas.js */
 function viajeDe76(v,f){return (S.cargas||[]).filter(function(c){return c.viaje&&+c.viaje.veh===+v.id&&(c.viaje.fecha||c.fecha)===f})[0]||null}
 function tagCruce(v,o){var t=tagDe(v);if(!t)return null;var m={t:'cru',f:o.f||iso(TODAY),h:o.h||'',cas:o.cas||'Caseta',m:r2(num(o.m)),q:quien()};var c=viajeDe76(v,m.f);
  if(c){c.extras=c.extras||[];c.extras.push({c:'Caseta (TAG) · '+m.cas,m:m.m,tag76:1});c.trBase=num(c.trBase)+m.m;m.cid=c.id}/* el TAG ya se pagó con la recarga: cuenta como costo del viaje, no vuelve a salir de la caja */t.mov=t.mov||[];t.mov.push(m);return m}

@@ -160,10 +160,10 @@ var _rdKm82=render;render=function(){try{if(MODO==='vacio'){var b=(S.bods||[])[0
    ofrecen "Galería"; una foto vieja (de más de 2 minutos) en una de ellas se rechaza. La marca va ARRIBA (abajo la tapaba la
    franja de fecha y placa): fecha y hora · quién · placa y vehículo. En Rutas, "📷 Fotos del vehículo" de cada chofer. */
 function soloCam82(inp){return !!(inp&&inp.hasAttribute&&inp.hasAttribute('capture'))}
-var _ca82=cam73Abre;cam73Abre=function(inp){var r=_ca82.apply(this,arguments);try{if(soloCam82(inp)){var g=document.querySelector('#cam73 [data-cam="gal"]');if(g){var s=document.createElement('span');s.setAttribute('style','width:64px;font-size:12px;text-align:center;color:#fff;opacity:.8');s.textContent='Solo cámara';g.replaceWith(s)}CAM73.solo82=1}else CAM73.solo82=0}catch(e){}return r};
-var _cg82=cam73Galeria;cam73Galeria=function(){if(CAM73.solo82){toast('Esta foto solo se puede tomar con la cámara');return}return _cg82.apply(this,arguments)};
+/* cam73Abre: pasó a tema-camara.js */
+/* cam73Galeria: pasó a tema-camara.js */
 window.addEventListener('change',function(e){var t=e.target;if(!t||t.type!=='file'||!soloCam82(t))return;var f=t.files&&t.files[0];if(!f)return;if(f.lastModified&&Date.now()-f.lastModified>2*60000){e.stopImmediatePropagation();try{t.value=''}catch(er){}toast('Esta foto se toma en el momento con la cámara (no de la galería)')}},true);
-var _cp82=cam73Prende;cam73Prende=function(){var r=_cp82.apply(this,arguments);if(CAM73.solo82)setTimeout(function(){var m=document.querySelector('#cam73 .msg');if(m&&/Galer/.test(m.innerHTML))m.innerHTML='No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Dale permiso de cámara a la app: Ajustes del celular → Apps → Ruta Fácil → Permisos → Cámara.</span>'},1500);return r};
+/* cam73Prende: pasó a tema-camara.js */
 function vehFoto82(){try{if(S.vw&&S.vw.open){var v=vehById(+S.vw.veh);if(v)return v}return vehHoy()}catch(e){return null}}
 cam73Sello=function(cx,w,h){var q='';try{q=quienFoto73()||''}catch(e){}var v=vehFoto82(),l1=new Date().toLocaleString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})+(q?' · '+q:''),l2=v&&(S.role==='rep'||S.vw&&S.vw.open)?('Placa '+(String(v.pl||'').toUpperCase()||'sin placa')+' · '+(v.n||'')):'';
  var hh=Math.max(22,Math.round(w*22/480)),n=l2?2:1;cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(0,0,w,hh*n);cx.fillStyle='#fff';cx.font='bold '+Math.round(hh*0.6)+'px sans-serif';cx.textBaseline='middle';cx.fillText(l1,Math.round(hh*0.3),hh/2);if(l2)cx.fillText(l2,Math.round(hh*0.3),hh*1.5)};
@@ -242,7 +242,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 
 /* ---------- 59 · días sin movimientos: no se pide precio ni cierre de caja; "cuadran las cuentas" lo dice ---------- */
 function sinMov82(d){var hay=false;try{rutasDia82(d).forEach(function(r){if(!rutaVacia(r.r||{log:r.log,salida:{ok:false}})||(r.log||[]).length)hay=true});if((S.vlVentas||[]).some(function(v){return v.f82===d}))hay=true;if((S.gastos||[]).some(function(g){return (g.f||g.f82)===d&&!/Retiro/.test(g.t||'')}))hay=true;if((S.cargas||[]).some(function(c){return c.fecha===d&&c.est!=='Por llegar'}))hay=true}catch(e){return false}return !hay}
-var _cAP82=cajaAyerPend;cajaAyerPend=function(){if(_cAP82.apply(this,arguments)===false)return false;try{var y=ayerIso();if(sinMov82(y)){S.sinTrabajo=(S.sinTrabajo||[]).concat([y]).filter(function(x,i,a){return a.indexOf(x)===i});S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'App',x:'El '+fmtF(y)+' no hubo movimientos: no se pide cierre de caja'});return false}}catch(e){}return true};
+/* cajaAyerPend: pasó a tema-cajas.js */
 /* popItems: pasó a tema-inicio.js */
 var _cu82=cuadre82;cuadre82=function(d){var F=_cu82.apply(this,arguments);try{if(sinMov82(d))F.forEach(function(o){o.e='ok';o.L=['Día sin movimientos.']})}catch(e){}return F};
 var _rdY82=render;render=function(){try{pedQVence82()}catch(e){}var r=_rdY82.apply(this,arguments);try{pedQAdm82();pedQRep82();sueltosPon82();sueltosTxt82()}catch(e){console.error('l82b',e)}return r};

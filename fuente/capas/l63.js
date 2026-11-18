@@ -66,8 +66,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* "Quitar" una nota pide ¿Seguro? */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="asidel"]');if(!b||b.dataset.ok)return;e.preventDefault();e.stopImmediatePropagation();var i=b.dataset.i;wzSeguro('Se quita la nota.',function(){clic63('asidel',{i:i,ok:'1'})},'Sí, quitar')},true);
 /* cada nota sale solo a quien debe verla (y las de "todos los clientes/proveedores" en cada uno) */
-var _nd63=notasDe;notasDe=function(k){var orig=S.notasN||[],rol=S.role==='rep'?'ch':(S.encOn?'enc':'adm');var gen=/^cli:/.test(k)?'cli:*':(/^prov:/.test(k)?'prov:*':null);
- S.notasN=orig.filter(function(n){if((n.k!==k&&n.k!==gen))return false;var v=n.v||'todos';return rol==='adm'||v==='todos'||v===rol}).map(function(n){return n.k===gen?Object.assign({},n,{k:k}):n});try{return _nd63.call(this,k)}finally{S.notasN=orig}};
+/* notasDe: pasó a tema-notas.js */
 
 /* ---------- 26 · "Me voy de vacaciones" por pasos ---------- */
 try{if(NB_SH.indexOf('vacPlan')<0)NB_SH.push('vacPlan')}catch(e){}

@@ -121,9 +121,8 @@ function nbForzarRol(){var p=NB.perfil;if(!p||!NB.listo)return;if(p.rol==='chofe
 /* personasEntrar: pasó a tema-pin.js */
 /* ---------- cajas: también cuentan las que van en los camiones de las otras rutas ---------- */
 function rutasOtras(){var L=[];Object.keys(S.chSt||{}).forEach(function(id){if(+id!==+S.chofHoy&&S.chSt[id])L.push(S.chSt[id])});return L}
-var _cd28=cajasDonde;cajasDonde=function(){var w=_cd28.apply(this,arguments);try{rutasOtras().forEach(function(o){var cam=num(o.invR),v=0,ll=0,vv=0,c=o.cierre;if(c&&!c.sent)v=sum(o.log||[],function(l){return num(l.V)-num(l.Vr)});
- if(c&&c.sent&&c.res&&!o.recep&&c.porContar){ll=Math.max(0,num(c.res.reg));vv=Math.max(0,num(c.res.V))}w.cam+=cam+ll;w.camV=(w.camV||0)+v+vv;w.tot+=cam+v+ll+vv})}catch(e){}return w};
-var _ce28=cajasEsperadas;cajasEsperadas=function(){var x=_ce28.apply(this,arguments);try{rutasOtras().forEach(function(o){if(o.cierre&&!o.cierre.sent)x-=sum(o.log||[],function(l){return num(l.Vr)})})}catch(e){}return x};
+/* cajasDonde: pasó a tema-cajas.js */
+/* cajasEsperadas: pasó a tema-cajas.js */
 /* ---------- fotos de evidencia: se borran de la nube a los 60 días (antes 30; lo hace el celular del admin, una vez al día) ---------- */
 function nbLimpiaFotos(){if(!NB.on||!NB.listo||!NB.perfil||NB.perfil.rol!=='admin'||!NB.ad.viejas)return;var hoy=iso(TODAY);try{if(localStorage.getItem('nbLimp')===hoy)return;localStorage.setItem('nbLimp',hoy)}catch(e){}
  NB.ad.viejas(nbP('f'),'pe',Date.now()-60*864e5,300)/* 122 · 60 días, igual que el detalle de las rutas (decisión de Ricardo) */.then(function(ids){ids.forEach(function(id){NB.ad.borrar(nbP('f/'+id)).catch(function(){})});if(ids.length)console.log('nube: '+ids.length+' fotos viejas borradas')},function(e){console.error('nube limpiar',e)})}

@@ -106,9 +106,7 @@ document.addEventListener('click',function(e){var im=e.target;if(!fotoZoomable(i
 /* ---- Ticket con el logo ---- */
 var TK_IMG=new Image();TK_IMG.src=IMG.tk;
 function tkSinNombre(){return /pl[aá]tanos\s+nietos/i.test(String(S.cfg.nombre||''))}
-var _nbL9=notaBlock;notaBlock=function(){var h=_nbL9.apply(this,arguments);if(!h)return h;
- h=h.replace('<img src="'+LOGO+'" alt="" style="width:90px;display:block;margin:0 auto 6px">','<img src="'+IMG.tk+'" alt="Plátanos Nietos" class="tklogo">');
- if(tkSinNombre())h=h.replace('<div style="text-align:center;font-weight:700;font-size:16px">'+esc(String(S.cfg.nombre).toUpperCase())+'</div>','');return h};
+/* notaBlock: pasó a tema-notas.js */
 notaImg=function(n){var it=notaItems(n);if(tkSinNombre()&&it[0]&&it[0].t==='c'&&it[0].s===String(S.cfg.nombre).toUpperCase())it=it.slice(1);
  var W=440,LW=170,LH=Math.round(LW*666/640),y0=LH+40,H=y0+it.length*28+10,cv=document.createElement('canvas');cv.width=W;cv.height=H;var cx=cv.getContext('2d');
  cx.fillStyle='#fff';cx.fillRect(0,0,W,H);try{if(TK_IMG.complete&&TK_IMG.naturalWidth)cx.drawImage(TK_IMG,W/2-LW/2,12,LW,LH)}catch(e){}cx.fillStyle='#111';var y=y0;
@@ -217,15 +215,9 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* en Ajustes la tarjeta del logo se agrega después: guardar dónde ibas para que no se mueva */
 function renderQuieto(){var o=document.getElementById('ajov')||document.getElementById('setov'),y=o?o.scrollTop:0,wy=window.scrollY;render();var o2=document.getElementById('ajov')||document.getElementById('setov');if(o2)o2.scrollTop=y;window.scrollTo(0,wy)}
 /* el ticket usa el logo que toque (o ninguno) */
-var _nbLg=notaBlock;notaBlock=function(){var h=_nbLg.apply(this,arguments);if(!h)return h;var src=logoTkSrc();
- if(src!==IMG.tk){var tag='<img src="'+IMG.tk+'" alt="Plátanos Nietos" class="tklogo">';h=h.replace(tag,src?'<img src="'+src+'" alt="Logo" class="tklogo">':'');
-  if(tkSinNombre()&&h.indexOf('font-weight:700;font-size:16px">'+esc(String(S.cfg.nombre).toUpperCase())+'</div>')<0){var i=h.indexOf('class="tklogo">');var nm='<div style="text-align:center;font-weight:700;font-size:16px">'+esc(String(S.cfg.nombre).toUpperCase())+'</div>';h=i>-1?h.slice(0,i+15)+nm+h.slice(i+15):h.replace(/(<div[^>]*>)/,'$1'+nm)}}
- return h};
+/* notaBlock: pasó a tema-notas.js */
 var _tkImgs={};function tkImg(src){if(!src)return null;if(!_tkImgs[src]){var i=new Image();i.src=src;_tkImgs[src]=i}return _tkImgs[src]}
-var _niLg=notaImg;notaImg=function(n){var src=logoTkSrc();if(src===IMG.tk)return _niLg.apply(this,arguments);
- var it=notaItems(n),im=tkImg(src),LW=0,LH=0;if(im&&im.complete&&im.naturalWidth){LW=Math.min(170,im.naturalWidth);LH=Math.round(LW*im.naturalHeight/im.naturalWidth);if(LH>170){LH=170;LW=Math.round(170*im.naturalWidth/im.naturalHeight)}}
- var W=440,y0=(LH?LH+40:34),H=y0+it.length*28+10,cv=document.createElement('canvas');cv.width=W;cv.height=H;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,W,H);if(LH)try{cx.drawImage(im,W/2-LW/2,12,LW,LH)}catch(e){}
- cx.fillStyle='#111';var y=y0;it.forEach(function(x){cx.font=(x.b?'bold ':'')+'15px monospace';if(x.t==='hr'){cx.fillRect(20,y-12,W-40,1)}else if(x.t==='c'){cx.textAlign='center';cx.font=(x.b?'bold 19px':'15px')+' monospace';cx.fillText(x.s,W/2,y)}else{cx.fillStyle=x.c==='neg'?'#B3261E':(x.c==='ok'?'#2F7D32':'#111');cx.textAlign='left';cx.fillText(x.k,20,y);cx.textAlign='right';cx.fillText(x.v,W-20,y);cx.fillStyle='#111'}y+=28});return cv.toDataURL('image/png')};
+/* notaImg: pasó a tema-notas.js */
 
 /* bienvenida animada (primera vez): llega el camión, se acomodan las cajas y dice para qué es la app */
 IMG.bvCam="__IMG_bv_camion__";IMG.bvVid="__IMG_bv_video__";IMG.bvCaj="__IMG_bv_cajas__";

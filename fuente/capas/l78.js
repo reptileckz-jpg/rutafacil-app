@@ -121,16 +121,7 @@ function camLentes78(){return navigator.mediaDevices.enumerateDevices().then(fun
  atras.sort(function(a,b){return malo(a)-malo(b)||num(a)-num(b)});CAM78.L=atras;return atras})}
 function camAbre78(id){var v=document.querySelector('#cam73 video'),m=document.querySelector('#cam73 .msg');if(!v)return;try{if(CAM73.stream)CAM73.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}
  navigator.mediaDevices.getUserMedia({audio:false,video:{deviceId:{exact:id},width:{ideal:1920},height:{ideal:1080}}}).then(function(s){CAM73.stream=s;v.srcObject=s;v.play().catch(function(){});if(m)m.textContent=''}).catch(function(){toast('Ese lente no se pudo abrir')})}
-var _cP78=cam73Prende;cam73Prende=function(){if(CAM73.cara!=='environment')return _cP78.apply(this,arguments);var v=document.querySelector('#cam73 video'),m=document.querySelector('#cam73 .msg');if(!v)return;
- /* 113 · antes se abría dos veces (una para el permiso y otra con el lente guardado): tardaba, a veces decía "falta permiso" y en el Moto X
-    cambiaba al lente blanco y negro. Ahora: una sola vez, el lente principal; "Lente" cambia a mano solo para esa foto. */
- try{if(CAM73.stream)CAM73.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}try{localStorage.removeItem('cam78')}catch(e){}CAM78.i=0;var intento=0;
- var abre=function(){navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}}).then(function(s){if(!document.getElementById('cam73')){try{s.getTracks().forEach(function(t){t.stop()})}catch(e){}return}
-   CAM73.stream=s;v.srcObject=s;v.play().catch(function(){});if(m)m.textContent='';camLentes78().then(function(){camBtn78()}).catch(function(){})})
-  .catch(function(er){var n=er&&er.name,perm=n==='NotAllowedError'||n==='SecurityError';if(!document.getElementById('cam73'))return;
-   if(!perm&&intento<3){intento++;if(m)m.textContent='Abriendo la cámara…';setTimeout(abre,700);return}
-   if(m)m.innerHTML=perm?'No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Dale permiso de cámara a la app: Ajustes del celular → Apps → Ruta Fácil → Permisos → Cámara.</span>':'No se pudo abrir la cámara.<br><span style="font-weight:400;font-size:15px">Ciérrala y vuelve a intentar.</span>'})};
- abre()};
+/* cam73Prende: pasó a tema-camara.js */
 function camBtn78(){var bar=document.querySelector('#cam73 .cbar73');if(!bar||bar.querySelector('[data-cam="lente"]')||CAM78.L.length<2)return;var b=document.createElement('button');b.dataset.cam='lente';b.innerHTML='🔁<br>Lente';var g=bar.querySelector('[data-cam="gal"]');bar.insertBefore(b,g.nextSibling)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#cam73 [data-cam="lente"]');if(!b)return;e.stopImmediatePropagation();e.preventDefault();if(!CAM78.L.length)return;CAM78.i=(CAM78.i+1)%CAM78.L.length;var d=CAM78.L[CAM78.i];try{localStorage.setItem('cam78',d.deviceId)}catch(er){}camAbre78(d.deviceId);toast('Lente '+(CAM78.i+1)+' de '+CAM78.L.length)},true);
 

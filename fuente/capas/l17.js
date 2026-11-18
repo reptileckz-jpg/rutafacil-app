@@ -7,14 +7,7 @@ function tkHecho(n){return !!(n&&(n.waOk||n.sinTk))}
 function imprOk(){return !!(S.impr&&S.impr.con)}
 function tkTel(n){return String(n.tel||'').replace(/\D/g,'').slice(-10)}
 function tkImprimir(n){n.prOk=true;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Imprimió el ticket de '+n.cli})}
-var _nB17=notaBlock;notaBlock=function(){var h=_nB17.apply(this,arguments),n=S.nota;if(!tkNecesita(n))return h;var debe=n.total-n.pago,x;
- if(!tkHecho(n)){var tel=tkTel(n);
-  x='<div class="card alert" id="tkcard" data-key="tkcard" style="border-width:2px"><b class="neg" style="font-size:17px">Mándale su ticket al cliente</b><div style="font-size:15px;margin-top:4px">'+(debe>0.005?'Le quedó a deber <b>'+money(debe)+'</b>':'')+(debe>0.005&&n.abono>0?' y ':'')+(n.abono>0?'Dio un abono de <b>'+money(n.abono)+'</b>':'')+'. Ahora debe <b>'+money(n.cred)+'</b>.</div><div class="lbl">Es obligatorio para seguir con la ruta.</div>'
-   +(tel.length===10?'':'<div class="field" style="margin-top:6px"><label for="tktel">WhatsApp del cliente</label><input id="tktel" type="tel" inputmode="tel" data-bind="nota.tel" value="'+esc(n.tel||'')+'" placeholder="10 números" style="width:160px;text-align:left"></div>')
-   +'<button class="btn" style="margin-top:10px;background:#1FA855" data-act="tkwa">📲 Mandar por WhatsApp'+(imprOk()?' e imprimir':'')+'</button>'
-   +'<button class="link" style="margin-top:6px" data-act="tknowa">El cliente no tiene WhatsApp</button></div>'}
- else x='<div class="card good" data-key="tkcard"><b>'+(n.waOk?'✓ Ticket enviado por WhatsApp':'Sin WhatsApp')+(n.prOk?' · ✓ impreso':'')+'</b>'+(n.sinTk&&!n.prOk?'<div class="lbl">Se le avisó al administrador que se fue sin ticket.</div>':'')+(!n.prOk&&imprOk()?'<button class="btn sm sec" style="margin-top:6px" data-act="tkprint">Imprimir ticket</button>':'')+'</div>';
- return x+h};
+/* notaBlock: pasó a tema-notas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=S.nota;
  if(a==='notaseguir'&&tkNecesita(n)&&!tkHecho(n)){e.stopImmediatePropagation();window._faltaSel='#tkcard';toast('Primero mándale su ticket al cliente');render();window.scrollTo({top:0,behavior:'smooth'});return}
  if(a==='tkwa'){e.stopImmediatePropagation();var t=tkTel(n);if(t.length!==10){window._faltaSel='#tktel';toast('Escribe el WhatsApp del cliente (10 números)');render();return}

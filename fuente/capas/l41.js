@@ -34,7 +34,7 @@ var _k41=null;window.addEventListener('click',function(e){var b=e.target.closest
 var _efD41=efeDesgloseHTML;efeDesgloseHTML=function(r){var h=_efD41.apply(this,arguments);if(!(r.tarj||r.trans))return h;
  var x=(r.tarj?rw('Cobrado con tarjeta (va al banco)','− '+money(r.tarj),'neg'):'')+(r.trans?rw('Transferencias (van al banco)','− '+money(r.trans),'neg'):'');return h.replace('<div class="row" style="min-height:56px;border-top:2px solid var(--fg)"><b>Debes entregar</b>',x+'<div class="row" style="min-height:56px;border-top:2px solid var(--fg)"><b>Debes entregar</b>')};
 /* ---------- caja: retirar del banco ---------- */
-var _cE41=cajaEsp;cajaEsp=function(){return _cE41.apply(this,arguments)+sum((S.bancoMov||[]).filter(function(x){return x.t==='Retiro a la caja'}),function(x){return -num(x.m)})};
+/* cajaEsp: pasó a tema-cajas.js */
 function bancoCardHTML(){if(S.role!=='admin'||S.encOn)return '';var s=bancoSaldo(),L=(S.bancoMov||[]).slice(-5).reverse(),x=S.bret;if(!(S.bancoMov||[]).length)return '';
  return '<details class="card" data-k="banco"'+(S.dOpen.banco?' open':'')+'><summary><b>En el banco (tarjeta y transferencias)</b><span class="lbl">'+money(s)+'</span></summary>'
   +L.map(function(m){return rw(esc(m.t)+'<br><span class="lbl">'+fmtF(m.f)+' · '+esc(m.n||'')+'</span>',(m.m<0?'− ':'+ ')+money(Math.abs(m.m)),m.m<0?'neg':'')}).join('')

@@ -106,7 +106,7 @@ var _toast13=toast;toast=function(t){if(typeof t==='string'){if(/^Sin señal: lo
 /* si falta la foto, primero se avisa (antes del "¿Enviar?") */
 /* confMsg: pasó a tema-cierre.js */
 /* las cajas "sin contar" siguen existiendo: cuentan como en el camión hasta que alguien las cuente */
-var _cdD13=cajasDonde;cajasDonde=function(){var w=_cdD13.apply(this,arguments);if(regPend()){var r=S.cierre.res,ll=Math.max(0,num(r.reg)),vv=Math.max(0,num(r.V));/* 121 · sin el dato ya no da NaN ("Total NaN") */w.cam+=ll;w.camV=(w.camV||0)+vv;w.tot+=ll+vv;w.sinC=ll+vv}return w};
+/* cajasDonde: pasó a tema-cajas.js */
 /* "Seguir trabajando" con cajas sin contar:
    - si reabre su cierre (todavía no le recibían el dinero): se deshace el "sin contar" y todo vuelve como estaba.
    - si empieza un segundo cierre: lo que no se contó sigue en el camión y sale otra vez en el nuevo cierre. */

@@ -3,8 +3,7 @@
    negocio (el de tu papá). Si un chofer captura un número de cliente que no estaba, te llega aviso para revisarlo. */
 /* ajHTML: pasó a tema-ajustes.js */
 /* setupHTML: pasó a tema-ajustes.js */
-var _nI18=notaItems;notaItems=function(n){var it=_nI18.apply(this,arguments),t=String(S.cfg.tel||'').trim();if(!t)return it;
- it=it.filter(function(x){return !(x.t==='c'&&x.s==='Tel. '+t)});var k=it.length-1;it.splice(k,0,{t:'c',s:'Pedidos por WhatsApp:'},{t:'c',s:t,b:1});return it};
+/* notaItems: pasó a tema-notas.js */
 function telNuevoAviso(c,tel,como){if(!c||!String(tel||'').replace(/\D/g,''))return;c.telPor=chofN(S.chofHoy);S.avPrecio.push('Revisa el número: '+chofN(S.chofHoy)+' capturó el WhatsApp de '+c.n+' ('+tel+')'+(como?' '+como:''))}
 /* desde el ticket obligatorio */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tkwa"]');if(!b||!S.nota)return;var c=S.cli.filter(function(x){return x.n===S.nota.cli})[0];if(!c||String(c.tel||'').replace(/\D/g,''))return;var t=S.nota.tel;

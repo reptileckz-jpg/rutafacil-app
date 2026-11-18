@@ -133,3 +133,5 @@ R("money=function(n){n=Math.round(num(n));return (n<0?'−$':'$')+Math.abs(n).to
 # 123 · al recibir el cierre no se acepta una cantidad negativa (antes se registraba y restaba de la caja)
 R("toast('Escribe cuánto efectivo recibiste');return}if(num(S.cierreRec)===0","toast('Escribe cuánto efectivo recibiste');return}if(num(S.cierreRec)<0){e.stopImmediatePropagation();window._faltaSel='#crec';toast('El efectivo recibido no puede ser negativo');return}if(num(S.cierreRec)===0")
 R("else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}","else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}if(num(S.cierreRec)<0){toast('El efectivo recibido no puede ser negativo');return}")
+# 124 · el administrador que reparte puede omitir las fotos al iniciar (antes el letrero decía "opcionales" pero no lo dejaba salir); los choferes no
+R("if(nf.length&&FOTOS_OBLIGATORIAS){sl.err='Faltan fotos: '","if(nf.length&&FOTOS_OBLIGATORIAS&&!(S.arOn&&sl.fotoSkip124)){sl.err='Faltan fotos: '")

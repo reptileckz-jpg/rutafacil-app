@@ -47,7 +47,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function arArriba90(){if(S.role!=='admin'||S.tab.admin!=='inicio')return;var m=document.querySelector('main');if(!m)return;var b=m.querySelector('[data-act="arentrar"]');if(!b||b.dataset.v90)return;b.dataset.v90='1';b.classList.add('ar90i');
  var ref=m.querySelector('[data-x="adm85"]');if(ref)ref.after(b);else m.prepend(b)}
 /* barra fija para regresar */
-arBanner=function(){return '<div class="ar90b" data-x="ar90b"><span style="flex:1;min-width:0"><b>🚚 Estás repartiendo</b><br><span class="lbl">Revisión, fotos y odómetro son opcionales para ti</span></span><button data-act="arsalir">← Volver a administrador</button></div>'};
+arBanner=function(){return '<div class="ar90b" data-x="ar90b"><span style="flex:1;min-width:0"><b>🚚 Estás repartiendo</b><br><span class="lbl">Puedes saltar la revisión y omitir las fotos</span></span><button data-act="arsalir">← Volver a administrador</button></div>'};
 /* 90 · textos que eran para el chofer */
 var AR90=[[/Enviar cierre al administrador/g,'Cerrar mi ruta'],[/Cierre enviado al administrador/g,'Ruta cerrada'],[/Entregar al administrador/g,'Pasar a la caja'],[/en efectivo al administrador/g,'en efectivo a la caja'],
  [/Listo, se le mandó al administrador/g,'Listo: tu ruta quedó cerrada'],[/Efectivo a entregar/g,'Efectivo de tu ruta'],[/Debes entregar/g,'Va a la caja'],[/[Ee]ntrégale(lo)? al administrador/g,'pásalo a la caja'],[/^al administrador$/,'a la caja'],[/Al administrador le llega aviso\./g,'Queda anotado.'],[/el administrador te lo puede reabrir/g,'lo puedes reabrir desde Inicio'],[/¿Cuánto entregas\?/g,'¿Cuánto pasas a la caja?']];
@@ -63,7 +63,7 @@ var _toast90=toast;toast=function(t){try{if(S.arOn&&S.role==='rep'&&typeof t==='
 
 /* ---------- 87 · tutorial del administrador que reparte ---------- */
 TUT.ar90=[['[data-x="ar90b"]','Estás repartiendo','Esta barra te dice que estás en tu ruta. Con "Volver a administrador" regresas a tus cosas cuando quieras; tu ruta se queda guardada.'],
- ['[data-act="iniciar"], .card.next, main .card','Empieza','Toca "Iniciar ruta". Para ti la revisión del vehículo, las fotos y el odómetro son opcionales.'],
+ ['[data-act="iniciar"], .card.next, main .card','Empieza','Toca "Iniciar ruta". Tú puedes saltar la revisión del vehículo y omitir las fotos.'],
  ['nav.tabs, main','Entregar y cerrar','Entrega a cada cliente con "Entregar". Abajo tienes Entrega, Gasto y Cierre. Al cerrar, el efectivo de tu ruta va directo a la caja: no se lo entregas a nadie.']];
 function arTut90(){if(!(S.arOn&&S.role==='rep')||!S.tut)return;var k=String(S.tut.k||'');if(k==='ar90'||!/^(rep$|d:rep:|n:rt81rep)/.test(k))return;S.tutVisto=S.tutVisto||{};S.tutVisto[k]=true;
  if(S.tutVisto.ar90){S.tut=null;return}S.tutVisto.ar90=true;S.tut={k:'ar90',i:0,prev:S.tut.prev,tab:S.tut.tab}}

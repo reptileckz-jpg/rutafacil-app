@@ -2623,3 +2623,8 @@ HECHO en `capas/tema-entregapasos.js` (nació como tema, se arma al final). **Fa
 - `t125.js` (12 OK). t108 y t115 ahora van al paso que toca (taras / cobro).
 - Encontrado y corregido al probar: el botón Siguiente de la barra salía escondido (heredaba lo escondido del de Guardar).
 - Capturas: `disenos/venta-por-pasos.png`.
+
+
+## 2026-11-18 · Ricardo: "ármala antes de que se me acabe el uso" → versión 10.0 (APK 1.0.47) a main
+- Lleva 123 (sin efectivo negativo al recibir), 124 (iniciar el día por pasos, tarjeta "¿Cuánto cargas hoy?", llaves del vehículo que se lleva, admin omite fotos), 125 (venta por pasos) y el aplanado de Vite hasta 294 (48%). Todas las pruebas en 0 FAIL antes de publicar.
+- Pendiente de respuesta de Ricardo: mover "🚦 Ordenar con tráfico" arriba y que no desaparezca (si faltan ubicaciones, decirlo).

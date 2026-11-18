@@ -8,7 +8,7 @@ await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.
 ok(await ev(()=>!(num(S.salida.R)===26&&num(S.salida.M)===80)),'la carga de 26 cajas y 80 kg de la demo ya no se cuela');
 await ev(()=>{S.setup=null;S.veh.push({id:1,n:'Nissan NP300',pl:'YKL',plEdo:'Veracruz',comb:'Gasolina Premium',odo:1000});var c=S.choferes[0];S.role='rep';S.chofHoy=c.id;S.vehHoy=1;S.pinOk['c:'+c.id]=true;S.tab.rep='ruta';render()});
 await ev(()=>{var b=[...document.querySelectorAll('button')].find(x=>/Iniciar ruta/.test(x.innerText));if(b)b.click()});await p.waitForTimeout(300);
-ok(/Todavía no hay con qué calcularlo/.test(await ev(()=>document.querySelector('main').innerText)),'sin pedidos ni días anteriores: no inventa cuánto cargar');await p.close();
+ok(/Todavía no hay con qué calcularlo/.test(await ev(()=>{if(typeof salPon124==='function')salPon124(5);render();return document.querySelector('main').innerText})),'sin pedidos ni días anteriores: no inventa cuánto cargar');await p.close();
 // demo
 p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(()=>{window.__pnTest=1});await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(800);ev=(f,a)=>p.evaluate(f,a);
 const ck=s=>ev(s=>{var e=document.querySelector(s);if(!e)return false;e.click();return true},s);

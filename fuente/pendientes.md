@@ -2598,3 +2598,15 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Tema "Personal y cuentas de sueldo" → `capas/tema-personal.js` (11). 305 → **294 (48%)**. `pruebas/comp-sueldos.js`: 104 casos iguales en la demo y 101 en la real; t118 24 OK. Las envolturas de szCalc/szDesg de l18 ya no se usan (las rehace tema-sueldos.js): quitarlas con Vite.
 - Siguiente: las piezas sueltas por área (entrar con PIN, vehículos…) y al final `render` (118).
 
+
+## 2026-11-18 · 124 · Ricardo: "que cuando se inicie la ruta del chofer también sea por pasos… terminas la inspección y después puedes seleccionar el vehículo; tendría que ser al revés" + "la tarjeta ¿Cuánto cargas hoy? se sale el texto del cuadro" (con captura, APK 1.0.46)
+Decidió: "hacerlo ya"; vehículo asignado: "confirma y puede cambiar". HECHO en `capas/tema-iniciodia.js` (nació como tema, se arma al final). **Falta armar APK (preguntar antes).**
+- Iniciar el día por pasos, igual que el cierre: 1 Vehículo → 2 Inspección (de ESE vehículo) → 3 Odómetro → 4 Gasolina → 5 Fotos → 6 Carga ("¿Cuánto cargas hoy?" + cajas y kilos) → 7 Revisar (resumen) e "Iniciar reparto". Atrás/Siguiente; no avanza sin lo de cada paso (lo mismo que ya pedía "Iniciar reparto", nada nuevo obligatorio). Si "Iniciar reparto" encuentra algo faltante, regresa a ese paso.
+- Por qué importaba el orden: la inspección va pegada al vehículo (`S.inspR.veh`); si el chofer la hacía y luego cambiaba de vehículo, se borraba.
+- Vehículo asignado: "Vas en X · Te lo asignó el administrador. ¿Hoy usas este?" + "Usar otro vehículo" (escoge de los libres; "Volver al que me asignaron"). Al iniciar, aviso al administrador: "X salió en B en lugar de A (el que tiene asignado)". La asignación no cambia.
+- Si el vehículo está ocupado, al iniciar l90 le da otro libre (como antes).
+- Cuando reparte el administrador (`S.arOn`) la pantalla se queda como estaba.
+- Inventario igual: prueba 50→40 cajas y 100→95 kg al salir con 10 y 5.
+- Tarjeta "¿Cuánto cargas hoy?": la tarjeta no tiene relleno propio y los avisos "Todavía no hay datos suficientes" / "Todavía no hay con qué calcularlo" (l72, l87) se pegaban a la orilla y la última línea se cortaba con la esquina. Ahora todo lo de adentro lleva 16 px a los lados y abajo (regla CSS en tema-iniciodia.js; sirve para cualquier aviso nuevo).
+- Pruebas: `t124.js` (29 OK: orden, cada paso, que no avance sin lo suyo, inventario, asignado + aviso, texto dentro del cuadro; falla si se quita el arreglo del cuadro). t72, t82, t87 ahora van al paso "Carga" para leer la sugerencia. Todas en 0 FAIL. Capturas: `disenos/inicio-dia-por-pasos.png`.
+- Visto al probar (no se cambió, preguntar a Ricardo): con vehículo asignado, antes del paso 1 sale "Antes de salir · ¿Cómo recibes tu equipo? · Llaves de Camioneta Uno" (l50). Si luego escoge otro vehículo, ese equipo habla de las llaves del asignado.

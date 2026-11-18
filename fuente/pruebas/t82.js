@@ -40,10 +40,10 @@ ok(r.a&&r.b&&r.n===1&&!r.sw&&r.blq,'fruta madura: solo sale lo pasado de tiempo 
 r=await ev(()=>{var n=S.gastos.length;S.gastos.push({t:'Sueldos',m:50,n:'nuevo'});render();var g=S.gastos[n];return {f:g.f82,hoy:iso(TODAY),viejo:HIST.some(x=>x.go>=9999)}});
 ok(r.f===r.hoy&&!r.viejo,'lo nuevo sin fecha recibe el día; lo viejo sin fecha no se cuenta en ningún día',r);
 // 46 · cuánto cargar: un solo cálculo
-r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;S.salida.ok=false;S.salida.R=0;S.salida.M=0;S.log=[];S.stops=S.cli.filter(c=>!c.oculto).map(c=>({c:c.id}));S.rutasHist=[];S.tab.rep='ruta';render();var ib=[...document.querySelectorAll('main button')].find(b=>/Iniciar ruta/.test(b.textContent));if(ib)ib.click();render();
+r=await ev(()=>{var ch=S.choferes.find(c=>c.n==='Chofer Uno').id;S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;S.salida.ok=false;S.salida.R=0;S.salida.M=0;S.log=[];S.stops=S.cli.filter(c=>!c.oculto).map(c=>({c:c.id}));S.rutasHist=[];S.tab.rep='ruta';render();var ib=[...document.querySelectorAll('main button')].find(b=>/Iniciar ruta/.test(b.textContent));if(ib)ib.click();if(typeof salPon124==='function')salPon124(5);render();
  var t=document.querySelector('main').innerText;return {t:t.slice(0,300),rep1:!!document.querySelector('.card.rep1'),arriba:/no hay con qué calcularlo/.test(t),abajo:/Sugerido para hoy/.test(t),pR:S.cli.map(c=>[c.pR,c.pM])}});
 ok(r.arriba&&!r.abajo&&r.pR.every(x=>!x[0]&&!x[1]),'sin historial: arriba "no hay con qué calcularlo" y abajo ya no inventa "suelen llevar 4 cajas y 30 kg"',r);
-r=await ev(()=>{var c1=S.cli[0].id;S.rutasHist=[{f:'2026-11-01',ch:S.chofHoy,log:[{c:c1,R:6,M:20,total:1,pago:1}]}];render();var t=document.querySelector('main').innerText;var a=(t.match(/Sugerido: ([^\n]*)/)||[])[1],b=(t.match(/Sugerido para hoy: ([^\n]*)/)||[])[1];return {a,b}});
+r=await ev(()=>{var c1=S.cli[0].id;S.rutasHist=[{f:'2026-11-01',ch:S.chofHoy,log:[{c:c1,R:6,M:20,total:1,pago:1}]}];if(typeof salPon124==='function')salPon124(5);render();var t=document.querySelector('main').innerText;var a=(t.match(/Sugerido: ([^\n]*)/)||[])[1],b=(t.match(/Sugerido para hoy: ([^\n]*)/)||[])[1];return {a,b}});
 ok(r.a&&r.a===r.b,'con historial: arriba y abajo dicen lo mismo',r);
 await ev(()=>{S.role='admin';render()});
 // 48 · fotos de evidencia

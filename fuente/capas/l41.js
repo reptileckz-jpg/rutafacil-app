@@ -39,7 +39,7 @@ function bancoCardHTML(){if(S.role!=='admin'||S.encOn)return '';var s=bancoSaldo
  return '<details class="card" data-k="banco"'+(S.dOpen.banco?' open':'')+'><summary><b>En el banco (tarjeta y transferencias)</b><span class="lbl">'+money(s)+'</span></summary>'
   +L.map(function(m){return rw(esc(m.t)+'<br><span class="lbl">'+fmtF(m.f)+' · '+esc(m.n||'')+'</span>',(m.m<0?'− ':'+ ')+money(Math.abs(m.m)),m.m<0?'neg':'')}).join('')
   +(x?'<div class="field"><label for="bret">¿Cuánto sacaste? $</label><input id="bret" type="number" inputmode="decimal" data-bind="bret.m" value="'+esc(x.m||'')+'"></div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn" style="flex:2" data-act="bretsi">Pasar a la caja</button><button class="btn sec" style="flex:1" data-act="bretno">Cancelar</button></div>':'<button class="btn sm sec" style="margin-top:8px" data-act="bretab">Retirar del banco a la caja</button>')+'</details>'}
-var _ini41=inicio;inicio=function(){var h=_ini41.apply(this,arguments),c=bancoCardHTML();if(!c)return h;var i=h.lastIndexOf('</div>');return h+c};
+/* inicio: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='bretab'){e.stopImmediatePropagation();S.bret={m:''};S.dOpen.banco=true;render();return}
  if(a==='bretno'){e.stopImmediatePropagation();S.bret=null;render();return}

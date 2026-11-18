@@ -82,7 +82,7 @@ WZ.prov={tit:'Proveedor nuevo',fin:'Guardar proveedor',pasos:[
  {q:'Revisa y guarda',html:function(d){return '<div class="card good">'+rw('Proveedor',esc(d.n))+rw('Vende',esc(d.tipo))+(d.tel?rw('Teléfono',esc(d.tel)):'')+(d.dir?rw('Dirección',esc(d.dir)):'')+(d.link?rw('Ubicación','del link de Maps'):'')+'</div>'}}],
  guardar:function(d){var n=String(d.n).trim(),p=provD(n);p.tipo=d.tipo;p.tel=String(d.tel||'').replace(/\D/g,'');p.dir=d.dir||'';if(d.link&&typeof ubParse==='function'){var u=ubParse(d.link);if(u){p.lat=u.lat;p.lng=u.lng}}else p.nub=true;
   S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Dio de alta al proveedor '+n});toast('Listo: '+n+' agregado');return true}};
-var _pvC47=proveedoresCard;proveedoresCard=function(){var h=_pvC47.apply(this,arguments);if(S.role!=='admin'||S.encOn)return h;return h.replace('<div class="card" style="padding:4px 14px">','<div class="card" style="padding:4px 14px"><button class="btn sec" style="margin:10px 0" data-act="provalta">+ Agregar proveedor</button>')};
+/* proveedoresCard: pasó a tema-inicio.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="provalta"]');if(!b)return;e.stopImmediatePropagation();wzAbre('prov',{})},true);
 /* ---------- simulador de viaje por tarjetas: el recorrido calcula los km ---------- */
 function svPunto(k){if(k==='bod')return BOD;var m=/^b:(.+)$/.exec(k);if(m){var b=(S.basc||[]).filter(function(x){return String(x.id)===m[1]})[0];return b&&b.lat!=null?b:null}var p=S.provDir[k];return p&&p.lat!=null?p:null}

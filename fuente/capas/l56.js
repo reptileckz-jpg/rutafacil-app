@@ -68,7 +68,7 @@ function ahoraSigue(){if(S.role!=='rep')return null;if(S.cierre&&S.cierre.sent)r
 /* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ahorami"]');if(!b)return;e.stopImmediatePropagation();var a=ahoraSigue();if(a)guiaMuestra(a[2])},true);
 /* ---------- Inicio del admin: "Hoy te toca" y "Aprende la app" arriba ---------- */
-var _ini56=inicio;inicio=function(){var h=_ini56.apply(this,arguments),a=aprendeHTML();if(a)h=h.replace(a,'');var top=hoyTocaHTML()+(a||'');if(!top)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+top+h.slice(i+5):top+h};
+/* inicio: pasó a tema-inicio.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.inicio)VIEWS.inicio=inicio;
 /* ruta: pasó a tema-ruta.js */
 /* ---------- tutorial desde el primer día, para cada persona (no depende del de otro celular) ---------- */

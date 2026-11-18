@@ -52,7 +52,6 @@ function popCasa(){return (typeof NAV_CASA!=='undefined'&&NAV_CASA[S.role])||'in
 var _popS59=popSig;popSig=function(){if(Date.now()-_popSigT<450)return;_popSigT=Date.now();
  if(!/^(popdesp|precioayer|inspok|inspno)$/.test(_popUlt||''))_popPausa={t:Date.now(),salio:false};_popUlt='';return _popS59.apply(this,arguments)};
 /* la siguiente tarjeta sale hasta que regresa a Inicio (o, si lo mandó a Inicio mismo, después de un rato) */
-var _popH59=popHTML;popHTML=function(){var P=_popPausa;if(P){var casa=S.tab[S.role]===popCasa()&&!document.querySelector('#fiov,#rcov,#wzov,#eqov,#cxov,#ajov,#medov,#cvov');if(!casa)P.salio=true;
-  if(casa&&(P.salio||Date.now()-P.t>90000))_popPausa=null;else return ''}return _popH59.apply(this,arguments)};
+/* popHTML: pasó a tema-inicio.js */
 var _rd59d=render;render=function(){try{if(_popPausa&&S.tab[S.role]!==popCasa())_popPausa.salio=true}catch(e){}return _rd59d.apply(this,arguments)};
 setInterval(function(){try{if(_popPausa&&Date.now()-_popPausa.t>90000&&S.tab[S.role]===popCasa())render()}catch(e){}},15000);

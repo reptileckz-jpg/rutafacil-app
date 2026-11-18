@@ -6,14 +6,7 @@ function pedAsigna(c,chId,cuando,tx){var cu=cuando||'hoy';if(cu==='hoy'){var st=
  try{rutaAviso(chId,'Pedido para '+cu+': '+tx)}catch(e){S.avPrecio.push('Pedido para '+chofN(chId)+' ('+cu+'): '+tx)}}
 function pedNuevoCli(n,tel,ch){var id=S.nextCli++;S.cli.push({id:id,n:n,ap:'',a:'',vac:0,cred:0,f:7,km:1,min:5,tel:tel||'',dias:[],chofer:ch!=null?+ch:+S.chofHoy,lim:1500,dp:null,tag:'',credOk:false,compras:0,tipo:'',recibe:'',lat:null,lng:null,porCh:S.role==='rep'?+S.chofHoy:null,altaPed:true});return cl(id)}
 /* ---- admin: "Pedido por WhatsApp" ---- */
-var _pc31=pedidoCard;pedidoCard=function(){var p=S.pf=S.pf||{cli:'',R:'',M:'',cuando:'hoy',nota:''},cs=S.cli.filter(function(c){return !c.oculto});if(p.cli!=='__nuevo'&&!cl(+p.cli))p.cli=cs[0]?String(cs[0].id):'__nuevo';
- var h=_pc31.apply(this,arguments),c=cl(+p.cli),sug=p.cli==='__nuevo'?((pedChoferes().filter(function(x){return !esAdm(x)})[0]||pedChoferes()[0]||{}).id):pedSugerido(c);if(p.ch==null||p.chCli!==p.cli){p.ch=sug;p.chCli=p.cli}
- h=h.replace(/(<select id="pfc"[^>]*>)([\s\S]*?)(<\/select>)/,function(m,a,o,z){return a+o.replace(' selected','')+'<option value="__nuevo"'+(p.cli==='__nuevo'?' selected':'')+'>+ Cliente nuevo</option>'+z});
- if(p.cli!=='__nuevo')h=h.replace(/(<option value="[^"]*")(>[^<]*<\/option>)/g,function(m,a,b){return a.replace(/ selected/,'')+(a.indexOf('value="'+p.cli+'"')>-1?' selected':'')+b});
- var extra=(p.cli==='__nuevo'?'<div class="field"><label for="pfnn">Nombre del cliente</label><input id="pfnn" type="text" data-bind="pf.nn" value="'+esc(p.nn||'')+'" style="width:190px;text-align:left"></div><div class="field"><label for="pfnt">Teléfono</label><input id="pfnt" type="tel" data-bind="pf.nt" value="'+esc(p.nt||'')+'" style="width:190px;text-align:left"></div><div class="lbl">El chofer guarda su ubicación cuando le entregue.</div>':'')
-  +'<div class="lbl" style="margin-top:8px"><b>¿Quién lo entrega?</b></div><div class="chips" role="group" aria-label="Quién lo entrega" style="margin:4px 0">'+pedChoferes().map(function(ch){var pp=pedPos(ch.id);return '<button data-act="pfch" data-id="'+ch.id+'" aria-pressed="'+(+p.ch===+ch.id)+'">'+esc(esAdm(ch)?chofN(2)+' (tú)':ch.n)+(sug!=null&&+sug===+ch.id?' · le queda cerca':'')+(pp.activo?'':' · sin salir')+'</button>'}).join('')+'</div>'
-  +(p.err?'<div class="neg" role="alert" style="font-weight:700;margin:6px 0">'+esc(p.err)+'</div>':'')+(p.ok?'<div style="color:var(--accent);font-weight:700;margin:6px 0">'+esc(p.ok)+'</div>':'');
- return h.replace('<button class="btn" data-act="pedido">Registrar pedido</button>',extra+'<button class="btn" data-act="pedido">Registrar pedido</button>')};
+/* pedidoCard: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pedido"],[data-act="pfch"]');if(!b)return;e.stopImmediatePropagation();var p=S.pf;p.err='';p.ok='';
  if(b.dataset.act==='pfch'){p.ch=+b.dataset.id;p.chCli=p.cli;render();return}
  var R=Math.round(num(p.R)),M=r2(num(p.M)),c;

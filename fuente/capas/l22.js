@@ -116,7 +116,7 @@ function relojReal(){var d=new Date();return d.getHours()*60+d.getMinutes()}
 if(REAL){S.reloj=relojReal();var _rClk22=render;render=function(){S.reloj=relojReal();return _rClk22.apply(this,arguments)};
  /* si la app se queda abierta y cambia el día, se recarga (lo guardado pasa al día nuevo) */
  var _diaAbierto=iso(TODAY);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){var d=new Date();d.setHours(12,0,0,0);if(iso(d)!==_diaAbierto){try{guardarYa()}catch(e){}setTimeout(function(){location.reload()},300)}}})}
-var _bvH22=bienvHTML;bienvHTML=function(){return _bvH22.apply(this,arguments).replace('<div style="text-align:center;padding:16px 4px 8px">','<div class="bvhola" style="text-align:center;padding:24px 4px 8px">')};
+/* bienvHTML: pasó a tema-inicio.js */
 
 /* ===================== Botón o gesto de "atrás" =====================
    Atrás = cierra la ventana que está abierta o regresa a la pantalla anterior; si ya no hay, va a la

@@ -54,7 +54,7 @@ var _mM57=mapaMonta;mapaMonta=function(){var L=gmInHay()?Array.prototype.filter.
 var _rd57=render;render=function(){var r=_rd57.apply(this,arguments);try{gmRevisa()}catch(e){console.error(e)}return r};
 setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */
-var _mvH57=mapaVivoHTML;mapaVivoHTML=function(id,data,alto){var h=_mvH57.apply(this,arguments);return gmInHay()?h.replace('🗺️ Ver en Google Maps','⤢ Ver más grande'):h};
+/* mapaVivoHTML: pasó a tema-inicio.js */
 /* Ajustes: interruptor (por celular) */
 var _aj57=ajHTML;ajHTML=function(){var h=_aj57.apply(this,arguments);if(!h||h.indexOf('id="ajov"')<0||!gmHay())return h;var no=false;try{no=localStorage.getItem('gmapsNo')==='1'}catch(e){}
  var c='<div class="card"><div class="row"><span><b>Mapas de Google</b><br><span class="lbl">Si algún mapa se ve mal en este celular, apágalo y se usa el mapa de antes.</span></span><button class="btn sm'+(no?' sec':'')+'" style="width:auto" data-act="gmswitch">'+(no?'No':'Sí')+'</button></div></div>';

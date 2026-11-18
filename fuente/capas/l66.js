@@ -69,11 +69,7 @@ var _stk66=stockCard;stockCard=function(){var h=_stk66.apply(this,arguments);try
 
 /* ---------- 40 · pedidos por WhatsApp ---------- */
 var WA40='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" stroke="#25D366" stroke-width="2" stroke-linejoin="round"/><path d="M9 8.5c.3 2.8 3.2 6 6.5 6.6l1-1.6-2-1-1 .8c-1.1-.5-2.2-1.6-2.7-2.7l.8-1-1-2z" fill="#25D366"/></svg>';
-var _pc66=pedidoCard;pedidoCard=function(){if(S.role!=='admin')return _pc66.apply(this,arguments);var pend=(S.cli||[]).filter(function(c){return !c.oculto&&c.ped});
- return '<div class="card pw40" data-key="pedidos"><div class="hd"><span class="wa">'+WA40+'</span><span><div class="tt">Pedidos por WhatsApp</div><div class="st">Mensajes listos para surtir</div></span>'+(pend.length?'<span class="pend">'+pend.length+' pendiente'+(pend.length>1?'s':'')+'</span>':'')+'</div>'
-  +(pend.length?pend.map(function(c){var p=c.ped,R=num(p.R),M=num(p.M);return '<div class="it"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><span class="nm">'+esc(c.n)+(c.apodo?' “'+esc(c.apodo)+'”':'')+'</span><span class="cu">'+esc(p.cuando==='hoy'?'Hoy':(p.cuando==='manana'||p.cuando==='mañana'?'Mañana':String(p.cuando||'')))+'</span></div>'
-   +'<div class="pills">'+(R?'<span class="pill pr">🍌 '+R+' caja'+(R>1?'s':'')+' de roatán</span>':'')+(M?'<span class="pill pm">⚖️ '+M+' kg de macho</span>':'')+'</div>'+(p.nota?'<div class="nota">'+esc(p.nota)+'</div>':'')+'</div>'}).join(''):'<div class="vac">Sin pedidos pendientes.</div>')
-  +'<button class="btn" data-act="pwabre">＋ Registrar un pedido</button>'+(S.pf&&S.pf.ok?'<div style="color:#6EE7B7;font-weight:700;margin-top:6px">'+esc(S.pf.ok)+'</div>':'')+'</div>'};
+/* pedidoCard: pasó a tema-inicio.js */
 
 /* ---------- 42 · PIN: pastilla de sesión y tecla de huella ---------- */
 var BIO42='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 11v3a8 8 0 0 1-1 4"/><path d="M8.5 8.5A5 5 0 0 1 17 12v1.5a13 13 0 0 1-.6 4"/><path d="M5.5 10a7 7 0 0 1 13.4-2"/><path d="M7 14.5c.3-1 .5-2 .5-2.5a4.5 4.5 0 0 1 .8-2.6"/><path d="M14 13.5a17 17 0 0 1-1.2 6"/><path d="M4 7a10 10 0 0 1 4-3.5"/><path d="M20 12a17 17 0 0 1-.3 3"/></svg>';

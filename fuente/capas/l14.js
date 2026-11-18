@@ -67,6 +67,4 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ===================== v5 · El chofer ve su vehículo con el mismo estilo que el admin, con su placa ===================== */
 (function(){var st=document.createElement('style');st.textContent='.vcard.vchof{cursor:default;margin-top:10px;width:100%;text-align:left}.vcard.vchof .plate.mini{width:118px;max-width:118px;display:block;margin:4px 0 2px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}';document.head.appendChild(st)})();
 function vehChofHTML(v){return '<div class="vcard popin vchof'+(v.foto?' vbg':'')+'" data-id="'+v.id+'" style="display:flex;gap:12px;align-items:center">'+vehThumb(v,124,84)+'<span class="grow"><span class="lbl">Tu vehículo</span><br><b style="font-size:17px">'+esc(v.n)+'</b>'+plateSVG(v,true)+fuelBadge(v.comb)+'</span></div>'}
-var _bvH14=bienvHTML;bienvHTML=function(){var h=_bvH14.apply(this,arguments);if(S.role!=='rep')return h;var vh=vehHoy();if(!vh)return h;
- var k=h.indexOf('<span class="lbl">Tu vehículo</span>');if(k<0)return h;var a=h.lastIndexOf('<div style="display:flex;gap:10px;align-items:center;margin-top:10px">',k);var e=h.indexOf('</span></div>',k);if(a<0||e<0)return h;
- return h.slice(0,a)+vehChofHTML(vh)+h.slice(e+'</span></div>'.length)};
+/* bienvHTML: pasó a tema-inicio.js */

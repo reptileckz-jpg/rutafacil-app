@@ -92,15 +92,7 @@ inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=di
 /* avRow: pasó a tema-avisos.js */
 
 /* ---------- 61 · ventana de aviso urgente ---------- */
-var _popH68=popHTML;popHTML=function(){var h=_popH68.apply(this,arguments);if(!h)return h;try{var L=popItems(),i=S.popI||0,x=L[i];if(!x)return h;
-  var raw=(x.b&&x.b[0]&&x.b[0][1]==='avgo')?decodeURIComponent((/data-k="([^"]*)"/.exec(x.b[0][2])||[])[1]||''):'',
-   I=raw?avInfo68(raw):avInfo68(String(x.t||'')+': '+String(x.m||'').replace(/<[^>]*>/g,'')),col=raw?I.col:(/vencid|falla|faltante|fuera de servicio|Le debes|Falta el costo/i.test(x.t)?'r':(/Precio de hoy/i.test(x.t)?'o':I.col)),
-   tit=raw?I.tit:esc(x.t),msg=raw?esc(I.det):x.m;if(raw)tit=esc(tit);
-  var bs=(x.b||[]).map(function(b,j){var lab=j===0&&b[1]==='avgo'?'Atender':b[0];return '<button class="btn'+(j?' sec':' p')+'" data-act="'+b[1]+'"'+b[2]+' data-pop="1">'+lab+(j?'':'<span aria-hidden="true">›</span>')+'</button>'}).join('');
-  return '<div style="position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px" class="fadein"><div class="popin pop68" role="dialog" aria-label="Aviso urgente" style="--c68:'+COL68[col]+'">'
-   +'<div class="fr">'+'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22zm-1 7h2v6h-2zm0 8h2v2h-2z"/></svg><b>'+NIV68[col]+'</b><span class="n">'+(i+1)+' de '+L.length+'</span></div>'
-   +'<div class="cu"><span class="ic">'+ic68(I.ic)+'</span><div><div class="t">'+tit+'</div>'+(msg?'<div class="m">'+msg+'</div>':'')+'</div></div>'
-   +'<div class="bt">'+bs+'<button class="btn sec" data-act="popdesp">🕒 Después</button></div></div></div>'}catch(e){console.error('aviso 61',e);return h}};
+/* popHTML: pasó a tema-inicio.js */
 
 /* ---------- 51 · "Mostrar/Ocultar" Finanzas ya no brinca: el navegador movía la pantalla al volver a dibujarla (anclaje del scroll) ---------- */
 (function(){var st=document.createElement('style');st.textContent='html,body{overflow-anchor:none}';document.head.appendChild(st)})();

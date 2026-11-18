@@ -10,9 +10,7 @@ function avFoco(sel){if(!sel)return;var n=0,f=function(){var el=document.querySe
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avgo"]');if(!b||e.target.closest('[data-act="avpos"],[data-act="atiende"]'))return;e.stopImmediatePropagation();
  if(b.dataset.pop)try{popSig()}catch(er){}var x=decodeURIComponent(b.dataset.k||''),d=avDestino(x);S.menu=false;S.tab[S.role]=d.t;if(d.cli)S.openCli=d.cli;render();if(d.sel)avFoco(d.sel);else window.scrollTo(0,0)},true);
 /* ventana de urgentes al abrir la app (una vez al día): ahora también trae los avisos URGENTES, uno por uno */
-var _popI37=popItems;popItems=function(){var L=_popI37.apply(this,arguments);if(S.role!=='admin'||S.encOn)return L;try{var ya=L.map(function(x){return x.t+' '+x.m}).join(' | ');
- avisos().filter(function(x){return AV_URG.test(x)}).forEach(function(x){var t=x.replace(/^URGENTE:\s*/,'').replace(/\s*\[pin:[^\]]+\]/,'');if(ya.indexOf(t.slice(0,30))>-1)return;
-  L.push({t:'Atiende esto',m:esc(t),b:[['Ir a atenderlo','avgo',' data-k="'+encodeURIComponent(x)+'"']]})})}catch(e){}return L};
+/* popItems: pasó a tema-inicio.js */
 /* el texto del aviso no enseña la marca [pin:…] */
 /* avRow: pasó a tema-avisos.js */
 /* al reiniciar el PIN, se quita la petición y su aviso */

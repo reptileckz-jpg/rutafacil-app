@@ -37,7 +37,7 @@ var _gpsR62=gpsRutaHTML;gpsRutaHTML=function(c){var h=_gpsR62.apply(this,argumen
  if(!extra)return h;var i=h.indexOf('<div class="mapviv"');if(i<0)i=h.lastIndexOf('</div>');var ah=extra.split('<div style="margin-top:10px"><b>¿Dónde')[0],resto=extra.slice(ah.length);
  h=h.slice(0,i)+ah+h.slice(i);var j=h.lastIndexOf('</div>');return h.slice(0,j)+resto+h.slice(j)}catch(e){console.error(e);return h}};
 /* 10 b · el mapa del recorrido se acerca a los puntos del día (no mete la bodega si está lejos) */
-var _mv62=mapaVivoHTML;mapaVivoHTML=function(id,data,alto){try{if(/^gps\d/.test(String(id))&&data&&data.bod!==false){var P=(data.pts||[]).concat(data.line||[]).filter(function(o){return o&&o.lat!=null});if(P.length&&!P.some(function(o){return gpsDist(o,BOD)<30000}))data.bod=false}}catch(e){}return _mv62.call(this,id,data,alto)};
+/* mapaVivoHTML: pasó a tema-inicio.js */
 
 /* ---------- 10 · ubicación de cada bodega (la principal mueve todos los mapas, km y rutas) ---------- */
 function bodPrincipal(){return (S.bods||[])[0]||null}

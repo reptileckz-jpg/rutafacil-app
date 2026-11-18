@@ -55,7 +55,7 @@ function aprendeItems(){var L=logsTodos();if(S.role==='rep')return [
  return [['Fijar el precio de hoy','inicio',(S.precio.hist||[]).length>0],['Recibir el efectivo de un chofer','inicio',!!S.cierreReg||(S.cierresPrev||[]).length>0],['Mandarte el resumen del día','inicio',!!S.resYa],['Programar un viaje','cargas',(S.cargas||[]).some(function(c){return c.prog})],['Usar el simulador de viaje','cargas',!!S.simYa],['Agregar un cliente','clientes',(S.cli||[]).some(function(c){return !c.oculto&&!c.rapida})],['Bajar un respaldo','inicio',!!S.respUlt]]}
 function aprendeHTML(){if(S.aprendeOff||!REAL||(S.role!=='rep'&&(S.role!=='admin'||S.encOn)))return '';var L=aprendeItems(),n=L.filter(function(x){return x[2]}).length;if(n===L.length)return '';
  return '<details class="card aprende" data-k="aprende"'+(S.dOpen.aprende?' open':'')+'><summary><b>Aprende la app</b><span class="lbl">'+n+' de '+L.length+'</span></summary>'+L.map(function(x){return '<button class="it'+(x[2]?' ok':'')+'" data-act="aprendeir" data-t="'+x[1]+'"><span class="ck">'+(x[2]?'✓':'')+'</span><span class="t grow">'+x[0]+'</span><span class="lbl">›</span></button>'}).join('')+'<button class="link" style="margin-top:4px" data-act="aprendeoff">Ya no mostrar</button></details>'}
-var _ini43=inicio;inicio=function(){var h=_ini43.apply(this,arguments),a=aprendeHTML();return a?h+a:h};
+/* inicio: pasó a tema-inicio.js */
 /* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="aprendeir"],[data-act="aprendeoff"],[data-act="resdia"],[data-act="ressem"],[data-act="simabre"]');if(!b)return;var a=b.dataset.act;
  if(a==='resdia'||a==='ressem'){S.resYa=true;return}if(a==='simabre'){S.simYa=true;return}

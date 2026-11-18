@@ -3,8 +3,7 @@
    pedir al proveedor, simulador de viaje ===================== */
 ['pagoPide','mesCerr','simDest'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 /* ---------- precio de ayer: si no se fijó hoy, se usa el de ayer y se avisa ---------- */
-var _pI42=popItems;popItems=function(){var L=_pI42.apply(this,arguments);try{if(S.role==='admin'&&S.precio&&num(S.precio.R)>0&&S.precio.conf!==iso(TODAY)&&(S.precioAyer||'')!==iso(TODAY))
- L.unshift({t:'Precio de hoy',m:'No lo has fijado: se está cobrando el de ayer · roatán '+money(S.precio.R)+' la caja · macho '+money(S.precio.M)+' el kilo.',b:[['Está bien, el de ayer','precioayer'],['Cambiarlo','popgo',' data-t="inicio"']]})}catch(e){}return L};
+/* popItems: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="precioayer"]');if(!b)return;e.stopImmediatePropagation();S.precioAyer=iso(TODAY);S.precio.conf=iso(TODAY);(S.precio.hist=S.precio.hist||[]).push({f:iso(TODAY),R:num(S.precio.R),M:num(S.precio.M)});try{popSig()}catch(er){}toast('Hoy sigue el precio de ayer');render()},true);
 /* ---------- encargado: si el precio se sale ±10% de la semana pasada, pregunta y avisa ---------- */
 function precioSemana(){var d0=iso(new Date(TODAY.getTime()-7*864e5)),L=(S.precio.hist||[]).filter(function(x){return x.f>=d0&&x.f<iso(TODAY)});if(!L.length)return null;return {R:sum(L,function(x){return num(x.R)})/L.length,M:sum(L,function(x){return num(x.M)})/L.length}}
@@ -40,7 +39,7 @@ function resumenTxt(sem){var hoy=iso(TODAY),d0=sem?mondayIso(TODAY):hoy,L=[];var
  var urg=avisos().filter(function(x){return AV_URG.test(x)});if(urg.length){L.push('','*Urgente*');urg.slice(0,6).forEach(function(x){L.push('• '+x.replace(/^URGENTE:\s*/,'').replace(/\s*\[pin:[^\]]+\]/,''))})}
  return L.join('\n')}
 function resumenCardHTML(){if(S.role!=='admin'||S.encOn)return '';return '<details class="card" data-k="resumen"'+(S.dOpen.resumen?' open':'')+'><summary><b>Resumen por WhatsApp</b><span class="lbl">del día o de la semana</span></summary><div class="lbl" style="margin-top:6px">Te lo mandas a ti (o a quien quieras) para ver cómo va el negocio.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="flex:1" data-act="resdia">Del día</button><button class="btn sm sec" style="flex:1" data-act="ressem">De la semana</button></div></details>'}
-var _ini42=inicio;inicio=function(){var h=_ini42.apply(this,arguments);return h+resumenCardHTML()+provPideHTML()};
+/* inicio: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resdia"],[data-act="ressem"]');if(!b)return;e.stopImmediatePropagation();var t=resumenTxt(b.dataset.act==='ressem');try{window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}catch(er){}},true);
 /* ---------- poca fruta: pedirle al proveedor por WhatsApp ---------- */
 function provPideHTML(){if(S.role!=='admin'||S.encOn)return '';var I=S.inv||{},mn=S.cfg||{},bajo=(num(I.verdes)+num(I.maduras)+madR())<num(mn.minR||40);if(!bajo)return '';

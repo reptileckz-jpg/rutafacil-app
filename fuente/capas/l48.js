@@ -49,4 +49,4 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* al chofer: si le falta la ubicación o la cámara, un aviso arriba de su ruta */
 /* ruta: pasó a tema-ruta.js */
 function permAvisoHTML(){var e=S.permE;if(S.role!=='rep'||!e||S.perm)return '';var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return '';return '<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>'}
-var _bvH48=bienvHTML;bienvHTML=function(){return permAvisoHTML()+_bvH48.apply(this,arguments)};
+/* bienvHTML: pasó a tema-inicio.js */

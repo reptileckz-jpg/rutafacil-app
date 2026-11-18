@@ -56,4 +56,4 @@ function provUbPega(n){var d=provD(n);return '<div class="field"><label for="pvu
 function provUbIns(h){h=h.replace(/<button class="btn sm sec" style="margin:6px 0" data-act="pvedit" data-n="([^"]*)">/g,function(m,enc){var n;try{n=decodeURIComponent(enc)}catch(e){n=enc}return rw('Ubicación',provUbTxt(provD(n)))+m});
  if(S.pvEdit!=null)h=h.replace('<button class="btn sm" style="margin:6px 0" data-act="pvlisto">',provUbPega(S.pvEdit)+'<button class="btn sm" style="margin:6px 0" data-act="pvlisto">');return h}
 var _fiP27=fiProv;fiProv=function(){return provUbIns(_fiP27.apply(this,arguments))};
-var _pvC27=proveedoresCard;proveedoresCard=function(){return provUbIns(_pvC27.apply(this,arguments))};
+/* proveedoresCard: pasó a tema-inicio.js */

@@ -120,7 +120,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
 
 /* ---------- 100 · Google Maps en pantalla completa (si la app trae la llave) ---------- */
 function gmHay(){return esNativo52()&&window.PN_GMAPS===true&&!!window.GMAPA&&(S.cfg||{}).gmapsNo!==true}
-var _mvH52=mapaVivoHTML;mapaVivoHTML=function(id,data,alto){var h=_mvH52.apply(this,arguments);if(!gmHay())return h;return h+'<button class="btn sm sec gmbtn" data-act="gmabre" data-id="'+esc(id)+'">🗺️ Ver en Google Maps</button>'};
+/* mapaVivoHTML: pasó a tema-inicio.js */
 var GM=null;
 function gmCierra(){var g=GM;GM=null;document.documentElement.classList.remove('gmon');var o=document.getElementById('gmov');if(o)o.remove();if(g&&g.m)try{g.m.destroy()}catch(e){}}
 function gmVista(B){if(!B.length)return {c:{lat:BOD.lat,lng:BOD.lng},z:13};var a=Math.min.apply(null,B.map(function(p){return p.lat})),b=Math.max.apply(null,B.map(function(p){return p.lat})),c=Math.min.apply(null,B.map(function(p){return p.lng})),d=Math.max.apply(null,B.map(function(p){return p.lng}));

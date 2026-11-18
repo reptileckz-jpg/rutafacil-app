@@ -58,9 +58,7 @@ gpsAlertas=function(){if(S.role!=='admin')return;var A=S.gpsAv=S.gpsAv||{},ahora
  Object.keys(A).forEach(function(k){if(/\|sin$/.test(k))return;if(ahora-A[k]>3*864e5){delete A[k];cam=true}});if(cam)render()};
 
 /* ---------- 17 · las tarjetas URGENTE: sin coordenadas ni teléfono a la vista; con Llamar / Ver dónde; "Atender" lleva a donde se resuelve ---------- */
-var _popI60=popItems;popItems=function(){var L=_popI60.apply(this,arguments);try{L.forEach(function(it){var m=String(it.m||''),raw=m.replace(/&#39;/g,"'"),tel=/\[tel:(\d+)\]/.exec(raw),geo=/\[geo:(-?[\d.]+),(-?[\d.]+)\]/.exec(raw);
-  it.m=m.replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'');it.t=String(it.t||'').replace(/\s*\[(tel|geo|gps|gpsev|pin):[^\]]*\]/g,'');
-  if(it.t==='Atiende esto'&&it.b&&it.b[0]&&it.b[0][1]==='avgo'){it.b[0][0]='Atender';if(geo)it.b.push(['📍 Ver dónde','avgeo',' data-lat="'+geo[1]+'" data-lng="'+geo[2]+'"']);if(tel)it.b.push(['📞 Llamar','avtel',' data-tel="'+tel[1]+'"'])}})}catch(e){}return L};
+/* popItems: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avgeo"],[data-act="avtel"]');if(!b)return;e.stopImmediatePropagation();
  var u=b.dataset.act==='avtel'?'tel:'+b.dataset.tel:'https://www.google.com/maps?q='+b.dataset.lat+','+b.dataset.lng;try{if(b.dataset.act==='avtel')location.href=u;else window.open(u,'_blank')}catch(er){}},true);
 /* a dónde lleva cada aviso */

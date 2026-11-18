@@ -49,7 +49,7 @@ function guiaHTML(){if(S.role!=='admin'||S.guiaOff||!REAL)return '';var P=guiaPa
  return '<div class="card guia" data-key="guia"><div style="display:flex;align-items:center;gap:8px"><b class="grow" style="font-size:18px">Para empezar</b><span class="pill">'+n+' de '+P.length+'</span></div><div class="lbl">Ve llenando esto y la app empieza a ayudarte con los números, las rutas y los avisos.</div>'
   +P.map(function(x){return '<button class="paso'+(x[3]?' hecho':'')+'" data-act="'+(x[2]==='ruta'?'guiaruta':'tab')+'" data-t="'+x[2]+'"><span class="ck">'+(x[3]?'✓':'')+'</span><span class="grow"><span class="t">'+x[0]+'</span><br><span class="lbl">'+x[1]+'</span></span><span class="lbl">›</span></button>'}).join('')
   +'<button class="link" style="margin-top:6px" data-act="guiaoff">Ya no mostrar</button></div>'}
-var _ini35=inicio;inicio=function(){var h=_ini35.apply(this,arguments),g=guiaHTML();if(!g)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+g+h.slice(i+5):g+h};
+/* inicio: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guiaoff"],[data-act="guiaruta"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='guiaoff'){S.guiaOff=true;render();return}S.menu=false;S.usrSel=true;render()},true);
 /* ---------- avisos al abrir: uno solo que te lleva a Avisos ---------- */
 var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.length>1&&!avisoBloq()){var n=_toastQ.length;_toastQ.length=0;setTimeout(function(){toast('Tienes '+n+' avisos nuevos. Míralos en Inicio → Avisos.')},400)}return _r35b.apply(this,arguments)};

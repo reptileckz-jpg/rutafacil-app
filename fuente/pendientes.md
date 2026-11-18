@@ -2635,3 +2635,11 @@ HECHO (l62 `rgCardHTML` y tema-ruta). **Falta armar APK (preguntar antes): la 1.
 - Ahora: sale arriba (debajo de "Ahora sigue"); también antes de salir (en "Revisar" del inicio por pasos, para ordenar la ruta en la mañana); si hay menos de 2 con ubicación dice "A N clientes les falta la ubicación…" en lugar de esconderse; si a algunos les falta, avisa que se quedan al final. No sale con menos de 2 pendientes ni con el cierre mandado.
 - Prueba `t126.js` (9 OK); t62 sigue 22 OK. Captura `disenos/ordenar-trafico.png`.
 - APK 1.0.47 (versión 10.0) quedó armado bien (run 47, 18 nov 20:34 UTC).
+
+## 2026-11-18 · 127 · Ricardo (con APK 1.0.47): "no me gustaron los pasos cuando el cliente tiene deuda de dinero y de taras…" (+ captura del cuadro "si te paga toda su deuda… ganas")
+Decidió: contado "si ya debe algo"; orden del cobro el propuesto, sin repetir "cómo pagó"; la comisión NO se muestra en la venta. HECHO. **Falta armar APK (preguntar antes).**
+- Regla nueva (tema-ruta.js, `credBloq` · 127): si el cliente ya debe algo de antes, la venta es de contado. El permiso del administrador para fiar ese día se respeta. Antes dejaba escoger "A crédito"/"Pagó una parte" y luego no dejaba seguir.
+- Paso Cobro en orden (tema-entregapasos.js, `entCobro127`): esta entrega → lo que ya debía y el abono → cómo paga esta entrega ("¿Cómo paga esta entrega?" con sus opciones, o "De contado: <razón>") → a cobrar → ¿Cómo pagó? → ¿Con cuánto te pagó? y el cambio. Se mueven las MISMAS piezas (mismos botones/campos), así el orden es igual en todos los celulares aunque l46 parta las tarjetas.
+- Se quitó de la venta "Si te paga toda su deuda ($X), ganas $Y" (era la comisión del chofer por cobrar; en el celular de Ricardo salía con un recuadro encima).
+- Vacías y taras: si ya debe taras, sale "Ya te debe N taras. Prestar taras es una facilidad, como el crédito: entre menos, mejor…" (antes solo salía si se quedaba debiendo MÁS, en una ventana al guardar).
+- Blindaje: `comp-venta.js` 19 ventas: 16 idénticas a antes y las 3 de clientes con deuda que antes se fiaban ahora quedan de contado (a propósito, regla 127). t115 actualizada (sin permiso: de contado; con permiso del admin: puede fiar como antes). `t127.js` 6 OK. Captura `disenos/cobro-con-deuda.png`.

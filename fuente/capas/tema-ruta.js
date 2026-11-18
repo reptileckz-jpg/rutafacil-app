@@ -145,3 +145,7 @@ var _r126=render;render=function(){var r=_r126.apply(this,arguments);try{if(S.ro
 
 /* entregaCalc · de l74 */
 var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
+
+/* credBloq · 127 (Ricardo, 18 nov: "si ya debe y no ha pagado, la venta debe ser de contado") */
+/* si el cliente ya debe algo de antes, esta venta es de contado (sin "Pagó una parte" ni "A crédito"). El permiso del administrador para fiar ese día se respeta. */
+var _cb127=credBloq;credBloq=function(c){var r=_cb127.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!(S.d&&S.d.reg)))return r;if((S.permOk||{})[c.id]===iso(TODAY))return '';if(num(c.cred)>0.005)return 'ya debe '+money(num(c.cred))+' de antes';return ''};

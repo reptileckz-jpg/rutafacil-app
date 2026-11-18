@@ -22,7 +22,11 @@ ok(/Dale \$400 de cambio/.test(r||''),'115 · paga con $2,000: "Dale $400 de cam
 r=await ev(()=>{document.querySelector('[data-act="entdesg"]').click();var d=document.getElementById('entdesg');return d&&d.innerText.replace(/\n/g,' | ')});
 ok(/Esta entrega \| \$1,100/.test(r)&&/Abono a lo que ya debía \| \+ \$500/.test(r)&&/Total a cobrar \| \$1,600/.test(r)&&/Su deuda queda en \| \$500/.test(r),'115 · al tocar la barra: el desglose renglón por renglón',r);
 // a crédito: buró a la vista y "sin cobro"
-r=await ev(()=>{document.querySelector('[data-act="abono115"][data-v="0"]').click();document.querySelector('[data-act="mode"][data-m="credito"]').click();return {t:document.querySelector('main').innerText,bar:document.querySelector('#entbt').innerText.replace(/\n/g,' | ')}});
+/* 127: si ya debe, de contado (sin los botones de fiar) */
+r=await ev(()=>{if(typeof entPon125==='function')entPon125(1);render();var t=document.querySelector('main').innerText,mo=document.querySelector('[data-act="mode"][data-m="credito"]');return {t:t.slice(0,600),contado:/De contado: ya debe \$1,000 de antes/.test(t),botones:!!(mo&&mo.getClientRects().length)}});
+ok(r.contado&&!r.botones,'127 · ya debe $1,000: "De contado" y sin los botones de fiar',r);
+/* con permiso del administrador para fiar hoy, sí se puede (como antes) */
+r=await ev(()=>{S.permOk=S.permOk||{};S.permOk[S.cli[0].id]=iso(TODAY);render();document.querySelector('[data-act="abono115"][data-v="0"]').click();document.querySelector('[data-act="mode"][data-m="credito"]').click();return {t:document.querySelector('main').innerText,bar:document.querySelector('#entbt').innerText.replace(/\n/g,' | ')}});
 ok(/Buró:/.test(r.t)&&/Sin cobro en esta visita/.test(r.bar)&&/\$0/.test(r.bar)&&/Queda debiendo \$2,100/.test(r.bar),'115 · a crédito: el buró a la vista, "Sin cobro en esta visita · Queda debiendo $2,100"',r.bar);
 // cajas vacías con saldo en vivo
 r=await ev(()=>{S.d.V=2;render();var v=document.getElementById('vac115');var a=v&&v.innerText.replace(/\n/g,' | ');S.d.V=8;render();var b2=document.getElementById('vac115').innerText.replace(/\n/g,' | ');return [a,b2]});

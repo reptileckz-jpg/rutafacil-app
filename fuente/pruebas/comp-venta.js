@@ -9,12 +9,12 @@ const {chromium}=require('playwright');
 const CASOS=[
  ['contado',0,'{}'],['abono',0,'{"abono":500}'],['vacias',0,'{"V":4}'],['rotas',0,'{"V":2,"Vr":1}'],
  ['sin-nada',0,'{"R":0,"M":0,"abono":0}'],['de-mas',0,'{"R":45}'],
- ['fiado',1,'{"mode":"credito","R":1,"M":0}'],['parte',1,'{"mode":"parte","pago":300,"R":2,"M":0}'],['parte-de-mas',1,'{"mode":"parte","pago":99999,"_lim":0}'],
- ['fiado-pasa-limite',1,'{"mode":"credito","R":20,"M":0}'],
+ ['fiado',0,'{"mode":"credito","R":1,"M":0}'],['parte',0,'{"mode":"parte","pago":300,"R":2,"M":0}'],['fiado-con-deuda',1,'{"mode":"credito","R":1,"M":0}','regla127'],['parte-con-deuda',1,'{"mode":"parte","pago":300,"R":2,"M":0}','regla127'],['parte-de-mas',1,'{"mode":"parte","pago":99999,"_lim":0}'],
+ ['fiado-pasa-limite',1,'{"mode":"credito","R":20,"M":0}','regla127'],
  ['mayoreo',1,'{"may":true,"R":12,"M":0,"pRm":"240","pMm":"","V":12}'],['mayoreo-sin-precio',1,'{"may":true,"R":12,"M":0,"pRm":"","pMm":""}'],
  ['centavos',2,'{"R":1,"M":7.5}'],['cliente3',3,'{}'],['cliente4-vacias',4,'{"V":1,"abono":120.5}'],['tope-vacias',2,'{"R":6,"V":0,"_tope":"1"}'],['calle',-1,'{"R":2,"M":0}']];
 async function corre(b,url,nuevo){const out={};
- for(const [nom,i,mod] of CASOS){const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(String(e)));p.on('dialog',d=>d.accept());
+ for(const [nom,i,mod,regla] of CASOS){const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(String(e)));p.on('dialog',d=>d.accept());
   await p.addInitScript(()=>{window.__pnTest=1;window.__hora93=11;Math.random=(function(){var x=7;return function(){x=(x*16807)%2147483647;return (x-1)/2147483646}})();Date.now=(function(){var t=1794979200000;return function(){return t+=1000}})()});
   await p.goto('file://'+url);await p.waitForTimeout(800);
   const ok=await p.evaluate(([i,mod])=>{if(window.PN_MODO==='vacio'){var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1000}];U.per=[{n:'Chofer Uno',puesto:'chofer',tel:'1'}];
@@ -36,7 +36,10 @@ async function corre(b,url,nuevo){const out={};
  return out}
 (async()=>{const [A,N]=process.argv.slice(2);const b=await chromium.launch();const a=await corre(b,A,false),n=await corre(b,N,true);await b.close();
  const K=[...new Set(Object.keys(a).concat(Object.keys(n)))];let dif=0,guard=0;
- for(const k of K){const x=JSON.stringify(a[k]),y=JSON.stringify(n[k]);if(!/·err$/.test(k)&&/"n\\":(\d+)/.test(x)){}
+ const REGLA={};CASOS.forEach(c=>{if(c[3])REGLA[c[0]]=1});let regla=0,reglaMal=0;
+ /* 127: si el cliente ya debe, la venta es de contado. Esos casos cambian A PROPÓSITO: en NUEVO tiene que quedar pagada completa */
+ for(const k of Object.keys(REGLA)){let o=null;try{o=JSON.parse(n[k])}catch(e){}const bien=o&&o.venta&&Math.abs(o.venta.pago-o.venta.total)<0.005&&o.venta.total>0;regla++;if(!bien)reglaMal++;console.log('  '+k.padEnd(20)+(bien?'OK de contado (regla 127): total '+o.venta.total+' · pagó '+o.venta.pago:'MAL: '+String(n[k]).slice(0,200)))}
+ for(const k of K){if(REGLA[k])continue;const x=JSON.stringify(a[k]),y=JSON.stringify(n[k]);if(!/·err$/.test(k)&&/"n\\":(\d+)/.test(x)){}
   if(x!==y){dif++;if(dif<=8)console.log('DIF',k,'\n antes:',String(x).slice(0,400),'\n nuevo:',String(y).slice(0,400))}}
  CASOS.forEach(([nom])=>{try{const o=JSON.parse(a[nom]);console.log('  '+nom.padEnd(20)+(o.venta?'guardó '+o.n+' ventas · total '+o.venta.total+' · pagó '+o.venta.pago+' · abono '+o.venta.abono:'no guardó ('+o.n+' ventas)'))}catch(e){console.log('  '+nom+' '+a[nom])}});
- console.log(CASOS.length+' ventas · '+dif+' diferencias');console.log(dif===0?'IDÉNTICO':'DISTINTO')})();
+ console.log(CASOS.length+' ventas · '+dif+' diferencias · regla 127: '+(regla-reglaMal)+' de '+regla+' de contado');console.log(dif===0&&reglaMal===0?'IDÉNTICO':'DISTINTO')})();

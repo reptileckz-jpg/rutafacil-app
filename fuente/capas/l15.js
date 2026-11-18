@@ -27,9 +27,7 @@ function npHTML(){if(!S.np||S.role!=='admin')return '';var n=S.np,ch=n.puesto===
   +'<button class="btn" style="margin-top:6px;min-height:56px" data-act="npsave">Guardar</button></div></div>'}
 /* va dentro del dibujo de la pantalla (junto al asistente), para que no se vuelva a crear en cada cambio */
 /* setupHTML: pasó a tema-ajustes.js */
-var _pers15=personal;personal=function(){var h=_pers15.apply(this,arguments),a=h.indexOf('<div class="card"><b>Agregar a alguien del personal</b>');if(a<0)a=h.indexOf('<div class="card"><b>Agregar chofer o personal</b>');if(a<0)return h;
- var e=h.indexOf('data-act="addch"',a);e=h.indexOf('</div>',e)+6;
- return h.slice(0,a)+'<button class="card npadd" data-act="npopen"><span class="ic">+</span><span class="grow"><b style="font-size:17px">Agregar a alguien nuevo</b><br><span class="lbl">Chofer, ayudante, bodega, venta local…</span></span><span style="font-size:22px">›</span></button>'+h.slice(e)};
+/* personal: pasó a tema-personal.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.npf||!t.files||!t.files[0]||!S.np)return;var k=t.dataset.npf;fotoLeer(t.files[0],function(u){S.np[k]=u;render()})},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='npopen'){e.stopImmediatePropagation();S.np=npBlank();render();setTimeout(function(){var o=document.getElementById('npov');if(o)o.scrollTop=0;var i=document.getElementById('np_n');if(i)i.focus()},60);return}

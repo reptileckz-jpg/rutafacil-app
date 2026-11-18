@@ -91,9 +91,7 @@ mayRepHTML=function(){var L=S.log.filter(function(l){return l.mayT});if(!L.lengt
 /* ficha del cliente: "nunca darle mayoreo" */
 /* mayHistHTML: pasó a tema-fichas.js */
 /* tarjeta del chofer en Personal: el interruptor */
-var _suel13=sueldos;sueldos=function(){var h=_suel13.apply(this,arguments);
- return h.replace(/<div class="field" style="margin-top:6px"><label for="adl_(\d+)"/g,function(m,id){var ch=chofById(id);if(!ch)return m;var n=mayRech30(ch.id);
-  return '<div class="row" style="margin-top:6px"><span>Mayoreo<br><span class="lbl">'+(ch.mayPerm?'Solo con tu permiso':'Lo puede dar sin pedirte permiso')+(n?' · '+n+' no aprobado'+(n>1?'s':'')+' en 30 días':'')+'</span></span><button class="btn sm sec" style="width:auto" data-act="mayperm" data-id="'+ch.id+'" data-v="'+(ch.mayPerm?'0':'1')+'">'+(ch.mayPerm?'Quitar permiso':'Pedir permiso')+'</button></div>'+m})};
+/* sueldos: pasó a tema-personal.js */
 /* cronómetro de 5 minutos que corre solo (sin volver a dibujar la pantalla) */
 (function(){var st=document.createElement('style');st.textContent='.mayreloj{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px;margin:4px 0}.mayreloj.poco{color:var(--danger)}';document.head.appendChild(st)})();
 function mayRelojTxt(t){var s=Math.max(0,Math.ceil((MAY_ESPERA-(Date.now()-t))/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}

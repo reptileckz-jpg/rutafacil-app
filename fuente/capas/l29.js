@@ -76,7 +76,7 @@ function nbAccHTML(){if(!NB.on||!NB.listo||S.role!=='admin'||!NB.perfil||NB.perf
  if(S.cfg.contador||S.pins.cont||nbCuentaDe('k','cont'))h+=fila('k','cont',(S.cfg.contadorN||'Contador'),'· Contador');else h+='<button class="link" style="margin-top:6px" data-act="nbacc" data-t="k" data-ref="cont">+ Darle acceso al contador</button>';
  h+='<div class="lbl" style="margin-top:8px">El encargado entra con su misma cuenta de chofer: mientras sea encargado le aparece "Entrar como encargado".</div>';
  return h+'</div>'}
-var _pers29=personal;personal=function(){var h=_pers29.apply(this,arguments);var a=nbAccHTML();if(!a)return h;var i=h.indexOf('</h1>');return i<0?a+h:h.slice(0,i+5)+a+h.slice(i+5)};
+/* personal: pasó a tema-personal.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.personal)VIEWS.personal=personal;
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(['nbacc','nbaccsi','nbaccno','nbaccok','nbaccquita','nbaccmail','nbsalir','nbcorte'].indexOf(a)<0)return;e.stopImmediatePropagation();var ad=NB.ad;
  if(a==='nbsalir'){abrirModal('¿Cerrar la sesión en este celular?','Para volver a entrar vas a necesitar tu usuario y contraseña (y internet).',[['Sí, cerrar sesión','nbsalirya']]);return}

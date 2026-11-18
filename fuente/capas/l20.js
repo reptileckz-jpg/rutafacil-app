@@ -23,9 +23,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='chburono'){e.stopImmediatePropagation();S.chBuroNo=S.chBuroNo||{};S.chBuroNo[b.dataset.k]=iso(TODAY);render();return}
  if(a==='chtope'){e.stopImmediatePropagation();return}},true);
 /* en la ficha del chofer (Sueldos): su tope editable y cómo cobra */
-var _suel20=sueldos;sueldos=function(){var h=_suel20.apply(this,arguments);
- return h.replace(/(<div class="field"><label for="adl_(\d+)")/g,function(m,all,id){var ch=S.choferes.filter(function(x){return x.id===+id})[0];if(!ch||(ch.puesto||'chofer')!=='chofer')return m;var bb=chBuro(ch);
-  return '<div class="field"><label for="crm'+id+'">Tope de crédito (lo que le pueden deber sus clientes) $</label><input id="crm'+id+'" type="number" inputmode="decimal" min="0" data-crmax="'+id+'" value="'+esc(ch.crMax!=null&&ch.crMax!==''?ch.crMax:crCfg().crCh)+'"></div><div class="lbl">Le deben '+money(bb.tot)+(bb.atr>0?' · '+money(bb.atr)+' atrasado':'')+' · '+['🟢 cobra bien','🟡 se atrasa','🟠 cobra mal'][bb.n]+'</div>'+all})};
+/* sueldos: pasó a tema-personal.js */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.crmax){var ch=S.choferes.filter(function(x){return x.id===+t.dataset.crmax})[0];if(ch)ch.crMax=t.value}},true);
 
 /* ===================== v5 · Mayoreo autorizado que baja su consumo =====================

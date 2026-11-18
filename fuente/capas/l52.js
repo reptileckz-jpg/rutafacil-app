@@ -92,8 +92,7 @@ function gpsRutaHTML(c){if(!esCh(c)||esAdm(c))return '';var V=S.gpsVer=S.gpsVer|
  var VE=A.E.filter(function(e){return e.cli||e.bod||e.t1-e.t0>=15*60000});h+='<div style="margin-top:8px">'+VE.map(function(e,ix){var raro=!e.cli&&!e.bod,man=ix>0?'<div class="lbl" style="padding:2px 0 0 12px">🚚 manejó '+minTxt(e.t0-VE[ix-1].t1)+'</div>':'';return man+'<div class="gpsst'+(raro?' raro':'')+'">'+(raro?'⚠️ Parada sin cliente':(e.bod?'Bodega':esc(e.cli.n)))+' · '+hmDe(e.t0)+' a '+hmDe(e.t1)+' · <b>'+minTxt(e.t1-e.t0)+'</b>'+(raro?' <a class="link" href="https://www.google.com/maps?q='+e.lat+','+e.lng+'" target="_blank" rel="noopener">Ver dónde</a>':'')+'</div>'}).join('')+'</div>';
  if(raras.length)h+='<div class="lbl neg" style="margin-top:6px">'+raras.length+' parada'+(raras.length>1?'s':'')+' de más de 15 min donde no hay cliente.</div>';
  return h+'</div>'}
-var _pers52=personal;personal=function(){var h=_pers52.apply(this,arguments);if(S.openCh==null)return h;var c=(S.choferes||[]).filter(function(x){return x.id===S.openCh})[0];if(!c)return h;var g=gpsRutaHTML(c);if(!g)return h;
- var m='<div class="lbl" style="margin-top:10px"><b>Referencias</b></div>',i=h.indexOf(m);return i<0?h:h.slice(0,i)+g+h.slice(i)};
+/* personal: pasó a tema-personal.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gpsdia"]');if(!b)return;e.stopImmediatePropagation();S.gpsVer=S.gpsVer||{};S.gpsVer[b.dataset.id]=b.dataset.d;render()},true);
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.gpsd||!t.value)return;S.gpsVer=S.gpsVer||{};S.gpsVer[t.dataset.gpsd]=t.value;render()},true);
 

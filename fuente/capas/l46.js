@@ -27,7 +27,7 @@ function tarjetear(h,donde){if(!h||typeof h!=='string')return h;try{var t=docume
  if(!donde)tjAgrupa(f);else [].forEach.call(f.querySelectorAll(donde),function(C){tjAgrupa(C)});return t.innerHTML}catch(e){return h}}
 ['inicio','clientes','bodega','cargas','gastos','vehiculos','personal','bienes','sugerencias','ruta','entrega','cierre','viaje','estadisticas'].forEach(function(n){if(typeof window[n]!=='function')return;var f=window[n];window[n]=function(){return tarjetear(f.apply(this,arguments))}});
 /* fichas: el contenido de la pestaña */
-var _fH46=fichaHTML;fichaHTML=function(f){var h=_fH46.apply(this,arguments);return tarjetear(h,'.fibody')};
+/* fichaHTML: pasó a tema-personal.js */
 /* pantallas encima (viaje, ubicación, carga extra, pasos…) */
 /* setupHTML: pasó a tema-ajustes.js */
 /* ---------- 57 · sin textos de demo, prueba (salvo los dos botones), web ni navegador ---------- */

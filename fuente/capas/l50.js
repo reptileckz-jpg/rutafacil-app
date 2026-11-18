@@ -88,8 +88,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rcabre"]');if(!b)return;e.stopImmediatePropagation();var D=rcDebe();S.rcv={p:0,R:String(D.R),M:String(D.M),V:String(D.V),E:String(D.dice!=null?D.dice:D.efe),est:{}};render();window.scrollTo(0,0)},true);
 function fCorta(d){var p=String(d).split('-');return p.length===3?p[2]+'/'+MES[+p[1]-1].toLowerCase().slice(0,3):d}
 /* en su sueldo, cada faltante con su motivo (el chofer ve por qué se le descuenta) */
-var _szRes50=szRes;szRes=function(c){var h=_szRes50.apply(this,arguments),L=(S.faltantes||[]).filter(function(f){return f.ch===c.id&&f.desc&&f.pend&&f.m>0.005});if(!L.length)return h;
- return h+'<div class="lbl" style="margin-top:4px">'+L.map(function(f){return '· '+esc(f.txt||('Faltante del '+fCorta(f.fecha)))+': −'+money(f.m)}).join('<br>')+'</div>'};
+/* szRes: pasó a tema-personal.js */
 /* si pasan 3 horas desde que mandó el cierre y no ha entregado su equipo: aviso urgente */
 function eqRevisaTarde(){try{if(S.role!=='admin'||!S.cierre||!S.cierre.sent||!S.ciEnvH)return;var ch=+S.chofHoy;if(!eqDe(ch).length||eqRegDe(ch).regreso)return;
  var p=String(S.ciEnvH).split(':'),t=new Date();var min=t.getHours()*60+t.getMinutes()-(+p[0]*60+ +p[1]);if(!(min>=180))return;var k=iso(TODAY)+'|'+ch;S.eqTarde=S.eqTarde||{};if(S.eqTarde[k])return;S.eqTarde[k]=1;

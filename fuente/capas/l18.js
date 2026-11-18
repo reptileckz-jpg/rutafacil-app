@@ -29,19 +29,12 @@ function comMitad(l){return l&&(l.mayT==='chofer'||l.mayEl)?0.5:1}
 function comDeLog(c,l){var z=c.sz,f=num(l.total)>0?Math.min(1,num(l.pago)/num(l.total)):0,v=comModo(c)==='pct'?num(l.pago)*num(z.comP)/100:(num(l.R)*num(z.comC)+num(l.M)*num(z.comK))*f;return r2(v*comMitad(l)+num(l.abono)*comPct(c))}
 function comHoyDe(c){if(!c||String(S.chofHoy)!==String(c.id)||!S.salida.ok)return 0;return r2(sum(S.log,function(l){return comDeLog(c,l)}))}
 function comPrevia(c){var z=c.sz;return comModo(c)==='pct'?r2(num(z.cob)*num(z.comP)/100):r2(num(z.cv)*num(z.comC)+num(z.kv)*num(z.comK))}
-var _szC18=szCalc;szCalc=function(c){var k=_szC18.apply(this,arguments),z=c.sz;if(z.tipo!=='base')return k;
- var viejo=k.cv*num(z.comC)+k.kv*num(z.comK),hoy=comHoyDe(c),com=r2(comPrevia(c)+hoy);k.cob=r2(num(z.cob)+cobHoy(c));k.com=com;k.comHoy=hoy;k.br=r2(k.br-viejo+com);k.pagar=Math.max(0,k.br-k.ad-k.fa);k.resto=Math.max(0,k.ad+k.fa-k.br);return k};
-var _szD18=szDesg;szDesg=function(c){var h=_szD18.apply(this,arguments),z=c.sz;if(z.tipo!=='base')return h;var k=szCalc(c),may=S.log.filter(function(l){return comMitad(l)<1}).length;
- var t=comModo(c)==='pct'?(num(z.comP)+'% de lo cobrado ('+money(k.cob)+')'):(money(num(z.comC))+' por caja y '+money(num(z.comK))+' por kilo cobrados');
- return h.replace(/<div class="row"><span>Comisión<br><span class="lbl">[^<]*<\/span><\/span><b[^>]*>[^<]*<\/b><\/div>/,rw('Comisión<br><span class="lbl">'+t+(may?' · '+may+' con mayoreo a mano (pagan la mitad)':'')+'</span>',money(k.com)))};
-var _suel18=sueldos;sueldos=function(){var h=_suel18.apply(this,arguments);
- return h.replace(/<div class="field"><label for="sz(\d+)comC">[^<]*<\/label><input[^>]*><\/div><div class="field"><label for="sz\d+comK">[^<]*<\/label><input[^>]*><\/div>/g,function(m,id){var c=S.choferes.filter(function(x){return x.id===+id})[0];if(!c)return m;var pc=comModo(c)==='pct';
-  return '<div class="lbl" style="margin-top:6px"><b>Comisión</b></div><div class="chips" role="group" style="margin:6px 0"><button data-act="commodo" data-id="'+id+'" data-v="unidad" aria-pressed="'+!pc+'">Por caja y kilo</button><button data-act="commodo" data-id="'+id+'" data-v="pct" aria-pressed="'+pc+'">Por porcentaje</button></div>'
-   +(pc?szField(c,'comP','% de lo cobrado'):szField(c,'comC','Por caja cobrada $')+szField(c,'comK','Por kilo cobrado $'))
-   +'<div class="lbl">Cuenta cuando el dinero entra: contado y abonos. Lo fiado cuenta hasta que se cobra. El mayoreo que da a mano paga la mitad.</div>'})};
+/* szCalc: pasó a tema-personal.js */
+/* szDesg: pasó a tema-personal.js */
+/* sueldos: pasó a tema-personal.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="commodo"]');if(!b)return;e.stopImmediatePropagation();var c=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];if(!c)return;c.sz.comModo=b.dataset.v;
  if(b.dataset.v==='pct'&&!num(c.sz.comP))c.sz.comP=String(Math.round(comPct(Object.assign({},c,{sz:Object.assign({},c.sz,{comModo:'unidad'})}))*1000)/10||2);render()},true);
-var _szR18=szRes;szRes=function(c){var h=_szR18.apply(this,arguments);if(c.sz.tipo!=='base')return h;var k=szCalc(c);return h.replace(/<div class="row"><span>Vendió esta semana<\/span><b[^>]*>[^<]*<\/b><\/div>/,rw('Cobró esta semana',money(k.cob)))};
+/* szRes: pasó a tema-personal.js */
 /* ---- motivadores (solo el chofer, solo lo suyo) ---- */
 (function(){var st=document.createElement('style');st.textContent=[
  '.compill{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1F6B2A,#2F7D32);color:#fff;border-radius:18px;padding:12px 14px;margin-bottom:10px;box-shadow:0 6px 16px rgba(47,125,50,.25)}',

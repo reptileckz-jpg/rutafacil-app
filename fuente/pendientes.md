@@ -2581,3 +2581,9 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
 - Nota: la primera versión de la prueba dio el inventario doble. Era la prueba: encendía la nube en cada celular como si ya hubiera bajado, y el chofer subía el inventario de la demo antes de bajar. La app real no sube nada hasta bajar primero (`nbEmpuja` espera `NB.listo`, que pone `nbPrimera` después de aplicar la nube). La prueba ya baja primero, como la app.
 - Límite práctico: la nube recomienda alrededor de 1 escritura por segundo sostenida por documento. Con unos 10 celulares no hay problema; si un día fueran muchos más, se reparten las listas en más documentos (va con la migración a Vite).
 
+## 2026-11-18 · Ricardo: "Sigue con vite" (después de la 9.9 / APK 1.0.46)
+- Se retoma el aplanado de temas (preparación dentro de las capas; sin archivos de Vite ni `package.json` hasta "Empezamos con Vite").
+- Tema "ruta y entrega del chofer" → `capas/tema-ruta.js` (28 envolturas: ruta 13, entrega 7, entValida 4, entregaCalc 2, credBloq 2), justo después de `l90`. 503 → **475 (16%)**.
+- Blindaje (toca la entrega = dinero): no cambia ninguna cuenta, solo el orden del código. `pruebas/comp-ruta.js` compara la app de antes y la nueva en la ruta, la entrega de cada cliente (contado, parte, crédito, abono, mayoreo, límite del cliente, tope del chofer), las cuentas, las revisiones, cuándo no se fía y guardar una entrega de verdad. Resultado: 148 casos iguales en la demo, 77 en la real. La prueba detecta un cambio hecho a propósito en el tope de crédito. Todas las pruebas en 0 FAIL.
+- Siguiente: fichas del personal y de clientes (fiEmp, fiCli, mayHistHTML, permsHTML).
+

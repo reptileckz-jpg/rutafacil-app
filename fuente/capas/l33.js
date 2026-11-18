@@ -7,8 +7,7 @@ function salConfHTML(){if(S.role!=='rep'||S.salida.ok)return '';var s=S.salida,c
  return '<div class="card note" data-key="salconf" style="padding:10px 12px"><b>Confirma lo que marca el tablero</b>'
   +'<div style="margin-top:8px">'+(s.odoOk?'<span style="color:var(--accent);font-weight:700">✓ Odómetro: '+num(c.odoIni).toLocaleString('es-MX')+' km</span>':'<div class="lbl">Odómetro: viene puesto el último que se registró ('+num(c.odoIni).toLocaleString('es-MX')+' km). Si el tablero marca otro, corrígelo arriba.</div><button class="btn sm" style="margin-top:6px" data-act="salodook">Sí, marca '+num(c.odoIni).toLocaleString('es-MX')+' km</button>')+'</div>'
   +'<div style="margin-top:10px">'+(s.tankOk?'<span style="color:var(--accent);font-weight:700">✓ Tanque: '+esc(c.tankIni||'')+'</span>':'<div class="lbl">Tanque: mueve la aguja a lo que marca el tablero.</div><button class="btn sm" style="margin-top:6px" data-act="saltankok">Sí, el tanque está en '+esc(c.tankIni||'')+'</button>')+'</div></div>'}
-var _ru33=ruta;ruta=function(){var h=_ru33.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return h;var x=salConfHTML(),i=h.indexOf('<div class="lbl" style="margin:10px 0 6px">Nivel del tanque al salir');
- if(i<0){i=h.indexOf('Fotos del vehículo (');if(i>-1)i=h.lastIndexOf('<div',i)}return i>-1?h.slice(0,i)+x+h.slice(i):h.replace('data-act="iniciar"','data-act="iniciar"')+x};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='salodook'){e.stopImmediatePropagation();S.salida.odoOk=true;render();return}
  if(a==='saltankok'){e.stopImmediatePropagation();S.salida.tankOk=true;render();return}},true);

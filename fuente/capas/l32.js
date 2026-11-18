@@ -36,12 +36,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(r&&r.est==='pend'){toast('Ya le pediste permiso al administrador. Espera su respuesta');return}
  S.reab={k:b.dataset.k||'carga',est:'pend',t:Date.now(),h:hhmm()};S.avPrecio.push('URGENTE: '+chofN(S.chofHoy)+' pide reabrir su ruta para '+(S.reab.k==='carga'?'cargar más':'dar otra vuelta')+'. Autorízalo en Inicio.');render()},true);
 /* lo que ve el chofer mientras espera */
-var _ru32=ruta;ruta=function(){var h=_ru32.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return h;var r=S.reab,top='';
- top='<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+'Entrega '+money((S.cierre.res||{}).efectivo||0)+' en efectivo al administrador.</div></div>';
- if(r&&r.est==='pend')top+='<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'. Cuando te autorice, aquí te sale para seguir.</div></div>';
- else if(r&&r.est==='no')top+='<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>';
- h=h.replace(/(<div class="hello">[\s\S]*?<\/div>)/,'$1'+top);
- return h.replace(/<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Cargar más<\/button>/,'<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Pedir permiso: cargar más</button>').replace(/<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Otra vuelta<\/button>/,'<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Pedir permiso: otra vuelta</button>').replace('Como aún no entregas el efectivo, se reabre tu cierre.','Para seguir, el administrador tiene que autorizarlo.').replace('Como ya entregaste el efectivo, se abre un segundo cierre.','Para seguir, el administrador tiene que autorizarlo.')};
+/* ruta: pasó a tema-ruta.js */
 /* cuando el admin autoriza, en el celular del chofer se reabre y se abre la pantalla de carga */
 var _r32=render;render=function(){try{if(S.role==='rep'&&S.reab&&S.reab.est==='ok'&&S.cierre&&S.cierre.sent&&!_seguirOk){var k=S.reab.k;S.reab=null;_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta con tu permiso')}}catch(e){console.error(e)}return _r32.apply(this,arguments)};
 /* en Inicio del admin: autorizar */

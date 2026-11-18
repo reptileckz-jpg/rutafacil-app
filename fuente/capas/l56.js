@@ -65,13 +65,12 @@ function ahoraSigue(){if(S.role!=='rep')return null;if(S.cierre&&S.cierre.sent)r
  var p=(S.stops||[]).filter(function(x){return !x.done});if(p.length){var c=cl(p[0].c);return ['Entrega a '+(c?c.n:'tu siguiente cliente'),'Toca "Entregar" cuando llegues. Te faltan '+p.length+' cliente'+(p.length>1?'s':'')+'.','[data-act="entregar"], .card.next']}
  if(!(S.stops||[]).length)return ['Espera tus entregas','Todavía no tienes clientes en tu ruta. Cuando te asignen, salen aquí.','main .card'];
  return ['Haz tu cierre','Ya entregaste a todos. Ve a Cierre y sigue los pasos.','nav.tabs button[data-t="cierre"]']}
-var _ru56=ruta;ruta=function(){var h=_ru56.apply(this,arguments),a=ahoraSigue();if(!a)return h;var c='<div class="card ahora" data-key="ahora"><span class="lbl">Ahora sigue</span><div class="q">'+esc(a[0])+'</div><div class="lbl">'+esc(a[1])+'</div><button class="btn sm sec" style="width:auto;margin-top:8px" data-act="ahorami">Muéstrame dónde</button></div>';
- var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ahorami"]');if(!b)return;e.stopImmediatePropagation();var a=ahoraSigue();if(a)guiaMuestra(a[2])},true);
 /* ---------- Inicio del admin: "Hoy te toca" y "Aprende la app" arriba ---------- */
 var _ini56=inicio;inicio=function(){var h=_ini56.apply(this,arguments),a=aprendeHTML();if(a)h=h.replace(a,'');var top=hoyTocaHTML()+(a||'');if(!top)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+top+h.slice(i+5):top+h};
 if(typeof VIEWS!=='undefined'&&VIEWS.inicio)VIEWS.inicio=inicio;
-var _ru56b=ruta;ruta=function(){var h=_ru56b.apply(this,arguments),a=aprendeHTML();if(!a||h.indexOf(a)<0)return h;h=h.replace(a,'');var k=h.indexOf('data-key="ahora"');if(k<0){var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h}var j=h.indexOf('</div>',h.indexOf('data-act="ahorami"'));return h.slice(0,j+6)+a+h.slice(j+6)};
+/* ruta: pasó a tema-ruta.js */
 /* ---------- tutorial desde el primer día, para cada persona (no depende del de otro celular) ---------- */
 function guiaLibre(){try{if(S.tut||S.wz||S.modal||S.confirm||S.perm||(_pin&&_pin.modo))return false;if(typeof bienvOn==='function'&&bienvOn())return false;
  return !document.querySelector('#nbov,#setov,#permov,#bienv,#arr,#pxov,#pinov,#fiov,#rcov,#eqov,#wzov,#pwov,#ajov,#gmov,[role="dialog"][aria-modal="true"]')}catch(e){return false}}

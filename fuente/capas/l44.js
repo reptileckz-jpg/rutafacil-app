@@ -24,7 +24,7 @@ function qrAbreCli(t){var m=/^RF-C:(\d+)$/.exec(String(t||'').trim());if(!m){toa
  var i=-1;S.stops.forEach(function(s,k){if(i<0&&+s.c===c.id&&!s.done)i=k});var sig=curStop();
  if(i<0){toast(esc(c.n)+' no está en tu ruta de hoy');S.openCli=c.id;S.tab.rep='ruta';render();return}
  if(i!==sig)toast('Ojo: '+c.n+' no es tu siguiente parada');S.cur=i;try{resetDraft(c)}catch(e){}S.tab.rep='entrega';render();window.scrollTo(0,0)}
-var _ru44=ruta;ruta=function(){var h=_ru44.apply(this,arguments);if(S.role!=='rep'||!qrOn()||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrscan">📷 Escanear QR del cliente</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};
+/* ruta: pasó a tema-ruta.js */
 /* escanear el corte del chofer (recepción): revisa el código de verificación */
 function corteVerifica(t){var s=String(t||'');if(s.indexOf('RF-CORTE|')!==0){toast('Ese QR no es de un corte');return}var d;try{d=JSON.parse(s.slice(9))}catch(e){toast('No se pudo leer el corte');return}
  var v=verifCodigo([d.ch,d.f,d.deb,d.ent,d.bo||'',JSON.stringify(d.b||{}),(d.may||[]).length].join('|')),bien=v===d.v;
@@ -60,7 +60,7 @@ function mjPos(p){var now=Date.now(),la=p.coords.latitude,ln=p.coords.longitude,
 function mjVigila(){if(!navigator.geolocation||window.__pnTest&&!window.__mjTest)return;var debe=mjActivo();if(debe&&MJ.w==null){MJ.w=navigator.geolocation.watchPosition(mjPos,function(){},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}else if(!debe&&MJ.w!=null){navigator.geolocation.clearWatch(MJ.w);MJ.w=null;MJ.on=false}}
 var _r44=render;render=function(){var r=_r44.apply(this,arguments);try{mjVigila()}catch(e){}return r};
 function mjLlegaHTML(){var x=S.mjLlega;if(!x||S.role!=='rep'||MJ.on)return '';return '<div class="card next" data-key="mjllega"><b style="font-size:18px">Llegaste con '+esc(x.c.n)+'</b><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="mjent">Abrir su entrega</button><button class="btn sec" style="flex:1" data-act="mjno">Ahora no</button></div></div>'}
-var _ru44b=ruta;ruta=function(){var h=_ru44b.apply(this,arguments),x=mjLlegaHTML();if(!x)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+x+h.slice(i+5):x+h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mjcopi"],[data-act="mjent"],[data-act="mjno"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;
  if(a==='mjcopi'){S.copiloto=iso(TODAY);MJ.on=false;toast('Listo: hoy no se esconde la app');render();return}
  if(a==='mjno'){S.mjLlega=null;render();return}var x=S.mjLlega;S.mjLlega=null;if(x){S.cur=x.k;try{resetDraft(x.c)}catch(er){}S.tab.rep='entrega'}render();window.scrollTo(0,0)},true);

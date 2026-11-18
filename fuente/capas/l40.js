@@ -63,18 +63,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- pantalla después del cierre ---------- */
 function saludoHora(){var h=new Date().getHours();return h<12?'Buenos días':(h<19?'Buenas tardes':'Buenas noches')}
 function chPideSeguir(id){var c=(S.choferes||[]).filter(function(x){return x.id===+id})[0];return !!(c&&c.segPerm)}
-var _ru40=ruta;ruta=function(){var h=_ru40.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent||S.cx)return h;var c=S.cierre,d=c.corte||{},r=S.reab,nm=chofN(S.chofHoy).split(' ')[0];
- var recibido=!!S.cierreReg,enc=encList().filter(function(x){return x.ch===+S.chofHoy&&x.est==='pend'}),pide=chPideSeguir(S.chofHoy);
- var o='<div class="poscierre"><div class="saludo">'+saludoHora()+', '+esc(nm)+'</div>'
-  +'<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+(recibido?'El administrador ya recibió tu efectivo.':'Entrega '+money(d.ent!=null?d.ent:(c.res||{}).efectivo||0)+(d.dest==='tómbola'?' en la tómbola':' al administrador')+'.')+'</div>'
-  +(S.corteUlt?'<button class="btn sm sec" style="margin-top:8px" data-act="corteotra">📲 Mandar otra vez la foto del corte</button>':'')+'</div>'
-  +(r&&r.est==='pend'?'<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'.</div></div>':'')
-  +(r&&r.est==='no'?'<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>':'')
-  +(enc.length?'<div class="card note"><b>Ya no tienes pedidos por entregar, pero te queda:</b></div>'+encRutaHTML(false):'<div class="card"><div class="nada">Nada más por hoy ✓</div><div class="lbl">Gracias por tu trabajo.</div></div>')
-  +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" data-act="seguir" data-k="carga">'+(pide?'Pedir permiso: cargar más':'Cargar más')+'</button><button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">'+(pide?'Pedir permiso: otra vuelta':'Otra vuelta')+'</button></div>'
-  +(S.inv.reparto>0||S.inv.repartoKg>0||true?'<button class="btn sec" style="margin-top:8px" data-act="apoyoofrece">🤝 Puedo apoyar a otro chofer</button>':'')+apoyoMioHTML()
-  +'<button class="btn sec" style="margin-top:8px" data-act="listohoy">Listo por hoy</button></div>';
- return o};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="corteotra"],[data-act="listohoy"]');if(!b)return;e.stopImmediatePropagation();
  if(b.dataset.act==='corteotra'){natCompartir(S.corteUlt,'corte.png',{tel:S.cfg.tel||''});return}
  toast('¡Hasta mañana!');S.pinOk={};try{pinEntrar()}catch(er){}render()},true);
@@ -99,7 +88,7 @@ function apoyoPasa(de,a,ids,quien){ids=ids.map(Number);var A=stopsDe(a).filter(f
 function apoyoMioHTML(){var A=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)&&x.de===+S.chofHoy&&x.est==='ofrece'});return A.length?'<div class="card note"><b>Ofreciste apoyo</b><div class="lbl">Cuando otro chofer acepte, te llegan sus clientes aquí.</div></div>':''}
 function apoyoParaMiHTML(){if(S.role!=='rep')return '';var A=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)&&x.est==='ofrece'&&x.de!==+S.chofHoy});if(!A.length||!pendDe(S.chofHoy).length)return '';
  return A.map(function(x){var sug=apoyoSugiere(x.de,S.chofHoy,x.cajas);return '<div class="card note" data-key="apoyo'+x.id+'"><b>'+esc(chofN(x.de))+' puede apoyarte</b><div class="lbl">Trae '+num(x.cajas)+' cajas. Te sugiero pasarle '+sug.length+' cliente'+(sug.length>1?'s':'')+': '+sug.map(function(c){return esc((cl(c)||{}).n||'')}).join(', ')+'. Solo por hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="apoyosi" data-id="'+x.id+'">Sí, pásaselos</button><button class="btn sec" style="flex:1" data-act="apoyono" data-id="'+x.id+'">No</button></div></div>'}).join('')}
-var _ru40b=ruta;ruta=function(){var h=_ru40b.apply(this,arguments),a=apoyoParaMiHTML();if(!a)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h};
+/* ruta: pasó a tema-ruta.js */
 /* admin: pasar la ruta de un chofer a otro (o solo algunos clientes) */
 function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter(function(i){var c=S.choferes.filter(function(k){return k.id===i})[0];return c&&!c.baja});var L=pendDe(x.de);
  return '<div id="bjov" role="dialog" aria-label="Pasar la ruta"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Pasar la ruta de '+esc(chofN(x.de))+'</b><div class="lbl">Solo por hoy. Mañana regresan a su chofer.</div></span><button class="helpb" style="margin:0" data-act="pasarx" aria-label="Cerrar">×</button></div>'

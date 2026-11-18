@@ -5,10 +5,7 @@ function tarjPct(){var v=num(S.cfg.comPct);return v>0?v:4.06}
 function comCobra(){return !!S.cfg.comCobra}
 function bancoSaldo(){return r2(sum(S.bancoMov||[],function(x){return num(x.m)}))}
 /* ---------- en el cálculo de la entrega: lo que no es efectivo ---------- */
-var _eC41=entregaCalc;entregaCalc=function(){var k=_eC41.apply(this,arguments);if(!k||!k.c)return k;var d=S.d||{},fo=d.forma||'efe',cob=r2(num(k.pago)+num(k.abono)),no=0;
- if(fo==='tarj'||fo==='trans')no=cob;else if(fo==='mixto')no=Math.min(cob,Math.max(0,num(d.mixM)));
- k.forma=fo;k.tarj=fo==='tarj'||(fo==='mixto'&&d.mixT!=='trans')?r2(no):0;k.trans=fo==='trans'||(fo==='mixto'&&d.mixT==='trans')?r2(no):0;k.efectivo=r2(cob-no);
- k.comCli=k.tarj>0&&comCobra()?r2(k.tarj*tarjPct()/(100-tarjPct())):0;return k};
+/* entregaCalc: pasó a tema-ruta.js */
 function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
  var h='<div style="border-top:1px solid var(--line);margin-top:8px;padding-top:8px"><b>¿Cómo pagó?</b><div class="chips" role="group" aria-label="Cómo pagó" style="margin:6px 0"><button data-act="pforma" data-v="efe" aria-pressed="'+(fo==='efe')+'" style="min-height:52px;font-size:17px">💵 Efectivo</button><button data-act="pforma" data-v="tarj" aria-pressed="'+(fo==='tarj')+'" style="min-height:52px;font-size:17px">💳 Tarjeta</button><button data-act="pforma" data-v="otros" aria-pressed="'+(fo==='trans'||fo==='mixto')+'">Otros</button></div>';
  if(fo==='trans'||fo==='mixto'||d.formaOtros)h+='<div class="chips" role="group" aria-label="Otras formas" style="margin:4px 0"><button data-act="pforma" data-v="trans" aria-pressed="'+(fo==='trans')+'">Transferencia</button><button data-act="pforma" data-v="mixto" aria-pressed="'+(fo==='mixto')+'">Mixto (parte y parte)</button></div>';
@@ -16,14 +13,7 @@ function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
  if(k.tarj>0)h+='<div class="card note" style="margin:6px 0;padding:8px 12px">'+(k.comCli?'Cóbrale en la terminal <b>'+money(k.tarj+k.comCli)+'</b> (incluye la comisión de '+money(k.comCli)+').':'Cóbrale en la terminal <b>'+money(k.tarj)+'</b>.')+'<div class="lbl">Ese dinero va al banco; no lo entregas en efectivo.</div></div>';
  if(k.trans>0)h+='<div class="card note" style="margin:6px 0;padding:8px 12px">Transferencia de <b>'+money(k.trans)+'</b>. Revisa que te enseñe el comprobante.<div class="lbl">Va al banco; no lo entregas en efectivo.</div></div>';
  return h+'</div>'}
-var _ent41=entrega;entrega=function(){var h=_ent41.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!c)return h;
- /* forma de pago, debajo del cálculo */
- h=h.replace('<div id="calc" style="margin-top:6px">','<div id="pforma">'+pagoFormaHTML()+'</div><div id="calc" style="margin-top:6px">');
- /* "No estaba" a la vista */
- if(!(c.rapida&&!S.d.reg))h=h.replace(/(<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas\?<\/b>)/,'<button class="btn sec" style="margin:6px 0" data-act="noestaba">🚪 No estaba / no se pudo entregar</button>$1');
- /* buró: el chofer solo lo ve si el cliente tiene crédito */
- if(S.role==='rep'&&!credActivo(c))h=h.replace(/<div class="lbl" style="margin:6px 0;line-height:1\.6">Buró: [\s\S]*?<\/div>/,'');
-}catch(e){console.error(e)}return h};
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 function credActivo(c){return !!c&&!c.nuevo&&c.credOk!==false&&!c.credFrz&&(num(c.cred)>0||c.credOk===true)}
 var _mh41=mayHistHTML;mayHistHTML=function(c){var h=_mh41.apply(this,arguments);if(S.role==='admin'||!c||credActivo(c))return h;return h.replace(/^<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró<\/b>[\s\S]*?<\/div><\/div>/,'')};

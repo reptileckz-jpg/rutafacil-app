@@ -106,8 +106,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  n.gpsFondo().then(function(r){if(r&&r.ok){S.permFondo=true;render();return}var vuelve=function(){if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',vuelve);permFondoRev()}};document.addEventListener('visibilitychange',vuelve)},function(){})},true);
 setTimeout(function(){try{permFondoRev()}catch(e){}},4000);
 /* al chofer: si falta "todo el tiempo", aviso arriba de su ruta */
-var _ru52=ruta;ruta=function(){var h=_ru52.apply(this,arguments);if(S.role!=='rep'||S.permFondo!==false||!natPl52()||S.perm)return h;
- return '<div class="card alert"><b>Falta: ubicación todo el tiempo</b><div class="lbl">Es celular del negocio. Toca el botón y escoge "Permitir todo el tiempo".</div><button class="btn" style="margin-top:8px" data-act="permfondo">Dar el permiso</button></div>'+h};
+/* ruta: pasó a tema-ruta.js */
 /* celular administrado: la ubicación queda fija y no se puede quitar el permiso */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="celrev"],[data-act="celr"]');if(!b)return;var n=natPl52();if(!n||!n.celGpsFijo)return;setTimeout(function(){if(S.celE&&S.celE.owner)n.celGpsFijo().catch(function(){})},1500)},true);
 /* Ajustes: a los cuántos minutos avisar */

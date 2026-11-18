@@ -2,8 +2,8 @@
    Cada chofer tiene su propio tope (lo que pueden deberle todos sus clientes). Si tarda en cobrar, la app
    te SUGIERE bajarlo; si cobra bien y usa casi todo su tope, te sugiere subirlo poco a poco. Tú decides. */
 function chTope(ch){return ch&&ch.crMax!=null&&ch.crMax!==''?num(ch.crMax):num(crCfg().crCh)}
-var _ev20=entValida;entValida=function(){var k=entregaCalc();var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ev20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
-var _ent20=entrega;entrega=function(){var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ent20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
+/* entValida: pasó a tema-ruta.js */
+/* entrega: pasó a tema-ruta.js */
 /* cómo cobra: cuánto de lo que le deben está atrasado */
 function chBuro(ch){var L=S.cli.filter(function(c){return !c.oculto&&+c.chofer===+ch.id&&c.cred>0.5}),tot=sum(L,function(c){return c.cred}),cf=crCfg();
  var atr=sum(L.filter(function(c){return credAge(c)>num(cf.bD2)}),function(c){return c.cred}),viejo=L.reduce(function(m,c){return Math.max(m,credAge(c))},0),tope=chTope(ch);

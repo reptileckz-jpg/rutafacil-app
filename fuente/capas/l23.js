@@ -23,7 +23,7 @@ limBase=function(c){var d=limDefDe(c);if(c.limMan!=null&&c.limMan!==''&&num(c.li
 var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
  return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
 /* congelar: no se le fía, pero puede pagar */
-var _cb23=credBloq;credBloq=function(c){if(c&&c.credFrz&&!((S.permOk||{})[c.id]===iso(TODAY)))return 'tiene el crédito congelado';return _cb23.apply(this,arguments)};
+/* credBloq: pasó a tema-ruta.js */
 /* ---- la pantalla para manejar su crédito ---- */
 function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=cl(id);if(!c){S.crCli=null;return ''}var b=buroDe(c),cf=crCfg(),lim=limEf(c),pagos=S.cobros.filter(function(x){return x.c===c.id}).slice(-5).reverse(),edad=c.cred>0?credAge(c):0;
  var est=!c.credOk?'<span class="pill warn">Solo contado (crédito cancelado)</span>':(c.credFrz?'<span class="pill wait">Crédito congelado</span>':buroPill(c));

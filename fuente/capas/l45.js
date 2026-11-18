@@ -46,9 +46,7 @@ function pedCargaHTML(){var P=pedPend();if(!P.length)return '';var n=pedNecesita
  return '<div class="card alert" data-key="pedasig"><b style="font-size:19px">'+(P.length>1?'Se te asignaron '+P.length+' entregas nuevas':'Se te asignó una nueva entrega')+'</b>'+lista
   +(falta?'<div style="font-size:17px;margin-top:8px"><b>Regresa a la bodega a cargar '+(fR?fR+' cajas de roatán':'')+(fR&&fM?' y ':'')+(fM?fM+' kg de macho':'')+'</b></div><div class="lbl">Traes '+n.trR+' cajas y '+n.trM+' kg. Te sugiero llevar además '+x.R+' cajas y '+x.M+' kg por si sale otro pedido (las puedes quitar).</div>'
    +'<button class="btn" style="margin-top:8px" data-act="pedcarga" data-r="'+(fR+x.R)+'" data-m="'+(fM+x.M)+'">Ir a cargar</button>':'<div class="lbl" style="margin-top:6px">Lo que traes alcanza.</div><button class="btn" style="margin-top:8px" data-act="pedir">Ir a entregar</button>')+'</div>'}
-var _ru45=ruta;ruta=function(){var h=_ru45.apply(this,arguments);if(S.role!=='rep')return h;var p=pedCargaHTML();
- if(S.cierre&&S.cierre.sent){if(!p)return h;var i=h.indexOf('<div class="card good cienv">');return i>-1?h.slice(0,i)+p+h.slice(i):p+h}
- if(p&&S.salida&&S.salida.ok){var n=pedNecesita();if(n.R>n.trR||n.M>n.trM){var j=h.indexOf('<h1>Ruta de hoy</h1>');return j>-1?h.slice(0,j)+p+h.slice(j):p+h}}return h};
+/* ruta: pasó a tema-ruta.js */
 function reabreSinPermiso(k,R,M){_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}
  setTimeout(function(){S.reab=null;S.cierreP=0;if(k==='carga')S.cx={R:String(R||''),M:String(M||''),foto:null,k:'carga',ped:true};render()},30)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pedcarga"],[data-act="pedir"]');if(!b)return;e.stopImmediatePropagation();var sent=S.cierre&&S.cierre.sent;

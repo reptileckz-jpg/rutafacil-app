@@ -56,7 +56,7 @@ function aprendeItems(){var L=logsTodos();if(S.role==='rep')return [
 function aprendeHTML(){if(S.aprendeOff||!REAL||(S.role!=='rep'&&(S.role!=='admin'||S.encOn)))return '';var L=aprendeItems(),n=L.filter(function(x){return x[2]}).length;if(n===L.length)return '';
  return '<details class="card aprende" data-k="aprende"'+(S.dOpen.aprende?' open':'')+'><summary><b>Aprende la app</b><span class="lbl">'+n+' de '+L.length+'</span></summary>'+L.map(function(x){return '<button class="it'+(x[2]?' ok':'')+'" data-act="aprendeir" data-t="'+x[1]+'"><span class="ck">'+(x[2]?'✓':'')+'</span><span class="t grow">'+x[0]+'</span><span class="lbl">›</span></button>'}).join('')+'<button class="link" style="margin-top:4px" data-act="aprendeoff">Ya no mostrar</button></details>'}
 var _ini43=inicio;inicio=function(){var h=_ini43.apply(this,arguments),a=aprendeHTML();return a?h+a:h};
-var _ru43=ruta;ruta=function(){var h=_ru43.apply(this,arguments);if(S.role!=='rep'||(S.cierre&&S.cierre.sent))return h;var a=aprendeHTML();return a?h+a:h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="aprendeir"],[data-act="aprendeoff"],[data-act="resdia"],[data-act="ressem"],[data-act="simabre"]');if(!b)return;var a=b.dataset.act;
  if(a==='resdia'||a==='ressem'){S.resYa=true;return}if(a==='simabre'){S.simYa=true;return}
  e.stopImmediatePropagation();if(a==='aprendeoff'){S.aprendeOff=true;render();return}S.tab[S.role]=b.dataset.t;render();window.scrollTo(0,0)},true);

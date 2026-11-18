@@ -98,7 +98,7 @@ function rgPend(){return (S.stops||[]).filter(function(s){if(s.done)return false
 function rgCardHTML(){if(S.role!=='rep'||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return '';var P=rgPend();if(P.length<2)return '';var rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
  return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(rg?' Último orden: '+hmDe(rg.t)+'.':'')+'</div>'
   +'<button class="btn sec" style="margin-top:8px" data-act="rgordena">'+(rg?'Volver a calcular':'Ordenar con tráfico')+'</button></div>'}
-var _ru62=ruta;ruta=function(){var h=_ru62.apply(this,arguments);try{var c=rgCardHTML();if(!c)return h;var i=h.lastIndexOf('</div>');return h+c}catch(e){return h}};
+/* ruta: pasó a tema-ruta.js */
 function rgCuerpo(o,P){var ll=function(p){return {location:{latLng:{latitude:+p.lat,longitude:+p.lng}}}};
  return {origin:ll(o),destination:ll(BOD),intermediates:P.map(function(s){var c=cl(s.c);return ll(c)}),travelMode:'DRIVE',routingPreference:'TRAFFIC_AWARE',optimizeWaypointOrder:true,languageCode:'es-MX',units:'METRIC'}}
 function rgSeg(d){var m=/^(\d+(?:\.\d+)?)s$/.exec(String(d||''));return m?+m[1]/60:null}

@@ -24,18 +24,12 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){var c=cl(id);if(!c)return;c.limMan=v>0&&v!==num(crCfg().crCli)?v:null;c.limRev=false;buroSync();render()},0)},true);
 var _ceedit19=null;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ceedit"]');if(!b)return;setTimeout(function(){var c=cl(+b.dataset.id);if(S.ce&&c)S.ce.lim=String(limBase(c));render()},0)},true);
 /* bloqueos */
-var _cb19=credBloq;credBloq=function(c){var r=_cb19.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!S.d.reg))return r;var b=buroDe(c);if((S.permOk||{})[c.id]===iso(TODAY))return '';
- if(b.n===3)return 'está bloqueado en el buró: debe desde hace '+credAge(c)+' días';if(limEf(c)<=0)return 'no tiene crédito';return ''};
+/* credBloq: pasó a tema-ruta.js */
 function chDeuda(ch,excepto){return r2(sum(S.cli.filter(function(c){return !c.oculto&&+c.chofer===+ch&&c.id!==excepto}),function(c){return num(c.cred)}))}
-var _ev19=entValida;entValida=function(){var r=_ev19.apply(this,arguments);if(r)return r;var k=entregaCalc();if(!k.c||!(k.quedaEntrega>0.005))return null;var c=k.c;
- if(k.deuda>limEf(c)+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Su límite es '+money(limEf(c))+' ('+BURO[buroDe(c).n][1]+'): cóbrale más de contado'];
- var tot=chDeuda(S.chofHoy,c.id)+k.deuda,mx=num(crCfg().crCh);if(tot>mx+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Tus clientes ya te deben '+money(chDeuda(S.chofHoy,c.id)+c.cred)+'. Tu tope es '+money(mx)+': cobra antes de fiar'];
- return null};
+/* entValida: pasó a tema-ruta.js */
 function buroPill(c){var b=buroDe(c),x=BURO[b.n];return '<span class="pill" style="background:'+['rgba(47,125,50,.14)','rgba(242,194,48,.25)','rgba(230,126,34,.2)','rgba(192,57,43,.18)'][b.n]+';color:inherit">'+x[0]+' '+x[1]+'</span>'}
 /* en la entrega: su calificación, su límite y cuánto le queda al chofer */
-var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;/* 115 · el buró se ve al fiar (una parte o a crédito) */if(S.d&&S.d.mode==='todo')return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
- var x='<div class="lbl" style="margin:6px 0;line-height:1.6">Buró: '+buroPill(c)+' · límite '+money(lim)+(c.cred>0?' · debe '+money(c.cred):'')+'<br>Tus clientes te deben <b>'+money(dch)+'</b> de '+money(mx)+(dch>=mx?' · <b class="neg">ya no puedes fiar</b>':'')+'</div>';
- return h.replace('<div id="calc"',x+'<div id="calc"')};
+/* entrega: pasó a tema-ruta.js */
 /* en la ficha del cliente (admin) */
 var _mh19=mayHistHTML;mayHistHTML=function(c){var h=_mh19.apply(this,arguments);if(!c||c.oculto)return h;var b=buroDe(c),cf=crCfg();
  return '<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b> '+buroPill(c)+'<div class="lbl" style="margin-top:4px">Límite '+money(limEf(c))+(c.limMan!=null?' · excepción tuya: '+money(limBase(c)):'')+(b.porque&&b.n?' · '+esc(b.porque):'')+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es) más':'')+(b.n===3?' · sin crédito hasta que pague todo':'')+'</div>'+(S.role==='admin'&&b.n?'<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>':'')+'</div>'+h};

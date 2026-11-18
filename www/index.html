@@ -4648,10 +4648,7 @@ function mayVencer(){var ch=false;mayPideL().forEach(function(p){if(p.est==='pen
 setInterval(function(){try{if(mayVencer())render()}catch(e){}},15000);
 /* el cliente con "nunca mayoreo" no lo lleva ni automático */
 var _mayAuto13=mayAutoOk;mayAutoOk=function(c,d){if(c&&c.mayNo){if(d)d.mayQ='norm';return false}return _mayAuto13.apply(this,arguments)};
-var _entV13=entValida;entValida=function(){var k=entregaCalc(),d=S.d;if(k.c&&d){var c=k.c;
-  if(d.may&&c.mayNo)return ['CH:[data-act="may"][data-v="0"]','A '+c.n+' no se le da mayoreo (lo decidió el administrador)'];
-  if(mayNecesitaPerm(c,d)){mayVencer();var p=mayPideDe(c.id);if(!p||p.est!=='ok'){S.dOpen.entmas=true;return ['CH:[data-act="maypide"]',p&&p.est==='pend'?'Espera el permiso del administrador o cambia a precio normal':'Pide permiso para el mayoreo o cambia a precio normal']}}}
- return _entV13.apply(this,arguments)};
+/* entValida: pasó a tema-ruta.js */
 /* tarjeta de precio del chofer: botón para pedir permiso y su estado */
 function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
  if(c.mayNo)return '<div class="lbl" style="margin-top:6px">A este cliente no se le da mayoreo.</div>';
@@ -4662,8 +4659,7 @@ function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
  else x='<div class="neg" style="font-weight:700">'+(p.est==='no'?'El administrador dijo que no.':'No contestó a tiempo.')+' Véndele a precio normal.</div>';
  return '<div class="card note" data-key="maynota" style="margin:8px 0 0;padding:10px 12px">'+x+'</div>'}
 var _prC13=precioCard;precioCard=function(){var h=_prC13.apply(this,arguments),x=mayNotaHTML();return x?h.replace(/<\/div>$/,x+'</div>'):h};
-var _ent13=entrega;entrega=function(){var h=_ent13.apply(this,arguments),x=mayNotaHTML();if(!x)return h;
- if(/Mínimo permitido:[^<]*<\/div>/.test(h))return h.replace(/(Mínimo permitido:[^<]*<\/div>)/,'$1'+x);return h.replace(/(Mayoreo a mano<\/button><\/div>)/,'$1'+x)};
+/* entrega: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='may'&&D.v==='1'&&S.role==='rep'){var c=curCli();S.dOpen.entmas=true;if(c&&c.mayNo){e.stopImmediatePropagation();toast('A '+c.n+' no se le da mayoreo (lo decidió el administrador)');return}}
  if(a==='maypide'){e.stopImmediatePropagation();var c2=curCli(),d=S.d;if(!c2)return;
@@ -5088,8 +5084,7 @@ var _meta18=metaCard;metaCard=function(){var h=_meta18.apply(this,arguments);if(
 function comEstimado(c){var p=comPct(chofHoyObj());/* 120 · lo que de verdad compra este cliente (sus entregas guardadas); sin historia no se inventa (antes 4 cajas y 30 kg) */var L=[];(S.rutasHist||[]).forEach(function(e){(e.log||[]).forEach(function(l){if(l&&+l.c===+c.id&&!l.anul)L.push(l)})});(S.log||[]).forEach(function(l){if(l&&+l.c===+c.id&&!l.anul)L.push(l)});L=L.slice(-8);var prom=L.length?sum(L,function(l){return num(l.total)})/L.length:0;return r2(prom*p)}
 var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x=(comEstimado(c)>0.5?'<span class="comtip" data-x="tedeja">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>':'')+(c.cred>0.5?' <span class="comtip deu" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
  return h.replace('<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">',x+'<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">')};
-var _ent18=entrega;entrega=function(){var h=_ent18.apply(this,arguments);if(!comOn())return h;var c=curCli();if(!c||!(c.cred>0))return h;var p=comPct(chofHoyObj());
- return h.replace(/(<input id="abono"[^>]*><\/div>)/,'$1<div class="lbl" style="color:var(--accent);font-weight:700">Si te paga toda su deuda ('+money(c.cred)+'), ganas '+money(r2(c.cred*p))+'</div>')};
+/* entrega: pasó a tema-ruta.js */
 /* +$ que sube cuando gana */
 var _comPrev=null;
 var _rCom18=render;render=function(){var r=_rCom18.apply(this,arguments);try{var el=document.querySelector('.compill[data-v]');if(el){var v=num(el.getAttribute('data-v'));if(_comPrev!==null&&v>_comPrev+0.005){var d=r2(v-_comPrev),rc=el.getBoundingClientRect(),f=document.createElement('div');f.className='comfloat';f.textContent='+'+money(d);f.style.left=Math.round(rc.left+rc.width*0.35)+'px';f.style.top=Math.round(Math.max(60,rc.top))+'px';document.body.appendChild(f);setTimeout(function(){f.remove()},1500)}_comPrev=v}}catch(e){}return r};
@@ -5126,18 +5121,12 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  setTimeout(function(){var c=cl(id);if(!c)return;c.limMan=v>0&&v!==num(crCfg().crCli)?v:null;c.limRev=false;buroSync();render()},0)},true);
 var _ceedit19=null;document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ceedit"]');if(!b)return;setTimeout(function(){var c=cl(+b.dataset.id);if(S.ce&&c)S.ce.lim=String(limBase(c));render()},0)},true);
 /* bloqueos */
-var _cb19=credBloq;credBloq=function(c){var r=_cb19.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!S.d.reg))return r;var b=buroDe(c);if((S.permOk||{})[c.id]===iso(TODAY))return '';
- if(b.n===3)return 'está bloqueado en el buró: debe desde hace '+credAge(c)+' días';if(limEf(c)<=0)return 'no tiene crédito';return ''};
+/* credBloq: pasó a tema-ruta.js */
 function chDeuda(ch,excepto){return r2(sum(S.cli.filter(function(c){return !c.oculto&&+c.chofer===+ch&&c.id!==excepto}),function(c){return num(c.cred)}))}
-var _ev19=entValida;entValida=function(){var r=_ev19.apply(this,arguments);if(r)return r;var k=entregaCalc();if(!k.c||!(k.quedaEntrega>0.005))return null;var c=k.c;
- if(k.deuda>limEf(c)+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Su límite es '+money(limEf(c))+' ('+BURO[buroDe(c).n][1]+'): cóbrale más de contado'];
- var tot=chDeuda(S.chofHoy,c.id)+k.deuda,mx=num(crCfg().crCh);if(tot>mx+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Tus clientes ya te deben '+money(chDeuda(S.chofHoy,c.id)+c.cred)+'. Tu tope es '+money(mx)+': cobra antes de fiar'];
- return null};
+/* entValida: pasó a tema-ruta.js */
 function buroPill(c){var b=buroDe(c),x=BURO[b.n];return '<span class="pill" style="background:'+['rgba(47,125,50,.14)','rgba(242,194,48,.25)','rgba(230,126,34,.2)','rgba(192,57,43,.18)'][b.n]+';color:inherit">'+x[0]+' '+x[1]+'</span>'}
 /* en la entrega: su calificación, su límite y cuánto le queda al chofer */
-var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;/* 115 · el buró se ve al fiar (una parte o a crédito) */if(S.d&&S.d.mode==='todo')return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
- var x='<div class="lbl" style="margin:6px 0;line-height:1.6">Buró: '+buroPill(c)+' · límite '+money(lim)+(c.cred>0?' · debe '+money(c.cred):'')+'<br>Tus clientes te deben <b>'+money(dch)+'</b> de '+money(mx)+(dch>=mx?' · <b class="neg">ya no puedes fiar</b>':'')+'</div>';
- return h.replace('<div id="calc"',x+'<div id="calc"')};
+/* entrega: pasó a tema-ruta.js */
 /* en la ficha del cliente (admin) */
 var _mh19=mayHistHTML;mayHistHTML=function(c){var h=_mh19.apply(this,arguments);if(!c||c.oculto)return h;var b=buroDe(c),cf=crCfg();
  return '<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b> '+buroPill(c)+'<div class="lbl" style="margin-top:4px">Límite '+money(limEf(c))+(c.limMan!=null?' · excepción tuya: '+money(limBase(c)):'')+(b.porque&&b.n?' · '+esc(b.porque):'')+(b.n&&b.n<3?' · sube al liquidar a tiempo '+(3-b.ok)+' vez(es) más':'')+(b.n===3?' · sin crédito hasta que pague todo':'')+'</div>'+(S.role==='admin'&&b.n?'<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>':'')+'</div>'+h};
@@ -5174,8 +5163,8 @@ var _aj19=ajHTML;ajHTML=function(){var h=_aj19.apply(this,arguments);if(!h||h.in
    Cada chofer tiene su propio tope (lo que pueden deberle todos sus clientes). Si tarda en cobrar, la app
    te SUGIERE bajarlo; si cobra bien y usa casi todo su tope, te sugiere subirlo poco a poco. Tú decides. */
 function chTope(ch){return ch&&ch.crMax!=null&&ch.crMax!==''?num(ch.crMax):num(crCfg().crCh)}
-var _ev20=entValida;entValida=function(){var k=entregaCalc();var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ev20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
-var _ent20=entrega;entrega=function(){var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ent20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
+/* entValida: pasó a tema-ruta.js */
+/* entrega: pasó a tema-ruta.js */
 /* cómo cobra: cuánto de lo que le deben está atrasado */
 function chBuro(ch){var L=S.cli.filter(function(c){return !c.oculto&&+c.chofer===+ch.id&&c.cred>0.5}),tot=sum(L,function(c){return c.cred}),cf=crCfg();
  var atr=sum(L.filter(function(c){return credAge(c)>num(cf.bD2)}),function(c){return c.cred}),viejo=L.reduce(function(m,c){return Math.max(m,credAge(c))},0),tope=chTope(ch);
@@ -5488,7 +5477,7 @@ limBase=function(c){var d=limDefDe(c);if(c.limMan!=null&&c.limMan!==''&&num(c.li
 var _mh23=mayHistHTML;mayHistHTML=function(c){var h=_mh23.apply(this,arguments);if(!c||S.role!=='admin')return h;
  return h.replace('<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró</b>','<div class="card note buroc" role="button" tabindex="0" data-act="cropen" data-id="'+c.id+'" style="padding:10px 12px;margin:6px 0"><span class="ir">›</span><b>Buró y crédito</b>').replace('<button class="link" data-act="buroreset" data-id="'+c.id+'">Perdonar y regresar a Bueno</button>','')};
 /* congelar: no se le fía, pero puede pagar */
-var _cb23=credBloq;credBloq=function(c){if(c&&c.credFrz&&!((S.permOk||{})[c.id]===iso(TODAY)))return 'tiene el crédito congelado';return _cb23.apply(this,arguments)};
+/* credBloq: pasó a tema-ruta.js */
 /* ---- la pantalla para manejar su crédito ---- */
 function crHTML(){var id=S.crCli;if(id==null||S.role!=='admin')return '';var c=cl(id);if(!c){S.crCli=null;return ''}var b=buroDe(c),cf=crCfg(),lim=limEf(c),pagos=S.cobros.filter(function(x){return x.c===c.id}).slice(-5).reverse(),edad=c.cred>0?credAge(c):0;
  var est=!c.credOk?'<span class="pill warn">Solo contado (crédito cancelado)</span>':(c.credFrz?'<span class="pill wait">Crédito congelado</span>':buroPill(c));
@@ -5683,16 +5672,11 @@ var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('foto
 /* ---- reparto: la ubicación del cliente es obligatoria; luego se completan sus datos ---- */
 function ubCliAplica(c){return !!c&&!(c.rapida&&!(S.d&&S.d.reg))&&!UB_LEGADO()}
 function ubCliFalta(c){var f=[];if(!c.foto)f.push('foto de la fachada');if(!String(c.tel||'').trim()&&!(c.rapida&&S.d&&String(S.d.rtel||'').trim()))f.push('teléfono');return f}
-var _ev26=entValida;entValida=function(){var r=_ev26.apply(this,arguments);if(r)return r;var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c)||ubTiene(c)||c.ubSkip===iso(TODAY))return null;
- return ['CH:[data-act="ubcli"]','Primero guarda la ubicación de '+(c.rapida?'este cliente':c.n)+' (botón 📍)']};
-var _ent26=entrega;entrega=function(){var h=_ent26.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c))return h;var nm=c.rapida?'este cliente':esc(c.n),card='';
- if(!ubTiene(c)&&c.ubSkip!==iso(TODAY))card='<div class="card alert ubcard"><b>📍 Guarda la ubicación de '+nm+'</b><div class="lbl">Es obligatorio la primera vez: así se van planeando las rutas. Hazlo ya estando en su negocio.</div><button class="btn" data-act="ubcli" data-id="'+c.id+'">📍 Guardar ubicación aquí</button></div>';
- else if(!c.rapida){var f=ubCliFalta(c),noche=c.foto&&ubNoche(c.fotoH)&&ubHayLuz();if(noche)card='<div class="card note ubcard"><b>Ya hay luz: actualiza la foto de la fachada</b><div class="lbl">La que hay se tomó de noche.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="foto">📷 Tomar otra foto</button></div>';
-  else if(f.length)card='<div class="card note ubcard"><b>Completa los datos de '+nm+'</b><div class="lbl">Falta: '+esc(f.join(' y '))+'.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="datos">Completar ahora</button></div>'}
- if(!card)return h;var an='<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas?</b>';return h.indexOf(an)>-1?h.replace(an,card+an):card+h}catch(er){return h}};
+/* entValida: pasó a tema-ruta.js */
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* el botón de GPS del cliente nuevo dice si ya se guardó de verdad */
-var _ent26b=entrega;entrega=function(){var h=_ent26b.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(c&&c.rapida)h=h.replace(/<button class="btn sm sec" data-act="gps"([^>]*)>(Ubicación guardada|Guardar ubicación GPS aquí)<\/button>/,'<button class="btn sm sec" data-act="gps"$1>'+(ubTiene(c)?'✓ Ubicación guardada':'📍 Guardar ubicación GPS aquí (obligatorio)')+'</button>')}catch(er){}return h};
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* aviso al admin: cliente nuevo dado de alta por el chofer */
 var _r26=render;render=function(){try{(S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&!c.oculto&&!c.avAlta){c.avAlta=true;S.avPrecio.push(chofN(c.porCh)+' dio de alta un cliente nuevo: '+c.n+(ubTiene(c)?' (con ubicación)':' (sin ubicación)')+(c.tel?' · tel. '+c.tel:'')+'. Revísalo en Clientes.')}})}catch(e){}return _r26.apply(this,arguments)};
@@ -6149,12 +6133,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(r&&r.est==='pend'){toast('Ya le pediste permiso al administrador. Espera su respuesta');return}
  S.reab={k:b.dataset.k||'carga',est:'pend',t:Date.now(),h:hhmm()};S.avPrecio.push('URGENTE: '+chofN(S.chofHoy)+' pide reabrir su ruta para '+(S.reab.k==='carga'?'cargar más':'dar otra vuelta')+'. Autorízalo en Inicio.');render()},true);
 /* lo que ve el chofer mientras espera */
-var _ru32=ruta;ruta=function(){var h=_ru32.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return h;var r=S.reab,top='';
- top='<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+'Entrega '+money((S.cierre.res||{}).efectivo||0)+' en efectivo al administrador.</div></div>';
- if(r&&r.est==='pend')top+='<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'. Cuando te autorice, aquí te sale para seguir.</div></div>';
- else if(r&&r.est==='no')top+='<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>';
- h=h.replace(/(<div class="hello">[\s\S]*?<\/div>)/,'$1'+top);
- return h.replace(/<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Cargar más<\/button>/,'<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Pedir permiso: cargar más</button>').replace(/<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Otra vuelta<\/button>/,'<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Pedir permiso: otra vuelta</button>').replace('Como aún no entregas el efectivo, se reabre tu cierre.','Para seguir, el administrador tiene que autorizarlo.').replace('Como ya entregaste el efectivo, se abre un segundo cierre.','Para seguir, el administrador tiene que autorizarlo.')};
+/* ruta: pasó a tema-ruta.js */
 /* cuando el admin autoriza, en el celular del chofer se reabre y se abre la pantalla de carga */
 var _r32=render;render=function(){try{if(S.role==='rep'&&S.reab&&S.reab.est==='ok'&&S.cierre&&S.cierre.sent&&!_seguirOk){var k=S.reab.k;S.reab=null;_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta con tu permiso')}}catch(e){console.error(e)}return _r32.apply(this,arguments)};
 /* en Inicio del admin: autorizar */
@@ -6214,8 +6193,7 @@ function salConfHTML(){if(S.role!=='rep'||S.salida.ok)return '';var s=S.salida,c
  return '<div class="card note" data-key="salconf" style="padding:10px 12px"><b>Confirma lo que marca el tablero</b>'
   +'<div style="margin-top:8px">'+(s.odoOk?'<span style="color:var(--accent);font-weight:700">✓ Odómetro: '+num(c.odoIni).toLocaleString('es-MX')+' km</span>':'<div class="lbl">Odómetro: viene puesto el último que se registró ('+num(c.odoIni).toLocaleString('es-MX')+' km). Si el tablero marca otro, corrígelo arriba.</div><button class="btn sm" style="margin-top:6px" data-act="salodook">Sí, marca '+num(c.odoIni).toLocaleString('es-MX')+' km</button>')+'</div>'
   +'<div style="margin-top:10px">'+(s.tankOk?'<span style="color:var(--accent);font-weight:700">✓ Tanque: '+esc(c.tankIni||'')+'</span>':'<div class="lbl">Tanque: mueve la aguja a lo que marca el tablero.</div><button class="btn sm" style="margin-top:6px" data-act="saltankok">Sí, el tanque está en '+esc(c.tankIni||'')+'</button>')+'</div></div>'}
-var _ru33=ruta;ruta=function(){var h=_ru33.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return h;var x=salConfHTML(),i=h.indexOf('<div class="lbl" style="margin:10px 0 6px">Nivel del tanque al salir');
- if(i<0){i=h.indexOf('Fotos del vehículo (');if(i>-1)i=h.lastIndexOf('<div',i)}return i>-1?h.slice(0,i)+x+h.slice(i):h.replace('data-act="iniciar"','data-act="iniciar"')+x};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='salodook'){e.stopImmediatePropagation();S.salida.odoOk=true;render();return}
  if(a==='saltankok'){e.stopImmediatePropagation();S.salida.tankOk=true;render();return}},true);
@@ -6697,18 +6675,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- pantalla después del cierre ---------- */
 function saludoHora(){var h=new Date().getHours();return h<12?'Buenos días':(h<19?'Buenas tardes':'Buenas noches')}
 function chPideSeguir(id){var c=(S.choferes||[]).filter(function(x){return x.id===+id})[0];return !!(c&&c.segPerm)}
-var _ru40=ruta;ruta=function(){var h=_ru40.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent||S.cx)return h;var c=S.cierre,d=c.corte||{},r=S.reab,nm=chofN(S.chofHoy).split(' ')[0];
- var recibido=!!S.cierreReg,enc=encList().filter(function(x){return x.ch===+S.chofHoy&&x.est==='pend'}),pide=chPideSeguir(S.chofHoy);
- var o='<div class="poscierre"><div class="saludo">'+saludoHora()+', '+esc(nm)+'</div>'
-  +'<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+(recibido?'El administrador ya recibió tu efectivo.':'Entrega '+money(d.ent!=null?d.ent:(c.res||{}).efectivo||0)+(d.dest==='tómbola'?' en la tómbola':' al administrador')+'.')+'</div>'
-  +(S.corteUlt?'<button class="btn sm sec" style="margin-top:8px" data-act="corteotra">📲 Mandar otra vez la foto del corte</button>':'')+'</div>'
-  +(r&&r.est==='pend'?'<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'.</div></div>':'')
-  +(r&&r.est==='no'?'<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>':'')
-  +(enc.length?'<div class="card note"><b>Ya no tienes pedidos por entregar, pero te queda:</b></div>'+encRutaHTML(false):'<div class="card"><div class="nada">Nada más por hoy ✓</div><div class="lbl">Gracias por tu trabajo.</div></div>')
-  +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" data-act="seguir" data-k="carga">'+(pide?'Pedir permiso: cargar más':'Cargar más')+'</button><button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">'+(pide?'Pedir permiso: otra vuelta':'Otra vuelta')+'</button></div>'
-  +(S.inv.reparto>0||S.inv.repartoKg>0||true?'<button class="btn sec" style="margin-top:8px" data-act="apoyoofrece">🤝 Puedo apoyar a otro chofer</button>':'')+apoyoMioHTML()
-  +'<button class="btn sec" style="margin-top:8px" data-act="listohoy">Listo por hoy</button></div>';
- return o};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="corteotra"],[data-act="listohoy"]');if(!b)return;e.stopImmediatePropagation();
  if(b.dataset.act==='corteotra'){natCompartir(S.corteUlt,'corte.png',{tel:S.cfg.tel||''});return}
  toast('¡Hasta mañana!');S.pinOk={};try{pinEntrar()}catch(er){}render()},true);
@@ -6733,7 +6700,7 @@ function apoyoPasa(de,a,ids,quien){ids=ids.map(Number);var A=stopsDe(a).filter(f
 function apoyoMioHTML(){var A=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)&&x.de===+S.chofHoy&&x.est==='ofrece'});return A.length?'<div class="card note"><b>Ofreciste apoyo</b><div class="lbl">Cuando otro chofer acepte, te llegan sus clientes aquí.</div></div>':''}
 function apoyoParaMiHTML(){if(S.role!=='rep')return '';var A=(S.apoyos||[]).filter(function(x){return x.f===iso(TODAY)&&x.est==='ofrece'&&x.de!==+S.chofHoy});if(!A.length||!pendDe(S.chofHoy).length)return '';
  return A.map(function(x){var sug=apoyoSugiere(x.de,S.chofHoy,x.cajas);return '<div class="card note" data-key="apoyo'+x.id+'"><b>'+esc(chofN(x.de))+' puede apoyarte</b><div class="lbl">Trae '+num(x.cajas)+' cajas. Te sugiero pasarle '+sug.length+' cliente'+(sug.length>1?'s':'')+': '+sug.map(function(c){return esc((cl(c)||{}).n||'')}).join(', ')+'. Solo por hoy.</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="apoyosi" data-id="'+x.id+'">Sí, pásaselos</button><button class="btn sec" style="flex:1" data-act="apoyono" data-id="'+x.id+'">No</button></div></div>'}).join('')}
-var _ru40b=ruta;ruta=function(){var h=_ru40b.apply(this,arguments),a=apoyoParaMiHTML();if(!a)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h};
+/* ruta: pasó a tema-ruta.js */
 /* admin: pasar la ruta de un chofer a otro (o solo algunos clientes) */
 function pasaRutaHTML(){var x=S.pasaR;if(!x)return '';var ids=nbRutaIds().filter(function(i){var c=S.choferes.filter(function(k){return k.id===i})[0];return c&&!c.baja});var L=pendDe(x.de);
  return '<div id="bjov" role="dialog" aria-label="Pasar la ruta"><div class="w"><div style="display:flex;align-items:center;gap:10px"><span class="grow"><b style="font-size:20px">Pasar la ruta de '+esc(chofN(x.de))+'</b><div class="lbl">Solo por hoy. Mañana regresan a su chofer.</div></span><button class="helpb" style="margin:0" data-act="pasarx" aria-label="Cerrar">×</button></div>'
@@ -6763,10 +6730,7 @@ function tarjPct(){var v=num(S.cfg.comPct);return v>0?v:4.06}
 function comCobra(){return !!S.cfg.comCobra}
 function bancoSaldo(){return r2(sum(S.bancoMov||[],function(x){return num(x.m)}))}
 /* ---------- en el cálculo de la entrega: lo que no es efectivo ---------- */
-var _eC41=entregaCalc;entregaCalc=function(){var k=_eC41.apply(this,arguments);if(!k||!k.c)return k;var d=S.d||{},fo=d.forma||'efe',cob=r2(num(k.pago)+num(k.abono)),no=0;
- if(fo==='tarj'||fo==='trans')no=cob;else if(fo==='mixto')no=Math.min(cob,Math.max(0,num(d.mixM)));
- k.forma=fo;k.tarj=fo==='tarj'||(fo==='mixto'&&d.mixT!=='trans')?r2(no):0;k.trans=fo==='trans'||(fo==='mixto'&&d.mixT==='trans')?r2(no):0;k.efectivo=r2(cob-no);
- k.comCli=k.tarj>0&&comCobra()?r2(k.tarj*tarjPct()/(100-tarjPct())):0;return k};
+/* entregaCalc: pasó a tema-ruta.js */
 function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
  var h='<div style="border-top:1px solid var(--line);margin-top:8px;padding-top:8px"><b>¿Cómo pagó?</b><div class="chips" role="group" aria-label="Cómo pagó" style="margin:6px 0"><button data-act="pforma" data-v="efe" aria-pressed="'+(fo==='efe')+'" style="min-height:52px;font-size:17px">💵 Efectivo</button><button data-act="pforma" data-v="tarj" aria-pressed="'+(fo==='tarj')+'" style="min-height:52px;font-size:17px">💳 Tarjeta</button><button data-act="pforma" data-v="otros" aria-pressed="'+(fo==='trans'||fo==='mixto')+'">Otros</button></div>';
  if(fo==='trans'||fo==='mixto'||d.formaOtros)h+='<div class="chips" role="group" aria-label="Otras formas" style="margin:4px 0"><button data-act="pforma" data-v="trans" aria-pressed="'+(fo==='trans')+'">Transferencia</button><button data-act="pforma" data-v="mixto" aria-pressed="'+(fo==='mixto')+'">Mixto (parte y parte)</button></div>';
@@ -6774,14 +6738,7 @@ function pagoFormaHTML(){var d=S.d||{},fo=d.forma||'efe',k=entregaCalc();
  if(k.tarj>0)h+='<div class="card note" style="margin:6px 0;padding:8px 12px">'+(k.comCli?'Cóbrale en la terminal <b>'+money(k.tarj+k.comCli)+'</b> (incluye la comisión de '+money(k.comCli)+').':'Cóbrale en la terminal <b>'+money(k.tarj)+'</b>.')+'<div class="lbl">Ese dinero va al banco; no lo entregas en efectivo.</div></div>';
  if(k.trans>0)h+='<div class="card note" style="margin:6px 0;padding:8px 12px">Transferencia de <b>'+money(k.trans)+'</b>. Revisa que te enseñe el comprobante.<div class="lbl">Va al banco; no lo entregas en efectivo.</div></div>';
  return h+'</div>'}
-var _ent41=entrega;entrega=function(){var h=_ent41.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!c)return h;
- /* forma de pago, debajo del cálculo */
- h=h.replace('<div id="calc" style="margin-top:6px">','<div id="pforma">'+pagoFormaHTML()+'</div><div id="calc" style="margin-top:6px">');
- /* "No estaba" a la vista */
- if(!(c.rapida&&!S.d.reg))h=h.replace(/(<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas\?<\/b>)/,'<button class="btn sec" style="margin:6px 0" data-act="noestaba">🚪 No estaba / no se pudo entregar</button>$1');
- /* buró: el chofer solo lo ve si el cliente tiene crédito */
- if(S.role==='rep'&&!credActivo(c))h=h.replace(/<div class="lbl" style="margin:6px 0;line-height:1\.6">Buró: [\s\S]*?<\/div>/,'');
-}catch(e){console.error(e)}return h};
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 function credActivo(c){return !!c&&!c.nuevo&&c.credOk!==false&&!c.credFrz&&(num(c.cred)>0||c.credOk===true)}
 var _mh41=mayHistHTML;mayHistHTML=function(c){var h=_mh41.apply(this,arguments);if(S.role==='admin'||!c||credActivo(c))return h;return h.replace(/^<div class="card note" style="padding:10px 12px;margin:6px 0"><b>Buró<\/b>[\s\S]*?<\/div><\/div>/,'')};
@@ -7001,7 +6958,7 @@ function aprendeItems(){var L=logsTodos();if(S.role==='rep')return [
 function aprendeHTML(){if(S.aprendeOff||!REAL||(S.role!=='rep'&&(S.role!=='admin'||S.encOn)))return '';var L=aprendeItems(),n=L.filter(function(x){return x[2]}).length;if(n===L.length)return '';
  return '<details class="card aprende" data-k="aprende"'+(S.dOpen.aprende?' open':'')+'><summary><b>Aprende la app</b><span class="lbl">'+n+' de '+L.length+'</span></summary>'+L.map(function(x){return '<button class="it'+(x[2]?' ok':'')+'" data-act="aprendeir" data-t="'+x[1]+'"><span class="ck">'+(x[2]?'✓':'')+'</span><span class="t grow">'+x[0]+'</span><span class="lbl">›</span></button>'}).join('')+'<button class="link" style="margin-top:4px" data-act="aprendeoff">Ya no mostrar</button></details>'}
 var _ini43=inicio;inicio=function(){var h=_ini43.apply(this,arguments),a=aprendeHTML();return a?h+a:h};
-var _ru43=ruta;ruta=function(){var h=_ru43.apply(this,arguments);if(S.role!=='rep'||(S.cierre&&S.cierre.sent))return h;var a=aprendeHTML();return a?h+a:h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="aprendeir"],[data-act="aprendeoff"],[data-act="resdia"],[data-act="ressem"],[data-act="simabre"]');if(!b)return;var a=b.dataset.act;
  if(a==='resdia'||a==='ressem'){S.resYa=true;return}if(a==='simabre'){S.simYa=true;return}
  e.stopImmediatePropagation();if(a==='aprendeoff'){S.aprendeOff=true;render();return}S.tab[S.role]=b.dataset.t;render();window.scrollTo(0,0)},true);
@@ -7071,7 +7028,7 @@ function qrAbreCli(t){var m=/^RF-C:(\d+)$/.exec(String(t||'').trim());if(!m){toa
  var i=-1;S.stops.forEach(function(s,k){if(i<0&&+s.c===c.id&&!s.done)i=k});var sig=curStop();
  if(i<0){toast(esc(c.n)+' no está en tu ruta de hoy');S.openCli=c.id;S.tab.rep='ruta';render();return}
  if(i!==sig)toast('Ojo: '+c.n+' no es tu siguiente parada');S.cur=i;try{resetDraft(c)}catch(e){}S.tab.rep='entrega';render();window.scrollTo(0,0)}
-var _ru44=ruta;ruta=function(){var h=_ru44.apply(this,arguments);if(S.role!=='rep'||!qrOn()||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrscan">📷 Escanear QR del cliente</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};
+/* ruta: pasó a tema-ruta.js */
 /* escanear el corte del chofer (recepción): revisa el código de verificación */
 function corteVerifica(t){var s=String(t||'');if(s.indexOf('RF-CORTE|')!==0){toast('Ese QR no es de un corte');return}var d;try{d=JSON.parse(s.slice(9))}catch(e){toast('No se pudo leer el corte');return}
  var v=verifCodigo([d.ch,d.f,d.deb,d.ent,d.bo||'',JSON.stringify(d.b||{}),(d.may||[]).length].join('|')),bien=v===d.v;
@@ -7107,7 +7064,7 @@ function mjPos(p){var now=Date.now(),la=p.coords.latitude,ln=p.coords.longitude,
 function mjVigila(){if(!navigator.geolocation||window.__pnTest&&!window.__mjTest)return;var debe=mjActivo();if(debe&&MJ.w==null){MJ.w=navigator.geolocation.watchPosition(mjPos,function(){},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}else if(!debe&&MJ.w!=null){navigator.geolocation.clearWatch(MJ.w);MJ.w=null;MJ.on=false}}
 var _r44=render;render=function(){var r=_r44.apply(this,arguments);try{mjVigila()}catch(e){}return r};
 function mjLlegaHTML(){var x=S.mjLlega;if(!x||S.role!=='rep'||MJ.on)return '';return '<div class="card next" data-key="mjllega"><b style="font-size:18px">Llegaste con '+esc(x.c.n)+'</b><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="mjent">Abrir su entrega</button><button class="btn sec" style="flex:1" data-act="mjno">Ahora no</button></div></div>'}
-var _ru44b=ruta;ruta=function(){var h=_ru44b.apply(this,arguments),x=mjLlegaHTML();if(!x)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+x+h.slice(i+5):x+h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mjcopi"],[data-act="mjent"],[data-act="mjno"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;
  if(a==='mjcopi'){S.copiloto=iso(TODAY);MJ.on=false;toast('Listo: hoy no se esconde la app');render();return}
  if(a==='mjno'){S.mjLlega=null;render();return}var x=S.mjLlega;S.mjLlega=null;if(x){S.cur=x.k;try{resetDraft(x.c)}catch(er){}S.tab.rep='entrega'}render();window.scrollTo(0,0)},true);
@@ -7194,9 +7151,7 @@ function pedCargaHTML(){var P=pedPend();if(!P.length)return '';var n=pedNecesita
  return '<div class="card alert" data-key="pedasig"><b style="font-size:19px">'+(P.length>1?'Se te asignaron '+P.length+' entregas nuevas':'Se te asignó una nueva entrega')+'</b>'+lista
   +(falta?'<div style="font-size:17px;margin-top:8px"><b>Regresa a la bodega a cargar '+(fR?fR+' cajas de roatán':'')+(fR&&fM?' y ':'')+(fM?fM+' kg de macho':'')+'</b></div><div class="lbl">Traes '+n.trR+' cajas y '+n.trM+' kg. Te sugiero llevar además '+x.R+' cajas y '+x.M+' kg por si sale otro pedido (las puedes quitar).</div>'
    +'<button class="btn" style="margin-top:8px" data-act="pedcarga" data-r="'+(fR+x.R)+'" data-m="'+(fM+x.M)+'">Ir a cargar</button>':'<div class="lbl" style="margin-top:6px">Lo que traes alcanza.</div><button class="btn" style="margin-top:8px" data-act="pedir">Ir a entregar</button>')+'</div>'}
-var _ru45=ruta;ruta=function(){var h=_ru45.apply(this,arguments);if(S.role!=='rep')return h;var p=pedCargaHTML();
- if(S.cierre&&S.cierre.sent){if(!p)return h;var i=h.indexOf('<div class="card good cienv">');return i>-1?h.slice(0,i)+p+h.slice(i):p+h}
- if(p&&S.salida&&S.salida.ok){var n=pedNecesita();if(n.R>n.trR||n.M>n.trM){var j=h.indexOf('<h1>Ruta de hoy</h1>');return j>-1?h.slice(0,j)+p+h.slice(j):p+h}}return h};
+/* ruta: pasó a tema-ruta.js */
 function reabreSinPermiso(k,R,M){_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}
  setTimeout(function(){S.reab=null;S.cierreP=0;if(k==='carga')S.cx={R:String(R||''),M:String(M||''),foto:null,k:'carga',ped:true};render()},30)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pedcarga"],[data-act="pedir"]');if(!b)return;e.stopImmediatePropagation();var sent=S.cierre&&S.cierre.sent;
@@ -7472,8 +7427,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='permlisto'){e.stopImmediatePropagation();try{localStorage.setItem('permVisto','1')}catch(er){}S.perm=null;render();return}
  if(a==='permaj'){e.stopImmediatePropagation();if(n&&n.abrirAjustes)n.abrirAjustes();var vuelve=function(){if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',vuelve);permRevisa(function(r){if(r){S.permE=r;if(S.perm)S.perm.e=r;render()}})}};document.addEventListener('visibilitychange',vuelve);return}},true);
 /* al chofer: si le falta la ubicación o la cámara, un aviso arriba de su ruta */
-var _ru48=ruta;ruta=function(){var h=_ru48.apply(this,arguments),e=S.permE;if(S.role!=='rep'||!e||S.perm)return h;var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return h;
- var c='<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>';return c+h};
+/* ruta: pasó a tema-ruta.js */
 function permAvisoHTML(){var e=S.permE;if(S.role!=='rep'||!e||S.perm)return '';var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return '';return '<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>'}
 var _bvH48=bienvHTML;bienvHTML=function(){return permAvisoHTML()+_bvH48.apply(this,arguments)};
 
@@ -7736,8 +7690,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  n.gpsFondo().then(function(r){if(r&&r.ok){S.permFondo=true;render();return}var vuelve=function(){if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',vuelve);permFondoRev()}};document.addEventListener('visibilitychange',vuelve)},function(){})},true);
 setTimeout(function(){try{permFondoRev()}catch(e){}},4000);
 /* al chofer: si falta "todo el tiempo", aviso arriba de su ruta */
-var _ru52=ruta;ruta=function(){var h=_ru52.apply(this,arguments);if(S.role!=='rep'||S.permFondo!==false||!natPl52()||S.perm)return h;
- return '<div class="card alert"><b>Falta: ubicación todo el tiempo</b><div class="lbl">Es celular del negocio. Toca el botón y escoge "Permitir todo el tiempo".</div><button class="btn" style="margin-top:8px" data-act="permfondo">Dar el permiso</button></div>'+h};
+/* ruta: pasó a tema-ruta.js */
 /* celular administrado: la ubicación queda fija y no se puede quitar el permiso */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="celrev"],[data-act="celr"]');if(!b)return;var n=natPl52();if(!n||!n.celGpsFijo)return;setTimeout(function(){if(S.celE&&S.celE.owner)n.celGpsFijo().catch(function(){})},1500)},true);
 /* Ajustes: a los cuántos minutos avisar */
@@ -7964,13 +7917,12 @@ function ahoraSigue(){if(S.role!=='rep')return null;if(S.cierre&&S.cierre.sent)r
  var p=(S.stops||[]).filter(function(x){return !x.done});if(p.length){var c=cl(p[0].c);return ['Entrega a '+(c?c.n:'tu siguiente cliente'),'Toca "Entregar" cuando llegues. Te faltan '+p.length+' cliente'+(p.length>1?'s':'')+'.','[data-act="entregar"], .card.next']}
  if(!(S.stops||[]).length)return ['Espera tus entregas','Todavía no tienes clientes en tu ruta. Cuando te asignen, salen aquí.','main .card'];
  return ['Haz tu cierre','Ya entregaste a todos. Ve a Cierre y sigue los pasos.','nav.tabs button[data-t="cierre"]']}
-var _ru56=ruta;ruta=function(){var h=_ru56.apply(this,arguments),a=ahoraSigue();if(!a)return h;var c='<div class="card ahora" data-key="ahora"><span class="lbl">Ahora sigue</span><div class="q">'+esc(a[0])+'</div><div class="lbl">'+esc(a[1])+'</div><button class="btn sm sec" style="width:auto;margin-top:8px" data-act="ahorami">Muéstrame dónde</button></div>';
- var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+/* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ahorami"]');if(!b)return;e.stopImmediatePropagation();var a=ahoraSigue();if(a)guiaMuestra(a[2])},true);
 /* ---------- Inicio del admin: "Hoy te toca" y "Aprende la app" arriba ---------- */
 var _ini56=inicio;inicio=function(){var h=_ini56.apply(this,arguments),a=aprendeHTML();if(a)h=h.replace(a,'');var top=hoyTocaHTML()+(a||'');if(!top)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+top+h.slice(i+5):top+h};
 if(typeof VIEWS!=='undefined'&&VIEWS.inicio)VIEWS.inicio=inicio;
-var _ru56b=ruta;ruta=function(){var h=_ru56b.apply(this,arguments),a=aprendeHTML();if(!a||h.indexOf(a)<0)return h;h=h.replace(a,'');var k=h.indexOf('data-key="ahora"');if(k<0){var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h}var j=h.indexOf('</div>',h.indexOf('data-act="ahorami"'));return h.slice(0,j+6)+a+h.slice(j+6)};
+/* ruta: pasó a tema-ruta.js */
 /* ---------- tutorial desde el primer día, para cada persona (no depende del de otro celular) ---------- */
 function guiaLibre(){try{if(S.tut||S.wz||S.modal||S.confirm||S.perm||(_pin&&_pin.modo))return false;if(typeof bienvOn==='function'&&bienvOn())return false;
  return !document.querySelector('#nbov,#setov,#permov,#bienv,#arr,#pxov,#pinov,#fiov,#rcov,#eqov,#wzov,#pwov,#ajov,#gmov,[role="dialog"][aria-modal="true"]')}catch(e){return false}}
@@ -8553,7 +8505,7 @@ function rgPend(){return (S.stops||[]).filter(function(s){if(s.done)return false
 function rgCardHTML(){if(S.role!=='rep'||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return '';var P=rgPend();if(P.length<2)return '';var rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
  return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(rg?' Último orden: '+hmDe(rg.t)+'.':'')+'</div>'
   +'<button class="btn sec" style="margin-top:8px" data-act="rgordena">'+(rg?'Volver a calcular':'Ordenar con tráfico')+'</button></div>'}
-var _ru62=ruta;ruta=function(){var h=_ru62.apply(this,arguments);try{var c=rgCardHTML();if(!c)return h;var i=h.lastIndexOf('</div>');return h+c}catch(e){return h}};
+/* ruta: pasó a tema-ruta.js */
 function rgCuerpo(o,P){var ll=function(p){return {location:{latLng:{latitude:+p.lat,longitude:+p.lng}}}};
  return {origin:ll(o),destination:ll(BOD),intermediates:P.map(function(s){var c=cl(s.c);return ll(c)}),travelMode:'DRIVE',routingPreference:'TRAFFIC_AWARE',optimizeWaypointOrder:true,languageCode:'es-MX',units:'METRIC'}}
 function rgSeg(d){var m=/^(\d+(?:\.\d+)?)s$/.exec(String(d||''));return m?+m[1]/60:null}
@@ -10043,7 +9995,7 @@ var _aj74=ajHTML;ajHTML=function(){var h=_aj74.apply(this,arguments);if(!h||h.in
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */
-var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
+/* entregaCalc: pasó a tema-ruta.js */
 
 //@@capa l75.js
 /* ===================== v7.6 · primera vez por pasos e importar clientes (12 nov)
@@ -10310,7 +10262,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4744,"l14.js"],[4820,"l15.js"],[4882,"l16.js"],[4991,"l17.js"],[5022,"l18.js"],[5102,"l19.js"],[5172,"l20.js"],[5221,"l21.js"],[5267,"l22.js"],[5465,"l23.js"],[5519,"l24.js"],[5535,"l25.js"],[5566,"l26.js"],[5709,"l27.js"],[5775,"l28.js"],[5907,"l29.js"],[6033,"l30.js"],[6077,"l31.js"],[6113,"l32.js"],[6207,"l33.js"],[6226,"l34.js"],[6286,"l35.js"],[6346,"l36.js"],[6444,"l37.js"],[6465,"l38.js"],[6553,"l39.js"],[6634,"l40.js"],[6758,"l41.js"],[6842,"l42.js"],[6945,"l43.js"],[7047,"l44.js"],[7148,"l45.js"],[7243,"l46.js"],[7311,"l47.js"],[7425,"l48.js"],[7480,"l49.js"],[7516,"l50.js"],[7620,"l51.js"],[7630,"l52.js"],[7773,"l53.js"],[7795,"l54.js"],[7870,"l55.js"],[7899,"l56.js"],[7984,"l57.js"],[8049,"l58.js"],[8176,"l59.js"],[8236,"l60.js"],[8398,"l61.js"],[8455,"l62.js"],[8585,"l63.js"],[8756,"l64.js"],[8788,"l65.js"],[8889,"l66.js"],[8995,"l67.js"],[9022,"l68.js"],[9156,"l69.js"],[9383,"l70.js"],[9605,"l71.js"],[9730,"l72.js"],[9848,"l73.js"],[9924,"l74.js"],[10048,"l75.js"],[10201,"l76.js"],[10304,"l77.js"],[10432,"l78.js"],[10582,"l79.js"],[10690,"l80.js"],[10814,"l81.js"],[10967,"l82.js"],[11220,"l83.js"],[11289,"l84.js"],[11402,"l85.js"],[11463,"tema-rutadia.js"],[11628,"l86.js"],[11688,"l87.js"],[11731,"l88.js"],[11781,"l89.js"],[11830,"l90.js"],[11936,"tema-cobranza.js"],[12083,"tema-pantallas.js"],[12304,"tema-avisos.js"],[12466,"tema-reparte.js"],[12532,"tema-vehiculos.js"],[12676,"tema-notas.js"],[12693,"tema-taras.js"],[12800,"tema-cargarmas.js"],[12839,"tema-cargas.js"],[12873,"tema-cobro.js"],[12909,"tema-horario.js"],[12948,"tema-sueldos.js"],[13090,"tema-ganado.js"],[13135,"tema-cierres.js"],[13234,"tema-finanzas.js"],[13307,"tema-cuadre.js"],[13496,"tema-retencion.js"]];/*@@MAPA*/
+var CAPAS77=[[3305,"l1.js"],[3396,"l2.js"],[3559,"l3.js"],[3662,"l4.js"],[3740,"l5.js"],[3865,"l6.js"],[3967,"l6b.js"],[4010,"l7.js"],[4143,"l8.js"],[4154,"l9.js"],[4474,"l10.js"],[4534,"l11.js"],[4551,"l12.js"],[4598,"l13.js"],[4740,"l14.js"],[4816,"l15.js"],[4878,"l16.js"],[4987,"l17.js"],[5018,"l18.js"],[5097,"l19.js"],[5161,"l20.js"],[5210,"l21.js"],[5256,"l22.js"],[5454,"l23.js"],[5508,"l24.js"],[5524,"l25.js"],[5555,"l26.js"],[5693,"l27.js"],[5759,"l28.js"],[5891,"l29.js"],[6017,"l30.js"],[6061,"l31.js"],[6097,"l32.js"],[6186,"l33.js"],[6204,"l34.js"],[6264,"l35.js"],[6324,"l36.js"],[6422,"l37.js"],[6443,"l38.js"],[6531,"l39.js"],[6612,"l40.js"],[6725,"l41.js"],[6799,"l42.js"],[6902,"l43.js"],[7004,"l44.js"],[7105,"l45.js"],[7198,"l46.js"],[7266,"l47.js"],[7380,"l48.js"],[7434,"l49.js"],[7470,"l50.js"],[7574,"l51.js"],[7584,"l52.js"],[7726,"l53.js"],[7748,"l54.js"],[7823,"l55.js"],[7852,"l56.js"],[7936,"l57.js"],[8001,"l58.js"],[8128,"l59.js"],[8188,"l60.js"],[8350,"l61.js"],[8407,"l62.js"],[8537,"l63.js"],[8708,"l64.js"],[8740,"l65.js"],[8841,"l66.js"],[8947,"l67.js"],[8974,"l68.js"],[9108,"l69.js"],[9335,"l70.js"],[9557,"l71.js"],[9682,"l72.js"],[9800,"l73.js"],[9876,"l74.js"],[10000,"l75.js"],[10153,"l76.js"],[10256,"l77.js"],[10384,"l78.js"],[10534,"l79.js"],[10642,"l80.js"],[10766,"l81.js"],[10919,"l82.js"],[11172,"l83.js"],[11241,"l84.js"],[11354,"l85.js"],[11415,"tema-rutadia.js"],[11580,"l86.js"],[11640,"l87.js"],[11683,"l88.js"],[11733,"l89.js"],[11782,"l90.js"],[11888,"tema-ruta.js"],[12035,"tema-cobranza.js"],[12182,"tema-pantallas.js"],[12403,"tema-avisos.js"],[12565,"tema-reparte.js"],[12631,"tema-vehiculos.js"],[12775,"tema-notas.js"],[12792,"tema-taras.js"],[12899,"tema-cargarmas.js"],[12938,"tema-cargas.js"],[12972,"tema-cobro.js"],[13008,"tema-horario.js"],[13047,"tema-sueldos.js"],[13189,"tema-ganado.js"],[13234,"tema-cierres.js"],[13333,"tema-finanzas.js"],[13406,"tema-cuadre.js"],[13595,"tema-retencion.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -11932,6 +11884,153 @@ var _rd90=render;render=function(){try{vehIds90();vehAuto90();arStToma90();arCue
  try{arArriba90();arLimpia90();vehOcupados90();vehSel90();ovPon70('av90',av90HTML())}catch(e){console.error('l90b',e)}return r};
 /* ---------- versión: la del APK (1.0.N), leída del celular; si no se puede, la de la app ---------- */
 (function(){try{var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(!A||!A.getInfo)return;A.getInfo().then(function(i){if(i&&i.version){APP_VER=String(i.version);try{render()}catch(e){}}},function(){})}catch(e){}})();
+
+//@@capa tema-ruta.js
+/* ===================== TEMA · Ruta y entrega del chofer (aplanado el 18 nov) =====================
+   Antes estaba repartido en 28 envolturas encadenadas en l13, l18, l19, l20, l23, l26, l32, l33, l40, l41, l43, l44, l45, l48, l52, l56, l62, l74.
+   Aquí está todo junto, en el MISMO orden, y hace exactamente lo mismo (comprobado con pruebas/comp-ruta.js).
+   Se arma justo después de l90 (antes de los otros temas: tema-taras envuelve entValida después).
+   Si se cambia algo de la ruta o la entrega, se cambia AQUÍ (no se agregan envolturas en capas nuevas).
+
+   - ruta: la pantalla de la ruta del chofer (13 pasos).
+   - entrega: la pantalla de la entrega (7 pasos).
+   - entValida: lo que se revisa antes de guardar una entrega (4 pasos).
+   - entregaCalc: las cuentas de la entrega (2 pasos).
+   - credBloq: cuándo no se le puede fiar a un cliente (2 pasos).
+   Las funciones que usan los pasos siguen en su capa.
+   ============================================================================================ */
+
+/* entValida · de l13 */
+var _entV13=entValida;entValida=function(){var k=entregaCalc(),d=S.d;if(k.c&&d){var c=k.c;
+  if(d.may&&c.mayNo)return ['CH:[data-act="may"][data-v="0"]','A '+c.n+' no se le da mayoreo (lo decidió el administrador)'];
+  if(mayNecesitaPerm(c,d)){mayVencer();var p=mayPideDe(c.id);if(!p||p.est!=='ok'){S.dOpen.entmas=true;return ['CH:[data-act="maypide"]',p&&p.est==='pend'?'Espera el permiso del administrador o cambia a precio normal':'Pide permiso para el mayoreo o cambia a precio normal']}}}
+ return _entV13.apply(this,arguments)};
+
+/* entrega · de l13 */
+var _ent13=entrega;entrega=function(){var h=_ent13.apply(this,arguments),x=mayNotaHTML();if(!x)return h;
+ if(/Mínimo permitido:[^<]*<\/div>/.test(h))return h.replace(/(Mínimo permitido:[^<]*<\/div>)/,'$1'+x);return h.replace(/(Mayoreo a mano<\/button><\/div>)/,'$1'+x)};
+
+/* entrega · de l18 */
+var _ent18=entrega;entrega=function(){var h=_ent18.apply(this,arguments);if(!comOn())return h;var c=curCli();if(!c||!(c.cred>0))return h;var p=comPct(chofHoyObj());
+ return h.replace(/(<input id="abono"[^>]*><\/div>)/,'$1<div class="lbl" style="color:var(--accent);font-weight:700">Si te paga toda su deuda ('+money(c.cred)+'), ganas '+money(r2(c.cred*p))+'</div>')};
+
+/* credBloq · de l19 */
+var _cb19=credBloq;credBloq=function(c){var r=_cb19.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!S.d.reg))return r;var b=buroDe(c);if((S.permOk||{})[c.id]===iso(TODAY))return '';
+ if(b.n===3)return 'está bloqueado en el buró: debe desde hace '+credAge(c)+' días';if(limEf(c)<=0)return 'no tiene crédito';return ''};
+
+/* entValida · de l19 */
+var _ev19=entValida;entValida=function(){var r=_ev19.apply(this,arguments);if(r)return r;var k=entregaCalc();if(!k.c||!(k.quedaEntrega>0.005))return null;var c=k.c;
+ if(k.deuda>limEf(c)+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Su límite es '+money(limEf(c))+' ('+BURO[buroDe(c).n][1]+'): cóbrale más de contado'];
+ var tot=chDeuda(S.chofHoy,c.id)+k.deuda,mx=num(crCfg().crCh);if(tot>mx+0.5)return [document.getElementById('pago')?'#pago':'CH:[data-act="mode"][data-m="todo"]','Tus clientes ya te deben '+money(chDeuda(S.chofHoy,c.id)+c.cred)+'. Tu tope es '+money(mx)+': cobra antes de fiar'];
+ return null};
+
+/* entrega · de l19 */
+var _ent19=entrega;entrega=function(){var h=_ent19.apply(this,arguments),c=curCli();if(!c||(c.rapida&&!S.d.reg))return h;/* 115 · el buró se ve al fiar (una parte o a crédito) */if(S.d&&S.d.mode==='todo')return h;var mx=num(crCfg().crCh),dch=chDeuda(S.chofHoy,null),lim=limEf(c);
+ var x='<div class="lbl" style="margin:6px 0;line-height:1.6">Buró: '+buroPill(c)+' · límite '+money(lim)+(c.cred>0?' · debe '+money(c.cred):'')+'<br>Tus clientes te deben <b>'+money(dch)+'</b> de '+money(mx)+(dch>=mx?' · <b class="neg">ya no puedes fiar</b>':'')+'</div>';
+ return h.replace('<div id="calc"',x+'<div id="calc"')};
+
+/* entValida · de l20 */
+var _ev20=entValida;entValida=function(){var k=entregaCalc();var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ev20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
+
+/* entrega · de l20 */
+var _ent20=entrega;entrega=function(){var ch=chofHoyObj(),keep=S.cfg.crCh;if(ch&&ch.crMax!=null&&ch.crMax!=='')S.cfg.crCh=String(chTope(ch));try{return _ent20.apply(this,arguments)}finally{S.cfg.crCh=keep}};
+
+/* credBloq · de l23 */
+var _cb23=credBloq;credBloq=function(c){if(c&&c.credFrz&&!((S.permOk||{})[c.id]===iso(TODAY)))return 'tiene el crédito congelado';return _cb23.apply(this,arguments)};
+
+/* entValida · de l26 */
+var _ev26=entValida;entValida=function(){var r=_ev26.apply(this,arguments);if(r)return r;var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c)||ubTiene(c)||c.ubSkip===iso(TODAY))return null;
+ return ['CH:[data-act="ubcli"]','Primero guarda la ubicación de '+(c.rapida?'este cliente':c.n)+' (botón 📍)']};
+
+/* entrega · de l26 */
+var _ent26=entrega;entrega=function(){var h=_ent26.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c))return h;var nm=c.rapida?'este cliente':esc(c.n),card='';
+ if(!ubTiene(c)&&c.ubSkip!==iso(TODAY))card='<div class="card alert ubcard"><b>📍 Guarda la ubicación de '+nm+'</b><div class="lbl">Es obligatorio la primera vez: así se van planeando las rutas. Hazlo ya estando en su negocio.</div><button class="btn" data-act="ubcli" data-id="'+c.id+'">📍 Guardar ubicación aquí</button></div>';
+ else if(!c.rapida){var f=ubCliFalta(c),noche=c.foto&&ubNoche(c.fotoH)&&ubHayLuz();if(noche)card='<div class="card note ubcard"><b>Ya hay luz: actualiza la foto de la fachada</b><div class="lbl">La que hay se tomó de noche.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="foto">📷 Tomar otra foto</button></div>';
+  else if(f.length)card='<div class="card note ubcard"><b>Completa los datos de '+nm+'</b><div class="lbl">Falta: '+esc(f.join(' y '))+'.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="datos">Completar ahora</button></div>'}
+ if(!card)return h;var an='<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas?</b>';return h.indexOf(an)>-1?h.replace(an,card+an):card+h}catch(er){return h}};
+
+/* entrega · de l26 */
+var _ent26b=entrega;entrega=function(){var h=_ent26b.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(c&&c.rapida)h=h.replace(/<button class="btn sm sec" data-act="gps"([^>]*)>(Ubicación guardada|Guardar ubicación GPS aquí)<\/button>/,'<button class="btn sm sec" data-act="gps"$1>'+(ubTiene(c)?'✓ Ubicación guardada':'📍 Guardar ubicación GPS aquí (obligatorio)')+'</button>')}catch(er){}return h};
+
+/* ruta · de l32 */
+var _ru32=ruta;ruta=function(){var h=_ru32.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent)return h;var r=S.reab,top='';
+ top='<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+'Entrega '+money((S.cierre.res||{}).efectivo||0)+' en efectivo al administrador.</div></div>';
+ if(r&&r.est==='pend')top+='<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'. Cuando te autorice, aquí te sale para seguir.</div></div>';
+ else if(r&&r.est==='no')top+='<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>';
+ h=h.replace(/(<div class="hello">[\s\S]*?<\/div>)/,'$1'+top);
+ return h.replace(/<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Cargar más<\/button>/,'<button class="btn" style="flex:1" data-act="seguir" data-k="carga">Pedir permiso: cargar más</button>').replace(/<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Otra vuelta<\/button>/,'<button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">Pedir permiso: otra vuelta</button>').replace('Como aún no entregas el efectivo, se reabre tu cierre.','Para seguir, el administrador tiene que autorizarlo.').replace('Como ya entregaste el efectivo, se abre un segundo cierre.','Para seguir, el administrador tiene que autorizarlo.')};
+
+/* ruta · de l33 */
+var _ru33=ruta;ruta=function(){var h=_ru33.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return h;var x=salConfHTML(),i=h.indexOf('<div class="lbl" style="margin:10px 0 6px">Nivel del tanque al salir');
+ if(i<0){i=h.indexOf('Fotos del vehículo (');if(i>-1)i=h.lastIndexOf('<div',i)}return i>-1?h.slice(0,i)+x+h.slice(i):h.replace('data-act="iniciar"','data-act="iniciar"')+x};
+
+/* ruta · de l40 */
+var _ru40=ruta;ruta=function(){var h=_ru40.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent||S.cx)return h;var c=S.cierre,d=c.corte||{},r=S.reab,nm=chofN(S.chofHoy).split(' ')[0];
+ var recibido=!!S.cierreReg,enc=encList().filter(function(x){return x.ch===+S.chofHoy&&x.est==='pend'}),pide=chPideSeguir(S.chofHoy);
+ var o='<div class="poscierre"><div class="saludo">'+saludoHora()+', '+esc(nm)+'</div>'
+  +'<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+(recibido?'El administrador ya recibió tu efectivo.':'Entrega '+money(d.ent!=null?d.ent:(c.res||{}).efectivo||0)+(d.dest==='tómbola'?' en la tómbola':' al administrador')+'.')+'</div>'
+  +(S.corteUlt?'<button class="btn sm sec" style="margin-top:8px" data-act="corteotra">📲 Mandar otra vez la foto del corte</button>':'')+'</div>'
+  +(r&&r.est==='pend'?'<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'.</div></div>':'')
+  +(r&&r.est==='no'?'<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>':'')
+  +(enc.length?'<div class="card note"><b>Ya no tienes pedidos por entregar, pero te queda:</b></div>'+encRutaHTML(false):'<div class="card"><div class="nada">Nada más por hoy ✓</div><div class="lbl">Gracias por tu trabajo.</div></div>')
+  +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" data-act="seguir" data-k="carga">'+(pide?'Pedir permiso: cargar más':'Cargar más')+'</button><button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">'+(pide?'Pedir permiso: otra vuelta':'Otra vuelta')+'</button></div>'
+  +(S.inv.reparto>0||S.inv.repartoKg>0||true?'<button class="btn sec" style="margin-top:8px" data-act="apoyoofrece">🤝 Puedo apoyar a otro chofer</button>':'')+apoyoMioHTML()
+  +'<button class="btn sec" style="margin-top:8px" data-act="listohoy">Listo por hoy</button></div>';
+ return o};
+
+/* ruta · de l40 */
+var _ru40b=ruta;ruta=function(){var h=_ru40b.apply(this,arguments),a=apoyoParaMiHTML();if(!a)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h};
+
+/* entregaCalc · de l41 */
+var _eC41=entregaCalc;entregaCalc=function(){var k=_eC41.apply(this,arguments);if(!k||!k.c)return k;var d=S.d||{},fo=d.forma||'efe',cob=r2(num(k.pago)+num(k.abono)),no=0;
+ if(fo==='tarj'||fo==='trans')no=cob;else if(fo==='mixto')no=Math.min(cob,Math.max(0,num(d.mixM)));
+ k.forma=fo;k.tarj=fo==='tarj'||(fo==='mixto'&&d.mixT!=='trans')?r2(no):0;k.trans=fo==='trans'||(fo==='mixto'&&d.mixT==='trans')?r2(no):0;k.efectivo=r2(cob-no);
+ k.comCli=k.tarj>0&&comCobra()?r2(k.tarj*tarjPct()/(100-tarjPct())):0;return k};
+
+/* entrega · de l41 */
+var _ent41=entrega;entrega=function(){var h=_ent41.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!c)return h;
+ /* forma de pago, debajo del cálculo */
+ h=h.replace('<div id="calc" style="margin-top:6px">','<div id="pforma">'+pagoFormaHTML()+'</div><div id="calc" style="margin-top:6px">');
+ /* "No estaba" a la vista */
+ if(!(c.rapida&&!S.d.reg))h=h.replace(/(<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas\?<\/b>)/,'<button class="btn sec" style="margin:6px 0" data-act="noestaba">🚪 No estaba / no se pudo entregar</button>$1');
+ /* buró: el chofer solo lo ve si el cliente tiene crédito */
+ if(S.role==='rep'&&!credActivo(c))h=h.replace(/<div class="lbl" style="margin:6px 0;line-height:1\.6">Buró: [\s\S]*?<\/div>/,'');
+}catch(e){console.error(e)}return h};
+
+/* ruta · de l43 */
+var _ru43=ruta;ruta=function(){var h=_ru43.apply(this,arguments);if(S.role!=='rep'||(S.cierre&&S.cierre.sent))return h;var a=aprendeHTML();return a?h+a:h};
+
+/* ruta · de l44 */
+var _ru44=ruta;ruta=function(){var h=_ru44.apply(this,arguments);if(S.role!=='rep'||!qrOn()||!S.salida||!S.salida.ok||(S.cierre&&S.cierre.sent))return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrscan">📷 Escanear QR del cliente</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};
+
+/* ruta · de l44 */
+var _ru44b=ruta;ruta=function(){var h=_ru44b.apply(this,arguments),x=mjLlegaHTML();if(!x)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+x+h.slice(i+5):x+h};
+
+/* ruta · de l45 */
+var _ru45=ruta;ruta=function(){var h=_ru45.apply(this,arguments);if(S.role!=='rep')return h;var p=pedCargaHTML();
+ if(S.cierre&&S.cierre.sent){if(!p)return h;var i=h.indexOf('<div class="card good cienv">');return i>-1?h.slice(0,i)+p+h.slice(i):p+h}
+ if(p&&S.salida&&S.salida.ok){var n=pedNecesita();if(n.R>n.trR||n.M>n.trM){var j=h.indexOf('<h1>Ruta de hoy</h1>');return j>-1?h.slice(0,j)+p+h.slice(j):p+h}}return h};
+
+/* ruta · de l48 */
+var _ru48=ruta;ruta=function(){var h=_ru48.apply(this,arguments),e=S.permE;if(S.role!=='rep'||!e||S.perm)return h;var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return h;
+ var c='<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>';return c+h};
+
+/* ruta · de l52 */
+var _ru52=ruta;ruta=function(){var h=_ru52.apply(this,arguments);if(S.role!=='rep'||S.permFondo!==false||!natPl52()||S.perm)return h;
+ return '<div class="card alert"><b>Falta: ubicación todo el tiempo</b><div class="lbl">Es celular del negocio. Toca el botón y escoge "Permitir todo el tiempo".</div><button class="btn" style="margin-top:8px" data-act="permfondo">Dar el permiso</button></div>'+h};
+
+/* ruta · de l56 */
+var _ru56=ruta;ruta=function(){var h=_ru56.apply(this,arguments),a=ahoraSigue();if(!a)return h;var c='<div class="card ahora" data-key="ahora"><span class="lbl">Ahora sigue</span><div class="q">'+esc(a[0])+'</div><div class="lbl">'+esc(a[1])+'</div><button class="btn sm sec" style="width:auto;margin-top:8px" data-act="ahorami">Muéstrame dónde</button></div>';
+ var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
+
+/* ruta · de l56 */
+var _ru56b=ruta;ruta=function(){var h=_ru56b.apply(this,arguments),a=aprendeHTML();if(!a||h.indexOf(a)<0)return h;h=h.replace(a,'');var k=h.indexOf('data-key="ahora"');if(k<0){var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+a+h.slice(i+5):a+h}var j=h.indexOf('</div>',h.indexOf('data-act="ahorami"'));return h.slice(0,j+6)+a+h.slice(j+6)};
+
+/* ruta · de l62 */
+var _ru62=ruta;ruta=function(){var h=_ru62.apply(this,arguments);try{var c=rgCardHTML();if(!c)return h;var i=h.lastIndexOf('</div>');return h+c}catch(e){return h}};
+
+/* entregaCalc · de l74 */
+var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
 
 //@@capa tema-cobranza.js
 /* ===================== TEMA · Cobranza (punto 84, 17 nov) =====================

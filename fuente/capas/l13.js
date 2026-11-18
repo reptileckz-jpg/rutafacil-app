@@ -50,10 +50,7 @@ function mayVencer(){var ch=false;mayPideL().forEach(function(p){if(p.est==='pen
 setInterval(function(){try{if(mayVencer())render()}catch(e){}},15000);
 /* el cliente con "nunca mayoreo" no lo lleva ni automático */
 var _mayAuto13=mayAutoOk;mayAutoOk=function(c,d){if(c&&c.mayNo){if(d)d.mayQ='norm';return false}return _mayAuto13.apply(this,arguments)};
-var _entV13=entValida;entValida=function(){var k=entregaCalc(),d=S.d;if(k.c&&d){var c=k.c;
-  if(d.may&&c.mayNo)return ['CH:[data-act="may"][data-v="0"]','A '+c.n+' no se le da mayoreo (lo decidió el administrador)'];
-  if(mayNecesitaPerm(c,d)){mayVencer();var p=mayPideDe(c.id);if(!p||p.est!=='ok'){S.dOpen.entmas=true;return ['CH:[data-act="maypide"]',p&&p.est==='pend'?'Espera el permiso del administrador o cambia a precio normal':'Pide permiso para el mayoreo o cambia a precio normal']}}}
- return _entV13.apply(this,arguments)};
+/* entValida: pasó a tema-ruta.js */
 /* tarjeta de precio del chofer: botón para pedir permiso y su estado */
 function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
  if(c.mayNo)return '<div class="lbl" style="margin-top:6px">A este cliente no se le da mayoreo.</div>';
@@ -64,8 +61,7 @@ function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
  else x='<div class="neg" style="font-weight:700">'+(p.est==='no'?'El administrador dijo que no.':'No contestó a tiempo.')+' Véndele a precio normal.</div>';
  return '<div class="card note" data-key="maynota" style="margin:8px 0 0;padding:10px 12px">'+x+'</div>'}
 var _prC13=precioCard;precioCard=function(){var h=_prC13.apply(this,arguments),x=mayNotaHTML();return x?h.replace(/<\/div>$/,x+'</div>'):h};
-var _ent13=entrega;entrega=function(){var h=_ent13.apply(this,arguments),x=mayNotaHTML();if(!x)return h;
- if(/Mínimo permitido:[^<]*<\/div>/.test(h))return h.replace(/(Mínimo permitido:[^<]*<\/div>)/,'$1'+x);return h.replace(/(Mayoreo a mano<\/button><\/div>)/,'$1'+x)};
+/* entrega: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='may'&&D.v==='1'&&S.role==='rep'){var c=curCli();S.dOpen.entmas=true;if(c&&c.mayNo){e.stopImmediatePropagation();toast('A '+c.n+' no se le da mayoreo (lo decidió el administrador)');return}}
  if(a==='maypide'){e.stopImmediatePropagation();var c2=curCli(),d=S.d;if(!c2)return;

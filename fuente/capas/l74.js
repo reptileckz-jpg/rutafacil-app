@@ -119,4 +119,4 @@ var _aj74=ajHTML;ajHTML=function(){var h=_aj74.apply(this,arguments);if(!h||h.in
 
 var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */
-var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(c&&c.ppUna&&c.mayoreo&&(num(c.ppR)||num(c.ppM))){c.mayoreo=false;try{return _eC74.apply(this,arguments)}finally{c.mayoreo=true}}return _eC74.apply(this,arguments)};
+/* entregaCalc: pasó a tema-ruta.js */

@@ -47,7 +47,6 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='permlisto'){e.stopImmediatePropagation();try{localStorage.setItem('permVisto','1')}catch(er){}S.perm=null;render();return}
  if(a==='permaj'){e.stopImmediatePropagation();if(n&&n.abrirAjustes)n.abrirAjustes();var vuelve=function(){if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',vuelve);permRevisa(function(r){if(r){S.permE=r;if(S.perm)S.perm.e=r;render()}})}};document.addEventListener('visibilitychange',vuelve);return}},true);
 /* al chofer: si le falta la ubicación o la cámara, un aviso arriba de su ruta */
-var _ru48=ruta;ruta=function(){var h=_ru48.apply(this,arguments),e=S.permE;if(S.role!=='rep'||!e||S.perm)return h;var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return h;
- var c='<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>';return c+h};
+/* ruta: pasó a tema-ruta.js */
 function permAvisoHTML(){var e=S.permE;if(S.role!=='rep'||!e||S.perm)return '';var f=[];if(e.ubicacion==='no')f.push('ubicación');if(e.camara==='no')f.push('cámara');if(!f.length)return '';return '<div class="card alert"><b>Falta el permiso de '+f.join(' y ')+'</b><div class="lbl">Sin eso no se guardan las fotos o la ubicación de tus entregas.</div><button class="btn" style="margin-top:8px" data-act="permaj">Abrir ajustes del celular</button></div>'}
 var _bvH48=bienvHTML;bienvHTML=function(){return permAvisoHTML()+_bvH48.apply(this,arguments)};

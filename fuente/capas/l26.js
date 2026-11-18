@@ -117,16 +117,11 @@ var _navA26=navAtras;navAtras=function(){if(S.ub&&!document.getElementById('foto
 /* ---- reparto: la ubicación del cliente es obligatoria; luego se completan sus datos ---- */
 function ubCliAplica(c){return !!c&&!(c.rapida&&!(S.d&&S.d.reg))&&!UB_LEGADO()}
 function ubCliFalta(c){var f=[];if(!c.foto)f.push('foto de la fachada');if(!String(c.tel||'').trim()&&!(c.rapida&&S.d&&String(S.d.rtel||'').trim()))f.push('teléfono');return f}
-var _ev26=entValida;entValida=function(){var r=_ev26.apply(this,arguments);if(r)return r;var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c)||ubTiene(c)||c.ubSkip===iso(TODAY))return null;
- return ['CH:[data-act="ubcli"]','Primero guarda la ubicación de '+(c.rapida?'este cliente':c.n)+' (botón 📍)']};
-var _ent26=entrega;entrega=function(){var h=_ent26.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(!ubCliAplica(c))return h;var nm=c.rapida?'este cliente':esc(c.n),card='';
- if(!ubTiene(c)&&c.ubSkip!==iso(TODAY))card='<div class="card alert ubcard"><b>📍 Guarda la ubicación de '+nm+'</b><div class="lbl">Es obligatorio la primera vez: así se van planeando las rutas. Hazlo ya estando en su negocio.</div><button class="btn" data-act="ubcli" data-id="'+c.id+'">📍 Guardar ubicación aquí</button></div>';
- else if(!c.rapida){var f=ubCliFalta(c),noche=c.foto&&ubNoche(c.fotoH)&&ubHayLuz();if(noche)card='<div class="card note ubcard"><b>Ya hay luz: actualiza la foto de la fachada</b><div class="lbl">La que hay se tomó de noche.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="foto">📷 Tomar otra foto</button></div>';
-  else if(f.length)card='<div class="card note ubcard"><b>Completa los datos de '+nm+'</b><div class="lbl">Falta: '+esc(f.join(' y '))+'.</div><button class="btn sm sec" data-act="ubcli" data-id="'+c.id+'" data-m="datos">Completar ahora</button></div>'}
- if(!card)return h;var an='<div class="card" style="padding:10px 14px"><b style="font-size:18px">¿Qué le dejas?</b>';return h.indexOf(an)>-1?h.replace(an,card+an):card+h}catch(er){return h}};
+/* entValida: pasó a tema-ruta.js */
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* el botón de GPS del cliente nuevo dice si ya se guardó de verdad */
-var _ent26b=entrega;entrega=function(){var h=_ent26b.apply(this,arguments);try{var k=entregaCalc(),c=k&&k.c;if(c&&c.rapida)h=h.replace(/<button class="btn sm sec" data-act="gps"([^>]*)>(Ubicación guardada|Guardar ubicación GPS aquí)<\/button>/,'<button class="btn sm sec" data-act="gps"$1>'+(ubTiene(c)?'✓ Ubicación guardada':'📍 Guardar ubicación GPS aquí (obligatorio)')+'</button>')}catch(er){}return h};
+/* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* aviso al admin: cliente nuevo dado de alta por el chofer */
 var _r26=render;render=function(){try{(S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&!c.oculto&&!c.avAlta){c.avAlta=true;S.avPrecio.push(chofN(c.porCh)+' dio de alta un cliente nuevo: '+c.n+(ubTiene(c)?' (con ubicación)':' (sin ubicación)')+(c.tel?' · tel. '+c.tel:'')+'. Revísalo en Clientes.')}})}catch(e){}return _r26.apply(this,arguments)};

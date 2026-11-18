@@ -2524,3 +2524,28 @@ Revisión hecha a la versión real instalada desde cero (datos neutros "Chofer U
   - Chofer: `crCfg()` ya no cambia los Ajustes en su celular y la nube ya no recibe de él lo que solo guarda el admin (adiós "Missing or insufficient permissions").
   - Pruebas: `t120.js` (22 OK: 4 cierres, ingresos, caja, cambio de día, historial, recuperar, verificación, chofer, taras, ruta del admin) y `t120b.js` (app en blanco: ninguna pantalla trae montos o nombres de la demo). `t92` actualizado (Más). Fotos `fotos/120-ingresos-por-cierre.png`, `fotos/120-historial-cierres.png`.
 
+## 2026-11-18 · 121 · Ricardo: "💰 un historial para revisar cada cierre y poder cuadrar la caja… lo que hizo cada repartidor, fotos, créditos, taras, ventas, crédito, ganancia, desgaste, sueldos y el neto del día; por día, semana o mes… el dinero es lo que más debe importar"
+- Decisiones: arriba en Inicio + en Más (y desde Finanzas) · desgaste por vehículo empezando en $0.70/km para todos, que se ajuste con el uso, y "alguna herramienta que facilite esto" (las llantas tardan mucho en cambiarse).
+- **HECHO 121** (sin publicar), nuevo tema `capas/tema-cuadre.js` (va al final):
+  - **💰 Cuadre** (Día / Semana / Mes, con ‹ › y fecha): Neto grande; Ventas (contado / crédito); abonos de deudas de antes; Ganancia de la fruta (ventas − costo, igual que Estadísticas); − Gastos de operación (por tipo); − Desgaste (km del odómetro × $/km de cada vehículo); − Sueldos (semanal ÷ 6 por día trabajado, igual que las faltas) y comisiones; − Merma; = Neto. Aparte: servicios y reparaciones del vehículo (salen del fondo del desgaste; no se restan dos veces). Aviso si falta el costo de la caja/kilo.
+  - **Cuadre del dinero**: debían entregar, entregaron (cortes), recibiste, faltó/sobró, abonos en bodega, venta en bodega, conteos de caja del día y el efectivo en caja ahora.
+  - **Por chofer**: cada cierre (vendió, cobrado, debía, entregó, recibiste, código, km y vehículo con su desgaste) y **📷 fotos del cierre** (vehículo al salir y al llegar, odómetro, tickets; se bajan de la nube solo al abrirlas), clientes a crédito, abonos que cobró, **taras** (dejó / recogió / prestó), gastos de su ruta, sueldo y "lo que dejó su ruta".
+  - Semana y mes: el mismo desglose sumado + "Día por día" (toca un día y se abre) + "Por chofer".
+  - Inicio: "💰 Cuadre de hoy" arriba (neto, vendido, ganancia, cierres, crédito). Más: "💰 Cuadre". Finanzas → "💰 Ver el cuadre de hoy".
+  - Los cierres guardan la referencia de sus fotos (`fotos121`), no la foto entera (para no llenar el celular).
+  - **🧮 Calculadora de desgaste** (vehículo → "Cuánto deja y cuánto cuesta", o desde el Cuadre): llantas, aceite, frenos, afinación, amortiguadores, batería, clutch, otro (cuesta / cada cuántos km; se llena sola con los intervalos y servicios que ya tiene el vehículo) + lo que pierde de valor el vehículo → $ por km. "Usar" lo deja fijo (el ajuste automático ya no lo cambia); también "Usar lo real" con los gastos de 12 meses.
+  - Desgaste: $0.70 al empezar (`tasa68`); los vehículos que traían el 0.60 de la demo pasan a 0.70 una sola vez; los nuevos ya no lo traen.
+  - El cierre perdido sugiere chofer y día con lo que la app sí anotó ("X empezó un segundo cierre", en "Lo que pasó").
+- Más restos de la demo que se quitaron: costo estimado del viaje ($1,500 de combustible sin rendimiento, $150 por parada, $300) → con el rendimiento real y el promedio de tus viajes; 150 km al proveedor y $24 el litro → se pregunta; "Esta entrega te deja" con 4 cajas y 30 kg inventados → con lo que de verdad compra ese cliente (sin historia no sale); "Cuánto deja el vehículo" con rendimiento 10 y sueldo $9,000 y la comparación con la NP300 de la demo; simulador con $525,000, $20,000 de anticipo, "NP300 nueva"… (en la real empieza vacío); "Desgaste ~$ al año con 30,000 km" → con los km reales del vehículo.
+- **Problemas reportados (24)**, estado:
+  - 12 nov · "Faltaba un número y se puso en 0: Bodega: kgVerde" → la app lo reparó sola (revisión del punto 74); no ha vuelto.
+  - 12–17 nov · Danu "nube … s~cfg / s~admins / s~porPagar Missing or insufficient permissions" → ARREGLADO en 120 (el celular del chofer ya no intenta guardar lo que solo guarda el admin).
+  - 12 nov · Danu "mapa 58 Map container is already initialized" → ARREGLADO (no se vuelve a poner el mapa si ya está).
+  - 12 nov · Danu "l72 … 'CH:[data-act="ubcli"]' is not a valid selector" → ARREGLADO (el "CH:" se quita antes de buscar).
+  - 12 nov · Ricardo "Cannot read properties of undefined (reading 'forEach')" en Personal, Más e Inicio → era una lista que llegaba vacía de la nube (en Inicio, `S.cierresPrev`); ARREGLADO: ya no se usa así y ahora toda lista vacía se pone como lista (`listas120`). Prueba: quitando cada una de las 64 listas, ninguna pantalla truena.
+  - 12 nov · Danu "Cannot read properties of undefined (reading 'R')" → no se pudo reproducir con la versión actual (probadas las 70 partes de los datos); no ha vuelto desde el 12.
+  - 12 nov · "viaje a medias quitado (2)" → no es error: la app quitó 2 viajes de carga que se habían quedado a medio crear (no son cargas registradas). Queda en "Lo que pasó".
+  - 13 y 16 nov · "Falta un número en las cuentas" y "Las taras no cuadran por lugar: Total NaN" → ARREGLADO: un cierre sin el dato de cajas que regresó y sumas sin `num()` daban NaN.
+  - 17 nov · Estadísticas "reading 'k'" → ARREGLADO en 120.
+- Pruebas: `t121.js` (21 OK: un día completo con todos sus números exactos, Inicio, pantalla, fotos, semana, mes, calculadora, Más); `t120.js` actualizado (24 OK); `t92` actualizado. Fotos `fotos/121-*.png`.
+

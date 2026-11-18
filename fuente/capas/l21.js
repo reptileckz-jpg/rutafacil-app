@@ -23,7 +23,7 @@ window.addEventListener('pagehide',guardarYa);
 /* al abrir: si hay algo guardado, se sigue de ahí */
 function rutaVacia(o){return !o||!((o.log||[]).length||(o.salida&&o.salida.ok))}
 function cambioDeDia(viejo){var hoy=iso(TODAY);if(!viejo||viejo===hoy)return;S.rutasHist=S.rutasHist||[];var pend=[];
- function archiva(o,ch){if(rutaVacia(o))return true;var env=o.cierre&&o.cierre.sent;S.rutasHist.push({f:viejo,ch:ch,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:!!env,corte120:o.cierre&&o.cierre.corte||null});if(!env){pend.push(chofN(ch));return false}return true}
+ function archiva(o,ch){if(rutaVacia(o))return true;var env=o.cierre&&o.cierre.sent;S.rutasHist.push({f:viejo,ch:ch,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:!!env,corte120:o.cierre&&o.cierre.corte||null,fotos121:(typeof fotosRuta121==='function'?fotosRuta121(o):null)});if(!env){pend.push(chofN(ch));return false}return true}
  var act=arPack();if(archiva(act,S.chofHoy)){arLoad(chNuevo(+S.chofHoy))}
  Object.keys(S.chSt||{}).forEach(function(id){if(archiva(S.chSt[id],+id))delete S.chSt[id]});
  if(S.arSt&&archiva(S.arSt,S.arSt.chofHoy))S.arSt=null;

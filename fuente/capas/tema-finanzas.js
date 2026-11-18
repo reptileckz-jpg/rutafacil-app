@@ -47,3 +47,25 @@ if(typeof crCfg2==='function'){var _crCfg2120=crCfg2;crCfg2=function(){if(S.role
 /* lo que solo el administrador puede guardar en la nube (firestore.rules): el celular del chofer no lo intenta */
 var SOLO_ADM120=['precio','cfg','pagosSueldo','adelantos','bonos','fijos','metaMes','mesCerr','reglas','vehAsig','admins','bods','mayP','mayMin','cajaBase','aportes','porPagar','pagoPide','enc','vac','bienes','fijosPag','cliBase','vacPlan','fac76'];
 function nbSoloAdm120(u){try{if(!u||u.ruta!=null||SOLO_ADM120.indexOf(u.k)<0)return false;var p=NB.perfil||{};if(p.rol==='admin'||p.rol==='cont')return false;return !(num(p.encHasta)>Date.now())}catch(e){return false}}
+
+/* ---------- 120 · estimaciones con datos reales (antes: $1,500 de combustible, $150 por parada, $300 extra, 150 km al proveedor, $24 el litro) ---------- */
+/* el efectivo que se le da al chofer para el viaje: combustible con el rendimiento real + lo que se ha gastado en viajes reales (casetas, comida, otros) */
+function vjPromGastos120(){var L=(S.cargas||[]).filter(function(c){return c&&c.t&&(num(c.t.diesel)||num(c.t.comida)||num(c.t.casetas)||num(c.t.extra))}).slice(-5);if(!L.length)return {comb:0,otros:0,n:0};
+ return {comb:sum(L,function(c){return num(c.t.diesel)})/L.length,otros:sum(L,function(c){return num(c.t.comida)+num(c.t.casetas)+num(c.t.extra)})/L.length,n:L.length}}
+vwGastoEst=function(){var v=S.vw||{},vh=S.veh.filter(function(x){return x.id===+v.veh})[0]||vehHoy(),ri=rendInfo(vh),km=vwKmEst(v),P=vjPromGastos120();
+ var comb=ri.rend&&num(vh&&vh.precio)>0&&km>0?km/ri.rend*num(vh.precio):P.comb;return Math.round(comb+P.otros)};
+/* km al proveedor: si no se sabe, se pregunta (no se inventan 150 km) */
+if(typeof kmProvs68==='function')kmProvs68=function(P){var km=0,falta=false;(P||[]).forEach(function(p){var d=null;try{d=provD(p)}catch(e){}if(!(num(d&&d.km)>0))falta=true;km=Math.max(km,num(d&&d.km))});return falta||!km?'':Math.round(km*2+40*Math.max(0,(P||[]).length-1))};
+var _cN120=combNormal;combNormal=function(provs,vh){var P=(provs||[]).filter(function(x,i,a){return x&&a.indexOf(x)===i}),key=P.slice().sort().join('|'),pr=num(vh&&vh.precio),
+  L=(S.vjHist||[]).filter(function(x){return provsDe(x.par)===key&&(!vh||x.veh===vh.n)&&(num(x.lit)||(pr&&num(x.comb)))}).slice(0,3);
+ if(L.length)return{lit:Math.round(sum(L,function(x){return num(x.lit)||num(x.comb)/pr})/L.length),n:L.length,pr:pr,P:P};
+ var ri=vh?rendInfo(vh):{rend:0},km=0,falta=false;P.forEach(function(p){var k=num(provD(p).km);if(!(k>0))falta=true;km=Math.max(km,k)});if(falta||!km)return{lit:0,n:0,pr:pr,km:0,P:P};
+ km=km*2+40*Math.max(0,P.length-1);return{lit:ri.rend?Math.round(km/ri.rend):0,n:0,pr:pr,km:km,P:P}};
+/* simulador de vehículos: en la app real empieza vacío (antes traía $525,000, $20,000 de anticipo, "NP300 nueva"…) */
+if(typeof simNuevo==='function'){var _simN120=simNuevo;simNuevo=function(vid){var r=_simN120.apply(this,arguments);try{if(window.PN_MODO==='vacio'&&S.sim){var s=S.sim;['nuevo','inst','carrN','eng','tasa','plazo','prest','abono','anios','carrAnt','nomN'].forEach(function(k){s[k]=''})}}catch(e){}return r}}
+
+/* ---------- 120 · errores de "Problemas reportados" ---------- */
+/* listas que llegaban vacías de la nube ("Cannot read properties of undefined (reading 'forEach')") */
+var LISTAS120=(function(){var L=[];try{Object.keys(S).forEach(function(k){if(Array.isArray(S[k]))L.push(k)})}catch(e){}return L})();
+function listas120(){try{LISTAS120.forEach(function(k){if(S[k]==null)S[k]=[]});Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o){['stops','log','gch','recs'].forEach(function(k){if(o[k]==null)o[k]=[]})}});if(!S.lotes)S.lotes=[]}catch(e){}}
+var _r120l=render;render=function(){listas120();return _r120l.apply(this,arguments)};

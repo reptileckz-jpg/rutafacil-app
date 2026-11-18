@@ -168,7 +168,7 @@ function ub68HTML(){var x=S.ub68;if(!x)return '';var o=ub68Obj(x),nm=ub68Nom(x),
  else{h='<div class="q">¿Seguro que aquí es '+esc(nm)+'?</div><div class="lbl">Arrastra el pin para dejarlo exacto.</div><div id="ub68map"></div><div class="lbl" id="ub68c" style="margin-top:6px">'+x.lat+', '+x.lng+'</div>'
   +'<button class="btn big" data-act="ub68si">Sí, guardar aquí</button><button class="btn sec big" data-act="ub68atras">Regresar</button>'}
  return ovW70('ub68ov','📍 Ubicación de '+nm,h,'ub68x')}
-function ub68Map(){var x=S.ub68,el=document.getElementById('ub68map');if(!x||!el||!window.L)return;try{var m=L.map(el,{zoomControl:true}).setView([x.lat,x.lng],17);mapaCapa(m,el,0);var mk=L.marker([x.lat,x.lng],{draggable:true}).addTo(m);
+function ub68Map(){var x=S.ub68,el=document.getElementById('ub68map');if(!x||!el||!window.L||el._leaflet_id)return;/* 120 · ya estaba puesto ("Map container is already initialized") */try{var m=L.map(el,{zoomControl:true}).setView([x.lat,x.lng],17);mapaCapa(m,el,0);var mk=L.marker([x.lat,x.lng],{draggable:true}).addTo(m);
   mk.on('dragend',function(){var p=mk.getLatLng();x.lat=+p.lat.toFixed(6);x.lng=+p.lng.toFixed(6);var c=document.getElementById('ub68c');if(c)c.textContent=x.lat+', '+x.lng});
   m.on('click',function(ev){mk.setLatLng(ev.latlng);x.lat=+ev.latlng.lat.toFixed(6);x.lng=+ev.latlng.lng.toFixed(6);var c=document.getElementById('ub68c');if(c)c.textContent=x.lat+', '+x.lng});setTimeout(function(){try{m.invalidateSize()}catch(e){}},200)}catch(e){console.error('mapa 58',e)}}
 function ub68Busca(){var x=S.ub68,n=natPl&&natPl();if(!String(x.q||'').trim()){toast('Escribe qué buscar');return}

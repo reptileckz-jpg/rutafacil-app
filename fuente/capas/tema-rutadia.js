@@ -76,7 +76,7 @@ function rutaRenueva80(){var v=rutaVieja80();if(!v)return false;var o=arPack(),e
   /* salió y no ha mandado el cierre: se bloquea con la pantalla "No mandaste tu cierre" */
   if(!env&&!rutaVacia(o)&&!sinEnt95){if(v!=='antes')S.dia80=v;return false}
   S.rutasHist=S.rutasHist||[];var ya=S.rutasHist.filter(function(x){return x.f===f&&+x.ch===+S.chofHoy&&!x.parcial120})[0];/* 120 · los cierres anteriores del día (parcial120) no cuentan como "ya guardada" */
-  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env,corte120:o.cierre&&o.cierre.corte||null});
+  if(!rutaVacia(o)&&!ya)S.rutasHist.push({f:f,ch:+S.chofHoy,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:env,corte120:o.cierre&&o.cierre.corte||null,fotos121:(typeof fotosRuta121==='function'?fotosRuta121(o):null)});
   /* 93 · si al cambiar de día ya se había guardado "sin enviar" y luego SÍ mandó su cierre, se actualiza (antes se quedaba "no enviado") */
   else if(ya&&env&&!ya.enviado){ya.log=o.log;ya.res=o.cierre&&o.cierre.res||null;ya.enviado=true;ya.tarde93=1;if(ya.recep82===undefined||ya.recep82===null){ya.cierreReg82=rec.reg||null;ya.recep82=rec.recep||null}}
   /* 82 · al historial se le pega cómo se recibió el cierre */
@@ -137,7 +137,7 @@ function atrasAbre93(k){var e=(S.atras93||{})[k];if(!e||e.hecho||S.role!=='admin
 function atrasSale93(recibido){var x=S.atr93;if(!x)return;var e=(S.atras93||{})[x.k];
  if(recibido&&e){e.hecho=1;e.rec={f:iso(TODAY),h:hhmm(),q:quien()};try{var H=(S.rutasHist||[]).filter(function(h){return h.f===e.f&&+h.ch===+e.id&&!h.parcial120})[0];var pk=arPack();
    if(H){H.log=pk.log;H.res=pk.cierre&&pk.cierre.res||H.res;H.enviado=true;H.cierreReg82=S.cierreReg||null;H.recep82=S.recep||null;H.recibido94=1}
-   else{S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:e.f,ch:+e.id,log:pk.log,res:pk.cierre&&pk.cierre.res||null,enviado:true,cierreReg82:S.cierreReg||null,recep82:S.recep||null,recibido94:1})}
+   else{S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:e.f,ch:+e.id,log:pk.log,res:pk.cierre&&pk.cierre.res||null,enviado:true,fotos121:(typeof fotosRuta121==='function'?fotosRuta121(pk):null),cierreReg82:S.cierreReg||null,recep82:S.recep||null,recibido94:1})}
    S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Recibió el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)})}catch(er){}
   /* el efectivo que se recibió entra a la caja de hoy (como un "cierre entregado") */
   try{if(S.cierreReg){S.cierresPrev=S.cierresPrev||[];S.cierresPrev.push({n:S.cierresPrev.length+1,res:S.cierre&&S.cierre.res||null,rec:num(S.cierreReg.rec),ch:+e.id,f:e.f,atras94:1});try{actAdd(+e.id,'Recibiste el cierre del '+fCorta91(e.f)+' de '+chofN(+e.id)+': '+money(num(S.cierreReg.rec)))}catch(er){}}}catch(er){}}
@@ -157,7 +157,7 @@ var _rd94=render;render=function(){try{atrasRevisa93()}catch(e){console.error('9
 /* ---- 95 · liberar la ruta de un chofer (antes en l86): lo que traía (efectivo, entregas, cajas) se guarda para recibirlo ---- */
 function libera86(id){var hoy=iso(TODAY),propia=+id===+S.chofHoy&&!S.arOn,o=propia?arPack():(S.chSt||{})[id];if(!o)return;
  try{atrasGuarda93(o,+id,o.rutaDia80||ayer80(),'liberada')}catch(e){console.error('95 lib',e)}
- S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:+id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true});
+ S.rutasHist=S.rutasHist||[];S.rutasHist.push({f:o.rutaDia80,ch:+id,log:o.log,res:o.cierre&&o.cierre.res||null,enviado:false,liberada:true,fotos121:(typeof fotosRuta121==='function'?fotosRuta121(o):null)});
  if(propia)arLoad(chNuevo(+id));else S.chSt[id]=chNuevo(+id);
  S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Liberó la ruta de hoy de '+chofN(id)+' (no mandó su cierre '+del80(o.rutaDia80)+')'});S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['El administrador liberó tu ruta de hoy. Lo de antes lo cuadras con él.']);
  if(S.libPide86&&S.libPide86[id])S.libPide86[id]=null;toast('Listo: '+chofN(id)+' ya tiene su ruta de hoy. Lo que traía te queda en Rutas para recibirlo.')}

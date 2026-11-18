@@ -100,7 +100,7 @@ function rp72(){var i=document.getElementById('rpR');if(!i)return;var dl=i.close
  var w=document.createElement('span');w.className='step';w.innerHTML='<button data-act="kgd" data-p="rp.R" data-d="-1" aria-label="Menos 1">−</button>';i.parentElement.insertBefore(w,i);w.appendChild(i);i.style.width='76px';i.style.textAlign='center';var pl=document.createElement('button');pl.className='plus';pl.dataset.act='kgd';pl.dataset.p='rp.R';pl.dataset.d='1';pl.setAttribute('aria-label','Más 1');pl.textContent='+';w.appendChild(pl)}
 
 /* ---------- 83 · cierre: si falta una foto, ir al paso donde va ---------- */
-function cierreFalta72(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cierre.sent)return;var sel=window._faltaSel;if(!sel)return;var vis=function(){var el=document.querySelector(sel);return el&&el.offsetParent!==null};if(vis())return;
+function cierreFalta72(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cierre.sent)return;var sel=window._faltaSel;if(!sel)return;sel=String(sel).replace(/^CH:/,'');/* 120 · "CH:[...]" no es un selector (error del 12 nov) */var vis=function(){var el=document.querySelector(sel);return el&&el.offsetParent!==null};if(vis())return;
  var p0=S.cierreP||0;for(var k=0;k<8;k++){if(k===p0)continue;S.cierreP=k;_rd72.call(window);if(vis()){setTimeout(function(){var el=document.querySelector(sel);if(el){try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}try{marcaFalta(el)}catch(e){}}},80);return}}S.cierreP=p0;_rd72.call(window)}
 
 /* ---------- 84 · botones de cliente nuevo y venta rápida ---------- */

@@ -164,7 +164,7 @@ function inicio92(){if(!adm92()||S.tab.admin!=='inicio')return;var m=document.qu
  /* arriba, en orden */
  /* (Ricardo) si hay un viaje de carga o una ruta tuya en curso, su burbuja va hasta ARRIBA (a la mitad se perdía) */
  var vb=q('.bubpanel')||q('.vbub'),ar=q('[data-act="arentrar"]'),a85=q('[data-x="adm85"]');/* si repartes hoy, "¿Repartes hoy?" y "Mi ruta de hoy" van juntos arriba (88) */
- var top=(ar?[vb,a85,ar,q('[data-x="dia80a"]'),pr]:[vb,q('[data-x="dia80a"]'),pr,a85]).filter(Boolean);var hc=document.createElement('div');hc.innerHTML=hoyCard92();var hoyEl=hc.firstElementChild;top.push(hoyEl);var cm=q('[data-x="camb"]');if(cm)top.push(cm);
+ var top=(ar?[vb,a85,ar,q('[data-x="dia80a"]'),q('[data-x="perd120"]'),q('[data-x="cuad121"]'),pr]:[vb,q('[data-x="dia80a"]'),q('[data-x="perd120"]'),q('[data-x="cuad121"]'),pr,a85]).filter(Boolean);/* 121 · el Cuadre de hoy arriba (Ricardo) */var hc=document.createElement('div');hc.innerHTML=hoyCard92();var hoyEl=hc.firstElementChild;top.push(hoyEl);var cm=q('[data-x="camb"]');if(cm)top.push(cm);
  var ref=m.firstChild;/* lo que ya iba antes (avisos de vacaciones, permisos) se queda arriba */
  var ancla=kids().filter(function(x){return x!==pr&&top.indexOf(x)<0})[0]||null;top.forEach(function(e){m.insertBefore(e,ancla)});
  /* números de hoy, luego la bodega como antes, luego ¿cuadran?, cierre de caja, resumen */

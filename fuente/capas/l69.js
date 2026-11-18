@@ -11,7 +11,7 @@
 /* ---------- ayudas ---------- */
 function tope68(){var t=num(S.cfg&&S.cfg.topeImp);return t>0?t:500}
 function esImp68(n){return /imprevist|reparaci|ponchadura|talacha|gr[uú]a|refacci|mec[aá]nic|llanta|falla/i.test(String(n||''))}
-function tasa68(vh){return vh&&vh.desg!=null&&vh.desg!==''&&isFinite(+vh.desg)?num(vh.desg):0.6}
+function tasa68(vh){return vh&&vh.desg!=null&&vh.desg!==''&&isFinite(+vh.desg)?num(vh.desg):0.7}/* 120 · $0.70 por km al empezar (decisión de Ricardo); se ajusta con el uso o con la calculadora de desgaste */
 function suelDia68(ch){if(!ch||ch.id===2||!ch.sz)return {s:0,c:0};var z=ch.sz,s=z.tipo==='semana'?num(z.monto)/7:(z.tipo==='dia'?num(z.porDia):(z.tipo==='base'?num(z.base)/7:0));return {s:Math.round(s),c:num(z.comViaje)}}
 function mgM68(c){return (S.cfg.mgIgual===false&&c&&c.mgM!=null&&c.mgM!=='')?num(c.mgM):num(c&&c.mg||30)}
 function mgR68(c){return num(c&&c.mg||30)}
@@ -95,7 +95,7 @@ function cierreExtra68(r){try{var G=(S.gch||[]),t=tope68(),big=G.filter(function
 var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
 function rep68(dias){dias=dias||30;var d0=iso(new Date(TODAY.getTime()-dias*864e5)),R=[];(S.rutasHist||[]).forEach(function(x){if(x.f>=d0&&x.res)R.push(x.res)});
  try{rutasOtras().forEach(function(o){if(o.cierre&&o.cierre.sent&&o.cierre.res)R.push(o.cierre.res)})}catch(e){}if(S.cierre&&S.cierre.sent&&S.cierre.res&&R.indexOf(S.cierre.res)<0)R.push(S.cierre.res);
- var o={rutas:0,cajas:0,kg:0,comb:0,otros:0,desg:0,suel:0};R.forEach(function(r){if(!(num(r.R)||num(r.M)))return;o.rutas++;o.cajas+=num(r.R);o.kg+=num(r.M);var g=r.g68||{};o.comb+=num(g.comb);o.otros+=Math.max(0,num(g.tot)-num(g.comb));o.desg+=Math.max(0,num(r.km))*(r.tasa68!=null?num(r.tasa68):0.6);o.suel+=num(r.suel68)});
+ var o={rutas:0,cajas:0,kg:0,comb:0,otros:0,desg:0,suel:0};R.forEach(function(r){if(!(num(r.R)||num(r.M)))return;o.rutas++;o.cajas+=num(r.R);o.kg+=num(r.M);var g=r.g68||{};o.comb+=num(g.comb);o.otros+=Math.max(0,num(g.tot)-num(g.comb));o.desg+=Math.max(0,num(r.km))*(r.tasa68!=null?num(r.tasa68):0.7);o.suel+=num(r.suel68)});
  o.tot=o.comb+o.otros+o.desg+o.suel;var kc=20;try{var lc=S.cargas.filter(function(c){return c.cajas>0&&c.kgR>0}).sort(function(a,b){return b.id-a.id})[0];if(lc)kc=lc.kgR/lc.cajas}catch(e){}
  var wR=o.cajas*kc,wM=o.kg,w=wR+wM;o.caja=o.cajas&&w?o.tot*wR/w/o.cajas:0;o.kgc=o.kg&&w?o.tot*wM/w/o.kg:0;o.kc=kc;return o}
 repCostoCard=function(){var a=rep68(7),b=rep68(30);
@@ -157,7 +157,7 @@ var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.
 
 /* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
 /* vehGastos: pasó a tema-vehiculos.js */
-function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
+function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){if(vh.desgCalc120)return;/* 120 · si se calculó con la calculadora, no se cambia solo */var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
   vh.desg=f.tasa;var txt='El desgaste de '+vh.n+' cambió de '+f2(ant)+' a '+f2(f.tasa)+' por km (con lo que de verdad se gastó en el año)';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:txt});(S.avPrecio=S.avPrecio||[]).push(txt)})}catch(e){}}
 var _rd69d=render;render=function(){var r=_rd69d.apply(this,arguments);desgAuto68();return r};
 

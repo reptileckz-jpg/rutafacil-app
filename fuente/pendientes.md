@@ -2939,3 +2939,9 @@ HECHO y PUBLICADO (10.12), `fuente/capas/tema-app171.js`, prueba `t171.js` (14 O
 - `html.lite171` (≤4 núcleos o ≤3 GB, o modo ahorro): sin backdrop-filter. `html.ahorro171`: sin animaciones ni transiciones. Ajustes → "🔋 Modo ahorro" (localStorage `ahorro171`, de cada celular).
 - Íconos 3D fuera de Inicio (`.e171`): el emoji se queda en el texto, escondido a la vista (lectores, búsquedas, comparaciones), y el ícono va al lado `aria-hidden`, quieto.
 - 142: `cmRaro150` además pregunta si el precio por kilo (roatán o macho) está 40 % arriba o abajo del promedio de las últimas 5 cargas.
+
+## 2026-11-19 · 172 · Ricardo (video): "al presionar un botón la app mueve la pantalla"; web/Fold: espacios vacíos; Ajustes desordenados. "Aún no armes el APK"
+HECHO (SIN PUBLICAR), prueba `t172.js` (18 OK).
+- Brinco: el ancla de `l82.js` (la pantalla se queda donde tocaste) buscaba el botón tocado en el dibujo nuevo por data-act/k/v/p/texto, SIN el renglón: al tocar "Mal" en Luces encontraba el "Mal" de Llantas y movía la pantalla según ese. Ahora compara también `data-i/id/w/t/c/j/n` (`ext82`).
+- Pantalla ancha (`tema-ancho172.js`): tras dibujar mide las columnas de cada tramo; si una quedó >200 px más corta, la tarjeta más alta de la columna larga va a todo lo ancho (`.span172`, hasta 3 veces). Mapa/SVG a todo lo ancho: alto máx. min(55vh,480px). Más: mosaico `auto-fill minmax(210px)`. `tema-ancha.js`: lista de clientes en cuadrícula desde 600 px (antes 900), renglones de 300 px.
+- Ajustes (`tema-ajorden172.js`, llamado desde `tema-dibujar1.js` ANTES de "morph" para no mover nodos vivos y no quitar el foco): grupos Este celular · Tu negocio · Ventas y cobranza · Fruta y bodega · Choferes y vehículos · Respaldo y datos · Otros · Acerca de (al final). Mismas tarjetas.

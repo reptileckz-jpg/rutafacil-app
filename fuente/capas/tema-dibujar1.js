@@ -125,6 +125,10 @@ var _rTr=render;render=function(){var antes={};OV_ANIM.forEach(function(x){antes
   _pfAnt=f1}catch(e){}
  return res};
 
+/* render · 172: Ajustes en grupos (tema-ajorden172.js). Va AQUÍ, antes de "morph": se ordena la copia nueva, así la pantalla de verdad
+   no mueve tarjetas en cada redibujado (moverlas quitaba el foco del campo donde escribes) */
+var _rAj172=render;render=function(){var r=_rAj172.apply(this,arguments);try{if(typeof ajOrden172==='function')ajOrden172()}catch(e){console.error('aj172',e)}return r};
+
 /* render · de l10 */
 var _rMorph=render;render=function(){
  var live=document.getElementById('root');

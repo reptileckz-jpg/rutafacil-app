@@ -2846,3 +2846,9 @@ Ricardo: "si tienes algún pendiente con Vite, termínalo todo sin preguntarme; 
 - `fuente/vite/vite.config.mjs`: `npm run build` (dist-vite/ y www/index.html) y `npm run dev` (servidor de prueba que se vuelve a armar y recarga al guardar una capa). `vite@6.3.5` en devDependencies.
 - `.github/workflows/apk.yml`: paso "Armar la app con Vite" antes de empaquetar.
 - Comprobado: las tres salidas idénticas byte por byte al armado viejo; `pruebas/tvite.js` 11 OK (incluye que se detiene si un cambio no encuentra su texto o una capa tiene error de sintaxis); todas las t*.js en 0 FAIL; todas las comparaciones IDÉNTICO; el servidor de prueba arranca sin errores (demo y real) y recarga al cambiar una capa.
+
+## 2026-11-19 · 142 resuelto (sin la captura: Ricardo dijo "hazlo, no me preguntes") → versión 10.6
+- Se reprodujo el día de Ricardo: 3 cierres del mismo chofer, $490 vendidos. El Cuadre cuenta todo UNA vez (150 km = 50 + 50 + 50, desgaste, sueldo y comisión del día una sola vez). Con la carga bien, el neto real es −$275 (día de poca venta: sueldo $250 + desgaste $105).
+- Para llegar a −$911 la caja tenía que "costar" ~$500: una carga mal capturada (2,000 kg en 40 cajas = 50 kg por caja → −$875 en la prueba; o el precio de la caja como precio del kilo).
+- Ya no pasa con cargas nuevas (150 pregunta al registrarlas). Para las de antes, el aviso "La fruta salió con pérdida" dice QUÉ carga se usa (proveedor y fecha) y qué se ve raro ("salen 50 kg por caja… ¿escribiste bien cuántas cajas?" o "el precio por kilo es $200: ¿es el de la CAJA?"). `tema-cuadre.js`, prueba `t142.js` (8 OK).
+- 10.6 es el primer APK armado con Vite.

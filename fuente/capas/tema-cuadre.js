@@ -194,7 +194,7 @@ function resultadoHTML121(T,tit){try{cdCss145()}catch(e){}
   +(num(T.neto)<0?'<div style="font-size:11px;color:#991B1B;margin-top:6px">Los gastos pasaron la ganancia de la fruta por '+cdM145(-num(T.neto))+'.</div>':'')+'</div>';
  /* 3 · avisos que se tocan */
  if(T.sinCosto)h+='<div class="k5alert2"><b>⚠️ Falta el costo de la caja o el kilo</b><div style="font-size:12px;margin-top:2px">Sin ese costo la ganancia sale inflada: parece que la fruta no costó nada.</div><button class="btn" data-act="tab" data-t="cargas">Completar costos →</button></div>';
- if(T.gan<-0.5&&T.venta>0)h+='<div class="k5alert2"><b>⚠️ La fruta salió con pérdida</b><div style="font-size:12px;margin-top:2px">Vendiste '+cdM145(T.venta)+' pero esa fruta te costó '+cdM145(r2(T.venta-T.gan))+' según el costo de tu última carga'+(T.cR?' (la caja te sale en '+cdM145(T.cR)+')':'')+'. Si no es real, revisa los kilos, el precio por kilo, el flete y cuántas cajas salieron de esa carga.</div><button class="btn" data-act="tab" data-t="cargas">Revisar cargas →</button></div>';
+ if(T.gan<-0.5&&T.venta>0)h+='<div class="k5alert2"><b>⚠️ La fruta salió con pérdida</b><div style="font-size:12px;margin-top:2px">Vendiste '+cdM145(T.venta)+' pero esa fruta te costó '+cdM145(r2(T.venta-T.gan))+' según el costo de tu última carga'+(T.cR?' (la caja te sale en '+cdM145(T.cR)+')':'')+'. Si no es real, revisa los kilos, el precio por kilo, el flete y cuántas cajas salieron de esa carga.</div>'+carga142HTML(T.d)+'<button class="btn" data-act="tab" data-t="cargas">Revisar cargas →</button></div>';
  /* 4 · flujo de ventas e ingresos */
  var dV=J(LIN.map(function(x){return cdLi145((x.p==='R'?'Plátano Roatán':'Plátano Macho')+cdTag145(x.tp),cdM145(x.q*x.pr),x.q.toLocaleString('es-MX')+(x.p==='R'?' cajas × '+cdM145(x.pr)+' c/u':' kg × '+cdM145(x.pr)+' / kg'))}))
   +(T.loc&&T.loc.venta?cdLi145('Venta en bodega',cdM145(T.loc.venta),T.loc.n+' venta'+(T.loc.n===1?'':'s')):'')
@@ -312,3 +312,14 @@ try{if(typeof SEC92!=='undefined'&&SEC92.indexOf('cuadre121')<0)SEC92.push('cuad
 /* 121 · una sola vez: todos los vehículos empiezan en $0.70 por km (traían el 0.60 de la demo), salvo los calculados con la calculadora */
 function desgIni121(){try{if(S.role!=='admin'||window.PN_MODO!=='vacio')return;(S.veh||[]).forEach(function(v){if(!v||v.desg121||v.desgCalc120)return;v.desg121=1;/* solo el 0.60 de la demo (o vacío) pasa a 0.70; si tú lo pusiste o la app lo ajustó con gastos reales, se respeta */if(v.desg==null||v.desg===''||Math.abs(num(v.desg)-0.6)<0.001)v.desg=''})}catch(e){}}
 var _r121d=render;render=function(){desgIni121();return _r121d.apply(this,arguments)};
+
+/* ---------- 142 · Ricardo: "vendí en total $490, ¿por qué dice que la ganancia del día es de −$911.38?" ----------
+   Se reprodujo con 3 cierres del mismo chofer el mismo día: el Cuadre cuenta todo UNA vez (km, desgaste, sueldo, comisión). La única forma
+   de llegar a −$911 con $490 vendidos es que la fruta "cueste" más de lo que se vende: una carga mal capturada (menos cajas de las que
+   salieron, o el precio de la caja escrito en el precio del kilo). Desde 150 ya pregunta al registrarla; para las que ya estaban,
+   el aviso "La fruta salió con pérdida" dice QUÉ carga se está usando y qué número se ve raro. Solo lee; no cambia ninguna cuenta. */
+function carga142(d){var c=(S.cargas||[]).filter(function(x){return (x.fecha||'')<=d&&num(x.kgR)>0&&num(x.pR)>0&&num(x.cajas)>0}).sort(function(a,b){return String(a.fecha).localeCompare(String(b.fecha))||a.id-b.id}).pop();return c||null}
+function carga142HTML(d){try{var c=carga142(d||iso(TODAY));if(!c)return '';var kc=r2(num(c.kgR)/num(c.cajas)),p=num(c.pR),v=num(S.precio&&S.precio.R),L=[];
+ if(kc>30)L.push('salen <b>'+kc+' kg por caja</b> ('+num(c.kgR).toLocaleString('es-MX')+' kg ÷ '+num(c.cajas)+' cajas; lo normal es como 20): ¿escribiste bien cuántas cajas?');
+ if(v>0&&p*15>v)L.push('el precio por kilo es <b>'+money(p)+'</b>: ¿es el precio de la CAJA?');
+ return '<div style="font-size:12px;margin-top:6px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,.05)">Se está usando la carga de <b>'+esc(c.prov||'')+'</b> del <b>'+esc(fCorta91(c.fecha))+'</b>'+(L.length?': '+L.join(' · '):'.')+'</div>'}catch(e){return ''}}

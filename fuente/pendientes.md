@@ -2788,3 +2788,10 @@ HECHO en `capas/tema-ticket.js` (nació como tema, va al final) + `l40.js` (gast
 - Ticket del cliente (imagen por WhatsApp): mismo formato con NOTA DE REMISIÓN No., cliente, tabla (con "Precio normal" debajo si fue mayoreo o especial), total, pago, quedó a crédito, abono, SALDO PENDIENTE, cajas vacías, próxima visita. El texto de WhatsApp (si no se manda la imagen) va con letra de ancho fijo. La impresora sigue con sus renglones.
 - Prueba `t143.js` (10 OK: tabla, el desglose suma exacto lo que hay que entregar con gastos/crédito/abonos/faltante, ancho, imágenes, texto). Capturas `disenos/ticket-corte-143.png` y `disenos/ticket-cliente-143.png`. Todas las pruebas en 0 FAIL.
 
+## 2026-11-19 · 144 · Ricardo: "para el Cuadre de hoy, ¿qué te parece una interfaz parecida al ticket? Al tocar un apartado (comisión, créditos…) te da los detalles; que sea evidente que se puede desplegar, algo que brinque. Lo demás consérvalo"
+HECHO en `capas/tema-cuadre.js` (`resultadoHTML121` rehecha). **Falta armar APK (preguntar antes).**
+- La tarjeta de arriba del Cuadre (día, semana, mes, año) con formato de ticket: letra de ancho fijo, rayas dobles y punteadas, importes con centavos y NETO grande.
+- Renglones que se abren con una pastilla "▾ ver" que brinca (cada ~2 s; se queda quieta abierta o si el celular pide menos movimiento): VENTAS (por chofer, venta en bodega, contado, crédito y a quién se le fió), Abonos (de quién), GANANCIA DE LA FRUTA (ventas − costo y el costo usado), Gastos de operación (por tipo), Desgaste (por chofer y km), Sueldos (de cada quien y cómo sale), Comisiones (por chofer con su desglose). Abajo: "Toca lo que dice ▾ ver para ver el detalle".
+- Lo demás del Cuadre igual (cuadre del dinero, tarjetas de cada chofer, día por día, por chofer). Las cuentas no cambian.
+- Pruebas: `t121` y `t128` actualizadas al formato nuevo (mismos números) + revisión del formato. Captura `disenos/cuadre-ticket-144.png`. Todas en 0 FAIL.
+

@@ -132,7 +132,9 @@ var _ru52=ruta;ruta=function(){var h=_ru52.apply(this,arguments);if(S.role!=='re
  return '<div class="card alert"><b>Falta: ubicación todo el tiempo</b><div class="lbl">Es celular del negocio. Toca el botón y escoge "Permitir todo el tiempo".</div><button class="btn" style="margin-top:8px" data-act="permfondo">Dar el permiso</button></div>'+h};
 
 /* ruta · de l56 */
-var _ru56=ruta;ruta=function(){var h=_ru56.apply(this,arguments),a=ahoraSigue();if(!a)return h;var c='<div class="card ahora" data-key="ahora"><span class="lbl">Ahora sigue</span><div class="q">'+esc(a[0])+'</div><div class="lbl">'+esc(a[1])+'</div><button class="btn sm sec" style="width:auto;margin-top:8px" data-act="ahorami">Muéstrame dónde</button></div>';
+var _ru56=ruta;ruta=function(){var h=_ru56.apply(this,arguments),a=ahoraSigue();if(!a)return h;
+ /* 133 · Ricardo: "abajo te dice dónde ir y arriba también". Si ya va en ruta, la tarjeta verde "Siguiente parada" dice lo mismo: no se repite */
+ if(/^Entrega a /.test(a[0])&&/class="card next/.test(h))return h;var c='<div class="card ahora" data-key="ahora"><span class="lbl">Ahora sigue</span><div class="q">'+esc(a[0])+'</div><div class="lbl">'+esc(a[1])+'</div><button class="btn sm sec" style="width:auto;margin-top:8px" data-act="ahorami">Muéstrame dónde</button></div>';
  var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};
 
 /* ruta · de l56 */

@@ -75,8 +75,18 @@ function rgPend(){return (S.stops||[]).filter(function(s){if(s.done)return false
 /* 126 · la tarjeta ya no desaparece: sale arriba de la ruta (también antes de salir) y si faltan ubicaciones lo dice (Ricardo, 18 nov) */
 function rgCardHTML(){if(S.role!=='rep'||!S.salida||(S.cierre&&S.cierre.sent))return '';var T=(S.stops||[]).filter(function(s){return !s.done&&cl(s.c)}),P=rgPend();if(T.length<2)return '';var sin=T.length-P.length,rg=S.rg&&S.rg.f===iso(TODAY)?S.rg:null;
  if(P.length<2)return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Para que Google la ordene se necesitan al menos 2 clientes con ubicación. '+(sin===1?'A 1 cliente le falta':'A '+sin+' clientes les falta')+' la ubicación: se guarda sola al entregarles, o confírmala en su ficha.</div></div>';
- return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(sin>0?' '+(sin===1?'1 cliente sin ubicación se queda':sin+' clientes sin ubicación se quedan')+' al final.':'')+(rg?' Último orden: '+hmDe(rg.t)+'.':'')+'</div>'
-  +'<button class="btn sec" style="margin-top:8px" data-act="rgordena">'+(rg?'Volver a calcular':'Ordenar con tráfico')+'</button></div>'}
+ return '<div class="card rgcard" data-key="rgcard"><b>🚦 Ordenar mi ruta con tráfico</b><div class="lbl">Google acomoda tus '+P.length+' clientes en el mejor orden con el tráfico de ahorita y te dice a qué hora llegas a cada uno.'+(sin>0?' '+(sin===1?'1 cliente sin ubicación se queda':sin+' clientes sin ubicación se quedan')+' al final.':'')+'</div>'+rgResHTML133()
+  +'<button class="btn sec" style="margin-top:8px" data-act="rgordena">'+(rg||S.rgRes&&S.rgRes.f===iso(TODAY)?'Volver a calcular':'Ordenar con tráfico')+'</button>'
+  +(S.rgAnt&&S.rgAnt.f===iso(TODAY)&&rgPendIds133().length?'<button class="btn sec" style="margin-top:8px" data-act="rgdeshaz">↩ Regresar al orden de antes</button>':'')+'</div>'}
+/* 133 · lo que te ahorró el último orden (antes → ahora), o que ya lo deshiciste */
+function rgResHTML133(){var x=S.rgRes;if(!x||x.f!==iso(TODAY))return '';var h='<div class="card note" style="padding:8px 10px;margin:8px 0 0">';
+ if(x.deshecho)return h+'<b>Regresaste al orden de antes</b><div class="lbl">'+hmDe(x.deshecho)+'. Toca "Volver a calcular" si lo quieres ordenar otra vez.</div></div>';
+ var a=rgAhorro133(x),q=function(o){return o?[o.min!=null?rgMin133(o.min):'',o.km!=null?rgKm133(o.km):''].filter(Boolean).join(' · '):'—'};
+ h+='<b>Último orden · '+hmDe(x.t)+(x.fuente==='app'?' (con lo que la app aprendió)':' (con Google y el tráfico)')+'</b>';
+ if(!a)return h+'<div class="lbl">Ahora: '+q(x.ahora)+'. No se pudo comparar con tu orden de antes.</div></div>';
+ h+='<div class="row" style="min-height:32px"><span>Como lo tenías</span><b>'+q(x.antes)+'</b></div><div class="row" style="min-height:32px"><span>Ordenada</span><b>'+q(x.ahora)+'</b></div>';
+ var bien=a.min>=1||(a.km!=null&&a.km>=0.5);
+ return h+'<div style="font-weight:800;margin-top:4px;color:'+(bien?'var(--accent)':'inherit')+'">'+(bien?'Te ahorra ~'+[a.min>=1?rgMin133(a.min):'',a.km!=null&&a.km>=0.5?rgKm133(a.km):''].filter(Boolean).join(' y '):'Tu orden ya era el mejor: no ahorra nada')+'</div></div>'}
 /* ruta: pasó a tema-ruta.js */
 function rgCuerpo(o,P){var ll=function(p){return {location:{latLng:{latitude:+p.lat,longitude:+p.lng}}}};
  return {origin:ll(o),destination:ll(BOD),intermediates:P.map(function(s){var c=cl(s.c);return ll(c)}),travelMode:'DRIVE',routingPreference:'TRAFFIC_AWARE',optimizeWaypointOrder:true,languageCode:'es-MX',units:'METRIC'}}
@@ -88,18 +98,37 @@ function rgSola(P){var ahora=Date.now(),de=null;(S.stops||[]).forEach(function(s
 function rgReordena(orden){var hechos=S.stops.filter(function(s){return s.done}),pend=S.stops.filter(function(s){return !s.done}),porC={};pend.forEach(function(s){porC[String(s.c)]=s});
  var nuevo=orden.map(function(k){return porC[k]}).filter(Boolean),resto=pend.filter(function(s){return nuevo.indexOf(s)<0});S.stops=hechos.concat(nuevo,resto)}
 function rgPlan(){var E=etas(),hoy=new Date();hoy.setHours(0,0,0,0);var plan={f:iso(TODAY),c:{}};S.stops.forEach(function(s,i){if(E[i])plan.c[String(s.c)]=hoy.getTime()+E[i].eta*60000});S.planDia=plan;return E}
+/* 133 · Ricardo: "no hay manera de deshacerlo, tampoco te dice cuánto tiempo o km te ahorró".
+   Antes de reordenar se guarda el orden de antes (S.rgAnt) para "Regresar al orden de antes". Con Google se piden DOS rutas al mismo
+   tiempo: la tuya como estaba y la ordenada, con el mismo tráfico, y se compara tiempo y km (S.rgRes). Si la app ordenó sola (con lo que
+   aprendió), compara el tiempo con su misma cuenta. */
+function rgMin133(m){m=Math.round(num(m));return m<60?m+' min':Math.floor(m/60)+' h'+(m%60?' '+(m%60)+' min':'')}
+function rgKm133(k){return (Math.round(num(k)*10)/10).toLocaleString('es-MX')+' km'}
+function rgPendIds133(){return (S.stops||[]).filter(function(s){return !s.done}).map(function(s){return String(s.c)})}
+function rgGuardaAnt133(){S.rgAnt={f:iso(TODAY),t:Date.now(),orden:rgPendIds133()}}
+function rgAhorro133(x){if(!x||!x.antes||!x.ahora)return null;var m=r2(num(x.antes.min)-num(x.ahora.min)),k=x.antes.km!=null&&x.ahora.km!=null?r2(num(x.antes.km)-num(x.ahora.km)):null;return {min:m,km:k}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rgordena"]');if(!b)return;e.stopImmediatePropagation();var P=rgPend();if(P.length<2){toast('Necesitas al menos 2 clientes con ubicación.');return}
- var sola=rgSola(P);if(sola){rgReordena(sola);var E0=rgPlan();toast('Ruta ordenada con lo que la app ya aprendió (sin gastar en Google). Regresas ~'+hm(E0.fin));render();return}
+ var sola=rgSola(P);if(sola){var E0=etas();rgGuardaAnt133();rgReordena(sola);var E1=rgPlan();S.rgRes={f:iso(TODAY),t:Date.now(),fuente:'app',antes:{min:num(E0.fin)-(S.salida.ok?S.reloj:480),km:null},ahora:{min:num(E1.fin)-(S.salida.ok?S.reloj:480),km:null}};
+  var a0=rgAhorro133(S.rgRes);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Ordenó su ruta con lo que la app aprendió'+(a0&&a0.min>=1?' (ahorra ~'+rgMin133(a0.min)+')':'')});
+  toast('Ruta ordenada con lo que la app ya aprendió (sin gastar en Google).'+(a0&&a0.min>=1?' Te ahorra ~'+rgMin133(a0.min)+'.':'')+' Regresas ~'+hm(E1.fin));render();return}
  var n=rgNat();if(!n){toast('Esto funciona en la app instalada en el celular del negocio.');return}
  if(!navigator.onLine){toast('Sin señal: se queda el orden de siempre.');return}
  var usa=P.slice(0,25),o=S.pos&&S.pos.lat!=null?S.pos:BOD;b.disabled=true;b.textContent='Calculando…';
+ var cAnt=rgCuerpo(o,usa);cAnt.optimizeWaypointOrder=false;/* tu orden como estaba, con el mismo tráfico */
+ var pAnt=n.rutasGoogle({cuerpo:JSON.stringify(cAnt),campos:'routes.duration,routes.distanceMeters'}).then(function(r){try{var j=JSON.parse(r.json||'{}');var R=r.status===200&&j.routes&&j.routes[0];return R?{min:rgSeg(R.duration),km:R.distanceMeters?Math.round(R.distanceMeters/100)/10:null}:null}catch(er){return null}},function(){return null});
  n.rutasGoogle({cuerpo:JSON.stringify(rgCuerpo(o,usa))}).then(function(r){var j={};try{j=JSON.parse(r.json||'{}')}catch(er){}
   if(r.status!==200||!j.routes||!j.routes[0]){var msg=j.error&&j.error.message||('error '+r.status);toast(/not authorized|API_KEY|PERMISSION|disabled|not been used/i.test(msg)?'Google no dejó usar las rutas: falta habilitar "Routes API" en la llave. Se queda el orden de siempre.':'No se pudo ordenar ('+msg+'). Se queda el orden de siempre.');render();return}
+  pAnt.then(function(ant){
   var R=j.routes[0],idx=R.optimizedIntermediateWaypointIndex||usa.map(function(x,i){return i}),orden=idx.map(function(i){return String(usa[i].c)}),legs={},prev='yo';
   (R.legs||[]).forEach(function(lg,i){var to=i<orden.length?orden[i]:'B',m=rgSeg(lg.duration);if(m!=null)legs[prev+'>'+to]=Math.round(m*10)/10;prev=to});
-  rgReordena(orden);S.rg={f:iso(TODAY),t:Date.now(),legs:legs,min:rgSeg(R.duration),km:R.distanceMeters?Math.round(R.distanceMeters/100)/10:null};var E=rgPlan();
-  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Ordenó su ruta con tráfico ('+orden.length+' clientes)'});toast('✓ Ruta ordenada con tráfico. Regresas a bodega ~'+hm(E.fin));render()},
+  rgGuardaAnt133();rgReordena(orden);S.rg={f:iso(TODAY),t:Date.now(),legs:legs,min:rgSeg(R.duration),km:R.distanceMeters?Math.round(R.distanceMeters/100)/10:null};var E=rgPlan();
+  S.rgRes={f:iso(TODAY),t:Date.now(),fuente:'google',antes:ant,ahora:{min:S.rg.min,km:S.rg.km}};var a=rgAhorro133(S.rgRes);
+  var tx=a?(a.min>=1||a.km>=0.5?'te ahorra ~'+[a.min>=1?rgMin133(a.min):'',a.km>=0.5?rgKm133(a.km):''].filter(Boolean).join(' y '):'tu orden ya era el mejor'):'';
+  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Ordenó su ruta con tráfico ('+orden.length+' clientes)'+(tx?': '+tx:'')});toast('✓ Ruta ordenada con tráfico'+(tx?': '+tx:'')+'. Regresas a bodega ~'+hm(E.fin));render()})},
   function(er){toast('Sin conexión con Google: se queda el orden de siempre.');render()})},true);
+/* deshacer: regresa al orden que tenías antes de ordenar (los ya entregados no se mueven) */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rgdeshaz"]');if(!b)return;e.stopImmediatePropagation();var A=S.rgAnt;if(!A||A.f!==iso(TODAY)){toast('Ya no hay un orden anterior para regresar.');return}
+ rgReordena(A.orden);S.rgAnt=null;if(S.rgRes)S.rgRes.deshecho=Date.now();try{rgPlan()}catch(er){}S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Regresó su ruta al orden de antes'});toast('Listo: tu ruta regresó al orden de antes');render()},true);
 /* el admin ve "estimado contra real" en la ficha del chofer */
 function planVsRealHTML(ch,dia,G){var P=nbRGet(ch,'planDia');if(!P||P.f!==dia||!P.c)return '';var real={};try{if(G&&G.est==='ok'&&G.pts.length)gpsAnaliza(G.pts).E.forEach(function(e){if(e.cli&&!real[e.cli.id])real[String(e.cli.id)]=e.t0})}catch(e){}
  var ks=Object.keys(P.c);if(!ks.length)return '';var dif=[];var rows=ks.map(function(k){var c=cl(+k),es=P.c[k],re=real[k];if(re)dif.push((re-es)/60000);return '<div class="row"><span>'+esc(c?c.n:'Cliente')+'</span><b>'+hmDe(es)+' → '+(re?hmDe(re)+' <span class="lbl">('+(re>=es?'+':'−')+minTxt(Math.abs(re-es))+')</span>':'—')+'</b></div>'}).join('');

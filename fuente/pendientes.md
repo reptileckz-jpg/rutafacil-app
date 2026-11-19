@@ -2694,3 +2694,15 @@ HECHO en `capas/tema-cierre.js` (`compFotos`, se rehace completa; la envoltura d
 - Causa: el aviso ("Se agregó a tu ruta…", `natNotif`) lo lanza la app cuando revisa la nube, y eso solo pasa con la app abierta (minimizada Android la duerme; cerrada no corre).
 - En el celular del chofer ya hay una parte nativa siempre prendida: el servicio de ubicación (`RutaGps`, arranca solo al prender el celular, revisa cada minuto y ya sube a la nube con la sesión guardada). Opciones: (A) que ese servicio revise también si hay pedidos nuevos para ese chofer y lance el aviso, sin servidor ni costo; (B) notificaciones push de Firebase (FCM) con una función en la nube (plan Blaze, pago por uso) que llegan aunque el servicio no corra. Las dos tocan lo nativo: se arman primero en `prueba-nativa`.
 
+## 2026-11-19 · Decisiones de Ricardo sobre 131 y 132
+- 132 (avisos con la app cerrada): **push de Firebase** (FCM con una función en la nube). Falta: Ricardo activa el plan Blaze y baja `google-services.json`; se arma en `prueba-nativa`.
+- 131 (gasolina): **foto del tablero de gasolina opcional** al salir y al regresar (punto 134).
+
+## 2026-11-19 · 133 · Ricardo (captura de la Ruta, APK 1.0.48): "esta pantalla hay que organizarla mejor, abajo te dice dónde ir y arriba también, pero arriba dice 'muéstrame'; además lo de ordenar la ruta con Google Maps no hay manera de deshacerlo, tampoco te dice cuánto tiempo o km te ahorró"
+HECHO (`tema-ruta.js` y `l62.js`). **Falta armar APK (preguntar antes).**
+- "Ahora sigue → Entrega a X / Muéstrame dónde" ya no sale cuando va en ruta: la tarjeta verde "Siguiente parada" dice lo mismo. Sí sale cuando ya no hay parada siguiente ("Haz tu cierre").
+- Ordenar con tráfico: se piden a Google DOS rutas al mismo tiempo (la que tenías y la ordenada, mismo tráfico) y la tarjeta dice "Como lo tenías 2 h 10 min · 85 km / Ordenada 1 h 45 min · 70 km / Te ahorra ~25 min y 15 km" (o "Tu orden ya era el mejor"). También en el aviso y en "Lo que pasó". Si la app ordena sola (con lo que aprendió), compara el tiempo con su misma cuenta.
+- "↩ Regresar al orden de antes": deja la ruta como estaba (los ya entregados no se mueven). La tarjeta dice "Regresaste al orden de antes".
+- Costo: una consulta más a Google por cada vez que se ordena (solo duración y km).
+- Prueba `t133.js` (15 OK). Captura `disenos/ruta-ordenar-ahorro.png`. Todas las pruebas en 0 FAIL (menos `tk.js`, que ya fallaba).
+

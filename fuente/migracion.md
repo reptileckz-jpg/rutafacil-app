@@ -56,6 +56,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Avisos de abajo (toast: 9 envolturas) | 9 | ✅ `tema-toast.js` (antes de `tema-version.js`). Comprobado con `pruebas/comp-toast.js` |
 | Piezas sueltas (rcHTML 3, rpForm 2, menuHTML 2, gxTipos 2, falloPantalla77 2, dfLista 2, cuentasRevisar 2) | 15 | ✅ `tema-sueltas.js` (justo después de `l90.js`). Comprobado con `pruebas/comp-sueltas.js`. rt81HTML NO: l84 la redefine |
 | Piezas de pantalla (40 envolturas de una o dos por función: tarjetas, formularios, precio, cierre, impresora, ventanas…) | 40 | ✅ `tema-piezas.js` (después de `tema-sueltas.js`). Comprobado con TODAS las comparaciones (IDÉNTICO) |
+| Envolturas dentro de un `if` (fxErr, gastos, cargas, clientes, resetDraft, pedAsigna, stock72 ×2) | 8 | ✅ al final de `tema-piezas.js` (bloques enteros, mismo orden). rt81HTML ×3: se quitaron (l84 la rehace completa; no se usaban). Todas las comparaciones IDÉNTICO |
 | "Después de dibujar" (render: 118 envolturas) | 118 | al final: una sola lista ordenada |
 | Lo que sobre | resto | pendiente |
 | **Cambiar el armado a Vite** | — | cuando quede 0 |

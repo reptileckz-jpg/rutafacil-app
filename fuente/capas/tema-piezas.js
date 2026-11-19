@@ -169,3 +169,33 @@ var _sh85=sheet84;sheet84=function(){var h=_sh85.apply(this,arguments),L=sinD85(
 
 /* nuevoCli · de l86 */
 var _nc86=nuevoCli;nuevoCli=function(o){var c=_nc86.apply(this,arguments);try{if(S.setup&&S.setup.fin&&num(c.vac)>0){S.cajasMov=S.cajasMov||[];S.cajasMov.push({t:'Taras que ya debía '+c.n+' (al darlo de alta)',f:iso(TODAY),n:Math.round(num(c.vac)),ini86:1})}}catch(e){}return c};
+
+/* ---------- envolturas que estaban dentro de un "if" (que siempre se cumple al armar): se movieron enteras, en el mismo orden (19 nov) ---------- */
+
+/* fxErr · de l22 */
+if(typeof fxErr==='function'){var _fe22=fxErr;fxErr=function(){try{_fe22.apply(this,arguments)}catch(e){}vibrar(250)}}
+
+/* gastos · de l42 */
+if(typeof gastos==='function'){var _gas42=gastos;gastos=function(){var h=_gas42.apply(this,arguments);return h+mesCardHTML()};if(typeof VIEWS!=='undefined'&&VIEWS.gastos)VIEWS.gastos=gastos}
+
+/* cargas · de l42 */
+if(typeof cargas==='function'){var _car42=cargas;cargas=function(){var h=_car42.apply(this,arguments);if(S.role!=='admin'||S.encOn)return h;var c='<button class="btn sec" style="margin:8px 0" data-act="simabre">🧮 Simulador de viaje</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+c+h.slice(i+5):c+h};if(typeof VIEWS!=='undefined'&&VIEWS.cargas)VIEWS.cargas=cargas}
+
+/* clientes · de l44 */
+if(typeof clientes==='function'){var _cli44=clientes;clientes=function(){var h=_cli44.apply(this,arguments);if(S.role!=='admin'||!qrOn()||!imprOk())return h;var n=S.cli.filter(function(c){return !c.oculto&&!c.rapida&&!c.qr}).length;if(!n)return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrfaltan">🖨️ Imprimir los '+n+' QR que faltan</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};if(typeof VIEWS!=='undefined'&&VIEWS.clientes)VIEWS.clientes=clientes}
+
+/* resetDraft · de l80 */
+if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply(this,arguments);try{/* 136: si tiene pedido, se queda lo que pidió (antes se cambiaba por la última compra) */if(c&&!c.rapida&&!c.ped){var u=ultPedido(c);S.d.R=u?num(u.R):0;S.d.M=u?num(u.M):0}}catch(e){}return r}}
+
+/* pedAsigna · de l81 */
+if(typeof pedAsigna==='function'){var _pa81=pedAsigna;pedAsigna=function(c,chId,cuando){var r=_pa81.apply(this,arguments);try{if(c&&cuando&&cuando!=='hoy'&&chId!=null)ovPon81(man81(),c.id,chId)}catch(e){}return r}}
+
+/* stock72 · de l82 */
+if(typeof stock72==='function'){var _st82=stock72;stock72=function(){if(MODO!=='vacio')return _st82.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return;var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(!c||c.dataset.x72)return;var s=sugCarga();
+ if(s.n&&(s.sR||s.sM)){c.dataset.x72='1';c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:19px;font-weight:800;margin-top:8px">Sugerido: '+(s.sR?s.sR+' cajas':'')+(s.sR&&s.sM?' y ':'')+(s.sM?s.sM+' kg':'')+'</div><div class="lbl" style="margin-top:4px">Con lo que de verdad llevan tus clientes de hoy'+(s.n<s.tot?' ('+s.n+' de '+s.tot+' tienen historial)':'')+'. Abajo, en "Iniciar el día", lo puedes usar con un toque.</div>';return}
+ return _st82.apply(this,arguments)}}
+
+/* stock72 · de l87 */
+var _st87=stock72;stock72=function(){if(MODO!=='vacio')return _st87.apply(this,arguments);var s=null;try{s=sugCarga()}catch(e){}if(s&&s.poco87&&S.role==='rep'&&!S.salida.ok){var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(c&&!c.dataset.x72){c.dataset.x72='1';
+  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:800;margin-top:8px">Todavía no hay datos suficientes</div><div class="lbl" style="margin-top:4px">Solo '+s.n+' de tus '+s.tot+' clientes de hoy ya tienen entregas. Carga lo que te diga el administrador; la app aprende con cada entrega.</div>'}return}
+ return _st87.apply(this,arguments)};

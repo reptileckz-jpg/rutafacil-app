@@ -135,9 +135,7 @@ sugCarga=function(){var P=MODO==='vacio'?prom82():null,L=(S.stops||[]).filter(fu
  return {R:R,M:M,sR:R+Math.max(5,Math.ceil(R*0.1)),sM:M+Math.max(20,Math.ceil(M*0.1)),n:L.length}};
 /* sugCargaHTML: pasó a tema-viaje.js */
 /* la tarjeta de arriba dice lo mismo */
-if(typeof stock72==='function'){var _st82=stock72;stock72=function(){if(MODO!=='vacio')return _st82.apply(this,arguments);if(S.role!=='rep'||S.salida.ok)return;var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(!c||c.dataset.x72)return;var s=sugCarga();
- if(s.n&&(s.sR||s.sM)){c.dataset.x72='1';c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:19px;font-weight:800;margin-top:8px">Sugerido: '+(s.sR?s.sR+' cajas':'')+(s.sR&&s.sM?' y ':'')+(s.sM?s.sM+' kg':'')+'</div><div class="lbl" style="margin-top:4px">Con lo que de verdad llevan tus clientes de hoy'+(s.n<s.tot?' ('+s.n+' de '+s.tot+' tienen historial)':'')+'. Abajo, en "Iniciar el día", lo puedes usar con un toque.</div>';return}
- return _st82.apply(this,arguments)}}
+/* stock72: pasó a tema-piezas.js */
 /* datos de la demo que se copiaban a cada cliente y vehículo nuevo */
 function limpiaTpl82(s){if(!s||MODO!=='vacio')return false;var ch=false,B=null;try{var b=(s.bods||[])[0];if(b&&b.lat!=null)B={lat:+b.lat,lng:+b.lng}}catch(e){}
  (s.cli||[]).forEach(function(c){if(num(c.pR)===4&&num(c.pM)===30){c.pR=0;c.pM=0;ch=true}if(num(c.km)===7&&num(c.min)===15){var k=B&&c.lat!=null?kmE(B,c):null;c.km=k!=null?Math.round(k*10)/10:0;c.min=k!=null?Math.round(k*2.5):0;ch=true}});
@@ -170,7 +168,7 @@ function fv82HTML(){var id=S.fv82;if(id==null||S.role!=='admin')return '';var sa
  return ovW70('fv82','Fotos de '+chofN(id),(v?'<div class="lbl" style="margin-bottom:6px">'+esc(v.n)+' · placa '+esc(String(v.pl||'').toUpperCase())+(sal.odoIni!=null?' · salió con '+num(sal.odoIni).toLocaleString('es-MX')+' km':'')+'</div>':'')+h+'<div class="lbl">Toca una foto para verla en grande. Cada una lleva la fecha, la hora, quién la tomó y la placa.</div>','fv82x')}
 function fv82Pon(){var o=document.getElementById('fv82'),h=fv82HTML();if(!h){if(o)o.remove();return}if(o&&o._h===h)return;ovPon70('fv82',h);var n=document.getElementById('fv82');if(n){n._h=h;n.style.zIndex='99'}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fv82"],[data-act="fv82x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();if(b.dataset.act==='fv82x'){S.fv82=null;render();return}S.fv82=+b.dataset.id;render()},true);
-var _rtF82=rt81HTML;rt81HTML=function(){var h=_rtF82.apply(this,arguments);if(!h||!S.rt81||S.rt81.dia!=='hoy')return h;return h.replace(/(<b style="font-size:18px">)([^<]*)(<\/b><br><span class="lbl">)/g,function(m,a,n,c){var ch=chs81().filter(function(x){return chofN(x.id)===n})[0];return ch?a+n+c.replace('<br>',' <button class="btn sm sec" data-act="fv82" data-id="'+ch.id+'" style="margin:4px 0 2px;min-height:36px">📷 Fotos del vehículo</button><br>'):m})};
+/* rt81HTML: aquí había una envoltura que no se usaba (l84 rehace rt81HTML completa al cargar); se quitó el 19 nov */
 var _rdF82=render;render=function(){var r=_rdF82.apply(this,arguments);try{fv82Pon()}catch(e){}return r};
 
 /* ---------- 49–53 · lo que se nos estaba pasando (re-análisis 14 nov) ---------- */

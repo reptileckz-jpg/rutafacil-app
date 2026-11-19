@@ -32,7 +32,7 @@ var PEND81={};
 /* → movido (tema-rutadia.js) */
 /* → movido (tema-rutadia.js) */
 /* los pedidos "para mañana" también quedan con su chofer */
-if(typeof pedAsigna==='function'){var _pa81=pedAsigna;pedAsigna=function(c,chId,cuando){var r=_pa81.apply(this,arguments);try{if(c&&cuando&&cuando!=='hoy'&&chId!=null)ovPon81(man81(),c.id,chId)}catch(e){}return r}}
+/* pedAsigna: pasó a tema-piezas.js */
 
 /* ---------- avisos al celular del chofer (el admin los deja en la nube; el chofer los aplica a su ruta) ---------- */
 function op81(ch,op,cid){if(ch==null)return;var f=hoy81();S.rq81=S.rq81||{};S.rq81[f]=S.rq81[f]||{};S.rq81[f]['o'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)]={ch:+ch,op:op,c:+cid,t:Date.now()}}
@@ -141,11 +141,6 @@ function aprende81(){Array.prototype.forEach.call(document.querySelectorAll('[da
 /* botón "?" */
 function help81(){try{if(HELP._81)return;HELP.inicio[1]+=' En "Rutas de hoy" ves qué clientes lleva cada chofer y los repartes.';HELP.personal[1]+=' Para repartir los clientes de hoy o mañana usa "Rutas de hoy".';HELP._81=1}catch(e){}}
 /* dentro de Rutas: "¿Cómo se usa?" (abierta la primera vez) */
-var _rtH81=rt81HTML;rt81HTML=function(){var h=_rtH81.apply(this,arguments);if(!h)return h;var R=S.rt81;if(R.ay==null)R.ay=!S.rt81Visto;S.rt81Visto=1;
- var ay='<details class="card" data-act="rt81ay"'+(R.ay?' open':'')+'><summary><b>¿Cómo se usa?</b></summary><ol style="margin:8px 0 0;padding-left:20px;line-height:1.45">'
-  +'<li>Arriba escoge <b>Hoy</b> o <b>Mañana</b>.</li><li>Marca uno o varios clientes (toca el cuadrito).</li><li>Toca <b>Pasar a…</b>, escoge el chofer y si es <b>solo ese día</b> o <b>siempre</b>. Luego <b>Hacer el cambio</b>.</li>'
-  +'<li>Con <b>Hoy no</b> saltas a un cliente solo ese día; abajo lo puedes <b>volver a poner</b>.</li><li><b>Pasar todos…</b> pasa todos los de un chofer (por si falta). <b>Todos a un chofer</b> junta a todos.</li>'
-  +'<li>Si es para hoy, al chofer le llega un aviso y su lista se acomoda sola, aunque ya vaya en camino.</li><li>Rojo arriba: clientes <b>sin chofer</b>. "Le cabe": si lo que lleva cabe en su camioneta.</li><li>El orden de las paradas lo pone el chofer con <b>Ordenar con tráfico</b>.</li></ol></details>';
- var i=h.indexOf('<div class="w">');return i<0?h:h.slice(0,i+15)+ay+h.slice(i+15)};
+/* rt81HTML: aquí había una envoltura que no se usaba (l84 rehace rt81HTML completa al cargar); se quitó el 19 nov */
 document.addEventListener('toggle',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.act==='rt81ay'&&S.rt81)S.rt81.ay=t.open},true);
 var _rd81b=render;render=function(){var r=_rd81b.apply(this,arguments);try{help81();aprende81();tutNuevo81()}catch(e){}return r};

@@ -38,7 +38,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='cortescan'){e.stopImmediatePropagation();qrScan(corteVerifica,'Apunta al QR del ticket del corte');return}
  if(a==='qrcierra'){e.stopImmediatePropagation();if(_qs)_qs();return}
  if(a==='qrfaltan'){e.stopImmediatePropagation();var L=S.cli.filter(function(c){return !c.oculto&&!c.rapida&&!c.qr}),i=0;var sig=function(){if(i>=L.length){toast('Listo: '+L.length+' etiquetas');return}var c=L[i++];imprimirItems(qrEtiqueta(c),cliQR(c)).then(function(){setTimeout(sig,600)},function(){toast('Se detuvo en '+c.n+': revisa la impresora')})};sig();return}},true);
-if(typeof clientes==='function'){var _cli44=clientes;clientes=function(){var h=_cli44.apply(this,arguments);if(S.role!=='admin'||!qrOn()||!imprOk())return h;var n=S.cli.filter(function(c){return !c.oculto&&!c.rapida&&!c.qr}).length;if(!n)return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrfaltan">🖨️ Imprimir los '+n+' QR que faltan</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};if(typeof VIEWS!=='undefined'&&VIEWS.clientes)VIEWS.clientes=clientes}
+/* clientes: pasó a tema-piezas.js */
 /* ---------- modo manejo automático (con la app abierta) ---------- */
 var MJ={on:false,w:null,ult:null,rap:0,len:0,cerca:null,vel:0};
 function mjActivo(){return S.role==='rep'&&S.salida&&S.salida.ok&&!(S.cierre&&S.cierre.sent)&&S.copiloto!==iso(TODAY)}

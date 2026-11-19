@@ -97,7 +97,7 @@ if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,argum
 /* la placa dice el estado de verdad (antes siempre "VERACRUZ") */
 /* plateSVG: pasó a tema-vehiculos.js */
 /* la entrega ya no empieza con 4 cajas y 30 kg inventados: lo de la vez pasada, o en ceros */
-if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply(this,arguments);try{/* 136: si tiene pedido, se queda lo que pidió (antes se cambiaba por la última compra) */if(c&&!c.rapida&&!c.ped){var u=ultPedido(c);S.d.R=u?num(u.R):0;S.d.M=u?num(u.M):0}}catch(e){}return r}}
+/* resetDraft: pasó a tema-piezas.js */
 /* la bodega sin ubicación: los mapas ya no usan Banderilla; mientras, se centran en tus clientes */
 function bod80(){if(MODO!=='vacio')return;var b=null;try{b=bodPrincipal()}catch(e){}if(b&&b.lat!=null)return;var L=(S.cli||[]).filter(function(c){return !c.oculto&&c.lat!=null&&!isNaN(+c.lat)});if(!L.length)return;BOD.lat=r2c80(sum(L,function(c){return +c.lat})/L.length);BOD.lng=r2c80(sum(L,function(c){return +c.lng})/L.length);BOD.aprox80=1}
 function r2c80(x){return Math.round(x*1e5)/1e5}

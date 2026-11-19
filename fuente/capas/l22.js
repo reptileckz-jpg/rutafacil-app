@@ -152,7 +152,7 @@ var _rTut22=render;render=function(){var r=_rTut22.apply(this,arguments);try{if(
 /* ===================== Vibración ===================== */
 function vibrar(p){try{var H=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics;if(H){if(Array.isArray(p)){H.vibrate({duration:Math.min(1500,p.reduce(function(a,b){return a+b},0))})}else if(p>=200)H.vibrate({duration:p});else H.impact({style:p>=40?'MEDIUM':'LIGHT'});return}}catch(e){}try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 /* velBeep: pasó a tema-vehiculos.js */
-if(typeof fxErr==='function'){var _fe22=fxErr;fxErr=function(){try{_fe22.apply(this,arguments)}catch(e){}vibrar(250)}}
+/* fxErr: pasó a tema-piezas.js */
 
 /* ===================== Teclado del PIN: responde aunque se teclee rápido ===================== */
 (function(){var st=document.createElement('style');st.textContent='#pinov .kp button{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}';document.head.appendChild(st)})();

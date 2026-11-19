@@ -34,8 +34,6 @@ function avChofer87(){if(S.role!=='rep'||S.chofHoy==null||!S.rutaAv)return;var L
 
 /* ---------- 73 · cuánto cargar: sin número si faltan datos ---------- */
 /* sugCarga: pasó a tema-viaje.js */
-var _st87=stock72;stock72=function(){if(MODO!=='vacio')return _st87.apply(this,arguments);var s=null;try{s=sugCarga()}catch(e){}if(s&&s.poco87&&S.role==='rep'&&!S.salida.ok){var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(c&&!c.dataset.x72){c.dataset.x72='1';
-  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:800;margin-top:8px">Todavía no hay datos suficientes</div><div class="lbl" style="margin-top:4px">Solo '+s.n+' de tus '+s.tot+' clientes de hoy ya tienen entregas. Carga lo que te diga el administrador; la app aprende con cada entrega.</div>'}return}
- return _st87.apply(this,arguments)};
+/* stock72: pasó a tema-piezas.js */
 
 var _rd87=render;render=function(){try{avChofer87();limpiaCierre87()}catch(e){console.error('l87',e)}var r=_rd87.apply(this,arguments);try{cierreAdm87()}catch(e){console.error('l87b',e)}return r};

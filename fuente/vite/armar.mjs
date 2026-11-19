@@ -4,8 +4,8 @@
    2. Le hace a la base (base-v38.html) los cambios de parches.mjs; en ["LIB"] mete la librería. Si un cambio no encuentra su texto
       (o lo encuentra otro número de veces), se DETIENE con el mensaje (como "FALLÓ EL ARMADO").
    3. Revisa que el script se pueda leer (sintaxis).
-   4. Saca tres versiones: demo (prototipo-platanos.html), real (platanos-primera-vez.html, PN_MODO="vacio") y la del APK (www/index.html,
-      la real con Leaflet, Firebase y Google Maps). A cada una le anota el mapa de errores (en qué renglón empieza cada capa).
+   4. Saca cuatro versiones: demo (prototipo-platanos.html), real (platanos-primera-vez.html, PN_MODO="vacio"), la del APK (www/index.html,
+      la real con Leaflet, Firebase y Google Maps) y la web (web-index.html: la del APK + manifiesto e íconos para instalarla en la computadora). A cada una le anota el mapa de errores (en qué renglón empieza cada capa).
    Uso directo: node fuente/vite/armar.mjs [carpeta]  → escribe las tres versiones (sin carpeta: dist-vite/). */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -60,10 +60,14 @@ export function armar(op = {}) {
   const real = demo.replace(t0, '<title>Plátanos · primera vez</title>\n<script>window.PN_MODO="vacio"</script>');
   const a = '<script>window.PN_MODO="vacio"</script>';
   const www = real.replace(a, a + '\n<link rel="stylesheet" href="leaflet/leaflet.css">\n<script src="leaflet/leaflet.js"></script>\n<script src="firebase.js"></script>\n<script src="mapas-cfg.js"></script>\n<script src="mapas.js"></script>');
-  return {demo: mapa(demo), real: mapa(real), www: mapa(www)};
+  // 164 · la versión web (para la computadora, se instala desde Chrome o Edge): la del APK + manifiesto, íconos y el trabajador que la deja abrir sin internet
+  const tw = '<title>Plátanos · primera vez</title>';
+  if (cuenta(www, tw) !== 1) throw new Error('FALLÓ EL ARMADO: no está el título de la versión real');
+  const web = www.replace(tw, '<title>Plátanos Nietos · Ruta Fácil</title>\n<link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#2F7D32">\n<link rel="icon" type="image/png" href="favicon.png">\n<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">\n<script>window.PN_WEB=true;if(\'serviceWorker\' in navigator)window.addEventListener(\'load\',function(){navigator.serviceWorker.register(\'sw.js\').catch(function(){})})</script>');
+  return {demo: mapa(demo), real: mapa(real), www: mapa(www), web: mapa(web)};
 }
 
-export const SALIDAS = {demo: 'prototipo-platanos.html', real: 'platanos-primera-vez.html', www: 'www-index.html'};
+export const SALIDAS = {demo: 'prototipo-platanos.html', real: 'platanos-primera-vez.html', www: 'www-index.html', web: 'web-index.html'};
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const dir = path.resolve(process.argv[2] || path.join(FUENTE, '..', 'dist-vite'));

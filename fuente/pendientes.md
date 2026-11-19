@@ -2880,3 +2880,8 @@ HECHO en `capas/tema-pin.js`, prueba `t162.js` (5 OK).
 HECHO, prueba `t163.js` (4 OK).
 - Revisión del vehículo (`tema-navega.js`): las ventanas que van encima de la app se volvían a crear con cada cambio y regresaban hasta arriba. Ahora `ovPon70` guarda dónde ibas (la ventana y lo que se desplaza adentro) y lo abierto, y lo deja igual al volver a crearla. Al tocar "Bien" pasa al siguiente punto y los botones se quedan bajo el dedo.
 - Tanque (`tema-piezas.js`, chipsTank): "Escoger el nivel con botones" no tenía nombre (data-k) y se cerraba cada vez que la pantalla se volvía a dibujar; ahora recuerda que lo abriste.
+
+## 2026-11-19 · 164 · Ricardo: "sí, haz la web" (y en DeX: "algunas tarjetas quedan flotando con un espacio vacío, sobre todo los clientes") → versión 10.11
+- **Web para computadora** en Firebase Hosting (https://platanos-nietos.web.app), misma nube y mismas cuentas. Se instala desde Chrome/Edge ("Instalar") con su ícono. Armado: 4ª salida de `fuente/vite/armar.mjs` (`web-index.html` = la del APK + manifiesto, íconos y trabajador `sw.js` que la deja abrir sin internet; siempre trae primero lo nuevo). `fuente/web.sh` arma `web-publica/`; `web-extra/` tiene manifiesto, íconos y `sw.js`. Flujo `.github/workflows/web.yml`: se publica solo con cada subida a main. `firebase.json`: hosting. En "Entrar" dice "en esta computadora".
+- **Pantalla ancha** (`capas/tema-ancha.js`, prueba `t164.js` 6 OK): en ≥900 px una tarjeta-lista (8 renglones iguales o más: Clientes, Pedidos…) ocupa todo el ancho en cuadrícula (3 columnas a 1366 px, 4 a 1920); en ≥1000 px se le deja su espacio a la barra de la izquierda (antes tapaba el contenido). En el celular, igual.
+- `pruebas/tvite.js` 12 OK (la web trae manifiesto y trabajador; la del APK no).

@@ -110,3 +110,6 @@ var _pinH162=pinHTML;pinHTML=function(){if(sinSesion162())return '';return _pinH
 var _rd162=render;render=function(){try{if(sinSesion162()&&_pin&&_pin.modo){_pin={v:'',modo:null};S.px=null}}catch(e){}var r=_rd162.apply(this,arguments);try{if(sinSesion162()){var o=document.getElementById('pinov');if(o)o.remove()}}catch(e){}return r};
 /* 162 · y la pantalla de "Entrar" va encima de TODO (antes z-index 200: algunas ventanas de la app quedaban encima) */
 (function(){var st=document.createElement('style');st.textContent='#nbov{z-index:2147483100!important}';document.head.appendChild(st)})();
+
+/* 164 · versión web (computadora): en "Entrar" dice "en esta computadora" en vez de "en este celular" */
+var _nbOv164=nbOvHTML;nbOvHTML=function(){var h=_nbOv164.apply(this,arguments);try{if(window.PN_WEB&&h)h=h.split('en este celular').join('en esta computadora')}catch(e){}return h};

@@ -24,8 +24,9 @@ const R=path.resolve(__dirname,'../..');let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK+
  const w0=fs.readFileSync(path.join(R,'www/index.html'),'utf8');let vb='';
  try{vb=execSync('npx vite build --config fuente/vite/vite.config.mjs 2>&1',{cwd:R}).toString()}catch(e){vb='ERR '+e.message}
  const D=path.join(R,'dist-vite');const L=fs.existsSync(D)?fs.readdirSync(D).sort():[];
- ok(JSON.stringify(L)===JSON.stringify(['platanos-primera-vez.html','prototipo-platanos.html','www-index.html']),'vite build deja las tres versiones (y nada más)',L);
- ok(L.length===3&&fs.readFileSync(path.join(D,'prototipo-platanos.html'),'utf8')===a.demo&&fs.readFileSync(path.join(D,'platanos-primera-vez.html'),'utf8')===a.real&&fs.readFileSync(path.join(D,'www-index.html'),'utf8')===a.www,'vite build: idéntico byte por byte (demo, real y APK)');
+ ok(JSON.stringify(L)===JSON.stringify(['platanos-primera-vez.html','prototipo-platanos.html','web-index.html','www-index.html']),'vite build deja las cuatro versiones (y nada más)',L);
+ ok(L.length===4&&fs.readFileSync(path.join(D,'prototipo-platanos.html'),'utf8')===a.demo&&fs.readFileSync(path.join(D,'platanos-primera-vez.html'),'utf8')===a.real&&fs.readFileSync(path.join(D,'www-index.html'),'utf8')===a.www,'vite build: idéntico byte por byte (demo, real y APK)');
  ok(fs.readFileSync(path.join(R,'www/index.html'),'utf8')===w0,'vite build deja www/index.html igual');
+ ok(L.length===4&&fs.readFileSync(path.join(D,'web-index.html'),'utf8')===a.web&&/<link rel="manifest" href="manifest.webmanifest">/.test(a.web)&&/serviceWorker/.test(a.web)&&!/manifest|serviceWorker/.test(a.www),'la web trae el manifiesto y el trabajador; la del APK no');
  fs.rmSync(out,{recursive:true,force:true});fs.rmSync(cp,{recursive:true,force:true});
  console.log(nOK+' OK · '+nF+' FAIL')})();

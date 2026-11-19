@@ -6,8 +6,8 @@ const mide=async(W)=>{const p=await (await b.newContext({viewport:{width:W,heigh
  await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(900);
  const r=await p.evaluate(()=>{S.tutVisto={rep:true,admin:true};S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='clientes';render();
   var L=document.querySelector('main>.lista164'),m=document.querySelector('main'),nav=document.querySelector('nav.tabs');
-  var cols=L?getComputedStyle(L).gridTemplateColumns.split(' ').length:0,wL=L?L.getBoundingClientRect().width:0;
-  var navR=nav?nav.getBoundingClientRect():null,mL=m.getBoundingClientRect().left;return {lista:!!L,cols:cols,anchoLista:Math.round(wL),anchoMain:Math.round(m.getBoundingClientRect().width),navDer:navR?Math.round(navR.right):0,mainIzq:Math.round(mL),navLado:navR&&navR.height>navR.width,sw:document.documentElement.scrollWidth}});
+  var cols=L?getComputedStyle(L).gridTemplateColumns.split(' ').length:0,wL=L?L.offsetWidth:0;
+  var navR=nav?nav.getBoundingClientRect():null,mL=m.getBoundingClientRect().left;return {lista:!!L,cols:cols,anchoLista:Math.round(wL),anchoMain:Math.round(m.clientWidth-parseFloat(getComputedStyle(m).paddingLeft)-parseFloat(getComputedStyle(m).paddingRight)),navDer:navR?Math.round(navR.right):0,mainIzq:Math.round(mL),navLado:navR&&navR.height>navR.width,sw:document.documentElement.scrollWidth}});
  await p.close();return r};
 let r=await mide(1366);
 ok(r.lista&&r.cols>=3&&r.anchoLista===r.anchoMain,'1366 px: la lista de clientes ocupa todo el ancho, en 3 columnas o más',r);

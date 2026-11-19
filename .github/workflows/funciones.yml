@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Publicar en Firebase
         env:
           SA: ${{ secrets.FIREBASE_SA }}
@@ -21,7 +21,7 @@ jobs:
           if [ -z "$SA" ]; then echo "Falta el secreto FIREBASE_SA (la llave de la cuenta de servicio de Firebase)."; exit 1; fi
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
-          npm i -g firebase-tools@13 --no-audit --no-fund
+          npm i -g firebase-tools@14 --no-audit --no-fund
           (cd functions && npm i --no-audit --no-fund)
           firebase deploy --only functions,firestore:rules --project platanos-nietos --non-interactive --force
           rm -f "$RUNNER_TEMP/sa.json"

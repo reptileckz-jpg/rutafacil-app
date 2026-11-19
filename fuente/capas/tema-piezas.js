@@ -12,7 +12,7 @@
    ============================================================================================ */
 
 /* chipsTank · de l3 */
-var _ctL=chipsTank;chipsTank=function(a,v,d){var h=_ctL.apply(this,arguments),i=h.indexOf('<div class="chips" role="group" aria-label="Nivel del tanque">');if(i<0)return h;return h.slice(0,i)+'<details style="margin-top:6px"><summary class="lbl">Escoger el nivel con botones</summary>'+h.slice(i)+'</details>'};
+var _ctL=chipsTank;chipsTank=function(a,v,d){var h=_ctL.apply(this,arguments),i=h.indexOf('<div class="chips" role="group" aria-label="Nivel del tanque">');if(i<0)return h;/* 163: con data-k recuerda que lo abriste (antes se cerraba solo cada vez que la pantalla se volvía a dibujar) */var k='tkb163'+a;return h.slice(0,i)+'<details data-k="'+k+'" style="margin-top:6px"'+(S.dOpen&&S.dOpen[k]?' open':'')+'><summary class="lbl">Escoger el nivel con botones</summary>'+h.slice(i)+'</details>'};
 
 /* sw2Hecho · de l5 */
 var _swHK=sw2Hecho;sw2Hecho=function(t,k){if(t==='g'){var x=S.gastos[+k];if(x){anularPide('g',+k,'el gasto '+x.t+' de '+money(x.m));render()}return}if(t==='ch'){var y=S.gch[+k];if(y){anularPide('ch',+k,'el gasto '+y.tipo+' de '+money(y.m));render()}return}return _swHK.apply(this,arguments)};

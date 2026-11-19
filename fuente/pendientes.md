@@ -2875,3 +2875,8 @@ HECHO en `capas/tema-angosta.js` (solo estilos), prueba `t161.js` (6 OK: 344, 32
 ## 2026-11-19 · 162 · Ricardo: "sigue el error al cerrar sesión: le di en cerrar sesión… y 'No soy Ricardo Nieto' y vuelve a pedir el PIN, no cierra la sesión"
 HECHO en `capas/tema-pin.js`, prueba `t162.js` (5 OK).
 - La sesión SÍ se cerraba, pero la pantalla del PIN (z-index altísimo) quedaba ENCIMA de la de "Entrar" (z-index 200). Ahora, mientras no haya sesión lista en la nube, no se pide el PIN (se quita) y "Entrar" / "¿Quién eres?" va encima de todo. Ya adentro, el PIN se pide como siempre.
+
+## 2026-11-19 · 163 · Ricardo: "en la lista de verificación del vehículo, cada que pongo una opción (llantas, luces…) la pantalla se sube sola; y en el nivel de combustible, si abro los botones sin tocar la aguja, se cierran solos: pareciera que se redibuja, como que brinca" → versión 10.10
+HECHO, prueba `t163.js` (4 OK).
+- Revisión del vehículo (`tema-navega.js`): las ventanas que van encima de la app se volvían a crear con cada cambio y regresaban hasta arriba. Ahora `ovPon70` guarda dónde ibas (la ventana y lo que se desplaza adentro) y lo abierto, y lo deja igual al volver a crearla. Al tocar "Bien" pasa al siguiente punto y los botones se quedan bajo el dedo.
+- Tanque (`tema-piezas.js`, chipsTank): "Escoger el nivel con botones" no tenía nombre (data-k) y se cerraba cada vez que la pantalla se volvía a dibujar; ahora recuerda que lo abriste.

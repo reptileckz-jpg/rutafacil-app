@@ -29,3 +29,15 @@ var _swB88=swBloq;swBloq=function(t){if(t&&t.closest&&t.closest('[data-x="pnd86"
 /* ---------- ovPon70 (aplanado el 18 nov, antes en l83): una ventana no se vuelve a dibujar si no cambió ---------- */
 /* ovPon70 · de l83 */
 var _ovP83=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id);if(o&&html&&o._h70===html)return;_ovP83.apply(this,arguments);var n=document.getElementById(id);if(n)n._h70=html};
+
+/* 163 · Ricardo: "en la lista de verificación del vehículo, cada que pongo una opción (llantas, luces…) la pantalla se sube sola; pareciera que
+   se redibuja, como que brinca". Las ventanas que van encima de la app (revisión del vehículo y otras) se vuelven a crear cuando cambia algo:
+   el desplazamiento regresaba hasta arriba y lo que estaba abierto se cerraba. Ahora, al volver a crearla, se queda donde ibas (la ventana y lo
+   que se desplaza adentro) y lo abierto sigue abierto. Si la ventana cambia de página (otra cosa adentro), igual se queda en su lugar. */
+var _ovP163=ovPon70;ovPon70=function(id,html){var o=document.getElementById(id),sv=null;
+ try{if(o&&html&&o._h70!==html){sv={t:o.scrollTop,inner:[],det:[]};var A=o.querySelectorAll('*');for(var i=0;i<A.length;i++){if(A[i].scrollTop>0)sv.inner.push([i,A[i].scrollTop])}
+  Array.prototype.forEach.call(o.querySelectorAll('details'),function(d){sv.det.push(d.open)})}}catch(e){sv=null}
+ var r=_ovP163.apply(this,arguments);
+ try{var n=document.getElementById(id);if(n&&sv&&n!==o){var B=n.querySelectorAll('*');sv.inner.forEach(function(q){if(B[q[0]])B[q[0]].scrollTop=q[1]});n.scrollTop=sv.t;
+  var D=n.querySelectorAll('details');sv.det.forEach(function(op,i){if(op&&D[i]&&!D[i].hasAttribute('data-k'))D[i].open=true})}}catch(e){}
+ return r};

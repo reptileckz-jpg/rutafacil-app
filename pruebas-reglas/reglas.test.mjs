@@ -69,12 +69,15 @@ await prueba('GPS: el admin lee y borra lo viejo; sin sesión nada', async () =>
   await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/gpsp/cel1_0000000000001')));
   await assertFails(setDoc(doc(db(null), 'n/pn/gps/cel9'), { dev: 'cel9' }));
 });
-await prueba('push: el chofer guarda SU token (y no el de otro); nadie lo lee', async () => {
-  await assertSucceeds(setDoc(doc(db('danu'), 'n/pn/tok/1'), { t: 'tokendanu', ts: 1 }));
-  await assertFails(setDoc(doc(db('danu'), 'n/pn/tok/3'), { t: 'x', ts: 1 }));
-  await assertFails(setDoc(doc(db('danu'), 'n/pn/tok/1'), { t: 'x', ts: 1, otro: 1 }));
-  await assertFails(getDoc(doc(db('danu'), 'n/pn/tok/1')));
-  await assertFails(getDoc(doc(db('duenio'), 'n/pn/tok/1')));
+await prueba('push: el chofer guarda SU token (y no el de otro); nadie lo lee; sin acceso, nada', async () => {
+  /* danu ya no tiene acceso (una prueba de arriba se lo quitó): se usa otro chofer activo */
+  await env.withSecurityRulesDisabled(async (c) => { await setDoc(doc(c.firestore(), 'usuarios_app/pepe'), { rol: 'chofer', activo: true, chId: 6 }); });
+  await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/tok/6'), { t: 'tokenpepe', ts: 1 }));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/tok/3'), { t: 'x', ts: 1 }));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/tok/6'), { t: 'x', ts: 1, otro: 1 }));
+  await assertFails(getDoc(doc(db('pepe'), 'n/pn/tok/6')));
+  await assertFails(getDoc(doc(db('duenio'), 'n/pn/tok/6')));
+  await assertFails(setDoc(doc(db('danu'), 'n/pn/tok/1'), { t: 'x', ts: 1 }));
   await assertFails(setDoc(doc(db('baja'), 'n/pn/tok/4'), { t: 'x', ts: 1 }));
 });
 await prueba('push: solo el administrador (o el encargado) manda un aviso; el chofer no', async () => {

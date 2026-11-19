@@ -79,15 +79,28 @@ var _ru33=ruta;ruta=function(){var h=_ru33.apply(this,arguments);if(S.role!=='re
 /* ruta · de l40 */
 var _ru40=ruta;ruta=function(){var h=_ru40.apply(this,arguments);if(S.role!=='rep'||!S.cierre||!S.cierre.sent||S.cx)return h;var c=S.cierre,d=c.corte||{},r=S.reab,nm=chofN(S.chofHoy).split(' ')[0];
  var recibido=!!S.cierreReg,enc=encList().filter(function(x){return x.ch===+S.chofHoy&&x.est==='pend'}),pide=chPideSeguir(S.chofHoy);
- var o='<div class="poscierre"><div class="saludo">'+saludoHora()+', '+esc(nm)+'</div>'
-  +'<div class="card good cienv"><div class="big">✓</div><b style="font-size:20px">Cierre enviado</b><div class="lbl">'+(S.ciEnvH?'A las '+esc(S.ciEnvH)+'. ':'')+(recibido?'El administrador ya recibió tu efectivo.':'Entrega '+money(d.ent!=null?d.ent:(c.res||{}).efectivo||0)+(d.dest==='tómbola'?' en la tómbola':' al administrador')+'.')+'</div>'
-  +(S.corteUlt?'<button class="btn sm sec" style="margin-top:8px" data-act="corteotra">📲 Mandar otra vez la foto del corte</button>':'')+'</div>'
+ /* 146 · Ricardo mandó el diseño "Jornada finalizada" (y el ciclo: "Listo por hoy" pedía el PIN y regresaba a la misma pantalla).
+    Ahora: ¡Buen trabajo!, su ganancia de hoy y de la semana, el cierre (hora, efectivo, pendiente/recibido, folio, reenviar), "Todo listo por hoy",
+    los imprevistos plegados (cargar más, otra vuelta, apoyar) y el botón principal "Cerrar sesión (cambiar de chofer)". Ya no hay "Listo por hoy". */
+ try{jor146Css()}catch(e){}
+ var gh=0,gs=0;try{var ch0=chofHoyObj(),T0=cuadreDia121(iso(TODAY)),o0=(T0.ch||[]).filter(function(x){return +x.ch===+S.chofHoy})[0];gh=o0?r2(num(o0.sueldo)+num(o0.com)):0;gs=ch0?r2(num(szCalc(ch0).br)):0}catch(e){}
+ var efe=d.ent!=null?d.ent:(c.res||{}).efectivo||0,abre=S.dOpen&&S.dOpen.jor146x;
+ var o='<div class="j6"><div class="j6hero"><span class="j6badge"><i></i>JORNADA FINALIZADA · '+esc(tkFecha143?tkFecha143(iso(TODAY)).replace(/ \d{4}$/,''):'')+'</span>'
+  +'<h2>¡Buen trabajo, '+esc(nm)+'!</h2><p>Tu ruta de hoy está cerrada.</p>'
+  +'<div class="j6g"><div><span>Tu ganancia hoy</span><b>'+cdM145(gh)+'</b></div><div><span>Acumulado semana</span><b>'+cdM145(gs)+'</b></div></div></div>'
+  +'<div class="j6card"><div class="j6h"><span class="j6ok">✓</span><div><b>Cierre enviado'+(S.ciEnvH?' a las '+esc(S.ciEnvH):'')+'</b><small>Ticket registrado en el sistema</small></div></div>'
+  +'<div class="j6efe"><div class="j6r"><span>'+(d.dest==='tómbola'?'Efectivo en la tómbola':'Efectivo a entregar al admin')+'</span><span class="j6st '+(recibido?'ok':'')+'">'+(recibido?'Recibido por el admin ✓':'Pendiente de recibir')+'</span></div>'
+  +'<div class="j6r"><b class="j6m">'+cdM145(efe)+'</b>'+(d.v?'<span class="j6folio">Folio: '+esc(d.v)+'</span>':'')+'</div></div>'
+  +(S.corteUlt?'<button class="j6btn2" data-act="corteotra">📲 Reenviar ticket por WhatsApp</button>':'')+'</div>'
   +(r&&r.est==='pend'?'<div class="card note"><b>Esperando permiso del administrador…</b><div class="lbl">Pediste '+(r.k==='carga'?'cargar más':'dar otra vuelta')+' a las '+esc(r.h||'')+'.</div></div>':'')
   +(r&&r.est==='no'?'<div class="card alert"><b>El administrador no autorizó seguir</b><div class="lbl">Si necesitas algo, llámale.</div></div>':'')
-  +(enc.length?'<div class="card note"><b>Ya no tienes pedidos por entregar, pero te queda:</b></div>'+encRutaHTML(false):'<div class="card"><div class="nada">Nada más por hoy ✓</div><div class="lbl">Gracias por tu trabajo.</div></div>')
-  +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" data-act="seguir" data-k="carga">'+(pide?'Pedir permiso: cargar más':'Cargar más')+'</button><button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">'+(pide?'Pedir permiso: otra vuelta':'Otra vuelta')+'</button></div>'
-  +(S.inv.reparto>0||S.inv.repartoKg>0||true?'<button class="btn sec" style="margin-top:8px" data-act="apoyoofrece">🤝 Puedo apoyar a otro chofer</button>':'')+apoyoMioHTML()
-  +'<button class="btn sec" style="margin-top:8px" data-act="listohoy">Listo por hoy</button></div>';
+  +(enc.length?'<div class="card note"><b>Ya no tienes pedidos por entregar, pero te queda:</b></div>'+encRutaHTML(false)
+    :'<div class="j6calm"><span>🌙</span><div><b>Todo listo por hoy</b><small>Ya puedes descansar o cerrar tu sesión. No tienes entregas ni tareas pendientes.</small></div></div>')
+  +apoyoMioHTML()
+  +'<details class="j6x" data-k="jor146x"'+(abre?' open':'')+'><summary>¿Surgió un imprevisto? Ver opciones extra <span class="j6chev">▾</span></summary><div class="j6xd"><small>Usa estas opciones solo si el administrador te pide reabrir actividad hoy:</small>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1" data-act="seguir" data-k="carga">📦 '+(pide?'Pedir permiso: cargar más':'Cargar más mercancía')+'</button><button class="btn sec" style="flex:1" data-act="seguir" data-k="vuelta">🚚 '+(pide?'Pedir permiso: otra vuelta':'Iniciar otra vuelta')+'</button></div>'
+  +'<button class="btn sec" style="margin-top:8px" data-act="apoyoofrece">🤝 Apoyar a otro chofer</button></div></details>'
+  +'<button class="j6out" data-act="jor146salir">Cerrar sesión (cambiar de chofer)</button></div>';
  return o};
 
 /* ruta · de l40 */
@@ -186,3 +199,28 @@ function pedHTML136(c,d){var p=c&&c.ped;if(!p)return '';var q=[];if(num(p.R))q.p
 var _ent136=entrega;entrega=function(){var h=_ent136.apply(this,arguments);try{var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(!c||!c.ped)return h;var x=pedHTML136(c,S.d);
  var an='<b style="font-size:18px">¿Qué le dejas?</b>';var k=h.indexOf(an);return k>-1?h.slice(0,k+an.length)+x+h.slice(k+an.length):h}catch(e){return h}};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ped136"]');if(!b)return;e.stopImmediatePropagation();var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(!c||!c.ped||!S.d)return;S.d.R=num(c.ped.R);S.d.M=num(c.ped.M);render()},true);
+
+/* 146 · estilos de "Jornada finalizada" (prefijo j6 para no chocar con los de la app) */
+function jor146Css(){if(document.getElementById('css146'))return;var st=document.createElement('style');st.id='css146';st.textContent=[
+ '.j6{display:flex;flex-direction:column;gap:14px;margin-top:6px}',
+ '.j6hero{background:linear-gradient(145deg,#1B4332 0%,#143627 100%);color:#fff;border-radius:20px;padding:18px;position:relative;overflow:hidden}',
+ '.j6hero:before{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(250,204,21,.10)}',
+ '.j6badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.05em;background:rgba(0,0,0,.25);color:#FEF08A;border:1px solid rgba(253,224,71,.25);border-radius:99px;padding:3px 10px}.j6badge i{width:7px;height:7px;border-radius:50%;background:#4ADE80;display:inline-block}',
+ '.j6hero h2{margin:10px 0 2px;font-size:26px;font-weight:800;color:#fff}.j6hero p{margin:0;opacity:.85;font-size:14px}',
+ '.j6g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.j6g div{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}',
+ '.j6g span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#A7F3D0;font-weight:700}.j6g b{font-size:18px;color:#FACC15;font-variant-numeric:tabular-nums}',
+ '.j6card{background:var(--card,#fff);border:1px solid var(--line);border-radius:18px;padding:14px}',
+ '.j6h{display:flex;align-items:center;gap:10px}.j6h b{display:block;font-size:15px}.j6h small{color:var(--muted);font-size:12px}',
+ '.j6ok{width:36px;height:36px;border-radius:50%;background:#DCFCE7;color:#15803D;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;flex:none}',
+ '.j6efe{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:12px}.j6r{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.j6r>span{font-size:12px;color:var(--muted)}',
+ '.j6st{font-size:11px!important;font-weight:800;border-radius:99px;padding:2px 10px;background:#FEF3C7;color:#92400E!important}.j6st.ok{background:#16A34A;color:#fff!important}',
+ '.j6m{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px}.j6folio{font-family:ui-monospace,monospace;font-size:12px!important;background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;padding:2px 8px}',
+ '.j6btn2{width:100%;margin-top:10px;min-height:46px;border-radius:14px;border:1px solid #BBF7D0;background:#F0FDF4;color:#166534;font-weight:700;font-size:14px}',
+ '.j6calm{display:flex;gap:12px;align-items:center;background:var(--card,#fff);border:1px solid var(--line);border-radius:18px;padding:14px}.j6calm>span{font-size:26px;width:44px;height:44px;border-radius:50%;background:#EEF2FF;display:flex;align-items:center;justify-content:center;flex:none}.j6calm b{display:block}.j6calm small{color:var(--muted);font-size:13px}',
+ '.j6x{background:var(--card,#fff);border:1px dashed var(--line);border-radius:16px}.j6x>summary{list-style:none;display:flex!important;justify-content:space-between;align-items:center;padding:12px 14px;min-height:48px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}',
+ '.j6x>summary::-webkit-details-marker{display:none}.j6x>summary::after,.j6x>summary::before{content:none!important;display:none!important}.j6x[open] .j6chev{transform:rotate(180deg)}.j6chev{transition:transform .25s}.j6xd{padding:0 14px 14px}.j6xd small{color:var(--muted)}',
+ '.j6out{width:100%;min-height:56px;border-radius:16px;border:0;background:#1B4332;color:#fff;font-size:16px;font-weight:800;margin:4px 0 10px}'
+ ].join('');document.head.appendChild(st)}
+
+/* 146 · "Cerrar sesión (cambiar de chofer)": la misma confirmación de "No soy… · cambiar de usuario" (se cierra la sesión de la cuenta en este celular) */
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="jor146salir"]');if(!b)return;e.stopImmediatePropagation();S.menu=false;S.px={t:'otro',k:pinKey()};render()},true);

@@ -2806,3 +2806,13 @@ HECHO en `capas/tema-cuadre.js` (`resultadoHTML121` rehecha; reemplaza la de 144
 - Números: `lin145Pon` agrupa las ventas por producto/tipo/precio con lo que dejó cada grupo (día y semana/mes). Las cuentas no cambian. Sin Tailwind ni letras de internet (funciona sin señal); clases con prefijo `k5` para no chocar con los estilos de la app.
 - Pruebas: `t120`, `t121`, `t128` actualizadas (mismos números). Captura `disenos/cuadre-145.png`. Todas en 0 FAIL.
 
+
+## 2026-11-19 · 146 · Ricardo: "cuando el repartidor manda el cierre y le das en *Es todo por hoy*, te manda al PIN, pones la huella y te regresa a la misma pantalla (bucle)" + diseño "Jornada finalizada"
+HECHO en `capas/tema-ruta.js` (vista de la ruta después de mandar el cierre). **Falta armar APK (preguntar antes).**
+- Pantalla "Jornada finalizada" con el diseño de Ricardo (clases `j6`): ¡Buen trabajo!, ganancia de hoy y acumulado de la semana; tarjeta del cierre (hora, efectivo, pendiente / "Recibido por el admin ✓", folio, reenviar ticket); "Todo listo por hoy"; los imprevistos (cargar más, otra vuelta, apoyar) plegados.
+- Ya no existe "Listo por hoy" (era el bucle: bloqueaba con PIN y al poner la huella volvía a la misma pantalla). En su lugar "Cerrar sesión (cambiar de chofer)" → pide confirmar "¿Cambiar de usuario?".
+- Prueba `t146.js` (8 OK). Captura `disenos/jornada-146.png`.
+
+## 2026-11-19 · 147 · Ricardo: "en el PIN, *¿No eres Danu?* vuelve a pedir el PIN; no deja cambiar de usuario"
+HECHO en `capas/tema-pin.js`: en un celular donde solo puede entrar una persona (celular de chofer con su cuenta), "Cambiar de usuario" lleva directo a "¿Cambiar de usuario?" (cerrar la sesión de la cuenta) en vez de la lista con él solo → su PIN otra vez. Prueba en `t146.js`.
+- **Pendiente de decisión de Ricardo:** al cerrar sesión sale la pantalla de correo/contraseña y "eso está mal". Opciones: (A) celular del negocio con PIN de cada quien (cambia reglas y perfiles) o (B) seguir con cuenta por persona pero la pantalla de entrada muestra los nombres ya usados en ese celular y solo pide la contraseña.

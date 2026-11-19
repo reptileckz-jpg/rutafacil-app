@@ -65,3 +65,10 @@ var _pinEnt58=pinEntrar;pinEntrar=function(){var k=pinKey();if(pnGracia(k)){S.pi
 
 /* entrarComo · de l58 */
 var _entC58=entrarComo;entrarComo=function(){_pinAuth={};return _entC58.apply(this,arguments)};
+
+/* 147 · Ricardo: "cuando te pide el PIN y le das 'No eres Danu', se vuelve a poner el PIN: no te deja cambiar de usuario".
+   En el celular de un chofer, la lista de "Cambiar de usuario" solo traía a ese chofer (la cuenta de la nube es suya): escogerlo pedía su PIN
+   otra vez (el ciclo). Ahora, si en este celular solo puede entrar esa persona, "Cambiar de usuario" lleva directo a "¿Cambiar de usuario?"
+   (cerrar la sesión de la cuenta y entrar con otra). */
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="usrcambia"]');if(!b)return;var L=[];try{L=personasEntrar()}catch(er){}
+ if(!(typeof NB!=='undefined'&&NB.on&&NB.perfil)||L.length>1)return;e.stopImmediatePropagation();S.menu=false;S.usrSel=false;var k=(_pin&&_pin.k)||pinKey();S.px={t:'otro',k:k};render()},true);

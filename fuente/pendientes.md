@@ -2903,3 +2903,9 @@ HECHO en `capas/tema-mas.js` (SIN PUBLICAR: solo en la rama). Prueba `t166.js` (
 - No se tomó: su barra inferior (ya está la 165) ni el panel de accesos rápidos (sus opciones eran de ejemplo).
 - CSS del diseño encerrado en .mas166, animaciones con sufijo 166, modo oscuro el de la app. Solo administrador.
 - t92 actualizada (nuevo orden de Más).
+
+## 2026-11-19 · 167 · Ricardo: "vamos a rediseñar la parte gráfica, usa este código como base (Inicio Bento Glossy 3D), pero conserva nuestra información y que nada se corrompa"
+HECHO en `capas/tema-glossy.js` (SIN PUBLICAR). Prueba `t167.js` (8 OK). Capturas `disenos/inicio-167*.png`.
+- Del código base, tal cual: sprite de degradados, ilustraciones 3D (bolsa, plátanos, camión, calendario, bodega, reloj), CSS (variables claro/oscuro, tarjetas Bento, botones elásticos, micro-animaciones, pop68).
+- Cambios para que funcione y no se corrompa: (1) inicio() no se llama por nombre al dibujar → la clase .ini167 se pone a <main> DESPUÉS de dibujar (alcanza también las tarjetas que se agregan después; no se envuelve nada); (2) emojis → ilustraciones SOLO en el texto visible (no atributos ni campos); (3) la entrada escalonada solo al llegar a Inicio (la app recrea las tarjetas en cada redibujado: parpadeaba) — lo mismo para el mosaico de Más (166); (4) estilo Bento en las tarjetas de primer nivel (> .card).
+- Comprobado: mismos botones (data-act) y mismo texto/números que sin el tema; todas las pruebas en 0 FAIL.

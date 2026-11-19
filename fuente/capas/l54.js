@@ -66,6 +66,6 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* registrar carga: si escribes un proveedor que no existe, se da de alta ahí mismo */
 var _rCm54=null;window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="savecarga"]');if(!b||!S.cf)return;var n=String(S.cf.prov||'').trim();if(!n||provNames().indexOf(n)>-1)return;var n0=S.cargas.length;
  setTimeout(function(){if(S.cargas.length>n0){provD(n);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Dio de alta al proveedor '+n});S.avPrecio.push(quien()+' registró un proveedor nuevo: '+n+' (completa sus datos)');render()}},30)},true);
-var _cf54=cfForm;cfForm=function(){var h=_cf54.apply(this,arguments);return h.replace('</datalist></div>','</datalist></div><div class="lbl" style="margin:-2px 0 6px">¿Es nuevo? Escríbelo y se agrega al guardar.</div>')};
+/* cfForm: pasó a tema-cargas.js */
 /* pedido por WhatsApp: solo lo que vende ese proveedor (el roatán se pide en kilos o cajas, se paga por kilo) */
 /* provPideHTML: pasó a tema-viaje.js */

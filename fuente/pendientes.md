@@ -2775,3 +2775,6 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 
 
 ## 2026-11-19 · Ricardo: "arma el APK con los cambios" → versión 10.3 a main (139 fotos nuevas en cada cierre, gasolina obligatoria, 140 corte desglosado, 141 lo que pasó por cierre, 142 costo usado en el Cuadre). Todas las pruebas en 0 FAIL.
+- APK 1.0.50 (versión 10.3) armado bien.
+- Vite: registrar carga → final de `tema-cargas.js` y tema "Bodega y maduración" → `tema-bodega.js`. 229 → **208 (63%)**. `comp-bodega.js` idéntica (63 demo / 57 real); todas las pruebas en 0 FAIL.
+- 132: la publicación de la función sigue fallando porque faltan los 3 permisos de las cuentas internas (pubsub: Creador de tokens; compute: Invocador de Cloud Run y Receptor de eventos de Eventarc).

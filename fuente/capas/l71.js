@@ -20,44 +20,25 @@ sano68=function(){if(setupAbierto71())return;var malos=[];try{var I=S.inv||{};['
 
 /* ---------- 65 · lotes de fruta madura ---------- */
 madVence=function(){var v=vidaDias(),o=[];(S.madL||[]).forEach(function(x){if(!(num(x.q)>0))return;var q=v-madEdad(x);if(q<=0)o.push((x.p==='R'?n65(x.q)+' cajas de roatán maduro':n65(x.q)+' kg de macho maduro')+' ya se pasaron de tiempo: revisar o rematar')});return o};
-var _ant71=antig65;antig65=function(){var d=_ant71.apply(this,arguments);if(!d)return d;var v=3;try{v=vidaDias()}catch(e){}
- try{var st=d.querySelector('.hd .st');if(st)st.textContent='Sale primero la más vieja · se descuenta sola con las ventas';
-  Array.prototype.forEach.call(d.querySelectorAll('.lote[data-act="lt53"]'),function(el){var x=(S.madL||[])[+el.dataset.k];if(!x)return;var mal=v-madEdad(x)<=0;if(mal){var t=el.querySelector('.tq53');if(t)t.textContent='Se pasó de tiempo: toca para decir qué pasó ›';return}
-   el.removeAttribute('data-act');el.removeAttribute('role');el.removeAttribute('tabindex');el.style.cursor='default';var t2=el.querySelector('.tq53');if(t2)t2.remove()})}catch(e){}return d};
-var _ltA71=lt53Aplica;lt53Aplica=function(){var t=S.lt53,x=lt53Lote();if(!t||!x||t.op!=='salio')return _ltA71.apply(this,arguments);
- var R=x.p==='R',hoy=iso(TODAY),otros=(S.madL||[]).filter(function(z){return z!==x&&z.p===x.p&&num(z.q)>0}).sort(function(a,b){return String(a.dia).localeCompare(String(b.dia))}),nuevo=otros[otros.length-1],nom=R?n65(x.q)+' cajas de roatán':n65(x.q)+' kg de macho',dv=x.dia;
- /* lo que queda en bodega es fruta más nueva: el lote viejo se junta con el más nuevo (o queda con fecha de hoy) y su tarjeta se quita */
- if(nuevo&&nuevo.dia>=x.dia){nuevo.q=R?num(nuevo.q)+num(x.q):r2(num(nuevo.q)+num(x.q));x.q=0;S.madL=(S.madL||[]).filter(function(z){return num(z.q)>0.001})}else x.dia=hoy;
- S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:quien(),x:'Lote de fruta madura ('+nom+', del '+fmtF(dv)+') salió a la venta: ya no es fruta vieja (no cambia el inventario)'});return 'Listo: ese lote ya no sale como fruta vieja'};
+/* antig65: pasó a tema-bodega.js */
+/* lt53Aplica: pasó a tema-bodega.js */
 
 /* ---------- 77 · Bodega: total + verdes / en maduración / maduras ---------- */
 function madBod71(p){var b=+(S.bodSel||1);return sum((S.lotes||[]).filter(function(l){return l.prod===p&&(l.bod==null||+l.bod===b)}),function(l){return num(l.q)})}
-var _ex71=exist65;exist65=function(old){var d=_ex71.apply(this,arguments);try{var I=S.inv||{},b=(S.bods||[]).filter(function(x){return +x.id===+(S.bodSel||1)})[0]||{n:'Bodega'},mR=madBod71('R'),mM=madBod71('M');
-  var t=function(k,v,u,col,bg){return '<div class="tile" style="background:'+bg+'"><div class="k" style="color:'+col+'"><span class="dot" style="background:'+col+'"></span>'+k+'</div><div><span class="big">'+n65(v)+'</span><span class="u">'+u+'</span></div></div>'},
-   fila=function(nom,col,tot,u,vv,mm,ma,uu){return '<div class="lab71" style="margin:12px 2px 6px;font-size:16px;font-weight:800;color:var(--fg)">Hay <b style="font-size:20px;color:'+col+'">'+n65(tot)+'</b> '+u+' de '+nom+', de '+(u==='kg'?'los cuales':'las cuales')+':</div>'
-    +'<div class="g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'+t('Verdes',vv,uu,'#15803D','color-mix(in srgb,#16A34A 7%,var(--surface))')+t('En maduración',mm,uu,'#D97706','color-mix(in srgb,#F59E0B 7%,var(--surface))')+t('Maduras',ma,uu,'#B45309','color-mix(in srgb,#CA8A04 10%,var(--surface))')+'</div>'};
-  d.innerHTML='<div class="hd"><span class="ic" style="background:#FFEDD5;color:#EA580C">'+IC65.caja+'</span><span class="grow"><div class="tt">Existencias en bodega</div><div class="st">'+esc(b.n)+' (solo consulta)</div></span></div>'
-   +fila('roatán','#C2410C',num(I.verdes)+mR+num(I.maduras),'cajas',I.verdes,mR,I.maduras,'cajas')
-   +fila('macho','#15803D',num(I.kgVerde)+mM+num(I.kgMaduro),'kg',I.kgVerde,mM,I.kgMaduro,'kg')
-   +'<div class="lbl" style="margin-top:8px">Lo que va en los camiones no cuenta aquí: ya salió de la bodega.</div>'}catch(e){console.error('exist71',e)}return d};
+/* exist65: pasó a tema-bodega.js */
 (function(){var st=document.createElement('style');st.textContent='.n65 .g3 .tile{padding:10px 8px}.n65 .g3 .big{font-size:22px}.n65 .g3 .k{font-size:12px}';document.head.appendChild(st)})();
 
 /* ---------- 75 · registrar carga → meter a madurar: ¿cuándo se sacan? ---------- */
 function salida71(h){var d=new Date(Date.now()+num(h)*3600e3),dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];var hoy=new Date(),man=new Date(hoy.getTime()+864e5),mismo=function(a,b){return a.toDateString()===b.toDateString()};
  return (mismo(d,hoy)?'hoy':mismo(d,man)?'mañana':'el '+dias[d.getDay()]+' '+d.getDate())+' a las '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
-var _cmMad71=cmMadHTML;cmMadHTML=function(){var h=_cmMad71.apply(this,arguments),m=S.cm;try{if(m.mad!=='si')return h;
-  h=h.replace(/<label for="cm_mz\.(R|M)\.h">Horas para madurar<\/label>/g,function(a,p){return '<label for="cm_mz.'+p+'.h" style="font-weight:800;font-size:17px">¿En cuántas horas los sacas de madurar?</label>'});
-  ['R','M'].forEach(function(p){var z=m.mz&&m.mz[p];if(!z||!m[p])return;var id='cmmzh'+p,i=h.indexOf('<div class="lbl" id="'+id+'">');if(i<0)return;
-   h=h.slice(0,i)+'<div class="card note" style="padding:8px 12px;margin-top:6px;font-size:16px" id="cmsal71'+p+'">⏰ Salen de madurar <b>'+(num(z.h)>0?salida71(z.h):'—')+'</b></div>'+h.slice(i)})}catch(e){}return h};
+/* cmMadHTML: pasó a tema-cargas.js */
 document.addEventListener('input',function(e){var t=e.target;if(!t||!S.cm||!/^cm_mz\.(R|M)\.h$/.test(t.id||''))return;var p=t.id.charAt(6),el=document.getElementById('cmsal71'+p);if(el)el.innerHTML='⏰ Salen de madurar <b>'+(num(t.value)>0?salida71(t.value):'—')+'</b>'},true);
-var _cmV71=cmValida;cmValida=function(k){var e=_cmV71.apply(this,arguments);if(e||k!=='madurar')return e;var m=S.cm;if(m.mad==='si'){var f=['R','M'].filter(function(p){return m[p]&&num(m['mad'+p])>0&&!(num((m.mz&&m.mz[p]||{}).h)>0)});if(f.length)return 'Escribe en cuántas horas los sacas de madurar'}return ''};
+/* cmValida: pasó a tema-cargas.js */
 
 /* ---------- 76 · precio de la carga: "Usar desde hoy" ya usado ---------- */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lphoy"],[data-act="lpdesp"],[data-act="lpinter"]');if(!b)return;var c=cargaById(+b.dataset.id);if(c){c.lpModo=b.dataset.act;c.lpF=iso(TODAY)}S.lp71=null},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cmpv"]');if(!b||!S.cm)return;var n0=S.cargas.length,v=b.dataset.v;setTimeout(function(){try{var c=S.cargas[S.cargas.length-1];if(c&&S.cargas.length>n0){c.lpModo={hoy:'lphoy',desp:'lpdesp',inter:'lpinter'}[v]||c.lpModo;c.lpF=iso(TODAY);c.lpOk=true}}catch(er){}},0)},true);
-var _lpH71=lotePrecioHTML;lotePrecioHTML=function(c){if(!c)return '';var ed=S.lp71===c.id;if(!c.lpOk||ed||!c.lpModo)return _lpH71.apply(this,arguments);
- var txt=c.lpModo==='lphoy'?'Se usa desde el '+fmtF(c.lpF||iso(TODAY)):(c.lpModo==='lpinter'?'Precio intermedio mientras se acaba el lote anterior':'Se usará cuando se acabe el lote anterior');
- return '<div class="card good" style="padding:12px 14px"><b style="font-size:18px">✓ Precio de esta carga en uso</b>'+(c.cajas?rw('Caja de roatán',money(num(c.vCaja))):'')+(c.kgM?rw('Kilo de macho',money(num(c.vKgM))):'')+'<div class="lbl">'+esc(txt)+'</div><button class="btn sec" style="margin-top:8px;min-height:50px;width:100%" data-act="lp71cam" data-id="'+c.id+'">Cambiar el precio</button></div>'};
+/* lotePrecioHTML: pasó a tema-bodega.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lp71cam"]');if(!b)return;e.stopImmediatePropagation();S.lp71=+b.dataset.id;S.lp=null;render()},true);
 
 /* ---------- 85 · mayoreo del día ---------- */

@@ -48,8 +48,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='blsi'){var bd=(S.bods||[]).filter(function(z){return +z.id===+x.id})[0];if(bd){bd.lat=x.lat;bd.lng=x.lng;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Guardó la ubicación de '+bd.n+' ('+x.lat+', '+x.lng+')'});bodAplica()}S.blov=null;toast('✓ Ubicación guardada');render();return}},true);
 var _rd62b=render;render=function(){var r=_rd62b.apply(this,arguments);try{var o=document.getElementById('blov');if(o)o.remove();var hh=bodLocHTML();if(hh){var w=document.createElement('div');w.innerHTML=hh;document.body.appendChild(w.firstElementChild);try{mapaMonta()}catch(e){}try{gmRevisa()}catch(e){}}}catch(e){console.error(e)}return r};
 /* botón en la tarjeta de Bodegas y en Ajustes */
-var _bc62=bodegasCard;bodegasCard=function(){var h=_bc62.apply(this,arguments);try{var L=(S.bods||[]).map(function(b){return '<div class="row"><span>📍 '+esc(b.n)+'<br><span class="lbl">'+(b.lat!=null?'Ubicación guardada':(b===bodPrincipal()?'Banderilla (la de inicio)':'Sin ubicación'))+'</span></span><button class="btn sm sec" style="width:auto" data-act="bodloc" data-id="'+b.id+'">Cambiar ubicación</button></div>'}).join('');
- var i=h.indexOf('<div class="lbl" style="margin-top:8px"><b>Agregar bodega');return i>-1?h.slice(0,i)+L+h.slice(i):h}catch(e){return h}};
+/* bodegasCard: pasó a tema-bodega.js */
 /* ajHTML: pasó a tema-ajustes.js */
 
 /* ---------- 12 · la app aprende de sus rutas ---------- */

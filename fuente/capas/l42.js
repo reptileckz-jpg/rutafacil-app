@@ -50,7 +50,7 @@ function ventaDiaR(){var d0=iso(new Date(TODAY.getTime()-7*864e5)),dias={},tot=0
 function madSugHTML(){var v=ventaDiaR();if(!(v>0))return '';var ped=sum(S.cli.filter(function(c){return c.ped&&!c.oculto}),function(c){return num(c.ped.R)}),mad=num(S.inv.maduras),enM=madR(),ver=num(S.inv.verdes);
  var hace=Math.ceil(v*2+ped-mad-enM);var meter=Math.max(0,Math.min(ver,hace));
  return '<div class="card '+(meter>0?'note':'good')+'" data-key="madsug"><b>Sugerencia de maduración</b><div class="lbl">Se venden ~'+Math.round(v)+' cajas al día'+(ped?' y hay pedidos por '+ped:'')+'. Tienes '+mad+' maduras y '+enM+' madurando.</div><div style="font-size:18px;font-weight:800;margin-top:6px">'+(meter>0?'Mete '+meter+' cajas a madurar hoy':'Por hoy no hace falta meter más')+'</div>'+(meter>0&&ver<hace?'<div class="lbl neg">Solo tienes '+ver+' verdes.</div>':'')+'</div>'}
-var _bod42=bodega;bodega=function(){var h=_bod42.apply(this,arguments),s=madSugHTML();if(!s)return h;var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+s+h.slice(i+5):s+h};
+/* bodega: pasó a tema-bodega.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.bodega)VIEWS.bodega=bodega;
 /* ---------- viaje: lo pactado contra lo real ---------- */
 var _r42b=render;render=function(){try{(S.vws||[]).forEach(function(v){if(!v.hist||v.hist.pvr)return;v.hist.pvr=(v.par||[]).map(function(p){var caj=p.t==='R'||p.u==='cajas',real=caj?num(p.cajas):vwKg(p);return {l:vwParLbl(p)+' en '+p.prov,u:caj?'cajas':'kg',plan:num(p.plan),real:r2(real),pk:num(p.pk)}});

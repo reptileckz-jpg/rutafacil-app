@@ -20,7 +20,7 @@ function kmProvs68(P){var km=0;(P||[]).forEach(function(p){var d=null;try{d=prov
 function apErr(tipo,txt,donde){try{S.probs=S.probs||[];var k=tipo+'|'+txt;if(S.probs.some(function(p){return p.auto&&p.k===k&&p.f===iso(TODAY)&&!p.res}))return;/* 122 · si ya se había marcado resuelto y vuelve a pasar, se anota otra vez */S.probs.push({id:Date.now()+Math.random().toString(36).slice(2,6),k:k,auto:true,f:iso(TODAY),h:hhmm(),q:(function(){try{return quien()}catch(e){return ''}})(),donde:donde||'',g:'App',txt:txt,v:(typeof PN_VER!=='undefined'?PN_VER:'')});if(S.probs.length>300)S.probs=S.probs.slice(-300)}catch(e){}}
 
 /* ---------- 54 · registrar carga: desgaste, sueldo e imprevisto ---------- */
-var _cmN69=cmNuevo;cmNuevo=function(){var r=_cmN69.apply(this,arguments);if(S.cm)S.cm.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',impOn:'',impT:'Ponchadura',impM:''};return r};
+/* cmNuevo: pasó a tema-cargas.js */
 function cmX68(){var m=S.cm;if(!m.x68)m.x68={dOn:'',km:'',tasa:'',sOn:'',sm:'',impOn:'',impT:'Ponchadura',impM:''};var x=m.x68;
  if(x.km===''){x.km=String(kmProvs68(cmProvs().map(function(p){return p[0]})))}
  if(x.tasa===''){x.tasa=String(tasa68(vehById(+m.veh)))}
@@ -45,18 +45,9 @@ function cmImpCard68(){var x=cmX68(),t=tope68();
   +ch68('cm68','impOn',[['no','No'],['si','Sí']],x.impOn)
   +(x.impOn==='si'?ch68('cm68','impT',[['Ponchadura','Ponchadura o talacha'],['Grúa','Grúa'],['Refacción','Refacción'],['Mecánico','Mecánico'],['Otro','Otro']],x.impT)+inp68('cm68im','cm.x68.impM',x.impM,'¿Cuánto costó? $')
    +(num(x.impM)>t?'<div class="card note" style="padding:8px 12px"><b>Es más de '+money(t)+'</b><div style="font-size:14px">Se carga al <b>mantenimiento del vehículo</b>, no al costo de esta fruta (si no, saldría carísima).</div></div>':(num(x.impM)?'<div class="lbl">Hasta '+money(t)+': entra al costo de este viaje.</div>':'')):'')+'</div>'}
-var _cmH69=cmHTML;cmHTML=function(){var h=_cmH69.apply(this,arguments);try{if(!h||!S.cm)return h;var P=cmPasos(),k=P[Math.min(S.cm.paso,P.length-1)];
-  if(k==='res'&&cmChof()){var i=h.indexOf('<div class="card" style="padding:10px 12px">');if(i>-1)h=h.slice(0,i)+cmCostCards68()+h.slice(i)}
-  if(k==='gastos'){var j=h.lastIndexOf('<div style="display:flex;gap:8px;margin-top:14px">');if(j>-1)h=h.slice(0,j)+cmImpCard68()+h.slice(j)}
- }catch(e){console.error('cm69',e)}return h};
-var _cmO69=cmObj;cmObj=function(){var o=_cmO69.apply(this,arguments);try{var m=S.cm,x=m&&m.x68;if(!x)return o;
-  if(x.impOn==='si'&&num(x.impM)>0){var big=num(x.impM)>tope68();o.extras=(o.extras||[]).concat([{c:'Imprevisto: '+x.impT,m:num(x.impM),imp68:true,mant:big}])}
-  if(cmChof()){var vh=vehById(+m.veh);o.dsgOn=x.dOn==='si';o.dsgKm=num(x.km);o.dsgTasa=num(x.tasa);o.dsgM=o.dsgOn?Math.round(o.dsgKm*o.dsgTasa):0;o.suelOn=x.sOn==='si';o.suelM=o.suelOn?num(x.sm):0;o.suelQ=m.quien==='yo'?quien():chofN(+m.quien);if(vh)o.veh=vh.id}
- }catch(e){}return o};
-var _cmV69=cmValida;cmValida=function(k){var e=_cmV69.apply(this,arguments);if(e)return e;var m=S.cm,x=m&&m.x68;if(!x)return '';
- if(k==='gastos'){if(!x.impOn)return 'Contesta si hubo algún imprevisto en el camino';if(x.impOn==='si'&&num(x.impM)<=0)return 'Escribe cuánto costó el imprevisto'}
- if(k==='res'&&cmChof()){cmX68();if(!x.dOn)return 'Contesta si sumas el desgaste del vehículo';if(x.dOn==='si'&&num(x.km)<=0)return 'Escribe los kilómetros del viaje';if(!x.sOn)return 'Contesta si se le asignó un sueldo por este viaje';if(x.sOn==='si'&&num(x.sm)<=0)return 'Escribe cuánto se le paga por el viaje'}
- return ''};
+/* cmHTML: pasó a tema-cargas.js */
+/* cmObj: pasó a tema-cargas.js */
+/* cmValida: pasó a tema-cargas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cm68"]');if(!b||!S.cm)return;e.stopImmediatePropagation();var x=cmX68();x[b.dataset.k]=b.dataset.v;var o=$('cmov'),st=o?o.scrollTop:0;render();o=$('cmov');if(o)o.scrollTop=st},true);
 /* el viaje queda en el historial con su desgaste y su sueldo (para comparar proveedores) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cmguardar"],[data-act="cmpvok"]');if(!b||!S.cm)return;var n0=S.cargas.length;
@@ -119,13 +110,9 @@ desg=function(c,k){var rp=rep68(30),vR=num(c.vCaja)||num(S.precio.R),vM=num(c.vK
  h+=sec('4','Cuánto ganas','var(--accent)','var(--ok-soft)',(c.cajas?ln('Por caja de roatán',f2(uR)+(eR?' ('+(uR/eR*100).toFixed(0)+'%)':''),uR<0?'neg':''):'')+(c.kgM?ln('Por kilo de macho',f2(uM)+(eM?' ('+(uM/eM*100).toFixed(0)+'%)':''),uM<0?'neg':''):'')+big('Utilidad del viaje',money(ut),ut<0?'var(--danger)':'var(--accent)')+'<div class="lbl">Si vendes todo a esos precios, ya contando lo que cuesta repartirla. No incluye merma.</div>');
  return h};
 /* precio sugerido (resumen de "Revisa y guarda" y precio de la carga) con el costo de repartir y la meta de cada fruta */
-var _cC69=cC;cC=function(c){var o=_cC69.apply(this,arguments);try{var rp=rep68(30);o.repCaja=rp.caja;o.repKg=rp.kgc;o.sug=(o.costoCaja+rp.caja)*(1+mgR68(c)/100);o.sugM=(o.costoKgM+rp.kgc)*(1+mgM68(c)/100)}catch(e){}return o};
+/* cC: pasó a tema-cargas.js */
 /* meta de ganancia: roatán y macho (o la misma para los dos) */
-var _cf69=cfield;cfield=function(c,key,label,step){if(key!=='mg')return _cf69.apply(this,arguments);var ig=S.cfg.mgIgual!==false;
- /* 102 · si la carga es de una sola fruta, una sola meta (sin hablar de la otra) */
- var hayR=num(c&&c.cajas)>0||num(c&&c.kgR)>0,hayM=num(c&&c.kgM)>0;if(hayR&&!hayM)return _cf69(c,'mg','Meta de ganancia %',step);if(hayM&&!hayR)return _cf69(c,ig?'mg':'mgM','Meta de ganancia %',step);
- return _cf69(c,'mg',ig?'Meta de ganancia (roatán y macho) %':'Meta de ganancia del roatán %',step)+(ig?'':_cf69(c,'mgM','Meta de ganancia del macho %',step))
-  +'<button class="btn sm sec" style="width:auto;margin-top:6px" data-act="mgigual">'+(ig?'Poner una meta distinta para el macho':'Usar la misma para los dos')+'</button>'};
+/* cfield: pasó a tema-cargas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mgigual"]');if(!b)return;e.stopImmediatePropagation();S.cfg.mgIgual=S.cfg.mgIgual===false?true:false;toast(S.cfg.mgIgual===false?'Ahora el macho tiene su propia meta':'La misma meta para los dos');render()},true);
 var _bP69=bigPrecio;bigPrecio=function(tit,cost,key,step,unit,mg){if(key==='M'&&mg!=null){var c=S.cargas.filter(function(x){return S.cvOpen&&x.id===+S.cvOpen})[0];if(c)mg=mgM68(c)}return _bP69.call(this,tit,cost,key,step,unit,mg)};
 

@@ -60,7 +60,7 @@ if(typeof nbAplica==='function'){var _nbA80=nbAplica;nbAplica=function(){var r=_
 
 /* ---------- 33 · la tarjeta de fruta madura se desliza para quitarla ---------- */
 function antigFirma80(){var v=3;try{v=vidaDias()}catch(e){}return (S.madL||[]).filter(function(x){return num(x.q)>0}).map(function(x){var e=0;try{e=madEdad(x)}catch(er){}return x.p+x.dia+(v-e<=1?'!':'')}).sort().join(',')}
-var _ant80=antig65;antig65=function(){var d=_ant80.apply(this,arguments);if(!d)return d;try{if(S.antigOff80&&S.antigOff80===antigFirma80())return null;d.dataset.sw80='1';var st=d.querySelector('.hd .st');if(st)st.textContent=st.textContent+' · desliza para quitarla'}catch(e){}return d};
+/* antig65: pasó a tema-bodega.js */
 (function(){var x0=null,y0=null,el=null;document.addEventListener('touchstart',function(e){var t=e.target.closest&&e.target.closest('[data-sw80]');if(!t){el=null;return}el=t;x0=e.touches[0].clientX;y0=e.touches[0].clientY;el.style.transition='none'},{passive:true});
  document.addEventListener('touchmove',function(e){if(!el)return;var dx=e.touches[0].clientX-x0,dy=e.touches[0].clientY-y0;if(Math.abs(dy)>Math.abs(dx)){return}el.style.transform='translateX('+dx+'px)';el.style.opacity=String(Math.max(.3,1-Math.abs(dx)/300))},{passive:true});
  document.addEventListener('touchend',function(e){if(!el)return;var dx=(e.changedTouches[0].clientX-x0);el.style.transition='transform .2s,opacity .2s';if(Math.abs(dx)>110){el.style.transform='translateX('+(dx>0?500:-500)+'px)';el.style.opacity='0';S.antigOff80=antigFirma80();setTimeout(function(){render();toast('Listo. Vuelve sola si entra fruta de otro día o algo está por pasarse.')},200)}else{el.style.transform='';el.style.opacity=''}el=null},{passive:true})})();

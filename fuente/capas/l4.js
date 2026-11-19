@@ -67,7 +67,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  /* mandar el cierre con cosas sin terminar */
  if(a==='enviar'&&!D.ok&&borrPend().length){e.stopImmediatePropagation();abrirModal('Tienes cosas sin terminar',borrPend().map(function(x){return '• '+esc(x.n)}).join('<br>')+'<div class="lbl" style="margin-top:6px">Lo que no termines no se cuenta en el cierre.</div>',[['Ir a terminarlo','borrir',' data-k="'+borrPend()[0].k+'"'],['Enviar de todos modos','enviar',' data-ok="1"']]);return}
  if(a==='enviar'&&D.ok){S.modal=null}},true);
-var _cmNK=cmNuevo;cmNuevo=function(){var r=_cmNK.apply(this,arguments);S._cm0=JSON.stringify(S.cm);return r};
+/* cmNuevo: pasó a tema-cargas.js */
 function borrPend(){var L=[];var B=S.borr||{};
  if(S.role==='rep'){if(B.ent){var c=cl(B.ent.c);L.push({k:'ent',n:'Entrega a '+(c?c.n:'cliente')})}if(B.gx)L.push({k:'gx',n:'Gasto de '+((S.gx||{}).tipo||'la ruta')+' ('+money(num((S.gx||{}).monto))+')'})}
  if(S.role==='admin'){if(B.cm)L.push({k:'cm',n:'Registro de carga'});if(B.vf)L.push({k:'vf',n:B.id!=null?'Cambios a un vehículo':'Vehículo nuevo'});if(B.ce){var c2=cl(B.ce.id);L.push({k:'ce',n:'Datos de '+(c2?c2.n:'un cliente')})}}

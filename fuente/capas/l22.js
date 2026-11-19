@@ -18,7 +18,7 @@ var _r22=render;render=function(){var r=_r22.apply(this,arguments);try{hdrMedir(
 /* minimizada también se queda arriba */
 var _dfB22=dfBurbuja;dfBurbuja=function(){return _dfB22.apply(this,arguments).replace('<div style="display:flex;justify-content:flex-end;margin-bottom:8px">','<div class="dfmini" style="display:flex;justify-content:flex-end;margin-bottom:8px">')};
 /* Bodega */
-var _bod22=bodega;bodega=function(){return _bod22.apply(this,arguments).replace('<div class="card"><div class="lbl">Existencias de ','<div class="card exist"><div class="lbl">Existencias de ')};
+/* bodega: pasó a tema-bodega.js */
 if(typeof VIEWS!=='undefined')VIEWS.bodega=bodega;
 
 /* ===================== Versión real: sin "demo" en el menú ===================== */

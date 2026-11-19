@@ -40,7 +40,7 @@ var _sal79=null;function carg79(){if(S.role!=='rep'||!S.salida)return;var ok=!!S
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="pedcarga"]');if(!b||S.role!=='rep')return;try{pedPend().forEach(function(s){var c=cl(s.c);if(c&&c.ped)c.ped.porCargar79=1})}catch(er){}},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cxsave"]');if(!b||S.role!=='rep')return;setTimeout(function(){try{pedPend().forEach(function(s){var c=cl(s.c);if(c&&c.ped&&!c.ped.carg79){c.ped.carg79=1;delete c.ped.porCargar79}})}catch(er){}},50)},true);
 /* Bodega: lo apartado */
-var _ex79=exist65;exist65=function(old){var d=_ex79.apply(this,arguments);try{var a=apartado79('hoy');if(a.R||a.M){var x=document.createElement('div');x.className='card note';x.style.cssText='margin-top:10px;padding:10px 12px';x.innerHTML='<b>📌 Apartado para pedidos de hoy: '+(a.R?a.R+' cajas':'')+(a.R&&a.M?' y ':'')+(a.M?a.M+' kg':'')+'</b><div class="lbl">'+esc(a.N.join(', '))+'. Nadie más lo puede usar.</div>';d.appendChild(x)}}catch(e){}return d};
+/* exist65: pasó a tema-bodega.js */
 /* venta en bodega y remate: si toca lo apartado, pregunta si se libera */
 function libera79(nec,u,sig){var dp=dispo79(),hay=u==='R'?dp.R:dp.M,a=dp.a;if(nec<=hay||!(u==='R'?a.R:a.M))return false;
  window._lib79=sig;abrirModal('Está apartado','Hay '+(u==='R'?a.R+' cajas':a.M+' kg')+' apartadas para pedidos de hoy ('+esc(a.N.join(', '))+'). Libres solo quedan '+hay+(u==='R'?' cajas':' kg')+'. ¿Las liberas para esto?',[['Sí, liberarlas','lib79']]);return true}

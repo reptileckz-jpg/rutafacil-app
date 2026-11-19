@@ -407,6 +407,32 @@ public class RutaNativa extends Plugin {
         }
     }
 
+    /* ---------------- 132 · avisos push (Firebase Cloud Messaging) ----------------
+       Regresa el token de este celular para que la nube le mande avisos aunque la app esté cerrada.
+       Deja creado el canal "avisos" (el mismo de notificar) para que el aviso suene aunque la app nunca haya avisado nada.
+       Si el APK no trae google-services.json, Firebase no está y se dice por qué (la app sigue igual). */
+    @PluginMethod
+    public void pushToken(PluginCall call) {
+        try {
+            Context ctx = getContext();
+            if (Build.VERSION.SDK_INT >= 26) {
+                NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (nm.getNotificationChannel("avisos") == null) {
+                    NotificationChannel ch = new NotificationChannel("avisos", "Avisos de la ruta", NotificationManager.IMPORTANCE_HIGH);
+                    ch.setDescription("Entregas nuevas y avisos del administrador");
+                    nm.createNotificationChannel(ch);
+                }
+            }
+            if (com.google.firebase.FirebaseApp.getApps(ctx).isEmpty()) { call.reject("sin-firebase"); return; }
+            com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken().addOnCompleteListener(t -> {
+                if (t.isSuccessful() && t.getResult() != null) { JSObject o = new JSObject(); o.put("token", t.getResult()); call.resolve(o); }
+                else call.reject("No se pudo sacar el token de avisos" + (t.getException() != null ? ": " + t.getException().getMessage() : ""));
+            });
+        } catch (Throwable e) {
+            call.reject(String.valueOf(e.getMessage()));
+        }
+    }
+
     /* ---------------- celular del negocio (solo si la app es "dueña" del celular) ---------------- */
     private DevicePolicyManager dpm() { return (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE); }
     private ComponentName adminCmp() { return new ComponentName(getContext(), RutaAdmin.class); }

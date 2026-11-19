@@ -36,3 +36,7 @@ var _p57A82=p57Asigna;p57Asigna=function(c,id){if(MODO!=='vacio'||!cerro82(id)||
 
 /* aplica83 · de l85 */
 var _ap85=aplica83;aplica83=function(dest){try{var R=S.rt81,D=(R.dias85||[]).slice().sort();if(D.length)sinD85().forEach(function(c){c.dias=D.slice();c.chofer=+dest;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Le puso días a '+c.n+' ('+D.map(function(x){return DSEM[x]}).join(', ')+') con '+chofN(dest)})});R.dias85=[]}catch(e){}return _ap85.apply(this,arguments)};
+
+/* p57Asigna · 132 · al asignar un pedido a un chofer, le llega un aviso push aunque tenga la app cerrada (tema-push.js) */
+var _pA132=p57Asigna;p57Asigna=function(c,id){var r=_pA132.apply(this,arguments);try{if(c&&c.ped&&+c.ped.asig78===+id&&typeof pushManda132==='function'){var p=c.ped,q=[];if(num(p.R))q.push(num(p.R)+' caja'+(num(p.R)===1?'':'s'));if(num(p.M))q.push(num(p.M).toLocaleString('es-MX')+' kg');
+ pushManda132(id,'📦 Pedido nuevo'+(/mañana/i.test(String(r||''))?' para mañana':''),c.n+(q.length?': '+q.join(' y '):'')+(p.nota?' · '+p.nota:''),'pedido')}}catch(e){}return r};

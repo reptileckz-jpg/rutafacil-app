@@ -94,6 +94,26 @@ service cloud.firestore {
       allow delete: if mandaComoAdmin();
     }
 
+    // 132 · avisos push (Firebase Cloud Messaging). El token de cada celular de chofer: lo guarda ese chofer (o el administrador);
+    // nadie lo lee desde la app (lo usa la función de la nube con permisos de servidor)
+    match /n/{neg}/tok/{ch} {
+      allow create, update: if activo()
+                            && (mandaComoAdmin() || (yo().rol == 'chofer' && string(yo().get('chId', '')) == ch))
+                            && request.resource.data.keys().hasOnly(['t', 'ts'])
+                            && request.resource.data.t is string && request.resource.data.t.size() < 400;
+      allow read: if false;
+      allow delete: if mandaComoAdmin();
+    }
+    // un aviso para un chofer: solo lo crea el administrador (o el encargado); la función de la nube lo manda y lo borra
+    match /n/{neg}/push/{id} {
+      allow create: if mandaComoAdmin()
+                    && request.resource.data.keys().hasOnly(['ch', 'titulo', 'texto', 'tipo', 't'])
+                    && request.resource.data.ch is string
+                    && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 200
+                    && request.resource.data.texto is string && request.resource.data.texto.size() <= 1000;
+      allow read, update, delete: if false;
+    }
+
     // todo lo demás, cerrado
     match /{todo=**} {
       allow read, write: if false;

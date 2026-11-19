@@ -2741,3 +2741,19 @@ HECHO (`tema-vehiculos.js` `gasTile134`, líneas 134 de `ql.py`, `l82.js`). **Fa
 - Se guarda como `fotos.gas` / `fotosFin.gas` y sale al recibir el cierre (al salir y al regresar), en el Cuadre (Fotos del cierre) y en "📷 Fotos del vehículo" del administrador. Al empezar otra vuelta también se pide de nuevo (137).
 - Prueba `t134.js` (8 OK). Todas las pruebas en 0 FAIL (menos `tk.js`); `comp-venta` idéntica.
 
+## 2026-11-19 · 132 · Avisos push con la app minimizada o cerrada (Ricardo decidió: push de Firebase)
+HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativo en `prueba-nativa`). **No armar APK sin preguntar.**
+- App (`capas/tema-push.js`, nació como tema): el celular del chofer guarda su token de avisos en `n/{neg}/tok/{chofer}` (una vez al día o si cambia). Al asignar un pedido (`p57Asigna`, en `tema-rutas.js`) el celular del administrador escribe `n/{neg}/push/{id}` = {ch, titulo "📦 Pedido nuevo", texto "Cliente: 10 cajas y 5 kg · nota", tipo, t}.
+- Nube: `functions/index.js` (función `avisoPush`, Firestore v2): manda el aviso al token de ese chofer con el canal "avisos" y lo borra; si falla deja el motivo en el aviso. `firebase.json` en la raíz.
+- Reglas (`firestore.rules` + 2 pruebas en `pruebas-reglas`): solo el administrador (o el encargado) crea avisos; cada chofer solo guarda SU token; nadie lee tokens ni avisos desde la app.
+- Nativo: `RutaNativa.pushToken()` (crea el canal "avisos" y regresa el token; sin `google-services.json` responde "sin-firebase" y la app sigue igual). `apk.yml`: agrega `firebase-messaging 24.1.0`, el canal "avisos" como el de los push, y escribe `google-services.json` desde el secreto `GOOGLE_SERVICES_JSON` (sin el secreto se arma igual, sin push).
+- `.github/workflows/funciones.yml`: "Publicar avisos push y reglas de la nube", se corre A MANO; usa el secreto `FIREBASE_SA`.
+- Prueba `t132.js` (9 OK, con nube y parte nativa de prueba). La prueba completa (que llegue el aviso con la app cerrada) solo se puede hacer en el celular.
+- **Lo que tiene que hacer Ricardo** (una sola vez):
+  1. Firebase → proyecto platanos-nietos → Configuración del proyecto → Tus apps → Agregar app → Android → paquete `com.rutafacil.app` → descargar `google-services.json`.
+  2. GitHub → Settings → Secrets and variables → Actions → secreto `GOOGLE_SERVICES_JSON` con TODO el contenido de ese archivo.
+  3. Firebase → Uso y facturación → plan **Blaze** (pago por uso; con este volumen debería salir en $0) y poner una alerta de presupuesto.
+  4. Firebase → Configuración → Cuentas de servicio → "Generar nueva clave privada" (JSON) → secreto `FIREBASE_SA`. En Google Cloud → IAM, a esa cuenta darle el papel "Editor" (para poder publicar funciones y reglas). Esa llave es como la llave maestra: solo en el secreto de GitHub.
+  5. GitHub → Actions → "Publicar avisos push y reglas de la nube" → Run workflow.
+  6. Armar el APK de prueba en `prueba-nativa` (Actions → Armar APK → rama prueba-nativa; no publica versión) y probar: asignar un pedido con la app del chofer cerrada.
+

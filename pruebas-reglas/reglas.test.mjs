@@ -69,6 +69,22 @@ await prueba('GPS: el admin lee y borra lo viejo; sin sesión nada', async () =>
   await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/gpsp/cel1_0000000000001')));
   await assertFails(setDoc(doc(db(null), 'n/pn/gps/cel9'), { dev: 'cel9' }));
 });
+await prueba('push: el chofer guarda SU token (y no el de otro); nadie lo lee', async () => {
+  await assertSucceeds(setDoc(doc(db('danu'), 'n/pn/tok/1'), { t: 'tokendanu', ts: 1 }));
+  await assertFails(setDoc(doc(db('danu'), 'n/pn/tok/3'), { t: 'x', ts: 1 }));
+  await assertFails(setDoc(doc(db('danu'), 'n/pn/tok/1'), { t: 'x', ts: 1, otro: 1 }));
+  await assertFails(getDoc(doc(db('danu'), 'n/pn/tok/1')));
+  await assertFails(getDoc(doc(db('duenio'), 'n/pn/tok/1')));
+  await assertFails(setDoc(doc(db('baja'), 'n/pn/tok/4'), { t: 'x', ts: 1 }));
+});
+await prueba('push: solo el administrador (o el encargado) manda un aviso; el chofer no', async () => {
+  const av = { ch: '1', titulo: '📦 Pedido nuevo', texto: 'Doña Mary: 10 cajas', tipo: 'pedido', t: 1 };
+  await assertSucceeds(setDoc(doc(db('duenio'), 'n/pn/push/a1'), av));
+  await assertSucceeds(setDoc(doc(db('rafa'), 'n/pn/push/a2'), av));
+  await assertFails(setDoc(doc(db('danu'), 'n/pn/push/a3'), av));
+  await assertFails(setDoc(doc(db('duenio'), 'n/pn/push/a4'), { ...av, extra: 1 }));
+  await assertFails(getDoc(doc(db('duenio'), 'n/pn/push/a1')));
+});
 await prueba('cuenta nueva del negocio: el dueño crea su perfil', async () => {
   await env.clearFirestore();
   const d = db('nuevoDuenio');

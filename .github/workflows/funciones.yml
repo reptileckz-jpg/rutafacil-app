@@ -1,0 +1,27 @@
+name: Publicar avisos push y reglas de la nube
+
+# 132 · Se corre A MANO desde la pestaña Actions (no se publica solo).
+# Publica la función de la nube que manda los avisos push (functions/) y las reglas (firestore.rules) al proyecto platanos-nietos.
+# Necesita el secreto FIREBASE_SA: la llave de una cuenta de servicio de Firebase (archivo JSON), con permiso para publicar.
+on:
+  workflow_dispatch:
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Publicar en Firebase
+        env:
+          SA: ${{ secrets.FIREBASE_SA }}
+        run: |
+          if [ -z "$SA" ]; then echo "Falta el secreto FIREBASE_SA (la llave de la cuenta de servicio de Firebase)."; exit 1; fi
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npm i -g firebase-tools@13 --no-audit --no-fund
+          (cd functions && npm i --no-audit --no-fund)
+          firebase deploy --only functions,firestore:rules --project platanos-nietos --non-interactive --force
+          rm -f "$RUNNER_TEMP/sa.json"

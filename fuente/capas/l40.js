@@ -37,8 +37,12 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function corteDatos(){var c=S.cierre,r=c.res||cierreRes(),deb=num(r.efectivo),ent=efEntrega(c),may=(S.log||[]).filter(function(l){return l.may}).map(function(l){var k=cl(l.c);return {n:k?k.n:'',R:num(l.R),M:num(l.M),pr:num(l.pr),pm:num(l.pm)}});
  var tj=sum(S.log||[],function(l){return num(l.tarj)}),tr=sum(S.log||[],function(l){return num(l.trans)});
  var d={ch:chofN(S.chofHoy),f:iso(TODAY),h:S.ciEnvH||hhmm(),deb:deb,ent:ent,dif:r2(ent-deb),mot:c.efMot||'',bolsa:c.bolsa||'',dest:c.dest==='tom'?'tómbola':'administrador',bill:c.billOn?c.bill:null,may:may,vend:num(r.total),tarj:r2(tj),trans:r2(tr)};
+ /* 130 · cajas y kilos que vendió en este cierre: de las MISMAS cuentas del cierre que "Vendió" (cierreRes). No entran al código de verificación: el código sigue igual */
+ d.R=num(r.R);d.M=r2(num(r.M));d.nEnt=(S.log||[]).filter(function(l){return l&&(num(l.R)||num(l.M))}).length;
  d.v=verifCodigo([d.ch,d.f,d.deb,d.ent,d.bolsa,JSON.stringify(d.bill||{}),d.may.length].join('|'));return d}
-function corteItems(d){var it=[{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:'CORTE DEL CHOFER'},{t:'c',s:fmtF(d.f)+' · '+d.h},{t:'hr'},{t:'kv',k:'Chofer',v:d.ch},{t:'kv',k:'Vendió',v:money(d.vend)}];
+function corteItems(d){var it=[{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:'CORTE DEL CHOFER'},{t:'c',s:fmtF(d.f)+' · '+d.h},{t:'hr'},{t:'kv',k:'Chofer',v:d.ch}];
+ if(d.R!=null){it.push({t:'kv',k:'Cajas de roatán vendidas',v:String(d.R)},{t:'kv',k:'Kilos de macho vendidos',v:(+d.M).toLocaleString('es-MX')+' kg'});if(d.nEnt!=null)it.push({t:'kv',k:'Entregas',v:String(d.nEnt)})}
+ it.push({t:'kv',k:'Vendió',v:money(d.vend),b:1});
  if(d.tarj)it.push({t:'kv',k:'Cobrado con tarjeta (no es efectivo)',v:money(d.tarj)});if(d.trans)it.push({t:'kv',k:'Transferencias (no es efectivo)',v:money(d.trans)});
  it.push({t:'kv',k:'Debía entregar',v:money(d.deb)},{t:'kv',k:'Entrega',v:money(d.ent),b:1});
  if(Math.abs(d.dif)>=0.5)it.push({t:'kv',k:d.dif<0?'Faltante':'Sobrante',v:money(Math.abs(d.dif)),b:1,c:'neg'},{t:'kv',k:'Motivo',v:d.mot});

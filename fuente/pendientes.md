@@ -2677,3 +2677,10 @@ HECHO (`l38.js`, `tema-notas.js` y líneas 129 de `ql.py`). **Falta armar APK (p
 - Ahora la imagen ya no se queda después de mandarla. Solo sale si no se pudo mandar o con "Ver como imagen", y con botones que sí funcionan: "💾 Guardar en el celular" (a Descargas, con la pieza nativa), "📤 Compartir la imagen" (otra vez al WhatsApp del cliente) y "Ocultar la imagen".
 - Prueba `t129.js` (12 OK; con la versión anterior falla en lo doble y en "mantén presionada"). Todas las pruebas en 0 FAIL (menos `tk.js`, que ya fallaba).
 
+## 2026-11-19 · 130 · Ricardo: "al corte del chofer que se manda por WhatsApp le faltan las cajas y kilos que se vendieron"
+HECHO (`l40.js`: `corteDatos` / `corteItems`). **Falta armar APK (preguntar antes).**
+- El corte (la imagen que se manda por WhatsApp y la que se imprime) ahora trae, antes de "Vendió": "Cajas de roatán vendidas", "Kilos de macho vendidos" y "Entregas".
+- Salen de las MISMAS cuentas del cierre que "Vendió" (`cierreRes`), así que siempre cuadran entre sí.
+- El código de verificación es el mismo de antes (las cajas y kilos no entran al código). Un corte viejo guardado sin esos datos se sigue viendo como antes.
+- Prueba `t130.js` (16 OK, demo y real). Captura `disenos/corte-cajas-kilos.png`. Todas las pruebas en 0 FAIL; `comp-cierre` idéntica.
+

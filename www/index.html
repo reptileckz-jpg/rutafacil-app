@@ -2726,7 +2726,7 @@ var _confMsg0=confMsg;confMsg=function(D){if(D.act==='lphoy'||D.act==='lpinter'|
 
 /* ===== 2. Ajustes con tuerca ===== */
 var GEAR='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
-var APP_VER='10.8';
+var APP_VER='10.9';
 function acercaHTML(){var lg=(document.querySelector('.logo img')||{}).src;return '<div class="card" style="text-align:center;padding:18px 16px">'+(lg?'<img src="'+lg+'" alt="Logo de Plátanos Nietos" style="width:72px;height:72px;border-radius:20px;object-fit:cover">':'')+'<div style="font-size:19px;font-weight:800;margin-top:8px">Plátanos Nietos</div><div class="lbl">Control de reparto · versión '+APP_VER+'</div><div style="margin-top:10px;font-size:15px">Desarrollada por <b>Ricardo Nieto Mejía</b></div><div class="lbl" style="margin-top:10px;font-size:13px">© '+TODAY.getFullYear()+' Ricardo Nieto Mejía. Todos los derechos reservados. Prohibida su copia o distribución sin permiso del autor.</div></div>'}
 function ajHTML(){if(!S.aj)return '';var adm=S.role==='admin'&&!S.encOn;
  return '<div id="ajov" style="position:fixed;inset:0;z-index:70;background:var(--bg);overflow-y:auto"><div style="max-width:440px;margin:0 auto;padding:12px 16px 40px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><span class="gear" style="border:0;background:none">'+GEAR+'</span><b class="grow" style="font-size:21px">Ajustes</b><button class="helpb" style="margin:0" data-act="ajx" aria-label="Cerrar ajustes">×</button></div>'
@@ -9757,7 +9757,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4399,"l10.js"],[4441,"l11.js"],[4458,"l12.js"],[4504,"l13.js"],[4629,"l14.js"],[4699,"l15.js"],[4759,"l16.js"],[4853,"l17.js"],[4877,"l18.js"],[4947,"l19.js"],[5006,"l20.js"],[5053,"l21.js"],[5097,"l22.js"],[5272,"l23.js"],[5321,"l24.js"],[5337,"l25.js"],[5364,"l26.js"],[5485,"l27.js"],[5534,"l28.js"],[5665,"l29.js"],[5790,"l30.js"],[5833,"l31.js"],[5859,"l32.js"],[5947,"l33.js"],[5965,"l34.js"],[6020,"l35.js"],[6075,"l36.js"],[6167,"l37.js"],[6186,"l38.js"],[6270,"l39.js"],[6350,"l40.js"],[6467,"l41.js"],[6526,"l42.js"],[6625,"l43.js"],[6714,"l44.js"],[6809,"l45.js"],[6892,"l46.js"],[6949,"l47.js"],[7063,"l48.js"],[7116,"l49.js"],[7152,"l50.js"],[7253,"l51.js"],[7263,"l52.js"],[7393,"l53.js"],[7413,"l54.js"],[7486,"l55.js"],[7515,"l56.js"],[7595,"l57.js"],[7657,"l58.js"],[7775,"l59.js"],[7824,"l60.js"],[7978,"l61.js"],[8034,"l62.js"],[8171,"l63.js"],[8329,"l64.js"],[8355,"l65.js"],[8456,"l66.js"],[8551,"l67.js"],[8578,"l68.js"],[8700,"l69.js"],[8891,"l70.js"],[9093,"l71.js"],[9196,"l72.js"],[9307,"l73.js"],[9381,"l74.js"],[9498,"l75.js"],[9648,"l76.js"],[9751,"l77.js"],[9861,"l78.js"],[9994,"l79.js"],[10102,"l80.js"],[10225,"l81.js"],[10373,"l82.js"],[10612,"l83.js"],[10680,"l84.js"],[10793,"l85.js"],[10852,"tema-fresco2.js"],[10893,"tema-dibujar1.js"],[11393,"tema-rutadia.js"],[11558,"l86.js"],[11617,"l87.js"],[11658,"l88.js"],[11708,"l89.js"],[11756,"l90.js"],[11861,"tema-dibujar2.js"],[11888,"tema-sueltas.js"],[11979,"tema-piezas.js"],[12185,"tema-ruta.js"],[12413,"tema-fichas.js"],[12530,"tema-cierre.js"],[12691,"tema-inicio.js"],[12819,"tema-ajustes.js"],[13067,"tema-nube.js"],[13125,"tema-viaje.js"],[13266,"tema-ubica.js"],[13407,"tema-personal.js"],[13470,"tema-pin.js"],[13574,"tema-navega.js"],[13607,"tema-cajas.js"],[13643,"tema-camara.js"],[13675,"tema-rutas.js"],[13717,"tema-estadisticas.js"],[13758,"tema-guia.js"],[13808,"tema-bodega.js"],[13877,"tema-cobranza.js"],[14037,"tema-pantallas.js"],[14258,"tema-avisos.js"],[14420,"tema-reparte.js"],[14486,"tema-vehiculos.js"],[14637,"tema-notas.js"],[14712,"tema-taras.js"],[14819,"tema-cargarmas.js"],[14858,"tema-cargas.js"],[14974,"tema-cobro.js"],[15010,"tema-horario.js"],[15049,"tema-sueldos.js"],[15191,"tema-ganado.js"],[15236,"tema-cierres.js"],[15369,"tema-finanzas.js"],[15442,"tema-cuadre.js"],[15836,"tema-retencion.js"],[15927,"tema-iniciodia.js"],[16032,"tema-entregapasos.js"],[16105,"tema-push.js"],[16199,"tema-ticket.js"],[16285,"tema-toast.js"],[16325,"tema-version.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4399,"l10.js"],[4441,"l11.js"],[4458,"l12.js"],[4504,"l13.js"],[4629,"l14.js"],[4699,"l15.js"],[4759,"l16.js"],[4853,"l17.js"],[4877,"l18.js"],[4947,"l19.js"],[5006,"l20.js"],[5053,"l21.js"],[5097,"l22.js"],[5272,"l23.js"],[5321,"l24.js"],[5337,"l25.js"],[5364,"l26.js"],[5485,"l27.js"],[5534,"l28.js"],[5665,"l29.js"],[5790,"l30.js"],[5833,"l31.js"],[5859,"l32.js"],[5947,"l33.js"],[5965,"l34.js"],[6020,"l35.js"],[6075,"l36.js"],[6167,"l37.js"],[6186,"l38.js"],[6270,"l39.js"],[6350,"l40.js"],[6467,"l41.js"],[6526,"l42.js"],[6625,"l43.js"],[6714,"l44.js"],[6809,"l45.js"],[6892,"l46.js"],[6949,"l47.js"],[7063,"l48.js"],[7116,"l49.js"],[7152,"l50.js"],[7253,"l51.js"],[7263,"l52.js"],[7393,"l53.js"],[7413,"l54.js"],[7486,"l55.js"],[7515,"l56.js"],[7595,"l57.js"],[7657,"l58.js"],[7775,"l59.js"],[7824,"l60.js"],[7978,"l61.js"],[8034,"l62.js"],[8171,"l63.js"],[8329,"l64.js"],[8355,"l65.js"],[8456,"l66.js"],[8551,"l67.js"],[8578,"l68.js"],[8700,"l69.js"],[8891,"l70.js"],[9093,"l71.js"],[9196,"l72.js"],[9307,"l73.js"],[9381,"l74.js"],[9498,"l75.js"],[9648,"l76.js"],[9751,"l77.js"],[9861,"l78.js"],[9994,"l79.js"],[10102,"l80.js"],[10225,"l81.js"],[10373,"l82.js"],[10612,"l83.js"],[10680,"l84.js"],[10793,"l85.js"],[10852,"tema-fresco2.js"],[10893,"tema-dibujar1.js"],[11393,"tema-rutadia.js"],[11558,"l86.js"],[11617,"l87.js"],[11658,"l88.js"],[11708,"l89.js"],[11756,"l90.js"],[11861,"tema-dibujar2.js"],[11888,"tema-sueltas.js"],[11979,"tema-piezas.js"],[12185,"tema-ruta.js"],[12413,"tema-fichas.js"],[12530,"tema-cierre.js"],[12691,"tema-inicio.js"],[12819,"tema-ajustes.js"],[13067,"tema-nube.js"],[13125,"tema-viaje.js"],[13266,"tema-ubica.js"],[13407,"tema-personal.js"],[13470,"tema-pin.js"],[13584,"tema-navega.js"],[13617,"tema-cajas.js"],[13653,"tema-camara.js"],[13685,"tema-rutas.js"],[13727,"tema-estadisticas.js"],[13768,"tema-guia.js"],[13818,"tema-bodega.js"],[13887,"tema-cobranza.js"],[14047,"tema-pantallas.js"],[14268,"tema-avisos.js"],[14430,"tema-reparte.js"],[14496,"tema-vehiculos.js"],[14647,"tema-notas.js"],[14722,"tema-taras.js"],[14829,"tema-cargarmas.js"],[14868,"tema-cargas.js"],[14984,"tema-cobro.js"],[15020,"tema-horario.js"],[15059,"tema-sueldos.js"],[15201,"tema-ganado.js"],[15246,"tema-cierres.js"],[15379,"tema-finanzas.js"],[15452,"tema-cuadre.js"],[15846,"tema-retencion.js"],[15937,"tema-iniciodia.js"],[16042,"tema-entregapasos.js"],[16115,"tema-push.js"],[16209,"tema-ticket.js"],[16295,"tema-toast.js"],[16335,"tema-version.js"],[16389,"tema-angosta.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -13571,6 +13571,16 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* "Otra persona" regresa a "¿Quién eres?" cuando se vuelve a cerrar la sesión */
 var _nbP158=nbPantalla;nbPantalla=function(){if(typeof NB!=='undefined'&&NB.est!=='login'){NBF158.otro=false;NBF158.i=null}return _nbP158.apply(this,arguments)};
 
+/* 162 · Ricardo (con la 1.0.52): "le di en cerrar sesión… y en 'No soy Ricardo Nieto' y vuelve a pedir el PIN: no cierra la sesión".
+   Sí se cerraba la sesión de la cuenta, pero la pantalla del PIN (z-index altísimo) se dibujaba ENCIMA de la de "Entrar" (z-index 200):
+   parecía que no se había cerrado y el letrero "Sesión activa" del PIN es solo adorno. Ahora, mientras la nube no tenga una sesión lista
+   (cerrada, entrando, cargando…), no se pide el PIN: queda a la vista "¿Quién eres?" / "Entrar". Ya adentro, el PIN se pide como siempre. */
+function sinSesion162(){return typeof NB!=='undefined'&&NB.on&&NB.est&&NB.est!=='listo'&&NB.est!=='off'}
+var _pinH162=pinHTML;pinHTML=function(){if(sinSesion162())return '';return _pinH162.apply(this,arguments)};
+var _rd162=render;render=function(){try{if(sinSesion162()&&_pin&&_pin.modo){_pin={v:'',modo:null};S.px=null}}catch(e){}var r=_rd162.apply(this,arguments);try{if(sinSesion162()){var o=document.getElementById('pinov');if(o)o.remove()}}catch(e){}return r};
+/* 162 · y la pantalla de "Entrar" va encima de TODO (antes z-index 200: algunas ventanas de la app quedaban encima) */
+(function(){var st=document.createElement('style');st.textContent='#nbov{z-index:2147483100!important}';document.head.appendChild(st)})();
+
 //@@capa tema-navega.js
 /* ===================== TEMA · Atrás y deslizar entre pantallas (aplanado el 18 nov) =====================
    Antes estaba repartido en 6 envolturas encadenadas en l24, l26, l45, l52, l82, l88.
@@ -16375,6 +16385,46 @@ setTimeout(function(){nv149Revisa()},5000);setInterval(function(){nv149Revisa()}
 /* versión en Ajustes ("Acerca de") y en cada corte de ruta */
 var _cd149=corteDatos;corteDatos=function(){var d=_cd149.apply(this,arguments);try{if(d&&typeof d==='object')d.ver=verTxt149()}catch(e){}return d};
 var _tkC149=tkCorte143;tkCorte143=function(d){var L=_tkC149.apply(this,arguments);try{if(d&&d.ver)L.push({s:'Hecho con la '+d.ver,c:1})}catch(e){}return L};
+
+//@@capa tema-angosta.js
+/* ===================== TEMA · Pantallas angostas (nació como tema, 19 nov · punto 161) =====================
+   Ricardo: "la información se desborda de la pantalla; pasa en celulares con pantalla angosta como la de enfrente del Z Fold (y con la
+   letra grande); en otros teléfonos no". Las tarjetas de 2 o 3 columnas (Existencias en bodega, precios de Inicio…) no se podían encoger
+   más que su contenido (número grande + "cajas"/"kg") y se salían por la derecha.
+   - Cualquier columna de una cuadrícula puede encogerse (min-width:0) y su texto se parte si no cabe.
+   - En pantallas de 380 px o menos: los números grandes de las tarjetas se achican un poco, la unidad ("cajas", "kg") puede bajar de renglón,
+     el puntito de color de las tarjetas se quita (el nombre ya va en ese color) y los renglones "izquierda · derecha" pueden partirse en dos.
+     Una palabra que no cabe se corta con guion donde va en español.
+   - Ningún dibujo, imagen, mapa o campo es más ancho que la pantalla; en pantallas angostas, si un campo no cabe junto a su nombre, baja
+     al renglón de abajo.
+   Solo estilos: no cambia ningún dato ni ninguna cuenta. Se arma al final. Si se cambia algo de esto, se cambia AQUÍ.
+   ============================================================================================ */
+/* el idioma de la página: para que una palabra larga que no cabe se corte con guion donde va en español ("madu-ración") */
+try{if(!document.documentElement.lang)document.documentElement.lang='es'}catch(e){}
+(function(){var st=document.createElement('style');st.id='css161';st.textContent=[
+ 'main [style*="display:grid"]>*,main .g3>*,main .g2>*,main .tile{min-width:0}',
+ 'main .tile .k,main .tile .big,main .tile .u{overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}',
+ 'main .tile .u{display:inline-block}',
+ 'main svg,main img,main canvas,main video,main iframe{max-width:100%}',
+ 'main svg:not([height]){height:auto}',
+ 'main input,main select,main textarea{max-width:100%}',
+ 'main .grow,main [style*="display:flex"]>*{min-width:0}',
+ '@media (max-width:380px){',
+ ' main .g3 .tile{padding:9px 7px}',
+ ' main .g3 .tile .big,main .n65 .g3 .big{font-size:clamp(17px,6.2vw,22px)}',
+ ' main .g3 .tile .k,main .n65 .g3 .k{font-size:11.5px;line-height:1.2}',
+ ' main .g3 .tile .u{font-size:12px;margin-left:2px}',
+ ' main .tile .dot{flex:none}',
+ ' main .g3 .tile .dot{display:none}',
+ ' main [style*="justify-content:space-between"]{flex-wrap:wrap;column-gap:8px}',
+ ' main .field{flex-wrap:wrap;row-gap:4px}',
+ ' main .field>input,main .field>select{flex:0 1 auto;min-width:0}',
+ '}',
+ '@media (max-width:320px){',
+ ' main .g3 .tile .big,main .n65 .g3 .big{font-size:17px}',
+ ' main .g3 .tile .u{display:block;margin-left:0}',
+ ' main .vcard .plate.mini,main .vchof .plate.mini{width:100%!important;max-width:84px!important}',
+ '}'].join('\n');document.head.appendChild(st)})();
 
 
 /* ---------- Estructura ---------- */

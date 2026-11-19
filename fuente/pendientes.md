@@ -2866,3 +2866,12 @@ HECHO en `tema-cuadre.js` (`viaje160`, `viaje160HTML`), prueba `t160.js` (11 OK)
 - Mínimo para no perder = (vuelta + fijo que falta) ÷ lo que deja cada caja; para ganar algo = (… + $100) ÷ lo que deja. Si lleva menos del mínimo para ganar algo: aviso.
 - Chofer (arriba de su ruta): el aviso, los km y el mínimo de cajas, SIN el costo de la fruta, lo que deja cada caja ni el sueldo ("Avísale al administrador"). Administrador (Inicio): con todo el desglose.
 - Solo calcula y avisa; no cambia ninguna cuenta.
+
+## 2026-11-19 · 161 · Ricardo: "la información se desborda de la pantalla en celulares angostos como la de enfrente del Z Fold" → versión 10.9
+HECHO en `capas/tema-angosta.js` (solo estilos), prueba `t161.js` (6 OK: 344, 320 y 280 px, demo y real), captura `disenos/existencias-angosta-161.png`.
+- Las columnas de las cuadrículas pueden encogerse; en ≤380 px los números grandes se achican, la unidad puede bajar de renglón, se quita el puntito de color de las tarjetas y los renglones "izquierda · derecha" se parten si no caben (Maduración: "faltan ~12 h" ya no se junta con "estimado"). Palabras que no caben se cortan con guion en español (lang="es").
+- Arreglado: Existencias en bodega, Precios de Inicio, la placa en la tarjeta del chofer, campos de Bodega y Cargas.
+
+## 2026-11-19 · 162 · Ricardo: "sigue el error al cerrar sesión: le di en cerrar sesión… y 'No soy Ricardo Nieto' y vuelve a pedir el PIN, no cierra la sesión"
+HECHO en `capas/tema-pin.js`, prueba `t162.js` (5 OK).
+- La sesión SÍ se cerraba, pero la pantalla del PIN (z-index altísimo) quedaba ENCIMA de la de "Entrar" (z-index 200). Ahora, mientras no haya sesión lista en la nube, no se pide el PIN (se quita) y "Entrar" / "¿Quién eres?" va encima de todo. Ya adentro, el PIN se pide como siempre.

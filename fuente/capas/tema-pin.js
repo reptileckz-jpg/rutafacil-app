@@ -100,3 +100,13 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  _nbSig='';nbPantalla();var p=document.getElementById('nbp');if(p&&a==='rec158')try{p.focus()}catch(er){}},true);
 /* "Otra persona" regresa a "¿Quién eres?" cuando se vuelve a cerrar la sesión */
 var _nbP158=nbPantalla;nbPantalla=function(){if(typeof NB!=='undefined'&&NB.est!=='login'){NBF158.otro=false;NBF158.i=null}return _nbP158.apply(this,arguments)};
+
+/* 162 · Ricardo (con la 1.0.52): "le di en cerrar sesión… y en 'No soy Ricardo Nieto' y vuelve a pedir el PIN: no cierra la sesión".
+   Sí se cerraba la sesión de la cuenta, pero la pantalla del PIN (z-index altísimo) se dibujaba ENCIMA de la de "Entrar" (z-index 200):
+   parecía que no se había cerrado y el letrero "Sesión activa" del PIN es solo adorno. Ahora, mientras la nube no tenga una sesión lista
+   (cerrada, entrando, cargando…), no se pide el PIN: queda a la vista "¿Quién eres?" / "Entrar". Ya adentro, el PIN se pide como siempre. */
+function sinSesion162(){return typeof NB!=='undefined'&&NB.on&&NB.est&&NB.est!=='listo'&&NB.est!=='off'}
+var _pinH162=pinHTML;pinHTML=function(){if(sinSesion162())return '';return _pinH162.apply(this,arguments)};
+var _rd162=render;render=function(){try{if(sinSesion162()&&_pin&&_pin.modo){_pin={v:'',modo:null};S.px=null}}catch(e){}var r=_rd162.apply(this,arguments);try{if(sinSesion162()){var o=document.getElementById('pinov');if(o)o.remove()}}catch(e){}return r};
+/* 162 · y la pantalla de "Entrar" va encima de TODO (antes z-index 200: algunas ventanas de la app quedaban encima) */
+(function(){var st=document.createElement('style');st.textContent='#nbov{z-index:2147483100!important}';document.head.appendChild(st)})();

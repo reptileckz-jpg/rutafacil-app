@@ -12,9 +12,13 @@ const SETUP=()=>{if(window.__su)return;window.__su=1;var bv=document.getElementB
  await p.waitForTimeout(300);const res=[];
  for(const [i,v] of [[1,'mal'],[2,'mal'],[3,'bien'],[2,'bien']]){
   const sel='[data-act="insp"][data-i="'+i+'"][data-v="'+v+'"]';
-  await ev(s=>{var e=document.querySelector(s);var r=e.getBoundingClientRect();window.scrollBy({top:r.top-330,behavior:'instant'})},sel);await p.waitForTimeout(300);
+  await ev(s=>{var e=document.querySelector(s);var r=e.getBoundingClientRect();window.scrollBy({top:r.top-330,behavior:'instant'})},sel);
+  /* esperar a que la pantalla esté quieta (el acomodo de la prueba puede terminar un poco después) */
+  for(let k=0,a=-1;k<20;k++){await p.waitForTimeout(120);const y=await ev(()=>scrollY);if(y===a)break;a=y}
   const y0=await ev(()=>scrollY),t0=await ev(s=>Math.round(document.querySelector(s).getBoundingClientRect().top),sel);
-  await p.tap(sel);await p.waitForTimeout(400);
+  /* tocar como un dedo, en el punto del botón (p.tap acomoda la pantalla por su cuenta si cree que algo lo tapa) */
+  const pt=await ev(s=>{var r=document.querySelector(s).getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}},sel);
+  await p.touchscreen.tap(pt.x,pt.y);await p.waitForTimeout(400);
   const q=await ev(s=>{var e=document.querySelector(s),a=document.activeElement;return {t1:e?Math.round(e.getBoundingClientRect().top):null,campo:!!(a&&/INPUT|TEXTAREA/.test(a.tagName)&&a.getBoundingClientRect().bottom<=innerHeight)}},sel);res.push({i,v,y0,t0,t1:q.t1,campo:q.campo})}
  /* se queda en su lugar; o, si abrió "¿Qué tiene?" pegado abajo, sube solo lo necesario para mostrar ese campo (nunca brinca hacia arriba de la pantalla) */
  ok(res.every(r=>r.t1!==null&&(Math.abs(r.t1-r.t0)<=3||(r.campo&&r.t1<r.t0&&r.t1>0))),'revisión del vehículo: el botón que tocas se queda en su lugar (Mal y ✓ de cada renglón)',res);

@@ -2748,7 +2748,7 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 - Reglas (`firestore.rules` + 2 pruebas en `pruebas-reglas`): solo el administrador (o el encargado) crea avisos; cada chofer solo guarda SU token; nadie lee tokens ni avisos desde la app.
 - Nativo: `RutaNativa.pushToken()` (crea el canal "avisos" y regresa el token; sin `google-services.json` responde "sin-firebase" y la app sigue igual). `apk.yml`: agrega `firebase-messaging 24.1.0`, el canal "avisos" como el de los push, y escribe `google-services.json` desde el secreto `GOOGLE_SERVICES_JSON` (sin el secreto se arma igual, sin push).
 - `.github/workflows/funciones.yml`: "Publicar avisos push y reglas de la nube", se corre A MANO; usa el secreto `FIREBASE_SA`.
-- Prueba `t132.js` (9 OK, con nube y parte nativa de prueba). La prueba completa (que llegue el aviso con la app cerrada) solo se puede hacer en el celular.
+- Prueba `t132.js` (9 OK, con nube y parte nativa de prueba). Reglas en el emulador de Firebase (GitHub, "Probar reglas de la nube"): 36 OK · 0 FAIL (la primera vez falló la prueba, no la regla: usaba a un chofer al que otra prueba ya le había quitado el acceso). La prueba completa (que llegue el aviso con la app cerrada) solo se puede hacer en el celular.
 - **Lo que tiene que hacer Ricardo** (una sola vez):
   1. Firebase → proyecto platanos-nietos → Configuración del proyecto → Tus apps → Agregar app → Android → paquete `com.rutafacil.app` → descargar `google-services.json`.
   2. GitHub → Settings → Secrets and variables → Actions → secreto `GOOGLE_SERVICES_JSON` con TODO el contenido de ese archivo.

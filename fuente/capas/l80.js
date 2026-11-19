@@ -56,7 +56,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='bod')return;var x=S.ub68,nm=String(x.nm78||'').trim();if(!nm&&!bodNomSug78(x.dir78||'')){e.preventDefault();e.stopImmediatePropagation();toast('Escribe el nombre de la bodega (ej. "Bodega Otay")');var i=document.getElementById('ub78n');if(i){try{marcaFalta(i)}catch(er){}try{i.focus()}catch(er){}}}},true);
 /* el nombre de la demo también se limpia después de bajar la nube (y se sube corregido) */
 function bodDemo80(){try{if(MODO!=='vacio')return false;var b=(S.bods||[])[0],ch=false;if(b&&b.n==='Bodega Banderilla'&&!b.dem78&&(b.dir==='Banderilla, Veracruz'||!b.dir)){b.n='Bodega';if(b.dir==='Banderilla, Veracruz')b.dir='';b.dem78=1;ch=true}if(S.cfg&&S.cfg.dir==='Banderilla, Veracruz'){S.cfg.dir='';ch=true}return ch}catch(e){return false}}
-if(typeof nbAplica==='function'){var _nbA80=nbAplica;nbAplica=function(){var r=_nbA80.apply(this,arguments);if(bodDemo80()){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},500)}catch(e){}r=true}return r}}
+/* nbAplica: pasó a tema-fresco2.js */
 
 /* ---------- 33 · la tarjeta de fruta madura se desliza para quitarla ---------- */
 function antigFirma80(){var v=3;try{v=vidaDias()}catch(e){}return (S.madL||[]).filter(function(x){return num(x.q)>0}).map(function(x){var e=0;try{e=madEdad(x)}catch(er){}return x.p+x.dia+(v-e<=1?'!':'')}).sort().join(',')}
@@ -92,8 +92,8 @@ function limpia80(s){if(!s||MODO!=='vacio')return false;var ch=false;try{
  /* placas: el estado de ejemplo */ (s.veh||[]).forEach(function(v){if(!v.plEdo){v.plEdo='Baja California';ch=true}});
  /* precios de ejemplo antes de terminar el asistente */ if(s.setup&&!s.setup.fin&&s.precio&&!s.precio.conf){if(num(s.precio.R)===260&&num(s.precio.M)===18){s.precio.R=0;s.precio.M=0}if(s.mayP&&num(s.mayP.R)===240&&num(s.mayP.M)===16)s.mayP={R:'',M:''};(s.vlProd||[]).forEach(function(p){if(p.p==='12'&&p.inv==='R'||p.p==='16'&&p.inv==='M')p.p=''})}
 }catch(e){}return ch}
-if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,arguments);limpia80(s);return s};limpia80(S);
- if(typeof nbAplica==='function'){var _nbA80b=nbAplica;nbAplica=function(){var r=_nbA80b.apply(this,arguments);if(limpia80(S)){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},700)}catch(e){}r=true}return r}}}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpia80(S);
+ /* nbAplica: pasó a tema-fresco2.js */}
 /* la placa dice el estado de verdad (antes siempre "VERACRUZ") */
 /* plateSVG: pasó a tema-vehiculos.js */
 /* la entrega ya no empieza con 4 cajas y 30 kg inventados: lo de la vez pasada, o en ceros */

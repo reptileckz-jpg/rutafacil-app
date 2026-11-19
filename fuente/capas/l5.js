@@ -104,7 +104,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* cuántas cajas hay en total solo cambia por compras, ajustes, rotas o cobradas */
 function cajasMovTot(){return sum((S.cajasMov||[]).filter(function(m){return !/Regresaron sin llenar/.test(m.t)}),function(m){return num(m.n)})}
 function cajasEsperadas(){var vr=S.cierre&&!S.cierre.sent?sum(S.log,function(l){return num(l.Vr)}):0;return S.cajasT0+cajasMovTot()-vr}
-(function(){var fij=function(s){var sv=S;S=s;try{s.cajasT0=cajasDonde().tot-cajasMovTot()}finally{S=sv}return s};var _frC=fresh;fresh=function(){return fij(_frC.apply(this,arguments))};fij(S)})();
+(function(){var fij=function(s){var sv=S;S=s;try{s.cajasT0=cajasDonde().tot-cajasMovTot()}finally{S=sv}return s};/* fresh: la envoltura pasó a tema-fresco1.js (fij(S) se queda aquí) */fij(S)})();
 
 /* pagar a un proveedor una deuda anotada a mano: también sale de la caja (antes bajaba la deuda pero el dinero no salía) */
 provPagar=function(prov,m,forma,cid){var rest=num(m),tot0=rest;forma=forma||'Efectivo';

@@ -57,7 +57,7 @@ function natNotif(t,x){var C=window.Capacitor,n=C&&C.Plugins&&C.Plugins.RutaNati
 /* render: pasó a tema-dibujar1.js */
 /* ---------- 74 · nada de la demo en la app real ---------- */
 function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}
-if(typeof MODO!=='undefined'&&MODO==='vacio'){var _fr45=fresh;fresh=function(){return limpiaDemo(_fr45.apply(this,arguments))};limpiaDemo(S)}
+if(typeof MODO!=='undefined'&&MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpiaDemo(S)}
 /* lo que ya se subió a la nube con datos de la demo se limpia una sola vez (sin tocar lo que capturó el usuario) */
 function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=3)return;if(S.limpDemo>=2){migraDemo100();S.limpDemo=3;return}var antes='2026-11-01';
  S.vjHist=(S.vjHist||[]).filter(function(v){return !(String(v.f||'')<antes&&/Freightliner M2 2015/.test(v.veh||''))});

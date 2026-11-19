@@ -40,7 +40,7 @@ function vwVivo77(){try{if(!S.vw||!S.vws)return;if(S.vws.indexOf(S.vw)>-1)return
 /* render: pasó a tema-dibujar1.js */
 /* la carga de la nube: si algo se rompe, se salta y deja entrar */
 /* nbPrimera: pasó a tema-nube.js */
-if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* si la carga se queda más de 25 segundos en "Cargando…", ofrece salir */
 (function(){var t0=Date.now();var iv=setInterval(function(){try{if(typeof NB==='undefined'||!NB.on){if(Date.now()-t0>120000)clearInterval(iv);return}if(NB.est==='listo'){clearInterval(iv);return}
  if((NB.est==='cargando'||NB.est==='conectando'||NB.est==='perfil'||NB.est==='auth')&&Date.now()-(NB._t77||(NB._t77=Date.now()))>40000){clearInterval(iv);falloPantalla77(falloAnota77(new Error('La carga de la nube tardó más de 40 segundos ('+NB.est+')'),'al cargar'))}}catch(x){}},1000)})();
@@ -83,7 +83,7 @@ falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Di
  on('f77nube',function(){if(!confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}location.reload()};var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{window._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}})}catch(x){}};
 /* mientras la pantalla de rescate está, no se dibuja ni se procesa nada más */
 /* render: pasó a tema-dibujar1.js */
-if(typeof nbAplica==='function'){var _nbA77b=nbAplica;nbAplica=function(){if(DIAG77.paus)return false;return _nbA77b.apply(this,arguments)}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* el aviso de "tardó mucho" ahora espera 40 segundos y también cubre "Conectando…" */
 
 /* ===================== 7.9b · el viaje que quedó a medias ya no tumba la app =====================
@@ -96,7 +96,7 @@ function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n
  if(S.vws.length<n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'La app',x:'Se quitó '+(n-S.vws.length)+' viaje de carga que había quedado a medias'})}catch(e){}try{falloAnota77(new Error('viaje a medias quitado ('+(n-S.vws.length)+')'),'al limpiar')}catch(e){}}return S.vws.length<n}catch(e){return false}}
 vwLimpia77();
 /* render: pasó a tema-dibujar1.js */
-if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* vwBurbuja: pasó a tema-viaje.js */
 /* vwPend: pasó a tema-viaje.js */
 

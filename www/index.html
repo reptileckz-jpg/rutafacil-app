@@ -3545,7 +3545,7 @@ window.addEventListener('popstate',function(){if($('fiov')){if(typeof borrSalir=
  document.addEventListener('mousedown',function(e){if(window.__swMouse)ini(e.clientX,e.clientY,e.target)});document.addEventListener('mouseup',function(e){if(window.__swMouse)fin(e.clientX,e.clientY)})})();
 
 /* al abrir la app, ninguna ficha abierta */
-(function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};var _frFi=fresh;fresh=function(){return cerrar(_frFi.apply(this,arguments))};cerrar(S)})();
+(function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};/* fresh: la envoltura pasó a tema-fresco1.js (cerrar(S) se queda aquí) */cerrar(S)})();
 
 //@@capa l3.js
 /* ===================== v3.9 · 3. Pantallas de captura más claras ===================== */
@@ -3825,7 +3825,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* cuántas cajas hay en total solo cambia por compras, ajustes, rotas o cobradas */
 function cajasMovTot(){return sum((S.cajasMov||[]).filter(function(m){return !/Regresaron sin llenar/.test(m.t)}),function(m){return num(m.n)})}
 function cajasEsperadas(){var vr=S.cierre&&!S.cierre.sent?sum(S.log,function(l){return num(l.Vr)}):0;return S.cajasT0+cajasMovTot()-vr}
-(function(){var fij=function(s){var sv=S;S=s;try{s.cajasT0=cajasDonde().tot-cajasMovTot()}finally{S=sv}return s};var _frC=fresh;fresh=function(){return fij(_frC.apply(this,arguments))};fij(S)})();
+(function(){var fij=function(s){var sv=S;S=s;try{s.cajasT0=cajasDonde().tot-cajasMovTot()}finally{S=sv}return s};/* fresh: la envoltura pasó a tema-fresco1.js (fij(S) se queda aquí) */fij(S)})();
 
 /* pagar a un proveedor una deuda anotada a mano: también sale de la caja (antes bajaba la deuda pero el dinero no salía) */
 provPagar=function(prov,m,forma,cid){var rest=num(m),tot0=rest;forma=forma||'Efectivo';
@@ -3964,10 +3964,26 @@ function datosDemo(s){if(s._v39)return s;s._v39=1;
  /* venta local con su propio precio (puede ser menor: ahí se remata la merma) */
  (s.vlProd||[]).forEach(function(p){if(p.inv==='R'&&(p.p==='13'||p.p==='9'))p.p='12';if(p.inv==='M'&&(p.p==='18'||p.p==='12'))p.p='16'});
  return s}
-var _frL6=fresh;fresh=function(){return datosDemo(_frL6.apply(this,arguments))};
+/* fresh: pasó a tema-fresco1.js */
 datosDemo(S);
 /* "con señal / sin señal" también en el mapa y el viaje */
 /* render: pasó a tema-dibujar1.js */
+
+//@@capa tema-fresco1.js
+/* ===================== TEMA · Estado nuevo (fresh), parte 1 (aplanado el 19 nov) =====================
+   Las envolturas de fresh() de l2, l5 y l6b: lo que se le hace al estado nuevo de la app (S) cuando se crea (cerrar lo abierto, cajas
+   de arranque, datos de la demo). Mismo orden. Se arma justo después de l6b.js, ANTES de l7.js: tpl() de l7 usa _frL6 directo.
+   Lo que se le hacía al estado de ESE MOMENTO al cargar (cerrar(S), fij(S)) se quedó en su capa, en su lugar.
+   ============================================================================================ */
+
+/* fresh · de l2 */
+(function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};var _frFi=fresh;fresh=function(){return cerrar(_frFi.apply(this,arguments))};})();
+
+/* fresh · de l5 */
+(function(){var fij=function(s){var sv=S;S=s;try{s.cajasT0=cajasDonde().tot-cajasMovTot()}finally{S=sv}return s};var _frC=fresh;fresh=function(){return fij(_frC.apply(this,arguments))};})();
+
+/* fresh · de l6b */
+var _frL6=fresh;fresh=function(){return datosDemo(_frL6.apply(this,arguments))};
 
 //@@capa l7.js
 /* ===================== v3.9 · 7. Primera vez: asistente de inicio y tutorial ===================== */
@@ -3990,7 +4006,7 @@ function vaciar(s){var I=s.inv;Object.keys(I).forEach(function(k){if(typeof I[k]
  s.salida.ok=false;s.cierre.sent=false;s.cierre.res=null;/* 100 · sin el odómetro del camión de la demo: se toma el del vehículo */s.cierre.odoIni='';s.cierre.odo='';s.cierreReg=null;s.nota=null;s.primerDia=true;s.cajaBase=0;s.precio.conf=null;s.precioProx=null;
  s.invB={1:s.inv};s.lotesB={1:s.lotes};s._histSeed=0;s.cajasT0=0;s.setup={p:0,veh:[],per:[],cli:[],prov:[]};s.tutVisto={};HIST.length=0;
  if(Array.isArray(window.COMPRAS))COMPRAS.length=0;return s}
-if(MODO==='vacio'){var _frL7=fresh;fresh=function(){return vaciar(_frL7.apply(this,arguments))};S=vaciar(S)}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */S=vaciar(S)}
 /* 100 · costo mientras no hay ninguna carga: el que se puso al empezar (en la demo, el de ejemplo) */
 function costoIni96(p){if(MODO!=='vacio')return p==='R'?190:14;return num((S.cfg||{})[p==='R'?'costoIniR':'costoIniM'])}
 function hayCostoCarga96(p){return (S.cargas||[]).some(function(x){return p==='R'?(x.kgR>0&&x.pR>0&&x.cajas>0):(x.kgM>0&&x.pM>0)})}
@@ -6850,7 +6866,7 @@ function natNotif(t,x){var C=window.Capacitor,n=C&&C.Plugins&&C.Plugins.RutaNati
 /* render: pasó a tema-dibujar1.js */
 /* ---------- 74 · nada de la demo en la app real ---------- */
 function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}
-if(typeof MODO!=='undefined'&&MODO==='vacio'){var _fr45=fresh;fresh=function(){return limpiaDemo(_fr45.apply(this,arguments))};limpiaDemo(S)}
+if(typeof MODO!=='undefined'&&MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpiaDemo(S)}
 /* lo que ya se subió a la nube con datos de la demo se limpia una sola vez (sin tocar lo que capturó el usuario) */
 function migraDemo(){if(typeof MODO==='undefined'||MODO!=='vacio'||S.limpDemo>=3)return;if(S.limpDemo>=2){migraDemo100();S.limpDemo=3;return}var antes='2026-11-01';
  S.vjHist=(S.vjHist||[]).filter(function(v){return !(String(v.f||'')<antes&&/Freightliner M2 2015/.test(v.veh||''))});
@@ -7988,7 +8004,7 @@ function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null
 /* la nube ya no sube c.cred / c.vac ni tarasProv como número final */
 /* nbCodifica: pasó a tema-nube.js */
 /* nbEmpuja: pasó a tema-nube.js */
-var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
+/* nbAplica: pasó a tema-fresco2.js */
 /* render: pasó a tema-dibujar1.js */
 
 /* ---------- 32 · cambio de día aunque la app nunca se vaya al fondo ---------- */
@@ -9198,7 +9214,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!(t.tagName
 
 /* ---------- 68 · lo que se cuela de la demo ---------- */
 function limpia72(s){if(!s)return s;try{if(s.salida&&!s.salida.ok&&num(s.salida.R)===26&&num(s.salida.M)===80){s.salida.R=0;s.salida.M=0}var m=s.mayMin||{};if(String(m.R)==='220'&&String(m.M)==='15'&&!s.mayMin71)s.mayMin={R:'',M:''}}catch(e){}return s}
-if(MODO==='vacio'){var _fr72=fresh;fresh=function(){return limpia72(_fr72.apply(this,arguments))};limpia72(S)}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpia72(S)}
 function sinBase72(){var hayPed=(S.stops||[]).some(function(x){var c=cl(x.c);return c&&c.ped&&(num(c.ped.R)||num(c.ped.M))});return !(S.rutasHist||[]).length&&!hayPed&&!(S.stops||[]).length}
 function stock72(){if(S.role!=='rep'||S.salida.ok)return;var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(!c||c.dataset.x72)return;if(!(num(S.salida.R)===0&&num(S.salida.M)===0||sinBase72()))return;c.dataset.x72='1';
  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:700;margin-top:8px">Todavía no hay con qué calcularlo: no tienes pedidos ni días anteriores.</div><div class="lbl" style="margin-top:4px">Carga lo que te diga el administrador. Al iniciar el día capturas lo que de verdad llevas.</div>'}
@@ -9741,7 +9757,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"l7.js"],[4100,"l8.js"],[4111,"l9.js"],[4383,"l10.js"],[4425,"l11.js"],[4442,"l12.js"],[4488,"l13.js"],[4613,"l14.js"],[4683,"l15.js"],[4743,"l16.js"],[4837,"l17.js"],[4861,"l18.js"],[4931,"l19.js"],[4990,"l20.js"],[5037,"l21.js"],[5081,"l22.js"],[5256,"l23.js"],[5305,"l24.js"],[5321,"l25.js"],[5348,"l26.js"],[5469,"l27.js"],[5518,"l28.js"],[5649,"l29.js"],[5774,"l30.js"],[5817,"l31.js"],[5843,"l32.js"],[5931,"l33.js"],[5949,"l34.js"],[6004,"l35.js"],[6059,"l36.js"],[6151,"l37.js"],[6170,"l38.js"],[6254,"l39.js"],[6334,"l40.js"],[6451,"l41.js"],[6510,"l42.js"],[6609,"l43.js"],[6698,"l44.js"],[6793,"l45.js"],[6876,"l46.js"],[6933,"l47.js"],[7047,"l48.js"],[7100,"l49.js"],[7136,"l50.js"],[7237,"l51.js"],[7247,"l52.js"],[7377,"l53.js"],[7397,"l54.js"],[7470,"l55.js"],[7499,"l56.js"],[7579,"l57.js"],[7641,"l58.js"],[7759,"l59.js"],[7808,"l60.js"],[7962,"l61.js"],[8018,"l62.js"],[8155,"l63.js"],[8313,"l64.js"],[8339,"l65.js"],[8440,"l66.js"],[8535,"l67.js"],[8562,"l68.js"],[8684,"l69.js"],[8875,"l70.js"],[9077,"l71.js"],[9180,"l72.js"],[9291,"l73.js"],[9365,"l74.js"],[9482,"l75.js"],[9632,"l76.js"],[9735,"l77.js"],[9845,"l78.js"],[9978,"l79.js"],[10086,"l80.js"],[10209,"l81.js"],[10357,"l82.js"],[10596,"l83.js"],[10664,"l84.js"],[10777,"l85.js"],[10836,"tema-dibujar1.js"],[11336,"tema-rutadia.js"],[11501,"l86.js"],[11560,"l87.js"],[11601,"l88.js"],[11651,"l89.js"],[11699,"l90.js"],[11804,"tema-dibujar2.js"],[11831,"tema-sueltas.js"],[11922,"tema-piezas.js"],[12128,"tema-ruta.js"],[12356,"tema-fichas.js"],[12473,"tema-cierre.js"],[12634,"tema-inicio.js"],[12762,"tema-ajustes.js"],[13010,"tema-nube.js"],[13068,"tema-viaje.js"],[13209,"tema-ubica.js"],[13350,"tema-personal.js"],[13413,"tema-pin.js"],[13517,"tema-navega.js"],[13550,"tema-cajas.js"],[13586,"tema-camara.js"],[13618,"tema-rutas.js"],[13660,"tema-estadisticas.js"],[13701,"tema-guia.js"],[13751,"tema-bodega.js"],[13820,"tema-cobranza.js"],[13980,"tema-pantallas.js"],[14201,"tema-avisos.js"],[14363,"tema-reparte.js"],[14429,"tema-vehiculos.js"],[14580,"tema-notas.js"],[14655,"tema-taras.js"],[14762,"tema-cargarmas.js"],[14801,"tema-cargas.js"],[14917,"tema-cobro.js"],[14953,"tema-horario.js"],[14992,"tema-sueldos.js"],[15134,"tema-ganado.js"],[15179,"tema-cierres.js"],[15312,"tema-finanzas.js"],[15385,"tema-cuadre.js"],[15701,"tema-retencion.js"],[15792,"tema-iniciodia.js"],[15897,"tema-entregapasos.js"],[15970,"tema-push.js"],[16064,"tema-ticket.js"],[16150,"tema-toast.js"],[16190,"tema-version.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4399,"l10.js"],[4441,"l11.js"],[4458,"l12.js"],[4504,"l13.js"],[4629,"l14.js"],[4699,"l15.js"],[4759,"l16.js"],[4853,"l17.js"],[4877,"l18.js"],[4947,"l19.js"],[5006,"l20.js"],[5053,"l21.js"],[5097,"l22.js"],[5272,"l23.js"],[5321,"l24.js"],[5337,"l25.js"],[5364,"l26.js"],[5485,"l27.js"],[5534,"l28.js"],[5665,"l29.js"],[5790,"l30.js"],[5833,"l31.js"],[5859,"l32.js"],[5947,"l33.js"],[5965,"l34.js"],[6020,"l35.js"],[6075,"l36.js"],[6167,"l37.js"],[6186,"l38.js"],[6270,"l39.js"],[6350,"l40.js"],[6467,"l41.js"],[6526,"l42.js"],[6625,"l43.js"],[6714,"l44.js"],[6809,"l45.js"],[6892,"l46.js"],[6949,"l47.js"],[7063,"l48.js"],[7116,"l49.js"],[7152,"l50.js"],[7253,"l51.js"],[7263,"l52.js"],[7393,"l53.js"],[7413,"l54.js"],[7486,"l55.js"],[7515,"l56.js"],[7595,"l57.js"],[7657,"l58.js"],[7775,"l59.js"],[7824,"l60.js"],[7978,"l61.js"],[8034,"l62.js"],[8171,"l63.js"],[8329,"l64.js"],[8355,"l65.js"],[8456,"l66.js"],[8551,"l67.js"],[8578,"l68.js"],[8700,"l69.js"],[8891,"l70.js"],[9093,"l71.js"],[9196,"l72.js"],[9307,"l73.js"],[9381,"l74.js"],[9498,"l75.js"],[9648,"l76.js"],[9751,"l77.js"],[9861,"l78.js"],[9994,"l79.js"],[10102,"l80.js"],[10225,"l81.js"],[10373,"l82.js"],[10612,"l83.js"],[10680,"l84.js"],[10793,"l85.js"],[10852,"tema-fresco2.js"],[10893,"tema-dibujar1.js"],[11393,"tema-rutadia.js"],[11558,"l86.js"],[11617,"l87.js"],[11658,"l88.js"],[11708,"l89.js"],[11756,"l90.js"],[11861,"tema-dibujar2.js"],[11888,"tema-sueltas.js"],[11979,"tema-piezas.js"],[12185,"tema-ruta.js"],[12413,"tema-fichas.js"],[12530,"tema-cierre.js"],[12691,"tema-inicio.js"],[12819,"tema-ajustes.js"],[13067,"tema-nube.js"],[13125,"tema-viaje.js"],[13266,"tema-ubica.js"],[13407,"tema-personal.js"],[13470,"tema-pin.js"],[13574,"tema-navega.js"],[13607,"tema-cajas.js"],[13643,"tema-camara.js"],[13675,"tema-rutas.js"],[13717,"tema-estadisticas.js"],[13758,"tema-guia.js"],[13808,"tema-bodega.js"],[13877,"tema-cobranza.js"],[14037,"tema-pantallas.js"],[14258,"tema-avisos.js"],[14420,"tema-reparte.js"],[14486,"tema-vehiculos.js"],[14637,"tema-notas.js"],[14712,"tema-taras.js"],[14819,"tema-cargarmas.js"],[14858,"tema-cargas.js"],[14974,"tema-cobro.js"],[15010,"tema-horario.js"],[15049,"tema-sueldos.js"],[15191,"tema-ganado.js"],[15236,"tema-cierres.js"],[15369,"tema-finanzas.js"],[15442,"tema-cuadre.js"],[15758,"tema-retencion.js"],[15849,"tema-iniciodia.js"],[15954,"tema-entregapasos.js"],[16027,"tema-push.js"],[16121,"tema-ticket.js"],[16207,"tema-toast.js"],[16247,"tema-version.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -9775,7 +9791,7 @@ function vwVivo77(){try{if(!S.vw||!S.vws)return;if(S.vws.indexOf(S.vw)>-1)return
 /* render: pasó a tema-dibujar1.js */
 /* la carga de la nube: si algo se rompe, se salta y deja entrar */
 /* nbPrimera: pasó a tema-nube.js */
-if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* si la carga se queda más de 25 segundos en "Cargando…", ofrece salir */
 (function(){var t0=Date.now();var iv=setInterval(function(){try{if(typeof NB==='undefined'||!NB.on){if(Date.now()-t0>120000)clearInterval(iv);return}if(NB.est==='listo'){clearInterval(iv);return}
  if((NB.est==='cargando'||NB.est==='conectando'||NB.est==='perfil'||NB.est==='auth')&&Date.now()-(NB._t77||(NB._t77=Date.now()))>40000){clearInterval(iv);falloPantalla77(falloAnota77(new Error('La carga de la nube tardó más de 40 segundos ('+NB.est+')'),'al cargar'))}}catch(x){}},1000)})();
@@ -9818,7 +9834,7 @@ falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Di
  on('f77nube',function(){if(!confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}location.reload()};var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{window._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}})}catch(x){}};
 /* mientras la pantalla de rescate está, no se dibuja ni se procesa nada más */
 /* render: pasó a tema-dibujar1.js */
-if(typeof nbAplica==='function'){var _nbA77b=nbAplica;nbAplica=function(){if(DIAG77.paus)return false;return _nbA77b.apply(this,arguments)}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* el aviso de "tardó mucho" ahora espera 40 segundos y también cubre "Conectando…" */
 
 /* ===================== 7.9b · el viaje que quedó a medias ya no tumba la app =====================
@@ -9831,7 +9847,7 @@ function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n
  if(S.vws.length<n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'La app',x:'Se quitó '+(n-S.vws.length)+' viaje de carga que había quedado a medias'})}catch(e){}try{falloAnota77(new Error('viaje a medias quitado ('+(n-S.vws.length)+')'),'al limpiar')}catch(e){}}return S.vws.length<n}catch(e){return false}}
 vwLimpia77();
 /* render: pasó a tema-dibujar1.js */
-if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
+/* nbAplica: pasó a tema-fresco2.js */
 /* vwBurbuja: pasó a tema-viaje.js */
 /* vwPend: pasó a tema-viaje.js */
 
@@ -10142,7 +10158,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ub68si"]');if(!b||!S.ub68||S.ub68.t!=='bod')return;var x=S.ub68,nm=String(x.nm78||'').trim();if(!nm&&!bodNomSug78(x.dir78||'')){e.preventDefault();e.stopImmediatePropagation();toast('Escribe el nombre de la bodega (ej. "Bodega Otay")');var i=document.getElementById('ub78n');if(i){try{marcaFalta(i)}catch(er){}try{i.focus()}catch(er){}}}},true);
 /* el nombre de la demo también se limpia después de bajar la nube (y se sube corregido) */
 function bodDemo80(){try{if(MODO!=='vacio')return false;var b=(S.bods||[])[0],ch=false;if(b&&b.n==='Bodega Banderilla'&&!b.dem78&&(b.dir==='Banderilla, Veracruz'||!b.dir)){b.n='Bodega';if(b.dir==='Banderilla, Veracruz')b.dir='';b.dem78=1;ch=true}if(S.cfg&&S.cfg.dir==='Banderilla, Veracruz'){S.cfg.dir='';ch=true}return ch}catch(e){return false}}
-if(typeof nbAplica==='function'){var _nbA80=nbAplica;nbAplica=function(){var r=_nbA80.apply(this,arguments);if(bodDemo80()){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},500)}catch(e){}r=true}return r}}
+/* nbAplica: pasó a tema-fresco2.js */
 
 /* ---------- 33 · la tarjeta de fruta madura se desliza para quitarla ---------- */
 function antigFirma80(){var v=3;try{v=vidaDias()}catch(e){}return (S.madL||[]).filter(function(x){return num(x.q)>0}).map(function(x){var e=0;try{e=madEdad(x)}catch(er){}return x.p+x.dia+(v-e<=1?'!':'')}).sort().join(',')}
@@ -10178,8 +10194,8 @@ function limpia80(s){if(!s||MODO!=='vacio')return false;var ch=false;try{
  /* placas: el estado de ejemplo */ (s.veh||[]).forEach(function(v){if(!v.plEdo){v.plEdo='Baja California';ch=true}});
  /* precios de ejemplo antes de terminar el asistente */ if(s.setup&&!s.setup.fin&&s.precio&&!s.precio.conf){if(num(s.precio.R)===260&&num(s.precio.M)===18){s.precio.R=0;s.precio.M=0}if(s.mayP&&num(s.mayP.R)===240&&num(s.mayP.M)===16)s.mayP={R:'',M:''};(s.vlProd||[]).forEach(function(p){if(p.p==='12'&&p.inv==='R'||p.p==='16'&&p.inv==='M')p.p=''})}
 }catch(e){}return ch}
-if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,arguments);limpia80(s);return s};limpia80(S);
- if(typeof nbAplica==='function'){var _nbA80b=nbAplica;nbAplica=function(){var r=_nbA80b.apply(this,arguments);if(limpia80(S)){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},700)}catch(e){}r=true}return r}}}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpia80(S);
+ /* nbAplica: pasó a tema-fresco2.js */}
 /* la placa dice el estado de verdad (antes siempre "VERACRUZ") */
 /* plateSVG: pasó a tema-vehiculos.js */
 /* la entrega ya no empieza con 4 cajas y 30 kg inventados: lo de la vez pasada, o en ceros */
@@ -10499,7 +10515,7 @@ function limpiaTpl82(s){if(!s||MODO!=='vacio')return false;var ch=false,B=null;t
  (s.veh||[]).forEach(function(v){if(num(v.valor)===330000){v.valor=0;ch=true}if(num(v.precioC)===385000){v.precioC=0;ch=true}if(v.afDue==='2026-12-10'){v.afDue='';ch=true}if(num(v.kmMes)===3200){v.kmMes=0;ch=true}});return ch}
 if(MODO==='vacio'){
  /* nuevoVeh y nuevoCli: lo de la app real pasó a su definición en l7.js */
- limpiaTpl82(S);if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
+ limpiaTpl82(S);/* nbAplica: pasó a tema-fresco2.js */}
 /* un cliente al que se le pone ubicación: su distancia desde la bodega */
 /* render: pasó a tema-dibujar1.js */
 
@@ -10832,6 +10848,47 @@ function fallas85(r,f0){try{if(!r||!f0)return;_pd85(r).forEach(function(cid){var
 function fallaLimpia85(){(S.cli||[]).forEach(function(c){if(c.falla85&&c.ult&&c.ult>=c.falla85.f)c.falla85=null})}
 
 /* render: pasó a tema-dibujar1.js */
+
+//@@capa tema-fresco2.js
+/* ===================== TEMA · Estado nuevo (fresh) y datos que llegan de la nube (nbAplica), parte 2 (aplanado el 19 nov) =====================
+   Las envolturas de fresh() de l7, l45, l72 y l80 (versión real: quitar lo de la demo) y las de nbAplica() de l61, l77, l80 y l82
+   (puente al cerrar, pausar si falló, limpiar plantillas de la demo al bajar de la nube). Mismo orden de cada una.
+   Se arma justo después de l85.js (antes de tema-dibujar1.js). Lo que se le hacía a S al cargar (S=vaciar(S), limpia72(S),
+   limpia80(S), limpiaTpl82(S), limpiaDemo(S)) se quedó en su capa, en su lugar. Las condiciones (MODO==='vacio') van con cada una.
+   ============================================================================================ */
+
+/* fresh · de l7 */
+if(MODO==='vacio'){var _frL7=fresh;fresh=function(){return vaciar(_frL7.apply(this,arguments))};}
+
+/* fresh · de l45 */
+if(typeof MODO!=='undefined'&&MODO==='vacio'){var _fr45=fresh;fresh=function(){return limpiaDemo(_fr45.apply(this,arguments))};}
+
+/* nbAplica · de l61 */
+var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
+
+/* fresh · de l72 */
+if(MODO==='vacio'){var _fr72=fresh;fresh=function(){return limpia72(_fr72.apply(this,arguments))};}
+
+/* nbAplica · de l77 */
+if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
+
+/* nbAplica · de l77 */
+if(typeof nbAplica==='function'){var _nbA77b=nbAplica;nbAplica=function(){if(DIAG77.paus)return false;return _nbA77b.apply(this,arguments)}}
+
+/* nbAplica · de l77 */
+if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
+
+/* nbAplica · de l80 */
+if(typeof nbAplica==='function'){var _nbA80=nbAplica;nbAplica=function(){var r=_nbA80.apply(this,arguments);if(bodDemo80()){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},500)}catch(e){}r=true}return r}}
+
+/* fresh · de l80 */
+if(MODO==='vacio'){var _fr80=fresh;fresh=function(){var s=_fr80.apply(this,arguments);limpia80(s);return s};}
+
+/* nbAplica · de l80 */
+if(MODO==='vacio'){if(typeof nbAplica==='function'){var _nbA80b=nbAplica;nbAplica=function(){var r=_nbA80b.apply(this,arguments);if(limpia80(S)){try{setTimeout(function(){try{nbEmpuja()}catch(e){}},700)}catch(e){}r=true}return r}}}
+
+/* nbAplica · de l82 */
+if(MODO==='vacio'){if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
 
 //@@capa tema-dibujar1.js
 /* ===================== TEMA · Después de dibujar, parte 1 (aplanado el 19 nov) =====================

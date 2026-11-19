@@ -35,7 +35,7 @@ function datosDemo(s){if(s._v39)return s;s._v39=1;
  /* venta local con su propio precio (puede ser menor: ahí se remata la merma) */
  (s.vlProd||[]).forEach(function(p){if(p.inv==='R'&&(p.p==='13'||p.p==='9'))p.p='12';if(p.inv==='M'&&(p.p==='18'||p.p==='12'))p.p='16'});
  return s}
-var _frL6=fresh;fresh=function(){return datosDemo(_frL6.apply(this,arguments))};
+/* fresh: pasó a tema-fresco1.js */
 datosDemo(S);
 /* "con señal / sin señal" también en el mapa y el viaje */
 /* render: pasó a tema-dibujar1.js */

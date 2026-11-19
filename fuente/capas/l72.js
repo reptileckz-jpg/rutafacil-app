@@ -18,7 +18,7 @@
 
 /* ---------- 68 · lo que se cuela de la demo ---------- */
 function limpia72(s){if(!s)return s;try{if(s.salida&&!s.salida.ok&&num(s.salida.R)===26&&num(s.salida.M)===80){s.salida.R=0;s.salida.M=0}var m=s.mayMin||{};if(String(m.R)==='220'&&String(m.M)==='15'&&!s.mayMin71)s.mayMin={R:'',M:''}}catch(e){}return s}
-if(MODO==='vacio'){var _fr72=fresh;fresh=function(){return limpia72(_fr72.apply(this,arguments))};limpia72(S)}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */limpia72(S)}
 function sinBase72(){var hayPed=(S.stops||[]).some(function(x){var c=cl(x.c);return c&&c.ped&&(num(c.ped.R)||num(c.ped.M))});return !(S.rutasHist||[]).length&&!hayPed&&!(S.stops||[]).length}
 function stock72(){if(S.role!=='rep'||S.salida.ok)return;var m=document.querySelector('main'),c=m&&m.querySelector('.card.rep1');if(!c||c.dataset.x72)return;if(!(num(S.salida.R)===0&&num(S.salida.M)===0||sinBase72()))return;c.dataset.x72='1';
  c.innerHTML='<div class="h">'+SV38.camion+'<span>¿Cuánto cargas hoy?</span></div><div style="font-size:17px;font-weight:700;margin-top:8px">Todavía no hay con qué calcularlo: no tienes pedidos ni días anteriores.</div><div class="lbl" style="margin-top:4px">Carga lo que te diga el administrador. Al iniciar el día capturas lo que de verdad llevas.</div>'}

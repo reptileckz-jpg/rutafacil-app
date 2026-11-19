@@ -26,7 +26,7 @@ function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null
 /* la nube ya no sube c.cred / c.vac ni tarasProv como número final */
 /* nbCodifica: pasó a tema-nube.js */
 /* nbEmpuja: pasó a tema-nube.js */
-var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
+/* nbAplica: pasó a tema-fresco2.js */
 /* render: pasó a tema-dibujar1.js */
 
 /* ---------- 32 · cambio de día aunque la app nunca se vaya al fondo ---------- */

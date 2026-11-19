@@ -142,7 +142,7 @@ function limpiaTpl82(s){if(!s||MODO!=='vacio')return false;var ch=false,B=null;t
  (s.veh||[]).forEach(function(v){if(num(v.valor)===330000){v.valor=0;ch=true}if(num(v.precioC)===385000){v.precioC=0;ch=true}if(v.afDue==='2026-12-10'){v.afDue='';ch=true}if(num(v.kmMes)===3200){v.kmMes=0;ch=true}});return ch}
 if(MODO==='vacio'){
  /* nuevoVeh y nuevoCli: lo de la app real pasó a su definición en l7.js */
- limpiaTpl82(S);if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
+ limpiaTpl82(S);/* nbAplica: pasó a tema-fresco2.js */}
 /* un cliente al que se le pone ubicación: su distancia desde la bodega */
 /* render: pasó a tema-dibujar1.js */
 

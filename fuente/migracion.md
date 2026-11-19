@@ -58,7 +58,8 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Piezas de pantalla (40 envolturas de una o dos por función: tarjetas, formularios, precio, cierre, impresora, ventanas…) | 40 | ✅ `tema-piezas.js` (después de `tema-sueltas.js`). Comprobado con TODAS las comparaciones (IDÉNTICO) |
 | Envolturas dentro de un `if` (fxErr, gastos, cargas, clientes, resetDraft, pedAsigna, stock72 ×2) | 8 | ✅ al final de `tema-piezas.js` (bloques enteros, mismo orden). rt81HTML ×3: se quitaron (l84 la rehace completa; no se usaban). Todas las comparaciones IDÉNTICO |
 | "Después de dibujar" (render: 118 envolturas) | 117 | ✅ `tema-dibujar1.js` (113, de l1–l85 y l6b; va justo antes de `tema-rutadia.js`) y `tema-dibujar2.js` (6, de l86–l90; va justo después de `l90.js`). Mismo orden exacto (se cortaron con un analizador de JavaScript, acorn). Todas las comparaciones IDÉNTICO y todas las pruebas en 0 FAIL. (la de l6b también: ya no queda ninguna de render). resetDraft de l72 pasó a `tema-piezas.js` |
-| Lo que sobre | resto | pendiente |
+| Estado nuevo y datos de la nube (fresh 7, nbAplica 7) | 14 | ✅ `tema-fresco1.js` (fresh de l2, l5, l6b; justo después de `l6b.js`, antes de `l7.js` porque `tpl()` usa `_frL6`) y `tema-fresco2.js` (fresh de l7, l45, l72, l80 y nbAplica de l61, l77, l80, l82; justo después de `l85.js`). Lo que se le hacía a S al cargar se quedó en su capa. Comparaciones IDÉNTICO; S al cargar, `fresh()` y `tpl()` iguales (en la demo solo cambia 1 segundo del reloj simulado) |
+| Lo que sobre | 0 | ✅ **0 envolturas en las capas viejas (19 nov)** |
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 
 ## Antes de seguir

@@ -2832,3 +2832,10 @@ Varias sugerencias ya existían en parte; se completaron en vez de duplicarlas. 
 - **158 · Entrar sin escribir el correo** (`tema-pin.js`, opción B): "¿Quién eres?" con los nombres que ya entraron en ese celular; tocas el tuyo y solo pones la contraseña. "Otra persona" y "Quitar de este celular".
 - Ajustes → **🛡️ Controles**: billetes, % de merma, cada cuántos días recordar.
 - Vite: `tema-toast.js` (9 envolturas de toast; `comp-toast.js` IDÉNTICO en demo y real). Quedan 199 (64%).
+
+## 2026-11-19 (noche) · Vite: 0 envolturas en las capas viejas (de 568 al empezar)
+Ricardo: "sigue con Vite hasta que se alcance el límite y termina la aplicación en Vite". Con la 10.5 ya publicada (APK 1.0.52, función y reglas publicadas):
+- `tema-toast.js` (9), `tema-sueltas.js` (15), `tema-piezas.js` (40 + 8 que estaban dentro de un `if` + resetDraft de l72), `tema-dibujar1.js` / `tema-dibujar2.js` (las 118 de render), `tema-fresco1.js` / `tema-fresco2.js` (fresh y nbAplica). Se quitaron 3 envolturas muertas de rt81HTML (l84 la rehace).
+- Para render, fresh y nbAplica se usó un analizador de JavaScript (acorn) para cortar exacto; los temas van en el lugar del armado donde el orden queda igual.
+- Comprobado: todas las pruebas de comparación IDÉNTICO (demo y real), todas las pruebas t*.js en 0 FAIL, y el estado S al cargar igual.
+- **Falta el último paso: cambiar el armado a Vite.** Según las reglas, eso empieza cuando Ricardo diga "Empezamos con Vite". Las capas ya están listas.

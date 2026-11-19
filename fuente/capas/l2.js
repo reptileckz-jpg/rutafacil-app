@@ -150,4 +150,4 @@ window.addEventListener('popstate',function(){if($('fiov')){if(typeof borrSalir=
  document.addEventListener('mousedown',function(e){if(window.__swMouse)ini(e.clientX,e.clientY,e.target)});document.addEventListener('mouseup',function(e){if(window.__swMouse)fin(e.clientX,e.clientY)})})();
 
 /* al abrir la app, ninguna ficha abierta */
-(function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};var _frFi=fresh;fresh=function(){return cerrar(_frFi.apply(this,arguments))};cerrar(S)})();
+(function(){var cerrar=function(s){FIK.forEach(function(k){s[k]=null});return s};/* fresh: la envoltura pasó a tema-fresco1.js (cerrar(S) se queda aquí) */cerrar(S)})();

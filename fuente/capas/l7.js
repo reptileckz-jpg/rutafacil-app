@@ -18,7 +18,7 @@ function vaciar(s){var I=s.inv;Object.keys(I).forEach(function(k){if(typeof I[k]
  s.salida.ok=false;s.cierre.sent=false;s.cierre.res=null;/* 100 · sin el odómetro del camión de la demo: se toma el del vehículo */s.cierre.odoIni='';s.cierre.odo='';s.cierreReg=null;s.nota=null;s.primerDia=true;s.cajaBase=0;s.precio.conf=null;s.precioProx=null;
  s.invB={1:s.inv};s.lotesB={1:s.lotes};s._histSeed=0;s.cajasT0=0;s.setup={p:0,veh:[],per:[],cli:[],prov:[]};s.tutVisto={};HIST.length=0;
  if(Array.isArray(window.COMPRAS))COMPRAS.length=0;return s}
-if(MODO==='vacio'){var _frL7=fresh;fresh=function(){return vaciar(_frL7.apply(this,arguments))};S=vaciar(S)}
+if(MODO==='vacio'){/* fresh: la envoltura pasó a tema-fresco2.js */S=vaciar(S)}
 /* 100 · costo mientras no hay ninguna carga: el que se puso al empezar (en la demo, el de ejemplo) */
 function costoIni96(p){if(MODO!=='vacio')return p==='R'?190:14;return num((S.cfg||{})[p==='R'?'costoIniR':'costoIniM'])}
 function hayCostoCarga96(p){return (S.cargas||[]).some(function(x){return p==='R'?(x.kgR>0&&x.pR>0&&x.cajas>0):(x.kgM>0&&x.pM>0)})}

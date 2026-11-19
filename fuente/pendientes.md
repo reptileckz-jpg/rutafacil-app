@@ -2922,3 +2922,12 @@ HECHO (SIN PUBLICAR), prueba en `t168.js` (10 OK).
 - Barra del chofer: cápsula que se DESLIZA (`.glider168`, translateX(i*100%) con cubic-bezier(0.34,1.56,0.64,1)); la app recrea la barra en cada redibujado, así que se pone donde estaba y en el siguiente cuadro va a la pestaña nueva. Queda exacto bajo el botón.
 - will-change: transform en los íconos que flotan/laten y, solo durante su entrada, en las tarjetas que entran.
 - La barra del administrador (165) se dejó exacta como la mandó (su cápsula ya es transform; el color de las letras tiene una transición corta propia de su CSS).
+
+## 2026-11-19 · 170 · Ricardo: "con esos dos diseños (Inicio y Ruta/Entrega) adáptalos a toda la app, conserva o añade animaciones… aceleradas por GPU"
+HECHO (SIN PUBLICAR), `fuente/capas/tema-app170.js` (último en `orden.json`), prueba `t170.js` (16 OK).
+- Clase `html.app170`. Tarjetas de `main` (menos Inicio/Ruta/Entrega, que ya tienen el suyo): radio 24 px y sombra suave (`--sh170`, claro/oscuro). Alerta/nota/bien conservan fondo y borde.
+- Botones: brillo (background-image) ENCIMA de su color, radio 16 (`.sm` píldora), rebote al soltar. Chips: píldora; la elegida con sombra verde. Campos: radio 14.
+- NO cambia padding ni tamaños de letra (la prueba compara texto, botones y espacios de 9 pantallas con y sin el tema).
+- Animaciones solo transform/opacity: `main.in170` (entrada escalonada solo al llegar a una pantalla); ventanas `.ab170` (fondo aparece + panel con rebote; `.sheet` sube; `.ov70` desliza) SOLO cuando la ventana no estaba abierta (MutationObserver compara las ventanas abiertas antes/después; un redibujado no anima). Transiciones de botones: solo transform (se quitaron fondo/borde/sombra que venían de v3.1). Barra flotante (`.nav-item`) excluida.
+- De paso: en oscuro, `.k5card2/.k5grp/.k5sub` del Cuadre se quedaban blancas (`var(--card,#fff)`); ahora `var(--surface)`.
+- Los íconos 3D (emoji → ilustración) siguen solo en Inicio: en el resto de la app hay textos que se comparan/buscan con el emoji.

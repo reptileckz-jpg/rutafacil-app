@@ -17,8 +17,9 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  var t=a==='tkwa'?tkTel(n):telDiez(n.tel||((S.cli.filter(function(x){return x.n===n.cli})[0]||{}).tel));
  if(a==='tkwa'&&t.length!==10)return; /* el manejador de siempre pide el número */
  e.stopImmediatePropagation();var c=S.cli.filter(function(x){return x.n===n.cli})[0];if(c&&!String(c.tel||'').replace(/\D/g,'')&&n.tel)c.tel=n.tel;
- var img;try{img=n.img=notaImg(n)}catch(er){img=null}
- var fin=function(ok){if(!ok){try{window.open('https://wa.me/52'+t+'?text='+encodeURIComponent(notaTxt(n)),'_blank')}catch(er){}}
+ /* 129 · la imagen ya NO se queda en la nota (salía doble abajo); solo si no se pudo mandar, para guardarla o compartirla */
+ var img;try{img=notaImg(n)}catch(er){img=null}n.img=null;
+ var fin=function(ok){if(!ok){n.img=img;try{window.open('https://wa.me/52'+t+'?text='+encodeURIComponent(notaTxt(n)),'_blank')}catch(er){}}
   if(a==='tkwa'){n.waOk=true;if(imprOk())try{tkImprimir(n)}catch(er){}toast(imprOk()?'Ticket enviado e impreso':'Ticket enviado por WhatsApp')}else n.waFb=!ok&&!t;render()};
  if(img)natCompartir(img,'ticket-'+(n.folio||'')+'.png',{tel:t,texto:''}).then(fin);else fin(false)},true);
 /* ---------- resumen para el proveedor: directo a su chat ---------- */

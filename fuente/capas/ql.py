@@ -135,3 +135,6 @@ R("toast('Escribe cuánto efectivo recibiste');return}if(num(S.cierreRec)===0","
 R("else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}","else if(a==='regcierre'){if(S.cierreRec===''){toast('Escribe el efectivo que recibiste');return}if(num(S.cierreRec)<0){toast('El efectivo recibido no puede ser negativo');return}")
 # 124 · el administrador que reparte puede omitir las fotos al iniciar (antes el letrero decía "opcionales" pero no lo dejaba salir); los choferes no
 R("if(nf.length&&FOTOS_OBLIGATORIAS){sl.err='Faltan fotos: '","if(nf.length&&FOTOS_OBLIGATORIAS&&!(S.arOn&&sl.fotoSkip124)){sl.err='Faltan fotos: '")
+# 129 · ticket por WhatsApp: la imagen ya no sale doble ni dice "mantén presionada" (en el APK no funciona); botones que sí sirven
+R("if(n.img)h+='<img src=\"'+n.img+'\" alt=\"Nota de remisión como imagen\" style=\"width:100%;margin-top:8px;border:1px solid var(--line);border-radius:10px\"><div class=\"lbl\">Mantén presionada la imagen para guardarla o compartirla.</div>';","if(n.img)h+=tkImgHTML129(n);")
+

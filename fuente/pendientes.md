@@ -2659,3 +2659,21 @@ Decidió: contado "si ya debe algo"; orden del cobro el propuesto, sin repetir "
   - `comp-nube.js` (real) dio una vez 7 diferencias solo en la HORA de un renglón de la bitácora (23:56 contra 23:57): la prueba usa un reloj falso que avanza 1 s por consulta y los relojes de la app (setInterval) corren con el tiempo real, así que con la máquina cargada cambia el minuto. Repetida 2 veces (y nuevo contra nuevo, y la versión anterior contra la de antes): IDÉNTICO, 999 casos.
   - **Encontrado (no se cambió):** `rt81HTML` tiene 3 envolturas en l81, l82 y l83 que NO hacen nada, porque l84 la vuelve a escribir completa después. Se dejaron así (moverlas las reviviría y cambiaría la pantalla de Rutas). Al pasar a Vite se pueden borrar. Lo mismo `szCalc`/`szDesg` de l18.
 - Siguiente: más piezas sueltas (clientes y mayoreo: cmNuevo 2, cmValida 2, cmHTML, cmObj, cmMadHTML, antig65 3, exist65 2; bodega: stock72 2, stockCard, bodega 2, bodegasCard; gastos: gastos, gSheetHTML, gxTipos 2, gchCard, cfForm…) y al final `render` (118).
+
+## 2026-11-19 · 128 · Ricardo: "en el cuadre hay que detallar más… viene un apartado 'comisión' y no especifica qué es lo que se está ganando el chofer por repartir; más detallista y fácil de entender"
+HECHO en `capas/tema-cuadre.js` (su tema). **Falta armar APK (preguntar antes).**
+- En la tarjeta de cada chofer: "− Comisión por repartir" (toca para ver cómo sale):
+  - "Cómo gana su comisión": $X por caja y $Y por kilo que cobra (o el N% de lo que cobra). Solo cuenta el dinero que sí entró; lo fiado le cuenta el día que se cobre; si él da precio de mayoreo, gana la mitad.
+  - Resumen: cajas pagadas completas × $, kilos pagados completos × $, entregas pagadas en parte, mayoreo que dio él (−), abonos de deudas de antes, = Comisión del día. Lo que quedó fiado se dice aparte.
+  - Entrega por entrega: cliente, cajas y kilos, cómo pagó y lo que le tocó.
+- "− Sueldo del día" dice cómo sale ("base de $1,500 a la semana ÷ 6 días"). Arriba, "− Comisiones de los choferes" dice de quién es cada una. Semana/mes: "sueldo $X + comisión $Y (N cajas y M kg pagados completos)".
+- Blindaje: NO cambia ninguna cuenta. El desglose usa la MISMA cuenta de la comisión (`comDeLog` de l18), entrega por entrega, así que suma exacto lo que se resta en el neto (si por centavos no da, sale un renglón "Centavos de redondeo"). Funciones de números aparte (`comDesg128`, `comFilas128`, `szTxt128`) de las de pantalla (`comHTML128`). El desglose NO se guarda en el resumen de 60 días (no crece la nube); en días viejos dice "el detalle de este día ya no se guarda".
+- Encontrado al probar: con la primera versión, Semana y Mes tronaban ("Algo falló") porque ahí la lista de sueldos viene en otro formato. Arreglado antes de subir (`comQuien128`).
+- Prueba `t128.js` (24 OK): la comisión es la misma de antes ($92.91), el desglose y sus renglones suman exacto, cajas, kilos, en parte, mayoreo, abonos, fiado, cada entrega, sueldo, el neto no cambia, la pantalla, por porcentaje, semana, mes y día viejo. Captura `disenos/cuadre-comision.png`.
+
+## 2026-11-19 · 129 · Ricardo: "cuando mandas el ticket por WhatsApp sale la imagen del ticket hasta abajo… se muestra doble… te dice que la dejes presionada para guardar o compartir pero tampoco funciona"
+HECHO (`l38.js`, `tema-notas.js` y líneas 129 de `ql.py`). **Falta armar APK (preguntar antes).**
+- Causa: al mandar el ticket, la imagen que se arma para WhatsApp se quedaba guardada en la nota (`n.img`) y la pantalla la dibujaba abajo. "Mantén presionada" no sirve en el APK: la app apaga el mantener presionado (punto 44).
+- Ahora la imagen ya no se queda después de mandarla. Solo sale si no se pudo mandar o con "Ver como imagen", y con botones que sí funcionan: "💾 Guardar en el celular" (a Descargas, con la pieza nativa), "📤 Compartir la imagen" (otra vez al WhatsApp del cliente) y "Ocultar la imagen".
+- Prueba `t129.js` (12 OK; con la versión anterior falla en lo doble y en "mantén presionada"). Todas las pruebas en 0 FAIL (menos `tk.js`, que ya fallaba).
+

@@ -51,3 +51,14 @@ var _nI18=notaItems;notaItems=function(n){var it=_nI18.apply(this,arguments),t=S
 /* notasDe · de l63 */
 var _nd63=notasDe;notasDe=function(k){var orig=S.notasN||[],rol=S.role==='rep'?'ch':(S.encOn?'enc':'adm');var gen=/^cli:/.test(k)?'cli:*':(/^prov:/.test(k)?'prov:*':null);
  S.notasN=orig.filter(function(n){if((n.k!==k&&n.k!==gen))return false;var v=n.v||'todos';return rol==='adm'||v==='todos'||v===rol}).map(function(n){return n.k===gen?Object.assign({},n,{k:k}):n});try{return _nd63.call(this,k)}finally{S.notasN=orig}};
+
+/* ---------- 129 · la imagen del ticket: botones que sí funcionan (antes decía "mantén presionada", y en el APK no hace nada) ----------
+   Sale solo con "Ver como imagen" o si el ticket no se pudo mandar. Guardar = a Descargas del celular; Compartir = la hoja de compartir (WhatsApp…). */
+function tkImgHTML129(n){return '<div class="card" style="padding:10px;margin-top:8px"><img src="'+n.img+'" alt="Nota de remisión como imagen" style="width:100%;border:1px solid var(--line);border-radius:10px">'
+ +'<button class="btn sec" style="margin-top:8px" data-act="imgguarda">💾 Guardar en el celular</button>'
+ +'<button class="btn sec" style="margin-top:8px" data-act="tkimgcomp">📤 Compartir la imagen</button>'
+ +'<button class="link" style="margin-top:6px" data-act="tkimgx">Ocultar la imagen</button></div>'}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tkimgcomp"],[data-act="tkimgx"]');if(!b)return;e.stopImmediatePropagation();var n=S.nota;if(!n)return;
+ if(b.dataset.act==='tkimgx'){n.img=null;render();return}
+ if(!n.img)return;var t='';try{t=telDiez(n.tel||((S.cli.filter(function(x){return x.n===n.cli})[0]||{}).tel))}catch(er){}
+ natCompartir(n.img,'ticket-'+(n.folio||'')+'.png',{tel:t,texto:''}).then(function(ok){if(!ok)toast('Este celular no deja compartir desde aquí. Usa "Guardar en el celular" y mándala desde WhatsApp.')})},true);

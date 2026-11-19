@@ -39,10 +39,15 @@ function corteDatos(){var c=S.cierre,r=c.res||cierreRes(),deb=num(r.efectivo),en
  var d={ch:chofN(S.chofHoy),f:iso(TODAY),h:S.ciEnvH||hhmm(),deb:deb,ent:ent,dif:r2(ent-deb),mot:c.efMot||'',bolsa:c.bolsa||'',dest:c.dest==='tom'?'tómbola':'administrador',bill:c.billOn?c.bill:null,may:may,vend:num(r.total),tarj:r2(tj),trans:r2(tr)};
  /* 130 · cajas y kilos que vendió en este cierre: de las MISMAS cuentas del cierre que "Vendió" (cierreRes). No entran al código de verificación: el código sigue igual */
  d.R=num(r.R);d.M=r2(num(r.M));d.nEnt=(S.log||[]).filter(function(l){return l&&(num(l.R)||num(l.M))}).length;
+ /* 140 · desglose como el ticket: cada producto con su precio; mayoreo y precio especial con el nombre del cliente */
+ try{var G={},O=[];(S.log||[]).forEach(function(l){if(!l||l.anul)return;var c0=cl(l.c),nm=c0?c0.n:'Cliente',esp={};(typeof preciosLog135==='function'?preciosLog135(l):[]).forEach(function(x){esp[x.p]=x});
+  ['R','M'].forEach(function(p){var q=num(l[p]);if(!(q>0))return;var pr=num(p==='R'?l.pr:l.pm),x=esp[p];if(x){O.push({p:p,q:q,pr:pr,t:x.txt,n:nm});return}var k=p+'|'+pr;G[k]=G[k]||{p:p,q:0,pr:pr};G[k].q=r2(G[k].q+q)})});
+  d.lin=Object.keys(G).map(function(k){return G[k]}).concat(O).sort(function(a,b){return a.p===b.p?0:(a.p==='R'?-1:1)});d.cont=r2(num(r.total)-num(r.cred));d.cred=r2(num(r.cred));d.ab=r2(num(r.ab))}catch(e){}
  d.v=verifCodigo([d.ch,d.f,d.deb,d.ent,d.bolsa,JSON.stringify(d.bill||{}),d.may.length].join('|'));return d}
 function corteItems(d){var it=[{t:'c',s:(S.cfg.nombre||'').toUpperCase(),b:1},{t:'c',s:'CORTE DEL CHOFER'},{t:'c',s:fmtF(d.f)+' · '+d.h},{t:'hr'},{t:'kv',k:'Chofer',v:d.ch}];
  if(d.R!=null){it.push({t:'kv',k:'Cajas de roatán vendidas',v:String(d.R)},{t:'kv',k:'Kilos de macho vendidos',v:(+d.M).toLocaleString('es-MX')+' kg'});if(d.nEnt!=null)it.push({t:'kv',k:'Entregas',v:String(d.nEnt)})}
- it.push({t:'kv',k:'Vendió',v:money(d.vend),b:1});
+ if(d.lin&&d.lin.length){it.push({t:'hr'});d.lin.forEach(function(x){it.push({t:'kv',k:(x.p==='R'?'Roatán ':'Macho ')+x.q.toLocaleString('es-MX')+(x.p==='R'?(x.q===1?' caja':' cajas'):' kg')+' a '+money(x.pr),v:money(r2(x.q*x.pr))});if(x.t)it.push({t:'kv',k:'   '+x.t+': '+x.n,v:''})});it.push({t:'hr'})}
+ it.push({t:'kv',k:'Vendió',v:money(d.vend),b:1});if(d.cont!=null){it.push({t:'kv',k:'  De contado',v:money(d.cont)});if(d.cred)it.push({t:'kv',k:'  A crédito',v:money(d.cred),c:'neg'});if(d.ab)it.push({t:'kv',k:'Abonos de deudas',v:money(d.ab)})}
  if(d.tarj)it.push({t:'kv',k:'Cobrado con tarjeta (no es efectivo)',v:money(d.tarj)});if(d.trans)it.push({t:'kv',k:'Transferencias (no es efectivo)',v:money(d.trans)});
  it.push({t:'kv',k:'Debía entregar',v:money(d.deb)},{t:'kv',k:'Entrega',v:money(d.ent),b:1});
  if(Math.abs(d.dif)>=0.5)it.push({t:'kv',k:d.dif<0?'Faltante':'Sobrante',v:money(Math.abs(d.dif)),b:1,c:'neg'},{t:'kv',k:'Motivo',v:d.mot});

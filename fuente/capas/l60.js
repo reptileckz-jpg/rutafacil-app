@@ -99,7 +99,7 @@ function actDiaHTML(f,ch,tit){var L=actDe(ch,f);if(!L.length)return '';return '<
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="avvisto"]');if(!b)return;e.stopImmediatePropagation();var hoy=iso(TODAY);S.actVisto=S.actVisto||{};S.actVisto[hoy]=actDe(null,hoy).length;
  S.avPrecio=(S.avPrecio||[]).filter(function(x){return typeof x!=='string'||AV_URG.test(x)||!AV_INFO.test(x)});toast('Listo');render()},true);
 /* recepción del cierre: "Lo que pasó hoy en su ruta" antes de confirmar el efectivo */
-var _rcH60=rcHTML;rcHTML=function(){var h=_rcH60.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0)return h;var a=actDiaHTML(iso(TODAY),+S.chofHoy,'Lo que pasó hoy en su ruta');if(!a)return h;
+var _rcH60=rcHTML;rcHTML=function(){var h=_rcH60.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0)return h;var a=actCierreHTML141(iso(TODAY),+S.chofHoy);if(!a)return h;
  var i=h.indexOf('<div style="margin-top:auto');return i>-1?h.slice(0,i)+'<div class="card" data-k="rcact">'+a+'</div>'+h.slice(i):h}catch(e){return h}};
 /* ficha del chofer → Ruta y metas: lo que pasó ese día */
 /* gpsRutaHTML: pasó a tema-ubica.js */

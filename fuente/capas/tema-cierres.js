@@ -113,3 +113,13 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  setTimeout(function(){try{if(!S.salida||(S.cierre&&S.cierre.sent))return;/* no se hizo nada */
   if(otra&&Object.keys(ff).some(function(k){return ff[k]}))S.salida.fotos=ff;
   S.salida.fotosFin=fotosFinVacias137();render()}catch(er){console.error('137',er)}},0)},true);
+
+/* ---------- 141 · Ricardo: "en su segundo o tercer cierre sigue apareciendo 'Lo que pasó hoy en su ruta' de otras rutas y sale una lista larga;
+   solo debe aparecer lo que sucedió mientras tenía abierta su ruta y acorde a cada cierre" ----------
+   Al recibir un cierre: solo lo de ese chofer DESPUÉS de su cierre anterior de hoy y hasta que mandó este. */
+function actCierre141(ch,f){var L=actDe(ch,f),P=(S.rutasHist||[]).filter(function(r){return r&&r.f===f&&+r.ch===+ch&&r.parcial120&&r.h120}).map(function(r){return String(r.h120)}).sort(),
+  desde=P.length?P[P.length-1]:'',c=S.cierre,hasta=c&&c.sent&&c.corte&&c.corte.h?String(c.corte.h):'';
+ return L.filter(function(a){var h=String(a.h||'');return (!desde||h>desde)&&(!hasta||h<=hasta)})}
+function actCierreHTML141(f,ch){var L=actCierre141(ch,f);if(!L.length)return '';var n=(S.rutasHist||[]).filter(function(r){return r&&r.f===f&&+r.ch===+ch&&r.parcial120}).length+1;
+ return '<div style="margin-top:8px"><b>Lo que pasó hoy en su ruta</b>'+(n>1?'<span class="lbl"> · cierre '+n+'</span>':'')+L.map(function(a){return '<div class="actl"><span class="lbl">'+esc(a.h)+'</span>'+esc(typeof avYo==='function'?avYo(a.x):a.x)+'</div>'}).join('')+'</div>'}
+

@@ -32,7 +32,7 @@ ok(/Cuadre de hoy/.test(r.t||'')&&/\$660/.test(r.t)&&/Vendido \$6,930/.test(r.t)
 ok(r.k.indexOf('cuad121')>-1&&r.k.indexOf('cuad121')<3,'121 · y va arriba en Inicio',r.k);
 // la pantalla del cuadre
 r=await ev(()=>{document.querySelector('[data-act="cu121ver"]').click();return document.querySelector('main').innerText});
-ok(/💰 Cuadre/.test(r)&&/Neto\s*\$660/.test(r)&&/Ganancia de la fruta[\s\S]{0,60}\$2,030/.test(r)&&/Gastos de operación\s*\$750/.test(r)&&/Desgaste de vehículos\s*100 km\s*\$70/.test(r)&&/Sueldos[\s\S]{0,60}\$500/.test(r),'121 · la pantalla del Cuadre trae todo el desglose',(r.match(/Neto[\s\S]{0,700}/)||[''])[0].slice(0,700));
+ok(/💰 Cuadre/.test(r)&&/Neto\s*\$660/.test(r)&&/Ganancia de la fruta[\s\S]{0,160}\$2,030/.test(r)&&/Gastos de operación\s*\$750/.test(r)&&/Desgaste de vehículos\s*100 km\s*\$70/.test(r)&&/Sueldos[\s\S]{0,60}\$500/.test(r),'121 · la pantalla del Cuadre trae todo el desglose',(r.match(/Neto[\s\S]{0,700}/)||[''])[0].slice(0,700));
 ok(/Servicios y reparaciones de vehículos: \$1,000/.test(r)&&/Recibiste de los cierres\s*\$5,650/.test(r)&&/Efectivo en caja ahora/.test(r),'121 · aparte las reparaciones (fondo del desgaste) y el cuadre del dinero con la caja');
 ok(/Danu/.test(r)&&/Cierre 1/.test(r)&&/Lo que dejó su ruta\s*\$780/.test(r)&&/Clientes a crédito \(1\)/.test(r)&&/Taras \(2\)/.test(r)&&/Gastos de su ruta \(2\)/.test(r)&&/Código del corte/.test(r),'121 · la tarjeta de Danu: su cierre, crédito, taras, gastos y lo que dejó su ruta');
 ok(/Venta en bodega/.test(r)&&/Sueldos del día de quien no salió a ruta[\s\S]{0,40}Pepe/.test(r),'121 · venta en bodega y el sueldo de Pepe (bodega)');

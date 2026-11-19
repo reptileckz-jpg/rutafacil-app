@@ -2759,3 +2759,12 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 
 
 ## 2026-11-19 · Ricardo: "todo con lo de hoy" → versión 10.2 a main (Vite hasta 229 / 59%, 128–138 y 132). Todas las pruebas en 0 FAIL antes de publicar.
+
+## 2026-11-19 · Reporte de Ricardo con la 10.2 (APK 1.0.49): segundo cierre sin fotos, corte igual, "Lo que pasó hoy" de otras rutas, ganancia −$911.38 con $490 vendidos, error al publicar la función
+- 139 · Fotos en el segundo cierre: reproducido el flujo real (cierre recibido → "Cargar más"/"Otra vuelta"): las fotos del regreso SÍ se vacían y el cierre no avanza sin ellas. Como el corte también le salió "exactamente igual", lo más probable es que el celular del chofer no tenía la 1.0.49 (revisar arriba "v1.0.49"). Pendiente confirmar con Ricardo.
+- 140 · HECHO (`l40.js`): el corte trae el desglose como el ticket: "Roatán 15 cajas a $275 = $4,125", aparte cada mayoreo o precio especial con el cliente ("Precio especial: Lupe"), y "De contado / A crédito / Abonos de deudas". El código de verificación no cambia.
+- 141 · HECHO (`tema-cierres.js` + `l60.js`): al recibir el cierre, "Lo que pasó hoy en su ruta" solo trae lo de ese chofer después de su cierre anterior de hoy y hasta que mandó este ("· cierre N").
+- 142 · La "Ganancia" del Cuadre es la de la fruta: ventas − costo de esa fruta con el costo de la ÚLTIMA carga (kilos × precio por kilo + flete, ÷ cajas). Si esa carga tiene pocas cajas o un kilo/precio de más, la caja sale carísima. HECHO (`tema-cuadre.js`): dice el costo usado y, si sale con pérdida, avisa y dice qué revisar en Cargas. Pendiente: Ricardo revisa su última carga.
+- Publicar la función: falló con "We failed to modify the IAM policy…": la cuenta de servicio (Editor) no puede dar permisos. Falta darle el rol "Administrador de IAM del proyecto".
+- Pruebas: `t140.js` (6 OK); `t121` ajustada (más texto entre el título y el número). Todas en 0 FAIL (menos `tk.js`).
+

@@ -2795,3 +2795,4 @@ HECHO en `capas/tema-cuadre.js` (`resultadoHTML121` rehecha). **Falta armar APK 
 - Lo demás del Cuadre igual (cuadre del dinero, tarjetas de cada chofer, día por día, por chofer). Las cuentas no cambian.
 - Pruebas: `t121` y `t128` actualizadas al formato nuevo (mismos números) + revisión del formato. Captura `disenos/cuadre-ticket-144.png`. Todas en 0 FAIL.
 
+- 143 · Ricardo: alinear P.UNIT e IMPORTE a la derecha. HECHO: cada columna se dibuja por separado (P.UNIT e IMPORTE, encabezado y precios, a la derecha contra su orilla; los importes de los demás renglones a la orilla derecha), el ancho de la letra se mide en el celular y las rayas ====/---- van de orilla a orilla. Así quedan en línea sin importar la letra del celular.

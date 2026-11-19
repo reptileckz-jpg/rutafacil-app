@@ -53,9 +53,9 @@ main.ruta168 > .card {
   border: 1px solid var(--card-border) !important;
   border-radius: 24px !important;
   box-shadow: var(--card-shadow) !important;
-  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-main.ruta168.ruta168in > .card, main.ruta168.ruta168in > .cn72 { animation: rutaUp168 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+main.ruta168.ruta168in > .card, main.ruta168.ruta168in > .cn72 { animation: rutaUp168 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards; will-change: transform, opacity; }
 main.ruta168.ruta168in > :nth-child(2) { animation-delay: 0.03s; }
 main.ruta168.ruta168in > :nth-child(3) { animation-delay: 0.07s; }
 main.ruta168.ruta168in > :nth-child(4) { animation-delay: 0.11s; }
@@ -94,7 +94,7 @@ main.ruta168 .cn72 > button:active { transform: scale(0.95); }
 main.ruta168 .cn72 > .nv { background: linear-gradient(145deg, #0f766e 0%, #14532d 100%) !important; }
 main.ruta168 .cn72 > .vr { background: linear-gradient(145deg, #d97706 0%, #9a3412 100%) !important; }
 main.ruta168 .cn72 > button small { font-size: 11px !important; font-weight: 600; color: rgba(255, 255, 255, 0.88) !important; }
-main.ruta168 .cn72 > button .e { display: inline-block; font-size: 26px; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25)); animation: float168 3.4s ease-in-out infinite; }
+main.ruta168 .cn72 > button .e { will-change: transform; display: inline-block; font-size: 26px; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25)); animation: float168 3.4s ease-in-out infinite; }
 main.ruta168 .cn72 > .vr .e { animation-name: spark168; animation-duration: 2.2s; }
 @keyframes float168 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes spark168 { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
@@ -189,7 +189,7 @@ main.ruta168 [data-x="ent125hd"] .wz-hd i.on { background: linear-gradient(90deg
 main.ruta168 .field .step button {
   width: 38px !important; height: 38px !important; min-height: 38px !important; border-radius: 13px !important;
   border: 1px solid var(--card-border) !important; background: var(--card-soft) !important; color: var(--ink-primary) !important; font-weight: 800 !important;
-  transition: transform 0.18s ease;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 main.ruta168 .field .step button.plus {
   border: 0 !important; background: linear-gradient(135deg, #15803d 0%, #0f766e 100%) !important; color: #ffffff !important;
@@ -217,12 +217,20 @@ html.rep168 nav.tabs {
   box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.16), 0 4px 12px -2px rgba(15, 23, 42, 0.06) !important;
   padding: 5px !important;
 }
-html.rep168 nav.tabs button { border-radius: 9999px !important; border-top: 0 !important; transition: background 0.3s ease, color 0.28s ease, transform 0.15s ease; }
+html.rep168 nav.tabs { position: relative; isolation: isolate; }
+html.rep168 nav.tabs button { position: relative; z-index: 1; border-radius: 9999px !important; border-top: 0 !important; background: transparent !important; transition: transform 0.15s ease; }
 html.rep168 nav.tabs button:active { transform: scale(0.92); }
-html.rep168 nav.tabs button[aria-pressed="true"] {
-  background: linear-gradient(135deg, #1b7a38 0%, #248a41 55%, #15662d 100%) !important;
-  color: #ffffff !important;
+html.rep168 nav.tabs button[aria-pressed="true"] { color: #ffffff !important; }
+/* la cápsula que se desliza (dock-glider): solo transform → tarjeta gráfica */
+html.rep168 nav.tabs .glider168 {
+  position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 5px;
+  width: calc((100% - 10px) / var(--n168, 5));
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #1b7a38 0%, #248a41 55%, #15662d 100%);
   box-shadow: 0 8px 20px -4px rgba(15, 118, 110, 0.48), inset 0 1.5px 2px rgba(255, 255, 255, 0.35);
+  transition: transform 0.44s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  pointer-events: none;
 }
 html.rep168 nav.tabs button[aria-pressed="true"] svg { color: #ffffff !important; }
 `;
@@ -254,5 +262,24 @@ function ruta168() {
     }
   } catch (e) { console.error('ruta168', e); }
 }
+/* la cápsula de la barra del chofer: la app vuelve a crear la barra en cada redibujado, así que se pone donde estaba y en el siguiente
+   cuadro se manda a la pestaña nueva (se desliza con translateX, en la tarjeta gráfica) */
+var _gl168 = -1;
+function glider168() {
+  try {
+    if (!document.documentElement.classList.contains('rep168')) { _gl168 = -1; return; }
+    var nv = document.querySelector('nav.tabs'); if (!nv) return;
+    var B = Array.prototype.filter.call(nv.children, function (x) { return x.tagName === 'BUTTON' && x.offsetParent !== null; });
+    var i = -1; B.forEach(function (b, k) { if (b.getAttribute('aria-pressed') === 'true') i = k; });
+    var g = nv.querySelector(':scope > .glider168');
+    if (i < 0) { if (g) g.remove(); _gl168 = -1; return; }
+    nv.style.setProperty('--n168', B.length);
+    var desde = _gl168 < 0 ? i : _gl168;
+    if (!g) { g = document.createElement('span'); g.className = 'glider168'; g.setAttribute('aria-hidden', 'true'); nv.insertBefore(g, nv.firstChild); g.style.transition = 'none'; g.style.transform = 'translateX(' + (desde * 100) + '%)'; void g.offsetWidth; g.style.transition = ''; }
+    if (desde !== i) requestAnimationFrame(function () { g.style.transform = 'translateX(' + (i * 100) + '%)'; });
+    else g.style.transform = 'translateX(' + (i * 100) + '%)';
+    _gl168 = i;
+  } catch (e) {}
+}
 var _rd168 = render;
-render = function () { var r = _rd168.apply(this, arguments); ruta168(); return r; };
+render = function () { var r = _rd168.apply(this, arguments); ruta168(); glider168(); return r; };

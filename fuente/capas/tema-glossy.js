@@ -131,10 +131,10 @@ var INI167_CSS = `
   padding: 16px !important;
   margin-bottom: 12px !important;
   box-shadow: var(--shadow-card) !important;
-  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 /* la entrada escalonada: solo al llegar a Inicio */
-.ini167.ini167in > .card { animation: iniFadeUp167 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.ini167.ini167in > .card { animation: iniFadeUp167 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards; will-change: transform, opacity; }
 .ini167.ini167in > .card:nth-of-type(1) { animation-delay: 0.02s; }
 .ini167.ini167in > .card:nth-of-type(2) { animation-delay: 0.06s; }
 .ini167.ini167in > .card:nth-of-type(3) { animation-delay: 0.10s; }
@@ -171,7 +171,7 @@ var INI167_CSS = `
   border-radius: 15px !important;
   font-weight: 800 !important;
   letter-spacing: -0.01em;
-  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease !important;
+  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 .ini167 .btn:active {
   transform: scale(0.95) !important;
@@ -195,6 +195,7 @@ var INI167_CSS = `
 }
 
 /* Micro-animaciones suaves aceleradas por GPU */
+.ini167 .float3d167, .ini167 .sway3d167, .ini167 .drive3d167, .ini167 .spark3d167 { will-change: transform; }
 .ini167 .float3d167 { animation: iniFloat167 3.2s ease-in-out infinite; }
 .ini167 .sway3d167  { animation: iniSway167 3.6s ease-in-out infinite; transform-origin: 80% 20%; }
 .ini167 .drive3d167 { animation: iniDrive167 2.8s ease-in-out infinite; }
@@ -241,6 +242,10 @@ var INI167_CSS = `
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+/* "Más" (166): solo transform en sus transiciones (fondo, borde y sombra cambian sin animarse: así todo va en la tarjeta gráfica) */
+.mas166 .bento-card { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important; }
+.mas166 .search-box, .mas166 .search-input, .mas166 .chevron-hint { transition: transform 0.25s ease !important; }
+.mas166 .icon-squircle svg * { will-change: auto; }
 /* "Más" (166): la entrada escalonada de su mosaico, solo al llegar (no en cada redibujado) */
 .mas166.quieto167 .bento-card { animation: none !important; }
 `;

@@ -2915,3 +2915,10 @@ HECHO en `capas/tema-ruta168.js` (SIN PUBLICAR). Prueba `t168.js` (8 OK). Captur
 - El diseño trae sus propias clases; su CSS se pasó a los elementos REALES (sin cambiar el HTML de la app): #gan117 → earnings-banner; .cn72 .nv/.vr → quick-bento jade/ámbar; .card.rep1 → cargo-bento; .card.rgcard → traffic-box; .card.next → hero-stop-card (+ .comtip → commission-callout, Ir blanco / Entregar ámbar); .stop → stop-row-item; .autocard → stop-pill-banner; ent125hd → step-progress; .field .step → stepper; .entbar → collection-dock; nav.tabs del chofer → floating-dock (mismos botones, incluido Gasto).
 - Se aplica después de dibujar (main.ruta168, html.rep168). Entrada solo al llegar. Modo oscuro: las letras de "Te quedan en el camión" traían color fijo oscuro → en oscuro van claras.
 - Comprobado: mismos botones, texto y números que sin el tema (Ruta y Entrega); no se aplica al admin ni a otras pantallas del chofer; todas las pruebas en 0 FAIL.
+
+## 2026-11-19 · 169 · Ricardo: "recuerda que las animaciones son fluidas y tienen aceleración por GPU"
+HECHO (SIN PUBLICAR), prueba en `t168.js` (10 OK).
+- Revisión de todos los temas nuevos: los @keyframes ya eran solo transform/opacity. Se quitaron las transiciones que no van en la tarjeta gráfica (fondo, borde, sombra, filter): Inicio (`tema-glossy.js`), Ruta/Entrega (`tema-ruta168.js`) y el mosaico de Más (override en `tema-glossy.js`). Ahora son solo transform.
+- Barra del chofer: cápsula que se DESLIZA (`.glider168`, translateX(i*100%) con cubic-bezier(0.34,1.56,0.64,1)); la app recrea la barra en cada redibujado, así que se pone donde estaba y en el siguiente cuadro va a la pestaña nueva. Queda exacto bajo el botón.
+- will-change: transform en los íconos que flotan/laten y, solo durante su entrada, en las tarjetas que entran.
+- La barra del administrador (165) se dejó exacta como la mandó (su cápsula ya es transform; el color de las letras tiene una transición corta propia de su CSS).

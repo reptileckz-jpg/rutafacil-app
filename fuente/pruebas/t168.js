@@ -17,4 +17,14 @@ for(const os of [false,true]){const p=await (await b.newContext({viewport:{width
  if(!os){r=await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';render();var a=[document.querySelector('main').classList.contains('ruta168'),document.documentElement.classList.contains('rep168')];S.role='rep';S.pinOk[pinKey()]=true;S.tab.rep='cierre';render();a.push(document.querySelector('main').classList.contains('ruta168'));return a});
   ok(r[0]===false&&r[1]===false&&r[2]===false,'no se aplica en el administrador ni en otras pantallas del chofer (Cierre)',r)}
  await p.close()}
+/* animaciones en la tarjeta gráfica: la cápsula del chofer se desliza con transform y todas las transiciones de los temas son solo transform */
+{const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());await p.addInitScript(()=>{window.__pnTest=1;window.__hora93=12});
+ await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(900);const ev=(f,a)=>p.evaluate(f,a);
+ await ev(()=>{S.tutVisto={rep:true,admin:true};S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role='rep';S.pinOk[pinKey()]=true;S.salida.ok=true;S.tab.rep='ruta';render()});await p.waitForTimeout(300);
+ await ev(()=>document.querySelector('nav.tabs button[data-t="viaje"]').click());await p.waitForTimeout(80);const mid=await ev(()=>new DOMMatrix(getComputedStyle(document.querySelector('nav.tabs .glider168')).transform).m41);await p.waitForTimeout(700);
+ let r=await ev(()=>{var g=document.querySelector('nav.tabs .glider168'),a=document.querySelector('nav.tabs button[aria-pressed="true"]'),rg=g.getBoundingClientRect(),ra=a.getBoundingClientRect();return {tp:getComputedStyle(g).transitionProperty,dc:Math.abs((rg.left+rg.width/2)-(ra.left+ra.width/2)),tf:g.style.transform}});
+ ok(mid>10&&r.tp==='transform'&&r.dc<2&&r.tf==='translateX(300%)','barra del chofer: la cápsula se DESLIZA con translateX (a medio camino a los 80 ms) y termina bajo el botón',{mid:mid,r:r});
+ r=await ev(()=>{var mal=[];[...document.styleSheets].forEach(sh=>{if(!/css16[78]|css166/.test((sh.ownerNode&&sh.ownerNode.id)||''))return;[...sh.cssRules].flatMap(x=>x.cssRules?[...x.cssRules]:[x]).forEach(x=>{var t=x.style&&x.style.transitionProperty;if(t&&!/^(transform|none|opacity)(, ?(transform|opacity))*$/.test(t))mal.push(x.selectorText+' → '+t)})});return mal});
+ ok(r.every(x=>/^\.mas166 /.test(x.split(' → ')[0])&&!/bento-card|search|chevron/.test(x))||!r.length,'Inicio, Ruta y Entrega: sus transiciones son solo transform (tarjeta gráfica)',r.slice(0,5));
+ await p.close()}
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

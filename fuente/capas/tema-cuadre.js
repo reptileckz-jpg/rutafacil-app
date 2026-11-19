@@ -347,3 +347,46 @@ function salida159HTML(o,p){if(!o||(o.partes||[]).length<2||p.neto==null)return 
   +(p.com?rwN121('− Comisión',money(p.com)):'')+(p.fijo>0.004?rwN121('− Gastos fijos del día',money(p.fijo),'','sueldo y gastos de la ruta (se cubren en orden)'):'')
   +'<div class="row" style="min-height:40px"><b>'+(p.neto<0?'Salió con pérdida':'Dejó')+'</b><b style="color:'+(p.neto<0?'var(--danger)':'var(--accent)')+'">'+money(p.neto)+'</b></div>'
   +(p.neto<0&&p.fijo<0.005&&p.var<0?'<div class="lbl neg" style="font-size:12.5px">Salió más caro ir (gasolina, desgaste y comisión) de lo que dejó la fruta.</div>':'')+'</div>'}
+
+/* ---------- 160 · Ricardo: "un aviso al administrador y al chofer: si sale con muy pocas cajas y el costo de la entrega supera la ganancia,
+   que salga la advertencia y le diga mínimo cuántas cajas debe vender para tener un poco de ganancia. Si una ruta anterior ya cubrió el sueldo
+   del día, ya solo se cuenta la gasolina y el desgaste" ----------
+   Al empezar una salida (todavía sin entregas):
+   - La vuelta: km de la ruta (los de Google si se ordenó con tráfico; si no, los que calcula la app con la distancia de cada cliente, ida y
+     vuelta) × (gasolina por km = precio del litro ÷ km por litro de esa camioneta + desgaste por km).
+   - Lo fijo que falta del día: el sueldo del día y los gastos de la ruta menos lo que ya dejaron las salidas anteriores (159). Si ya se cubrió: $0.
+   - Cada caja deja: precio de la caja − lo que costó (última carga) − la comisión del chofer por esa caja.
+   - Mínimo para no perder = (vuelta + fijo que falta) ÷ lo que deja cada caja; para ganar algo (al menos $100) = (… + $100) ÷ lo que deja.
+   Si lleva menos cajas que el mínimo para ganar algo, le sale el aviso al chofer (arriba de su ruta) y al administrador (Inicio).
+   Solo calcula y avisa; no cambia ninguna cuenta. */
+var GANA160=100;
+function rutaDe160(id){if(+id===+S.chofHoy&&S.role==='rep')return {stops:S.stops||[],log:S.log||[],veh:S.vehHoy,cajas:num(S.inv&&S.inv.reparto),rg:S.rgRes,salida:S.salida,cierre:S.cierre};
+ var r=(S.chSt||{})[id];if(+id===+S.chofHoy)r=arPack();if(!r)return null;return {stops:r.stops||[],log:r.log||[],veh:r.vehHoy,cajas:num(r.invR),rg:r.rgRes||null,salida:r.salida,cierre:r.cierre}}
+function viaje160(id){try{var R=rutaDe160(id);if(!R||!R.salida||!R.salida.ok||(R.cierre&&R.cierre.sent))return null;if((R.log||[]).some(function(l){return l&&!l.anul}))return null;
+ var pend=(R.stops||[]).filter(function(s){return s&&!s.done});if(!pend.length)return null;
+ var c=(S.choferes||[]).filter(function(z){return +z.id===+id})[0];if(!c)return null;
+ var ped=sum(pend,function(s){var k=cl(s.c);return k&&k.ped?num(k.ped.R):0}),cajas=R.cajas>0?R.cajas:ped;if(!(cajas>0))return null;
+ var hoy=iso(TODAY),g=R.rg,km=g&&g.f===hoy&&!g.deshecho&&g.ahora&&num(g.ahora.km)>0?Math.round(num(g.ahora.km)):rutaKmEstDe(pend),src=g&&g.f===hoy&&!g.deshecho&&g.ahora&&num(g.ahora.km)>0?'Google':'la app';
+ var v=R.veh!=null?vehById(R.veh):null,ri=v?rendInfo(v):{rend:0},gkm=v&&num(v.precio)>0&&num(ri.rend)>0?num(v.precio)/num(ri.rend):0,dkm=v?tasa68(v):0.7,ckm=gkm+dkm,vuelta=r2(km*ckm);
+ var pv=num(S.precio&&S.precio.R),cc=costoCajaAct(),com=0;try{if(c.sz&&c.sz.tipo==='base')com=num(comDeLog(c,{R:1,M:0,total:pv,pago:pv,abono:0,pr:pv}))}catch(e){}
+ var deja=r2(pv-cc-com);
+ /* lo fijo que falta: el del día menos lo que ya dejaron las salidas anteriores (ya cerradas) */
+ var fijo=0;try{var T=cuadreDia121(hoy),o=(T.ch||[]).filter(function(x){return +x.ch===+id})[0];if(o){var antes=sum((o.partes||[]).filter(function(p){return !p.vivo}),function(p){return Math.max(0,num(p.var))});fijo=r2(Math.max(0,num(o.fijo159)-antes))}else{var tr=false;try{tr=activo118(c,hoy)&&marca118(c,hoy)!=='falta'}catch(e){}fijo=tr?r2(diaSz118(c)):0}}catch(e){}
+ var x={id:+id,n:c.n,cajas:cajas,km:km,src:src,gkm:r2(gkm),dkm:r2(dkm),vuelta:vuelta,fijo:fijo,deja:deja,pv:pv,cc:r2(cc),com:r2(com),sinGas:!(gkm>0)};
+ if(deja<=0){x.min=null;x.minG=null;x.malo=true;x.gana=r2(cajas*deja-vuelta-fijo);return x}
+ x.min=Math.ceil((vuelta+fijo)/deja);x.minG=Math.ceil((vuelta+fijo+GANA160)/deja);x.gana=r2(cajas*deja-vuelta-fijo);x.malo=cajas<x.minG;return x}catch(e){return null}}
+function viaje160HTML(x,yo){if(!x||!x.malo)return '';var q=function(n){return n+(n===1?' caja':' cajas')};
+ /* en el celular del chofer: solo el aviso, los km y el mínimo de cajas (sin el costo de la fruta ni el sueldo); el desglose, al administrador */
+ if(yo){var hh=viaje160HTML(x,false);var i=hh.indexOf('<div style="font-size:14px;margin-top:4px">La vuelta (~');return hh.slice(0,i).replace(/^<div class="card alert" data-k="viaje160"/,'<div class="card alert" data-k="viaje160"').replace('⚠️ '+esc(x.n)+' salió con '+q(x.cajas)+': la vuelta ','⚠️ Con '+q(x.cajas)+' esta vuelta ')
+   +'<div style="font-size:14px;margin-top:4px">La vuelta es de ~'+x.km+' km'+(x.fijo>0.5?' y todavía no se cubren los gastos del día':'')+'. Con lo que llevas, la gasolina y el desgaste de la camioneta '+(x.gana<0?'salen más caros que lo que deja la fruta':'se comen casi toda la ganancia')+'.</div>'
+   +(x.min!=null?'<div style="margin-top:6px;font-size:15px">Para no perder: <b>mínimo '+q(x.min)+'</b> · para ganar algo: <b>'+q(x.minG)+'</b>. Avísale al administrador.</div>':'<div style="margin-top:6px;font-size:15px"><b>Avísale al administrador.</b></div>')+'</div>'}
+ var h='<div class="card alert" data-k="viaje160" data-ch="'+x.id+'" style="padding:12px 14px"><b style="font-size:16px">⚠️ '+(yo?'Con ':esc(x.n)+' salió con ')+q(x.cajas)+(yo?' esta vuelta ':': la vuelta ')+(x.gana<0?'sale con pérdida':'casi no deja ganancia')+'</b>'
+  +'<div style="font-size:14px;margin-top:4px">La vuelta (~'+x.km+' km, según '+x.src+') cuesta ~<b>'+money(x.vuelta)+'</b> de gasolina y desgaste'+(x.fijo>0.5?' y faltan <b>'+money(x.fijo)+'</b> de gastos fijos del día (sueldo)':' (el sueldo del día ya lo cubrió una salida anterior)')+'.'
+  +(x.deja>0?' Cada caja deja ~<b>'+money(x.deja)+'</b> (se vende en '+money(x.pv)+', costó '+money(x.cc)+(x.com?', comisión '+money(x.com):'')+').':' Cada caja deja '+money(x.deja)+': se vende en '+money(x.pv)+' y costó '+money(x.cc)+'.')+'</div>'
+  +(x.min!=null?'<div style="margin-top:6px;font-size:15px">Para no perder: <b>mínimo '+q(x.min)+'</b> · para ganar algo (unos '+money(GANA160)+'): <b>'+q(x.minG)+'</b>.</div>':'<div style="margin-top:6px;font-size:15px"><b>Con ese precio y ese costo ninguna cantidad deja ganancia.</b></div>')
+  +'<div class="lbl" style="margin-top:4px">Con '+q(x.cajas)+' quedaría en <b class="'+(x.gana<0?'neg':'')+'">'+money(x.gana)+'</b>.'+(x.sinGas?' (Sin el precio o el rendimiento de la gasolina de la camioneta, solo se contó el desgaste.)':'')+'</div></div>';
+ return h}
+var _rd160=render;render=function(){var r=_rd160.apply(this,arguments);try{var m=document.querySelector('main');if(!m||m.querySelector('[data-k="viaje160"]'))return r;var h='';
+ if(S.role==='rep'&&S.tab.rep==='ruta'&&S.chofHoy!=null)h=viaje160HTML(viaje160(S.chofHoy),true);
+ else if(S.role==='admin'&&!S.encOn&&S.tab.admin==='inicio'){var ids=[];if(S.chofHoy!=null&&S.salida&&S.salida.ok)ids.push(+S.chofHoy);Object.keys(S.chSt||{}).forEach(function(k){if(ids.indexOf(+k)<0)ids.push(+k)});ids.forEach(function(id){h+=viaje160HTML(viaje160(id),false)})}
+ if(h){var d=document.createElement('div');d.innerHTML=h;while(d.lastChild)m.prepend(d.lastChild)}}catch(e){console.error('viaje160',e)}return r};

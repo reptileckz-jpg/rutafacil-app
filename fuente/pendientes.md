@@ -2859,3 +2859,10 @@ HECHO en `tema-cuadre.js` (`salidas159`, `salida159HTML`), prueba `t159.js` (9 O
 - Lo FIJO del día (sueldo del día y los gastos de la ruta que no son gasolina) se cubre en orden: la salida 1 primero; lo que no alcance pasa a la 2, etc. Si no alcanza con todas, lo que falta se queda en la primera.
 - En el Cuadre, cuando hay 2 salidas o más, cada cierre tiene "Lo que dejó esta salida". Si una sale negativa solo por gasolina/desgaste: "Salió más caro ir de lo que dejó la fruta".
 - Blindaje: solo se reparte; la suma de las salidas es EXACTO el neto del chofer en el día (los centavos de redondeo van a la última). Ninguna cuenta del día cambia.
+
+## 2026-11-19 · 160 · Ricardo: "un aviso al administrador y al chofer si sale con muy pocas cajas y el costo de la entrega supera la ganancia, y que diga mínimo cuántas cajas debe vender para tener un poco de ganancia; si una ruta anterior ya cubrió el sueldo, solo se cuenta gasolina y desgaste" → versión 10.8
+HECHO en `tema-cuadre.js` (`viaje160`, `viaje160HTML`), prueba `t160.js` (11 OK).
+- Al empezar una salida (sin entregas todavía): vuelta = km (Google si se ordenó; si no, la app) × (precio del litro ÷ km por litro de la camioneta + desgaste por km). Fijo que falta = sueldo y gastos de la ruta del día menos lo que ya dejaron las salidas anteriores (159). Cada caja deja = precio − costo de la caja − comisión.
+- Mínimo para no perder = (vuelta + fijo que falta) ÷ lo que deja cada caja; para ganar algo = (… + $100) ÷ lo que deja. Si lleva menos del mínimo para ganar algo: aviso.
+- Chofer (arriba de su ruta): el aviso, los km y el mínimo de cajas, SIN el costo de la fruta, lo que deja cada caja ni el sueldo ("Avísale al administrador"). Administrador (Inicio): con todo el desglose.
+- Solo calcula y avisa; no cambia ninguna cuenta.

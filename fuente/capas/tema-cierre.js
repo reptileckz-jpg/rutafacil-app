@@ -108,3 +108,12 @@ compFotos=function(){var s=S.salida||{},c=S.cierre||{},F=fotosVeh131(s),hay=Obje
    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">'+L.map(function(x){return tile(G[x[0]],x[1])}).join('')+'</div></div>'};
  var rec=num(c.odo)>num(c.odoIni)&&num(c.odoIni)>0?'<div class="lbl" style="margin-top:8px">Recorrió '+(num(c.odo)-num(c.odoIni)).toLocaleString('es-MX')+' km. Compara las fotos de la salida con las del regreso para ver si hubo golpes o daños. Toca una foto para verla en grande.</div>':'<div class="lbl" style="margin-top:8px">Toca una foto para verla en grande.</div>';
  return bloque('🚚 Al salir',F.ini,km(c.odoIni),c.tankIni)+bloque('🏁 Al regresar',F.fin,km(c.odo),c.tank||'')+rec};
+
+/* ---------- 135 · Recibir el cierre: a qué cliente le dio precio especial (el mayoreo ya sale en "Precios de mayoreo del día") ---------- */
+function espHTML135(){var L=[];(S.log||[]).forEach(function(l){preciosLog135(l).forEach(function(x){if(x.t==='esp'){var c0=cl(l.c);L.push({n:c0?c0.n:'Cliente',x:x})}})});if(!L.length)return '';
+ var tot=r2(L.reduce(function(a,y){return a+y.x.dif},0));
+ return '<div class="card" data-key="esp135"><b>⭐ Precio especial</b><div class="lbl">Clientes a los que se les dio su precio especial en esta ruta.</div>'
+  +L.map(function(y){return '<div class="row" style="align-items:flex-start"><span>'+esc(y.n)+'<br><span class="lbl">'+precioTxt135(y.x)+'</span></span><b class="'+(y.x.dif<0?'neg':'')+'" style="white-space:nowrap">'+(y.x.dif?(y.x.dif<0?'−':'+')+money(Math.abs(y.x.dif)):'')+'</b></div>'}).join('')
+  +(L.length>1&&tot?'<div class="row"><b>Total</b><b class="'+(tot<0?'neg':'')+'">'+(tot<0?'−':'+')+money(Math.abs(tot))+'</b></div>':'')+'</div>'}
+var _cAdm135=cierreAdm;cierreAdm=function(){var h=_cAdm135.apply(this,arguments);try{if(!S.cierre||!S.cierre.res)return h;var x=espHTML135();if(!x)return h;var i=h.indexOf('<details class="card" data-key="fotoscierre"');if(i<0)i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
+

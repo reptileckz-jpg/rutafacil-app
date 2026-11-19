@@ -2706,3 +2706,13 @@ HECHO (`tema-ruta.js` y `l62.js`). **Falta armar APK (preguntar antes).**
 - Costo: una consulta más a Google por cada vez que se ordena (solo duración y km).
 - Prueba `t133.js` (15 OK). Captura `disenos/ruta-ordenar-ahorro.png`. Todas las pruebas en 0 FAIL (menos `tk.js`, que ya fallaba).
 
+## 2026-11-19 · 135 · Ricardo: "lo de los tickets, pon el precio de cada cosa, ej. macho 15 kg a $1 = $15, roatán 20 cajas a $20 cada una = $200, roatán a mayoreo, precio especial… y ya en el desglose del cuadre y del cierre se pueda ver a qué cliente dejó mayoreo o precio especial"
+HECHO (`tema-ruta.js`, `tema-notas.js`, `tema-cuadre.js`, `tema-cierre.js`, `tema-cierres.js`). **Falta armar APK (preguntar antes).**
+- Al guardar cada entrega se anota el tipo de precio de cada producto (`l.tR`/`l.tM`: precio del día, mayoreo que dio el chofer, cliente de mayoreo, mayoreo por más de 10 cajas, precio especial) con el precio del día. Se toma la foto del precio ANTES de guardar (el precio especial se borra después de usarlo). Funciones de números aparte: `precioTipo135`, `preciosLog135`.
+- Ticket (pantalla, imagen de WhatsApp e impresión): "Roatán · 20 cajas a $240 c/u = $4,800" y debajo "Mayoreo (cliente de mayoreo) · normal $275"; "Macho · 15 kg a $17 el kilo = $255" / "Precio especial · normal $20". Lo que no se llevó ya no sale en "0".
+- Cuadre → tarjeta del chofer: "Mayoreo y precios especiales (N)": cliente, cajas/kilos a $ (normal $), tipo y cuánto menos (−$).
+- Recibir el cierre: "⭐ Precio especial" con los clientes (el mayoreo ya sale en "Precios de mayoreo del día").
+- Historial de cierres: cada entrega dice "4 cajas a $250 · Precio especial (normal $275)".
+- Entregas viejas sin la marca: el mayoreo sí se ve (de `mayT`).
+- Blindaje: no cambia ninguna cuenta. `comp-venta.js` (ahora quita la marca nueva para comparar): 19 ventas idénticas. `comp-cajas.js`: las únicas diferencias son las del ticket (a propósito). Prueba `t135.js` (14 OK). Captura `disenos/ticket-precios.png`. Todas las pruebas en 0 FAIL (menos `tk.js`).
+

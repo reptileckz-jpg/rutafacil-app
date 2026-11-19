@@ -151,3 +151,24 @@ var _eC74=entregaCalc;entregaCalc=function(){var i=curStop(),c=i>=0&&S.stops[i]?
 /* credBloq · 127 (Ricardo, 18 nov: "si ya debe y no ha pagado, la venta debe ser de contado") */
 /* si el cliente ya debe algo de antes, esta venta es de contado (sin "Pagó una parte" ni "A crédito"). El permiso del administrador para fiar ese día se respeta. */
 var _cb127=credBloq;credBloq=function(c){var r=_cb127.apply(this,arguments);if(r)return r;if(!c||(c.rapida&&!(S.d&&S.d.reg)))return r;if((S.permOk||{})[c.id]===iso(TODAY))return '';if(num(c.cred)>0.005)return 'ya debe '+money(num(c.cred))+' de antes';return ''};
+
+/* ---------- 135 · el tipo de precio de cada producto se anota en la entrega (Ricardo: "pon el precio de cada cosa… mayoreo, precio especial…
+   y en el desglose del cuadre y del cierre se pueda ver a qué cliente dejó mayoreo o precio especial") ----------
+   Al tocar "guardar" se toma la foto de cómo estaba el precio (el especial se borra después de usarlo) y, ya guardada, se le pone a la
+   entrega: l.tR / l.tM = {t, txt, pr (lo que se cobró), n (precio del día)}. t: 'dia', 'esp', 'mayChofer', 'mayFijo', 'mayAuto'.
+   Solo números (no dibuja nada); no cambia ninguna cuenta. */
+function precioTipo135(o,p,cob){var q=num(p==='R'?o.R:o.M);if(!(q>0))return null;var dia=num(p==='R'?o.diaR:o.diaM),pp=num(p==='R'?o.ppR:o.ppM),base=pp||dia,t,txt;cob=num(cob);
+ if(o.may){t='mayChofer';txt='Mayoreo (lo dio el chofer)'}
+ else if(cob<base-0.005){t=o.mayoreo?'mayFijo':'mayAuto';txt=o.mayoreo?'Mayoreo (cliente de mayoreo)':'Mayoreo por llevar más de 10 cajas'}
+ else if(pp>0&&Math.abs(cob-pp)<0.005){t='esp';txt='Precio especial'}
+ else{t='dia';txt='Precio del día'}
+ return {t:t,txt:txt,pr:cob,n:dia}}
+/* lo que no fue precio del día en una entrega (para el Cuadre, el cierre y el historial). Entregas viejas sin la marca: solo el mayoreo (mayT) */
+function preciosLog135(l){var out=[];if(!l)return out;['R','M'].forEach(function(p){var q=num(l[p]);if(!(q>0))return;var t=l['t'+p];
+  if(!t&&l.mayT){var pr=num(p==='R'?l.pr:l.pm),n=num(p==='R'?l.pnR:l.pnM);if(n&&pr<n-0.005||l.mayT==='chofer')t={t:'may',txt:l.mayT==='chofer'?'Mayoreo (lo dio el chofer)':(l.mayT==='fijo'?'Mayoreo (cliente de mayoreo)':'Mayoreo por llevar más de 10 cajas'),pr:pr,n:n||pr}}
+  if(!t||t.t==='dia')return;out.push({p:p,q:q,u:p==='R'?(q===1?'caja':'cajas'):'kg',pr:num(t.pr),n:num(t.n),txt:t.txt,t:t.t,dif:r2(q*(num(t.pr)-num(t.n)))})});return out}
+function precioTxt135(x){return x.q.toLocaleString('es-MX')+' '+x.u+' a '+money(x.pr)+(x.n&&Math.abs(x.n-x.pr)>0.005?' (normal '+money(x.n)+')':'')}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guardar"]');if(!b||S.role!=='rep')return;
+ try{var c=curCli(),d=S.d||{};if(!c)return;var o={R:num(d.R),M:num(d.M),may:!!d.may,ppR:num(c.ppR),ppM:num(c.ppM),mayoreo:!!c.mayoreo,diaR:num(S.precio.R),diaM:num(S.precio.M)},n0=S.log.length,cid=c.id;
+  setTimeout(function(){try{if(S.log.length<=n0)return;var l=S.log[S.log.length-1];if(+l.c!==+cid)return;var tR=precioTipo135(o,'R',l.pr),tM=precioTipo135(o,'M',l.pm);if(tR)l.tR=tR;if(tM)l.tM=tM;
+   if(S.nota&&S.nota.cli===c.n){if(tR)S.nota.tR=tR;if(tM)S.nota.tM=tM;S.nota.img=null}if(S.tab.rep==='nota')render()}catch(er){}},0)}catch(er){}},true);

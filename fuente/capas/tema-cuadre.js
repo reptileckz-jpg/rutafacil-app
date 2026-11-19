@@ -45,11 +45,11 @@ function rutaGastos121(d,ch,vivo){var n=chofN(ch)+' · ',L=(S.gastos||[]).filter
  if(vivo&&!(vivo.cierre&&vivo.cierre.sent)){(vivo.gch||[]).forEach(function(g){L.push({t:(g.tipo||'Gasto')+' (sin cerrar)',m:num(g.m)})});(vivo.recs||[]).forEach(function(x){L.push({t:'Combustible (sin cerrar)',m:num(x.total)})})}return L}
 function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[];try{P=rutasDia120(d)}catch(e){}var CH={},ord=[];
  P.forEach(function(x){var L=(x.log||[]).filter(function(l){return l&&!l.anul}),r=x.res||{},ch=+x.ch;
-  var o=CH[ch];if(!o){o=CH[ch]={ch:ch,n:chofN(ch),partes:[],venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,deb:0,ent:0,rec:0,creditos:[],abonos:[],taras:[],veh:{},vivo:null};ord.push(ch)}
+  var o=CH[ch];if(!o){o=CH[ch]={ch:ch,n:chofN(ch),partes:[],venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,deb:0,ent:0,rec:0,creditos:[],abonos:[],taras:[],precios:[],veh:{},vivo:null};ord.push(ch)}
   var p={n:x.n,parcial:x.parcial,resc:x.resc,sent:x.sent,vivo:!!x.vivo,h:(x.corte&&x.corte.h)||(x.e&&x.e.h120)||'',corte:x.corte||null,rec:x.reg&&x.reg.rec!=null?num(x.reg.rec):null,deb:num(r.efectivo),venta:0,cob:0};
   L.forEach(function(l){var t=num(l.total),pg=num(l.pago),cl0=cl(l.c),nm=cl0?cl0.n:(l.rescate120?'(cierre recuperado)':'Cliente');p.venta+=t;p.cob+=pg+num(l.abono);o.venta+=t;o.contado+=pg;o.ab+=num(l.abono);o.R+=num(l.R);o.M+=num(l.M);
    o.gan+=num(l.R)*(num(l.pr||S.precio.R)-num(c.R))+num(l.M)*(num(l.pm||S.precio.M)-num(c.M));
-   if(t-pg>0.005){o.cred+=t-pg;o.creditos.push({n:nm,m:r2(t-pg),R:num(l.R),M:num(l.M)})}if(num(l.abono)>0.005)o.abonos.push({n:nm,m:num(l.abono)});
+   if(t-pg>0.005){o.cred+=t-pg;o.creditos.push({n:nm,m:r2(t-pg),R:num(l.R),M:num(l.M)})}if(num(l.abono)>0.005)o.abonos.push({n:nm,m:num(l.abono)});preciosLog135(l).forEach(function(x){o.precios.push({n:nm,x:x})});/* 135 */
    var dej=num(l.R),rec=num(l.V);if(!l.rescate120&&(dej||rec)&&dej!==rec)o.taras.push({n:nm,dejo:dej,recogio:rec,rotas:num(l.Vr),neto:dej-rec})});
   /* km, vehículo y desgaste de esta parte */
   var vr=x.r||null,vid=r.veh68!=null?r.veh68:(vr&&vr.vehHoy),vh=vid!=null?vehById(+vid):null,km=Math.max(0,num(r.km));
@@ -156,6 +156,7 @@ function choferHTML121(o){var k='cu121c'+o.ch,abierta=S.dOpen[k]!==false;
   +rwN121('Ganancia de su fruta',money(o.gan))+rwN121('− Gastos de su ruta',money(o.gasT))+rwN121('− Desgaste',money(o.desg),'',o.km?o.km.toLocaleString('es-MX')+' km':'sin kilómetros')+rwN121('− Sueldo del día',money(o.sueldo||0),'',o.sTx||'')+(o.com||o.comD&&o.comD.filas.length?comHTML128(o,k):'')
   +'<div class="row" style="min-height:48px"><b>Lo que dejó su ruta</b><b style="font-size:19px;color:'+(o.neto<0?'var(--danger)':'var(--accent)')+'">'+money(o.neto)+'</b></div></div>'
   +lst('Clientes a crédito',o.creditos,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n),money(x.m),'neg',(x.R?x.R+' cajas':'')+(x.M?' '+x.M+' kg':''))})
+  +lst('Mayoreo y precios especiales',o.precios||[],function(y){var x=y.x;return rwN121('&nbsp;&nbsp;'+esc(y.n),x.dif?(x.dif<0?'−':'+')+money(Math.abs(x.dif)):'',x.dif<0?'neg':'',precioTxt135(x)+' · '+esc(x.txt))})
   +lst('Abonos que cobró',o.abonos,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n),money(x.m))})
   +lst('Taras',o.taras,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n),(x.neto>0?'prestó '+x.neto:'regresó '+(-x.neto)),x.neto>0?'neg':'','dejó '+x.dejo+' llenas · recogió '+x.recogio+' vacías'+(x.rotas?' ('+x.rotas+' rotas)':''))})
   +lst('Gastos de su ruta',o.gastos,function(x){return rwN121('&nbsp;&nbsp;'+esc(x.t),money(x.m))})+'</details>'}

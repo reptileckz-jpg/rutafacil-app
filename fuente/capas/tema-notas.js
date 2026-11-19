@@ -62,3 +62,12 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  if(b.dataset.act==='tkimgx'){n.img=null;render();return}
  if(!n.img)return;var t='';try{t=telDiez(n.tel||((S.cli.filter(function(x){return x.n===n.cli})[0]||{}).tel))}catch(er){}
  natCompartir(n.img,'ticket-'+(n.folio||'')+'.png',{tel:t,texto:''}).then(function(ok){if(!ok)toast('Este celular no deja compartir desde aquí. Usa "Guardar en el celular" y mándala desde WhatsApp.')})},true);
+
+/* ---------- 135 · el ticket dice el precio de cada cosa: "Roatán · 20 cajas a $275 c/u = $5,500", "Macho · 15 kg a $20 el kilo = $300",
+   y debajo si fue mayoreo o precio especial (con el precio normal). Lo que no se llevó ya no sale en 0. ---------- */
+function notaProd135(nom,q,u,pr,t,p){var L=[{t:'kv',k:nom+' · '+q.toLocaleString('es-MX')+' '+u+' a '+money(pr)+(p==='R'?' c/u':' el kilo'),v:money(r2(q*pr))}];
+ if(t&&t.t!=='dia')L.push({t:'kv',k:'   '+t.txt,v:num(t.n)&&Math.abs(num(t.n)-pr)>0.005?'normal '+money(num(t.n)):''});return L}
+var _nI135=notaItems;notaItems=function(n){var it=_nI135.apply(this,arguments);if(!n)return it;try{var out=[];it.forEach(function(x){
+  if(x&&x.t==='kv'&&x.k==='Plátano roatán'){if(num(n.R)>0)out=out.concat(notaProd135('Roatán',num(n.R),num(n.R)===1?'caja':'cajas',num(n.pr),n.tR||(n.may?{t:'mayChofer',txt:'Mayoreo'}:null),'R'))}
+  else if(x&&x.t==='kv'&&x.k==='Plátano macho'){if(num(n.M)>0)out=out.concat(notaProd135('Macho',num(n.M),'kg',num(n.pm),n.tM||(n.may?{t:'mayChofer',txt:'Mayoreo'}:null),'M'))}
+  else out.push(x)});return out}catch(e){return it}};

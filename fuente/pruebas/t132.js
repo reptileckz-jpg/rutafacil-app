@@ -11,8 +11,13 @@ await ev(()=>{var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja Cali
 /* administrador asigna un pedido */
 r=await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0],c=S.cli[0];c.ped={R:10,M:5,f:iso(TODAY),nota:'bien maduro'};window.__esc=[];var t=p57Asigna(c,D.id);return {t:t,D:D.id,esc:window.__esc.filter(x=>/\/push\//.test(x.path))}});
 ok(r.esc.length===1&&/^n\/pn\/push\//.test(r.esc[0].path),'al asignar el pedido se escribe el aviso en la nube',r.esc);
-ok(r.esc[0]&&r.esc[0].obj.ch===String(r.D)&&r.esc[0].obj.titulo==='📦 Pedido nuevo'&&r.esc[0].obj.texto==='Doña Mary: 10 cajas y 5 kg · bien maduro'&&r.esc[0].obj.tipo==='pedido','el aviso dice para quién, qué cliente y cuánto',r.esc[0]&&r.esc[0].obj);
+ok(r.esc[0]&&r.esc[0].obj.ch===String(r.D)&&r.esc[0].obj.titulo==='📦 Pedido nuevo'&&r.esc[0].obj.texto==='Doña Mary (10 cajas, 5 kg)'&&r.esc[0].obj.tipo==='pedido','el aviso dice para quién, qué cliente y cuánto',r.esc[0]&&r.esc[0].obj);
 ok(r.esc[0]&&Object.keys(r.esc[0].obj).sort().join(',')==='ch,t,texto,tipo,titulo','solo los campos que dejan las reglas',r.esc[0]&&Object.keys(r.esc[0].obj));
+/* el otro camino: registrar un pedido nuevo con su chofer (pedAsigna) */
+r=await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0],c=S.cli[0];window.__esc=[];pedAsigna(c,D.id,'hoy','Doña Mary (3 cajas, 0 kg)');pedAsigna(c,D.id,'mañana','Doña Mary (2 cajas, 0 kg)');return window.__esc.filter(x=>/\/push\//.test(x.path)).map(x=>[x.obj.titulo,x.obj.texto,x.obj.ch===String(D.id)])});
+ok(r.length===2&&r[0][0]==='📦 Pedido nuevo'&&r[0][1]==='Doña Mary (3 cajas, 0 kg)'&&r[0][2]&&r[1][0]==='📦 Pedido para mañana','registrar un pedido con su chofer (hoy y mañana) también manda el aviso',r);
+/* otros avisos de la ruta no mandan push */
+r=await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0];window.__esc=[];rutaAviso(D.id,'Se quitó Doña Mary de mañana');return window.__esc.length});ok(r===0,'otros avisos de la ruta no mandan push',r);
 /* sin nube: no se manda nada */
 r=await ev(()=>{NB.on=false;window.__esc=[];var D=S.choferes.filter(c=>c.n==='Rafa')[0],c=S.cli[0];c.ped={R:2,M:0,f:iso(TODAY)};p57Asigna(c,D.id);NB.on=true;return window.__esc.length});ok(r===0,'sin nube no se intenta mandar');
 /* el chofer no manda avisos */
@@ -22,8 +27,12 @@ r=await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0];NB.perfil={rol:'chof
  return new Promise(res=>setTimeout(()=>{var a=window.__esc.filter(x=>/\/tok\//.test(x.path));pushRegistra132();setTimeout(()=>{res({a:a,D:D.id,n:window.__esc.filter(x=>/\/tok\//.test(x.path)).length,llam:window.__tok})},200)},200))});
 ok(r.a.length===1&&r.a[0].path==='n/pn/tok/'+r.D&&r.a[0].obj.t==='TOKEN-DANU-123'&&Object.keys(r.a[0].obj).sort().join(',')==='t,ts','el chofer guarda su token en n/pn/tok/{chofer}',r.a);
 ok(r.n===1,'no lo vuelve a guardar el mismo día',r);
+r=await ev(()=>{S.role='rep';S.aj=true;var h=ajHTML();S.aj=false;S.role='admin';var d=document.createElement('div');d.innerHTML=h;var x=d.querySelector('[data-k="push132"]');return x?x.innerText:''});
+ok(/Este celular ya recibe los avisos/.test(r),'Ajustes del chofer: "🔔 Avisos con la app cerrada ✓"',r);
 /* APK sin Firebase: no pasa nada */
 r=await ev(()=>{window.Capacitor.Plugins.RutaNativa.pushToken=function(){return Promise.reject(new Error('sin-firebase'))};try{localStorage.removeItem('push132')}catch(e){}_push132.k='';window.__esc=[];pushRegistra132();return new Promise(res=>setTimeout(()=>res(window.__esc.length),200))});
 ok(r===0,'APK sin Firebase: no guarda nada y la app sigue igual');
+r=await ev(()=>{S.role='rep';S.aj=true;var h=ajHTML();S.aj=false;S.role='admin';var d=document.createElement('div');d.innerHTML=h;var x=d.querySelector('[data-k="push132"]');return x?x.innerText:''});
+ok(/No están activos: este APK no trae Firebase/.test(r),'y en Ajustes dice por qué no',r);
 ok(!errs.length,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

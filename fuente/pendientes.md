@@ -2778,3 +2778,7 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 - APK 1.0.50 (versión 10.3) armado bien.
 - Vite: registrar carga → final de `tema-cargas.js` y tema "Bodega y maduración" → `tema-bodega.js`. 229 → **208 (63%)**. `comp-bodega.js` idéntica (63 demo / 57 real); todas las pruebas en 0 FAIL.
 - 132: la publicación de la función sigue fallando porque faltan los 3 permisos de las cuentas internas (pubsub: Creador de tokens; compute: Invocador de Cloud Run y Receptor de eventos de Eventarc).
+- 132 · Publicado (después de dar permisos en Google Cloud: Administrador de IAM del proyecto a la cuenta de publicar, prender Cloud Billing API; la función queda en us-central1 porque en northamerica-south1 no hay funciones; el aviso se engancha desde la base en México). Reglas publicadas.
+- 132 · Prueba de Ricardo con la 1.0.50: con la app del chofer CERRADA no llegó; minimizada sí (ese era el aviso de siempre). Causa: el push solo estaba en "Asignar" (`p57Asigna`); al registrar un pedido nuevo con su chofer (`pedAsigna`, y el de la base) no se mandaba. HECHO: el push sale de `rutaAviso` (por donde pasan todos): "📦 Pedido nuevo", "📦 Pedido para mañana", "↩️ Cambio en tu ruta". Ajustes del chofer → "🔔 Avisos con la app cerrada": ✓ o el motivo si no. `t132` 13 OK.
+- Versión 10.4 a main. Todas las pruebas en 0 FAIL.
+

@@ -2729,3 +2729,9 @@ HECHO (líneas 137/138 de `ql.py`, sobre `fotoTomada` de la base).
 - Encontrado: `build.sh` seguía armando aunque un cambio de `ql.py` fallara (dejaba la salida vieja). Ahora se detiene con "FALLÓ EL ARMADO".
 - Prueba `t137.js` (10 OK: píxeles de la marca, foto repetida, otra vuelta, historial, reabrir). Todas las pruebas en 0 FAIL (menos `tk.js`).
 
+## 2026-11-19 · 136 · Ricardo: "si se asignó un pedido al chofer, al abrir su entrega debería decirle de cuánto era el pedido que hicieron, y ya de todas maneras dejar otra cantidad por si quería menos o más"
+HECHO (`tema-ruta.js` y `l80.js`). **Falta armar APK (preguntar antes).**
+- Encontrado: en la versión real, al abrir la entrega, `l80` cambiaba las cantidades del pedido por las de la última compra: el pedido se perdía. Ahora, si tiene pedido, empieza con lo que pidió.
+- En "¿Qué le dejas?": "📦 Pidió 10 cajas de roatán y 5 kg de macho", su nota y por dónde llegó ("Pedido por WhatsApp"). Si deja otra cantidad: "Le dejas 2 cajas más y 2 kg menos de lo que pidió" y el botón "Poner lo que pidió". Se guarda lo que de verdad le dejó.
+- Prueba `t136.js` (8 OK). `comp-venta` idéntica. Todas las pruebas en 0 FAIL (menos `tk.js`).
+

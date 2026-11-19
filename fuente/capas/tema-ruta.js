@@ -172,3 +172,17 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  try{var c=curCli(),d=S.d||{};if(!c)return;var o={R:num(d.R),M:num(d.M),may:!!d.may,ppR:num(c.ppR),ppM:num(c.ppM),mayoreo:!!c.mayoreo,diaR:num(S.precio.R),diaM:num(S.precio.M)},n0=S.log.length,cid=c.id;
   setTimeout(function(){try{if(S.log.length<=n0)return;var l=S.log[S.log.length-1];if(+l.c!==+cid)return;var tR=precioTipo135(o,'R',l.pr),tM=precioTipo135(o,'M',l.pm);if(tR)l.tR=tR;if(tM)l.tM=tM;
    if(S.nota&&S.nota.cli===c.n){if(tR)S.nota.tR=tR;if(tM)S.nota.tM=tM;S.nota.img=null}if(S.tab.rep==='nota')render()}catch(er){}},0)}catch(er){}},true);
+
+/* ---------- 136 · Ricardo: "si se asignó un pedido al chofer, al abrir su entrega debería decirle de cuánto era el pedido, y de todas maneras dejar otra cantidad por si quería menos o más" ----------
+   En "¿Qué le dejas?": "📦 Pidió N cajas y M kg" (con su nota y por dónde llegó). Las cantidades empiezan con lo que pidió (l80 ya no las
+   cambia por la última compra) y se pueden cambiar; si cambian, dice cuánto de más o de menos y "Poner lo que pidió". */
+function pedDif136(p,d){var dR=num(d.R)-num(p.R),dM=r2(num(d.M)-num(p.M)),t=[];if(dR)t.push(Math.abs(dR)+' caja'+(Math.abs(dR)===1?'':'s')+(dR>0?' más':' menos'));if(dM)t.push(Math.abs(dM).toLocaleString('es-MX')+' kg'+(dM>0?' más':' menos'));return t}
+function pedHTML136(c,d){var p=c&&c.ped;if(!p)return '';var q=[];if(num(p.R))q.push(num(p.R)+' caja'+(num(p.R)===1?'':'s')+' de roatán');if(num(p.M))q.push(num(p.M).toLocaleString('es-MX')+' kg de macho');
+ var dif=pedDif136(p,d||{});
+ return '<div class="card note" data-key="ped136" style="padding:8px 10px;margin:6px 0"><b>📦 Pidió '+(q.length?q.join(' y '):'(sin cantidad)')+'</b>'
+  +(p.nota?'<div style="font-size:14px">'+esc(p.nota)+'</div>':'')+(p.via?'<div class="lbl">Pedido por '+esc(p.via)+'</div>':'')
+  +(dif.length?'<div style="font-weight:700;margin-top:4px">Le dejas '+dif.join(' y ')+' de lo que pidió</div><button class="btn sm sec" style="width:auto;margin-top:6px" data-act="ped136">Poner lo que pidió</button>'
+   :'<div class="lbl" style="margin-top:2px">Ya está puesto lo que pidió. Si quiere más o menos, cámbialo abajo.</div>')+'</div>'}
+var _ent136=entrega;entrega=function(){var h=_ent136.apply(this,arguments);try{var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(!c||!c.ped)return h;var x=pedHTML136(c,S.d);
+ var an='<b style="font-size:18px">¿Qué le dejas?</b>';var k=h.indexOf(an);return k>-1?h.slice(0,k+an.length)+x+h.slice(k+an.length):h}catch(e){return h}};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ped136"]');if(!b)return;e.stopImmediatePropagation();var i=curStop(),c=i>=0&&S.stops[i]?cl(S.stops[i].c):null;if(!c||!c.ped||!S.d)return;S.d.R=num(c.ped.R);S.d.M=num(c.ped.M);render()},true);

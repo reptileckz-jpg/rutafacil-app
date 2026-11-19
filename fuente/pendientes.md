@@ -2735,3 +2735,9 @@ HECHO (`tema-ruta.js` y `l80.js`). **Falta armar APK (preguntar antes).**
 - En "¿Qué le dejas?": "📦 Pidió 10 cajas de roatán y 5 kg de macho", su nota y por dónde llegó ("Pedido por WhatsApp"). Si deja otra cantidad: "Le dejas 2 cajas más y 2 kg menos de lo que pidió" y el botón "Poner lo que pidió". Se guarda lo que de verdad le dejó.
 - Prueba `t136.js` (8 OK). `comp-venta` idéntica. Todas las pruebas en 0 FAIL (menos `tk.js`).
 
+## 2026-11-19 · 134 · Foto del tablero de gasolina (Ricardo: "sí, opcional")
+HECHO (`tema-vehiculos.js` `gasTile134`, líneas 134 de `ql.py`, `l82.js`). **Falta armar APK (preguntar antes).**
+- "Tablero de gasolina (opcional)" en el paso Gasolina al salir (inicio por pasos, paso 5) y en el paso Gasolina del cierre (paso 2). No detiene al chofer si no la toma (sin "No pude tomarla").
+- Se guarda como `fotos.gas` / `fotosFin.gas` y sale al recibir el cierre (al salir y al regresar), en el Cuadre (Fotos del cierre) y en "📷 Fotos del vehículo" del administrador. Al empezar otra vuelta también se pide de nuevo (137).
+- Prueba `t134.js` (8 OK). Todas las pruebas en 0 FAIL (menos `tk.js`); `comp-venta` idéntica.
+

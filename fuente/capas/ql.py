@@ -141,3 +141,7 @@ R("if(n.img)h+='<img src=\"'+n.img+'\" alt=\"Nota de remisión como imagen\" sty
 #   (va sobre el texto como ya quedó con las líneas 58 y 95–100 de este archivo)
 R("cx.drawImage(im,0,0,w,h);var sh=Math.max(22,Math.round(w*22/480));cx.fillStyle='rgba(0,0,0,.6)';cx.fillRect(0,h-sh,w,sh);cx.fillStyle='#fff';cx.font=Math.round(sh*0.6)+'px sans-serif';\n  cx.fillText(new Date().toLocaleString('es-MX')+' · '+vehHoy().pl+(typeof quienFoto73==='function'?' · '+quienFoto73():''),Math.round(sh*0.3),h-Math.round(sh*0.3));\n  S.salida[inp.dataset.grp||'fotos'][k]=cv.toDataURL('image/jpeg',FOTO_Q119);",
   "cx.drawImage(im,0,0,w,h);/* 138: una sola marca, arriba */if(!/^foto-\\d+\\.jpg$/.test(f.name||'')){try{cam73Sello(cx,w,h)}catch(e){}}\n  var u137=cv.toDataURL('image/jpeg',FOTO_Q119);if(fotoRepetida137(inp.dataset.grp||'fotos',u137)){toast('Esa es la misma foto de la salida. Toma una foto nueva del vehículo como está ahora.');try{inp.value=''}catch(e){}return}S.salida[inp.dataset.grp||'fotos'][k]=u137;")
+# 134 · foto opcional del tablero de gasolina al salir y al regresar (Ricardo: "sí, opcional"); sale en el paso Gasolina
+R("+chipsTank('tankini',c.tankIni,false)","+chipsTank('tankini',c.tankIni,false)+gasTile134('fotos')")
+R("+chipsTank('tank',c.tank||c.tankIni,c.sent)+'</div>'","+chipsTank('tank',c.tank||c.tankIni,c.sent)+gasTile134('fotosFin')+'</div>'")
+

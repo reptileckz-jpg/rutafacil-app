@@ -125,7 +125,7 @@ velBeep=function(){_velBeepBase.apply(this,arguments);vibrar([300,150,300,150,30
 /* ---------- fotos ---------- */
 var _fotoTileBase=fotoTile;
 /* l32 · si la foto es obligatoria y no se pudo: "No pude tomarla" */
-fotoTile=function(k,l,g){var h=_fotoTileBase.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS)return h;var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
+fotoTile=function(k,l,g){var h=_fotoTileBase.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS||k==='gas')return h;/* 134: la de la gasolina es opcional */var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
 var _fotoAbrirBase=fotoAbrir;
 fotoAbrir=function(src){
  /* l24 · "Tomar otra para reemplazarla" (se mira qué foto se tocó ANTES de abrirla) */
@@ -140,3 +140,8 @@ fotoZoomable=function(im){if(_fotoZoomableBase.apply(this,arguments))return true
  if(!im||im.tagName!=='IMG'||im.closest('#fotov,#fgov,#tutov,#pinov,#pncubre,nav,header,label,[data-act],a,.tklogo,.logo,#bienv,#arr,.bv-stage,.gmhole'))return false;
  if(im.classList.contains('tic'))return false;var s=im.getAttribute('src')||'';if(!/^(data:image\/(jpe?g|webp)|blob:|https?:)/i.test(s))return false;
  var r=im.getBoundingClientRect();return r.width>=36&&r.height>=36}catch(e){return false}};
+
+/* 134 · foto opcional del tablero de gasolina (Ricardo, 19 nov: "sí, opcional"). Va en el paso "Gasolina" al salir y al cerrar.
+   Se guarda como S.salida.fotos.gas / S.salida.fotosFin.gas y sale en Recibir el cierre, el Cuadre y "Fotos del vehículo". */
+function gasTile134(g){return '<div style="max-width:180px;margin-top:8px">'+fotoTile('gas','Tablero de gasolina (opcional)',g)+'</div>'}
+

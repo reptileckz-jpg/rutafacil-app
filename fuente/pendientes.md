@@ -2852,3 +2852,10 @@ Ricardo: "si tienes algún pendiente con Vite, termínalo todo sin preguntarme; 
 - Para llegar a −$911 la caja tenía que "costar" ~$500: una carga mal capturada (2,000 kg en 40 cajas = 50 kg por caja → −$875 en la prueba; o el precio de la caja como precio del kilo).
 - Ya no pasa con cargas nuevas (150 pregunta al registrarlas). Para las de antes, el aviso "La fruta salió con pérdida" dice QUÉ carga se usa (proveedor y fecha) y qué se ve raro ("salen 50 kg por caja… ¿escribiste bien cuántas cajas?" o "el precio por kilo es $200: ¿es el de la CAJA?"). `tema-cuadre.js`, prueba `t142.js` (8 OK).
 - 10.6 es el primer APK armado con Vite.
+
+## 2026-11-19 · 159 · Ricardo: "si ya una ruta cubrió los gastos de operación del día, las demás (aunque sean 5 cajas) deberían salir positivas, a excepción de la gasolina" → versión 10.7
+HECHO en `tema-cuadre.js` (`salidas159`, `salida159HTML`), prueba `t159.js` (9 OK), captura `disenos/cuadre-salidas-159.png`.
+- Cada salida (cierre) carga lo SUYO: su fruta (venta − costo), su gasolina (los gastos de combustible del día repartidos por los km de cada salida) y su desgaste (km × tasa), y su comisión.
+- Lo FIJO del día (sueldo del día y los gastos de la ruta que no son gasolina) se cubre en orden: la salida 1 primero; lo que no alcance pasa a la 2, etc. Si no alcanza con todas, lo que falta se queda en la primera.
+- En el Cuadre, cuando hay 2 salidas o más, cada cierre tiene "Lo que dejó esta salida". Si una sale negativa solo por gasolina/desgaste: "Salió más caro ir de lo que dejó la fruta".
+- Blindaje: solo se reparte; la suma de las salidas es EXACTO el neto del chofer en el día (los centavos de redondeo van a la última). Ninguna cuenta del día cambia.

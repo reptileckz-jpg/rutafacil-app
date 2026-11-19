@@ -46,9 +46,9 @@ function rutaGastos121(d,ch,vivo){var n=chofN(ch)+' · ',L=(S.gastos||[]).filter
 function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[],lin145={};try{P=rutasDia120(d)}catch(e){}var CH={},ord=[];
  P.forEach(function(x){var L=(x.log||[]).filter(function(l){return l&&!l.anul}),r=x.res||{},ch=+x.ch;
   var o=CH[ch];if(!o){o=CH[ch]={ch:ch,n:chofN(ch),partes:[],venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,deb:0,ent:0,rec:0,creditos:[],abonos:[],taras:[],precios:[],veh:{},vivo:null};ord.push(ch)}
-  var p={n:x.n,parcial:x.parcial,resc:x.resc,sent:x.sent,vivo:!!x.vivo,h:(x.corte&&x.corte.h)||(x.e&&x.e.h120)||'',corte:x.corte||null,rec:x.reg&&x.reg.rec!=null?num(x.reg.rec):null,deb:num(r.efectivo),venta:0,cob:0};
+  var p={n:x.n,parcial:x.parcial,resc:x.resc,sent:x.sent,vivo:!!x.vivo,h:(x.corte&&x.corte.h)||(x.e&&x.e.h120)||'',corte:x.corte||null,rec:x.reg&&x.reg.rec!=null?num(x.reg.rec):null,deb:num(r.efectivo),venta:0,cob:0,gan:0,com:0};var cz159=(S.choferes||[]).filter(function(z){return +z.id===ch})[0];
   L.forEach(function(l){var t=num(l.total),pg=num(l.pago),cl0=cl(l.c),nm=cl0?cl0.n:(l.rescate120?'(cierre recuperado)':'Cliente');p.venta+=t;p.cob+=pg+num(l.abono);o.venta+=t;o.contado+=pg;o.ab+=num(l.abono);o.R+=num(l.R);o.M+=num(l.M);
-   o.gan+=num(l.R)*(num(l.pr||S.precio.R)-num(c.R))+num(l.M)*(num(l.pm||S.precio.M)-num(c.M));
+   o.gan+=num(l.R)*(num(l.pr||S.precio.R)-num(c.R))+num(l.M)*(num(l.pm||S.precio.M)-num(c.M));p.gan+=num(l.R)*(num(l.pr||S.precio.R)-num(c.R))+num(l.M)*(num(l.pm||S.precio.M)-num(c.M));/* 159 */try{if(cz159&&cz159.sz&&cz159.sz.tipo==='base'&&!esAdm(cz159))p.com+=comDeLog(cz159,l)}catch(e){}
    if(t-pg>0.005){o.cred+=t-pg;o.creditos.push({n:nm,m:r2(t-pg),R:num(l.R),M:num(l.M)})}if(num(l.abono)>0.005)o.abonos.push({n:nm,m:num(l.abono)});preciosLog135(l).forEach(function(x){o.precios.push({n:nm,x:x})});/* 135 */lin145Pon(lin145,l,c);/* 145 */
    var dej=num(l.R),rec=num(l.V);if(!l.rescate120&&(dej||rec)&&dej!==rec)o.taras.push({n:nm,dejo:dej,recogio:rec,rotas:num(l.Vr),neto:dej-rec})});
   /* km, vehículo y desgaste de esta parte */
@@ -68,7 +68,7 @@ function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[],lin145={};try{
   var s=trabajo?r2(diaSz118(c)):0,com=0;if(c.sz.tipo==='base'&&CH[c.id]){try{(rutasDia120(d)||[]).filter(function(x){return +x.ch===+c.id}).forEach(function(x){(x.log||[]).forEach(function(l){if(l&&!l.anul)com+=comDeLog(c,l)})})}catch(e){}}
   com=r2(com);if(!(s||com))return;var sTx=s?szTxt128(c):'';SU.push({ch:c.id,n:c.n,s:s,com:com,sTx:sTx,vac:marca118(c,d)==='vac'});suT+=s;comT+=com;
   if(CH[c.id]){CH[c.id].sueldo=s;CH[c.id].com=com;CH[c.id].sTx=sTx;if(c.sz.tipo==='base'){var LL=[];try{(rutasDia120(d)||[]).filter(function(x){return +x.ch===+c.id}).forEach(function(x){(x.log||[]).forEach(function(l){if(l&&!l.anul)LL.push(l)})})}catch(e){}CH[c.id].comD=comDesg128(c,LL)}}});
- CHL.forEach(function(o){o.sueldo=o.sueldo||0;o.com=o.com||0;o.neto=r2(o.gan-o.gasT-o.desg-o.sueldo-o.com)});
+ CHL.forEach(function(o){o.sueldo=o.sueldo||0;o.com=o.com||0;o.neto=r2(o.gan-o.gasT-o.desg-o.sueldo-o.com);salidas159(o)});
  /* venta en bodega (venta local), abonos cobrados en bodega, merma */
  var kgC=20;try{kgC=num(vlKgCaja())||20}catch(e){}var loc={venta:0,gan:0,n:0};(S.vlVentas||[]).filter(function(v){return v&&v.f82===d}).forEach(function(v){loc.n++;(v.lin||[]).forEach(function(l){var t=num(l.kg)*num(l.pk),M=false;try{M=vlInv82(l.p)==='M'}catch(e){}loc.venta+=t;loc.gan+=t-(M?num(l.kg)*num(c.M):num(l.kg)*num(c.R)/kgC)})});
  var abB=r2(sum((S.cobros||[]).filter(function(x){return x&&x.f===d&&+x.c!==0&&x.n!=='viaje'&&x.n!=='Venta local'}),function(x){return num(x.m)})),
@@ -240,7 +240,7 @@ function choferHTML121(o){var k='cu121c'+o.ch,abierta=S.dOpen[k]!==false;
    return '<div style="border-top:1px solid var(--line);padding:8px 0"><div style="display:flex;justify-content:space-between"><b>Cierre '+p.n+(p.resc?' (recuperado)':'')+'</b><span class="lbl">'+esc(p.h||'')+' · '+est+'</span></div>'
     +rwN121('Vendió',money(p.venta))+rwN121('Cobrado',money(p.cob))+((p.sent||p.parcial)?rwN121('Debía entregar',money(p.deb))+(ent!=null?rwN121('Entregó',money(ent),Math.abs(ent-p.deb)>=0.5?'neg':''):'')+(p.rec!=null?rwN121('Recibiste',money(p.rec)):''):'')
     +(c.v?rwN121('Código del corte',esc(c.v)):'')+(p.km?rwN121('Kilómetros'+(p.veh?' · '+esc(p.veh):''),p.km.toLocaleString('es-MX')+' km','','desgaste '+f2(p.tasa)+' por km = '+money(p.desg)):'')
-    +'<details data-k="'+k+'f'+p.n+'"'+(S.dOpen[k+'f'+p.n]?' open':'')+'><summary class="lbl" style="min-height:40px;display:flex;align-items:center">📷 Fotos del cierre '+p.n+'</summary>'+(S.dOpen[k+'f'+p.n]?fotosHTML121(p.fotos):'')+'</details></div>'}).join('')
+    +salida159HTML(o,p)+'<details data-k="'+k+'f'+p.n+'"'+(S.dOpen[k+'f'+p.n]?' open':'')+'><summary class="lbl" style="min-height:40px;display:flex;align-items:center">📷 Fotos del cierre '+p.n+'</summary>'+(S.dOpen[k+'f'+p.n]?fotosHTML121(p.fotos):'')+'</details></div>'}).join('')
   +'<div style="border-top:2px solid var(--line);margin-top:4px;padding-top:6px">'+rwN121('Ventas',money(o.venta),'',o.R+' cajas'+(o.M?' · '+o.M+' kg':''))+rwN121('&nbsp;&nbsp;A crédito',money(o.cred),o.cred>0?'neg':'')+(o.ab?rwN121('Abonos cobrados',money(o.ab)):'')
   +rwN121('Ganancia de su fruta',money(o.gan))+rwN121('− Gastos de su ruta',money(o.gasT))+rwN121('− Desgaste',money(o.desg),'',o.km?o.km.toLocaleString('es-MX')+' km':'sin kilómetros')+rwN121('− Sueldo del día',money(o.sueldo||0),'',o.sTx||'')+(o.com||o.comD&&o.comD.filas.length?comHTML128(o,k):'')
   +'<div class="row" style="min-height:48px"><b>Lo que dejó su ruta</b><b style="font-size:19px;color:'+(o.neto<0?'var(--danger)':'var(--accent)')+'">'+money(o.neto)+'</b></div></div>'
@@ -323,3 +323,27 @@ function carga142HTML(d){try{var c=carga142(d||iso(TODAY));if(!c)return '';var k
  if(kc>30)L.push('salen <b>'+kc+' kg por caja</b> ('+num(c.kgR).toLocaleString('es-MX')+' kg ÷ '+num(c.cajas)+' cajas; lo normal es como 20): ¿escribiste bien cuántas cajas?');
  if(v>0&&p*15>v)L.push('el precio por kilo es <b>'+money(p)+'</b>: ¿es el precio de la CAJA?');
  return '<div style="font-size:12px;margin-top:6px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,.05)">Se está usando la carga de <b>'+esc(c.prov||'')+'</b> del <b>'+esc(fCorta91(c.fecha))+'</b>'+(L.length?': '+L.join(' · '):'.')+'</div>'}catch(e){return ''}}
+
+/* ---------- 159 · Ricardo: "si ya una ruta cubrió todos los gastos de operación del día, las demás (aunque sean 5 cajas) deberían salir
+   positivas, a excepción de la gasolina: que se vea si sale más caro ir a entregarlas" ----------
+   Cada salida (cierre) del chofer carga lo SUYO: su fruta (venta − costo), su gasolina (los gastos de combustible del día repartidos por
+   los km de cada salida) y su desgaste (km × tasa), y su comisión. Lo FIJO del día (sueldo del día y los gastos de la ruta que no son
+   gasolina) se cubre en orden: primero la salida 1; lo que no alcance pasa a la 2, y así. Si con todas no alcanza, lo que falta se le
+   queda a la primera. Solo se reparte: la suma de las salidas es EXACTO el neto del chofer en el día (o.neto). */
+function salidas159(o){try{var P=o.partes||[];if(!P.length)return;var G=o.gastos||[],comb=r2(sum(G.filter(function(g){return g.t==='Combustible'}),function(g){return num(g.m)})),
+  fijo=r2(num(o.sueldo)+num(o.gasT)-comb),km=sum(P,function(p){return num(p.km)}),comR=sum(P,function(p){return num(p.com)});
+ P.forEach(function(p,i){p.gan=r2(p.gan||0);p.comb=km>0?r2(comb*num(p.km)/km):(i===0?comb:0);p.com=comR>0?r2(num(o.com)*num(p.com)/comR):(i===0?r2(num(o.com)):0)});
+ /* los centavos de redondeo, a la última (así la suma es exacta) */
+ var u=P[P.length-1];u.comb=r2(u.comb+comb-sum(P,function(p){return p.comb}));u.com=r2(u.com+num(o.com)-sum(P,function(p){return p.com}));
+ P.forEach(function(p){p.var=r2(p.gan-p.comb-num(p.desg)-p.com)});
+ var rest=fijo;P.forEach(function(p){var f=rest>0?Math.min(rest,Math.max(0,p.var)):0;p.fijo=r2(f);rest=r2(rest-f)});if(rest>0.005)P[0].fijo=r2(P[0].fijo+rest);
+ P.forEach(function(p){p.neto=r2(p.var-p.fijo)});
+ var d=r2(o.neto-sum(P,function(p){return p.neto}));if(Math.abs(d)>0.004){P[0].fijo=r2(P[0].fijo-d);P[0].neto=r2(P[0].neto+d)}
+ o.fijo159=fijo;o.comb159=comb}catch(e){}}
+function salida159HTML(o,p){if(!o||(o.partes||[]).length<2||p.neto==null)return '';
+ return '<div style="margin-top:6px;padding:6px 8px;border-radius:10px;background:color-mix(in srgb,'+(p.neto<0?'#DC2626':'#16A34A')+' 8%,var(--surface))">'
+  +'<div class="lbl" style="margin-bottom:2px"><b>Lo que dejó esta salida</b></div>'
+  +rwN121('Ganancia de la fruta',money(p.gan))+rwN121('− Gasolina y desgaste',money(r2(p.comb+num(p.desg))),'',(p.km?p.km.toLocaleString('es-MX')+' km':'sin km'))
+  +(p.com?rwN121('− Comisión',money(p.com)):'')+(p.fijo>0.004?rwN121('− Gastos fijos del día',money(p.fijo),'','sueldo y gastos de la ruta (se cubren en orden)'):'')
+  +'<div class="row" style="min-height:40px"><b>'+(p.neto<0?'Salió con pérdida':'Dejó')+'</b><b style="color:'+(p.neto<0?'var(--danger)':'var(--accent)')+'">'+money(p.neto)+'</b></div>'
+  +(p.neto<0&&p.fijo<0.005&&p.var<0?'<div class="lbl neg" style="font-size:12.5px">Salió más caro ir (gasolina, desgaste y comisión) de lo que dejó la fruta.</div>':'')+'</div>'}

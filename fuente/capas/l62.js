@@ -25,7 +25,7 @@ function irLink(lat,lng){return 'https://www.google.com/maps/dir/?api=1&destinat
 /* ---------- 10 · ubicación de cada bodega (la principal mueve todos los mapas, km y rutas) ---------- */
 function bodPrincipal(){return (S.bods||[])[0]||null}
 function bodAplica(){var b=bodPrincipal();if(b&&b.lat!=null&&b.lng!=null){BOD.lat=+b.lat;BOD.lng=+b.lng}}
-var _rd62a=render;render=function(){try{bodAplica()}catch(e){}return _rd62a.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 function coordsDe(txt){var s=String(txt||'').trim(),m;
  if((m=/!3d(-?\d{1,2}\.\d+)!4d(-?\d{1,3}\.\d+)/.exec(s))||(m=/@(-?\d{1,2}\.\d+),\s*(-?\d{1,3}\.\d+)/.exec(s))||(m=/[?&](?:q|query|ll|destination|center)=(-?\d{1,2}\.\d+),\s*(-?\d{1,3}\.\d+)/.exec(s))||(m=/^(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)$/.exec(s))||(m=/(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})/.exec(s))){
   var la=+m[1],ln=+m[2];if(Math.abs(la)<=90&&Math.abs(ln)<=180)return {lat:+la.toFixed(6),lng:+ln.toFixed(6)}}return null}
@@ -46,7 +46,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='blaqui'){x.err='';toast('Buscando tu ubicación…');var ok=function(la,ln){x.lat=+(+la).toFixed(6);x.lng=+(+ln).toFixed(6);x.p=1;render()},mal=function(){x.err='No se pudo leer el GPS. Prende la ubicación o usa el link.';render()};
   try{navigator.geolocation.getCurrentPosition(function(p){ok(p.coords.latitude,p.coords.longitude)},mal,{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){mal()}return}
  if(a==='blsi'){var bd=(S.bods||[]).filter(function(z){return +z.id===+x.id})[0];if(bd){bd.lat=x.lat;bd.lng=x.lng;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Guardó la ubicación de '+bd.n+' ('+x.lat+', '+x.lng+')'});bodAplica()}S.blov=null;toast('✓ Ubicación guardada');render();return}},true);
-var _rd62b=render;render=function(){var r=_rd62b.apply(this,arguments);try{var o=document.getElementById('blov');if(o)o.remove();var hh=bodLocHTML();if(hh){var w=document.createElement('div');w.innerHTML=hh;document.body.appendChild(w.firstElementChild);try{mapaMonta()}catch(e){}try{gmRevisa()}catch(e){}}}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* botón en la tarjeta de Bodegas y en Ajustes */
 /* bodegasCard: pasó a tema-bodega.js */
 /* ajHTML: pasó a tema-ajustes.js */
@@ -64,7 +64,7 @@ function aprAprende(){if(S.role!=='rep'||!S.salida||!S.salida.ok)return false;va
  L.forEach(function(o,i){var x=o.x;
   if(!x.aprT){var prev=i>0?L[i-1]:null,de=prev?prev.c:'B',t0=prev?prev.x.sal:S.salidaTs;if(t0&&x.lleg>t0){var mi=(x.lleg-t0)/60000;if(mi>=1&&mi<=180){aprPon(S.aprT,de+'>'+o.c+'|'+franja(t0),mi);aprPon(S.aprT,de+'>'+o.c+'|*',mi)}x.aprT=1;cam=true}}
   if(!x.aprA&&x.sal&&x.sal>x.lleg){var ma=(x.sal-x.lleg)/60000;if(ma>=0.5&&ma<=120)aprPon(S.aprA,o.c,ma);x.aprA=1;cam=true}});return cam}
-var _rd62c=render;render=function(){try{aprAprende()}catch(e){}return _rd62c.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* hora estimada = manejo (aprendido, o lo de Google, o el cálculo de siempre) + tiempo de atención de cada cliente */
 /* etas: pasó a tema-rutas.js */
 

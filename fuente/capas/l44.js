@@ -54,7 +54,7 @@ function mjPos(p){var now=Date.now(),la=p.coords.latitude,ln=p.coords.longitude,
  if(kmh<8&&mjActivo()){var cer=null;S.stops.forEach(function(s,k){if(s.done||cer)return;var c=cl(s.c);if(c&&c.lat!=null&&kmE({lat:la,lng:ln},c)/1.3<0.1)cer={c:c,k:k}});
   if(cer&&MJ.cerca!==cer.c.id&&S.tab.rep!=='entrega'){MJ.cerca=cer.c.id;S.mjLlega=cer;render()}}}
 function mjVigila(){if(!navigator.geolocation||window.__pnTest&&!window.__mjTest)return;var debe=mjActivo();if(debe&&MJ.w==null){MJ.w=navigator.geolocation.watchPosition(mjPos,function(){},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}else if(!debe&&MJ.w!=null){navigator.geolocation.clearWatch(MJ.w);MJ.w=null;MJ.on=false}}
-var _r44=render;render=function(){var r=_r44.apply(this,arguments);try{mjVigila()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 function mjLlegaHTML(){var x=S.mjLlega;if(!x||S.role!=='rep'||MJ.on)return '';return '<div class="card next" data-key="mjllega"><b style="font-size:18px">Llegaste con '+esc(x.c.n)+'</b><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:2" data-act="mjent">Abrir su entrega</button><button class="btn sec" style="flex:1" data-act="mjno">Ahora no</button></div></div>'}
 /* ruta: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mjcopi"],[data-act="mjent"],[data-act="mjno"]');if(!b)return;e.stopImmediatePropagation();var a=b.dataset.act;

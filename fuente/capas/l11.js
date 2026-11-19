@@ -12,4 +12,4 @@ function irAvisos(){var c=avisosCard();if(!c)return;S.avVisto=urgSig();document.
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('nav.tabs button[data-act="tab"][data-t="inicio"]');if(!b||S.role!=='admin')return;
  var dot=b.querySelector('.tdot[aria-label="Hay avisos urgentes"]');var vis=dot&&getComputedStyle(dot).display!=='none';
  if(vis)setTimeout(irAvisos,60)},true);
-var _rAv=render;render=function(){var r=_rAv.apply(this,arguments);try{var sg=urgSig();document.documentElement.classList.toggle('av-visto',!!sg&&S.avVisto===sg)}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */

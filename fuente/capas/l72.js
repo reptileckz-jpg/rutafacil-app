@@ -106,6 +106,4 @@ var _vr72=null;function vr72Pon(){if(_vr72||typeof VIEWS==='undefined'||!VIEWS.r
 function botones72(){}
 
 /* ---------- dibujo ---------- */
-var _rd72=render;render=function(){try{vr72Pon()}catch(e){}var r=_rd72.apply(this,arguments);try{stock72();rotas72();tarEnt72();rp72();botones72();cierreFalta72();tarBuro72();ovPon70('tar72ov',tar72HTML());
- /* 108–110 (tema-taras.js, tema-cargarmas.js) */
- if(typeof tar108HTML==='function'){ovPon70('tar108ov',tar108HTML());ovPon70('deb109ov',deb109HTML());debCard109();tarFondoCard108()}if(typeof cm110HTML==='function'){ovPon70('cm110ov',cm110HTML());bodCard110()}}catch(e){console.error('l72',e)}return r};
+/* render: pasó a tema-dibujar1.js */

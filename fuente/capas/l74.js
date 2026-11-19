@@ -110,6 +110,6 @@ function dsgVj74(){(S.cargas||[]).forEach(function(c){if(!c.vw||c.est==='Por lle
 /* desg: pasó a tema-estadisticas.js */
 /* ajHTML: pasó a tema-ajustes.js */
 
-var _rd74=render;render=function(){try{dsgVj74()}catch(e){}var r=_rd74.apply(this,arguments);try{acLbl74();acArregla74();ce74();ovPon70('ip74ov',ip74HTML());ovPon70('pe74ov',pe74HTML())}catch(e){console.error('l74',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el precio especial de una vez gana sobre el mayoreo en esa compra */
 /* entregaCalc: pasó a tema-ruta.js */

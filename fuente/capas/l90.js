@@ -98,7 +98,6 @@ function vehOcupados90(){if(S.role!=='rep'||S.tab.rep!=='ruta'||(S.salida&&S.sal
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="iniciar"]');if(!b||S.role!=='rep'||S.vehHoy==null)return;var q=vehUso90(S.vehHoy,+S.chofHoy);if(q==null)return;
  e.preventDefault();e.stopImmediatePropagation();var v=vehHoy();toast((v?v.n:'Ese vehículo')+' está ocupado: lo trae '+(q===-1?'un viaje de carga':(+q===ADM85?'el administrador':chofN(q)))+'. Escoge otro.');var L=vehLibres(+S.chofHoy);if(L.length){S.vehHoy=L[0].id;var v1=vehHoy();S.cierre.odoIni=v1.odo;S.cierre.odo=v1.odo}render()},true);
 
-var _rd90=render;render=function(){try{vehIds90();vehAuto90();arStToma90();arCuenta90();arTut90()}catch(e){console.error('l90',e)}var r=_rd90.apply(this,arguments);
- try{arArriba90();arLimpia90();vehOcupados90();vehSel90();ovPon70('av90',av90HTML())}catch(e){console.error('l90b',e)}return r};
+/* render: pasó a tema-dibujar2.js */
 /* ---------- versión: la del APK (1.0.N), leída del celular; si no se puede, la de la app ---------- */
 (function(){try{var A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(!A||!A.getInfo)return;A.getInfo().then(function(i){if(i&&i.version){APP_VER=String(i.version);try{render()}catch(e){}}},function(){})}catch(e){}})();

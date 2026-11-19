@@ -21,7 +21,7 @@ var _bioEnCurso=false;
 function bioEntrar(){var p=bioPl(),k=_pin&&_pin.k;if(!p||!k||_bioEnCurso)return;_bioEnCurso=true;
  p.verifyIdentity({reason:'Para entrar a Ruta Fácil',title:'Entrar con tu huella',subtitle:pinNom(k),negativeButtonText:'Usar mi PIN',maxAttempts:3}).then(function(){_bioEnCurso=false;if(!_pin||_pin.k!==k)return;var cb=_pin.cb,m=_pin.modo;S.pinOk[k]=true;_pinAct=Date.now();if(S.pinF)delete S.pinF[k];_pin={v:'',modo:null};try{vibrar(20)}catch(e){}render();if(m!=='entrar'&&cb)setTimeout(cb,0)},function(){_bioEnCurso=false})}
 /* al abrir la pantalla del PIN con huella activada, se pide sola */
-var _bioUltK='';var _r36a=render;render=function(){var r=_r36a.apply(this,arguments);try{if(_pin&&_pin.modo==='entrar'&&bioActiva(_pin.k)&&!document.getElementById('pnov')){var sig=_pin.k+':'+(_pin.bloq||0)+':'+(S.pinF&&S.pinF[_pin.k]?S.pinF[_pin.k].hasta:'');if(sig!==_bioUltK){_bioUltK=sig;setTimeout(bioEntrar,350)}}else if(!_pin||!_pin.modo)_bioUltK=''}catch(e){}return r};
+var _bioUltK='';/* render: pasó a tema-dibujar1.js */
 /* ---------- pantalla del PIN: huella, olvidé mi PIN, cambiar de usuario ---------- */
 /* pinHTML: pasó a tema-pin.js */
 function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(S.pinPista||{})[k],pend=(S.pinPide||{})[k],h='';
@@ -33,7 +33,7 @@ function pxHTML(){var x=S.px;if(!x)return '';var k=x.k,nm=esc(pinNom(k)),pista=(
  if(x.t==='bio')h='<div style="font-size:44px;text-align:center">🫆</div><b style="font-size:20px">¿Entrar con tu huella?</b><div class="lbl" style="margin-top:6px">Así ya no escribes el PIN en este celular. El PIN sigue sirviendo por si la huella falla.</div><button class="btn" style="margin-top:12px" data-act="bioactiva">Sí, usar mi huella</button><button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button>';
  return '<div id="pxov" role="dialog" aria-label="PIN"><div class="w">'+h+'</div></div>'}
 /* setupHTML: pasó a tema-ajustes.js */
-var _r36b=render;render=function(){var r=_r36b.apply(this,arguments);try{var o=document.getElementById('pxov'),h=pxHTML();if(h){if(!o){o=document.createElement('div');document.body.appendChild(o)}var sig=JSON.stringify([S.px&&S.px.t,S.px&&S.px.err,(S.pinPide||{})[S.px&&S.px.k]]);if(o.dataset.sig!==sig){var v=(o.querySelector('#pxp')||{}).value;o.outerHTML=h;var n=document.getElementById('pxov');n.dataset.sig=sig;if(v&&n.querySelector('#pxp'))n.querySelector('#pxp').value=v}}else if(o)o.remove()}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.pxb&&S.px)S.px[t.dataset.pxb]=t.value},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;
  if(a==='biousar'){e.stopImmediatePropagation();bioEntrar();return}

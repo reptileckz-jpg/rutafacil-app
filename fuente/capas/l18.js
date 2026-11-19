@@ -60,7 +60,7 @@ function comEstimado(c){var p=comPct(chofHoyObj());/* 120 · lo que de verdad co
 /* entrega: pasó a tema-ruta.js */
 /* +$ que sube cuando gana */
 var _comPrev=null;
-var _rCom18=render;render=function(){var r=_rCom18.apply(this,arguments);try{var el=document.querySelector('.compill[data-v]');if(el){var v=num(el.getAttribute('data-v'));if(_comPrev!==null&&v>_comPrev+0.005){var d=r2(v-_comPrev),rc=el.getBoundingClientRect(),f=document.createElement('div');f.className='comfloat';f.textContent='+'+money(d);f.style.left=Math.round(rc.left+rc.width*0.35)+'px';f.style.top=Math.round(Math.max(60,rc.top))+'px';document.body.appendChild(f);setTimeout(function(){f.remove()},1500)}_comPrev=v}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* racha: al enviar el cierre, si llegó a su meta de cajas */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="enviar"]');if(!b||S.role!=='rep')return;var c=chofHoyObj();if(!c||!num(c.meta.R))return;var ya=!!S.cierre.sent;
  setTimeout(function(){if(ya||!S.cierre.sent)return;S.racha=S.racha||{};var R=S.racha[c.id]||{n:0,f:''};if(R.f===iso(TODAY))return;var vR=sum(S.log,function(l){return l.R});R.n=vR>=num(c.meta.R)?R.n+1:0;R.f=iso(TODAY);S.racha[c.id]=R},0)},true);

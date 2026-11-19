@@ -54,4 +54,4 @@ function fallas85(r,f0){try{if(!r||!f0)return;_pd85(r).forEach(function(cid){var
 /* al entregarle, se le borran las fallas */
 function fallaLimpia85(){(S.cli||[]).forEach(function(c){if(c.falla85&&c.ult&&c.ult>=c.falla85.f)c.falla85=null})}
 
-var _rd85=render;render=function(){try{mig85();fallaLimpia85()}catch(e){console.error('l85',e)}var r=_rd85.apply(this,arguments);try{admSw85()}catch(e){console.error('l85b',e)}return r};
+/* render: pasó a tema-dibujar1.js */

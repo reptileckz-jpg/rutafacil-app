@@ -93,17 +93,7 @@ function cuentasHTML(){var R=cuentasRevisar(),m=R.filter(function(x){return !x.o
   +R.map(function(x){return '<div class="row"><span>'+(x.ok?'✓ ':'⚠ ')+esc(x.n)+(x.ok||!x.det?'':'<br><span class="lbl neg">'+esc(x.det)+'</span>')+'</span></div>'}).join('')+'<div class="lbl">La app se revisa sola después de cada movimiento.</div></details>'}
 /* aviso si algo deja de cuadrar */
 /* avisos: pasó a tema-avisos.js */
-var _rL5=render;render=function(){_rL5.apply(this,arguments);try{var R=cuentasRevisar().filter(function(x){return !x.ok}).map(function(x){return x.n}).join('|');if(R&&R!==_cuMal)setTimeout(function(){toast('⚠ Algo no cuadra: '+R.split('|')[0]+'. Revísalo en Estadísticas.')},10);_cuMal=R;
- var m=document.querySelector('main');if(!m)return;
- if(S.role==='admin'&&S.tab.admin==='estadisticas'&&!m.querySelector('[data-k="cuentas"]')){var h1=m.querySelector('h1'),w=document.createElement('div');w.innerHTML=cuentasHTML();if(h1)h1.after(w.firstElementChild)}
- if(S.role==='cont'&&S.tab.cont==='cres'&&!m.querySelector('[data-k="cuentas"]')){var w2=document.createElement('div');w2.innerHTML=cuentasHTML();var n1=m.querySelector('.card.note');if(n1)n1.after(w2.firstElementChild)}
- if(((S.role==='admin'&&S.tab.admin==='gastos')||(S.role==='cont'&&S.tab.cont==='cgas'))&&!m.querySelector('[data-k="anul"]')&&S.anulados.length){var w3=document.createElement('div');w3.innerHTML=anuladosHTML();var ft=m.querySelector('.foot');if(ft)ft.before(w3.firstElementChild)}
- Array.prototype.forEach.call(m.querySelectorAll('.lbl'),function(x){if(x.textContent==='Toca uno para corregirlo. Deslízalo a un lado para borrarlo.')x.textContent='Toca uno para corregirlo. Deslízalo a un lado para anularlo (queda registrado).'});
- /* "con el chofer" en Finanzas y en el cierre de caja */
- if(S.role==='admin'&&S.tab.admin==='inicio'){var cc=conChofer(),cj=Array.prototype.slice.call(m.querySelectorAll('details[data-k="cajadia"]'))[0];if(cj&&cc>0.5&&!cj.querySelector('[data-conch]')){var rr=document.createElement('div');rr.setAttribute('data-conch','1');rr.className='lbl';rr.style.margin='6px 0';rr.innerHTML='Además, <b>'+money(cc)+'</b> los trae '+esc(chofN(S.chofHoy))+' y todavía no los entrega (no cuentan en la caja).';var sm=cj.querySelector('summary');if(sm)sm.after(rr)}}
- /* botón Corregir en las entregas hechas */
- if(S.role==='rep'&&S.tab.rep==='ruta'&&!S.cierre.sent){Array.prototype.forEach.call(m.querySelectorAll('.stop'),function(row,k){})}
-}catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */
 /* lista de entregas hechas con botón para corregir */
 function corrListaHTML(){if(S.role!=='rep'||S.cierre.sent)return '';var L=S.stops.map(function(s,i){return {s:s,i:i}}).filter(function(o){return o.s.done&&o.s.logI!=null&&S.log[o.s.logI]});if(!L.length)return '';
  return '<details class="card" data-k="entdone"'+(S.dOpen.entdone?' open':'')+'><summary><b>Entregas hechas</b><span class="lbl">'+L.length+' · toca Corregir si te equivocaste</span></summary>'+L.map(function(o){var l=S.log[o.s.logI],c=cl(l.c);return '<div class="row"><span>'+esc(c?c.n:'')+'<br><span class="lbl">'+l.R+' cajas · '+l.M+' kg · '+money(l.total)+(l.corr?' · corregida':'')+'</span></span><button class="btn sm sec" style="width:auto" data-act="entcorr" data-i="'+o.i+'">Corregir</button></div>'}).join('')+'<div class="lbl">Al corregir, al administrador le llega el aviso con lo de antes y lo de ahora.</div></details>'}

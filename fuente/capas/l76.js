@@ -96,6 +96,6 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function facLista76HTML(){if(!S.fl76)return '';var F=fac76();return ovW70('fl76ov','Facturas','<div class="lbl">Los borradores se timbran cuando se conecte el proveedor de facturas (PAC).</div>'+(F.L||[]).slice().reverse().map(function(x){return '<div class="card" style="padding:10px 14px"><b>'+esc(x.folio)+' · '+money(x.total)+'</b><div class="lbl">'+esc(fmtF(x.f))+' · '+esc(x.rec&&x.rec.rs||'')+(x.global?' · global '+esc(x.global):'')+' · '+(x.est==='borrador'?'Borrador sin timbrar':esc(x.est))+'</div></div>'}).join(''),'fl76x')}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fl76x"]');if(!b)return;e.stopImmediatePropagation();S.fl76=0;render()},true);
 
-var _rd76=render;render=function(){var r=_rd76.apply(this,arguments);try{tagFicha76();tagAviso76();facCli76();ovPon70('tag76ov',tag76HTML());ovPon70('fv76ov',facVen76HTML());ovPon70('fl76ov',facLista76HTML())}catch(e){console.error('l76',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* lo nuevo también se sube a la nube */
 try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)})}catch(e){}

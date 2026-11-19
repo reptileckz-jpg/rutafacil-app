@@ -97,8 +97,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  var m=new Date(TODAY.getTime()+864e5);wzAbre('vac',{desde:iso(m),hasta:iso(new Date(m.getTime()+9*864e5)),p_cierres:'1',p_precio:'',lim:String(encLim()),manda:'urg'})},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="modalok"]');if(!b)return;e.stopImmediatePropagation();S.modal=null;render()},true);
 /* al pasar la fecha de regreso se termina sola; mientras, si el encargado no puede fijar precio, se usa el precio base */
-var _rd63a=render;render=function(){try{var P=S.vacPlan;if(P&&S.role==='admin'){var hoy=iso(TODAY);if(hoy>P.hasta&&!S.encOn&&S.adminYo===P.adm){setTimeout(function(){vacTermina(true);render()},0)}
-  else if(hoy>=P.desde&&hoy<=P.hasta&&!P.p.precio&&P.pR&&S.precio&&S.precio.conf!==hoy){S.precio.R=P.pR;if(P.pM)S.precio.M=P.pM;S.precio.conf=hoy;S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:'Precio base de vacaciones: '+money(P.pR)+' la caja'+(P.pM?' y '+money(P.pM)+' el kilo':'')})}}}catch(e){}return _rd63a.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* lo que el encargado no tiene permitido: la app dice por qué */
 var VAC_ACT={precio:/^(precioconf|precioguarda|preciosave|precioapl|precioint|preciousar|precioayer)$/,cierres:/^(rcabre|rctodo|rcdif|rcfin|recep|regcierre|vercierre)$/,pagos:/^(abonoprov|fijopag|pagarsz|porpagar|credpag)$/,fiar:/^(permok|permno|mayok|mayneg)$/,viajes:/^(progviaje|simabre|newcarga)$/};
 window.addEventListener('click',function(e){if(!S.encOn||S.role!=='admin'||!e.isTrusted&&!window.__vacTest)return;var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var p=(S.enc||{}).p;if(!p)return;var a=b.dataset.act;
@@ -109,10 +108,7 @@ function chofComida(){var c=cl0(S.chofHoy);return !!(c&&c.comida)}
 function gxTicketObl(t){return !/^Comida/.test(String(t||''))}
 /* la opción de comida solo sale si el administrador la acordó con ese chofer */
 /* gxTipos: pasó a tema-sueltas.js */
-var _rd63b=render;render=function(){var r=_rd63b.apply(this,arguments);try{if(S.role==='rep'&&!chofComida()){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxt2"][data-t="Comida o viáticos"],[data-act="gxtipo"][data-t="Comida o viáticos"],[data-act="gxtipo"][data-v="Comida o viáticos"]'),function(b){b.remove()});
-  if(S.gx&&/^Comida/.test(S.gx.tipo||'')){S.gx.tipo='Caseta'}}
- /* ticket obligatorio: el texto lo dice */
- Array.prototype.forEach.call(document.querySelectorAll('.gxsheet .lbl'),function(l){if(/Sin foto del ticket no se descuenta/.test(l.textContent)&&!(S.gx&&!gxTicketObl(S.gx.tipo)&&!S.gxFuel))l.textContent='La foto del ticket es obligatoria. Guarda el ticket y entrégalo en bodega al cerrar.'})}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"],[data-act="recargar"]');if(!b||S.role!=='rep'||window.__ticketLibre)return;var fuel=b.dataset.act==='recargar';
  if(!fuel&&S.gx&&/^Comida/.test(S.gx.tipo||'')&&!chofComida()){e.preventDefault();e.stopImmediatePropagation();toast('La comida solo se registra si el administrador te la autorizó.');return}
  var foto=fuel?(S.rc&&S.rc.foto):(S.gx&&S.gx.foto);if(!foto&&(fuel||gxTicketObl(S.gx&&S.gx.tipo))){e.preventDefault();e.stopImmediatePropagation();toast('Toma la foto del ticket: es obligatoria.');var f=document.querySelector(fuel?'label[for="rcf"]':'label[for="gxf"]')||document.getElementById(fuel?'rcf':'gxf');if(f)try{marcaFalta(f)}catch(er){}}},true);

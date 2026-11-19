@@ -26,8 +26,7 @@ function pagoPideHTML(){if(S.role!=='admin'||S.encOn)return '';var L=(S.pagoPide
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="ppsi"],[data-act="ppno"]');if(!b)return;e.stopImmediatePropagation();var x=(S.pagoPide||[]).filter(function(k){return k.id===+b.dataset.id})[0];if(!x)return;x.est=b.dataset.act==='ppsi'?'ok':'no';x.por=quien();
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(x.est==='ok'?'Autorizó':'No autorizó')+' al encargado pagar '+money(x.m)+' · '+x.n});toast(x.est==='ok'?'Autorizado':'Le avisamos que no');render()},true);
 /* ---------- conteo doble: lo que cuenta quien recibe contra lo que dijo el chofer ---------- */
-var _r42=render;render=function(){try{if(S.role==='admin'){nbRutaIds().forEach(function(id){var c=nbRGet(id,'cierre'),rg=nbRGet(id,'cierreReg');if(!c||!c.sent||!c.corte||!rg||rg.rec==null||c.dobleAv)return;var dif=r2(num(rg.rec)-num(c.corte.ent));
- if(Math.abs(dif)>=0.5){S.avPrecio.push('URGENTE: el efectivo de '+chofN(id)+' no coincide: él dijo '+money(c.corte.ent)+(c.corte.bolsa?' (bolsa '+c.corte.bolsa+')':'')+' y se contaron '+money(rg.rec)+'.')}c.dobleAv=true;if(+id!==+S.chofHoy)nbRSet(id,'cierre',c)})}}catch(er){}return _r42.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- resumen del día por WhatsApp ---------- */
 function resumenTxt(sem){var hoy=iso(TODAY),d0=sem?mondayIso(TODAY):hoy,L=[];var logs=[];(S.rutasHist||[]).forEach(function(r){if(r.f>=d0)logs=logs.concat(r.log||[])});
  Object.keys(S.chSt||{}).forEach(function(id){var o=S.chSt[id];if(o&&+id!==+S.chofHoy)logs=logs.concat(o.log||[])});logs=logs.concat(S.log||[]);
@@ -53,8 +52,7 @@ function madSugHTML(){var v=ventaDiaR();if(!(v>0))return '';var ped=sum(S.cli.fi
 /* bodega: pasó a tema-bodega.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.bodega)VIEWS.bodega=bodega;
 /* ---------- viaje: lo pactado contra lo real ---------- */
-var _r42b=render;render=function(){try{(S.vws||[]).forEach(function(v){if(!v.hist||v.hist.pvr)return;v.hist.pvr=(v.par||[]).map(function(p){var caj=p.t==='R'||p.u==='cajas',real=caj?num(p.cajas):vwKg(p);return {l:vwParLbl(p)+' en '+p.prov,u:caj?'cajas':'kg',plan:num(p.plan),real:r2(real),pk:num(p.pk)}});
- var dd=v.hist.pvr.filter(function(x){return x.plan>0&&Math.abs(x.real-x.plan)/x.plan>0.05});if(dd.length)S.avPrecio.push('Viaje de '+v.hist.quien+': '+dd.map(function(x){return x.l+' pactado '+x.plan+' '+x.u+', llegó '+x.real+' '+x.u}).join(' · '))})}catch(er){}return _r42b.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 var _vjH42=null;if(typeof vjHistCard==='function'){_vjH42=vjHistCard;vjHistCard=function(){var h=_vjH42.apply(this,arguments);try{(S.vjHist||[]).forEach(function(x){if(!x.pvr||!x.pvr.length)return;var t='<div class="lbl" style="margin:4px 0 8px">Pactado vs real: '+x.pvr.map(function(p){var d=p.plan?p.real-p.plan:0;return esc(p.l)+' · '+(p.plan||'?')+' → '+p.real+' '+p.u+(p.plan&&Math.abs(d)>0.5?' <b class="'+(d<0?'neg':'')+'">('+(d>0?'+':'')+r2(d)+')</b>':'')}).join(' · ')+'</div>';var k=esc(x.par);var i=h.indexOf(k);if(i>-1){var j=h.indexOf('</div>',i);if(j>-1)h=h.slice(0,j+6)+t+h.slice(j+6)}})}catch(e){}return h}}
 /* ---------- gastos: "tiene factura" y cerrar el mes ---------- */
 /* gSheetHTML: pasó a tema-piezas.js */

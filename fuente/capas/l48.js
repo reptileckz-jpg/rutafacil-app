@@ -18,7 +18,7 @@
 (function(){if(window.__pnTest)return;try{var o=document.createElement('div');o.id='arr';var lg=(typeof logoApp==='function'&&logoApp())||(typeof LOGO_IC!=='undefined'?LOGO_IC:'');o.innerHTML=(lg?'<img alt="" src="'+lg+'">':'')+'<b>'+esc(String((S.cfg&&S.cfg.nombre)||'').trim()||'Ruta Fácil')+'</b>';
  var pon=function(){if(document.body){document.body.appendChild(o);setTimeout(function(){if(o.parentNode)o.remove()},950)}else setTimeout(pon,20)};pon()}catch(e){}})();
 /* la primera vez en este celular: la bienvenida completa antes de pedir el correo */
-var _r48a=render;render=function(){var r=_r48a.apply(this,arguments);try{if(!window.__pnTest&&document.getElementById('nbov')&&!document.getElementById('bienv')){var vis=false;try{vis=localStorage.getItem('bienvCel')==='1'}catch(e){}if(!vis){try{localStorage.setItem('bienvCel','1')}catch(e){}if(typeof bienvMostrar==='function')setTimeout(bienvMostrar,980)}}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- 77/78/79 · huella o cara: lee con animación, verde al entrar, roja si falla (3 fallos → PIN) ---------- */
 function bioAnim(est){var o=document.getElementById('bioa');if(est==='fuera'){if(o)o.remove();return}
  if(!o){o=document.createElement('div');o.id='bioa';o.innerHTML='<div class="c"><svg viewBox="0 0 64 64" fill="none" stroke-width="3.4" stroke-linecap="round"><path class="ln" d="M20 24c3-6 9-9 15-8s10 6 11 12"/><path class="ln" d="M16 34c0-9 7-16 16-16 8 0 15 7 15 16v4"/><path class="ln" d="M24 46c-2-3-3-7-3-11 0-6 5-11 11-11s11 5 11 11c0 3 0 6-1 9"/><path class="ln" d="M28 52c-1-5-1-10-1-16 0-3 2-5 5-5s5 2 5 5c0 6 0 11-2 16"/><path class="ln" d="M32 36c0 7 0 13 3 19"/><path class="ck" d="M18 33l10 10 18-20" stroke-width="5"/></svg></div>';document.body.appendChild(o)}
@@ -40,8 +40,7 @@ function permHTML(){var x=S.perm;if(!x)return '';var E=x.e||{},alguno=PERM_L.som
   +'<button class="btn" style="margin-top:12px;min-height:58px" data-act="'+(x.pedido?'permlisto':'permpide')+'">'+(x.pedido?'Listo':'Dar permisos')+'</button>'+(x.pedido?'':'<button class="link" style="margin-top:6px" data-act="permlisto">Ahora no</button>')+'</div></div>'}
 /* setupHTML: pasó a tema-ajustes.js */
 function permRevisa(cb){var n=natPl48();if(!n||!n.permisosEstado){cb&&cb(null);return}n.permisosEstado().then(function(e){cb&&cb(e)},function(){cb&&cb(null)})}
-var _permVez=false;var _r48b=render;render=function(){var r=_r48b.apply(this,arguments);try{if(!_permVez&&!window.__pnTest&&natPl48()&&!(_pin&&_pin.modo)&&!document.getElementById('nbov')&&!document.getElementById('setov')&&!document.getElementById('bienv')&&S.role){_permVez=true;var vis=false;try{vis=localStorage.getItem('permVisto')==='1'}catch(e){}
- permRevisa(function(e){if(!e)return;S.permE=e;var faltaImp=e.ubicacion!=='si'||e.camara!=='si';if(!vis){S.perm={e:e};render()}else if(faltaImp&&S.role==='rep')render()})}}catch(er){}return r};
+var _permVez=false;/* render: pasó a tema-dibujar1.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,n=natPl48();
  if(a==='permpide'){e.stopImmediatePropagation();if(!n)return;n.pedirPermisos({cuales:['ubicacion','camara','notif']}).then(function(r){S.perm={e:r,pedido:true};S.permE=r;render()},function(){S.perm.pedido=true;render()});return}
  if(a==='permlisto'){e.stopImmediatePropagation();try{localStorage.setItem('permVisto','1')}catch(er){}S.perm=null;render();return}

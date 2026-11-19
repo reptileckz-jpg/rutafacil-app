@@ -88,14 +88,4 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.
 function vwEtapaTxt(L,i){var a=L.indexOf('camino'),r=L.indexOf('vuelta');if(a<0)a=L.length;if(r<0)r=L.length;var f,ini,fin;if(i<a){f='Antes de salir';ini=0;fin=a}else if(i<r){f='En el camino';ini=a;fin=r}else{f='De regreso';ini=r;fin=L.length}return f+' · paso '+(i-ini+1)+' de '+(fin-ini)}
 
 /* ---- Después de dibujar ---- */
-var _rL3=render;render=function(){_rL3.apply(this,arguments);try{
- cierrePasos();bodegaOrden();vfPasos();
- /* dibujos de fondo */
- Array.prototype.forEach.call(document.querySelectorAll('main .card.deco-pl'),function(c){if(c.getAttribute('data-act')==='tab'&&c.getAttribute('data-t')==='bodega')c.classList.add('dcaja');else c.classList.add('dban')});
- Array.prototype.forEach.call(document.querySelectorAll('img.banic'),function(x){x.remove()});
- /* entrega: foto de fachada solo si no tiene, y "lo mismo que la vez pasada" */
- if(S.role==='rep'&&S.tab.rep==='entrega'){var c=curCli();if(c&&c.foto){var lb=document.querySelector('label[for="fach"]');if(lb)lb.style.display='none'}
-  var q=Array.prototype.slice.call(document.querySelectorAll('main .card')).filter(function(x){var b=x.querySelector('b');return b&&/Qué le dejas/.test(b.textContent)})[0],u=c&&ultPedido(c);
-  if(q&&u&&(u.R||u.M)&&!q.querySelector('[data-act="entmismo"]')){var bt=document.createElement('button');bt.className='btn sm sec';bt.style.marginTop='8px';bt.dataset.act='entmismo';bt.textContent='Lo mismo que la vez pasada ('+u.R+' cajas · '+u.M+' kg)';q.appendChild(bt)}
-  var cv=Array.prototype.slice.call(document.querySelectorAll('main .card')).filter(function(x){var b=x.querySelector('b');return b&&b.textContent.trim()==='Cajas vacías'})[0];if(cv&&c){var lbl=Array.prototype.slice.call(cv.querySelectorAll('.lbl')).filter(function(x){return /^Debe \d+\. Pídeselas/.test(x.textContent)})[0];if(lbl)lbl.textContent='Ya debía '+c.vac+'. Si no las tiene, entrégale de todos modos.'}}
-}catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */

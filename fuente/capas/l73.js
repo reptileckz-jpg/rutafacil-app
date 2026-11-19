@@ -69,4 +69,4 @@ window.addEventListener('click',function(e){if(window.__pnTest&&!window.__cam73T
 /* el botón "atrás" de Android cierra la cámara */
 document.addEventListener('backbutton',function(){if(document.getElementById('cam73'))cam73Cierra()},false);
 
-var _rd73=render;render=function(){var r=_rd73.apply(this,arguments);try{bioOfrece73()}catch(e){console.error('l73',e)}return r};
+/* render: pasó a tema-dibujar1.js */

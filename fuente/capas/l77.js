@@ -37,9 +37,7 @@ function falloSeguro77(){try{var r=S.role;['fi','openCarga','vehOpen','openCli',
 /* el viaje que estaba abierto ya no existe (lo terminó el chofer en su celular) */
 function vwVivo77(){try{if(!S.vw||!S.vws)return;if(S.vws.indexOf(S.vw)>-1)return;var cid=S.vw.cid,o=S.vws.filter(function(v){return v.cid!=null&&v.cid===cid})[0];if(o){S.vw=o;S.vwI=S.vws.indexOf(o);return}
  var ab=!!S.vw.open;S.vw=S.vws[0]||null;S.vwI=0;if(ab&&S.role==='admin')setTimeout(function(){try{toast('Ese viaje ya terminó')}catch(x){}},50)}catch(x){}}
-var _rd77=render;render=function(){if(FALLO77.enRender)return;try{vwVivo77()}catch(x){}
- try{return _rd77.apply(this,arguments)}catch(e){var t=falloAnota77(e,'al dibujar');FALLO77.enRender=true;
-  try{falloSeguro77();_rd77.apply(this,arguments);FALLO77.enRender=false;setTimeout(function(){try{toast('Algo falló y se cerró lo que estaba abierto. Ya quedó anotado.')}catch(x){}},60);return}catch(e2){FALLO77.enRender=false;falloPantalla77(falloAnota77(e2,'al dibujar (otra vez)'))}}};
+/* render: pasó a tema-dibujar1.js */
 /* la carga de la nube: si algo se rompe, se salta y deja entrar */
 /* nbPrimera: pasó a tema-nube.js */
 if(typeof nbAplica==='function'){var _nbA77=nbAplica;nbAplica=function(){try{return _nbA77.apply(this,arguments)}catch(e){falloAnota77(e,'al recibir cambios de la nube');return true}}}
@@ -84,7 +82,7 @@ falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Di
  on('f77cp',function(){var ok=function(){var b=document.getElementById('f77cp');if(b)b.textContent='✓ Copiado';};try{navigator.clipboard.writeText(txt).then(ok,function(){var a=document.createElement('textarea');a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(x){}a.remove()})}catch(x){}});
  on('f77nube',function(){if(!confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}location.reload()};var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{window._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}})}catch(x){}};
 /* mientras la pantalla de rescate está, no se dibuja ni se procesa nada más */
-var _rd77b=render;render=function(){if(DIAG77.paus)return;return _rd77b.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 if(typeof nbAplica==='function'){var _nbA77b=nbAplica;nbAplica=function(){if(DIAG77.paus)return false;return _nbA77b.apply(this,arguments)}}
 /* el aviso de "tardó mucho" ahora espera 40 segundos y también cubre "Conectando…" */
 
@@ -97,7 +95,7 @@ function vwLimpia77(){try{if(!S)return;if(!Array.isArray(S.vws)){S.vws=[];}var n
  if(S.vw&&(S.vws.indexOf(S.vw)<0||!Array.isArray(S.vw.par))){var cid0=S.vw.cid,ab0=!!S.vw.open,mismo=S.vws.filter(function(v){return cid0!=null&&v.cid===cid0})[0];if(!mismo&&ab0&&S.role==='admin')setTimeout(function(){try{toast('Ese viaje ya terminó')}catch(x){}},50);S.vw=mismo||S.vws[S.vwI]||S.vws[0]||null;if(S.vw)S.vwI=S.vws.indexOf(S.vw);else S.vwI=0}
  if(S.vws.length<n){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:'La app',x:'Se quitó '+(n-S.vws.length)+' viaje de carga que había quedado a medias'})}catch(e){}try{falloAnota77(new Error('viaje a medias quitado ('+(n-S.vws.length)+')'),'al limpiar')}catch(e){}}return S.vws.length<n}catch(e){return false}}
 vwLimpia77();
-var _rd77c=render;render=function(){vwLimpia77();return _rd77c.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=_nbA77c.apply(this,arguments);if(vwLimpia77())r=true;return r}}
 /* vwBurbuja: pasó a tema-viaje.js */
 /* vwPend: pasó a tema-viaje.js */

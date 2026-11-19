@@ -27,7 +27,7 @@ function salPrimera(){var m=salMig();if(!m||!salListo())return false;var ya=null
 /* nbCodifica: pasó a tema-nube.js */
 /* nbEmpuja: pasó a tema-nube.js */
 var _nbApl61=nbAplica;nbAplica=function(docs,primera){try{if(!primera&&!salPrimera())salPuente()}catch(e){}var r=_nbApl61.apply(this,arguments);try{salPrimera();salAplica()}catch(e){console.error('saldos',e)}return r};
-var _rd61a=render;render=function(){try{if(!salPrimera())salPuente()}catch(e){}return _rd61a.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 32 · cambio de día aunque la app nunca se vaya al fondo ---------- */
 var _dia61=null;
@@ -45,7 +45,7 @@ function redN(v){if(typeof v==='number'){if(!isFinite(v)||Math.round(v)===v)retu
 function redObj(o,prof){if(!o||typeof o!=='object'||prof>2)return;Object.keys(o).forEach(function(k){if(RED_NO.test(k))return;var v=o[k];if(v&&typeof v==='object'){if(!Array.isArray(v))redObj(v,prof+1);return}var r=redN(v);if(r!==v)o[k]=r})}
 function redondea(){RED_LISTAS.forEach(function(k){var L=S[k];if(!Array.isArray(L))return;for(var i=Math.max(0,L.length-400);i<L.length;i++)redObj(L[i],0)});
  (S.cargas||[]).forEach(function(c){redObj(c,0);(c.pagos||[]).forEach(function(p){redObj(p,0)})});(S.cli||[]).forEach(function(c){var r=redN(c.cred);if(r!==c.cred)c.cred=r})}
-var _redT=0;var _rd61b=render;render=function(){try{if(Date.now()-_redT>1500){_redT=Date.now();redondea()}}catch(e){}return _rd61b.apply(this,arguments)};
+var _redT=0;/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 35 · doble toque: el mismo botón no se ejecuta dos veces en menos de 1 segundo ---------- */
 var DOBLE_RE=/^(entregar|cobrar|cobrarcajas|cobrartodo|enviar|guardar|gsave|gxsave|credpag|fijopag|pagarsz|porpagar|rcfin|rctodo|rceqok|recibir|regcierre|vlvender|vtliq|vtgasto|vtfin|abonoprov|tirar|fasi|vwfpago|vwcomb|vfcomb|savecarga|newcarga|cxsave|ventaok|pagook|extracarga|recargar|registrarcnt|cajacierre|clialta|provalta|cesave|vsave|npsave|ubsave|bfsave|fnsave|eqsave|eqok|wzok|wzsig|abono|abonar|gasto|gastar|combustible|pagar|pago|cobro)$/;

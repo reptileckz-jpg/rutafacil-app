@@ -190,15 +190,11 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* el chofer confirma la ubicación cuando está en el lugar (entrega del cliente) */
 function cfUb70(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="cfub70"]'))return;var st=S.stops&&S.stops[S.cur],c=st?cl(st.c):null;if(!c)return;
  var d=document.createElement('div');d.className='card';d.dataset.x='cfub70';d.innerHTML='<b>📍 Ubicación de '+esc(c.n)+'</b><div class="lbl">'+(c.lat!=null?'Ya tiene. Si estás aquí y no es exacta, corrígela.':'Todavía no tiene ubicación.')+'</div><button class="btn sec" style="width:100%;margin-top:6px;min-height:52px" data-act="cfub70" data-id="'+c.id+'">Confirmar la ubicación aquí</button>';m.appendChild(d)}
-var _rd70u=render;render=function(){var r=_rd70u.apply(this,arguments);try{cfUb70()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70"]');if(!b)return;e.stopImmediatePropagation();var c=cl(+b.dataset.id);if(!c)return;
  var guarda=function(la,ln){S.modal=null;var tenia=c.lat!=null;c.lat=+(+la).toFixed(6);c.lng=+(+ln).toFixed(6);c.locBy=chofN(S.chofHoy);c.locF=iso(TODAY);S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Confirmó la ubicación de '+c.n+' estando ahí'});try{(S.avPrecio=S.avPrecio||[]).push(chofN(S.chofHoy)+' '+(tenia?'corrigió':'guardó')+' la ubicación de '+c.n+' estando ahí')}catch(er){}toast('✓ Ubicación guardada');render()};
  toast('Buscando tu ubicación…');try{navigator.geolocation.getCurrentPosition(function(p){var la=p.coords.latitude,ln=p.coords.longitude;if(c.lat!=null){window._cf70=function(){guarda(la,ln)};abrirModal('¿Seguro?',esc(c.n)+' ya tenía ubicación. ¿La cambio por donde estás ahorita? Le aviso al administrador.',[['Sí, cambiarla','cfub70si']])}else guarda(la,ln)},function(){toast('No se pudo leer el GPS. Prende la ubicación.')},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}catch(er){toast('No se pudo leer el GPS.')}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cfub70si"]');if(!b)return;e.stopImmediatePropagation();var f=window._cf70;window._cf70=null;if(f)f()},true);
 
 /* =============== las ventanas nuevas se dibujan encima; el menú y el "?" llevan "Reportar un problema" =============== */
-var _rd70=render;render=function(){var r=_rd70.apply(this,arguments);try{
-  ovPon70('lt53ov',lt53HTML());ovPon70('p57ov',p57HTML());ovPon70('rp56ov',rp56HTML());var ub=ub68HTML();ovPon70('ub68ov',ub);if(ub&&S.ub68.p===2)setTimeout(ub68Map,30);
-  var nv=document.querySelector('.drawer nav');if(nv&&!nv.querySelector('[data-act="rp56"]')){var bt=document.createElement('button');bt.className='btn sec';bt.style.marginTop='10px';bt.dataset.act='rp56';bt.textContent='🐞 Reportar un problema';var ref=nv.querySelector('[data-act="usrcambia"],[data-act="usrsalir"],.link[data-act="reset"]');if(ref)ref.before(bt);else nv.appendChild(bt)}
-  var hp=document.querySelector('[aria-labelledby="hlpT"]');if(hp&&!hp.querySelector('[data-act="rp56"]')){var b2=document.createElement('button');b2.className='btn sec';b2.style.cssText='margin-top:12px;width:100%;min-height:52px';b2.dataset.act='rp56';b2.textContent='🐞 Reportar un problema';hp.appendChild(b2)}
- }catch(e){console.error('ventanas 7.5',e)}return r};
+/* render: pasó a tema-dibujar1.js */

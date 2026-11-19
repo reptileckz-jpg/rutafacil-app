@@ -50,7 +50,7 @@ function gmRevisa(){if(!window.GMAPA)return;
   if(!el._gm){gmMonta(el);return}var x=el._gm,dd=document.querySelector('[data-mapdata="'+el.getAttribute('data-vivo')+'"]'),j=dd&&dd.getAttribute('data-j');if(j&&j!==x.j){x.j=j;try{gmDatos(x,JSON.parse(j))}catch(e){}}});gmPinta()}
 /* el montaje de Leaflet se salta los mapas que ya son de Google */
 /* mapaMonta: pasó a tema-ubica.js */
-var _rd57=render;render=function(){var r=_rd57.apply(this,arguments);try{gmRevisa()}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 setInterval(function(){try{gmRevisa()}catch(e){}},1500);
 /* con el mapa dentro ya no hace falta el botón de pantalla completa… salvo como "ampliar" */
 /* mapaVivoHTML: pasó a tema-inicio.js */

@@ -73,7 +73,7 @@ function cv80HTML(v,tit){var k=cv80(v);if(!k||!k.efe&&!k.g)return '';return '<di
 function cvPon80(){var v=S.vw,o=document.getElementById('vwov');if(!v||!v.open||!v.started||v.side||!o||o.querySelector('[data-x="cv80"]'))return;var k='';try{k=vwKey()}catch(e){}if(/^(ruta|veh|insp|tanque|comb|lista|fotos|reg|gracias|fin)$/.test(k))return;
  var h=cv80HTML(v,vwEsAdm()?'Cómo van las cuentas de '+esc(chofN(v.quien)):'Cómo van tus cuentas');if(!h)return;var d=document.createElement('div');d.innerHTML=h;var w=o.firstElementChild;if(w)w.appendChild(d.firstElementChild)}
 
-var _rd80=render;render=function(){try{rutaRenueva80()}catch(e){console.error('l80 ruta',e)}try{lotesReloj80()}catch(e){}try{bod80();clima80()}catch(e){}var r=_rd80.apply(this,arguments);try{ovPon70('dia80',dia80HTML());dia80Adm();cvPon80();lote80Pon();txt80()}catch(e){console.error('l80',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 37 · la maduración cuenta el tiempo de verdad (antes solo avanzaba con el botón de la demo) ---------- */
 var _clk80=0;document.addEventListener('click',function(){_clk80=Date.now()},true);

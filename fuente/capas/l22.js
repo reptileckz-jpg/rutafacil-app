@@ -14,7 +14,7 @@
  if(!document.querySelector('meta[name="color-scheme"]')){var m=document.createElement('meta');m.name='color-scheme';m.content='light dark';document.head.appendChild(m)}})();
 function hdrMedir(){var h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hdrH',Math.round(h.getBoundingClientRect().height)+'px')}
 window.addEventListener('resize',hdrMedir);
-var _r22=render;render=function(){var r=_r22.apply(this,arguments);try{hdrMedir()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* minimizada también se queda arriba */
 /* dfBurbuja: pasó a tema-piezas.js */
 /* Bodega */
@@ -29,7 +29,7 @@ function personasEntrar(){var L=[];(S.admins||[]).forEach(function(a){L.push({k:
 /* menuHTML: pasó a tema-sueltas.js */
 var _bienv22=typeof bienvHTML==='function'?bienvHTML:null;
 /* pie de página de "prototipo" */
-var _rFoot22=render;render=function(){var r=_rFoot22.apply(this,arguments);if(REAL){var f=document.querySelector('main .foot');if(f&&f.style.display!=='none')f.style.display='none'}return r};
+/* render: pasó a tema-dibujar1.js */
 function usrHTML(){if(!S.usrSel)return '';var L=personasEntrar();
  return '<div class="drawer" style="z-index:86" data-act="usrx"><nav role="dialog" aria-label="Cambiar de usuario" style="max-width:420px"><div style="display:flex;align-items:center"><b style="font-size:18px">¿Quién va a usar el celular?</b><button class="helpb" style="margin-left:auto" data-act="usrx" aria-label="Cerrar">×</button></div><div class="lbl">Te va a pedir el PIN de esa persona.</div>'+L.map(function(x,i){return '<button class="qa" style="margin-top:8px;width:100%;text-align:left" data-act="usrpick" data-i="'+i+'"><span class="grow"><b>'+esc(x.n)+'</b><br><span class="lbl">'+x.p+'</span></span><span style="font-size:20px">›</span></button>'}).join('')+'</nav></div>'}
 /* setupHTML: pasó a tema-ajustes.js */
@@ -90,7 +90,7 @@ function minAvisos(){var a=[];MIN_K.forEach(function(m){var lim=S.cfg[m[0]];if(l
 /* ===================== Versión real: sin rastros de demo, fecha y hora de verdad ===================== */
 if(REAL){document.documentElement.classList.add('real');(function(){var st=document.createElement('style');st.textContent='html.real main .foot,html.real [data-act="reset"]{display:none!important}.bvhola>:first-child{margin-left:auto!important;margin-right:auto!important}';document.head.appendChild(st)})()}
 function relojReal(){var d=new Date();return d.getHours()*60+d.getMinutes()}
-if(REAL){S.reloj=relojReal();var _rClk22=render;render=function(){S.reloj=relojReal();return _rClk22.apply(this,arguments)};
+if(REAL){S.reloj=relojReal();/* render: pasó a tema-dibujar1.js */
  /* si la app se queda abierta y cambia el día, se recarga (lo guardado pasa al día nuevo) */
  var _diaAbierto=iso(TODAY);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){var d=new Date();d.setHours(12,0,0,0);if(iso(d)!==_diaAbierto){try{guardarYa()}catch(e){}setTimeout(function(){location.reload()},300)}}})}
 /* bienvHTML: pasó a tema-inicio.js */
@@ -105,7 +105,7 @@ function navLlave(){return S.role+':'+(S.tab&&S.tab[S.role])}
 function navGuardia(){if(_navGuard)return;try{history.pushState({pn:1},'');_navGuard=true}catch(e){}}
 try{history.replaceState({pn:0},'')}catch(e){}
 setTimeout(navGuardia,300);
-var _rNav22=render;render=function(){var r=_rNav22.apply(this,arguments);try{var k=navLlave();if(_navUlt&&k!==_navUlt&&!_navAtras&&_navUlt.split(':')[0]===S.role){_navPila.push(_navUlt);if(_navPila.length>30)_navPila.shift()}if(_navUlt&&_navUlt.split(':')[0]!==S.role)_navPila=[];_navUlt=k;_navAtras=false}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 function navVentana(){/* la ventana de más arriba que tenga botón para cerrar/regresar */
  var D=[].slice.call(document.querySelectorAll('[role="dialog"],.drawer,#fiov,#ajov,#npov,#dfov,#setov,.gxsheet')).filter(function(d){if(!d.isConnected||d.id==='pinov'||d.id==='bienv'||d.id==='setov'||d.id==='cajov')return false;var cs=getComputedStyle(d);return cs.display!=='none'&&cs.visibility!=='hidden'&&d.getBoundingClientRect().height>0});
  if(!D.length)return null;D.sort(function(a,b){return (+getComputedStyle(b).zIndex||0)-(+getComputedStyle(a).zIndex||0)});
@@ -144,7 +144,7 @@ window.addEventListener('popstate',function(){_navGuard=false;
 (function(){var st=document.createElement('style');st.textContent='[data-act="vwveh"]{height:auto!important;min-height:76px;padding-top:10px!important;padding-bottom:10px!important;align-items:center}';document.head.appendChild(st)})();
 /* tutorial del chofer: solo cuando ya entró con su PIN y ya está en su ruta (no encima de la bienvenida) */
 var _tutRepT=null;
-var _rTut22=render;render=function(){var r=_rTut22.apply(this,arguments);try{if(REAL&&S.role==='rep'&&!(S.tutVisto&&S.tutVisto.rep)&&!S.tut&&!(_pin&&_pin.modo)&&!(typeof bienvOn==='function'&&bienvOn())&&!document.getElementById('bienv')&&!S.modal&&!_tutRepT){_tutRepT=setTimeout(function(){_tutRepT=null;if(S.role==='rep'&&!S.tut&&!(S.tutVisto&&S.tutVisto.rep)&&!(_pin&&_pin.modo)&&!bienvOn())tutIniciar('rep')},700)}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* las animaciones de entrada ya no dejan "movidas" las barras fijas (la de abajo del viaje se iba a un lado) */
 (function(){var st=document.createElement('style');st.textContent='.ov-in,.ov-fade,.d-in,.popin,.slideup,.fadein,.app,main,main>*{animation-fill-mode:backwards!important}';document.head.appendChild(st)})();

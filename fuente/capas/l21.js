@@ -17,7 +17,7 @@ function estadoTxt(){var o={};Object.keys(S).forEach(function(k){if(PN_TRANS.ind
 var _gT=null,_gUlt='',_cargado=!PN_GUARDA;
 function guardarYa(){if(!PN_GUARDA||!_cargado)return;try{var t=estadoTxt();if(t===_gUlt)return;_gUlt=t;idbPut('S',t)}catch(e){console.error('guardar',e)}}
 function guardarLuego(){if(!PN_GUARDA||!_cargado)return;clearTimeout(_gT);_gT=setTimeout(guardarYa,700)}
-var _rG21=render;render=function(){var r=_rG21.apply(this,arguments);guardarLuego();return r};
+/* render: pasó a tema-dibujar1.js */
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')guardarYa()});
 window.addEventListener('pagehide',guardarYa);
 /* al abrir: si hay algo guardado, se sigue de ahí */

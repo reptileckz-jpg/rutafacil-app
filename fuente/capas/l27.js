@@ -22,7 +22,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="chcrdef"]');if(!b)return;e.stopImmediatePropagation();var ch=S.choferes.filter(function(x){return x.id===+b.dataset.id})[0];if(!ch)return;ch.crCli=null;ch.crMax=null;ch.tarMax116=null;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Regresó el crédito de '+ch.n+' a lo de Ajustes'});toast('Crédito de '+ch.n+': igual que Ajustes');render()},true);
 /* el límite que se ve en todos lados (c.lim) es el de verdad; si el admin lo cambia en "Editar datos", queda como excepción */
 function limSync(){(S.cli||[]).forEach(function(c){try{if(c._limS!=null&&c.lim!==c._limS&&c.lim!==''&&c.lim!=null){var d=limDefDe(c);c.limMan=num(c.lim)===d?null:num(c.lim)}var v=limEf(c);c.lim=v;c._limS=v}catch(e){}})}
-var _r27=render;render=function(){limSync();return _r27.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- ficha del cliente: teléfono confirmado y límite real ---------- */
 function telConfOk(c){return !!(c.tel&&c.telConf&&digs(c.telConf.tel)===digs(c.tel))}
 function telDeChofer(c){var d=digs(c.tel);if(d.length<10)return null;return S.choferes.filter(function(x){return digs(x.tel)===d})[0]||null}
@@ -37,8 +37,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* básculas con ubicación aproximada también se actualizan */
 /* ubDeNodo: pasó a tema-ubica.js */
 /* proveedor nuevo del viaje: su ubicación aproximada */
-var _r27b=render;render=function(){try{(S.vws||[]).forEach(function(v){(v.par||[]).forEach(function(p){if(p.nub&&p.prov&&p.prov!=='__nuevo'){var c=ubParse(p.nub),d=provD(p.prov);if(c&&!ubTiene(d)){d.lat=c.lat;d.lng=c.lng;d.ubAprox=true}p.nub=''}})});
- (S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&c.tel&&c.telPor==null)c.telPor=c.porCh})}catch(e){}return _r27b.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- ficha del proveedor: ubicación (aproximada o exacta) ---------- */
 function provUbTxt(d){if(!ubTiene(d))return 'sin ubicación';if(d.ubAprox)return 'aproximada · el chofer la pone exacta cuando vaya';return 'exacta'+(d.ubPor?' · la guardó '+esc(d.ubPor)+(d.ubF?' el '+fmtF(d.ubF):''):'')}
 function provUbPega(n){var d=provD(n);return '<div class="field"><label for="pvub">'+(ubTiene(d)&&!d.ubAprox?'Ubicación (ya es exacta; solo cámbiala si está mal)':'Ubicación aproximada (link de Google Maps o coordenadas)')+'</label><input id="pvub" type="text" data-ubpega="prov:'+esc(n)+'" placeholder="19.5432, -96.9271" style="width:190px;text-align:left"></div><div class="lbl">Ahora: '+provUbTxt(d)+'</div>'}

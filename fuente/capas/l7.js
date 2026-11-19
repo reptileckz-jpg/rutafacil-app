@@ -113,12 +113,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='tutfin'){e.stopImmediatePropagation();tutTerminar();return}
  if(a==='tutver'){e.stopImmediatePropagation();S.aj=false;S.menu=false;tutIniciar(S.role==='rep'?'rep':'admin');return}
 },true);
-var _rL7=render;render=function(){if(S.tut){var el0=null}_rL7.apply(this,arguments);try{var root=$('root');var su=setupHTML();if(su){var w=document.createElement('div');w.innerHTML=su;root.appendChild(w.firstElementChild)}
- if(S.tut){var t0=TUT[S.tut.k][S.tut.i];if(t0){var tg=null;t0[0].split(',').some(function(sel){var x=document.querySelector(sel.trim());if(x){tg=x;return true}return false});if(tg){var rr=tg.getBoundingClientRect();if(rr.top<0||rr.bottom>window.innerHeight)tg.scrollIntoView({block:'center'})}}
-  var th=tutHTML();if(th){var w2=document.createElement('div');w2.innerHTML=th;root.appendChild(w2.firstElementChild)}}
- /* en Ajustes: ver el tutorial otra vez y empezar desde cero */
- var aj=$('ajov');if(aj&&!aj.querySelector('[data-act="tutver"]')){var box=document.createElement('div');box.className='card';box.innerHTML='<b>Ayuda</b><button class="btn sec" style="margin-top:8px" data-act="tutver">Ver el tutorial otra vez</button>'+(typeof pinRow==='function'?pinRow(pinKey()):'');var ac=Array.prototype.slice.call(aj.querySelectorAll('.lbl')).filter(function(x){return /Acerca de/.test(x.textContent)})[0];if(ac)ac.before(box)}
-}catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */
 window.addEventListener('resize',function(){if(S.tut)render()});
 
 /* ---- v4.0: cuándo se sacan de madurar (en horas o día y hora) ---- */

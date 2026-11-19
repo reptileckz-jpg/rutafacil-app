@@ -18,7 +18,7 @@ function buroSync(){crCfg();S.cli.forEach(function(c){if(c.rapida&&!c.reg)return
  c._credAnt=c.cred;c.lim=limEf(c)})}
 /* clientes que ya tenían más de $1,500: bajan y tú decides la excepción */
 (function(){try{crCfg();S.cli.forEach(function(c){if(c.limRevVisto)return;c.limRevVisto=1;if(num(c.lim)>num(S.cfg.crCli)&&c.limMan==null){c.limOld=num(c.lim);c.limRev=true}});buroSync()}catch(e){}})();
-var _rBu19=render;render=function(){try{buroSync()}catch(e){}return _rBu19.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* el admin edita el límite: eso es su excepción */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cesave"]');if(!b||!S.ce)return;var id=S.cliEdit,v=num(S.ce.lim);
  setTimeout(function(){var c=cl(id);if(!c)return;c.limMan=v>0&&v!==num(crCfg().crCli)?v:null;c.limRev=false;buroSync();render()},0)},true);

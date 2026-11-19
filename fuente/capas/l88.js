@@ -43,6 +43,6 @@ function fichaFalla88(){var o=document.getElementById('fiov');if(!o||S.vehOpen==
  var L=(S.avPrecio||[]).filter(function(x){return typeof x==='string'&&/Salió con una falla/.test(x)&&avLimpio88(x).indexOf(v.n)>-1});if(!L.length)return;var w=o.querySelector('.fiw')||o;var d=document.createElement('div');d.dataset.x='fa88f';d.className='card alert';d.style.padding='12px 14px';
  d.innerHTML='<b style="font-size:18px">⚠️ Falla reportada</b>'+L.map(function(x){return '<div style="margin-top:6px;font-size:15px">'+esc(avLimpio88(x).replace(/^Salió con una falla:\s*/,''))+'</div>'+falla88HTML(x)}).join('');var hd=w.querySelector('.fihd');if(hd&&hd.nextSibling)w.insertBefore(d,hd.nextSibling);else w.prepend(d)}
 
-var _rd88=render;render=function(){try{ordena88()}catch(e){console.error('l88',e)}var r=_rd88.apply(this,arguments);try{fichaFalla88()}catch(e){console.error('l88b',e)}return r};
+/* render: pasó a tema-dibujar2.js */
 /* deslizar sobre la lista de pendientes ya no cambia de sección */
 /* swBloq: pasó a tema-navega.js */

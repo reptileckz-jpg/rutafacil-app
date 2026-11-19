@@ -37,22 +37,4 @@ function mKids(A,B){
  while(cur){var nx=cur.nextSibling;A.removeChild(cur);cur=nx}}
 function mLook(a,b){/* parecido suficiente para reutilizarlo */if(a.nodeType!==1)return a.nodeValue===b.nodeValue;return (a.className||'')===(b.className||'')}
 
-var _rMorph=render;render=function(){
- var live=document.getElementById('root');
- if(!MORPH_ON||!live||!live.firstChild||window.__noMorph||(S&&S.tut))return _rMorph.apply(this,arguments);
- var y=window.scrollY,ae=document.activeElement,aeIn=ae&&live.contains(ae)?ae:null;
- var copy=document.createElement('div');copy.id='root';copy.setAttribute('aria-hidden','true');
- copy.style.cssText='position:fixed;left:-30000px;top:0;width:'+(live.offsetWidth||window.innerWidth)+'px;pointer-events:none;visibility:hidden';
- live.parentNode.insertBefore(copy,live);
- window.__morphing=true;var res,err=null;
- try{res=_rMorph.apply(this,arguments)}catch(e){err=e}
- window.__morphing=false;
- /* lo que la copia tenía enfocado (por ejemplo un campo que se abre solo) */
- var cae=document.activeElement,cKey=cae&&copy.contains(cae)&&typeof campoKey==='function'?campoKey(cae):null;
- copy.removeAttribute('style');copy.removeAttribute('aria-hidden');
- try{mKids(live,copy);mAttrs(live,copy);live.id='root'}catch(e){console.error('morph',e);live.innerHTML='';while(copy.firstChild)live.appendChild(copy.firstChild)}
- copy.remove();
- if(Math.abs(window.scrollY-y)>1&&!window.__scrollPedido)window.scrollTo(0,y);
- try{if(aeIn&&live.contains(aeIn)&&document.activeElement!==aeIn)aeIn.focus({preventScroll:true});else if(cKey){var n=campoBusca(cKey);if(n&&live.contains(n))n.focus({preventScroll:true})}}catch(e){}
- if(err)throw err;
- return res};
+/* render: pasó a tema-dibujar1.js */

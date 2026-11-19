@@ -33,7 +33,7 @@ function stopsTRevisa(){if(S.role!=='rep'||!S.salida||!S.salida.ok||(S.cierre&&S
   if(st.done&&!x.sal){if(!x.lleg)x.lleg=ahora;x.sal=ahora;cam=true}});return cam}
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b||S.role!=='rep')return;var a=b.dataset.act;if(a!=='entregar')return;var bi=b.dataset.i;
  setTimeout(function(){try{var i=bi!=null?+bi:(typeof curStop==='function'?curStop():null),st=i!=null?S.stops[i]:null;if(!st)return;var T=S.stopsT=S.stopsT||{},x=T[String(st.c)]=T[String(st.c)]||{};if(!x.lleg)x.lleg=Date.now()}catch(er){}},0)},true);
-var _rd52=render;render=function(){try{stopsTRevisa()}catch(e){}var r=_rd52.apply(this,arguments);try{gpsNatRevisa()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 88 · administrador: celulares sin señal, apagados, ubicación apagada ---------- */
 var GPS={devs:{},w:false,dia:{}};

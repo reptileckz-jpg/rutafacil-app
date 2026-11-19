@@ -26,7 +26,7 @@ document.addEventListener('visibilitychange',function(){if(window.__pnTest&&!win
  if(document.visibilityState==='hidden'){if(pnTienePin()||pnBloqueada())pnTapa();return}
  setTimeout(function(){try{if(pinBloq())render()}catch(e){}pnDestapa()},60)});
 /* que el bloqueo se revise también cada vez que dibuja (y cierra mapas) */
-var _rd58=render;render=function(){var r=_rd58.apply(this,arguments);try{if(pnBloqueada())pnQuitaMapas()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 18 · huella una sola vez ---------- */
 /* al terminar de cargar lo guardado (o la nube) se borraba el "ya entró" y la pedía otra vez */
@@ -35,10 +35,7 @@ var _pinAuth={},_pnCarga=Date.now();
 function pnGracia(k){if(window.__pnTest&&!window.__pnGracia)return false;return !!(_pinAuth[k]&&Date.now()-_pinAuth[k]<120000&&Date.now()-_pnCarga<180000)}
 /* pinEntrar: pasó a tema-pin.js */
 var _pinModoAnt=null,_pinKAnt=null;
-var _rd58b=render;render=function(){
- try{if(_pin&&_pin.modo==='entrar'&&pnGracia(_pin.k)&&!_pin.bloq){S.pinOk[_pin.k]=true;_pin={v:'',modo:null}}}catch(e){}
- var r=_rd58b.apply(this,arguments);
- try{/* solo cuenta como "ya entró" si pasó por la pantalla del PIN o la huella */var k=pinKey(),m=_pin&&_pin.modo;if(_pinModoAnt==='entrar'&&!m&&S.pinOk&&S.pinOk[_pinKAnt])_pinAuth[_pinKAnt]=Date.now();_pinModoAnt=m;_pinKAnt=_pin&&_pin.k}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* salir, cambiar de usuario o cerrar el día sí borran el permiso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;if(/^(usrsalir|pinotrosi|role|chofsel|adminyo|encentrar|encsalir|usrgo|nbsalir|enviar)$/.test(b.dataset.act))_pinAuth={}},true);
 /* entrarComo: pasó a tema-pin.js */
@@ -53,23 +50,18 @@ function pnAMedias(){var v=null;try{v=navVentana()}catch(e){}
  return false}
 function pnIrCasa(){for(var i=0;i<12;i++){var r=false;try{r=navAtras()}catch(e){}if(!r)break}S.modal=null;S.confirm=null;S.aj=false;S.menu=false;S.tab[S.role]=pnCasa();render();window.scrollTo(0,0)}
 var _pnBloqEra=false;
-var _rd58c=render;render=function(){var r=_rd58c.apply(this,arguments);try{
- if(pnBloqueada()&&_pin.bloq)_pnBloqEra=true;
- else if(_pnBloqEra&&!(_pin&&_pin.modo)){_pnBloqEra=false;if(pnAMedias())setTimeout(pnMedias,0);else setTimeout(pnIrCasa,0)}}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 function pnMedias(){if(document.getElementById('medov'))return;var o=document.createElement('div');o.id='medov';o.setAttribute('role','dialog');
  o.innerHTML='<div style="font-size:44px">📝</div><b>Tenías algo a medias</b><div class="lbl" style="font-size:16px">¿Quieres seguir donde ibas o regresar '+(S.role==='rep'?'a tu ruta':'a Inicio')+'? Si regresas, se pierde lo que no guardaste.</div><button class="btn" data-act="medsigue">Seguir donde iba</button><button class="btn sec" data-act="medcasa">Ir '+(S.role==='rep'?'a mi ruta':'a Inicio')+'</button>';document.body.appendChild(o)}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="medsigue"],[data-act="medcasa"]');if(!b)return;e.stopImmediatePropagation();var o=document.getElementById('medov');if(o)o.remove();
  if(b.dataset.act==='medcasa')pnIrCasa()},true);
 /* al abrir la app (en frío) también empieza en Inicio / Ruta */
 var _pnFrio=true;
-var _rd58d=render;render=function(){if(_pnFrio&&typeof _cargado!=='undefined'&&_cargado){_pnFrio=false;try{if(S.role&&S.tab&&!(S.setup&&!S.setup.fin)){var c=pnCasa();if(S.tab[S.role]!==c){if(S.role==='rep'&&/^(entrega|cierre|viaje)$/.test(S.tab.rep)&&pnAMedias())setTimeout(pnMedias,400);else S.tab[S.role]=c}S.aj=false}}catch(e){}}
- return _rd58d.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 36 · Ajustes según el puesto ---------- */
 function esDueno(){return S.role==='admin'&&!S.encOn}
-var _rd58e=render;render=function(){var r=_rd58e.apply(this,arguments);try{var aj=document.getElementById('ajov');if(aj&&!esDueno()){
- Array.prototype.forEach.call(aj.querySelectorAll('.logocard,[data-key="ajcred"],[data-key="mincard"],details[data-k="ajcredd"],details[data-k="ajmind"]'),function(c){c.remove()});
- Array.prototype.forEach.call(aj.querySelectorAll('.card,details'),function(c){var t=(c.querySelector('b,summary')||c).textContent.trim();if(/^(Logo del negocio|Aviso de poca fruta|Crédito y mayoreo)/.test(t))c.remove()})}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* aunque alguien encontrara el botón: solo el dueño cambia lo del negocio */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b||esDueno())return;
  if(/^(logotk|logoquita|logoapp|lgquita|cfgsimple|ajmay|imprdemo|inspdel|inspadd|mcdel|mcadd|quejasver|respbaja|borrapr|comcobra|qron|gmswitch2)$/.test(b.dataset.act)&&b.closest('#ajov')){e.preventDefault();e.stopImmediatePropagation();toast('Eso solo lo cambia el administrador.')}},true);
@@ -80,8 +72,7 @@ function prefBig(){try{var v=localStorage.getItem('pBig');if(v!=null)return v===
 temaApply=function(){var t=prefTema();if(t==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);try{colorEsquema()}catch(e){}};
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="tema"],[data-act="cfgbig"]');if(!b)return;if(pnBloqueada())return;e.preventDefault();e.stopImmediatePropagation();
  try{if(b.dataset.act==='tema')localStorage.setItem('pTema',b.dataset.v);else localStorage.setItem('pBig',b.dataset.v==='1'?'1':'0')}catch(er){}render()},true);
-var _rd58f=render;render=function(){var r=_rd58f.apply(this,arguments);try{temaApply();document.body.classList.toggle('big-ui',prefBig());
- var aj=document.getElementById('ajov');if(aj){var t=prefTema(),bg=prefBig();Array.prototype.forEach.call(aj.querySelectorAll('[data-act="tema"]'),function(x){x.setAttribute('aria-pressed',String(x.dataset.v===t))});Array.prototype.forEach.call(aj.querySelectorAll('[data-act="cfgbig"]'),function(x){x.setAttribute('aria-pressed',String((x.dataset.v==='1')===bg))})}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 4 y 9 · campos con colores claros u oscuros según la app (no según el celular) ---------- */
 function colorEsquema(){var t=document.documentElement.getAttribute('data-theme'),osc=t?t==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);

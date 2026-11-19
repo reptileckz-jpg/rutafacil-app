@@ -82,16 +82,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='cesave'){var c0=cl(S.cliEdit);setTimeout(function(){if(c0)S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Cambió los datos de '+c0.n})},0)}
  if(a==='vsave'){var n0=S.vf&&S.vf.n;setTimeout(function(){if(!S.vf)S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Guardó el vehículo '+(n0||'')})},0)}},true);
 /* entrar como el otro admin marca su historial como visto la primera vez */
-var _rL6=render;render=function(){if(S.role==='admin'&&S.histVisto[S.adminYo]==null)S.histVisto[S.adminYo]=Math.max(0,S.hist.length-(S._histSeed||0));
- _rL6.apply(this,arguments);try{var root=$('root'),m=document.querySelector('main');
-  if(m){var add=function(html,key){if(!html||m.querySelector('[data-x="'+key+'"]'))return;var w=document.createElement('div');w.innerHTML=html;var el=w.firstElementChild;el.setAttribute('data-x',key);m.insertBefore(el,m.firstElementChild)};
-   if(S.role==='admin'&&S.tab.admin==='inicio'){var ch=cambiosHTML();if(ch&&!m.querySelector('[data-x="camb"]')){var w0=document.createElement('div');w0.innerHTML=ch;var el0=w0.firstElementChild;el0.setAttribute('data-x','camb');var ref=m.querySelector('.card.deco-pl');if(ref)ref.after(el0);else m.insertBefore(el0,m.firstElementChild)}}
-   add(senalBanner(),'sen');
-   if(S.role==='admin'&&S.tab.admin==='personal'){Array.prototype.forEach.call(m.querySelectorAll('[data-act="opench"]'),function(bt){var id=+bt.dataset.id;if(!conn(id).on&&!bt.querySelector('.sinsen')){var s=document.createElement('div');s.innerHTML=senalTxt(id);var g=bt.querySelector('.grow');if(g)g.appendChild(s)}})}
-  }
-  var ca=cajaAyerHTML();if(ca){var w2=document.createElement('div');w2.innerHTML=ca;root.appendChild(w2.firstElementChild)}
-  var ph=pinHTML();if(ph){var w3=document.createElement('div');w3.innerHTML=ph;root.appendChild(w3.firstElementChild)}
- }catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */
 
 setTimeout(function(){try{if(window.CONF){delete CONF.gxdel}}catch(e){}},0);
 

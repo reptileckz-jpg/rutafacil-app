@@ -145,20 +145,7 @@ function swHintQuita(){var o=document.getElementById('swhint');if(!o)return;o.cl
 document.addEventListener('pointerdown',function(){if(document.getElementById('swhint')){clearTimeout(_swhT);swHintQuita()}},true);
 
 /* ---- render: todo lo de arriba ---- */
-var _rL9=render;render=function(){navSync();_rL9.apply(this,arguments);try{navSync();var m=document.querySelector('main');
- vbgPon();
- /* dibujos junto a su título */
- if(m){var pt=m.querySelector('.card.deco-pl b.tt');if(pt&&!pt.querySelector('.tic')&&/Precio de hoy/.test(pt.textContent)){var pc=pt.closest('.card');pt.insertAdjacentHTML('afterbegin','<img class="tic" alt="" src="'+(pc&&pc.classList.contains('pfix')?IMG.plw:IMG.pl)+'">')}
-  var cj=m.querySelector('.card.deco-pl.dcaja .big');if(cj&&!cj.parentNode.querySelector('.tic'))cj.insertAdjacentHTML('beforebegin','<img class="tic lg" alt="" src="'+IMG.caja+'">');
-  Array.prototype.forEach.call(m.querySelectorAll('.card.dcaja:not(.deco-pl)>b:first-child'),function(b){if(!b.querySelector('.tic')&&/^Cajas/.test(b.textContent))b.insertAdjacentHTML('afterbegin','<img class="tic" alt="" src="'+IMG.caja+'">')});
-  Array.prototype.forEach.call(m.querySelectorAll('.card.dban:not(.deco-pl)>.lbl:first-child'),function(b){if(!b.querySelector('.tic')&&/^Existencias/.test(b.textContent))b.insertAdjacentHTML('afterbegin','<img class="tic sm" alt="" src="'+IMG.pl+'">')});
-  /* botón para regresar */
-  var bk=pnBackHTML();if(bk&&!m.querySelector('.pnback'))m.insertAdjacentHTML('afterbegin',bk)}
- /* cantidades con comas también en las ventanas que se ponen encima (cierre de caja de ayer, asistente, fichas) */
- try{fmtInputs()}catch(e){}
- /* las fotos que se pueden ver en grande */
- Array.prototype.forEach.call(document.querySelectorAll('#fiov img,main img,.modal img'),function(im){if(!im.classList.contains('zoomable')&&fotoZoomable(im))im.classList.add('zoomable')});
-}catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */
 
 /* ===================== v4.0 · Logo del negocio, bienvenida animada ===================== */
 (function(){var css=[
@@ -231,14 +218,7 @@ function bienvMostrar(){if(document.getElementById('bienv'))return;var o=documen
  var tc=setTimeout(function(){o.classList.add('tumba');try{vd.currentTime=0;var pr=vd.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}},9000);
  o.querySelector('.bv-go').addEventListener('click',function(e){e.stopPropagation();clearTimeout(tc);if(S.setup)S.setup.bienv=true;o.classList.add('out');setTimeout(function(){if(o.parentNode)o.remove()},360)})}
 
-var _rLg=render;render=function(){_rLg.apply(this,arguments);try{
- /* logo arriba en la app */
- var la=logoApp(),hi=document.querySelector('header.top .logo img');if(hi){var want=la||LOGO_IC;if(hi.getAttribute('src')!==want){hi.setAttribute('src',want);hi.style.objectFit=la?'contain':'cover';hi.style.background=la?'#fff':''}}
- /* logo también en Ajustes */
- var aj=document.getElementById('ajov');if(aj&&!aj.querySelector('.logocard')){var ay=Array.prototype.slice.call(aj.querySelectorAll('.card')).filter(function(c){return /^Ayuda/.test((c.textContent||'').trim())})[0];var w=document.createElement('div');w.innerHTML=logoCardHTML();if(ay)ay.before(w.firstElementChild);else{var sc=aj.querySelector('.sw,.pn,div');(sc||aj).appendChild(w.firstElementChild)}}
- /* bienvenida al abrir por primera vez */
- if(typeof MODO!=='undefined'&&MODO==='vacio'&&S.setup&&!S.setup.fin&&!S.setup.bienv&&S.setup.p===0&&document.getElementById('setov')&&!window.__pnTest)bienvMostrar();
-}catch(e){console.error(e)}};
+/* render: pasó a tema-dibujar1.js */
 
 /* ===================== v4.0 · Escribir sin que la pantalla brinque =====================
    Al pasar de un campo a otro la app se vuelve a dibujar (para recalcular totales). Antes eso
@@ -253,12 +233,7 @@ document.addEventListener('pointerdown',function(e){var t=e.target&&e.target.clo
 var SCROLLERS='#setov,#fiov,#ajov,#cmov,#vwov,#cvov,#arqov,#cajov,.gxsheet .pn,.drawer nav';
 function scrollFoto(){var r={w:window.scrollY,o:{}};Array.prototype.forEach.call(document.querySelectorAll(SCROLLERS),function(el){var k=el.id||el.className;r.o[k]=el.scrollTop});return r}
 function scrollPon(r){Array.prototype.forEach.call(document.querySelectorAll(SCROLLERS),function(el){var k=el.id||el.className;if(r.o[k]!=null&&Math.abs(el.scrollTop-r.o[k])>1)el.scrollTop=r.o[k]});if(Math.abs(window.scrollY-r.w)>1)window.scrollTo(0,r.w)}
-var _rCampo=render;render=function(){var ae=document.activeElement,edit=esCampo(ae),tap=_campoTap&&Date.now()-_campoTap.t<900?_campoTap:null;
- if((!edit&&!tap)||window.__morphing)return _rCampo.apply(this,arguments);
- var foto=scrollFoto(),k=tap?tap.k:campoKey(ae),ss=null,se=null;try{if(!tap&&ae&&ae.selectionStart!=null){ss=ae.selectionStart;se=ae.selectionEnd}}catch(e){}
- var res=_rCampo.apply(this,arguments);
- try{scrollPon(foto);var n=campoBusca(k);if(n&&document.activeElement!==n){n.focus({preventScroll:true});if(ss!=null)try{n.setSelectionRange(ss,se)}catch(e){}}scrollPon(foto)}catch(e){}
- return res};
+/* render: pasó a tema-dibujar1.js */
 /* si el teclado tapa el campo, subir solo lo necesario y suave */
 document.addEventListener('focusin',function(e){var x=e.target;if(!esCampo(x))return;setTimeout(function(){if(document.activeElement!==x)return;var vv=window.visualViewport,h=vv?vv.height+vv.offsetTop:window.innerHeight,r=x.getBoundingClientRect();
  var falta=r.bottom-(h-16);if(falta>0){var sc=x.closest(SCROLLERS);try{if(sc&&sc.scrollHeight>sc.clientHeight)sc.scrollBy({top:falta,behavior:'smooth'});else window.scrollBy({top:falta,behavior:'smooth'})}catch(er){}}
@@ -289,22 +264,7 @@ document.addEventListener('focusin',function(e){var x=e.target;if(!esCampo(x))re
 var OV_ANIM=[['#fiov','ov-in'],['#cmov','ov-in'],['#vwov','ov-in'],['#cvov','ov-in'],['#ajov','ov-in'],['#arqov','ov-in'],['#setov','ov-fade'],['#cajov','ov-fade'],['.drawer','ov-fade'],['.gxsheet','ov-in']];
 function pantallaFirma(){var f=null;try{f=fiCur()}catch(e){}return [S.role,S.tab&&S.tab[S.role],f?f.t+':'+f.id:'',f?(S.fiTab||{})[f.t+':'+f.id]:'',S.cm&&S.cm.paso,S.vfP,S.cierreP,S.setup&&!S.setup.fin?S.setup.p:'',S.vf?1:0].join('|')}
 var _pfAnt=null,_tabAnt=null;
-var _rTr=render;render=function(){var antes={};OV_ANIM.forEach(function(x){antes[x[0]]=!!document.querySelector(x[0])});var f0=_pfAnt,fz=null,fA=null;try{fA=pantallaFirma();fz=scrollFoto()}catch(e){}
- var res=_rTr.apply(this,arguments);
- /* si sigues en la misma pantalla (solo tocaste una opción o cambió un número), todo se queda donde estaba */
- try{if(fz&&fA===pantallaFirma())scrollPon(fz)}catch(e){}
- try{if(window.__pnTest&&!window.__pnAnim){_pfAnt=pantallaFirma();return res}
-  var nueva=false;OV_ANIM.forEach(function(x){var el=document.querySelector(x[0]);if(el&&!antes[x[0]]){el.classList.add(x[1]);nueva=true}});
-  var f1=pantallaFirma();
-  if(!nueva&&f0!==null&&f1!==f0){var a=f0.split('|'),b=f1.split('|'),tg=null,dx=0;
-   if(a[0]!==b[0]||a[1]!==b[1]){if(!document.querySelector('#fiov,#cmov,#vwov,#cvov,#setov')){tg=document.querySelector('main');try{var T=tabsDe(S.role).map(function(t){return t[0]}),i0=T.indexOf(a[1]),i1=T.indexOf(b[1]);dx=i0>-1&&i1>-1?(i1>i0?18:-18):0}catch(e){}}}
-   else if(a[2]===b[2]&&a[3]!==b[3])tg=document.querySelector('#fiov .fibody');
-   else if(a[4]!==b[4])tg=document.querySelector('#cmov')&&(document.querySelector('#cmov .cmb')||document.querySelector('#cmov').firstElementChild);
-   else if(a[7]!==b[7])tg=document.querySelector('#setov .sw');
-   else if(a[5]!==b[5]||a[6]!==b[6])tg=document.querySelector('main');
-   if(tg){tg.style.setProperty('--dx',dx+'px');tg.classList.remove('scr-in');void tg.offsetWidth;tg.classList.add('scr-in')}}
-  _pfAnt=f1}catch(e){}
- return res};
+/* render: pasó a tema-dibujar1.js */
 /* menús que se despliegan: se abren suave (solo cuando tú los abres) */
 var _sumT=0;document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('summary'))_sumT=Date.now()},true);
 document.addEventListener('toggle',function(e){var d=e.target;if(!d||d.tagName!=='DETAILS'||!d.open||Date.now()-_sumT>600)return;/* con animate() no se toca la clase: así el motor de pantalla no la quita y no parpadea */Array.prototype.forEach.call(d.children,function(c){if(c.tagName!=='SUMMARY'&&c.animate){try{c.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:220,easing:'ease'})}catch(er){}}})},true);

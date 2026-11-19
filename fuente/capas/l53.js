@@ -15,5 +15,4 @@ var _cfTxt53='';window.addEventListener('click',function(e){var b=e.target.close
 /* y "Deshacer" en lo nuevo */
 setTimeout(function(){['rcfin','rcfinsi','flt','eqok'].forEach(function(k){UNDO[k]=1})},0);
 (function(){var st=document.createElement('style');st.textContent='[data-act="confno"],[data-act="confok"]{min-height:60px!important;font-size:18px!important}';document.head.appendChild(st)})();
-var _rd53=render;render=function(){var r=_rd53.apply(this,arguments);try{var a=document.querySelector('[data-act="confno"]');if(a&&a.textContent!=='Regresar')a.textContent='Regresar';var o=document.querySelector('[data-act="confok"]');if(o&&o.textContent==='Sí, confirmar')o.textContent='Sí';
- var m=document.querySelector('[data-act="modalx"]');if(m&&m.textContent==='Cancelar')m.textContent='Regresar'}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */

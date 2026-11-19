@@ -44,8 +44,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='guiamu'){var g=guiaTip();guiaCierra();if(g)guiaMuestra(g[2]);_guiaT=Date.now();return}
  if(k)guiaSet('ok:'+k);guiaCierra();_guiaT=Date.now()},true);
 /* botón "?" junto al título de cada pantalla */
-var _rd56=render;render=function(){var r=_rd56.apply(this,arguments);try{if(guiaTip()){var h=document.querySelector('header.top .brand');if(h&&!h.querySelector('.qbtn')){var q=document.createElement('button');q.className='qbtn';q.dataset.act='guiaq';q.setAttribute('aria-label','Ayuda de esta pantalla');q.textContent='?';h.appendChild(q)}}
- var o=document.getElementById('guiab');if(o&&o.dataset.k!==S.role+':'+S.tab[S.role])o.remove()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- "Hoy te toca" (admin) ---------- */
 function hoyItems(){var h=new Date().getHours(),hoy=iso(TODAY),L=[];
  var choferesRuta=nbRutaIdsSeguro().length;
@@ -74,9 +73,6 @@ if(typeof VIEWS!=='undefined'&&VIEWS.inicio)VIEWS.inicio=inicio;
 /* ---------- tutorial desde el primer día, para cada persona (no depende del de otro celular) ---------- */
 function guiaLibre(){try{if(S.tut||S.wz||S.modal||S.confirm||S.perm||(_pin&&_pin.modo))return false;if(typeof bienvOn==='function'&&bienvOn())return false;
  return !document.querySelector('#nbov,#setov,#permov,#bienv,#arr,#pxov,#pinov,#fiov,#rcov,#eqov,#wzov,#pwov,#ajov,#gmov,[role="dialog"][aria-modal="true"]')}catch(e){return false}}
-var _tutVez56=false;var _rd56b=render;render=function(){var r=_rd56b.apply(this,arguments);try{if(_tutVez56||window.__pnTest||(navigator.webdriver&&!window.__guiaTest)||!REAL||!guiaLibre())return r;
- var rr=S.role==='rep'?'rep':(S.role==='admin'&&!S.encOn?'admin':null);if(!rr||!TUT[rr])return r;var n=guiaDia(),k=n<=1?rr:'d:'+rr+':'+n;
- if(n>1&&!guiaGet('tut:'+rr)&&TUT[rr])k=rr;if(!TUT[k]||guiaGet('tut:'+k))return r;if(k.indexOf('d:rep')===0&&!(S.salida&&S.salida.ok))return r;
- _tutVez56=true;setTimeout(function(){if(!guiaLibre()){_tutVez56=false;return}guiaSet('tut:'+k);if(k===rr)tutIniciar(k);else{S.tut={k:k,i:0,prev:{tab:S.tab[S.role]},tab:S.tab[S.role]};render()}},1200)}catch(e){}return r};
+var _tutVez56=false;/* render: pasó a tema-dibujar1.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="resdia"]');if(b)S.resHoy=iso(TODAY)},true);
 ['resHoy','hoyVisto'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});

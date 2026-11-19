@@ -14,12 +14,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* después de enviar: lo que regresa queda "sin contar" (sale de bodega hasta que alguien lo cuente).
    Se hace al dibujar, porque el botón de enviar pasa por la confirmación y otros pasos. */
 var _regRegAnt=null;
-var _rCaj13=render;render=function(){
- try{var c=S.cierre;if(c&&c.sent&&c.res&&!c.regMov&&!S.recep&&!S.arOn){var r=c.res;c.regMov=true;c.porContar=true;
-   S.inv.maduras-=Math.max(0,r.reg);S.inv.kgMaduro=r2(S.inv.kgMaduro-Math.max(0,r.regK));S.inv.vacias-=r.V}
-  var hayReg=!!S.cierreReg;if(hayReg&&_regRegAnt===false&&!S.recep&&c&&c.porContar&&S.role==='admin'){S.toast=(S.toast?S.toast+'. ':'')+'Ahora cuenta las cajas que regresó';setTimeout(function(){var k=document.querySelector('[data-key="recep"]');if(!k)return;var y=k.getBoundingClientRect().top+window.scrollY-70;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});k.classList.remove('flashsc');void k.offsetWidth;k.classList.add('flashsc')},120)}
-  _regRegAnt=hayReg}catch(e){}
- return _rCaj13.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* admin: la foto del chofer junto al conteo, y el aviso en Inicio */
 /* recepCard: pasó a tema-piezas.js */
 /* cierreTop: pasó a tema-cierre.js */
@@ -125,4 +120,4 @@ document.addEventListener('click',function(e){if(!S.tut||!document.getElementByI
  if(a&&/^tut/.test(a))return;if(e.target.closest&&e.target.closest('.bub'))return;
  e.stopImmediatePropagation();e.preventDefault();var bub=document.querySelector('#tutov .bub');if(bub){bub.classList.remove('tutno');void bub.offsetWidth;bub.classList.add('tutno')}},true);
 (function(){var st=document.createElement('style');st.textContent='@keyframes tutNo{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}#tutov .bub.tutno{animation:tutNo .3s ease}';document.head.appendChild(st)})();
-var _rTut13=render;render=function(){if(S.tut&&S.role&&S.tab&&S.tab[S.role]!==tutTab()){S.tab[S.role]=tutTab()}return _rTut13.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */

@@ -145,4 +145,4 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 function im75Btn(){if(!(S.role==='admin'&&!S.encOn))return;var m=document.querySelector('main');if(!m)return;
  [['clialta','cli','clientes'],['provalta','prov','proveedores']].forEach(function(z){var b=m.querySelector('[data-act="'+z[0]+'"]');if(!b||m.querySelector('[data-act="im75"][data-t="'+z[1]+'"]'))return;var n=document.createElement('button');n.className='btn sec';n.dataset.act='im75';n.dataset.t=z[1];n.style.cssText='margin-top:8px;width:100%;min-height:52px';n.textContent='📥 Importar '+z[2]+' de un Excel';b.after(n)})}
 
-var _rd75=render;render=function(){var r=_rd75.apply(this,arguments);try{suPrep75();suListas75();suListo75();im75Btn();ovPon70('im75ov',im75HTML())}catch(e){console.error('l75',e)}return r};
+/* render: pasó a tema-dibujar1.js */

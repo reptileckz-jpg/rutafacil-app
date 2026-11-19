@@ -132,15 +132,7 @@ function fiCarga(f){var c=cargaById(f.id),k=cC(c),sv=S.openCarga,html;S.openCarg
 function fichaHTML(f){return f.t==='veh'?fiVeh(f):f.t==='emp'?fiEmp(f):f.t==='cli'?fiCli(f):f.t==='prov'?fiProv(f):fiCarga(f)}
 var _fiOpen=null;
 var FIK=['openCli','openCh','vehOpen','openProv','openCarga'];
-var _rFi=render;render=function(){var f=fiCur(),sv={},ov=$('fiov'),sc=ov?ov.scrollTop:0,sg=ov?ov.getAttribute('data-fi'):null;
- if(f)FIK.forEach(function(k){sv[k]=S[k];S[k]=null});
- try{_rFi.apply(this,arguments)}finally{if(f)FIK.forEach(function(k){S[k]=sv[k]})}
- if(f){try{var w=document.createElement('div');w.innerHTML=fichaHTML(f);var el=w.firstElementChild;$('root').appendChild(el);if(sg&&el.getAttribute('data-fi')===sg)el.scrollTop=sc;
-   else if(sg&&sg.split(':').slice(0,2).join(':')===String(el.getAttribute('data-fi')).split(':').slice(0,2).join(':')){/* misma ficha, otra pestaña: las pestañas se quedan arriba y la pestaña nueva se ve desde su inicio */
-    var tb=el.querySelector('.fitabs'),lim=0;if(tb)lim=tb.offsetTop-(parseFloat(getComputedStyle(tb).top)||0);el.scrollTop=Math.min(sc,Math.max(0,lim))}
-   var key=f.t+':'+f.id;if(_fiOpen!==key){if(!_fiOpen)try{history.pushState({fi:1},'')}catch(e){}_fiOpen=key}
-   document.documentElement.classList.add('fi-on');try{fechaTxt(el);singTxt(el)}catch(e){}}catch(e){console.error(e)}}
- else{if(_fiOpen){_fiOpen=null}document.documentElement.classList.remove('fi-on')}};
+/* render: pasó a tema-dibujar1.js */
 function fiCerrar(){var f=fiCur();if(!f)return false;S[f.key]=null;if(f.t==='cli')S.cliEdit=null;if(f.t==='emp')S.chEdit=null;if(f.t==='prov')S.pvEdit=null;if(f.t==='veh')S.vbaja=null;render();return true}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='fix'){e.stopImmediatePropagation();if(typeof borrSalir==='function'&&borrSalir('ficha',function(){fiCerrar()}))return;fiCerrar();return}

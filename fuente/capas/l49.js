@@ -11,7 +11,7 @@ function bodLiga(){if(!S.invB)return;S.invBx=S.invBx||{};S.lotesBx=S.lotesBx||{}
  Object.keys(S.invBx).forEach(function(id){if(+id===1)return;var nube=S.invBx[id];if(S.invB[id]!==nube){S.invB[id]=nube;if(b===+id)S.inv=nube}});
  Object.keys(S.lotesBx).forEach(function(id){if(+id===1)return;var nube=S.lotesBx[id];if(S.lotesB&&S.lotesB[id]!==nube){S.lotesB[id]=nube;if(b===+id)S.lotes=nube}});
  Object.keys(S.invB).forEach(function(id){if(+id===1)return;if(S.invBx[id]!==S.invB[id])S.invBx[id]=S.invB[id];if(S.lotesB&&S.lotesBx[id]!==S.lotesB[id])S.lotesBx[id]=S.lotesB[id]})}
-var _r49=render;render=function(){try{bodLiga()}catch(e){}return _r49.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- 70 · celulares del negocio: si la app es la "dueña" del celular, aquí se limitan ---------- */
 function natPl49(){var C=window.Capacitor;return C&&C.Plugins&&C.Plugins.RutaNativa||null}
 var CEL_R=[['instalar','No dejar instalar apps'],['desinstalar','No dejar desinstalar apps'],['restablecer','No dejar restablecer de fábrica'],['ubicacion','No dejar apagar la ubicación'],['cuentas','No dejar agregar o quitar cuentas']];

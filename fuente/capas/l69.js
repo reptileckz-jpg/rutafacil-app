@@ -124,13 +124,13 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  var ya=sum((S.gch||[]).filter(function(x){return /^Comida/.test(x.tipo||'')}),function(x){return num(x.m)});if(ya+num(S.gx.m)>num(c.comidaMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del presupuesto de comida de hoy ('+money(num(c.comidaMax))+'; llevas '+money(ya)+').')}},true);
 /* en el reparto no hay casetas: no sale la opción */
 /* gxTipos: pasó a tema-sueltas.js */
-var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.role==='rep'){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxtipo"][data-t="Caseta"],[data-act="gxt2"][data-t="Caseta"]'),function(b){b.remove()});if(S.gx&&S.gx.tipo==='Caseta')S.gx.tipo='Ponchadura o reparación'}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
 /* vehGastos: pasó a tema-vehiculos.js */
 function desgAuto68(){try{var hoy=iso(TODAY);if(S.role!=='admin'||(S.desgAutoF===hoy))return;S.desgAutoF=hoy;vehAct().forEach(function(vh){if(vh.desgCalc120)return;/* 120 · si se calculó con la calculadora, no se cambia solo */var f=fondoVeh(vh,12);if(!(f.gs>0&&f.km>0&&f.tasa>0))return;var ant=tasa68(vh);if(Math.abs(f.tasa-ant)<0.05)return;
   vh.desg=f.tasa;var txt='El desgaste de '+vh.n+' cambió de '+f2(ant)+' a '+f2(f.tasa)+' por km (con lo que de verdad se gastó en el año)';S.hist.push({t:fmtF(hoy)+' '+hhmm(),q:'App',x:txt});(S.avPrecio=S.avPrecio||[]).push(txt)})}catch(e){}}
-var _rd69d=render;render=function(){var r=_rd69d.apply(this,arguments);desgAuto68();return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 58 · contra errores de dedo: "¿Seguro? Es mucho más de lo normal" ---------- */
 function med68(L){L=L.filter(function(x){return x>0}).sort(function(a,b){return a-b});return L.length>=2?L[Math.floor(L.length/2)]:0}
@@ -155,7 +155,7 @@ function sano68(){var malos=[];try{var I=S.inv||{};['verdes','maduras','kgVerde'
   ['cajasT0'].forEach(function(k){if(S[k]!=null&&!isFinite(Number(S[k]))){malos.push('Total de taras inicial');S[k]=0}else if(S[k]!=null)S[k]=Number(S[k])});
   (S.cajasMov||[]).forEach(function(m){if(!isFinite(Number(m.n))){malos.push('Movimiento de taras: '+(m.t||''));m.n=0}else m.n=Number(m.n)})}catch(e){}
  if(malos.length){apErr('número vacío','Faltaba un número y se puso en 0: '+malos.join(', '),S.tab&&S.tab[S.role]);try{(S.avPrecio=S.avPrecio||[]).push('Faltaba un número y la app lo puso en 0: '+malos.join(', ')+'. Revísalo; es un error de la app, ya quedó anotado.')}catch(e){}}}
-var _rd69s=render;render=function(){sano68();return _rd69s.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 60 · avisos de "no cuadra" en palabras claras ---------- */
 var CU68={
@@ -182,7 +182,7 @@ var CU68={
 function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter(function(x){return !x.ok}),d=document.createElement('div');d.dataset.x='cuadra68';
  if(!m.length){d.className='card';d.style.cssText='padding:12px 16px;display:flex;align-items:center;gap:12px;border:1.5px solid color-mix(in srgb,#16A34A 40%,transparent);background:color-mix(in srgb,#16A34A 9%,var(--surface))';d.innerHTML='<span style="font-size:26px">✓</span><span><b style="font-size:17px;color:#15803D">Todo cuadra</b><br><span class="lbl">Caja, cajas, kilos, taras y deudas ('+R.length+' revisiones)</span></span>';return d}
  d.className='card alert';d.style.cssText='padding:12px 16px;border-width:2px';d.innerHTML='<b style="font-size:18px" class="neg">⚠ Algo no cuadra</b>'+m.map(function(x){return '<div style="margin-top:8px;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--danger) 8%,var(--surface))"><b>'+esc(x.n)+'</b><div style="font-size:15px">'+esc(x.det||'')+'</div></div>'}).join('');return d}
-var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var mm=document.querySelector('main');if(mm&&S.role==='admin'&&S.tab.admin==='inicio'&&!mm.querySelector('[data-x="cuadra68"]')){var ref=mm.querySelector(':scope > details[data-k="avinfo"]')||Array.prototype.filter.call(mm.querySelectorAll(':scope > .card'),function(c){var b=c.querySelector('.tt');return b&&/^Por atender/.test(b.textContent)})[0]||mm.querySelector('.inv68');if(ref)ref.after(cuadraCard68())}}catch(e){console.error('cuadra68',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* 54 · "Costo del viaje más exacto" a la vista en la ficha de la carga (antes escondido en "Detalle") */
 /* fiCarga: pasó a tema-viaje.js */
 /* el aviso que sale abajo también dice qué no cuadra y por cuánto */

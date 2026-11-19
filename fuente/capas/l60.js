@@ -113,9 +113,7 @@ function chAvLimpia(){var R=S.rutaAv;if(!R)return false;var cam=false;Object.key
 /* lo informativo se pasa a la actividad un momento después (algunas partes le agregan el motivo al aviso justo después de crearlo) */
 var _avOrdT=0;function avOrdenaLuego(){if(_avOrdT)return;if(!(S.avPrecio||[]).some(function(x){return typeof x==='string'&&avEsAct(x)}))return;_avOrdT=setTimeout(function(){_avOrdT=0;try{if(avOrdena())render()}catch(e){}},1200)}
 /* avisos: pasó a tema-avisos.js */
-var _rd60a=render;render=function(){try{avOrdenaLuego();faLimpia();chAvLimpia()}catch(e){console.error(e)}var r=_rd60a.apply(this,arguments);
- try{var fo=document.getElementById('faov');if(fo)fo.remove();var fh=faovHTML();if(fh){var w=document.createElement('div');w.innerHTML=fh;document.body.appendChild(w.firstElementChild)}}catch(e){console.error(e)}
- try{tabBadges()}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 22 · "Hoy te toca": cada renglón hace algo o dice por qué todavía no ---------- */
 function cierresHoy(){var ids=nbRutaIdsSeguro(),L=[];ids.forEach(function(id){var sa=nbRGet(id,'salida'),ci=nbRGet(id,'cierre'),rg=nbRGet(id,'cierreReg'),rc=nbRGet(id,'recep');if(!(sa&&sa.ok)&&!(ci&&ci.sent))return;

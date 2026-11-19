@@ -69,9 +69,7 @@ var WA40='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.8 13.5
 
 /* ---------- 42 · PIN: pastilla de sesión y tecla de huella ---------- */
 var BIO42='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 11v3a8 8 0 0 1-1 4"/><path d="M8.5 8.5A5 5 0 0 1 17 12v1.5a13 13 0 0 1-.6 4"/><path d="M5.5 10a7 7 0 0 1 13.4-2"/><path d="M7 14.5c.3-1 .5-2 .5-2.5a4.5 4.5 0 0 1 .8-2.6"/><path d="M14 13.5a17 17 0 0 1-1.2 6"/><path d="M4 7a10 10 0 0 1 4-3.5"/><path d="M20 12a17 17 0 0 1-.3 3"/></svg>';
-var _rd66a=render;render=function(){var r=_rd66a.apply(this,arguments);try{var o=document.getElementById('pinov');if(o&&_pin&&_pin.modo==='entrar'){var pw=o.querySelector('.pw');
-  if(pw&&!pw.querySelector('.ses')){var b=pw.querySelector(':scope>b');if(b){var s=document.createElement('span');s.className='ses';s.innerHTML='<i></i>Sesión activa';b.before(s)}}
-  var x=o.querySelector('.kp [data-act="pinx"]');if(x&&typeof bioActiva==='function'&&bioActiva(_pin.k)&&typeof bioPl==='function'&&bioPl()&&!x.classList.contains('bio42')){x.className='bio42';x.dataset.act='biousar';x.setAttribute('aria-label','Entrar con mi huella');x.innerHTML=BIO42}}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 43 · tarjetas de vehículos ---------- */
 var BOMBA43='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h9a1 1 0 0 1 1 1v8h1a2 2 0 0 1 2 2v3a1 1 0 0 0 2 0V9l-2-2 1.4-1.4L22 9v8a3 3 0 0 1-6 0v-3h-1v7H4V4a1 1 0 0 1 1-1zm2 2v5h6V5z"/></svg>';
@@ -92,5 +90,4 @@ function veh43(v){var inf={};try{inf=vInfo(v)||{}}catch(e){}var fuera=!!v.fuera,
   +(inf.rem!=null?'<div class="ac"><div class="bar"><i style="width:'+pct+'%;background:'+acol+'"></i></div><div class="t">Aceite: '+(rem<=0?'<b style="color:#DC2626">vencido por '+n65(-rem)+' km</b>':'faltan '+n65(rem)+' km')+'</div></div>':'')+'</div></div>'
   +(a0?'<div class="av" style="background:'+acs[a0.c][0]+';color:'+acs[a0.c][1]+'">'+acs[a0.c][2]+'<span>'+esc(a0.t)+'</span>'+(A.length>1?'<span class="mas">+'+(A.length-1)+' más</span>':'<span style="margin-left:auto"></span>')+'<span class="go">›</span></div>'
    :'<div class="av" style="background:#F1F5F9;color:#334155">✓ <span>Todo al día</span><span style="margin-left:auto"></span><span class="go">›</span></div>')}
-var _rd66b=render;render=function(){var r=_rd66b.apply(this,arguments);try{if(S.role==='admin'&&S.tab.admin==='vehiculos'){Array.prototype.forEach.call(document.querySelectorAll('main button.vcard[data-act="vehopen"]'),function(bt){if(bt.classList.contains('veh43'))return;var v=(S.veh||[]).filter(function(x){return +x.id===+bt.dataset.id})[0];if(!v)return;
-  var pl=bt.querySelector('svg.plate');var html=veh43(v);bt.className='vcard veh43';bt.removeAttribute('style');bt.innerHTML=html;if(pl){pl.classList.add('plate');var an=bt.querySelector('.an');if(an)an.after(pl)}})}}catch(e){console.error('43',e)}return r};
+/* render: pasó a tema-dibujar1.js */

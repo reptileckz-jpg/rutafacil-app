@@ -62,7 +62,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(sig==='precioconf')setTimeout(function(){var c=document.querySelector('[data-act="precioconf"]');if(c)c.click()},60)},true);
 
 /* ---------- las ventanas de esta capa ---------- */
-var _rd71=render;render=function(){var r=_rd71.apply(this,arguments);try{ovPon70('may71ov',may71HTML())}catch(e){console.error('l71 ov',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* =============== 63/64 · ubicaciones: el mensaje real de Google, links que sí sirven en toda la app =============== */
 /* el lector de coordenadas de toda la app entiende los mismos formatos que la ventana nueva */

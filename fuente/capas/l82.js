@@ -105,7 +105,7 @@ document.addEventListener('input',function(e){var t=e.target;if(!t||!/^cnt_/.tes
 /* antig65: pasó a tema-bodega.js */
 /* swBloq: pasó a tema-navega.js */
 
-var _rd82=render;render=function(){try{fechas82();gtip82();if(S.role==='admin'||S.role==='cont'||S.encOn)histPon82()}catch(e){console.error('l82 hist',e)}var r=_rd82.apply(this,arguments);try{retiroNota82();cuEntrada82();cu82Pon()}catch(e){console.error('l82',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 45 · la pantalla ya no brinca sola al tocar algo ----------
    Al abrir un apartado se cerraban otros de más arriba (la página se acortaba y lo que tocaste se iba para arriba), y en la entrega
@@ -144,7 +144,7 @@ if(MODO==='vacio'){
  /* nuevoVeh y nuevoCli: lo de la app real pasó a su definición en l7.js */
  limpiaTpl82(S);if(typeof nbAplica==='function'){var _nbA82=nbAplica;nbAplica=function(){var r=_nbA82.apply(this,arguments);if(limpiaTpl82(S)){setTimeout(function(){try{nbEmpuja()}catch(e){}},900);r=true}return r}}}
 /* un cliente al que se le pone ubicación: su distancia desde la bodega */
-var _rdKm82=render;render=function(){try{if(MODO==='vacio'){var b=(S.bods||[])[0];if(b&&b.lat!=null)(S.cli||[]).forEach(function(c){if(c.lat!=null&&!num(c.km)){var k=kmE({lat:+b.lat,lng:+b.lng},c);if(k){c.km=Math.round(k*10)/10;c.min=Math.round(k*2.5)}}})}}catch(e){}return _rdKm82.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 48 · fotos de evidencia: solo con la cámara, con marca completa, y el administrador las ve ----------
    Las fotos marcadas "solo cámara" (las 4 del vehículo, odómetro, tickets, combustible, fruta mala, lo que regresa…) ya no
@@ -169,7 +169,7 @@ function fv82HTML(){var id=S.fv82;if(id==null||S.role!=='admin')return '';var sa
 function fv82Pon(){var o=document.getElementById('fv82'),h=fv82HTML();if(!h){if(o)o.remove();return}if(o&&o._h===h)return;ovPon70('fv82',h);var n=document.getElementById('fv82');if(n){n._h=h;n.style.zIndex='99'}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fv82"],[data-act="fv82x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();if(b.dataset.act==='fv82x'){S.fv82=null;render();return}S.fv82=+b.dataset.id;render()},true);
 /* rt81HTML: aquí había una envoltura que no se usaba (l84 rehace rt81HTML completa al cargar); se quitó el 19 nov */
-var _rdF82=render;render=function(){var r=_rdF82.apply(this,arguments);try{fv82Pon()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 49–53 · lo que se nos estaba pasando (re-análisis 14 nov) ---------- */
 /* 49 · ranking de choferes "este mes": de las rutas del mes (el contador .mes solo lo llenaba la demo) */
@@ -188,7 +188,7 @@ function txtDemo82(){if(MODO!=='vacio')return;var m=document.querySelector('main
  while(t=w.nextNode()){var v=t.nodeValue;if(!/ejemplo|hasta ayer/.test(v))continue;R.forEach(function(r){v=v.split(r[0]).join(r[1])});if(v!==t.nodeValue)t.nodeValue=v}}
 /* 53 · la "Revisión del lunes" vieja (llantas/frenos/aceite, salía a diario por la demo): fuera; ya existe la revisión semanal por pasos */
 if(typeof REV_DEMO!=='undefined'&&MODO==='vacio'){REV_DEMO=false;revHTML=function(){return ''}}
-var _rdX82=render;render=function(){try{cliSync82()}catch(e){}var r=_rdX82.apply(this,arguments);try{txtDemo82()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 55 · pedido "para hoy" a un chofer que YA mandó su cierre ----------
    Antes de la hora límite (Ajustes; tope 7:30 pm): te pregunta "¿Se lo mandas? Ya cerró" y al chofer le llega "¿Puedes llevar este
@@ -234,4 +234,4 @@ function sinMov82(d){var hay=false;try{rutasDia82(d).forEach(function(r){if(!rut
 /* cajaAyerPend: pasó a tema-cajas.js */
 /* popItems: pasó a tema-inicio.js */
 /* cuadre82: pasó a tema-estadisticas.js */
-var _rdY82=render;render=function(){try{pedQVence82()}catch(e){}var r=_rdY82.apply(this,arguments);try{pedQAdm82();pedQRep82();sueltosPon82();sueltosTxt82()}catch(e){console.error('l82b',e)}return r};
+/* render: pasó a tema-dibujar1.js */

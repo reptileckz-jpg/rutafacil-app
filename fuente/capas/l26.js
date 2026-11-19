@@ -110,10 +110,10 @@ if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* entrega: pasó a tema-ruta.js */
 if(typeof VIEWS!=='undefined'&&VIEWS.entrega)VIEWS.entrega=entrega;
 /* aviso al admin: cliente nuevo dado de alta por el chofer */
-var _r26=render;render=function(){try{(S.cli||[]).forEach(function(c){if(c.porCh!=null&&!c.rapida&&!c.oculto&&!c.avAlta){c.avAlta=true;S.avPrecio.push(chofN(c.porCh)+' dio de alta un cliente nuevo: '+c.n+(ubTiene(c)?' (con ubicación)':' (sin ubicación)')+(c.tel?' · tel. '+c.tel:'')+'. Revísalo en Clientes.')}})}catch(e){}return _r26.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* el número del siguiente cliente nunca repite uno que ya existe (en la demo se repetía y el cliente nuevo tomaba los datos de otro) */
 function cliIdFix(){try{var mx=(S.cli||[]).reduce(function(m,c){return Math.max(m,+c.id||0)},0);if(!(+S.nextCli>mx))S.nextCli=mx+1}catch(e){}}
-cliIdFix();var _r26c=render;render=function(){cliIdFix();return _r26c.apply(this,arguments)};
+cliIdFix();/* render: pasó a tema-dibujar1.js */
 
 /* "Ir con Google Maps" a un lugar sin ubicación: busca por nombre y dirección en vez de mandar a un punto inventado */
 /* vwTramoHTML: pasó a tema-viaje.js */

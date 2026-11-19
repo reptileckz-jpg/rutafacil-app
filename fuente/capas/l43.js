@@ -17,7 +17,7 @@ function tutPinta(){var de=document.documentElement,on=!!S.tut&&!(_pin&&_pin.mod
  var k=tutClave();if(o&&o.dataset.k===k&&o.parentNode===document.body)return;if(o)o.remove();
  var h=tutHTML(false);if(!h)return;var w=document.createElement('div');w.innerHTML=h;var n=w.firstElementChild;n.dataset.k=k;document.body.appendChild(n);setTimeout(function(){tutReacomoda(false)},380)}
 tutTab=function(){var t=S.tut;if(!t)return null;if(t.tab)return t.tab;return (t.k==='rep'||/^d:rep/.test(t.k))?'ruta':'inicio'};
-var _r43t=render;render=function(){var t=S.tut,r;if(t&&S.role&&S.tab&&S.tab[S.role]!==tutTab())S.tab[S.role]=tutTab();window.__tutAct=t;S.tut=null;try{r=_r43t.apply(this,arguments)}finally{S.tut=t;window.__tutAct=null}try{tutPinta()}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* mientras está el tutorial, lo de atrás no responde (solo el tutorial) */
 window.addEventListener('click',function(e){if(!S.tut)return;var o=document.getElementById('tutov');if(!o||o.contains(e.target))return;if(e.target.closest&&e.target.closest('#pinov,#nbov'))return;e.stopImmediatePropagation();e.preventDefault()},true);
 /* pasos del chofer: Gasto apunta al botón de verdad; Deslizar, al centro de la pantalla */
@@ -37,8 +37,7 @@ var TUT_DIAS={rep:[null,
  [['main','Resumen y respaldo','En Inicio te mandas el resumen del día por WhatsApp. En Ajustes → Respaldo bajas una copia y el Excel.']]]};
 (function(){Object.keys(TUT_DIAS).forEach(function(r){TUT_DIAS[r].forEach(function(L,i){if(L)TUT['d:'+r+':'+(i+1)]=L})})})();
 function tutDiaNum(r){S.tutD=S.tutD||{};var L=S.tutD[r]=S.tutD[r]||[],h=iso(TODAY);if(L.indexOf(h)<0)L.push(h);return L.length}
-var _r43d=render;render=function(){var r=_r43d.apply(this,arguments);try{if(!window.__pnTest&&REAL&&!S.tut&&!window.__tutAct&&!(_pin&&_pin.modo)&&!S.tutDiasOff&&!document.getElementById('nbov')&&!document.getElementById('setov')&&(S.role==='rep'||S.role==='admin')){var rr=S.role==='rep'?'rep':'admin';
- if(S.tutVisto&&S.tutVisto[rr]){var n=tutDiaNum(rr),k='d:'+rr+':'+n;if(TUT[k]&&!S.tutVisto[k]&&(S.role!=='rep'||(S.salida&&S.salida.ok))){S.tutVisto[k]=true;setTimeout(function(){if(S.tut)return;S.tut={k:k,i:0,prev:{tab:S.tab[S.role]},tab:S.tab[S.role]};render()},900)}}}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- "Aprende la app": se palomea solo al hacerlo de verdad ---------- */
 function logsTodos(){var L=[].concat(S.log||[]);(S.rutasHist||[]).forEach(function(r){L=L.concat(r.log||[])});return L}
 function aprendeItems(){var L=logsTodos();if(S.role==='rep')return [

@@ -22,7 +22,7 @@ function mapaMonta(){if(!mapaHay())return;Array.prototype.forEach.call(document.
  (d.pts||[]).forEach(function(o){if(o.lat==null)return;var r=Math.max(18,(o.r||8)*2.4);g.addLayer(L.marker([o.lat,o.lng],{icon:ic('<div class="mk" style="background:'+mapCol(o.col)+';opacity:'+(o.op==null?1:o.op)+';min-width:'+r+'px;height:'+r+'px;line-height:'+(r-4)+'px">'+esc(o.t||'')+'</div>','',r)}).bindTooltip(esc(o.n||o.t||''),{direction:'top'}));B.push([o.lat,o.lng])});
  (d.marks||[]).forEach(function(o){if(o.lat==null)return;g.addLayer(L.marker([o.lat,o.lng],{zIndexOffset:1000,icon:ic('<div class="mk '+(o.yo?'yo':'ch')+'"'+(o.col?' style="background:'+mapCol(o.col)+'"':'')+'>'+esc(o.t||'')+'</div>','',30)}).bindTooltip(esc(o.n||o.t||'')+(o.hace?' · '+o.hace:''),{direction:'top'}));B.push([o.lat,o.lng])});
  if(!el._fit||d.refit){if(B.length>1)el._m.fitBounds(B,{padding:[28,28],maxZoom:15});else if(B.length)el._m.setView(B[0],14);el._fit=true}setTimeout(function(){try{el._m.invalidateSize()}catch(e){}},60)})}
-var _r34=render;render=function(){var r=_r34.apply(this,arguments);try{mapaMonta()}catch(e){console.error(e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el dibujo de siempre → mapa real */
 /* mapaSVG: pasó a tema-ubica.js */
 /* vwMapa: pasó a tema-viaje.js */

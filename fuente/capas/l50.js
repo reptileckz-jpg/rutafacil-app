@@ -96,4 +96,4 @@ setInterval(eqRevisaTarde,5*60*1000);
 /* el historial del bien lo escribe el administrador (los bienes solo los cambia él en la nube) */
 function eqAplica(){if(S.role!=='admin'||!S.eqDanos)return;S.eqDanos.forEach(function(d){if(d.ap||d.k.charAt(0)!=='b')return;d.ap=1;var b=(S.bienes||[]).filter(function(z){return 'b'+z.id===d.k})[0];if(!b)return;b.hist=b.hist||[];
  b.hist.push({f:d.f,x:(d.v==='falta'?'No lo entregó ':'Mal estado ')+(d.modo==='salida'?'al recibirlo ':'al entregarlo ')+chofN(d.ch)+(d.nota?': '+d.nota:''),foto:d.foto||undefined});if(d.v==='mal')b.est='Mal estado'})}
-var _rd50=render;render=function(){try{eqAplica()}catch(e){}return _rd50.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */

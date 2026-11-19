@@ -36,4 +36,4 @@ function avChofer87(){if(S.role!=='rep'||S.chofHoy==null||!S.rutaAv)return;var L
 /* sugCarga: pasó a tema-viaje.js */
 /* stock72: pasó a tema-piezas.js */
 
-var _rd87=render;render=function(){try{avChofer87();limpiaCierre87()}catch(e){console.error('l87',e)}var r=_rd87.apply(this,arguments);try{cierreAdm87()}catch(e){console.error('l87b',e)}return r};
+/* render: pasó a tema-dibujar2.js */

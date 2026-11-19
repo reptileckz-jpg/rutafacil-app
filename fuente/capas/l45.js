@@ -11,7 +11,7 @@ function primerVacio(){var c=capaArriba();if(!c)return null;var L=Array.prototyp
 var FALTA_RE=/^(Escribe|Escoge|Elige|Pon |Pon la|Falta|Faltan|Toma la|Confirma|Di |Selecciona)/;
 /* toast: pasó a tema-toast.js */
 var _clk45=0;window.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-act]'))_clk45=Date.now()},true);
-var _r45a=render;render=function(){var r=_r45a.apply(this,arguments);try{if(Date.now()-_clk45<500){var c=capaArriba(),al=c&&c.querySelector('.neg[role="alert"],[role="alert"].neg,.err[role="alert"]');if(al&&al.getClientRects().length&&FALTA_RE.test(al.textContent.trim())){_clk45=0;var t=primerVacio();if(t)marcaFalta(t);else{al.classList.remove('falta');void al.offsetWidth;al.classList.add('falta');try{vibrar(60)}catch(er){}}}}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- 54 · después de mandar el cierre, el cierre solo se ve (fotos fijas) ---------- */
 function fotoMini(src,l){return src&&!/^data:x$/.test(src)?'<figure><img src="'+esc(src)+'" alt="'+esc(l)+'" data-act="fotogr" data-src="'+esc(src)+'"><figcaption>'+esc(l)+'</figcaption></figure>':'<figure><div class="lbl" style="aspect-ratio:4/3;border:1px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center">Sin foto</div><figcaption>'+esc(l)+'</figcaption></figure>'}
 /* cierre: pasó a tema-cierre.js */
@@ -24,7 +24,7 @@ window.addEventListener('change',function(e){var t=e.target;if(S.role==='rep'&&S
 /* tiempoAprox: pasó a tema-piezas.js */
 /* kmAprox: pasó a tema-piezas.js */
 function sinRaros(root){if(!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,L=[];while(n=w.nextNode())if(/Infinity|NaN|undefined/.test(n.nodeValue))L.push(n);L.forEach(function(t){console.warn('texto raro:',t.nodeValue);t.nodeValue=t.nodeValue.replace(/(como )?-?Infinity( años| meses| días)?/g,'—').replace(/\$?NaN/g,'—').replace(/\bundefined\b/g,'')})}
-var _r45b=render;render=function(){var r=_r45b.apply(this,arguments);try{sinRaros(document.getElementById('root')||document.body)}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- 67 · el aviso del administrador dice lo que pasó ---------- */
 function rutaAvTit(av){var p=(av||[]).filter(function(x){return /^Pedido para/.test(x)}).length;if(p&&p===av.length)return p>1?'Se te asignaron '+p+' entregas nuevas':'Se te asignó una nueva entrega';if(p)return 'Entregas nuevas y avisos del administrador';
  if((av||[]).some(function(x){return /te pasó|apoya/.test(x)}))return 'Te pasaron clientes para hoy';return 'Aviso del administrador'}
@@ -49,13 +49,12 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(sent)reabreSinPermiso('vuelta');S.tab.rep='ruta';render();window.scrollTo(0,0)},true);
 /* aviso en el celular del chofer cuando le llega algo nuevo */
 function natNotif(t,x){var C=window.Capacitor,n=C&&C.Plugins&&C.Plugins.RutaNativa;try{if(n&&n.notificar)n.notificar({titulo:t,texto:x});}catch(e){}try{vibrar([80,60,80])}catch(e){}}
-var _r45c=render;render=function(){var r=_r45c.apply(this,arguments);try{if(S.role==='rep'&&S.chofHoy!=null){var av=(S.rutaAv||{})[S.chofHoy]||[],k='rutaAvN:'+S.chofHoy+':'+iso(TODAY),ant=+(localStorage.getItem(k)||0);if(av.length>ant){var nuevos=av.slice(ant);localStorage.setItem(k,String(av.length));
- if(ant>0||Date.now()-(window.__ini45||0)>5000){var t=rutaAvTit(nuevos);natNotif(t,nuevos.map(avPedTxt).join(' · '));toast(t)}}else if(av.length<ant)localStorage.setItem(k,String(av.length))}}catch(e){}return r};window.__ini45=Date.now();
+/* render: pasó a tema-dibujar1.js */window.__ini45=Date.now();
 /* Ajustes: cuánto extra sugerir */
 /* ajHTML: pasó a tema-ajustes.js */
 /* ---------- 68 · mover el mapa no cambia de sección ---------- */
 /* swBloq: pasó a tema-navega.js */
-var _r45d=render;render=function(){var r=_r45d.apply(this,arguments);try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container,[data-vivo]'),function(el){if(!el.hasAttribute('data-swipe'))el.setAttribute('data-swipe','mapa')})}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- 74 · nada de la demo en la app real ---------- */
 function limpiaDemo(s){if(!s)return s;s.vjHist=[];s.tarasProv={};s.loteCierres=[];s.vehAsig={};s.metaMes={ven:'',gan:''};if(s.precio){s.precio.hist=[];s.precio.desde=null}if(s.vj)s.vj.fecha=iso(TODAY);if(s.an){s.an.dia=iso(TODAY);s.an.mes=iso(TODAY).slice(0,7);s.an.anio=iso(TODAY).slice(0,4)}if(s.rev)s.rev.last=null;s.limpDemo=3;return s}
 if(typeof MODO!=='undefined'&&MODO==='vacio'){var _fr45=fresh;fresh=function(){return limpiaDemo(_fr45.apply(this,arguments))};limpiaDemo(S)}
@@ -77,7 +76,6 @@ function migraDemo100(){var T=[];try{T=tpl().veh||[]}catch(e){}var J=function(x)
   var C=['capV','capVK','capRC','capRK','capC'];if(C.every(function(k){return num(v[k])===num(t[k])})&&C.some(function(k){return num(t[k])}))C.forEach(function(k){v[k]=''})})});
  (S.cli||[]).forEach(function(c){if(c&&c.pc===70&&c.dp==null)c.pc=null})}
 ['limpDemo'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
-var _r45e=render;render=function(){try{if(typeof NB==='undefined'||!NB.on||NB.listo)migraDemo()}catch(e){}return _r45e.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- encargado: su perfil en la nube dice hasta cuándo manda (para las reglas de seguridad) ---------- */
-var _encSync45='';var _r45f=render;render=function(){var r=_r45f.apply(this,arguments);try{if(typeof NB!=='undefined'&&NB.on&&NB.ad&&NB.perfil&&NB.perfil.rol==='admin'&&NB.usuarios){var e=S.enc,hasta=e&&e.hasta?new Date(e.hasta+'T23:59:59').getTime():0,sig=(e?e.ch:'')+':'+hasta;if(sig!==_encSync45){_encSync45=sig;
- Object.keys(NB.usuarios).forEach(function(uid){var p=NB.usuarios[uid];if(!p||p.rol!=='chofer'||!p.activo)return;var quiero=e&&+p.chId===+e.ch?hasta:0;if(num(p.encHasta)!==quiero){p.encHasta=quiero;NB.ad.set('usuarios_app/'+uid,{encHasta:quiero},true).catch(function(){})}})}}}catch(er){}return r};
+var _encSync45='';/* render: pasó a tema-dibujar1.js */

@@ -38,7 +38,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* lo que ve el chofer mientras espera */
 /* ruta: pasó a tema-ruta.js */
 /* cuando el admin autoriza, en el celular del chofer se reabre y se abre la pantalla de carga */
-var _r32=render;render=function(){try{if(S.role==='rep'&&S.reab&&S.reab.est==='ok'&&S.cierre&&S.cierre.sent&&!_seguirOk){var k=S.reab.k;S.reab=null;_seguirOk=true;var bt=document.createElement('button');bt.dataset.act='seguir';bt.dataset.k=k;bt.style.display='none';document.body.appendChild(bt);try{bt.click()}finally{bt.remove();_seguirOk=false}S.cierreP=0;S.cx={R:'',M:'',foto:null,k:k};S.avPrecio.push(chofN(S.chofHoy)+' reabrió su ruta con tu permiso')}}catch(e){console.error(e)}return _r32.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* en Inicio del admin: autorizar */
 /* cierreTop: pasó a tema-cierre.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="reabsi"],[data-act="reabno"]');if(!b)return;e.stopImmediatePropagation();var id=+b.dataset.id,r=reabDe(id);if(!r)return;var n=JSON.parse(JSON.stringify(r));n.est=b.dataset.act==='reabsi'?'ok':'no';n.por=quien();nbRSet(id,'reab',n);
@@ -83,4 +83,4 @@ function sinDemo(){if(!REAL)return;var w=document.createTreeWalker(document.body
  L.forEach(function(n){var p=n.parentElement;if(!p||p.closest('script,style'))return;var v=n.nodeValue;
   if(/Herramientas de la demo|Ver como|Saltar|Simular|Avanzar el reloj|Probar aviso|En la demo el PIN/i.test(v)){var box=p.closest('details,button')||p;box.style.display='none';return}
   var nv=v.replace(DEMO_RX,'');if(nv!==v)n.nodeValue=nv})}
-var _r32b=render;render=function(){var r=_r32b.apply(this,arguments);try{sinDemo()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */

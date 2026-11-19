@@ -121,7 +121,7 @@ function rtEntrada81(){if(S.role!=='admin'||S.encOn||S.rt81)return;var t=S.tab.a
  var d=document.createElement('div');d.dataset.x='rt81e';d.className='card'+(sc?' alert':'');d.style.padding='12px 14px';
  d.innerHTML='<div class="row"><span><b style="font-size:18px">🗺️ Rutas de hoy</b><br><span class="lbl">'+n+' cliente'+(n===1?'':'s')+(partes.length?' · '+esc(partes.join(' · ')):'')+(sc?' · <b>'+sc+' sin chofer</b>':'')+'</span></span></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" style="flex:1" data-act="rt81open" data-v="hoy">Ver y repartir</button><button class="btn sec" style="flex:1" data-act="rt81open" data-v="man">Mañana</button></div>';
  var ref=m.querySelector('[data-x="dia80a"]');if(ref)ref.after(d);else m.prepend(d)}
-var _rd81=render;render=function(){var ch=false;try{ch=toma81()}catch(e){console.error('l81 toma',e)}var r=_rd81.apply(this,arguments);try{rtEntrada81();rt81Pon()}catch(e){console.error('l81',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 39 · Rutas en el tutorial ---------- */
 try{TUT.admin.splice(1,0,['[data-x="rt81e"]','Rutas','Aquí ves qué clientes tocan hoy y mañana y con qué chofer. Toca "Ver y repartir" para pasar clientes de un chofer a otro, saltar a uno solo por hoy o ver la ruta en el mapa.'])}catch(e){}
@@ -143,4 +143,4 @@ function help81(){try{if(HELP._81)return;HELP.inicio[1]+=' En "Rutas de hoy" ves
 /* dentro de Rutas: "¿Cómo se usa?" (abierta la primera vez) */
 /* rt81HTML: aquí había una envoltura que no se usaba (l84 rehace rt81HTML completa al cargar); se quitó el 19 nov */
 document.addEventListener('toggle',function(e){var t=e.target;if(t&&t.dataset&&t.dataset.act==='rt81ay'&&S.rt81)S.rt81.ay=t.open},true);
-var _rd81b=render;render=function(){var r=_rd81b.apply(this,arguments);try{help81();aprende81();tutNuevo81()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */

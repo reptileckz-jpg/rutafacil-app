@@ -34,7 +34,7 @@ function mayBaseFijar(c){c.mayBase=num(c.c30);c.mayBaseF=iso(TODAY)}
 function maySync(){var cf=crCfg2();S.cli.forEach(function(c){if(!c.mayoreo){return}if(c.mayBase==null){mayBaseFijar(c);return}
  if(c.mayBase>0&&num(c.c30)<c.mayBase*(1-num(cf.mayBaja)/100)&&!c.mayMant){c.mayoreo=false;c.mayBajo={antes:c.mayBase,ahora:num(c.c30),f:iso(TODAY)};
   S.avPrecio.push(c.n+' bajó su consumo (de '+money(c.mayBase)+' a '+money(num(c.c30))+' en 30 días): regresó a precio normal')}})}
-var _rMay20=render;render=function(){try{maySync()}catch(e){}return _rMay20.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* cuando le das mayoreo (cualquier botón), se guarda su consumo de ese momento */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act;if(!/^(mayfijo|mayrevsi|climay|climay2|maymant)$/.test(a))return;var id=+b.dataset.id;
  if(a==='maymant'){e.stopImmediatePropagation();var c=cl(id);c.mayoreo=true;c.mayMant=true;c.mayBajo=null;mayBaseFijar(c);toast(c.n+' se queda con mayoreo');render();return}

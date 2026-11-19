@@ -12,14 +12,14 @@
 /* vwBasc: pasó a tema-viaje.js */
 /* vwNodos: pasó a tema-viaje.js */
 /* barra escondida durante el viaje */
-var _r25=render;render=function(){var vo=!!(S.vw&&S.vw.open);document.documentElement.classList.toggle('vwab',vo);return _r25.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* burbujas minimizadas juntas en una esquina */
 /* vwBurbuja: pasó a tema-viaje.js */
 /* avisos: no salen antes de entrar (pantalla de carga, PIN o elegir usuario); el de "no cuadra" solo al admin y al contador */
 var _toastQ=[];
 function avisoBloq(t){if(typeof _cargado!=='undefined'&&!_cargado)return true;var auto=t==null||/^⚠|URGENTE|no cuadra/.test(t);return auto&&((typeof _pin!=='undefined'&&_pin.modo==='entrar')||!!S.usrSel)}
 /* toast: pasó a tema-toast.js */
-var _r25b=render;render=function(){var r=_r25b.apply(this,arguments);if(_toastQ.length&&!avisoBloq()){var q=_toastQ.slice();_toastQ=[];setTimeout(function(){q.forEach(function(t,i){setTimeout(function(){toast(t)},i*2400)})},400)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el aviso de cajas en palabras claras */
 /* cuentasRevisar: pasó a tema-sueltas.js */
 /* toast: pasó a tema-toast.js */

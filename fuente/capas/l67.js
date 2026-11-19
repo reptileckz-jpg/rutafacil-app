@@ -7,7 +7,7 @@
 /* quitar los mapas de Google chicos que hubieran quedado */
 try{setTimeout(function(){try{GMI.slice().forEach(gmQuita)}catch(e){}},0)}catch(e){}
 /* el interruptor "Mapas de Google" de Ajustes ya no hace falta */
-var _rd67a=render;render=function(){var r=_rd67a.apply(this,arguments);try{var b=document.querySelector('#ajov [data-act="gmswitch"]');if(b){var c=b.closest('.card');if(c)c.remove()}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 (function(){var st=document.createElement('style');st.textContent=[
  'body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}',
  'input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}'].join('\n');document.head.appendChild(st)})();

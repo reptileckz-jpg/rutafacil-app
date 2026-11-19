@@ -94,6 +94,6 @@ function antig65(){var L=(S.madL||[]).filter(function(x){return num(x.q)>0});if(
 function bodega65(m){bodTit65(m);var ex=m.querySelector('.card.exist');if(ex&&!m.querySelector('[data-x="exist65"]')){var n=exist65(ex);ex.before(n);ex.style.display='none';var a=antig65();if(a)n.after(a)}
  Array.prototype.forEach.call(m.querySelectorAll(':scope > .card'),function(c){if(/^\s*Sugerencia|meter a madurar|Por hoy no hace falta/i.test(c.textContent.slice(0,80)))c.classList.add('sugmad')})}
 
-var _rd65=render;render=function(){var r=_rd65.apply(this,arguments);try{var m=document.querySelector('main');if(m&&S.role==='admin'){var t=S.tab.admin;if(t==='inicio')inicio65(m);else if(t==='bodega')bodega65(m)}}catch(e){console.error('diseño 7.3',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el tutorial y las guías apuntan a las tarjetas nuevas */
 try{if(TUT.admin&&TUT.admin[0])TUT.admin[0][0]='[data-x="precio65"], .card.deco-pl, .card.pfix'}catch(e){}

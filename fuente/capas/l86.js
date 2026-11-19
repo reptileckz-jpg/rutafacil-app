@@ -15,7 +15,7 @@
 try{if(NB_SH.indexOf('libPide86')<0)NB_SH.push('libPide86')}catch(e){}
 
 /* ---------- 67 · la pantalla se quita sola cuando la ruta ya es la de hoy ---------- */
-var _rdA86=render;render=function(){try{libSync86()}catch(e){}try{if(S.dia80&&S.role==='rep'&&(!S.rutaDia80||S.rutaDia80===iso(TODAY)||(S.cierre&&S.cierre.sent)))S.dia80=null}catch(e){}return _rdA86.apply(this,arguments)};
+/* render: pasó a tema-dibujar2.js */
 /* el chofer pide que lo liberen: también queda en un dato propio (para la tarjeta roja del admin) */
 function libSync86(){if(S.role!=='rep'||S.chofHoy==null||(S.libPide83||'')!==iso(TODAY))return;var P=S.libPide86=S.libPide86||{},o=P[S.chofHoy];if(o&&o.f===iso(TODAY))return;P[S.chofHoy]={f:iso(TODAY),de:S.dia80||S.rutaDia80||''}}
 /* rutas que el admin puede liberar: las de otros choferes Y la que tiene cargada en su celular */
@@ -54,5 +54,4 @@ function pendCard86(){if(S.role!=='admin'||S.encOn)return;var t=S.tab.admin;if(!
    return '<button class="it" data-act="avgo" data-k="'+encodeURIComponent(o.x)+'"><span style="font-size:20px">'+(o.u?'🔴':'🟡')+'</span><span class="tx">'+(t==='mas'?'<span class="sec">'+esc(SEC86[o.t]||o.t)+'</span>':'')+'<b>'+esc(I.tit||tx)+'</b>'+(I.tit&&I.tit!==tx?'<span class="lbl">'+esc(tx.length>110?tx.slice(0,108)+'…':tx)+'</span>':'')+'</span><span class="lbl" style="font-size:20px">›</span></button>'}).join('');
  m.prepend(d)}
 
-var _rdB86=render;render=function(){var y0=window.scrollY,t0=Date.now(),tb=S.role+'|'+(S.tab&&S.tab[S.role]);var r=_rdB86.apply(this,arguments);try{tarasCard86();pendCard86()}catch(e){console.error('l86',e)}
- try{if(S.role+'|'+(S.tab&&S.tab[S.role])===tb&&!(typeof ANC82!=='undefined'&&ANC82.t>=t0)&&y0>0&&Math.abs(window.scrollY-y0)>2){var k=ANC82.t;window.scrollTo(0,y0);ANC82.t=k}}catch(e){}return r};
+/* render: pasó a tema-dibujar2.js */

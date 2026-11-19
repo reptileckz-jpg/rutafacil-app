@@ -101,16 +101,12 @@ inv65=function(old){var I=S.inv||{},mr=0,da={};try{mr=madR()}catch(e){}try{da=di
    tenía la marca de "deslizar para posponer aviso" (data-swipe) y ese gesto movía todo el cuadro ---------- */
 (function(){var st=document.createElement('style');st.textContent='.leaflet-container,[data-vivo]{transform:none!important;opacity:1!important}';document.head.appendChild(st)})();
 function mapSw68(){try{Array.prototype.forEach.call(document.querySelectorAll('.leaflet-container[data-swipe],[data-vivo][data-swipe],[data-mapa][data-swipe]'),function(el){if(el.getAttribute('data-swipe')==='mapa'){el.removeAttribute('data-swipe');el.setAttribute('data-noswipe','1')}})}catch(e){}}
-var _rd68m=render;render=function(){var r=_rd68m.apply(this,arguments);mapSw68();return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 62a · el menú lateral: "Sugerencias" se veía verde (parecía seleccionado); ahora todos los botones del menú iguales ---------- */
 /* ---------- 62b · la barra de abajo nunca se queda escondida al cambiar de pantalla o al desbloquear ---------- */
 var _t68=null,_pin68=false;
-var _rd68n=render;render=function(){var r=_rd68n.apply(this,arguments);try{
-  Array.prototype.forEach.call(document.querySelectorAll('.drawer nav button.btn:not(.sec)'),function(b){b.classList.add('sec')});
-  var t=S.role+':'+S.tab[S.role],pin=!!document.getElementById('pinov');
-  if(t!==_t68||(_pin68&&!pin)||window.scrollY<=30){navHid=false;document.documentElement.classList.remove('navhid');var nv=document.querySelector('nav.tabs');if(nv)nv.classList.remove('hid')}
-  _t68=t;_pin68=pin}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 62c · numerito de la barra, 2º toque: va al pendiente EXACTO (baja y lo marca); si hay varios, cada toque pasa al siguiente ("1 de 4: …") ---------- */
 /* avDestino: pasó a tema-avisos.js */

@@ -35,7 +35,7 @@ var TXT_DEMO=[[/Haz una ruta de prueba/g,'Haz tu primera ruta'],[/✓?\s*Impreso
 function sinDemoTxt(root){if(typeof MODO==='undefined'||MODO!=='vacio'||!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,L=[];while(n=w.nextNode()){if(n.parentElement&&/SCRIPT|STYLE/.test(n.parentElement.tagName))continue;if(/demo|ejemplo|Prototipo|navegador|\bweb\b|ruta de prueba|Impresora de prueba/i.test(n.nodeValue))L.push(n)}
  L.forEach(function(t){var v=t.nodeValue;TXT_DEMO.forEach(function(r){v=v.replace(r[0],r[1])});if(v!==t.nodeValue)t.nodeValue=v});
  [].forEach.call(root.querySelectorAll('[data-act="demoreset"],[data-act*="demo"],.foot'),function(el){if(/demo|Prototipo/i.test(el.textContent)||/demo/.test(el.dataset.act||''))el.style.display='none'})}
-var _r46=render;render=function(){var r=_r46.apply(this,arguments);try{sinDemoTxt(document.body)}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* toast: pasó a tema-toast.js */
 /* abrirModal: pasó a tema-piezas.js */
 /* ---------- 59 · burbujas: abiertas se ven como pestañas [Viaje] [Faltan N] ---------- */

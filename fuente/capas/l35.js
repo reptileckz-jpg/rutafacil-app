@@ -23,7 +23,7 @@
 /* ---------- tarjetas pintadas completas (en vez de la orilla de color) ---------- */
 function pintaTarjetas(){Array.prototype.forEach.call(document.querySelectorAll('[style*="border-left:"]'),function(el){var s=el.getAttribute('style')||'',m=/border-left:\s*([3-8])px solid ([^;"]+)/.exec(s);if(!m||el.dataset.pint===s)return;var col=m[2].trim();
  el.style.borderLeft='0';el.style.background='color-mix(in srgb, '+col+' 14%, var(--surface))';el.dataset.pint=el.getAttribute('style')})}
-var _r35=render;render=function(){var r=_r35.apply(this,arguments);try{pintaTarjetas()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* ---------- menú: se mete deslizándose al cerrarlo ---------- */
 var _drCerrando=false;
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="menux"],[data-act="usrx"]');if(!b||_drCerrando)return;var d=b.closest('.drawer')||document.querySelector('.drawer');if(!d)return;if(b.classList.contains('drawer')&&e.target.closest('nav'))return;
@@ -50,4 +50,4 @@ function guiaHTML(){if(S.role!=='admin'||S.guiaOff||!REAL)return '';var P=guiaPa
 /* inicio: pasó a tema-inicio.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="guiaoff"],[data-act="guiaruta"]');if(!b)return;e.stopImmediatePropagation();if(b.dataset.act==='guiaoff'){S.guiaOff=true;render();return}S.menu=false;S.usrSel=true;render()},true);
 /* ---------- avisos al abrir: uno solo que te lleva a Avisos ---------- */
-var _r35b=render;render=function(){if(typeof _toastQ!=='undefined'&&_toastQ.length>1&&!avisoBloq()){var n=_toastQ.length;_toastQ.length=0;setTimeout(function(){toast('Tienes '+n+' avisos nuevos. Míralos en Inicio → Avisos.')},400)}return _r35b.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */

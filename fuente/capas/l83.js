@@ -50,7 +50,7 @@ function loc83(){try{return JSON.parse(localStorage.getItem('rq83')||'{}')}catch
 function locPon83(o){try{var ks=Object.keys(o);if(ks.length>600){ks.slice(0,ks.length-600).forEach(function(k){delete o[k]})}localStorage.setItem('rq83',JSON.stringify(o))}catch(e){}}
 /* toma81: pasó a tema-reparte.js */
 /* dos paradas PENDIENTES del mismo cliente se juntan en una (las ya entregadas no se tocan: un cliente sí puede pedir dos veces) */
-var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops)){var vis={},out=[],cur=S.stops[S.cur]&&S.stops[S.cur].c,cambio=false;S.stops.forEach(function(s){var k=+s.c;if(s.done){out.push(s);return}if(vis[k]!=null){cambio=true;return}vis[k]=out.length;out.push(s)});if(cambio){S.stops=out;if(cur!=null){var ni=out.map(function(s){return +s.c}).indexOf(+cur);S.cur=ni>-1?ni:Math.max(0,curStop())}}}}catch(e){}return _rd83.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 61 · el chofer trabado en "No mandaste tu cierre" (16 nov) ----------
    (1) las pantallas completas se volvían a crear en cada redibujo (con la nube, cada pocos segundos): el botón desaparecía bajo el
@@ -59,7 +59,7 @@ var _rd83=render;render=function(){try{if(S.chofHoy!=null&&Array.isArray(S.stops
    (3) salida de emergencia: "Pedir que liberen mi ruta" (le llega URGENTE al administrador).
    (4) "del Antier sábado" → "del sábado". */
 /* ovPon70: pasó a tema-navega.js */
-var _rdC83=render;render=function(){try{if(S.role==='rep'&&S.tab.rep==='cierre'&&S.dia80&&S.salida&&!S.salida.ok&&(S.log||[]).length&&!(S.cierre&&S.cierre.sent)){S.salida.ok=true;S.salida.tarde83=1}}catch(e){}return _rdC83.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 del80=function(f){if(f===ayer80())return 'de ayer';var t=String(fmtF(f)).replace(/^(Hoy|Ayer|Antier|Antes de ayer)\s+/i,'');return 'del '+t};
 /* → movido (tema-rutadia.js) */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="lib83"]');if(!b)return;e.stopImmediatePropagation();S.libPide83=iso(TODAY);(S.avPrecio=S.avPrecio||[]).push('URGENTE: '+chofN(S.chofHoy)+' no puede mandar su cierre '+del80(S.dia80||ayer80())+' y no le sale su ruta de hoy. En Inicio toca "Liberar su ruta de hoy".');

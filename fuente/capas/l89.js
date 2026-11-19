@@ -43,4 +43,4 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset)
 function hola89(){if(S.role!=='rep'||S.tab.rep!=='ruta')return;var m=document.querySelector('main');if(!m||m.querySelector('.hola89'))return;var h=m.querySelector('.hello'),ub=[].filter.call(m.querySelectorAll('.card.autocard'),function(c){return /el administrador ve tu ubicación/.test(c.textContent)})[0];if(!h&&!ub)return;
  var d=document.createElement('div');d.className='hola89';d.innerHTML='<b>Hola, '+esc(chofN(S.chofHoy))+'</b>'+(ub?'<span>· el administrador ve tu ubicación mientras trabajas</span>':'');if(h)h.remove();if(ub)ub.remove();m.prepend(d)}
 
-var _rd89=render;render=function(){try{ubArregla89();odo89()}catch(e){console.error('l89',e)}var r=_rd89.apply(this,arguments);try{ubDup89();hola89();rep1Fit89()}catch(e){console.error('l89b',e)}return r};
+/* render: pasó a tema-dibujar2.js */

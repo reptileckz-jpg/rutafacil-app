@@ -97,7 +97,7 @@ function nbIdsFix(){var B=num(NB.perfil&&NB.perfil.idBase);if(!B)return;var mx=B
 /* ---------- render: después de cada cambio, subir (con pausa corta) ---------- */
 var _nbT=null;function nbLuego(){if(!NB.on||!NB.listo)return;clearTimeout(_nbT);_nbT=setTimeout(function(){try{nbEmpuja()}catch(e){console.error('nube empujar',e)}},window.__nbFast?30:900)}
 var _nbRendering=false;function nbRender(){if(_nbRendering)return;_nbRendering=true;try{render()}finally{_nbRendering=false}}
-var _r28=render;render=function(){if(NB.on&&NB.listo){try{nbIdsFix();nbForzarRol()}catch(e){}}var r=_r28.apply(this,arguments);nbLuego();try{nbPantalla()}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&NB.on&&NB.listo){clearTimeout(_nbT);try{nbEmpuja()}catch(e){}}});
 /* ---------- arranque ---------- */
 function nbPuede(){return typeof REAL!=='undefined'&&REAL&&!!(window.__nubeAd||window.NUBE_AD)}

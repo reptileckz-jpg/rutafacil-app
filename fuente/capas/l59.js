@@ -4,10 +4,10 @@
 
 /* ---------- 3 · "Contar por billetes": se queda abierto mientras el chofer lo tenga abierto ---------- */
 document.addEventListener('toggle',function(e){var d=e.target;if(!d||!d.matches||!d.matches('details[data-k="efbilld"]')||!S.cierre)return;S.cierre.billAb=d.open},true);
-var _rd59a=render;render=function(){var r=_rd59a.apply(this,arguments);try{var d=document.querySelector('details[data-k="efbilld"]');if(d&&S.cierre&&S.cierre.billAb!=null&&d.open!==!!S.cierre.billAb)d.open=!!S.cierre.billAb}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 
 /* ---------- 5 · un solo "?" en el encabezado ---------- */
-var _rd59b=render;render=function(){var r=_rd59b.apply(this,arguments);try{var h=document.querySelector('header.top .brand');if(h){var q=h.querySelectorAll('.qbtn');Array.prototype.forEach.call(q,function(x){x.remove()})}}catch(e){}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el "?" que queda: si la pantalla tiene guía, enseña "¿Qué sigue?" con Muéstrame; si no, la ayuda de siempre */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('header.top [data-act="help"]');if(!b)return;try{if(typeof guiaTip==='function'&&guiaTip()){e.preventDefault();e.stopImmediatePropagation();guiaBurbuja(true)}}catch(er){}},true);
 
@@ -29,11 +29,7 @@ function pnHayUrgentes(){try{return !!(typeof popHTML==='function'&&popHTML())}c
 function pnArranqueListo(){try{if(_pin&&_pin.modo)return false;if(document.querySelector('#arr,#bienv,#nbov,#setov,#permov,#pxov,#pinov,#medov'))return false;if(S.setup&&!S.setup.fin)return false;
  if(pnHayUrgentes())return false;return true}catch(e){return false}}
 var _tutPend59=null;
-var _rd59c=render;render=function(){
- try{if(S.tut&&!S.tut._ok&&!pnArranqueListo()){_tutPend59=S.tut;S.tut=null}
-  else if(!S.tut&&_tutPend59&&pnArranqueListo()){S.tut=_tutPend59;S.tut._ok=1;_tutPend59=null}
-  else if(S.tut&&!S.tut._ok)S.tut._ok=1}catch(e){}
- return _rd59c.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 /* 113 · solo si de verdad ya puede salir (sin otro tutorial puesto): antes, con otro tutorial en pantalla, redibujaba cada 1.5 s sin fin (parpadeo) */
 setInterval(function(){try{if(_tutPend59&&!S.tut&&pnArranqueListo())render()}catch(e){}},1500);
 
@@ -47,5 +43,5 @@ function popCasa(){return (typeof NAV_CASA!=='undefined'&&NAV_CASA[S.role])||'in
 /* popSig: pasó a tema-guia.js */
 /* la siguiente tarjeta sale hasta que regresa a Inicio (o, si lo mandó a Inicio mismo, después de un rato) */
 /* popHTML: pasó a tema-inicio.js */
-var _rd59d=render;render=function(){try{if(_popPausa&&S.tab[S.role]!==popCasa())_popPausa.salio=true}catch(e){}return _rd59d.apply(this,arguments)};
+/* render: pasó a tema-dibujar1.js */
 setInterval(function(){try{if(_popPausa&&Date.now()-_popPausa.t>90000&&S.tab[S.role]===popCasa())render()}catch(e){}},15000);

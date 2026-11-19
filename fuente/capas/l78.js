@@ -125,7 +125,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* ---------- la pantalla del chofer: lo nuevo se acomoda al armarla ---------- */
 var _vr78=null;function vr78Pon(){if(_vr78||typeof VIEWS==='undefined'||!VIEWS.ruta)return;_vr78=VIEWS.ruta;VIEWS.ruta=function(){return vrFix78(_vr78.apply(this,arguments))}}
 
-var _rd78=render;render=function(){try{vr78Pon()}catch(e){}try{if(pedToma78()){}}catch(e){}var r=_rd78.apply(this,arguments);try{cfMas78();defPreg78();thumbs78()}catch(e){console.error('l78',e)}return r};
+/* render: pasó a tema-dibujar1.js */
 /* el estado del pedido reconoce lo asignado por la nube */
 var _e57_78=est57;est57=function(c){var r=_e57_78.apply(this,arguments);try{if(!r.ch&&c&&c.ped){var id=c.ped.asig78;chofsDia57().forEach(function(ch){if(r.ch)return;if(((S.pedAsig||{})[ch.id]||[]).some(function(x){return +x===+c.id})||(id!=null&&+id===+ch.id))r.ch=ch})}}catch(e){}return r};
 /* p57Asigna: pasó a tema-rutas.js */

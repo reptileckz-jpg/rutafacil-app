@@ -2895,3 +2895,11 @@ HECHO en `capas/tema-barra.js` (SIN PUBLICAR: solo en la rama). Prueba `t165.js`
 - De paso (`tema-avisos.js`): el pendiente marcado (avFoco) ya no se borra si la pantalla se redibuja durante sus 3.4 s.
 - Web: la versión web declara su ancho para celular (meta viewport) para verse bien en Chrome de celular/tablet (el APK no cambia).
 - Pruebas ajustadas: t68 (toca la barra nueva), t164 (ya no hay barra a la izquierda).
+
+## 2026-11-19 · 166 · Ricardo: "¿qué te parece tomar el diseño de esta interfaz con sus animaciones para la pestaña de Más? usa lo útil sin que rompa lo que ya tenemos" (Rediseño Pantalla Más - Bento Grid Animado)
+HECHO en `capas/tema-mas.js` (SIN PUBLICAR: solo en la rama). Prueba `t166.js` (9 OK). Capturas `disenos/mas-166*.png`.
+- Se tomó: encabezado "Centro de Control", buscador (filtra mientras escribes), mosaico (Cuadre destacado a lo ancho + Gastos, Estadísticas, Vehículos, Personal, Bienes, Ajustes), sus íconos y micro-animaciones, entrada escalonada y etiquetas — con datos reales (cierres por recibir / "Al día", pendientes, "N unid.", "Meta N%", encabezado "Operación al día" o "N pendientes").
+- Cada tarjeta abre la MISMA sección de siempre (data-act/data-t de antes) ~300 ms después de su animación. Se conserva la clase .mas92 (tutoriales y pruebas). "Lo que pasó hoy" y "Aprende la app" siguen abajo. En pantalla ancha, 4 columnas.
+- No se tomó: su barra inferior (ya está la 165) ni el panel de accesos rápidos (sus opciones eran de ejemplo).
+- CSS del diseño encerrado en .mas166, animaciones con sufijo 166, modo oscuro el de la app. Solo administrador.
+- t92 actualizada (nuevo orden de Más).

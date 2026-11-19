@@ -17,7 +17,7 @@ await ev(()=>{var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja Cali
 r=await ev(()=>{window.__esc=[];apErr('error interno','x is not a function','Chofer · Ruta');apErr('error interno','x is not a function','Chofer · Ruta');
  return new Promise(res=>setTimeout(()=>res(window.__esc.filter(x=>/\/err\//.test(x.path))),400))});
 ok(r.length===1&&/^n\/pn\/err\//.test(r[0].path),'148 · el error se manda solo a la nube (una vez, aunque se repita)',r.map(x=>x.path));
-ok(r[0]&&Object.keys(r[0].obj).sort().join(',')==='apk,ch,donde,f,h,rol,t,tipo,txt,web'&&r[0].obj.txt==='x is not a function'&&r[0].obj.web==='10.11','con la versión, el papel y la pantalla (solo los campos que dejan las reglas)',r[0]&&r[0].obj);
+ok(r[0]&&Object.keys(r[0].obj).sort().join(',')==='apk,ch,donde,f,h,rol,t,tipo,txt,web'&&r[0].obj.txt==='x is not a function'&&r[0].obj.web==='10.12','con la versión, el papel y la pantalla (solo los campos que dejan las reglas)',r[0]&&r[0].obj);
 r=await ev(()=>{NB.listo=false;window.__esc=[];apErr('error interno','otro error','Inicio');var n1=ERR148.cola.length;NB.listo=true;err148Manda();return new Promise(res=>setTimeout(()=>res([n1,window.__esc.filter(x=>/\/err\//.test(x.path)).length,ERR148.cola.length]),400))});
 ok(r[0]===1&&r[1]===1&&r[2]===0,'sin nube se guarda en el celular y se manda después',r);
 
@@ -27,7 +27,7 @@ ok(/api\.github\.com\/repos\/reptileckz-jpg\/rutafacil-app\/releases\/latest/.te
 r=await ev(()=>{document.querySelector('main [data-act="nv149baja"]').click();return window.__nat.abre.slice(-1)[0]});ok(/RutaFacil-1\.0\.52\.apk$/.test(r),'"Descargar" abre el APK nuevo',r);
 r=await ev(()=>{document.querySelector('main [data-act="nv149x"]').click();return !!document.querySelector('main [data-k="nv149"]')});ok(!r,'"Después" la esconde hasta mañana');
 r=await ev(()=>{APP_VER='1.0.52';try{localStorage.removeItem('nv149x')}catch(e){}render();return !!document.querySelector('main [data-k="nv149"]')});ok(!r,'con la versión al día no sale nada');
-r=await ev(()=>{var d=corteDatos();var L=tkCorte143(d);return [d.ver,L.slice(-1)[0].s]});ok(r[0]==='app 10.11 · APK 1.0.52'&&/Hecho con la app 10\.11 · APK 1\.0\.52/.test(r[1]),'el corte dice con qué versión se hizo',r);
+r=await ev(()=>{var d=corteDatos();var L=tkCorte143(d);return [d.ver,L.slice(-1)[0].s]});ok(r[0]==='app 10.12 · APK 1.0.52'&&/Hecho con la app 10\.11 · APK 1\.0\.52/.test(r[1]),'el corte dice con qué versión se hizo',r);
 
 /* ---------- 151 ---------- */
 r=await ev(()=>{BAT151.rev=0;bat151Revisa();return new Promise(res=>setTimeout(()=>{S.tab.admin='inicio';render();var c=document.querySelector('main [data-k="bat151"]');res(c?c.innerText:'')},300))});

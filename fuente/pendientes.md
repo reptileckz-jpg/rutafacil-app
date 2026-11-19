@@ -2924,10 +2924,18 @@ HECHO (SIN PUBLICAR), prueba en `t168.js` (10 OK).
 - La barra del administrador (165) se dejó exacta como la mandó (su cápsula ya es transform; el color de las letras tiene una transición corta propia de su CSS).
 
 ## 2026-11-19 · 170 · Ricardo: "con esos dos diseños (Inicio y Ruta/Entrega) adáptalos a toda la app, conserva o añade animaciones… aceleradas por GPU"
-HECHO (SIN PUBLICAR), `fuente/capas/tema-app170.js` (último en `orden.json`), prueba `t170.js` (16 OK).
+HECHO y PUBLICADO (10.12), `fuente/capas/tema-app170.js` (último en `orden.json`), prueba `t170.js` (16 OK).
 - Clase `html.app170`. Tarjetas de `main` (menos Inicio/Ruta/Entrega, que ya tienen el suyo): radio 24 px y sombra suave (`--sh170`, claro/oscuro). Alerta/nota/bien conservan fondo y borde.
 - Botones: brillo (background-image) ENCIMA de su color, radio 16 (`.sm` píldora), rebote al soltar. Chips: píldora; la elegida con sombra verde. Campos: radio 14.
 - NO cambia padding ni tamaños de letra (la prueba compara texto, botones y espacios de 9 pantallas con y sin el tema).
 - Animaciones solo transform/opacity: `main.in170` (entrada escalonada solo al llegar a una pantalla); ventanas `.ab170` (fondo aparece + panel con rebote; `.sheet` sube; `.ov70` desliza) SOLO cuando la ventana no estaba abierta (MutationObserver compara las ventanas abiertas antes/después; un redibujado no anima). Transiciones de botones: solo transform (se quitaron fondo/borde/sombra que venían de v3.1). Barra flotante (`.nav-item`) excluida.
 - De paso: en oscuro, `.k5card2/.k5grp/.k5sub` del Cuadre se quedaban blancas (`var(--card,#fff)`); ahora `var(--surface)`.
 - Los íconos 3D (emoji → ilustración) siguen solo en Inicio: en el resto de la app hay textos que se comparan/buscan con el emoji.
+
+## 2026-11-19 · 171 · Ricardo: "sí, también para el chofer, haz lo que sugieres, arma y publica"
+HECHO y PUBLICADO (10.12), `fuente/capas/tema-app171.js`, prueba `t171.js` (14 OK).
+- Barra flotante del chofer y de venta local (`nav.floating-nav.chofer171`): se arma con los MISMOS botones de su barra (Ruta, Entrega, Gasto, Viaje, Cierre / Vender, Corte), íconos duotone (pin, caja y camión de la barra 165; recibo, portapapeles, bolsa y billete nuevos con micro-animación transform). Al tocar se toca el botón de antes. Gasto abre su ventana sin mover la cápsula. Se rearma solo si cambian los botones. La barra del administrador (`gen_barra.py`) ahora ignora la del chofer (`:not(.chofer171)`).
+- Con barra flotante: `.entbar` (cobro de Entrega) y `.toast` suben arriba de ella.
+- `html.lite171` (≤4 núcleos o ≤3 GB, o modo ahorro): sin backdrop-filter. `html.ahorro171`: sin animaciones ni transiciones. Ajustes → "🔋 Modo ahorro" (localStorage `ahorro171`, de cada celular).
+- Íconos 3D fuera de Inicio (`.e171`): el emoji se queda en el texto, escondido a la vista (lectores, búsquedas, comparaciones), y el ícono va al lado `aria-hidden`, quieto.
+- 142: `cmRaro150` además pregunta si el precio por kilo (roatán o macho) está 40 % arriba o abajo del promedio de las últimas 5 cargas.

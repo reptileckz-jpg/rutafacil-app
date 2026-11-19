@@ -2796,3 +2796,13 @@ HECHO en `capas/tema-cuadre.js` (`resultadoHTML121` rehecha). **Falta armar APK 
 - Pruebas: `t121` y `t128` actualizadas al formato nuevo (mismos números) + revisión del formato. Captura `disenos/cuadre-ticket-144.png`. Todas en 0 FAIL.
 
 - 143 · Ricardo: alinear P.UNIT e IMPORTE a la derecha. HECHO: cada columna se dibuja por separado (P.UNIT e IMPORTE, encabezado y precios, a la derecha contra su orilla; los importes de los demás renglones a la orilla derecha), el ancho de la letra se mide en el celular y las rayas ====/---- van de orilla a orilla. Así quedan en línea sin importar la letra del celular.
+
+## 2026-11-19 · 145 · Ricardo: "el cuadre así (tipo ticket) se ve muy revuelto, la información pelea por estar ahí; este diseño me parece mucho mejor, compleméntalo con la información que tenemos" (mandó un HTML de muestra)
+HECHO en `capas/tema-cuadre.js` (`resultadoHTML121` rehecha; reemplaza la de 144). **Falta armar APK (preguntar antes).**
+- Tarjeta verde: "💰 Ganancia neta" grande, margen libre (neto ÷ ventas) y dos pastillas (Ganancia fruta · Gastos y com.).
+- "¿A dónde se fue tu ganancia de fruta?": barra con Libre (neto), Sueldos, Comisiones, Vehículo, Gastos y Merma en %, y "Día rentable / Día con pérdida".
+- Avisos que se tocan: "Falta el costo de la caja o el kilo" y "La fruta salió con pérdida" → botón a Cargas.
+- "Flujo de ventas e ingresos" (Ventas del día por producto y tipo de precio Normal/Mayoreo/Especial con cantidad × precio, contado, crédito y a quién; Abonos de quién; Ganancia bruta de la fruta renglón por renglón: venta − costo × cantidad) y "Gastos y comisiones" (gastos por tipo, desgaste por vehículo km × $/km, sueldos de cada quien, comisiones por chofer con su desglose, merma). Flecha que brinca en lo cerrado.
+- Números: `lin145Pon` agrupa las ventas por producto/tipo/precio con lo que dejó cada grupo (día y semana/mes). Las cuentas no cambian. Sin Tailwind ni letras de internet (funciona sin señal); clases con prefijo `k5` para no chocar con los estilos de la app.
+- Pruebas: `t120`, `t121`, `t128` actualizadas (mismos números). Captura `disenos/cuadre-145.png`. Todas en 0 FAIL.
+

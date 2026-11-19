@@ -43,13 +43,13 @@ var MANT121=/ponchadura|reparaci|aceite|llanta|taller|mantenimiento|^veh[ií]cul
 function costoDia121(d){try{return costoEn82(d)}catch(e){return {R:0,M:0}}}
 function rutaGastos121(d,ch,vivo){var n=chofN(ch)+' · ',L=(S.gastos||[]).filter(function(g){return g&&(g.f||g.f82)===d&&/^(Gasto de ruta|Combustible de reparto)$/.test(String(g.t||''))&&String(g.n||'').indexOf(n)===0}).map(function(g){return {t:g.t==='Combustible de reparto'?'Combustible':String(g.n||'').slice(n.length)||g.t,m:num(g.m)}});
  if(vivo&&!(vivo.cierre&&vivo.cierre.sent)){(vivo.gch||[]).forEach(function(g){L.push({t:(g.tipo||'Gasto')+' (sin cerrar)',m:num(g.m)})});(vivo.recs||[]).forEach(function(x){L.push({t:'Combustible (sin cerrar)',m:num(x.total)})})}return L}
-function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[];try{P=rutasDia120(d)}catch(e){}var CH={},ord=[];
+function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[],lin145={};try{P=rutasDia120(d)}catch(e){}var CH={},ord=[];
  P.forEach(function(x){var L=(x.log||[]).filter(function(l){return l&&!l.anul}),r=x.res||{},ch=+x.ch;
   var o=CH[ch];if(!o){o=CH[ch]={ch:ch,n:chofN(ch),partes:[],venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,deb:0,ent:0,rec:0,creditos:[],abonos:[],taras:[],precios:[],veh:{},vivo:null};ord.push(ch)}
   var p={n:x.n,parcial:x.parcial,resc:x.resc,sent:x.sent,vivo:!!x.vivo,h:(x.corte&&x.corte.h)||(x.e&&x.e.h120)||'',corte:x.corte||null,rec:x.reg&&x.reg.rec!=null?num(x.reg.rec):null,deb:num(r.efectivo),venta:0,cob:0};
   L.forEach(function(l){var t=num(l.total),pg=num(l.pago),cl0=cl(l.c),nm=cl0?cl0.n:(l.rescate120?'(cierre recuperado)':'Cliente');p.venta+=t;p.cob+=pg+num(l.abono);o.venta+=t;o.contado+=pg;o.ab+=num(l.abono);o.R+=num(l.R);o.M+=num(l.M);
    o.gan+=num(l.R)*(num(l.pr||S.precio.R)-num(c.R))+num(l.M)*(num(l.pm||S.precio.M)-num(c.M));
-   if(t-pg>0.005){o.cred+=t-pg;o.creditos.push({n:nm,m:r2(t-pg),R:num(l.R),M:num(l.M)})}if(num(l.abono)>0.005)o.abonos.push({n:nm,m:num(l.abono)});preciosLog135(l).forEach(function(x){o.precios.push({n:nm,x:x})});/* 135 */
+   if(t-pg>0.005){o.cred+=t-pg;o.creditos.push({n:nm,m:r2(t-pg),R:num(l.R),M:num(l.M)})}if(num(l.abono)>0.005)o.abonos.push({n:nm,m:num(l.abono)});preciosLog135(l).forEach(function(x){o.precios.push({n:nm,x:x})});/* 135 */lin145Pon(lin145,l,c);/* 145 */
    var dej=num(l.R),rec=num(l.V);if(!l.rescate120&&(dej||rec)&&dej!==rec)o.taras.push({n:nm,dejo:dej,recogio:rec,rotas:num(l.Vr),neto:dej-rec})});
   /* km, vehículo y desgaste de esta parte */
   var vr=x.r||null,vid=r.veh68!=null?r.veh68:(vr&&vr.vehHoy),vh=vid!=null?vehById(+vid):null,km=Math.max(0,num(r.km));
@@ -74,19 +74,19 @@ function cuadreDia121(d){var hoy=iso(TODAY),c=costoDia121(d),P=[];try{P=rutasDia
  var abB=r2(sum((S.cobros||[]).filter(function(x){return x&&x.f===d&&+x.c!==0&&x.n!=='viaje'&&x.n!=='Venta local'}),function(x){return num(x.m)})),
   merma=r2(sum((S.mermas||[]).filter(function(m){return m&&m.fecha===d}),function(m){return num(m.valor)})),
   cc=(S.cajaCierres||[]).filter(function(x){return x&&x.f===d});
- var T={d:d,ch:CHL,su:SU,loc:{venta:r2(loc.venta),gan:r2(loc.gan),n:loc.n},abB:abB,merma:merma,cat:cat,op:r2(op),mant:r2(mant),fuera:r2(fuera),caja:cc,
+ var T={d:d,lin:Object.keys(lin145).map(function(k){return lin145[k]}),ch:CHL,su:SU,loc:{venta:r2(loc.venta),gan:r2(loc.gan),n:loc.n},abB:abB,merma:merma,cat:cat,op:r2(op),mant:r2(mant),fuera:r2(fuera),caja:cc,
   venta:r2(sum(CHL,function(o){return o.venta})+loc.venta),contado:r2(sum(CHL,function(o){return o.contado})+loc.venta),cred:r2(sum(CHL,function(o){return o.cred})),ab:r2(sum(CHL,function(o){return o.ab})+abB),
   R:sum(CHL,function(o){return o.R}),M:r2(sum(CHL,function(o){return o.M})),gan:r2(sum(CHL,function(o){return o.gan})+loc.gan),km:sum(CHL,function(o){return o.km}),desg:r2(sum(CHL,function(o){return o.desg})),su:SU,suT:r2(suT),comT:r2(comT),
   deb:r2(sum(CHL,function(o){return o.deb})),ent:r2(sum(CHL,function(o){return o.ent})),rec:r2(sum(CHL,function(o){return o.rec})),cierres:sum(CHL,function(o){return o.partes.filter(function(p){return p.sent||p.parcial}).length})};
  T.cR=r2(num(c.R));T.cM=r2(num(c.M));/* 142 */T.sinCosto=(T.R>0&&!(num(c.R)>0))||(T.M>0&&!(num(c.M)>0));T.neto=r2(T.gan-T.op-T.desg-T.suT-T.comT-T.merma);return T}
 /* varios días juntos (semana, mes) */
 function cuadreRango121(d0,d1){var D=[],d=d0,i=0,h=iso(TODAY);if(d1>h)d1=h;while(d<=d1&&i<370){D.push(cuadreDia121(d));d=addD121(d,1);i++}
- var A={dias:D,cat:{},venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,suT:0,comT:0,merma:0,op:0,mant:0,neto:0,deb:0,ent:0,rec:0,cierres:0,ch:{},su:{},loc:{venta:0,gan:0}};
+ var A={dias:D,lin145:{},cat:{},venta:0,contado:0,cred:0,ab:0,R:0,M:0,gan:0,km:0,desg:0,suT:0,comT:0,merma:0,op:0,mant:0,neto:0,deb:0,ent:0,rec:0,cierres:0,ch:{},su:{},loc:{venta:0,gan:0}};
  D.forEach(function(x){if(x.sinCosto)A.sinCosto=true;['venta','contado','cred','ab','abB','R','M','gan','km','desg','suT','comT','merma','op','mant','neto','deb','ent','rec','cierres'].forEach(function(k){A[k]=num(A[k])+num(x[k])});A.loc.venta+=x.loc.venta;A.loc.gan+=x.loc.gan;
-  Object.keys(x.cat).forEach(function(k){A.cat[k]=(A.cat[k]||0)+x.cat[k]});
+  Object.keys(x.cat).forEach(function(k){A.cat[k]=(A.cat[k]||0)+x.cat[k]});(x.lin||[]).forEach(function(y){var k=y.p+'|'+y.tp+'|'+y.pr,G=A.lin145[k]=A.lin145[k]||{p:y.p,tp:y.tp,pr:y.pr,q:0,m:0,c:y.c};G.q=r2(G.q+y.q);G.m=r2(G.m+y.m)});/* 145 */
   x.ch.forEach(function(o){var a=A.ch[o.ch]=A.ch[o.ch]||{ch:o.ch,n:o.n,venta:0,cred:0,gan:0,km:0,desg:0,gasT:0,sueldo:0,com:0,neto:0,cierres:0,dias:0,deb:0,ent:0,rec:0};['venta','cred','gan','km','desg','gasT','sueldo','com','neto','deb','ent','rec'].forEach(function(k){a[k]+=num(o[k])});if(o.comD){a.comCaj=(a.comCaj||0)+o.comD.cajas;a.comKg=(a.comKg||0)+o.comD.kg}a.cierres+=o.partes&&o.partes.length?o.partes.filter(function(p){return p.sent||p.parcial}).length:num(o.cierres);a.dias++});
   x.su.forEach(function(s){var a=A.su[s.ch]=A.su[s.ch]||{n:s.n,s:0,com:0,dias:0};a.s+=s.s;a.com+=s.com;if(s.s)a.dias++})});
- Object.keys(A).forEach(function(k){if(typeof A[k]==='number')A[k]=r2(A[k])});return A}
+ Object.keys(A).forEach(function(k){if(typeof A[k]==='number')A[k]=r2(A[k])});A.lin=Object.keys(A.lin145).map(function(k){return A.lin145[k]});return A}
 
 /* ---------- 128 · la comisión y el sueldo del día, explicados (solo números; la pantalla está en comHTML128) ----------
    Usa la MISMA cuenta que el sueldo (comDeLog de l18), entrega por entrega, así que el total es idéntico al que se resta.
@@ -114,6 +114,11 @@ function comFilas128(D){var F=[],n=function(x){return (Math.round(x*100)/100).to
  if(D.abonos>0.005)F.push(['Abonos de deudas de antes',money(D.abonos)+(D.pct?' × '+n(D.comP)+'%':' · igual que una venta ('+(D.comC&&D.precioR?money(D.comC)+' por cada '+money(D.precioR):money(D.comK)+' por cada '+money(D.precioM))+')'),D.abCom]);
  var s=r2(F.reduce(function(a,x){return a+r2(x[2])},0)),dif=r2(D.total-s);if(Math.abs(dif)>=0.005)F.push(['Centavos de redondeo','',dif]);return F}
 
+/* 145 · las ventas por producto, tipo de precio (Normal / Mayoreo / Especial) y precio, con lo que dejó cada grupo (precio − costo × cantidad) */
+function lin145Pon(G,l,c){if(!l||l.anul)return;['R','M'].forEach(function(p){var q=num(l[p]);if(!(q>0))return;var pr=num(p==='R'?(l.pr||S.precio.R):(l.pm||S.precio.M)),cu=num(p==='R'?c.R:c.M),
+  x=(typeof preciosLog135==='function'?preciosLog135(l):[]).filter(function(y){return y.p===p})[0],tp=x?(/mayoreo/i.test(x.txt)?'Mayoreo':'Especial'):'Normal',k=p+'|'+tp+'|'+pr,o=G[k]=G[k]||{p:p,tp:tp,pr:pr,q:0,m:0,c:cu};
+  o.q=r2(o.q+q);o.m=r2(o.m+q*(pr-cu))})}
+
 /* ---------- la pantalla ---------- */
 function comHTML128(o,k){var D=o.comD,ab=S.dOpen[k+'com']?' open':'';
  var h='<details data-k="'+k+'com"'+ab+'><summary style="display:flex;justify-content:space-between;align-items:flex-start;min-height:44px;gap:8px"><span>− Comisión por repartir<br><span class="lbl">lo que gana por lo que cobró · toca para ver cómo sale</span></span><b style="white-space:nowrap">'+money(o.com)+'</b></summary>';
@@ -126,51 +131,101 @@ function comHTML128(o,k){var D=o.comD,ab=S.dOpen[k+'com']?' open':'';
  if(D.filas.length)h+='<div class="lbl" style="margin-top:6px"><b>Entrega por entrega ('+D.filas.length+')</b></div>'+D.filas.map(function(x){return rwN121('&nbsp;&nbsp;'+esc(x.n)+(x.q?' · '+x.q:''),money(x.m),'',esc(x.nota))}).join('');
  return h+'</details>'}
 function rwN121(l,v,cls,sub){return '<div class="row" style="min-height:44px;align-items:flex-start"><span>'+l+(sub?'<br><span class="lbl">'+sub+'</span>':'')+'</span><b class="'+(cls||'')+'" style="white-space:nowrap">'+v+'</b></div>'}
-/* ---------- 144 · Ricardo: el resultado arriba "parecido al ticket" (como el corte de ruta), y al tocar un apartado (ventas, créditos,
-   comisiones…) se desglosa; con algo que brinque para que no se le olvide al administrador que se puede abrir. Las cuentas son las mismas. ---------- */
-function ctkM144(v){return typeof tkM143==='function'?tkM143(v):money(v)}
-function ctkR144(l,v,cls,sub){return '<div class="r144'+(cls?' '+cls:'')+'"><span>'+l+(sub?'<br><span class="s144">'+sub+'</span>':'')+'</span><b>'+v+'</b></div>'}
-/* un renglón que se abre: "▾ ver" brinca para recordar que tiene detalle */
-function ctkX144(k,l,v,det,cls,sub){var ab=S.dOpen&&S.dOpen[k];return '<details class="x144'+(cls?' '+cls:'')+'" data-k="'+k+'"'+(ab?' open':'')+'><summary class="r144"><span>'+l+' <span class="v144"></span>'+(sub?'<br><span class="s144">'+sub+'</span>':'')+'</span><b>'+v+'</b></summary><div class="d144">'+(det||'<div class="s144">Sin detalle.</div>')+'</div></details>'}
-function ctkCss144(){if(document.getElementById('css144'))return;var st=document.createElement('style');st.id='css144';st.textContent=
- '.ctk144{font-family:ui-monospace,Menlo,Consolas,"Roboto Mono",monospace;font-size:14px;padding:14px}'
- +'.ctk144 .c144{text-align:center}.ctk144 .eq{border-top:3px double var(--fg);margin:8px 0}.ctk144 .da{border-top:1px dashed var(--muted);margin:8px 0}'
- +'.r144{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;min-height:30px;padding:3px 0}.r144>b{white-space:nowrap}.r144.neg>b{color:var(--danger)}'
- +'.ctk144 details.x144>summary{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:10px}.ctk144 details.x144>summary::after,.ctk144 details.x144>summary::before{content:none!important;display:none!important}.ctk144 details.x144>summary>span{flex:1;min-width:0}'
- +'.s144{font-size:12px;color:var(--muted)}.x144>summary{list-style:none;cursor:pointer;border-left:3px solid var(--accent);padding-left:6px;margin-left:-9px;min-height:40px}.x144>summary::-webkit-details-marker{display:none}'
- +'.v144{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:0 6px;margin-left:4px;animation:brinca144 1.8s ease-in-out infinite}'
- +'.v144::before{content:"▾ ver"}.x144[open] .v144::before{content:"▴ cerrar"}.x144[open] .v144{animation:none}.d144{background:var(--bg);border-radius:8px;padding:6px 8px;margin:2px 0 8px}'
- +'@keyframes brinca144{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-4px)}90%{transform:translateY(0)}85%{transform:translateY(-1px)}}'
- +'@media (prefers-reduced-motion: reduce){.v144{animation:none}}';document.head.appendChild(st)}
-function resultadoHTML121(T,tit){try{ctkCss144()}catch(e){}var cat=Object.keys(T.cat||{}).sort(function(a,b){return T.cat[b]-T.cat[a]}),CH=T.ch?(Array.isArray(T.ch)?T.ch:Object.keys(T.ch).map(function(k){return T.ch[k]})):[],
-  SU=T.su?(Array.isArray(T.su)?T.su:Object.keys(T.su).map(function(k){return T.su[k]})):[],L=function(a){return a.join('')};
- var cuant=(T.R?T.R.toLocaleString('es-MX')+' cajas':'')+(T.R&&T.M?' · ':'')+(T.M?T.M.toLocaleString('es-MX')+' kg':'');
- /* ventas: por chofer, contado, crédito y a quién se le fió */
- var cre=[];CH.forEach(function(o){(o.creditos||[]).forEach(function(x){cre.push(ctkR144('&nbsp;&nbsp;'+esc(x.n),ctkM144(x.m),'neg',(x.R?x.R+' cj':'')+(x.M?' '+x.M+' kg':'')+(CH.length>1?' · '+esc(o.n):'')))})});
- var dV=L(CH.filter(function(o){return o.venta}).map(function(o){return ctkR144(esc(o.n),ctkM144(o.venta),'',(o.R?o.R+' cj':'')+(o.M?' · '+o.M+' kg':''))}))
-  +(T.loc&&T.loc.venta?ctkR144('Venta en bodega',ctkM144(T.loc.venta)):'')+'<div class="da"></div>'+ctkR144('(+) De contado',ctkM144(T.contado))+ctkR144('(−) A crédito (fiado)',ctkM144(T.cred),T.cred>0?'neg':'')
-  +(cre.length?'<div class="s144" style="margin-top:4px">A quién se le fió:</div>'+L(cre):'');
- var abo=[];CH.forEach(function(o){(o.abonos||[]).forEach(function(x){abo.push(ctkR144('&nbsp;&nbsp;'+esc(x.n),ctkM144(x.m),'',CH.length>1?esc(o.n):''))})});if(num(T.abB))abo.push(ctkR144('&nbsp;&nbsp;Cobrados en bodega',ctkM144(T.abB)));
- var dG=ctkR144('Ventas',ctkM144(T.venta))+ctkR144('(−) Lo que costó esa fruta',ctkM144(r2(T.venta-T.gan)))+(T.cR||T.cM?'<div class="s144">Costo usado (de tu última carga): '+[T.cR?'caja '+ctkM144(T.cR):'',T.cM?'kilo de macho '+ctkM144(T.cM):''].filter(Boolean).join(' · ')+'</div>':'');
- var dD=L(CH.filter(function(o){return o.km||o.desg}).map(function(o){return ctkR144(esc(o.n),ctkM144(o.desg),'',(o.km?Math.round(o.km).toLocaleString('es-MX')+' km':'sin km'))}));
- var dS=L(SU.filter(function(x){return num(x.s)}).map(function(x){return ctkR144(esc(x.n)+(x.vac?' (vacaciones)':''),ctkM144(x.s),'',x.sTx?esc(x.sTx):(x.dias?x.dias+' día'+(x.dias===1?'':'s'):''))}));
- var dC=L(CH.filter(function(o){return num(o.com)}).map(function(o){var F=o.comD&&typeof comFilas128==='function'?comFilas128(o.comD):[];return '<div style="margin-bottom:6px">'+ctkR144('<b>'+esc(o.n)+'</b>',ctkM144(o.com))+L(F.map(function(x){return ctkR144('&nbsp;&nbsp;'+x[0],(x[2]<0?'−':'')+ctkM144(Math.abs(x[2])),x[2]<0?'neg':'',x[1])}))+'</div>'}));
- if(!dC&&T.comT)dC='<div class="s144">'+comQuien128(T)+'</div>';
- var h='<div class="card ctk144" data-x="ctk144"><div class="c144"><b style="font-size:16px">💰 CUADRE</b><div>'+tit+'</div></div><div class="eq"></div>'
-  +ctkX144('cu144v','VENTAS',ctkM144(T.venta),dV,'',cuant)
-  +(T.ab||num(T.abB)?ctkX144('cu144a','(+) Abonos de deudas de antes',ctkM144(r2(num(T.ab)+num(T.abB))),L(abo),'','dinero que entró, no es venta nueva'):'')
-  +'<div class="da"></div>'
-  +(T.sinCosto?'<div class="card alert" style="padding:8px 10px;margin:6px 0;font-family:inherit"><b class="neg">Falta lo que te cuesta la caja o el kilo</b><div class="lbl">Sin ese costo la ganancia sale igual a la venta. Ponlo en "Datos que faltan" o registra la carga con su precio.</div></div>':'')
-  +ctkX144('cu144g','<b>GANANCIA DE LA FRUTA</b>',ctkM144(T.gan),dG,T.gan<0?'neg':'','ventas menos lo que costó esa fruta')
-  +(T.gan<-0.5&&T.venta>0?'<div class="card alert" style="padding:8px 10px;margin:6px 0;font-family:inherit"><b class="neg">La fruta salió con pérdida</b><div class="lbl">Vendiste '+money(T.venta)+' pero esa fruta te costó '+money(r2(T.venta-T.gan))+' según el costo de tu última carga'+(T.cR?' (la caja te sale en '+money(T.cR)+')':'')+'. Si no es real, revisa en Cargas los kilos, el precio por kilo, el flete y cuántas cajas salieron de esa carga.</div></div>':'')
-  +ctkX144('cu121op','(−) Gastos de operación',ctkM144(T.op),cat.length?L(cat.map(function(k){return ctkR144(esc(k),ctkM144(T.cat[k]))})):'')
-  +ctkX144('cu144d','(−) Desgaste de vehículos',ctkM144(T.desg),dD,'',(T.km?T.km.toLocaleString('es-MX')+' km':'sin kilómetros registrados'))
-  +ctkX144('cu144s','(−) Sueldos',ctkM144(T.suT),dS,'','sueldo por día trabajado (semanal ÷ 6)')
-  +(T.comT?ctkX144('cu144c','(−) Comisiones de los choferes',ctkM144(T.comT),dC,'','lo que ganan por lo que cobran'):'')
-  +(T.merma?ctkR144('(−) Merma',ctkM144(T.merma),'neg'):'')
-  +'<div class="eq"></div><div class="r144" style="align-items:center"><b style="font-size:18px">NETO</b><b style="font-size:26px;color:'+(T.neto<0?'var(--danger)':'var(--accent)')+'">'+ctkM144(T.neto)+'</b></div><div class="eq"></div>'
-  +(T.mant?'<div class="s144">Servicios y reparaciones de vehículos: '+ctkM144(T.mant)+'. Se pagan del fondo del desgaste; no se restan otra vez.</div>':'')
-  +'<div class="s144 c144" style="margin-top:4px">Toca lo que dice <b>▾ ver</b> para ver el detalle</div></div>';
+/* ---------- 145 · Ricardo mandó un diseño para el resultado de arriba del Cuadre ("el de ticket se ve muy revuelto; este me parece mucho
+   mejor, compleméntalo con la información que tenemos"): tarjeta verde con la ganancia neta y el margen, barra de "¿a dónde se fue tu
+   ganancia de fruta?", avisos que se tocan, y dos grupos de renglones que se abren (Flujo de ventas e ingresos · Gastos y comisiones),
+   con la flecha que brinca para recordar que se pueden abrir. Sin Tailwind ni letras de internet (la app funciona sin señal).
+   Las cuentas son las mismas (cuadreDia121 / cuadreRango121). ---------- */
+function cdM145(v){return typeof tkM143==='function'?tkM143(v):money(v)}
+function cdCss145(){if(document.getElementById('css145'))return;var st=document.createElement('style');st.id='css145';st.textContent=[
+ '.cd145{display:flex;flex-direction:column;gap:14px;margin:6px 0 12px}',
+ '.cd145 .k5hero{background:linear-gradient(135deg,#14532D 0%,#166534 100%);color:#fff;border-radius:18px;padding:18px;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(5,46,22,.25)}',
+ '.cd145 .k5hero:before{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:rgba(250,204,21,.10)}',
+ '.cd145 .k5hb{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}',
+ '.cd145 .k5chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:99px;padding:3px 10px}',
+ '.cd145 .k5chip.y{background:#FACC15;color:#14532D}.cd145 .k5chip.d{background:rgba(0,0,0,.25);color:#FEF08A;border:1px solid rgba(253,224,71,.25);text-transform:none;letter-spacing:0}',
+ '.cd145 .k5hero .k5big{color:#fff;font-size:36px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px;font-variant-numeric:tabular-nums}',
+ '.cd145 .k5pills{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)}',
+ '.cd145 .k5pill{border-radius:12px;padding:8px 12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.1);font-variant-numeric:tabular-nums}.cd145 .k5pill.o{background:rgba(0,0,0,.2)}',
+ '.cd145 .k5pill span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#A7F3D0;font-weight:700}.cd145 .k5pill.o span{color:#FECDD3}.cd145 .k5pill b{font-size:15px;color:#fff!important}.cd145 .k5pill.o b{color:#FECDD3!important}',
+ '.cd145 .k5card2{background:var(--card,#fff);border:1px solid var(--line);border-radius:18px;padding:14px}',
+ '.cd145 .k5bar{display:flex;gap:2px;height:14px;border-radius:99px;overflow:hidden;background:var(--bg);border:1px solid var(--line);padding:2px;margin-top:8px}.cd145 .k5bar i{display:block;height:100%}',
+ '.cd145 .k5ley{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-size:12px;font-variant-numeric:tabular-nums}.cd145 .k5ley div{display:flex;justify-content:space-between;align-items:center}',
+ '.cd145 .k5sq{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}',
+ '.cd145 .k5tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-radius:8px;padding:3px 8px}',
+ '.cd145 .k5alert2{background:#FEF2F2;border:1px solid #FECACA;border-left:4px solid #DC2626;border-radius:16px;padding:12px 14px;color:#7F1D1D}.cd145 .k5alert2 b{color:#450A0A}.cd145 .k5alert2 .btn{width:auto;min-height:40px;margin-top:8px;background:#DC2626;color:#fff;border:0}',
+ '.cd145 .k5sec h3{display:flex;justify-content:space-between;align-items:center;margin:0 4px 6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.cd145 .k5sec h3 small{font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted)}',
+ '.cd145 .k5grp{background:var(--card,#fff);border:1px solid var(--line);border-radius:18px;overflow:hidden}',
+ '.cd145 details.k5ac{border-top:1px solid var(--line)}.cd145 details.k5ac:first-child{border-top:0}',
+ '.cd145 details.k5ac>summary{list-style:none;display:flex!important;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;cursor:pointer;min-height:56px}',
+ '.cd145 details.k5ac>summary::-webkit-details-marker{display:none}.cd145 details.k5ac>summary::after,.cd145 details.k5ac>summary::before{content:none!important;display:none!important}',
+ '.cd145 .k5ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}',
+ '.cd145 .k5tt{flex:1;min-width:0}.cd145 .k5tt b{display:block;font-size:14px}.cd145 .k5tt small{display:block;font-size:12px;color:var(--muted);margin-top:1px}',
+ '.cd145 .k5am{font-weight:800;font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums}',
+ '.cd145 .k5chev{display:inline-block;margin-left:6px;color:var(--muted);transition:transform .25s;animation:chev145 2.2s ease-in-out infinite}',
+ '.cd145 details.k5ac[open] .k5chev{transform:rotate(180deg);animation:none}',
+ '@keyframes chev145{0%,70%,100%{transform:translateY(0)}78%{transform:translateY(3px)}86%{transform:translateY(0)}92%{transform:translateY(2px)}}',
+ '@media (prefers-reduced-motion: reduce){.cd145 .k5chev{animation:none}}',
+ '.cd145 .k5det{padding:10px 14px 12px;border-top:1px solid var(--line);background:var(--bg);font-size:13px}',
+ '.cd145 .k5li>span{flex:1;min-width:0}.cd145 .k5li{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:5px 0;font-variant-numeric:tabular-nums}.cd145 .k5li>b{white-space:nowrap}.cd145 .k5li small{display:block;color:var(--muted);font-size:11px}',
+ '.cd145 .k5sub{background:var(--card,#fff);border:1px solid var(--line);border-left:3px solid #BE123C;border-radius:12px;padding:8px 10px;margin:6px 0}',
+ '.cd145 .k5pos{color:#15803D}.cd145 .k5neg2{color:#BE123C}.cd145 .k5note2{font-size:11px;color:var(--muted);padding-top:6px;border-top:1px solid var(--line);margin-top:4px}'
+ ].join('');document.head.appendChild(st)}
+function cdAc145(k,ic,icBg,icFg,tit,sub,amt,amtCls,det,bg){var ab=S.dOpen&&S.dOpen[k];
+ return '<details class="k5ac" data-k="'+k+'"'+(ab?' open':'')+(bg?' style="background:'+bg+'"':'')+'><summary><span class="k5ic" style="background:'+icBg+';color:'+icFg+'">'+ic+'</span><span class="k5tt"><b>'+tit+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><span class="k5am '+(amtCls||'')+'">'+amt+'<span class="k5chev">▾</span></span></summary><div class="k5det">'+(det||'<div class="k5li"><span>Sin detalle.</span></div>')+'</div></details>'}
+function cdLi145(l,v,sub,cls){return '<div class="k5li"><span>'+l+(sub?'<small>'+sub+'</small>':'')+'</span><b class="'+(cls||'')+'">'+v+'</b></div>'}
+function cdTag145(tp){var c=tp==='Mayoreo'?'background:#FEF3C7;color:#92400E':(tp==='Especial'?'background:#EDE9FE;color:#5B21B6':'background:#DCFCE7;color:#166534');return ' <span class="k5tag" style="'+c+'">'+tp+'</span>'}
+function resultadoHTML121(T,tit){try{cdCss145()}catch(e){}
+ var CH=T.ch?(Array.isArray(T.ch)?T.ch:Object.keys(T.ch).map(function(k){return T.ch[k]})):[],SU=T.su?(Array.isArray(T.su)?T.su:Object.keys(T.su).map(function(k){return T.su[k]})):[],J=function(a){return a.join('')};
+ var cat=Object.keys(T.cat||{}).sort(function(a,b){return T.cat[b]-T.cat[a]}),LIN=(T.lin||[]).slice().sort(function(a,b){return (a.p===b.p?0:(a.p==='R'?-1:1))||(a.tp==='Normal'?-1:1)}),
+  gastosT=r2(num(T.op)+num(T.desg)+num(T.suT)+num(T.comT)+num(T.merma)),marg=num(T.venta)>0?Math.round(num(T.neto)/num(T.venta)*1000)/10:0,
+  cuant=(T.R?T.R.toLocaleString('es-MX')+' cajas':'')+(T.R&&T.M?' · ':'')+(T.M?T.M.toLocaleString('es-MX')+' kg':'')+(T.R||T.M?' vendidos':'sin ventas');
+ /* 1 · tarjeta verde */
+ var h='<div class="cd145"><div class="k5hero"><div class="k5hb"><span class="k5chip y">💰 Ganancia neta</span><span class="k5chip d">● Margen libre: '+marg.toLocaleString('es-MX')+'%</span></div>'
+  +'<div class="small" style="opacity:.85;margin-top:6px;font-size:12px">'+tit+'</div><div class="k5big" style="'+(T.neto<0?'color:#FECACA':'')+'">'+cdM145(T.neto)+'</div>'
+  +'<div class="k5pills"><div class="k5pill"><span>Ganancia fruta</span><b>'+cdM145(T.gan)+'</b></div><div class="k5pill o"><span>Gastos y com.</span><b>'+(gastosT?'-':'')+cdM145(gastosT)+'</b></div></div></div>';
+ /* 2 · ¿a dónde se fue tu ganancia de fruta? */
+ var seg=[['Libre (neto)',Math.max(0,num(T.neto)),'#166534'],['Sueldos',num(T.suT),'#7C3AED'],['Comisiones',num(T.comT),'#E11D48'],['Vehículo',num(T.desg),'#D97706'],['Gastos',num(T.op),'#475569'],['Merma',num(T.merma),'#0EA5E9']].filter(function(x){return x[1]>0.005||x[0]==='Libre (neto)'}),
+  base=seg.reduce(function(a,x){return a+x[1]},0),pct=function(v){return base>0?Math.round(v/base*1000)/10:0},bueno=num(T.neto)>=0&&num(T.gan)>0;
+ if(base>0)h+='<div class="k5card2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><b style="font-size:13px">¿A dónde se fue tu ganancia de fruta?</b><div style="font-size:11px;color:var(--muted)">Reparto de los <b>'+cdM145(Math.max(num(T.gan),0))+'</b> de ganancia de la fruta</div></div>'
+  +'<span class="k5tag" style="'+(bueno?'background:#D1FAE5;color:#065F46':'background:#FEE2E2;color:#991B1B')+'">'+(bueno?'Día rentable':'Día con pérdida')+'</span></div>'
+  +'<div class="k5bar">'+J(seg.map(function(x){return x[1]>0?'<i style="width:'+pct(x[1])+'%;background:'+x[2]+'" title="'+x[0]+'"></i>':''}))+'</div>'
+  +'<div class="k5ley">'+J(seg.map(function(x){return '<div><span><span class="k5sq" style="background:'+x[2]+'"></span>'+x[0]+'</span><b>'+pct(x[1]).toLocaleString('es-MX')+'%</b></div>'}))+'</div>'
+  +(num(T.neto)<0?'<div style="font-size:11px;color:#991B1B;margin-top:6px">Los gastos pasaron la ganancia de la fruta por '+cdM145(-num(T.neto))+'.</div>':'')+'</div>';
+ /* 3 · avisos que se tocan */
+ if(T.sinCosto)h+='<div class="k5alert2"><b>⚠️ Falta el costo de la caja o el kilo</b><div style="font-size:12px;margin-top:2px">Sin ese costo la ganancia sale inflada: parece que la fruta no costó nada.</div><button class="btn" data-act="tab" data-t="cargas">Completar costos →</button></div>';
+ if(T.gan<-0.5&&T.venta>0)h+='<div class="k5alert2"><b>⚠️ La fruta salió con pérdida</b><div style="font-size:12px;margin-top:2px">Vendiste '+cdM145(T.venta)+' pero esa fruta te costó '+cdM145(r2(T.venta-T.gan))+' según el costo de tu última carga'+(T.cR?' (la caja te sale en '+cdM145(T.cR)+')':'')+'. Si no es real, revisa los kilos, el precio por kilo, el flete y cuántas cajas salieron de esa carga.</div><button class="btn" data-act="tab" data-t="cargas">Revisar cargas →</button></div>';
+ /* 4 · flujo de ventas e ingresos */
+ var dV=J(LIN.map(function(x){return cdLi145((x.p==='R'?'Plátano Roatán':'Plátano Macho')+cdTag145(x.tp),cdM145(x.q*x.pr),x.q.toLocaleString('es-MX')+(x.p==='R'?' cajas × '+cdM145(x.pr)+' c/u':' kg × '+cdM145(x.pr)+' / kg'))}))
+  +(T.loc&&T.loc.venta?cdLi145('Venta en bodega',cdM145(T.loc.venta),T.loc.n+' venta'+(T.loc.n===1?'':'s')):'')
+  +'<div class="k5note2">'+cdLi145('(+) De contado',cdM145(T.contado))+cdLi145('(−) A crédito (fiado)',cdM145(T.cred),'',T.cred>0?'k5neg2':'')
+  +J(CH.map(function(o){return J((o.creditos||[]).map(function(x){return cdLi145('&nbsp;&nbsp;↳ '+esc(x.n),cdM145(x.m),(x.R?x.R+' cj':'')+(x.M?' '+x.M+' kg':'')+(CH.length>1?' · '+esc(o.n):''),'k5neg2')}))}))
+  +(CH.length>1?J(CH.filter(function(o){return o.venta}).map(function(o){return cdLi145('Vendió '+esc(o.n),cdM145(o.venta))})):'')
+  +'Total vendido en el día (contado y crédito).</div>';
+ var abo=[];CH.forEach(function(o){(o.abonos||[]).forEach(function(x){abo.push(cdLi145(esc(x.n),'+'+cdM145(x.m),CH.length>1?esc(o.n):'','k5pos'))})});if(num(T.abB))abo.push(cdLi145('Cobrados en bodega','+'+cdM145(T.abB),'','k5pos'));
+ var dG='<div class="k5sub" style="border-left-color:#16A34A">'+J(LIN.map(function(x){return cdLi145((x.p==='R'?'Roatán':'Macho')+' · '+x.tp+' <span class="k5tag" style="background:#DCFCE7;color:#166534">'+x.q.toLocaleString('es-MX')+(x.p==='R'?' cj':' kg')+'</span>',(x.m>=0?'+':'-')+cdM145(Math.abs(x.m)),'Venta '+cdM145(x.pr)+' − costo '+(x.c?cdM145(x.c):'(falta)')+(x.p==='R'?' c/u':' /kg'),x.m>=0?'k5pos':'k5neg2')}))
+  +(T.loc&&T.loc.venta?cdLi145('Venta en bodega',(T.loc.gan>=0?'+':'-')+cdM145(Math.abs(T.loc.gan)),'','k5pos'):'')+'</div>'
+  +'<div class="k5note2"><b>Ventas menos costo de compra.</b> De aquí se descuentan gastos, vehículo, sueldos y comisiones para sacar tu neto.'+(T.cR||T.cM?' Costo usado (de tu última carga): '+[T.cR?'caja '+cdM145(T.cR):'',T.cM?'kilo de macho '+cdM145(T.cM):''].filter(Boolean).join(' · ')+'.':'')+'</div>';
+ h+='<div class="k5sec"><h3><span style="color:#065F46">● Flujo de ventas e ingresos</span><small>Toca para desglosar</small></h3><div class="k5grp">'
+  +cdAc145('cu145v','🛍️','#DCFCE7','#15803D','Ventas del día',cuant,cdM145(T.venta),'',dV)
+  +(num(T.ab)||num(T.abB)?cdAc145('cu145a','💵','#E0F2FE','#0369A1','Abonos cobrados','Deudas de días anteriores','+'+cdM145(r2(num(T.ab)+num(T.abB))),'',J(abo)+'<div class="k5note2">Dinero que entró hoy de cuentas pasadas, <b>no es venta nueva</b>. Cuenta para el efectivo en caja y para la comisión por cobro.</div>'):'')
+  +cdAc145('cu145g','📈','#BBF7D0','#14532D','Ganancia bruta de la fruta','Ventas menos costo de la fruta',cdM145(T.gan),T.gan<0?'k5neg2':'k5pos',dG,'#F0FDF4')+'</div></div>';
+ /* 5 · gastos y comisiones */
+ var dO=cat.length?J(cat.map(function(k){return cdLi145(esc(k),'-'+cdM145(T.cat[k]))})):'<div class="k5li"><span>Sin gastos registrados (casetas, comida, combustible…).</span></div>';
+ var dD=J(CH.map(function(o){var V=o.veh?Object.keys(o.veh).map(function(k){return o.veh[k]}):[];if(V.length)return J(V.map(function(v){return cdLi145(esc(v.n)+(CH.length>1?' · '+esc(o.n):''),'-'+cdM145(v.desg),Math.round(v.km).toLocaleString('es-MX')+' km × '+cdM145(v.tasa)+'/km')}));
+  return o.km||o.desg?cdLi145(esc(o.n),'-'+cdM145(o.desg),Math.round(num(o.km)).toLocaleString('es-MX')+' km'):''}));
+ var dS=J(SU.filter(function(x){return num(x.s)}).map(function(x){return cdLi145(esc(x.n)+(x.vac?' (vacaciones)':''),'-'+cdM145(x.s),x.sTx?esc(x.sTx):(x.dias?x.dias+' día'+(x.dias===1?'':'s')+' trabajado'+(x.dias===1?'':'s'):''))}));
+ var dC=J(CH.filter(function(o){return num(o.com)}).map(function(o){var F=o.comD&&typeof comFilas128==='function'?comFilas128(o.comD):[];
+  return '<div class="k5sub"><div class="k5li"><span><b>'+esc(o.n)+'</b><small>Repartidor</small></span><b class="k5neg2">-'+cdM145(o.com)+'</b></div>'+J(F.map(function(x){return cdLi145(x[0],(x[2]<0?'-':'+')+cdM145(Math.abs(x[2])),x[1],x[2]<0?'k5neg2':'')}))+'</div>'}));
+ if(!dC&&num(T.comT))dC='<div class="k5li"><span>'+comQuien128(T)+'</span></div>';
+ var nCh=CH.filter(function(o){return num(o.com)}).length;
+ h+='<div class="k5sec"><h3><span style="color:#9F1239">● Gastos y comisiones</span><small class="k5neg2" style="font-weight:800">'+(gastosT?'-':'')+cdM145(gastosT)+'</small></h3><div class="k5grp">'
+  +cdAc145('cu121op','🧾','#F1F5F9','#334155','Gastos de operación','Casetas, comida, combustible…',(num(T.op)?'-':'')+cdM145(T.op),'',dO)
+  +cdAc145('cu145d','🚚','#FEF3C7','#B45309','Desgaste de vehículos',(T.km?T.km.toLocaleString('es-MX')+' km recorridos':'sin kilómetros registrados'),(num(T.desg)?'-':'')+cdM145(T.desg),'',dD||'<div class="k5li"><span>Sin kilómetros registrados.</span></div>')
+  +cdAc145('cu145s','👷','#EDE9FE','#6D28D9','Sueldos','Proporcional del día (semanal ÷ 6)',(num(T.suT)?'-':'')+cdM145(T.suT),'',dS||'<div class="k5li"><span>Nadie trabajó o no tiene sueldo.</span></div>')
+  +(num(T.comT)?cdAc145('cu145c','🤝','#FFE4E6','#BE123C','Comisiones de choferes',nCh+' repartidor'+(nCh===1?'':'es')+' · lo que ganan por lo que cobran','-'+cdM145(T.comT),'k5neg2','<div style="font-size:12px;color:var(--muted);margin-bottom:4px">Lo que ganan por lo que cobran en ruta:</div>'+dC):'')
+  +(num(T.merma)?cdAc145('cu145m','🗑️','#E0F2FE','#0369A1','Merma','Fruta que se echó a perder','-'+cdM145(T.merma),'k5neg2',''):'')+'</div></div>'
+  +(T.mant?'<div style="font-size:11px;color:var(--muted);margin:0 4px">Servicios y reparaciones de vehículos: '+cdM145(T.mant)+'. Se pagan del fondo del desgaste; no se restan otra vez.</div>':'')+'</div>';
  return h}
 function cajaHTML121(T,dia){var dif=r2(T.ent-T.deb);
  return '<div class="card" style="padding:14px"><b style="font-size:17px">💵 Cuadre del dinero</b>'

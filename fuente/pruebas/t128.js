@@ -38,18 +38,18 @@ ok(/Comisión por repartir/.test(r)&&/lo que gana por lo que cobró/.test(r),'en
 ok(/Cómo gana su comisión/.test(r)&&/\$5 por cada caja que cobra y \$0\.50 por cada kilo que cobra/.test(r)&&/lo fiado le cuenta el día que se cobre/.test(r),'explica cómo la gana');
 ok(/Cajas pagadas completas/.test(r)&&/Kilos pagados completos/.test(r)&&/Pagadas en parte/.test(r)&&/Mayoreo que dio él/.test(r)&&/Abonos de deudas de antes/.test(r)&&/Comisión del día/.test(r),'resumen: cajas, kilos, mayoreo, abonos y total');
 ok(/Quedó fiado \$1,050/.test(r)&&/Entrega por entrega \(5\)/.test(r)&&/Doña Mary · 10 cajas y 4 kg/.test(r),'lo fiado y cada entrega',(r.match(/Entrega por entrega[\s\S]{0,300}/)||[''])[0]);
-r2t=await ev(()=>{var c=document.querySelector('[data-x="ctk144"]');var css=(document.getElementById('css144')||{}).textContent||'';return [c?c.querySelectorAll('details.x144').length:0,c?c.querySelectorAll('details.x144 .v144').length:0,/brinca144/.test(css),/content:"▾ ver"/.test(css),c?getComputedStyle(c).fontFamily:'']});
-ok(r2t[0]>=6&&r2t[1]===r2t[0]&&r2t[2]&&r2t[3]&&/mono/i.test(r2t[4]),'144 · el Cuadre arriba es como el ticket: letra fija, renglones que se abren con "▾ ver" que brinca',r2t);
-r2t=await ev(()=>{var x=document.querySelector('[data-k="cu144c"]');return x?x.textContent:''});ok(/Comisiones de los choferes/.test(r2t)&&/Danu\s*\$92\.91/.test(r2t)&&/Cajas pagadas completas/.test(r2t),'arriba, al abrir Comisiones: de quién es cada una y su desglose',r2t.slice(0,200));
+r2t=await ev(()=>{var c=document.querySelector('.cd145');var css=(document.getElementById('css145')||{}).textContent||'';return [c?c.querySelectorAll('details.k5ac').length:0,c?c.querySelectorAll('details.k5ac .k5chev').length:0,/chev145/.test(css),!!(c&&c.querySelector('.k5hero')),!!(c&&c.querySelector('.k5bar'))]});
+ok(r2t[0]>=6&&r2t[1]===r2t[0]&&r2t[2]&&r2t[3]&&r2t[4],'145 · el Cuadre arriba con el diseño de Ricardo: tarjeta verde, barra de reparto, renglones que se abren con flecha que brinca',r2t);
+r2t=await ev(()=>{var x=document.querySelector('[data-k="cu145c"]');return x?x.textContent:''});ok(/Comisiones de choferes/.test(r2t)&&/Danu[\s\S]{0,20}-\$92\.91/.test(r2t)&&/Cajas pagadas completas/.test(r2t),'arriba, al abrir Comisiones: de quién es cada una y su desglose',r2t.slice(0,200));
 ok(/base de \$1,500 a la semana ÷ 6 días/.test(r),'el sueldo del día dice cómo sale');
 /* por porcentaje */
 r=await ev(()=>{var D=S.choferes.filter(c=>c.id===window.__D)[0];D.sz.comModo='pct';D.sz.comP='3';var T=cuadreDia121('2026-11-18'),o=T.ch[0];return {com:o.com,F:comFilas128(o.comD),tot:o.comD.total}});
 ok(r.tot===r.com&&Math.abs(r.F.reduce((a,x)=>a+x[2],0)-r.com)<0.005&&r.F[0][0]==='Cobrado en sus entregas'&&/× 3%/.test(r.F[0][1]),'por porcentaje: cobrado × 3% y abonos × 3%, suma exacto',r);
 /* semana: sueldo y comisión separados */
 r=await ev(()=>{var D=S.choferes.filter(c=>c.id===window.__D)[0];D.sz.comModo='unidad';S.cu121p='semana';render();return document.querySelector('main').innerText});
-ok(/sueldo \$[\d,.]+ \+ comisión \$92\.91 \(20 cajas y 4 kg pagados completos\)/.test(r)&&/Comisiones de los choferes/.test(r),'semana: sueldo y comisión por separado y de quién es cada comisión',(r.match(/Sueldo y comisión[\s\S]{0,120}/)||[r.slice(0,300)])[0]);
+ok(/sueldo \$[\d,.]+ \+ comisión \$92\.91 \(20 cajas y 4 kg pagados completos\)/.test(r)&&/Comisiones de choferes/.test(r),'semana: sueldo y comisión por separado y de quién es cada comisión',(r.match(/Sueldo y comisión[\s\S]{0,120}/)||[r.slice(0,300)])[0]);
 r=await ev(()=>{S.cu121p='mes';render();return [document.querySelector('main').innerText,(S.probs||[]).some(x=>/filter is not a function/.test(x.txt||''))]});
-ok(/Comisiones de los choferes/.test(r[0])&&!r[1],'mes: también sin tronar',r[0].slice(0,120));
+ok(/Comisiones de choferes/.test(r[0])&&!r[1],'mes: también sin tronar',r[0].slice(0,120));
 /* un día que ya solo tiene el resumen */
 r=await ev(()=>{var T=cuadreDia121('2026-11-18'),o=JSON.parse(JSON.stringify(T.ch[0]));delete o.comD;return comHTML128(o,'x')});
 ok(/ya no se guarda/.test(r),'día viejo (solo el resumen): lo dice en vez de tronar');

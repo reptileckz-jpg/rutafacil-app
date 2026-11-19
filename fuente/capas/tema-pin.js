@@ -72,3 +72,31 @@ var _entC58=entrarComo;entrarComo=function(){_pinAuth={};return _entC58.apply(th
    (cerrar la sesión de la cuenta y entrar con otra). */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="usrcambia"]');if(!b)return;var L=[];try{L=personasEntrar()}catch(er){}
  if(!(typeof NB!=='undefined'&&NB.on&&NB.perfil)||L.length>1)return;e.stopImmediatePropagation();S.menu=false;S.usrSel=false;var k=(_pin&&_pin.k)||pinKey();S.px={t:'otro',k:k};render()},true);
+
+/* 158 · Ricardo: "una vez que le das a cerrar sesión y pones la huella, te manda a la pantalla donde pones el correo, pero eso está mal".
+   Escogió (con "haz todo lo que me dijiste") la opción B: cada quien sigue con su cuenta, pero la pantalla "Entrar" ya no pide escribir el
+   usuario o el correo: muestra los nombres de quienes ya entraron en ESTE celular ("¿Quién eres?"); tocas el tuyo y solo pones tu contraseña.
+   "Otra persona" abre la pantalla de siempre. Se recuerdan en el celular (localStorage 'rec158': usuario o correo, nombre y papel; nunca
+   la contraseña), hasta 8, el último primero; "Quitar de la lista" para borrar a alguien. */
+function rec158L(){try{var L=JSON.parse(localStorage.getItem('rec158')||'[]');return Array.isArray(L)?L.filter(function(x){return x&&x.u}):[]}catch(e){return []}}
+function rec158Pon(L){try{localStorage.setItem('rec158',JSON.stringify(L.slice(0,8)))}catch(e){}}
+function rec158Guarda(){try{if(typeof NB==='undefined'||!NB.on||!NB.listo||!NB.user||!NB.perfil||NB.perfil.activo!==true)return;var p=NB.perfil,u=p.usuario||NB.user.email;if(!u)return;
+ var n=p.nombre||'';if(!n&&p.chId!=null){try{n=chofN(p.chId)}catch(e){}}if(!n)n=String(u).split('@')[0];var rol={admin:'Administrador',chofer:'Chofer',cont:'Contador',local:'Venta local'}[p.rol]||'';
+ var L=rec158L(),i=-1;L.forEach(function(x,j){if(x.u===u)i=j});var o={u:u,n:n,r:rol};if(i===0&&L[0].n===n&&L[0].r===rol)return;if(i>-1)L.splice(i,1);L.unshift(o);rec158Pon(L)}catch(e){}}
+setInterval(rec158Guarda,20000);setTimeout(rec158Guarda,6000);
+var NBF158={i:null,otro:false};
+var _nbOv158=nbOvHTML;nbOvHTML=function(){var h=_nbOv158.apply(this,arguments);try{if(NB.est!=='login'||NBF.modo==='crear'||NBF158.otro)return h;var L=rec158L();if(!L.length)return h;
+ var w='<div class="nbw">'+nbLogo(),x=NBF158.i!=null?L[NBF158.i]:null,pie=(NBF.err?'<div class="nberr">'+esc(NBF.err)+'</div>':'')+(NBF.msg?'<div class="nbok">'+esc(NBF.msg)+'</div>':'');
+ if(!x)return w+'<h1>¿Quién eres?</h1><p>Toca tu nombre y escribe tu contraseña.</p>'+L.map(function(p,i){return '<button class="nbsec" data-nb="rec158" data-i="'+i+'" style="text-align:left;padding:8px 16px;display:flex;flex-direction:column;gap:2px"><span style="font-size:18px;font-weight:800">'+esc(p.n)+'</span>'+(p.r?'<span class="lbl" style="font-size:14px">'+esc(p.r)+'</span>':'')+'</button>'}).join('')
+  +pie+'<button class="nblink" data-nb="otro158">Otra persona (escribir usuario o correo)</button></div>';
+ return w+'<h1>Hola, '+esc(x.n)+'</h1><p>Escribe tu contraseña para entrar. Después entras con tu PIN.</p><input id="nbu" type="hidden" value="'+esc(x.u)+'"><label for="nbp">Contraseña</label><input id="nbp" type="password" autocomplete="current-password">'
+  +pie+'<button class="nbbtn" data-nb="entrar"'+(NBF.ocupado?' disabled':'')+'>'+(NBF.ocupado?'Entrando…':'Entrar')+'</button><button class="nblink" data-nb="olvide">Olvidé mi contraseña</button>'
+  +'<button class="nbsec" data-nb="rec158x">No soy '+esc(x.n)+'</button><button class="nblink" data-nb="rec158q" data-i="'+NBF158.i+'" style="font-size:14px">Quitar a '+esc(x.n)+' de este celular</button></div>'}catch(e){return h}};
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#nbov [data-nb]');if(!b)return;var a=b.dataset.nb;if(['rec158','rec158x','rec158q','otro158'].indexOf(a)<0)return;e.stopImmediatePropagation();e.preventDefault();NBF.err='';NBF.msg='';
+ if(a==='rec158'){NBF158.i=+b.dataset.i;NBF.u=(rec158L()[NBF158.i]||{}).u||''}
+ else if(a==='rec158x'){NBF158.i=null}
+ else if(a==='otro158'){NBF158.otro=true;NBF158.i=null;NBF.u=''}
+ else if(a==='rec158q'){var L=rec158L();L.splice(+b.dataset.i,1);rec158Pon(L);NBF158.i=null}
+ _nbSig='';nbPantalla();var p=document.getElementById('nbp');if(p&&a==='rec158')try{p.focus()}catch(er){}},true);
+/* "Otra persona" regresa a "¿Quién eres?" cuando se vuelve a cerrar la sesión */
+var _nbP158=nbPantalla;nbPantalla=function(){if(typeof NB!=='undefined'&&NB.est!=='login'){NBF158.otro=false;NBF158.i=null}return _nbP158.apply(this,arguments)};

@@ -231,3 +231,16 @@ var _aj139=ajHTML;ajHTML=function(){var h=_aj139.apply(this,arguments);try{if(!h
  var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fotogas139"]');if(!b)return;e.stopImmediatePropagation();S.cfg=S.cfg||{};S.cfg.fotoGas=b.dataset.v==='opc'?'opc':'';
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'La foto del tablero de gasolina ahora es '+(S.cfg.fotoGas==='opc'?'opcional':'obligatoria')});toast(S.cfg.fotoGas==='opc'?'La foto de la gasolina es opcional':'La foto de la gasolina es obligatoria');render()},true);
+
+/* ---------- 153/155/157 · Ajustes → "🛡️ Controles": contar billetes en el cierre (obligatorio u opcional), cada cuántos días toca
+   recordarle a un cliente que debe, y el % de merma a partir del cual te avisa ---------- */
+var _aj153=ajHTML;ajHTML=function(){var h=_aj153.apply(this,arguments);try{if(!h||S.role!=='admin'||S.encOn)return h;var cf=S.cfg||{},ob=cf.bill153!=='opc';
+ var x='<details class="card" data-k="aj153"'+(S.dOpen&&S.dOpen.aj153?' open':'')+'><summary><b>🛡️ Controles</b><span class="lbl">billetes: '+(ob?'obligatorio':'opcional')+' · merma: '+lim157()+'% · recordar cada '+cada155()+' días</span></summary>'
+  +'<div class="lbl" style="margin-top:8px"><b>💵 Contar billetes en el cierre</b><br>El chofer pone cuántos billetes de cada uno entrega y la app suma (menos errores y menos "me faltaron $50").</div>'
+  +'<div class="chips" role="group" aria-label="Contar billetes" style="margin-top:6px"><button data-act="bill153" data-v="obl" aria-pressed="'+ob+'">Obligatorio</button><button data-act="bill153" data-v="opc" aria-pressed="'+!ob+'">Opcional</button></div>'
+  +'<div class="field" style="margin-top:10px"><label for="cfg_merma157">🍌 Avisar si la merma de la semana pasa de (%)</label><input id="cfg_merma157" type="number" inputmode="decimal" min="1" data-c157="merma157" value="'+esc(cf.merma157||'5')+'" style="width:90px"></div>'
+  +'<div class="field" style="margin-top:6px"><label for="cfg_cb155">📲 Recordarle a un cliente que debe cada (días)</label><input id="cfg_cb155" type="number" inputmode="numeric" min="1" data-c157="cb155" value="'+esc(cf.cb155||'7')+'" style="width:90px"></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="bill153"]');if(!b)return;e.stopImmediatePropagation();S.cfg=S.cfg||{};S.cfg.bill153=b.dataset.v==='opc'?'opc':'';
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Contar billetes en el cierre ahora es '+(S.cfg.bill153==='opc'?'opcional':'obligatorio')});toast(S.cfg.bill153==='opc'?'Contar billetes es opcional':'Contar billetes es obligatorio');render()},true);
+document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.c157)return;var v=num(t.value);if(!(v>0)){toast('Escribe un número mayor que 0');render();return}S.cfg=S.cfg||{};S.cfg[t.dataset.c157]=String(v);toast('Guardado');render()},true);

@@ -77,3 +77,38 @@ var _cmMad71=cmMadHTML;cmMadHTML=function(){var h=_cmMad71.apply(this,arguments)
 
 /* cmValida · de l71 */
 var _cmV71=cmValida;cmValida=function(k){var e=_cmV71.apply(this,arguments);if(e||k!=='madurar')return e;var m=S.cm;if(m.mad==='si'){var f=['R','M'].filter(function(p){return m[p]&&num(m['mad'+p])>0&&!(num((m.mz&&m.mz[p]||{}).h)>0)});if(f.length)return 'Escribe en cuántas horas los sacas de madurar'}return ''};
+
+/* ---------- 150 · Ricardo: "haz todo lo que me dijiste" (sugerencia 3: que no se pueda recibir una carga con un costo raro) ----------
+   La ganancia negativa del Cuadre (142) casi siempre viene de un precio mal escrito en la carga (p. ej. el precio de la CAJA en el
+   lugar del precio del KILO). Al dar "Siguiente" en el roatán o el macho: si con ese precio la caja (o el kilo) te cuesta lo mismo o
+   más de lo que la vendes, la app pregunta antes de seguir ("¿escribiste el precio por kilo?"). Si dices que sí está bien, sigue;
+   si cambias los números, vuelve a preguntar. Sin precio ya no se podía seguir (cmValida). No cambia ninguna cuenta. */
+function cmRaro150(k){var m=S.cm;if(!m)return '';
+ if(k==='R'&&m.R){var kg=num(m.kgR),cj=num(m.cajas),p=num(m.pR),v=num(S.precio&&S.precio.R);if(!(kg>0&&cj>0&&p>0&&v>0))return '';var cc=r2(kg*p/cj);if(cc<v-0.005)return '';
+  return 'Revisa el precio del roatán: con '+money(p)+' el kilo, cada caja ('+r2(kg/cj)+' kg) te cuesta '+money(cc)+' y la vendes en '+money(v)+': perderías '+money(r2(cc-v))+' por caja.\n\n¿Escribiste el precio por KILO (no por caja)?\n\nAceptar = sí, está bien así · Cancelar = lo corrijo'}
+ if(k==='M'&&m.M){var p2=num(m.pM),v2=num(S.precio&&S.precio.M);if(!(p2>0&&v2>0)||p2<v2-0.005)return '';
+  return 'Revisa el precio del macho: el kilo te cuesta '+money(p2)+' y lo vendes en '+money(v2)+': perderías '+money(r2(p2-v2))+' por kilo.\n\nAceptar = sí, está bien así · Cancelar = lo corrijo'}
+ return ''}
+var _cmV150=cmValida;cmValida=function(k){var e=_cmV150.apply(this,arguments);if(e||(k!=='R'&&k!=='M'))return e;try{var m=S.cm,msg=cmRaro150(k);if(!msg)return e;
+  var key=k+'|'+(k==='R'?[m.kgR,m.cajas,m.pR]:[m.kgM,m.pM]).join('|');m.ok150=m.ok150||{};if(m.ok150[key])return e;
+  /* cmValida se llama varias veces en el mismo toque: se pregunta una sola vez */
+  var q=m.q150;if(q&&q.key===key&&Date.now()-q.t<1500)return q.si?e:'Corrige el precio';
+  var si=!!window.confirm(msg);m.q150={key:key,t:Date.now(),si:si};if(si){m.ok150[key]=1;return e}return 'Corrige el precio'}catch(er){return e}};
+
+/* ---------- 157 · Ricardo: "haz todo lo que me dijiste" (sugerencia 10: aviso de merma alta) ----------
+   Merma de la semana = lo que se perdió (S.mermas: fruta tirada, faltantes, cambios, remates…) ÷ lo que costaron las cargas recibidas
+   en esos 7 días. Si pasa del % de Ajustes → "🛡️ Controles" (5% por defecto), sale una tarjeta en Inicio con la merma de cada
+   proveedor en 30 días: cada merma se le cuenta a la última carga recibida antes de ese día (la fruta que había en bodega).
+   Solo lee números; no cambia ninguna cuenta. */
+function lim157(){var v=num((S.cfg||{}).merma157);return v>0?v:5}
+function merma157(dias){var hoy=iso(TODAY),de=iso(new Date(TODAY.getTime()-(dias-1)*864e5)),C=(S.cargas||[]).filter(function(c){return c&&c.est==='Recibida'&&c.fecha}).slice().sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:a.id-b.id}),P={},compra=0,perd=0;
+ var costo=function(c){try{return num(cC(c).total)}catch(e){return 0}};
+ C.forEach(function(c){if(c.fecha<de||c.fecha>hoy)return;var v=costo(c);compra+=v;var k=c.prov||'Sin proveedor';(P[k]=P[k]||{n:k,compra:0,perd:0}).compra+=v});
+ (S.mermas||[]).forEach(function(x){if(!x||!x.fecha||x.fecha<de||x.fecha>hoy)return;var v=num(x.valor);if(!(v>0))return;perd+=v;var u=null;C.forEach(function(c){if(c.fecha<=x.fecha)u=c});var k=u?(u.prov||'Sin proveedor'):'Sin proveedor';(P[k]=P[k]||{n:k,compra:0,perd:0}).perd+=v});
+ var L=Object.keys(P).map(function(k){var o=P[k];o.pct=o.compra>0?r2(o.perd/o.compra*100):null;return o}).filter(function(o){return o.perd>0||o.compra>0}).sort(function(a,b){return (b.pct||0)-(a.pct||0)});
+ return {compra:r2(compra),perd:r2(perd),pct:compra>0?r2(perd/compra*100):null,prov:L}}
+function merma157HTML(){var s=merma157(7);if(s.pct==null||s.pct<=lim157())return '';var t=merma157(30);
+ return '<details class="card alert" data-k="merma157"'+(S.dOpen&&S.dOpen.merma157?' open':'')+' style="padding:10px 12px"><summary><b style="font-size:16px">🍌 Merma alta esta semana: '+s.pct.toLocaleString('es-MX')+'%</b><span class="lbl">se perdieron '+money(s.perd)+' de '+money(s.compra)+' de fruta · tu límite: '+lim157()+'%</span></summary>'
+  +'<div class="lbl" style="margin-top:6px"><b>Por proveedor (últimos 30 días)</b></div>'+t.prov.map(function(o){return '<div class="row"><span>'+esc(o.n)+'<br><span class="lbl">perdido '+money(r2(o.perd))+' de '+money(r2(o.compra))+'</span></span><b class="'+(o.pct!=null&&o.pct>lim157()?'neg':'')+'">'+(o.pct==null?'—':o.pct.toLocaleString('es-MX')+'%')+'</b></div>'}).join('')
+  +'<div class="lbl" style="margin-top:6px">Cada merma se le cuenta a la última carga que llegó antes de ese día. Cambia el límite en Ajustes → Controles.</div></details>'}
+var _rd157=render;render=function(){var r=_rd157.apply(this,arguments);try{if(S.role==='admin'&&!S.encOn&&S.tab.admin==='inicio'){var m=document.querySelector('main');if(m&&!m.querySelector('[data-k="merma157"]')){var h=merma157HTML();if(h){var d=document.createElement('div');d.innerHTML=h;var a=m.querySelector('[data-x="hoy92"]');if(a&&a.parentNode===m)a.after(d.firstChild);else m.appendChild(d.firstChild)}}}}catch(e){console.error('merma157',e)}return r};

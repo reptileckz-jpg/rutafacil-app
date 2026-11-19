@@ -59,7 +59,7 @@ function arLimpia90(){if(!(S.arOn&&S.role==='rep'))return;var m=document.querySe
  var ap=m.querySelector('.card.aprende');if(ap)ap.remove();
  var w=document.createTreeWalker(m,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode()))if(/administrador|entregar|entregas\?/.test(n.nodeValue))L.push(n);L.forEach(function(x){x.nodeValue=arTxt90(x.nodeValue)});
  [].slice.call(m.querySelectorAll('button,input[type="button"]')).forEach(function(b){if(b.value&&/administrador/.test(b.value))b.value=arTxt90(b.value)})}
-var _toast90=toast;toast=function(t){try{if(S.arOn&&S.role==='rep'&&typeof t==='string')t=arTxt90(t)}catch(e){}return _toast90.apply(this,[t].concat([].slice.call(arguments,1)))};
+/* toast: pasó a tema-toast.js */
 
 /* ---------- 87 · tutorial del administrador que reparte ---------- */
 TUT.ar90=[['[data-x="ar90b"]','Estás repartiendo','Esta barra te dice que estás en tu ruta. Con "Volver a administrador" regresas a tus cosas cuando quieras; tu ruta se queda guardada.'],

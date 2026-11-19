@@ -53,6 +53,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Estadísticas (estadisticas 2, rankingHTML, cuadre82, fijoMes, rep68, desg) | 7 | ✅ `tema-estadisticas.js` (después de `tema-rutas.js`). Comprobado con `pruebas/comp-estad.js` |
 | Guía y tutoriales (tutHTML, tutIniciar, guiaLibre, guiaMuestra, aprendeItems, popSig, hoyItems) | 7 | ✅ `tema-guia.js` (después de `tema-estadisticas.js`). Comprobado con `pruebas/comp-estad.js` |
 | Mapa grande (gmInHay 2, gmHay, gmHuecos, gmMueve) | 5 | ✅ al final de `tema-ubica.js` |
+| Avisos de abajo (toast: 9 envolturas) | 9 | ✅ `tema-toast.js` (antes de `tema-version.js`). Comprobado con `pruebas/comp-toast.js` |
 | "Después de dibujar" (render: 118 envolturas) | 118 | al final: una sola lista ordenada |
 | Lo que sobre | resto | pendiente |
 | **Cambiar el armado a Vite** | — | cuando quede 0 |

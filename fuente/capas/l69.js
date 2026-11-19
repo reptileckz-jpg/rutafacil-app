@@ -198,4 +198,4 @@ var _rd69q=render;render=function(){var r=_rd69q.apply(this,arguments);try{var m
 /* 54 · "Costo del viaje más exacto" a la vista en la ficha de la carga (antes escondido en "Detalle") */
 /* fiCarga: pasó a tema-viaje.js */
 /* el aviso que sale abajo también dice qué no cuadra y por cuánto */
-var _tq69=toast;toast=function(t){try{var m=/^⚠ Algo no cuadra: ([^.]+)\. Revísalo en Estadísticas\.$/.exec(t||'');if(m){var x=cuentasRevisar().filter(function(y){return !y.ok&&y.n===m[1]})[0];if(x&&x.det)t='⚠ '+x.n+'. '+x.det+'.'}}catch(e){}return _tq69.call(this,t)};
+/* toast: pasó a tema-toast.js */

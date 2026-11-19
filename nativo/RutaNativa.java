@@ -433,6 +433,41 @@ public class RutaNativa extends Plugin {
         }
     }
 
+    /* ---------------- 151 · batería: que Android no apague la app (para que lleguen los avisos con la app cerrada) ---------------- */
+    @PluginMethod
+    public void bateriaEstado(PluginCall call) {
+        JSObject o = new JSObject();
+        boolean libre = true;
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                android.os.PowerManager pm = (android.os.PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                libre = pm != null && pm.isIgnoringBatteryOptimizations(getContext().getPackageName());
+            }
+        } catch (Throwable e) { libre = true; }
+        o.put("libre", libre);
+        call.resolve(o);
+    }
+
+    @PluginMethod
+    public void bateriaPide(PluginCall call) {
+        try {
+            Intent i = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            i.setData(Uri.parse("package:" + getContext().getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(i);
+            call.resolve();
+        } catch (Throwable e) {
+            try {
+                Intent j = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(j);
+                call.resolve();
+            } catch (Throwable e2) {
+                call.reject(String.valueOf(e2.getMessage()));
+            }
+        }
+    }
+
     /* ---------------- celular del negocio (solo si la app es "dueña" del celular) ---------------- */
     private DevicePolicyManager dpm() { return (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE); }
     private ComponentName adminCmp() { return new ComponentName(getContext(), RutaAdmin.class); }

@@ -128,3 +128,32 @@ function fotosViejas139(){if(S.role!=='rep'||!S.cierre||S.cierre.sent||!S.salida
  Object.keys(F).forEach(function(k){var v=F[k];if(!v||v==='data:x')return;var r=null;try{r=fotoRef121(v)}catch(e){}if(U[v]||(r&&U[r])){F[k]=null;n++}});
  if(n)S.fv139=n;return n}
 var _cie139=cierre;cierre=function(){try{var n139=fotosViejas139();if(!n139&&S.fv139&&(!S.cierre||S.cierre.sent||FOTOS.every(function(x){return S.salida.fotosFin&&S.salida.fotosFin[x[0]]})))S.fv139=0}catch(e){}var h=_cie139.apply(this,arguments);try{if(S.fv139&&S.role==='rep'&&S.cierre&&!S.cierre.sent){h=h.replace(/<\/h1>/,'</h1><div class="card note" data-k="fv139"><b>📷 Toma fotos nuevas del vehículo</b><div class="lbl">Las que había eran de un cierre anterior. Para cada cierre se toman fotos nuevas al regresar.</div></div>')}}catch(e){}return h};
+
+/* ---------- 153 · Ricardo: "haz todo lo que me dijiste" (sugerencia 6: contar billetes en el cierre) ----------
+   Ya existía "Contar por billetes" (opcional). Ahora, si en Ajustes → "🛡️ Controles" está como obligatorio (así viene), en el paso
+   "¿Cuánto entregas?" el chofer pone cuántos billetes de cada uno y monedas, la app suma, y no puede seguir sin contarlos (si debe
+   entregar efectivo). Lo entregado = lo contado (efEntrega ya lo hacía así). No cambia ninguna cuenta. */
+function billObl153(){return (S.cfg||{}).bill153!=='opc'}
+var _efP153=efPasoHTML;efPasoHTML=function(){var h=_efP153.apply(this,arguments);try{if(!billObl153()||!(num(cierreRes().efectivo)>0))return h;var c=S.cierre;
+ h=h.replace(/<div class="field"><label for="efent">[\s\S]*?<\/div>/,'');
+ h=h.replace('<details class="card" data-k="efbilld" style="margin-top:8px">','<details class="card" data-k="efbilld" style="margin-top:8px" open>');
+ h=h.replace('<summary><b>Contar por billetes</b><span class="lbl">opcional · la app suma</span></summary>','<summary><b>Cuenta tus billetes</b><span class="lbl">cuántos de cada uno · la app suma</span></summary>');
+ h=h.replace('Si entregas otra cantidad, escríbela.','Cuenta los billetes y las monedas que entregas.')}catch(e){}return h};
+function bill153Falta(){var c=S.cierre;if(!c||!billObl153()||!(num(cierreRes().efectivo)>0))return '';return c.billOn?'':'Cuenta tus billetes: cuántos de cada uno (la app suma)'}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"],[data-act="enviar"]');if(!b||!S.cierre||S.cierre.sent||S.role!=='rep')return;
+ var cur=S.cierreP||0;if(b.dataset.act==='cipaso'&&!(cur===4&&+b.dataset.v>4))return;if(b.dataset.act==='enviar'&&cur<4)return;var f=bill153Falta();if(!f)return;
+ e.stopImmediatePropagation();if(b.dataset.act==='enviar'){S.modal=null;S.cierreP=4}toast(f);try{vibrar([60,40,60])}catch(er){}render();setTimeout(function(){var el=document.getElementById('efb500');if(el){try{el.scrollIntoView({block:'center'})}catch(er){}try{marcaFalta(el)}catch(er){}}},60)},true);
+
+/* ---------- 154 · Ricardo: "haz todo lo que me dijiste" (sugerencia 7: revisar el odómetro contra la ruta) ----------
+   Km esperados: los de Google si se ordenó la ruta con tráfico (S.rgRes), si no, los que calcula la app con la distancia de cada
+   cliente (rutaKmEst). Si recorrió mucho más (30% más y 10 km o más) o mucho menos (la mitad o menos), le sale una nota al chofer
+   en el paso del odómetro (no lo detiene) y un aviso al administrador cuando recibe el cierre. Va en el corte (d.km154). */
+function kmEsp154(){try{var g=S.rgRes;if(g&&g.f===(S.rutaDia80||iso(TODAY))&&!g.deshecho&&g.ahora&&num(g.ahora.km)>0)return {km:Math.round(num(g.ahora.km)),src:'Google'};return {km:rutaKmEst(),src:'la app'}}catch(e){return {km:0,src:''}}}
+function km154(c){c=c||S.cierre;if(!c)return null;var rec=num(c.odo)-num(c.odoIni);if(!(num(c.odo)>0)||rec<0)return null;var x=kmEsp154();if(!(x.km>0))return null;
+ var t=rec>x.km*1.3&&rec-x.km>=10?'mas':(rec<=x.km*0.5?'menos':'');return {rec:Math.round(rec),esp:x.km,src:x.src,t:t,dif:Math.round(rec-x.km)}}
+function km154Txt(k,yo){if(!k||!k.t)return '';return k.t==='mas'?(yo?'Recorriste':'Recorrió')+' <b>'+k.rec+' km</b> y la ruta era de ~'+k.esp+' km (según '+k.src+'): <b>'+k.dif+' km de más</b>.':(yo?'Recorriste':'Recorrió')+' solo <b>'+k.rec+' km</b> y la ruta era de ~'+k.esp+' km (según '+k.src+'). Revisa que el odómetro esté bien escrito.'}
+var _cP154=cierrePasos;cierrePasos=function(){var r=_cP154.apply(this,arguments);try{if(S.role!=='rep'||!S.cierre||S.cierre.sent||(S.cierreP||0)!==0)return r;var m=document.querySelector('main'),i=m&&m.querySelector('#odo');if(!i||m.querySelector('[data-k="km154"]'))return r;
+ var k=km154();if(!k||!k.t)return r;var d=document.createElement('div');d.className='card alert';d.setAttribute('data-k','km154');d.style.cssText='padding:8px 10px;margin-top:8px';
+ d.innerHTML='<b>📏 Revisa el kilometraje</b><div style="font-size:14px">'+km154Txt(k,true)+(k.t==='mas'?' Si está bien, sigue; al administrador le sale el aviso.':'')+'</div>';var f=i.closest('.field')||i;f.after(d)}catch(e){}return r};
+document.addEventListener('change',function(e){if(e.target&&e.target.id==='odo'&&S.role==='rep'&&S.cierre&&!S.cierre.sent)setTimeout(function(){try{render()}catch(er){}},0)});
+var _cd154=corteDatos;corteDatos=function(){var d=_cd154.apply(this,arguments);try{var k=km154();if(d&&typeof d==='object'&&k)d.km154=k}catch(e){}return d};

@@ -104,9 +104,19 @@ service cloud.firestore {
       allow read: if false;
       allow delete: if mandaComoAdmin();
     }
-    // un aviso para un chofer: solo lo crea el administrador (o el encargado); la función de la nube lo manda y lo borra
+    // 148 · errores de la app: cada celular manda los suyos (solo crear); los lee el administrador o el servidor
+    match /n/{neg}/err/{id} {
+      allow create: if activo()
+                    && request.resource.data.keys().hasOnly(['t', 'f', 'h', 'tipo', 'txt', 'donde', 'rol', 'ch', 'web', 'apk'])
+                    && request.resource.data.txt is string && request.resource.data.txt.size() <= 300
+                    && request.resource.data.donde is string && request.resource.data.donde.size() <= 200;
+      allow read, delete: if esAdmin();
+      allow update: if false;
+    }
+    // un aviso para un chofer: solo lo crea el administrador (o el encargado); la función de la nube lo manda y lo borra.
+    // 152 · un chofer también puede avisar a los administradores (ch == 'admins'), solo para pedir permiso (fiar, mayoreo, precio)
     match /n/{neg}/push/{id} {
-      allow create: if mandaComoAdmin()
+      allow create: if (mandaComoAdmin() || (activo() && request.resource.data.ch == 'admins' && request.resource.data.tipo == 'permiso'))
                     && request.resource.data.keys().hasOnly(['ch', 'titulo', 'texto', 'tipo', 't'])
                     && request.resource.data.ch is string
                     && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 200

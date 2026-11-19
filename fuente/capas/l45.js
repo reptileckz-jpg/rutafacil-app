@@ -9,7 +9,7 @@ function capaArriba(){var L=Array.prototype.slice.call(document.querySelectorAll
  L.sort(function(a,b){return (+getComputedStyle(b).zIndex||0)-(+getComputedStyle(a).zIndex||0)});return L[0]||document.querySelector('main')}
 function primerVacio(){var c=capaArriba();if(!c)return null;var L=Array.prototype.slice.call(c.querySelectorAll('input:not([type=hidden]):not([type=file]):not([type=checkbox]):not([type=radio]):not([disabled]),select:not([disabled]),textarea:not([disabled])')).filter(function(i){return i.getClientRects().length&&!String(i.value||'').trim()&&!/opcional/i.test(((i.closest('.field')||{}).textContent)||'')&&!i.readOnly});return L[0]||null}
 var FALTA_RE=/^(Escribe|Escoge|Elige|Pon |Pon la|Falta|Faltan|Toma la|Confirma|Di |Selecciona)/;
-var _toast45=toast;toast=function(t){var r=_toast45.apply(this,arguments);try{if(FALTA_RE.test(String(t||'')))setTimeout(function(){marcaFalta(primerVacio())},40)}catch(e){}return r};
+/* toast: pasó a tema-toast.js */
 var _clk45=0;window.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-act]'))_clk45=Date.now()},true);
 var _r45a=render;render=function(){var r=_r45a.apply(this,arguments);try{if(Date.now()-_clk45<500){var c=capaArriba(),al=c&&c.querySelector('.neg[role="alert"],[role="alert"].neg,.err[role="alert"]');if(al&&al.getClientRects().length&&FALTA_RE.test(al.textContent.trim())){_clk45=0;var t=primerVacio();if(t)marcaFalta(t);else{al.classList.remove('falta');void al.offsetWidth;al.classList.add('falta');try{vibrar(60)}catch(er){}}}}}catch(e){}return r};
 /* ---------- 54 · después de mandar el cierre, el cierre solo se ve (fotos fijas) ---------- */

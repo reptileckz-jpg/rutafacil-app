@@ -18,7 +18,7 @@ const URL=process.argv[2]||'/mnt/user-data/outputs/prototipo-platanos.html';
   FOTOS.forEach(function(f){S.salida.fotosFin[f[0]]='data:x'});S.salida.fotosFin.odo='data:x';
   S.cierre.odo=String(num(S.cierre.odoIni)+50);S.cierre.tankOk=true;S.cierre.gxConf=true;S.cierre.fotoReg='data:x';S.cierre.ev79={ok:true};S.rutaDia80=iso(TODAY);
   S.log.push({c:S.cli[0].id,R:5,M:0,V:0,Vr:0,total:1500,pago:1500,abono:0,pr:300,pm:0});
-  S.tab.rep='cierre';S.cierreP=5;S.cierre.entrega=String(r2(num(cierreRes().efectivo)-100));S.cierre.efMot='me faltó cobrar';render();
+  S.cfg.bill153='opc';/* 153: aquí se prueba lo que escribe a mano */S.tab.rep='cierre';S.cierreP=5;S.cierre.entrega=String(r2(num(cierreRes().efectivo)-100));S.cierre.efMot='me faltó cobrar';render();
   var bt=[].slice.call(document.querySelectorAll('main button')).filter(function(x){return /Enviar cierre|Terminar mi ruta/.test(x.textContent)})[0];bt.click()});
  await W(400);await clicSi('^(Sí|Enviar|Confirmar)','S.cierre.sent');
  const ent=await ev(()=>({sent:!!S.cierre.sent,ent:num(S.cierre.entrega)}));ok(ent.sent,'el chofer mandó su cierre',ent);

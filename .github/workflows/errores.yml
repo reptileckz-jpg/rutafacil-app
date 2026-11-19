@@ -1,0 +1,36 @@
+name: Leer errores de la app
+
+# 148 · Se corre A MANO desde la pestaña Actions. Lee los errores que la app mandó sola a la nube (n/{neg}/err) y los imprime
+# agrupados (texto del error, versión, papel, pantalla, número de chofer; sin nombres de clientes). No cambia nada de la app.
+on:
+  workflow_dispatch:
+    inputs:
+      dias:
+        description: 'De cuántos días para atrás'
+        default: '7'
+      borrar_dias:
+        description: 'Borrar los errores de hace más de N días (0 = no borrar)'
+        default: '60'
+
+jobs:
+  leer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Leer errores
+        env:
+          SA: ${{ secrets.FIREBASE_SA }}
+          DIAS: ${{ github.event.inputs.dias }}
+          BORRAR_DIAS: ${{ github.event.inputs.borrar_dias }}
+        run: |
+          if [ -z "$SA" ]; then echo "Falta el secreto FIREBASE_SA."; exit 1; fi
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          export GOOGLE_CLOUD_PROJECT=platanos-nietos
+          mkdir -p "$RUNNER_TEMP/le" && cp herramientas/leer-errores.js "$RUNNER_TEMP/le/" && cd "$RUNNER_TEMP/le"
+          npm i firebase-admin@13 --no-audit --no-fund >/dev/null
+          node leer-errores.js
+          rm -f "$RUNNER_TEMP/sa.json"

@@ -123,3 +123,9 @@ function actCierre141(ch,f){var L=actDe(ch,f),P=(S.rutasHist||[]).filter(functio
 function actCierreHTML141(f,ch){var L=actCierre141(ch,f);if(!L.length)return '';var n=(S.rutasHist||[]).filter(function(r){return r&&r.f===f&&+r.ch===+ch&&r.parcial120}).length+1;
  return '<div style="margin-top:8px"><b>Lo que pasó hoy en su ruta</b>'+(n>1?'<span class="lbl"> · cierre '+n+'</span>':'')+L.map(function(a){return '<div class="actl"><span class="lbl">'+esc(a.h)+'</span>'+esc(typeof avYo==='function'?avYo(a.x):a.x)+'</div>'}).join('')+'</div>'}
 
+
+/* ---------- 154 · al recibir el cierre: aviso si el kilometraje no cuadra con la ruta (ver km154 en tema-cierre.js) ---------- */
+var _rcH154=rcHTML;rcHTML=function(){var h=_rcH154.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0||h.indexOf('data-k="km154a"')>-1)return h;
+ var c=S.cierre||{},k=(c.corte&&c.corte.km154)||km154(c);if(!k||!k.t)return h;
+ var x='<div class="card alert" data-k="km154a" style="padding:10px 12px"><b>📏 Kilometraje '+(k.t==='mas'?'de más':'raro')+'</b><div style="font-size:14px">'+km154Txt(k,false)+'</div></div>';
+ var i=h.indexOf('<div style="margin-top:auto');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};

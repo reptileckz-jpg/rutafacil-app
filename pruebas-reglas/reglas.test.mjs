@@ -88,6 +88,26 @@ await prueba('push: solo el administrador (o el encargado) manda un aviso; el ch
   await assertFails(setDoc(doc(db('duenio'), 'n/pn/push/a4'), { ...av, extra: 1 }));
   await assertFails(getDoc(doc(db('duenio'), 'n/pn/push/a1')));
 });
+await prueba('152 · el chofer avisa a los administradores SOLO para pedir permiso', async () => {
+  const pe = { ch: 'admins', titulo: '🙋 Piden permiso', texto: 'Pepe quiere fiarle a Doña Mary', tipo: 'permiso', t: 1 };
+  await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/push/p1'), pe));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/push/p2'), { ...pe, tipo: 'pedido' }));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/push/p3'), { ...pe, ch: '1' }));
+  await assertFails(setDoc(doc(db('baja'), 'n/pn/push/p4'), pe));
+  await assertSucceeds(setDoc(doc(db('duenio'), 'n/pn/tok/a~duenio'), { t: 'tokenadmin', ts: 1 }));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/tok/a~pepe'), { t: 'x', ts: 1 }));
+});
+await prueba('148 · errores: cualquiera con acceso los manda (solo crear); solo el admin los lee', async () => {
+  const er = { t: 1, f: '2026-11-19', h: '10:00', tipo: 'error interno', txt: 'x is not a function', donde: 'Chofer · Ruta', rol: 'rep', ch: '6', web: '10.5', apk: '1.0.52' };
+  await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/err/e1'), er));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/err/e2'), { ...er, nombre: 'Doña Mary' }));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/err/e3'), { ...er, txt: 'x'.repeat(301) }));
+  await assertFails(getDoc(doc(db('pepe'), 'n/pn/err/e1')));
+  await assertFails(setDoc(doc(db('pepe'), 'n/pn/err/e1'), { ...er, txt: 'otro' }));
+  await assertFails(setDoc(doc(db('baja'), 'n/pn/err/e4'), er));
+  await assertSucceeds(getDoc(doc(db('duenio'), 'n/pn/err/e1')));
+  await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/err/e1')));
+});
 await prueba('cuenta nueva del negocio: el dueño crea su perfil', async () => {
   await env.clearFirestore();
   const d = db('nuevoDuenio');

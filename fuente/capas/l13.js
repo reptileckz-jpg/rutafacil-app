@@ -102,7 +102,7 @@ setInterval(function(){var L=document.querySelectorAll('[data-mayt]');if(!L.leng
    Antes salía una tarjeta con mucho texto. Ahora solo una barrita: "Sin conexión · tus datos se guardan". */
 (function(){var st=document.createElement('style');st.textContent='.sinconx{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:0 0 10px;border-radius:12px;background:var(--danger);color:#fff;font-weight:700;font-size:14px}.sinconx span{font-weight:500;opacity:.9}';document.head.appendChild(st)})();
 senalBanner=function(){if(S.role!=='rep')return '';var c=conn(+S.chofHoy);if(c.on)return '';return '<div class="sinconx" role="status">📶 Sin conexión <span>· tus datos se guardan</span></div>'};
-var _toast13=toast;toast=function(t){if(typeof t==='string'){if(/^Sin señal: lo que captures/.test(t)){render();return}else if(/^Volvió la señal/.test(t))t='Volvió la conexión · ya se mandó todo'}return _toast13.call(this,t)};
+/* toast: pasó a tema-toast.js */
 /* si falta la foto, primero se avisa (antes del "¿Enviar?") */
 /* confMsg: pasó a tema-cierre.js */
 /* las cajas "sin contar" siguen existiendo: cuentan como en el camión hasta que alguien las cuente */

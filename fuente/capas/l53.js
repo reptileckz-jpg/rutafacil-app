@@ -2,8 +2,7 @@
 /* también los avisos de un dato mal escrito marcan el campo donde estabas escribiendo */
 var VALOR_RE=/^(Agrega al menos|Cada fruta necesita|Captura |El PIN debe|Las cajas de roatán son un número|Las rotas no pueden|Lo pagado al proveedor no puede|No traes suficiente|No hay tanto|Ya no hay tanto|Debe quedar al menos|Primero escribe|Revisa las fechas|Revisa los pesos|Revisa todos los puntos|Ya hay un vehículo con esas placas|Corrige lo que)/;
 var _ultIn53=null;document.addEventListener('focusin',function(e){var t=e.target;if(t&&/INPUT|SELECT|TEXTAREA/.test(t.tagName))_ultIn53=t},true);
-var _toast53=toast;toast=function(t){var r=_toast53.apply(this,arguments);try{var s=String(t||'');if(VALOR_RE.test(s)&&!FALTA_RE.test(s))setTimeout(function(){var el=window._faltaSel?document.querySelector(window._faltaSel):null;window._faltaSel=null;
- if(!el&&_ultIn53&&document.body.contains(_ultIn53)&&_ultIn53.getClientRects().length)el=_ultIn53;if(!el)el=primerVacio();if(el)marcaFalta(el)},40)}catch(e){}return r};
+/* toast: pasó a tema-toast.js */
 /* las ventanas de "¿Seguro?" siempre arriba de las tarjetas de pantalla completa */
 (function(){var st=document.createElement('style');st.textContent='div[style*="z-index:88"][style*="inset:0"],div[style*="z-index:87"][style*="inset:0"]{z-index:150!important}';document.head.appendChild(st)})();
 /* 99 · antes de algo que no se puede deshacer: "¿Estás seguro?" con Sí / Regresar */

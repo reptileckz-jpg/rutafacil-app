@@ -13,6 +13,30 @@ exports.avisoPush = onDocumentCreated({ document: 'n/{neg}/push/{id}', region: '
   const snap = ev.data; if (!snap) return;
   const d = snap.data() || {}, neg = ev.params.neg;
   if (!d.ch || !d.titulo) { await snap.ref.update({ error: 'aviso incompleto', fin: Date.now() }); return; }
+  // 152 · "admins": un chofer pide permiso (fiar, mayoreo, precio) → a todos los celulares de administrador (tok/a~{uid})
+  if (d.ch === 'admins') {
+    const q = await getFirestore().collection(`n/${neg}/tok`).get();
+    const L = q.docs.filter(x => x.id.startsWith('a~')).map(x => ({ ref: x.ref, t: x.get('t') })).filter(x => x.t);
+    if (!L.length) { await snap.ref.update({ error: 'ningún celular de administrador registra sus avisos', fin: Date.now() }); return; }
+    let bien = 0, err = '';
+    for (const x of L) {
+      try {
+        await getMessaging().send({
+          token: x.t,
+          notification: { title: String(d.titulo).slice(0, 200), body: String(d.texto || '').slice(0, 1000) },
+          android: { priority: 'high', notification: { channelId: 'avisos', sound: 'default', tag: 'permiso-' + String(d.t || '') } },
+          data: { tipo: 'permiso', neg: String(neg) }
+        });
+        bien++;
+      } catch (e) {
+        const code = String((e && e.code) || '');
+        if (/registration-token-not-registered|invalid-registration-token/.test(code)) await x.ref.delete().catch(() => {});
+        err = String((e && e.message) || e);
+      }
+    }
+    if (bien) await snap.ref.delete(); else await snap.ref.update({ error: err || 'no se pudo', fin: Date.now() });
+    return;
+  }
   const tok = await getFirestore().doc(`n/${neg}/tok/${d.ch}`).get();
   const t = tok.exists ? tok.get('t') : null;
   if (!t) { await snap.ref.update({ error: 'el celular de ese chofer todavía no registra sus avisos', fin: Date.now() }); return; }

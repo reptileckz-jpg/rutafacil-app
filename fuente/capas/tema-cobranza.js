@@ -5,7 +5,7 @@
      Cada cliente: cuánto debe, desde cuándo, su plazo, su chofer, último aviso y si prometió pagar.
      Botones: "📲 Estado de cuenta" (WhatsApp con el desglose), "🤝 Prometió pagar" (día y cuánto), "💵 Abono", "Ver crédito".
      "Mandar a todos los vencidos": uno por uno por WhatsApp, sin escribir nada.
-   - Plazo: el general (Ajustes → Cobranza: "Mensaje de WhatsApp a los N días") y, si se quiere, uno distinto por cliente
+   - Plazo: el general (Ajustes → "🛡️ Controles": "Mensaje de WhatsApp a los N días") y, si se quiere, uno distinto por cliente
      (en la pantalla de su crédito).
    - Promesa de pago: ese día te avisa a ti (Por atender) y le sale al chofer en su ruta y en la entrega. Si pasó el día y no
      pagó nada, el cliente se pone en rojo y te avisa.
@@ -143,3 +143,16 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 document.addEventListener('change',function(e){var t=e.target;if(t&&t.id==='cob91fd'&&S.cob91){var mi=document.getElementById('cob91m');if(mi)S.cob91.pm=mi.value;S.cob91.pf=t.value;render()}},true);
 
 var _rd91=render;render=function(){try{cobF91();rev91()}catch(e){console.error('cob91',e)}var r=_rd91.apply(this,arguments);try{ini91();ch91();cob91Pon()}catch(e){console.error('cob91b',e)}return r};
+
+/* ---------- 155 · Ricardo: "haz todo lo que me dijiste" (sugerencia 8: recordatorio de cobro por WhatsApp) ----------
+   WhatsApp no deja mandar mensajes solos (sin que alguien toque "enviar"), así que la app te dice a quién le toca HOY y te los pone
+   en fila: vencidos con teléfono a los que no se les ha mandado su estado de cuenta en los últimos N días (Ajustes → "🛡️ Controles":
+   "Recordarle cada", 7 por defecto). En "Hoy" (Inicio): "📲 Hoy toca recordarle a N clientes" → "Ir ›" abre Cobranza y empieza
+   a mandar uno por uno (el mismo "Mandar a todos los vencidos"). No cambia ninguna cuenta. */
+function cada155(){return Math.max(1,num((S.cfg||{}).cb155)||7)}
+function toca155(){var lim=iso(new Date(TODAY.getTime()-cada155()*864e5));return deud91().filter(function(c){var s=est91(c);return (s==='am'||s==='ro')&&c.tel&&!(c.recF91&&c.recF91>lim)})}
+/* en "Hoy" (Inicio): el renglón de cobrar dice a cuántos toca recordarles hoy y "Ir ›" empieza a mandarles uno por uno */
+var _hT155=hoyTareas;hoyTareas=function(){var L=_hT155.apply(this,arguments);try{var X=toca155();if(!X.length)return L;var t='📲 Hoy toca recordarle a '+X.length+(X.length===1?' cliente':' clientes')+' que debe'+(X.length===1?'':'n')+' ('+money(sum(X,function(c){return num(c.cred)}))+')',k=-1;
+ L.forEach(function(x,i){if(x&&x.k==='cb')k=i});if(k>-1)L[k]=Object.assign({},L[k],{t:L[k].t+' · 📲 hoy toca recordarle a '+X.length,r155:1});else L.push({k:'cb',t:t,go:'clientes',r155:1})}catch(e){}return L};
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cob155"],[data-x="hoy92"] .it92 [data-act="cli92"]');if(!b)return;if(b.dataset.act==='cli92'){var it=b.closest('.it92');if(!it||!it.querySelector('[data-k="cb"]')||!toca155().length)return}e.stopImmediatePropagation();e.preventDefault();
+ var L=toca155();S.cob91={ch:null,inl:1,seq:L.map(function(c){return c.id}),si:0};S.cli92='cob';S.tab.admin='clientes';render();window.scrollTo(0,0)},true);

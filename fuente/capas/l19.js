@@ -50,7 +50,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='limok'){e.stopImmediatePropagation();c.limMan=null;c.limRev=false;buroSync();toast(c.n+': límite de '+money(num(crCfg().crCli)));render();return}
  if(a==='buroreset'){e.stopImmediatePropagation();var bb=buroDe(c);bb.n=0;bb.ok=0;bb.porque='';c._edad=0;toast(c.n+' regresó a Bueno');render();return}},true);
 /* los mensajes del chofer cuando está en revisión */
-var _tst19=toast;toast=function(t){if(typeof t==='string'&&/no se le da mayoreo \(lo decidió el administrador\)/.test(t)){var c=curCli();if(c&&c.mayRev)t='A '+c.n+' no se le puede dar mayoreo: está en revisión del administrador'}return _tst19.call(this,t)};
+/* toast: pasó a tema-toast.js */
 /* regla del chofer: rechazos en los mismos días (antes 30) */
 mayRech30=function(ch){var lim=iso(new Date(TODAY.getTime()-num(crCfg().mayD)*864e5));return mayRechL().filter(function(x){return x.ch===+ch&&x.f>lim}).length};
 /* Ajustes */

@@ -66,7 +66,7 @@ function salFalta124(p){var sl=S.salida,c=S.cierre||{},r=S.inspR;
  if(p===1){if(!r||!r.ok||r.veh!==String(S.vehHoy))return r&&r.wait?'Espera el ok del administrador por la falla del vehículo':'Termina la inspección del vehículo'}
  if(p===2&&FOTOS_OBLIGATORIAS&&!(salAdm124()&&sl.fotoSkip124)){var nf=salFotosFaltan124();if(nf.length)return 'Faltan fotos: '+nf.map(function(f){return f[1].toLowerCase()}).join(', ')+(salAdm124()?' (o toca "Omitir las fotos")':'')}
  if(p===3){if(!(num(c.odoIni)>0))return 'Escribe el odómetro';if(typeof REAL!=='undefined'&&REAL&&!sl.odoOk)return 'Confirma el odómetro'}
- if(p===4){if(typeof REAL!=='undefined'&&REAL&&!sl.tankOk)return 'Confirma el nivel del tanque'}
+ if(p===4){if(typeof REAL!=='undefined'&&REAL&&!sl.tankOk)return 'Confirma el nivel del tanque';if(gasOblig139()&&!(salAdm124()&&sl.fotoSkip124)&&!(sl.fotos&&sl.fotos.gas))return 'Toma la foto del tablero de gasolina'/* 139 */}
  if(p===5){if(num(sl.R)<=0&&num(sl.M)<=0)return 'Agrega las cajas de roatán o los kilos de macho que cargas';if(num(sl.R)>num(S.inv.maduras))return 'Solo hay '+S.inv.maduras+' cajas maduras en bodega'}
  return ''}
 function salPasos124(){if(!salActivo124())return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="sal124hd"]'))return;

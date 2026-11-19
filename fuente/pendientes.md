@@ -2767,4 +2767,9 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 - 142 · La "Ganancia" del Cuadre es la de la fruta: ventas − costo de esa fruta con el costo de la ÚLTIMA carga (kilos × precio por kilo + flete, ÷ cajas). Si esa carga tiene pocas cajas o un kilo/precio de más, la caja sale carísima. HECHO (`tema-cuadre.js`): dice el costo usado y, si sale con pérdida, avisa y dice qué revisar en Cargas. Pendiente: Ricardo revisa su última carga.
 - Publicar la función: falló con "We failed to modify the IAM policy…": la cuenta de servicio (Editor) no puede dar permisos. Falta darle el rol "Administrador de IAM del proyecto".
 - Pruebas: `t140.js` (6 OK); `t121` ajustada (más texto entre el título y el número). Todas en 0 FAIL (menos `tk.js`).
+- Ricardo confirmó: el chofer SÍ tenía la 1.0.49; el primer cierre y la reapertura fueron con la .48 (no vaciaba las fotos), y en el segundo cierre (con la .49) las fotos del regreso seguían cargadas.
+- 139 · HECHO (`tema-cierre.js` `fotosViejas139`): al abrir el cierre, una foto del regreso que ya se usó en un cierre anterior de hoy (historial `fotos121`) o que es la de la salida se quita, y sale "📷 Toma fotos nuevas del vehículo". Funciona sin importar cómo se reabrió la ruta.
+- 139 · HECHO: la foto del tablero de gasolina es OBLIGATORIA (Ricardo: "con el puro marcador es fácil que nos quieran engañar"), al salir (paso Gasolina) y al cerrar (paso 2). Ajustes → "📷 Fotos del vehículo" → Obligatoria / Opcional (`S.cfg.fotoGas`). El administrador que reparte la puede omitir como las demás; trae "No pude tomarla".
+- Pruebas: `t139.js` (9 OK); `t93`, `t124`, `t134` actualizadas (ahora toman la foto de la gasolina). Todas en 0 FAIL (menos `tk.js`).
+- 142 · Ricardo: el primer cierre marcaba ganancia; con el segundo (3 pedidos de WhatsApp) quedó en −$981. Pendiente: captura del Cuadre del día (ahora dice el costo usado) para ver de dónde sale.
 

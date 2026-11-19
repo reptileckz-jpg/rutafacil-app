@@ -117,3 +117,14 @@ function espHTML135(){var L=[];(S.log||[]).forEach(function(l){preciosLog135(l).
   +(L.length>1&&tot?'<div class="row"><b>Total</b><b class="'+(tot<0?'neg':'')+'">'+(tot<0?'−':'+')+money(Math.abs(tot))+'</b></div>':'')+'</div>'}
 var _cAdm135=cierreAdm;cierreAdm=function(){var h=_cAdm135.apply(this,arguments);try{if(!S.cierre||!S.cierre.res)return h;var x=espHTML135();if(!x)return h;var i=h.indexOf('<details class="card" data-key="fotoscierre"');if(i<0)i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
 
+
+/* ---------- 139 · Ricardo: "al finalizar el cierre las fotos de los 4 lados ya venían precargadas con las que ya había mandado antes; me dejó avanzar"
+   (la ruta se había reabierto con la versión anterior, que no las vaciaba). A prueba de cualquier camino: al abrir el cierre, una foto del
+   regreso que ya se usó en un cierre anterior de hoy (o que es la de la salida) se quita y hay que tomar una nueva. ---------- */
+function fotosUsadas139(){var U={},f=typeof hoy120==='function'?hoy120():iso(TODAY),pon=function(v){if(!v||typeof v!=='string')return;U[v]=1;try{var r=fotoRef121(v);if(r)U[r]=1}catch(e){}};
+ var s=S.salida||{};Object.keys(s.fotos||{}).forEach(function(k){pon(s.fotos[k])});
+ (S.rutasHist||[]).forEach(function(r){if(!r||r.f!==f||+r.ch!==+S.chofHoy||!r.fotos121)return;['ini','fin'].forEach(function(g){var G=r.fotos121[g]||{};Object.keys(G).forEach(function(k){pon(G[k])})})});return U}
+function fotosViejas139(){if(S.role!=='rep'||!S.cierre||S.cierre.sent||!S.salida||!S.salida.fotosFin)return 0;var F=S.salida.fotosFin,U=fotosUsadas139(),n=0;
+ Object.keys(F).forEach(function(k){var v=F[k];if(!v||v==='data:x')return;var r=null;try{r=fotoRef121(v)}catch(e){}if(U[v]||(r&&U[r])){F[k]=null;n++}});
+ if(n)S.fv139=n;return n}
+var _cie139=cierre;cierre=function(){try{var n139=fotosViejas139();if(!n139&&S.fv139&&(!S.cierre||S.cierre.sent||FOTOS.every(function(x){return S.salida.fotosFin&&S.salida.fotosFin[x[0]]})))S.fv139=0}catch(e){}var h=_cie139.apply(this,arguments);try{if(S.fv139&&S.role==='rep'&&S.cierre&&!S.cierre.sent){h=h.replace(/<\/h1>/,'</h1><div class="card note" data-k="fv139"><b>📷 Toma fotos nuevas del vehículo</b><div class="lbl">Las que había eran de un cierre anterior. Para cada cierre se toman fotos nuevas al regresar.</div></div>')}}catch(e){}return h};

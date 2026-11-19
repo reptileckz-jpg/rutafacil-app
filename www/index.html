@@ -5986,7 +5986,7 @@ cierrePasos=function(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cie
 /* no avanza sin lo de cada paso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b||!S.cierre)return;var a=+b.dataset.v,cur=S.cierreP||0,c=S.cierre,falta='';if(a<=cur)return;
  if(cur===0){if(!(num(c.odo)>0))falta='Escribe el odómetro';else if(num(c.odo)<num(c.odoIni))falta='El odómetro no puede ser menor al de la salida ('+num(c.odoIni).toLocaleString('es-MX')+' km)';else if(FOTOS_OBLIGATORIAS&&!(S.salida.fotosFin&&S.salida.fotosFin.odo))falta='Toma la foto del odómetro'}
- if(cur===1&&!c.tankOk)falta='Confirma el nivel del tanque';
+ if(cur===1&&!c.tankOk)falta='Confirma el nivel del tanque';else if(cur===1&&gasOblig139()&&!(S.salida.fotosFin&&S.salida.fotosFin.gas))falta='Toma la foto del tablero de gasolina';/* 139 */
  if(cur===2&&FOTOS_OBLIGATORIAS){var ff=S.salida.fotosFin||{},fl=FOTOS.filter(function(x){return !ff[x[0]]});if(fl.length)falta='Faltan fotos: '+fl.map(function(x){return x[1].toLowerCase()}).join(', ')}
  if(falta){e.stopImmediatePropagation();toast(falta);try{vibrar([60,40,60])}catch(er){}}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="citankok"]');if(!b||!S.cierre)return;e.stopImmediatePropagation();S.cierre.tankOk=true;render()},true);
@@ -9981,7 +9981,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3558,"l3.js"],[3661,"l4.js"],[3739,"l5.js"],[3864,"l6.js"],[3966,"l6b.js"],[4009,"l7.js"],[4142,"l8.js"],[4153,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4588,"l13.js"],[4720,"l14.js"],[4790,"l15.js"],[4850,"l16.js"],[4944,"l17.js"],[4968,"l18.js"],[5039,"l19.js"],[5098,"l20.js"],[5145,"l21.js"],[5189,"l22.js"],[5371,"l23.js"],[5420,"l24.js"],[5436,"l25.js"],[5463,"l26.js"],[5584,"l27.js"],[5634,"l28.js"],[5765,"l29.js"],[5891,"l30.js"],[5934,"l31.js"],[5963,"l32.js"],[6051,"l33.js"],[6069,"l34.js"],[6124,"l35.js"],[6181,"l36.js"],[6273,"l37.js"],[6292,"l38.js"],[6376,"l39.js"],[6456,"l40.js"],[6573,"l41.js"],[6633,"l42.js"],[6735,"l43.js"],[6829,"l44.js"],[6924,"l45.js"],[7010,"l46.js"],[7073,"l47.js"],[7187,"l48.js"],[7241,"l49.js"],[7277,"l50.js"],[7379,"l51.js"],[7389,"l52.js"],[7525,"l53.js"],[7547,"l54.js"],[7620,"l55.js"],[7649,"l56.js"],[7733,"l57.js"],[7795,"l58.js"],[7922,"l59.js"],[7975,"l60.js"],[8132,"l61.js"],[8188,"l62.js"],[8326,"l63.js"],[8490,"l64.js"],[8516,"l65.js"],[8617,"l66.js"],[8719,"l67.js"],[8746,"l68.js"],[8872,"l69.js"],[9088,"l70.js"],[9294,"l71.js"],[9416,"l72.js"],[9529,"l73.js"],[9605,"l74.js"],[9722,"l75.js"],[9872,"l76.js"],[9975,"l77.js"],[10100,"l78.js"],[10234,"l79.js"],[10342,"l80.js"],[10465,"l81.js"],[10618,"l82.js"],[10864,"l83.js"],[10933,"l84.js"],[11046,"l85.js"],[11107,"tema-rutadia.js"],[11272,"l86.js"],[11332,"l87.js"],[11375,"l88.js"],[11425,"l89.js"],[11473,"l90.js"],[11579,"tema-ruta.js"],[11769,"tema-fichas.js"],[11886,"tema-cierre.js"],[12007,"tema-inicio.js"],[12135,"tema-ajustes.js"],[12361,"tema-nube.js"],[12419,"tema-viaje.js"],[12560,"tema-ubica.js"],[12701,"tema-personal.js"],[12764,"tema-pin.js"],[12833,"tema-navega.js"],[12866,"tema-cajas.js"],[12902,"tema-camara.js"],[12934,"tema-rutas.js"],[12978,"tema-estadisticas.js"],[13019,"tema-guia.js"],[13069,"tema-cobranza.js"],[13216,"tema-pantallas.js"],[13437,"tema-avisos.js"],[13599,"tema-reparte.js"],[13665,"tema-vehiculos.js"],[13814,"tema-notas.js"],[13889,"tema-taras.js"],[13996,"tema-cargarmas.js"],[14035,"tema-cargas.js"],[14069,"tema-cobro.js"],[14105,"tema-horario.js"],[14144,"tema-sueldos.js"],[14286,"tema-ganado.js"],[14331,"tema-cierres.js"],[14458,"tema-finanzas.js"],[14531,"tema-cuadre.js"],[14759,"tema-retencion.js"],[14850,"tema-iniciodia.js"],[14955,"tema-entregapasos.js"],[15028,"tema-push.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3558,"l3.js"],[3661,"l4.js"],[3739,"l5.js"],[3864,"l6.js"],[3966,"l6b.js"],[4009,"l7.js"],[4142,"l8.js"],[4153,"l9.js"],[4465,"l10.js"],[4525,"l11.js"],[4542,"l12.js"],[4588,"l13.js"],[4720,"l14.js"],[4790,"l15.js"],[4850,"l16.js"],[4944,"l17.js"],[4968,"l18.js"],[5039,"l19.js"],[5098,"l20.js"],[5145,"l21.js"],[5189,"l22.js"],[5371,"l23.js"],[5420,"l24.js"],[5436,"l25.js"],[5463,"l26.js"],[5584,"l27.js"],[5634,"l28.js"],[5765,"l29.js"],[5891,"l30.js"],[5934,"l31.js"],[5963,"l32.js"],[6051,"l33.js"],[6069,"l34.js"],[6124,"l35.js"],[6181,"l36.js"],[6273,"l37.js"],[6292,"l38.js"],[6376,"l39.js"],[6456,"l40.js"],[6573,"l41.js"],[6633,"l42.js"],[6735,"l43.js"],[6829,"l44.js"],[6924,"l45.js"],[7010,"l46.js"],[7073,"l47.js"],[7187,"l48.js"],[7241,"l49.js"],[7277,"l50.js"],[7379,"l51.js"],[7389,"l52.js"],[7525,"l53.js"],[7547,"l54.js"],[7620,"l55.js"],[7649,"l56.js"],[7733,"l57.js"],[7795,"l58.js"],[7922,"l59.js"],[7975,"l60.js"],[8132,"l61.js"],[8188,"l62.js"],[8326,"l63.js"],[8490,"l64.js"],[8516,"l65.js"],[8617,"l66.js"],[8719,"l67.js"],[8746,"l68.js"],[8872,"l69.js"],[9088,"l70.js"],[9294,"l71.js"],[9416,"l72.js"],[9529,"l73.js"],[9605,"l74.js"],[9722,"l75.js"],[9872,"l76.js"],[9975,"l77.js"],[10100,"l78.js"],[10234,"l79.js"],[10342,"l80.js"],[10465,"l81.js"],[10618,"l82.js"],[10864,"l83.js"],[10933,"l84.js"],[11046,"l85.js"],[11107,"tema-rutadia.js"],[11272,"l86.js"],[11332,"l87.js"],[11375,"l88.js"],[11425,"l89.js"],[11473,"l90.js"],[11579,"tema-ruta.js"],[11769,"tema-fichas.js"],[11886,"tema-cierre.js"],[12018,"tema-inicio.js"],[12146,"tema-ajustes.js"],[12381,"tema-nube.js"],[12439,"tema-viaje.js"],[12580,"tema-ubica.js"],[12721,"tema-personal.js"],[12784,"tema-pin.js"],[12853,"tema-navega.js"],[12886,"tema-cajas.js"],[12922,"tema-camara.js"],[12954,"tema-rutas.js"],[12998,"tema-estadisticas.js"],[13039,"tema-guia.js"],[13089,"tema-cobranza.js"],[13236,"tema-pantallas.js"],[13457,"tema-avisos.js"],[13619,"tema-reparte.js"],[13685,"tema-vehiculos.js"],[13836,"tema-notas.js"],[13911,"tema-taras.js"],[14018,"tema-cargarmas.js"],[14057,"tema-cargas.js"],[14091,"tema-cobro.js"],[14127,"tema-horario.js"],[14166,"tema-sueldos.js"],[14308,"tema-ganado.js"],[14353,"tema-cierres.js"],[14480,"tema-finanzas.js"],[14553,"tema-cuadre.js"],[14781,"tema-retencion.js"],[14872,"tema-iniciodia.js"],[14977,"tema-entregapasos.js"],[15050,"tema-push.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -12004,6 +12004,17 @@ function espHTML135(){var L=[];(S.log||[]).forEach(function(l){preciosLog135(l).
 var _cAdm135=cierreAdm;cierreAdm=function(){var h=_cAdm135.apply(this,arguments);try{if(!S.cierre||!S.cierre.res)return h;var x=espHTML135();if(!x)return h;var i=h.indexOf('<details class="card" data-key="fotoscierre"');if(i<0)i=h.indexOf('<details class="card" data-k="fotoscierre"');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
 
 
+/* ---------- 139 · Ricardo: "al finalizar el cierre las fotos de los 4 lados ya venían precargadas con las que ya había mandado antes; me dejó avanzar"
+   (la ruta se había reabierto con la versión anterior, que no las vaciaba). A prueba de cualquier camino: al abrir el cierre, una foto del
+   regreso que ya se usó en un cierre anterior de hoy (o que es la de la salida) se quita y hay que tomar una nueva. ---------- */
+function fotosUsadas139(){var U={},f=typeof hoy120==='function'?hoy120():iso(TODAY),pon=function(v){if(!v||typeof v!=='string')return;U[v]=1;try{var r=fotoRef121(v);if(r)U[r]=1}catch(e){}};
+ var s=S.salida||{};Object.keys(s.fotos||{}).forEach(function(k){pon(s.fotos[k])});
+ (S.rutasHist||[]).forEach(function(r){if(!r||r.f!==f||+r.ch!==+S.chofHoy||!r.fotos121)return;['ini','fin'].forEach(function(g){var G=r.fotos121[g]||{};Object.keys(G).forEach(function(k){pon(G[k])})})});return U}
+function fotosViejas139(){if(S.role!=='rep'||!S.cierre||S.cierre.sent||!S.salida||!S.salida.fotosFin)return 0;var F=S.salida.fotosFin,U=fotosUsadas139(),n=0;
+ Object.keys(F).forEach(function(k){var v=F[k];if(!v||v==='data:x')return;var r=null;try{r=fotoRef121(v)}catch(e){}if(U[v]||(r&&U[r])){F[k]=null;n++}});
+ if(n)S.fv139=n;return n}
+var _cie139=cierre;cierre=function(){try{var n139=fotosViejas139();if(!n139&&S.fv139&&(!S.cierre||S.cierre.sent||FOTOS.every(function(x){return S.salida.fotosFin&&S.salida.fotosFin[x[0]]})))S.fv139=0}catch(e){}var h=_cie139.apply(this,arguments);try{if(S.fv139&&S.role==='rep'&&S.cierre&&!S.cierre.sent){h=h.replace(/<\/h1>/,'</h1><div class="card note" data-k="fv139"><b>📷 Toma fotos nuevas del vehículo</b><div class="lbl">Las que había eran de un cierre anterior. Para cada cierre se toman fotos nuevas al regresar.</div></div>')}}catch(e){}return h};
+
 //@@capa tema-inicio.js
 /* ===================== TEMA · Inicio del administrador y sus tarjetas (aplanado el 18 nov) =====================
    Antes estaba repartido en 24 envolturas encadenadas en l14, l22, l27, l31, l35, l37, l41, l42, l43, l44, l47, l48, l52, l56, l57, l59, l60, l62, l66, l68, l70, l82.
@@ -12357,6 +12368,15 @@ var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(funct
 
 /* suAplicar · de l90 */
 var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
+
+/* ---------- 139 · Ajustes → "📷 Fotos del vehículo": la foto del tablero de gasolina obligatoria u opcional (por defecto obligatoria) ---------- */
+var _aj139=ajHTML;ajHTML=function(){var h=_aj139.apply(this,arguments);try{if(!h||S.role!=='admin'||S.encOn)return h;var ob=(S.cfg||{}).fotoGas!=='opc';
+ var x='<details class="card" data-k="aj139"'+(S.dOpen&&S.dOpen.aj139?' open':'')+'><summary><b>📷 Fotos del vehículo</b><span class="lbl">gasolina: '+(ob?'obligatoria':'opcional')+'</span></summary>'
+  +'<div class="lbl" style="margin-top:6px">La foto del tablero de gasolina al salir y al regresar. Sirve para llevar bien el control del combustible: con el puro marcador de la app es fácil equivocarse.</div>'
+  +'<div class="chips" role="group" aria-label="Foto de la gasolina" style="margin-top:8px"><button data-act="fotogas139" data-v="obl" aria-pressed="'+ob+'">Obligatoria</button><button data-act="fotogas139" data-v="opc" aria-pressed="'+!ob+'">Opcional</button></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fotogas139"]');if(!b)return;e.stopImmediatePropagation();S.cfg=S.cfg||{};S.cfg.fotoGas=b.dataset.v==='opc'?'opc':'';
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'La foto del tablero de gasolina ahora es '+(S.cfg.fotoGas==='opc'?'opcional':'obligatoria')});toast(S.cfg.fotoGas==='opc'?'La foto de la gasolina es opcional':'La foto de la gasolina es obligatoria');render()},true);
 
 //@@capa tema-nube.js
 /* ===================== TEMA · Nube: subir y bajar los datos (aplanado el 18 nov) =====================
@@ -13790,7 +13810,7 @@ velBeep=function(){_velBeepBase.apply(this,arguments);vibrar([300,150,300,150,30
 /* ---------- fotos ---------- */
 var _fotoTileBase=fotoTile;
 /* l32 · si la foto es obligatoria y no se pudo: "No pude tomarla" */
-fotoTile=function(k,l,g){var h=_fotoTileBase.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS||k==='gas')return h;/* 134: la de la gasolina es opcional */var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
+fotoTile=function(k,l,g){var h=_fotoTileBase.apply(this,arguments);if(S.role!=='rep'||!FOTOS_OBLIGATORIAS||k==='gas'&&!gasOblig139())return h;/* 134/139: la de la gasolina es opcional si así está en Ajustes */var gg=g||'fotos',f=S.salida[gg]&&S.salida[gg][k];if(f)return h;return h.replace(/<\/div>$/,'<button class="fotono" data-act="fotono" data-g="'+gg+'" data-k="'+k+'" data-l="'+esc(l)+'">No pude tomarla</button></div>')};
 var _fotoAbrirBase=fotoAbrir;
 fotoAbrir=function(src){
  /* l24 · "Tomar otra para reemplazarla" (se mira qué foto se tocó ANTES de abrirla) */
@@ -13808,7 +13828,9 @@ fotoZoomable=function(im){if(_fotoZoomableBase.apply(this,arguments))return true
 
 /* 134 · foto opcional del tablero de gasolina (Ricardo, 19 nov: "sí, opcional"). Va en el paso "Gasolina" al salir y al cerrar.
    Se guarda como S.salida.fotos.gas / S.salida.fotosFin.gas y sale en Recibir el cierre, el Cuadre y "Fotos del vehículo". */
-function gasTile134(g){return '<div style="max-width:180px;margin-top:8px">'+fotoTile('gas','Tablero de gasolina (opcional)',g)+'</div>'}
+function gasTile134(g){return '<div style="max-width:180px;margin-top:8px">'+fotoTile('gas',gasOblig139()?'Tablero de gasolina':'Tablero de gasolina (opcional)',g)+'</div>'}
+/* 139 · Ricardo: "la foto del tanque debe ser obligatoria, con la opción de quitarlo desde Ajustes" (para el control del combustible) */
+function gasOblig139(){return !!(typeof FOTOS_OBLIGATORIAS!=='undefined'&&FOTOS_OBLIGATORIAS)&&(S.cfg||{}).fotoGas!=='opc'}
 
 
 //@@capa tema-notas.js
@@ -14916,7 +14938,7 @@ function salFalta124(p){var sl=S.salida,c=S.cierre||{},r=S.inspR;
  if(p===1){if(!r||!r.ok||r.veh!==String(S.vehHoy))return r&&r.wait?'Espera el ok del administrador por la falla del vehículo':'Termina la inspección del vehículo'}
  if(p===2&&FOTOS_OBLIGATORIAS&&!(salAdm124()&&sl.fotoSkip124)){var nf=salFotosFaltan124();if(nf.length)return 'Faltan fotos: '+nf.map(function(f){return f[1].toLowerCase()}).join(', ')+(salAdm124()?' (o toca "Omitir las fotos")':'')}
  if(p===3){if(!(num(c.odoIni)>0))return 'Escribe el odómetro';if(typeof REAL!=='undefined'&&REAL&&!sl.odoOk)return 'Confirma el odómetro'}
- if(p===4){if(typeof REAL!=='undefined'&&REAL&&!sl.tankOk)return 'Confirma el nivel del tanque'}
+ if(p===4){if(typeof REAL!=='undefined'&&REAL&&!sl.tankOk)return 'Confirma el nivel del tanque';if(gasOblig139()&&!(salAdm124()&&sl.fotoSkip124)&&!(sl.fotos&&sl.fotos.gas))return 'Toma la foto del tablero de gasolina'/* 139 */}
  if(p===5){if(num(sl.R)<=0&&num(sl.M)<=0)return 'Agrega las cajas de roatán o los kilos de macho que cargas';if(num(sl.R)>num(S.inv.maduras))return 'Solo hay '+S.inv.maduras+' cajas maduras en bodega'}
  return ''}
 function salPasos124(){if(!salActivo124())return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="sal124hd"]'))return;

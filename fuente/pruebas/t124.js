@@ -42,7 +42,7 @@ const URL=process.argv[2]||'/mnt/user-data/outputs/platanos-primera-vez.html';
  if(await p.evaluate(()=>REAL)){ok(await sig(p)===3,'sin confirmar el odómetro no avanza');await p.evaluate(()=>document.querySelector('[data-act="salodook"]').click());await p.waitForTimeout(100)}
  ok(await sig(p)===4,'pasa a la gasolina');
  t=await vis(p);ok(/Paso 5 de 7 · Gasolina/.test(t)&&/Nivel del tanque/.test(t)&&!/Sí, marca/.test(t),'paso 5: el tanque');
- if(await p.evaluate(()=>REAL)){ok(await sig(p)===4,'sin confirmar el tanque no avanza');await p.evaluate(()=>document.querySelector('[data-act="saltankok"]').click());await p.waitForTimeout(100)}
+ if(await p.evaluate(()=>REAL)){ok(await sig(p)===4,'sin confirmar el tanque no avanza');await p.evaluate(()=>{document.querySelector('[data-act="saltankok"]').click();S.salida.fotos.gas='data:image/jpeg;base64,GAS';/* 139: la foto de la gasolina es obligatoria */render()});await p.waitForTimeout(100)}
  ok(await sig(p)===5,'pasa a la carga');
  t=await vis(p);ok(/Paso 6 de 7 · Carga/.test(t)&&/¿Cuánto cargas hoy\?/.test(t)&&/Cajas de roatán que cargas/.test(t),'paso 6: "¿Cuánto cargas hoy?" y lo que lleva');
  /* la tarjeta: ningún texto se sale ni se corta */
@@ -75,7 +75,7 @@ const URL=process.argv[2]||'/mnt/user-data/outputs/platanos-primera-vez.html';
  eq=await p.evaluate(()=>({ov:!!S.eqov,paso:salPaso124(),reg:Object.keys(((eqRegDe(+S.chofHoy).salida)||{}).est||{}),llave:'v'+vehHoy().id}));
  ok(!eq.ov&&eq.paso===1&&eq.reg.indexOf(eq.llave)>-1,'equipo guardado y sigue a la inspección',eq);
  await inspecciona(p);await p.waitForTimeout(120);
- await p.evaluate(()=>{S.salida.odoOk=true;S.salida.tankOk=true;FOTOS.forEach(f=>S.salida.fotos[f[0]]='data:x');S.salida.R=5;salPon124(6);render();document.querySelector('[data-act="iniciar"]').click()});await p.waitForTimeout(400);
+ await p.evaluate(()=>{S.salida.odoOk=true;S.salida.tankOk=true;FOTOS.forEach(f=>S.salida.fotos[f[0]]='data:x');S.salida.fotos.gas='data:x';S.salida.R=5;salPon124(6);render();document.querySelector('[data-act="iniciar"]').click()});await p.waitForTimeout(400);
  const a=await p.evaluate(()=>({ok:S.salida.ok,ov:!!S.eqov,av:S.avPrecio.slice(-1)[0],asig:S.vehAsig[S.chofHoy]===S.veh[0].id}));
  ok(a.ok&&!a.ov&&/salió en Camioneta Dos en lugar de Camioneta Uno/.test(a.av)&&a.asig,'al iniciar (sin volver a pedir el equipo): aviso al administrador y la asignación no cambia',a);
  ok(!errs.length,'sin errores (asignado)',errs);await p.close();

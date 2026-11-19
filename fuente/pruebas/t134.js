@@ -11,8 +11,8 @@ for(let k=0;k<2;k++){await ev(()=>{var x=[].slice.call(document.querySelectorAll
 /* al salir: el paso Gasolina */
 console.log('· paso gasolina');r=await ev(()=>{salPon124(4);render();var m=document.querySelector('main');var vis=function(el){return !!(el&&el.getClientRects().length&&!el.closest('.wz-hide'))};var g=m.querySelector('#foto_fotosgas'),lab=m.querySelector('label[for="foto_fotosgas"]');
  var paso=(m.querySelector('.wz-hd')&&m.innerText.match(/Paso \d+ de \d+ · [^\n]+/)||[''])[0];return {paso:paso,hay:!!g,vis:vis(lab),txt:lab?lab.textContent:'',nopude:!!m.querySelector('[data-act="fotono"][data-k="gas"]')}});
-ok(r.hay&&/Tablero de gasolina \(opcional\)/.test(r.txt),'al salir: casilla "Tablero de gasolina (opcional)"',r);
-ok(!r.nopude,'es opcional: sin "No pude tomarla"');
+ok(r.hay&&/Tablero de gasolina/.test(r.txt)&&!/opcional/.test(r.txt),'al salir: casilla "Tablero de gasolina" (139: obligatoria por defecto)',r);
+ok(r.nopude,'obligatoria: trae "No pude tomarla" como las demás');
 r=await ev(()=>{var v=[];for(var i=0;i<7;i++){salPon124(i);render();var lab=document.querySelector('main label[for="foto_fotosgas"]');if(lab&&lab.getClientRects().length&&!lab.closest('.wz-hide'))v.push(i)}return v});
 ok(r.length===1,'sale en un solo paso del inicio (el de Gasolina)',r);
 console.log('· tomar la foto');/* tomar la foto */

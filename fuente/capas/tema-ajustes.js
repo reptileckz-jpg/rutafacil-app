@@ -222,3 +222,12 @@ var _suA75=suAplicar;suAplicar=function(){var U=S.setup,ev=(U.veh||[]).map(funct
 
 /* suAplicar · de l90 */
 var _suA90=suAplicar;suAplicar=function(){var r=_suA90.apply(this,arguments);try{var V=S.veh||[],vis={},mx=0;V.forEach(function(v,i){if(vis[v.id]||!(v.id>0))v.id=Math.max(mx,0)+1;vis[v.id]=1;mx=Math.max(mx,v.id)});if(V[0])S.vehHoy=V[0].id}catch(e){}return r};
+
+/* ---------- 139 · Ajustes → "📷 Fotos del vehículo": la foto del tablero de gasolina obligatoria u opcional (por defecto obligatoria) ---------- */
+var _aj139=ajHTML;ajHTML=function(){var h=_aj139.apply(this,arguments);try{if(!h||S.role!=='admin'||S.encOn)return h;var ob=(S.cfg||{}).fotoGas!=='opc';
+ var x='<details class="card" data-k="aj139"'+(S.dOpen&&S.dOpen.aj139?' open':'')+'><summary><b>📷 Fotos del vehículo</b><span class="lbl">gasolina: '+(ob?'obligatoria':'opcional')+'</span></summary>'
+  +'<div class="lbl" style="margin-top:6px">La foto del tablero de gasolina al salir y al regresar. Sirve para llevar bien el control del combustible: con el puro marcador de la app es fácil equivocarse.</div>'
+  +'<div class="chips" role="group" aria-label="Foto de la gasolina" style="margin-top:8px"><button data-act="fotogas139" data-v="obl" aria-pressed="'+ob+'">Obligatoria</button><button data-act="fotogas139" data-v="opc" aria-pressed="'+!ob+'">Opcional</button></div></details>';
+ var i=h.lastIndexOf('</div></div>');return i>-1?h.slice(0,i)+x+h.slice(i):h+x}catch(e){return h}};
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="fotogas139"]');if(!b)return;e.stopImmediatePropagation();S.cfg=S.cfg||{};S.cfg.fotoGas=b.dataset.v==='opc'?'opc':'';
+ S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'La foto del tablero de gasolina ahora es '+(S.cfg.fotoGas==='opc'?'opcional':'obligatoria')});toast(S.cfg.fotoGas==='opc'?'La foto de la gasolina es opcional':'La foto de la gasolina es obligatoria');render()},true);

@@ -23,7 +23,7 @@ cierrePasos=function(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cie
 /* no avanza sin lo de cada paso */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b||!S.cierre)return;var a=+b.dataset.v,cur=S.cierreP||0,c=S.cierre,falta='';if(a<=cur)return;
  if(cur===0){if(!(num(c.odo)>0))falta='Escribe el odómetro';else if(num(c.odo)<num(c.odoIni))falta='El odómetro no puede ser menor al de la salida ('+num(c.odoIni).toLocaleString('es-MX')+' km)';else if(FOTOS_OBLIGATORIAS&&!(S.salida.fotosFin&&S.salida.fotosFin.odo))falta='Toma la foto del odómetro'}
- if(cur===1&&!c.tankOk)falta='Confirma el nivel del tanque';
+ if(cur===1&&!c.tankOk)falta='Confirma el nivel del tanque';else if(cur===1&&gasOblig139()&&!(S.salida.fotosFin&&S.salida.fotosFin.gas))falta='Toma la foto del tablero de gasolina';/* 139 */
  if(cur===2&&FOTOS_OBLIGATORIAS){var ff=S.salida.fotosFin||{},fl=FOTOS.filter(function(x){return !ff[x[0]]});if(fl.length)falta='Faltan fotos: '+fl.map(function(x){return x[1].toLowerCase()}).join(', ')}
  if(falta){e.stopImmediatePropagation();toast(falta);try{vibrar([60,40,60])}catch(er){}}},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="citankok"]');if(!b||!S.cierre)return;e.stopImmediatePropagation();S.cierre.tankOk=true;render()},true);

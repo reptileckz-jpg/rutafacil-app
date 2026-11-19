@@ -5,18 +5,24 @@
   "description": "Ruta Fácil: control de reparto (app de Android hecha con Capacitor a partir de la versión web).",
   "dependencies": {
     "@capacitor/android": "^7.0.0",
-    "@capacitor/core": "^7.0.0",
-    "@capacitor/status-bar": "^7.0.0",
-    "@capacitor/haptics": "^7.0.0",
-    "firebase": ">=12.0.0",
     "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/google-maps": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0",
     "@capacitor/keyboard": "^7.0.0",
-    "leaflet": "^1.9.4",
-    "@capacitor/google-maps": "^7.0.0"
+    "@capacitor/status-bar": "^7.0.0",
+    "firebase": ">=12.0.0",
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^7.0.0",
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.24.0",
+    "vite": "6.3.5"
+  },
+  "scripts": {
+    "dev": "vite --config fuente/vite/vite.config.mjs",
+    "build": "vite build --config fuente/vite/vite.config.mjs",
+    "armar": "node fuente/vite/armar.mjs"
   }
 }

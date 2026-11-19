@@ -5,7 +5,7 @@
      Ahora, en el paso "La fruta", si una fruta tiene kilos pero no precio y otra sí, pregunta "¿Sí se cargó?"; "No" la quita.
    - "¿A quién se le cargan los gastos del viaje?" solo sale con 2 frutas o más (las que de verdad se compraron: con kilos y precio).
    - Las opciones son las frutas de la carga, incluida la otra fruta ("Solo plátano dominico", por ejemplo); con 3, "Dividir entre todas".
-   Si se cambia algo de esto, se cambia AQUÍ (el reparto en sí está en la base, cC, ajustado en ql.py para "Solo otra fruta").
+   Si se cambia algo de esto, se cambia AQUÍ (el reparto en sí está en la base, cC, ajustado en fuente/vite/parches.mjs para "Solo otra fruta").
    ============================================================================================ */
 function frutas111(o){if(!o)return [];var L=[];if((num(o.kgR)>0||num(o.cajas)>0)&&num(o.pR)>0)L.push(['R','roatán']);if(num(o.kgM)>0&&num(o.pM)>0)L.push(['M','macho']);
  (o.otros||[]).forEach(function(x){if(x&&num(x.kg)>0&&num(x.p)>0&&!L.some(function(y){return y[0]==='O'}))L.push(['O',String(x.n||'la otra fruta').trim()||'la otra fruta'])});return L}

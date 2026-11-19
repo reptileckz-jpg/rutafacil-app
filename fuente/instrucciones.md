@@ -15,7 +15,7 @@ Luego lee, en este orden:
 
 ## Dónde está todo
 - **Repositorio:** `reptileckz-jpg/rutafacil-app`, privado.
-- **Código:** `fuente/base-v38.html` + las capas `fuente/capas/l1.js…l90.js`, en orden, + `patch39.py` y `ql.py`.
+- **Código:** `fuente/base-v38.html` + las capas `fuente/capas/l1.js…l90.js`, en orden (`capas/orden.json`) + los cambios de texto de `fuente/vite/parches.mjs`. Se arma con Vite: `npm run build` (o `bash fuente/capas/build.sh`); `npm run dev` para probar.
 - **Temas aplanados:** `fuente/capas/tema-rutadia.js` (la ruta del día), `fuente/capas/tema-cobranza.js` (Cobranza), `fuente/capas/tema-avisos.js` (avisos y pendientes: lista, a dónde lleva cada uno, numeritos, Ir / Listo), `fuente/capas/tema-reparte.js` (quién reparte: choferes del día, el administrador que reparte, cambios de Rutas al chofer en camino), `fuente/capas/tema-vehiculos.js` (vehículos) y `fuente/capas/tema-pantallas.js` (dónde va cada cosa en las pantallas del administrador; si se mueve algo de lugar, también se ajustan ahí los tutoriales y se corre `t92.js`). Lo nuevo de un tema va en su archivo `tema-*.js`. Si se cambia algo de ese tema, se cambia ahí, sin envolturas nuevas. Poco a poco se van aplanando más temas.
 - **Errores:** cuando la app falla, el texto del error trae "En: lNN.js:renglón" (mapa de errores, `mapa.py`).
 - **Pruebas:** `fuente/pruebas`, con Playwright. Cada una imprime "N OK · N FAIL".

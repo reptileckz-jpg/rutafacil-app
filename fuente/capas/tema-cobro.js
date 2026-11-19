@@ -6,7 +6,7 @@
    - "Esta entrega" y "Lo que ya debía" separados; el abono con botones rápidos: $0, la mitad, liquidar.
    - El buró se ve solo al fiar (una parte o a crédito).
    - Cajas vacías con el saldo en vivo: ya debía · le dejas · devuelve → queda debiendo / al corriente.
-   La plantilla de la entrega está en la base (ql.py). Si se cambia algo de esto, se cambia AQUÍ y en esas líneas de ql.py.
+   La plantilla de la entrega está en la base (fuente/vite/parches.mjs). Si se cambia algo de esto, se cambia AQUÍ y en esas líneas de fuente/vite/parches.mjs.
    ============================================================================================ */
 function cobro115(k){k=k||entregaCalc();return r2(num(k.pago)+num(k.abono))}
 /* billetes sugeridos: el siguiente cien, el siguiente quinientos y el siguiente mil arriba de lo que hay que cobrar */

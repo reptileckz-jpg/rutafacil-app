@@ -60,7 +60,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | "Después de dibujar" (render: 118 envolturas) | 117 | ✅ `tema-dibujar1.js` (113, de l1–l85 y l6b; va justo antes de `tema-rutadia.js`) y `tema-dibujar2.js` (6, de l86–l90; va justo después de `l90.js`). Mismo orden exacto (se cortaron con un analizador de JavaScript, acorn). Todas las comparaciones IDÉNTICO y todas las pruebas en 0 FAIL. (la de l6b también: ya no queda ninguna de render). resetDraft de l72 pasó a `tema-piezas.js` |
 | Estado nuevo y datos de la nube (fresh 7, nbAplica 7) | 14 | ✅ `tema-fresco1.js` (fresh de l2, l5, l6b; justo después de `l6b.js`, antes de `l7.js` porque `tpl()` usa `_frL6`) y `tema-fresco2.js` (fresh de l7, l45, l72, l80 y nbAplica de l61, l77, l80, l82; justo después de `l85.js`). Lo que se le hacía a S al cargar se quedó en su capa. Comparaciones IDÉNTICO; S al cargar, `fresh()` y `tpl()` iguales (en la demo solo cambia 1 segundo del reloj simulado) |
 | Lo que sobre | 0 | ✅ **0 envolturas en las capas viejas (19 nov)** |
-| **Cambiar el armado a Vite** | — | cuando quede 0 |
+| **Cambiar el armado a Vite** | — | ✅ **19 nov**: `fuente/vite/` (`armar.mjs`, `parches.mjs`, `vite.config.mjs`), `npm run build` / `npm run dev`, `capas/orden.json`. Sale idéntico byte por byte (demo, real y APK). El APK se arma con `npm run build`. Prueba: `pruebas/tvite.js` (11 OK) |
 
 ## Antes de seguir
 **Ricardo (17 nov): "aún no sigas con Vite"** → pausa en 503 (11%). **Ricardo (18 nov, después de la 9.9 / APK 1.0.46): "sigue con vite"** → se retomó el aplanado (esto es preparación dentro de las capas; NO se crean archivos de Vite ni se toca `package.json` hasta que diga "Empezamos con Vite", ver `REGLAS-NUMEROS.md`). 451 (20%).

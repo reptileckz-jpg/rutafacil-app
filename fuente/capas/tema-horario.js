@@ -5,7 +5,7 @@
      y se corrige con un toque (en cualquier casilla de abre/cierra: ficha, asistente, ubicación, preguntas en ruta).
    - Los clientes que ya tienen un horario así salen en "Datos que faltan" (horMal117, en l16).
    - Si el apodo es igual al nombre (sin importar mayúsculas ni acentos), no se repite ("Benavides" · "Benavides").
-   Las líneas de la base que muestran el horario están en ql.py (117). Si se cambia algo de esto, se cambia AQUÍ y ahí.
+   Las líneas de la base que muestran el horario están en fuente/vite/parches.mjs (117). Si se cambia algo de esto, se cambia AQUÍ y ahí.
    ============================================================================================ */
 function horaTxt117(t){var m=hmin(t);if(m==null||isNaN(m))return String(t||'');var h=Math.floor(m/60)%24,mi=m%60,h12=h%12||12,
   p=h<6?'de la madrugada':h<12?'de la mañana':h===12?'del día':h<19?'de la tarde':'de la noche';return h12+(mi?':'+('0'+mi).slice(-2):'')+' '+p}

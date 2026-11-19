@@ -3,7 +3,7 @@
 Las dio Ricardo el 18 de noviembre de 2026, después de que un segundo cierre borrara el primero ($27,270 que dejaron de aparecer en las cuentas). **Léelas antes de tocar cualquier código.** Están ajustadas a cómo funciona de verdad la app (ver "Ajustes").
 
 ## Estado del proyecto
-1. **Todavía NO se migra a Vite.** Se sigue armando con la base HTML y las capas (`capas/build.sh`). No crear archivos de Vite, no cambiar `package.json` ni la estructura de carpetas hasta que Ricardo diga **"Empezamos con Vite"**. Las reglas de Vite de abajo solo se recuerdan.
+1. **Ya se arma con Vite (19 nov).** Ricardo: "si tienes algún pendiente con Vite, termínalo todo sin preguntarme". `npm run build` (o `bash fuente/capas/build.sh`) arma la app con `fuente/vite/armar.mjs`; `npm run dev` abre el servidor de prueba. La app sale idéntica byte por byte a la del armado viejo. Las capas siguen siendo scripts clásicos (no módulos) y se cambian igual que antes.
 2. **Prioridad absoluta: blindar los números.** Lo visual puede fallar; los números (efectivo, cortes, inventario, créditos, abonos) **jamás** deben perderse ni descuadrarse.
    - Antes de escribir código que toque dinero o mercancía: analizar los casos límite y **explicarle a Ricardo cómo se blindan** (ver "Plan de blindaje").
 

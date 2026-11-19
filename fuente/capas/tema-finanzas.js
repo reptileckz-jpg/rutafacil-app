@@ -8,7 +8,7 @@
    - Gastos = los gastos del día (S.gastos con fecha; sin "Retiro del dueño") + lo que los choferes gastaron en su ruta y no han cerrado.
    - Semana (desde el lunes) y mes: la suma de cada día.
    También: el celular del chofer ya no intenta cambiar los Ajustes (la nube no lo deja y salía "Missing or insufficient permissions").
-   Si se cambia algo de esto, se cambia AQUÍ y en las líneas 120 de ql.py.
+   Si se cambia algo de esto, se cambia AQUÍ y en las líneas 120 de fuente/vite/parches.mjs.
    ============================================================================================ */
 function d120(d){return /^\d{4}-\d\d-\d\d$/.test(String(d||''))}
 /* los abonos cobrados en bodega llevan fecha desde hoy (los de antes no tenían; quedan "sin fecha") */

@@ -2839,3 +2839,10 @@ Ricardo: "sigue con Vite hasta que se alcance el límite y termina la aplicació
 - Para render, fresh y nbAplica se usó un analizador de JavaScript (acorn) para cortar exacto; los temas van en el lugar del armado donde el orden queda igual.
 - Comprobado: todas las pruebas de comparación IDÉNTICO (demo y real), todas las pruebas t*.js en 0 FAIL, y el estado S al cargar igual.
 - **Falta el último paso: cambiar el armado a Vite.** Según las reglas, eso empieza cuando Ricardo diga "Empezamos con Vite". Las capas ya están listas.
+
+## 2026-11-19 · Vite: el armado ya es con Vite
+Ricardo: "si tienes algún pendiente con Vite, termínalo todo sin preguntarme; si tienes alguna prueba que hacer, hazla; ya solo dime los resultados".
+- `fuente/vite/armar.mjs` hace en Node lo que hacían `build.sh` + `patch39.py` + `ql.py` + `mapa.py` + `www.sh` (estos `.py` se quitaron; sus cambios están en `fuente/vite/parches.mjs`, el orden en `capas/orden.json`).
+- `fuente/vite/vite.config.mjs`: `npm run build` (dist-vite/ y www/index.html) y `npm run dev` (servidor de prueba que se vuelve a armar y recarga al guardar una capa). `vite@6.3.5` en devDependencies.
+- `.github/workflows/apk.yml`: paso "Armar la app con Vite" antes de empaquetar.
+- Comprobado: las tres salidas idénticas byte por byte al armado viejo; `pruebas/tvite.js` 11 OK (incluye que se detiene si un cambio no encuentra su texto o una capa tiene error de sintaxis); todas las t*.js en 0 FAIL; todas las comparaciones IDÉNTICO; el servidor de prueba arranca sin errores (demo y real) y recarga al cambiar una capa.

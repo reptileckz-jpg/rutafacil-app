@@ -14863,7 +14863,7 @@ try{if(typeof AR_K!=='undefined'&&AR_K.indexOf('bod110')<0)AR_K.push('bod110')}c
      Ahora, en el paso "La fruta", si una fruta tiene kilos pero no precio y otra sí, pregunta "¿Sí se cargó?"; "No" la quita.
    - "¿A quién se le cargan los gastos del viaje?" solo sale con 2 frutas o más (las que de verdad se compraron: con kilos y precio).
    - Las opciones son las frutas de la carga, incluida la otra fruta ("Solo plátano dominico", por ejemplo); con 3, "Dividir entre todas".
-   Si se cambia algo de esto, se cambia AQUÍ (el reparto en sí está en la base, cC, ajustado en ql.py para "Solo otra fruta").
+   Si se cambia algo de esto, se cambia AQUÍ (el reparto en sí está en la base, cC, ajustado en fuente/vite/parches.mjs para "Solo otra fruta").
    ============================================================================================ */
 function frutas111(o){if(!o)return [];var L=[];if((num(o.kgR)>0||num(o.cajas)>0)&&num(o.pR)>0)L.push(['R','roatán']);if(num(o.kgM)>0&&num(o.pM)>0)L.push(['M','macho']);
  (o.otros||[]).forEach(function(x){if(x&&num(x.kg)>0&&num(x.p)>0&&!L.some(function(y){return y[0]==='O'}))L.push(['O',String(x.n||'la otra fruta').trim()||'la otra fruta'])});return L}
@@ -14980,7 +14980,7 @@ var _rd157=render;render=function(){var r=_rd157.apply(this,arguments);try{if(S.
    - "Esta entrega" y "Lo que ya debía" separados; el abono con botones rápidos: $0, la mitad, liquidar.
    - El buró se ve solo al fiar (una parte o a crédito).
    - Cajas vacías con el saldo en vivo: ya debía · le dejas · devuelve → queda debiendo / al corriente.
-   La plantilla de la entrega está en la base (ql.py). Si se cambia algo de esto, se cambia AQUÍ y en esas líneas de ql.py.
+   La plantilla de la entrega está en la base (fuente/vite/parches.mjs). Si se cambia algo de esto, se cambia AQUÍ y en esas líneas de fuente/vite/parches.mjs.
    ============================================================================================ */
 function cobro115(k){k=k||entregaCalc();return r2(num(k.pago)+num(k.abono))}
 /* billetes sugeridos: el siguiente cien, el siguiente quinientos y el siguiente mil arriba de lo que hay que cobrar */
@@ -15015,7 +15015,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
      y se corrige con un toque (en cualquier casilla de abre/cierra: ficha, asistente, ubicación, preguntas en ruta).
    - Los clientes que ya tienen un horario así salen en "Datos que faltan" (horMal117, en l16).
    - Si el apodo es igual al nombre (sin importar mayúsculas ni acentos), no se repite ("Benavides" · "Benavides").
-   Las líneas de la base que muestran el horario están en ql.py (117). Si se cambia algo de esto, se cambia AQUÍ y ahí.
+   Las líneas de la base que muestran el horario están en fuente/vite/parches.mjs (117). Si se cambia algo de esto, se cambia AQUÍ y ahí.
    ============================================================================================ */
 function horaTxt117(t){var m=hmin(t);if(m==null||isNaN(m))return String(t||'');var h=Math.floor(m/60)%24,mi=m%60,h12=h%12||12,
   p=h<6?'de la madrugada':h<12?'de la mañana':h===12?'del día':h<19?'de la tarde':'de la noche';return h12+(mi?':'+('0'+mi).slice(-2):'')+' '+p}
@@ -15377,7 +15377,7 @@ var _rcH154=rcHTML;rcHTML=function(){var h=_rcH154.apply(this,arguments);try{if(
    - Gastos = los gastos del día (S.gastos con fecha; sin "Retiro del dueño") + lo que los choferes gastaron en su ruta y no han cerrado.
    - Semana (desde el lunes) y mes: la suma de cada día.
    También: el celular del chofer ya no intenta cambiar los Ajustes (la nube no lo deja y salía "Missing or insufficient permissions").
-   Si se cambia algo de esto, se cambia AQUÍ y en las líneas 120 de ql.py.
+   Si se cambia algo de esto, se cambia AQUÍ y en las líneas 120 de fuente/vite/parches.mjs.
    ============================================================================================ */
 function d120(d){return /^\d{4}-\d\d-\d\d$/.test(String(d||''))}
 /* los abonos cobrados en bodega llevan fecha desde hoy (los de antes no tenían; quedan "sin fecha") */

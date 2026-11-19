@@ -48,9 +48,9 @@
 
 - **Front:** un solo HTML. Hay una **base** (`fuente/base-v38.html`) y encima **capas** (`fuente/capas/l1.js … l90.js`) más **temas aplanados** (`tema-rutadia.js`, `tema-cobranza.js`, `tema-pantallas.js`, `tema-avisos.js`, `tema-reparte.js`, `tema-vehiculos.js`).
   - **Regla nueva:** lo de un tema aplanado se cambia en su `tema-*.js`, sin envolturas nuevas en otras capas. Avance de la migración a Vite en `fuente/migracion.md` (se mide con `bash capas/mide.sh`: envolturas que quedan; meta 0).
-  - **Mapa de errores:** `build.sh` marca dónde empieza cada capa y `mapa.py` lo anota; los errores dicen "En: l80.js:57".
+  - **Mapa de errores:** el armado marca dónde empieza cada capa y lo anota; los errores dicen "En: l80.js:57".
   - Cada capa reemplaza o envuelve funciones globales: `var _f=f; f=function(){…}`.
-  - `patch39.py` y `ql.py` hacen cambios de texto sobre la base. `build.sh` junta todo.
+  - Se arma con **Vite** (`npm run build`, `npm run dev`): `fuente/vite/armar.mjs` junta todo (orden en `capas/orden.json`) y le hace a la base los cambios de `fuente/vite/parches.mjs`.
   - Salen dos versiones: `prototipo-platanos.html` (**demo** con datos de ejemplo) y `platanos-primera-vez.html` (**versión real**, `PN_MODO="vacio"`, sin datos de ejemplo). La real se copia a `www/index.html`.
 - **Estado:** un objeto global `S`. `render()` dibuja la pantalla según `S.role` y `S.tab`. Hay un motor que solo actualiza lo que cambió.
 - **Guardado local:** IndexedDB en el teléfono, ~0.7 s después de cada cambio y al irse al fondo. Además, la caché de Firestore.

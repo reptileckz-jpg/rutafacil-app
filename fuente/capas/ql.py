@@ -1,5 +1,5 @@
 R("<title>Prototipo Plátanos</title>",'<meta charset="utf-8">\n<title>Prototipo Plátanos</title>')
-R("APP_VER='3.8'","APP_VER='10.1'")
+R("APP_VER='3.8'","APP_VER='10.2'")
 R("<div class=\"field\" style=\"border:0\"><label for=\"vlp'+i+'\">Producto</label><select id=\"vlp'+i+'\" data-bind=\"vl.lin.'+i+'.p\" style=\"width:170px\">'+S.vlProd.map(function(p){return '<option value=\"'+esc(p.n)+'\"'+(p.n===l.p?' selected':'')+'>'+esc(p.n)+' · '+money(num(p.p))+'/'+(p.u==='caja'?'caja':'kg')+'</option>'}).join('')+'</select></div>'","'+vlProdBtns(l,i)")
 R("+(S.salida.ok?velDemoBtn(vehHoy()):'')+stockCard()","+stockCard()")
 R("<button class=\"btn sec\" data-act=\"llamada\"'+(S.stops.some(function(s){return s.call})?' disabled':'')+'>Simular llamada de un cliente</button>';","';")

@@ -2757,3 +2757,5 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
   5. GitHub → Actions → "Publicar avisos push y reglas de la nube" → Run workflow.
   6. Armar el APK de prueba en `prueba-nativa` (Actions → Armar APK → rama prueba-nativa; no publica versión) y probar: asignar un pedido con la app del chofer cerrada.
 
+
+## 2026-11-19 · Ricardo: "todo con lo de hoy" → versión 10.2 a main (Vite hasta 229 / 59%, 128–138 y 132). Todas las pruebas en 0 FAIL antes de publicar.

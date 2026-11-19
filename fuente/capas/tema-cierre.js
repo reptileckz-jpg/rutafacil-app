@@ -90,3 +90,21 @@ var _confMsg53=confMsg;confMsg=function(D){var r=_confMsg53.apply(this,arguments
 
 /* cierreRes · de l69 */
 var _cR69=cierreRes;cierreRes=function(){var r=_cR69.apply(this,arguments);return r?cierreExtra68(r):r};
+
+/* ---------- 131 · Recibir el cierre → Vehículo: las fotos de la SALIDA y del REGRESO por separado, con el odómetro y el tanque ----------
+   Antes: solo los 4 lados en parejas chiquitas, sin decir cuál era de la salida y cuál del regreso, y sin la foto del odómetro.
+   Ahora: "🚚 Al salir" y "🏁 Al regresar", cada uno con su kilometraje, el nivel del tanque y sus fotos (4 lados + odómetro, y la
+   de la gasolina si hay). Cada foto se toca para verla en grande (las de la nube se bajan solas). Reemplaza la compFotos de la base
+   (y el cambio de texto que le hacía l82). */
+var FOTOS131=[['frente','Frente'],['atras','Atrás'],['izq','Lado izquierdo'],['der','Lado derecho'],['odo','Odómetro'],['gas','Gasolina']];
+function fotosVeh131(s){var F=fotosRuta121({salida:s||{}});return {ini:F.ini,fin:F.fin}}
+compFotos=function(){var s=S.salida||{},c=S.cierre||{},F=fotosVeh131(s),hay=Object.keys(F.ini).length+Object.keys(F.fin).length;
+ if(!hay)return '<div class="lbl" style="margin-top:6px">Este día no se tomaron las fotos del vehículo.</div>';
+ var tile=function(ref,l){var src=ref?fotoSrc121(ref):'';return ref?'<button data-act="foto121" data-ref="'+esc(ref)+'" data-l="'+esc(l)+'" style="padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;align-items:stretch;min-height:44px">'+(src?'<img src="'+src+'" alt="'+esc(l)+'" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">':'<span class="lbl" style="aspect-ratio:4/3;display:flex;align-items:center;justify-content:center">cargando…</span>')+'<span style="font-size:12px;padding:3px 6px;text-align:left">'+esc(l)+'</span></button>'
+   :'<div style="border:1px dashed var(--line);border-radius:10px;display:flex;flex-direction:column"><span class="lbl" style="aspect-ratio:4/3;display:flex;align-items:center;justify-content:center">Sin foto</span><span style="font-size:12px;padding:3px 6px">'+esc(l)+'</span></div>'};
+ var km=function(v){return num(v)>0?num(v).toLocaleString('es-MX')+' km':''};
+ var bloque=function(tit,G,odo,tan){var L=FOTOS131.filter(function(x){return x[0]!=='gas'||G.gas});
+  return '<div style="margin-top:10px"><b>'+tit+'</b><div class="lbl">'+[odo?'odómetro '+odo:'',tan?'tanque '+esc(tan):''].filter(Boolean).join(' · ')+'</div>'
+   +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">'+L.map(function(x){return tile(G[x[0]],x[1])}).join('')+'</div></div>'};
+ var rec=num(c.odo)>num(c.odoIni)&&num(c.odoIni)>0?'<div class="lbl" style="margin-top:8px">Recorrió '+(num(c.odo)-num(c.odoIni)).toLocaleString('es-MX')+' km. Compara las fotos de la salida con las del regreso para ver si hubo golpes o daños. Toca una foto para verla en grande.</div>':'<div class="lbl" style="margin-top:8px">Toca una foto para verla en grande.</div>';
+ return bloque('🚚 Al salir',F.ini,km(c.odoIni),c.tankIni)+bloque('🏁 Al regresar',F.fin,km(c.odo),c.tank||'')+rec};

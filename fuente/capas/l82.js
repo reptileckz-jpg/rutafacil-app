@@ -190,7 +190,7 @@ function cliSync82(){if(MODO!=='vacio')return;var M=cliHist82();(S.cli||[]).forE
 /* el contador "este mes" de clientes se reinicia al cambiar de mes (nadie lo hacía) */
 /* → movido (tema-rutadia.js) */
 /* 52 · textos de la demo que llegaban a la app real */
-var _cf82=typeof compFotos==='function'?compFotos:null;if(_cf82)compFotos=function(){var h=_cf82.apply(this,arguments);return MODO==='vacio'?String(h).replace('Sin fotos del vehículo en esta demo.','Este día no se tomaron las fotos del vehículo.'):h};
+/* (131: compFotos ahora se rehace completa en tema-cierre.js; esto ya no se ve. Se puede quitar con Vite) */var _cf82=typeof compFotos==='function'?compFotos:null;if(_cf82)compFotos=function(){var h=_cf82.apply(this,arguments);return MODO==='vacio'?String(h).replace('Sin fotos del vehículo en esta demo.','Este día no se tomaron las fotos del vehículo.'):h};
 function txtDemo82(){if(MODO!=='vacio')return;var m=document.querySelector('main');if(!m)return;var w=document.createTreeWalker(m,NodeFilter.SHOW_TEXT),t,R=[['Las fotos y los datos son de ejemplo. En la versión APK se guardan cifrados y solo los ve el administrador.','Las fotos y los datos del personal solo los ve el administrador.'],['No hay datos en esa fecha. Hay información hasta ayer.','No hay movimientos en esa fecha.'],['El historial de ejemplo es solo de ruta; desde hoy la venta local se guarda aparte.','La venta en bodega se suma aparte de la de ruta.'],[', hasta ayer','']];
  while(t=w.nextNode()){var v=t.nodeValue;if(!/ejemplo|hasta ayer/.test(v))continue;R.forEach(function(r){v=v.split(r[0]).join(r[1])});if(v!==t.nodeValue)t.nodeValue=v}}
 /* 53 · la "Revisión del lunes" vieja (llantas/frenos/aceite, salía a diario por la demo): fuera; ya existe la revisión semanal por pasos */

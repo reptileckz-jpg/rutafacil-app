@@ -2684,3 +2684,13 @@ HECHO (`l40.js`: `corteDatos` / `corteItems`). **Falta armar APK (preguntar ante
 - El código de verificación es el mismo de antes (las cajas y kilos no entran al código). Un corte viejo guardado sin esos datos se sigue viendo como antes.
 - Prueba `t130.js` (16 OK, demo y real). Captura `disenos/corte-cajas-kilos.png`. Todas las pruebas en 0 FAIL; `comp-cierre` idéntica.
 
+## 2026-11-19 · 131 · Ricardo: "en el cierre, donde se ven las fotos del vehículo falta poder [ver] las fotos del odómetro y gasolina; las de los 4 lados ya están, pero no se muestran las de cuando salió y cuando regresó: son 4 fotos al inicio y 4 al final"
+HECHO en `capas/tema-cierre.js` (`compFotos`, se rehace completa; la envoltura de l82 ya no se ve). **Falta armar APK (preguntar antes).**
+- Recibir el cierre → Vehículo: "🚚 Al salir" y "🏁 Al regresar" por separado, cada uno con su odómetro (km), el nivel del tanque y sus fotos: frente, atrás, lado izquierdo, lado derecho y **odómetro** (antes no salía). Si falta una, dice "Sin foto". "Recorrió N km". Cada foto se toca para verla en grande. Las que vienen de la nube se bajan solas (también se redibuja en esta pantalla, `tema-cuadre.js`).
+- **Gasolina:** hoy NO se toma foto del tanque (el chofer solo mueve la aguja); se muestra el nivel que marcó al salir y al regresar. Si se agrega la foto (clave `gas`), ya sale sola aquí y en el Cuadre. Pendiente de que Ricardo decida si se agrega.
+- Prueba `t131.js` (9 OK). Captura `disenos/cierre-fotos-salida-regreso.png`. Todas las pruebas en 0 FAIL (menos `tk.js`, que ya fallaba).
+
+## 2026-11-19 · 132 · Ricardo: "si no estoy en la app abierta, y está minimizada o cerrada, no le llegan las notificaciones; no le avisa que le asigné un nuevo pedido al chofer". PENDIENTE DE DECIDIR
+- Causa: el aviso ("Se agregó a tu ruta…", `natNotif`) lo lanza la app cuando revisa la nube, y eso solo pasa con la app abierta (minimizada Android la duerme; cerrada no corre).
+- En el celular del chofer ya hay una parte nativa siempre prendida: el servicio de ubicación (`RutaGps`, arranca solo al prender el celular, revisa cada minuto y ya sube a la nube con la sesión guardada). Opciones: (A) que ese servicio revise también si hay pedidos nuevos para ese chofer y lance el aviso, sin servidor ni costo; (B) notificaciones push de Firebase (FCM) con una función en la nube (plan Blaze, pago por uso) que llegan aunque el servicio no corra. Las dos tocan lo nativo: se arman primero en `prueba-nativa`.
+

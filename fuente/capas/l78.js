@@ -42,8 +42,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 /* tagCruce: pasó a tema-vehiculos.js */
 
 /* ---------- 24 · "Lo que pasó hoy en su ruta" minimizado ---------- */
-var _rc78=rcHTML;rcHTML=function(){var h=_rc78.apply(this,arguments);try{if(!h||h.indexOf('data-k="rcact"')<0)return h;var n=0;try{n=actDe(+S.chofHoy,iso(TODAY)).length}catch(e){}
-  return h.replace(/<div class="card" data-k="rcact"><div style="margin-top:8px"><b>Lo que pasó hoy en su ruta<\/b>/,'<details class="card" data-k="rcact78"'+(S.dOpen.rcact78?' open':'')+'><summary><b>Lo que pasó hoy en su ruta</b><span class="lbl">'+n+' cosa'+(n===1?'':'s')+' · toca para ver</span></summary><div style="margin-top:8px">').replace(/(data-k="rcact78"[\s\S]*?<\/div>)<\/div>(<div style="margin-top:auto)/,'$1</details>$2')}catch(e){return h}};
+/* rcHTML: pasó a tema-sueltas.js */
 
 /* ---------- 25b · "Aprende la app": cada renglón lleva a lo suyo ---------- */
 function marca78(sel,msg){setTimeout(function(){var el=null;try{el=typeof sel==='string'?document.querySelector(String(sel).replace(/^CH:/,'')):sel}catch(e){el=null}if(!el){if(msg)toast(msg);return}try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}try{marcaFalta(el)}catch(e){}},250)}

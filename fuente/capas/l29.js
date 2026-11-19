@@ -100,8 +100,7 @@ document.addEventListener('input',function(e){var t=e.target;if(!t||!t.dataset||
 /* ---------- menú: estado de la nube y cerrar sesión ---------- */
 function nbEstadoTxt(){if(!NB.on||!NB.listo)return '';return NB.pend>0?(navigator.onLine===false?'☁️ Sin señal: '+NB.pend+' cambio'+(NB.pend>1?'s':'')+' por subir':'☁️ Subiendo '+NB.pend+' cambio'+(NB.pend>1?'s':'')+'…'):'☁️ Todo guardado en la nube'}
 function nbIndicador(){var el=document.getElementById('nbind');if(el)el.textContent=nbEstadoTxt()}
-var _menu29=menuHTML;menuHTML=function(r){var h=_menu29.apply(this,arguments);if(!NB.on||!NB.listo)return h;var add='<div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px"><div id="nbind" class="lbl">'+nbEstadoTxt()+'</div><div class="lbl">'+esc(NB.user&&NB.user.email&&!/@rutafacil\.app$/.test(NB.user.email)?NB.user.email:(NB.perfil&&NB.perfil.usuario?'Usuario: '+NB.perfil.usuario:''))+'</div><button class="link" data-act="nbsalir">Cerrar sesión en este celular</button></div>';
- var i=h.lastIndexOf('</nav>');return i<0?h+add:h.slice(0,i)+add+h.slice(i)};
+/* menuHTML: pasó a tema-sueltas.js */
 
 /* el teclado no tapa lo que se escribe (en toda la app).
    El celular ya achica la pantalla cuando sale el teclado; aquí solo se mueve lo justo para que el campo quede a la vista.

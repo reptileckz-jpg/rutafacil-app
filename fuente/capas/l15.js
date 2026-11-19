@@ -53,6 +53,6 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  parSet(t,b.dataset.v);S.parOtro=PAR_O.indexOf(b.dataset.v)>-1?t:null;render()},true);
 document.addEventListener('input',function(e){var x=e.target;if(x&&x.dataset&&x.dataset.part){parSet(x.dataset.part,x.value)}},true);
 /* en la pantalla de alta */
-var _npF15=npF;npF=function(k,l,t,ph){if(/^(r1p|r2p|emp)$/.test(k))return parHTML('np:'+k);return _npF15.apply(this,arguments)};
+/* npF: pasó a tema-piezas.js */
 /* y al editar a alguien que ya existe */
 /* fiEmp: pasó a tema-fichas.js */

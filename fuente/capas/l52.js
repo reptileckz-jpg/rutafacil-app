@@ -11,11 +11,7 @@ function esNativo52(){var C=window.Capacitor;try{return !!(C&&C.isNativePlatform
 if(AR_K.indexOf('stopsT')<0)AR_K.push('stopsT');
 
 /* ---------- 84 · escanear QR con el escáner de Google (el del navegador cerraba la app) ---------- */
-var _qrScan52=qrScan;qrScan=function(cb,titulo){var n=natPl52();
- if(esNativo52()){if(!n||!n.escanear){toast('Actualiza la app para poder leer códigos QR.');return}
-  n.escanear().then(function(r){if(r&&r.texto)cb(r.texto);else if(!(r&&r.cancelado))toast('No se leyó el código. Intenta otra vez.')},function(er){var m=String(er&&er.message||er||'');
-   toast(/sin_play/.test(m)?'Este celular no tiene los servicios de Google para leer QR. Escribe o busca a mano.':'No se pudo abrir el lector de QR. Intenta otra vez.')});return}
- return _qrScan52.apply(this,arguments)};
+/* qrScan: pasó a tema-piezas.js */
 
 /* ---------- 87/88 · la ubicación del celular del negocio, siempre (también sin sesión) ---------- */
 var _gpsCfgK='';
@@ -97,9 +93,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.gpsd||!t.value)return;S.gpsVer=S.gpsVer||{};S.gpsVer[t.dataset.gpsd]=t.value;render()},true);
 
 /* ---------- 87 · "Permitir todo el tiempo" en la pantalla de permisos (solo celulares de chofer) ---------- */
-var _permH52=permHTML;permHTML=function(){var h=_permH52.apply(this,arguments);if(!h||S.role!=='rep')return h;var f=S.permFondo;
- var it='<div class="pr"><span class="ic">🛰️</span><span class="grow"><b>Ubicación todo el tiempo</b><div class="lbl">Es celular del negocio: la ubicación se manda siempre. En la pantalla que se abre escoge <b>"Permitir todo el tiempo"</b>.</div>'+(f?'':'<button class="btn sm" style="width:auto;margin-top:6px" data-act="permfondo">Dar este permiso</button>')+'</div><span class="st" style="color:'+(f?'var(--accent)':'var(--muted)')+'">'+(f?'✓':'•')+'</span></div>';
- var m='<div class="pr"><span class="ic">🖨️</span>';return h.replace(m,it+m)};
+/* permHTML: pasó a tema-piezas.js */
 function permFondoRev(){var n=natPl52();if(!n||!n.gpsEstado)return;n.gpsEstado().then(function(r){var f=!!(r&&r.fondo);if(S.permFondo!==f){S.permFondo=f;render()}},function(){})}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="permfondo"]');if(!b)return;e.stopImmediatePropagation();var n=natPl52();if(!n||!n.gpsFondo)return;
  n.gpsFondo().then(function(r){if(r&&r.ok){S.permFondo=true;render();return}var vuelve=function(){if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',vuelve);permFondoRev()}};document.addEventListener('visibilitychange',vuelve)},function(){})},true);

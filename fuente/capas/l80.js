@@ -36,7 +36,7 @@ function repara80(por){if(_rep80)return;var A=window.NUBE_AD;if(!A||!A.reparar)r
 window.addEventListener('error',function(ev){try{if(ev&&REP80.test(String(ev.message||'')))repara80('error')}catch(e){}});
 window.addEventListener('unhandledrejection',function(ev){try{var t=String(ev&&ev.reason&&(ev.reason.message||ev.reason)||'');if(REP80.test(t))repara80('promesa')}catch(e){}});
 /* en la pantalla de rescate, un botón para repararla a mano */
-var _fP80=falloPantalla77;falloPantalla77=function(t){_fP80.apply(this,arguments);try{var f=document.getElementById('fallo77');if(!f||f.tagName!=='IFRAME')return;var pon=function(){try{var d=f.contentDocument;if(!d||d.getElementById('rep80'))return;var re=d.getElementById('re');if(!re)return;var b=d.createElement('button');b.id='rep80';b.textContent='🔧 Reparar la conexión con la nube';b.setAttribute('style',re.getAttribute('style').replace('#2F7D32','#1D4ED8'));re.after(b);b.onclick=function(){repara80('botón')}}catch(e){}};if(f.contentDocument&&f.contentDocument.readyState==='complete')pon();f.addEventListener('load',pon)}catch(e){}};
+/* falloPantalla77: pasó a tema-sueltas.js */
 /* fotos más ligeras: la cámara de la app guarda a 1000 px */
 if(typeof cam73Tira==='function'){cam73Tira=function(){var v=document.querySelector('#cam73 video'),inp=cam73Destino(CAM73.inp);/* 106 · a la casilla que está en pantalla */if(!v||!inp||!v.videoWidth){toast('La cámara todavía no está lista');return}
  var r=Math.min(1,1600/Math.max(v.videoWidth,v.videoHeight)),w=Math.round(v.videoWidth*r),h=Math.round(v.videoHeight*r),cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');

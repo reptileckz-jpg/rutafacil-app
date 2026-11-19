@@ -90,10 +90,7 @@ function cuEntrada82(){if(S.role!=='admin'||S.encOn||S.cu82||S.rt81||S.tab.admin
 /* ---------- 43 · contar bodega: volver a contar y motivo ---------- */
 var MOT82=['Se echó a perder (merma)','Venta que no se registró','Error al registrar la carga','Está en un vehículo','Otro'];
 function cntGrande82(r){return r.d.some(function(x){return x.u==='cajas'?Math.abs(x.dif)>2:Math.abs(x.dif)>20})}
-var _cc82=cntCard;cntCard=function(){var h=_cc82.apply(this,arguments),X=S.cnt82||{},r=null;try{r=cntCalc()}catch(e){}if(!r)return h;var hay=r.d.some(function(x){return Math.abs(x.dif)>0.001});var add='';
- if(X.re)add+='<div class="card note" style="margin:8px 0;padding:10px 12px"><b>Vuelve a contar</b><div class="lbl">La diferencia es grande. Cuenta otra vez lo marcado: '+esc(X.re)+'. Si sale igual, se registra.</div></div>';
- if(hay)add+='<div style="margin-top:8px"><b>¿Por qué no cuadra?</b><div class="chips" role="group" style="margin:6px 0;flex-wrap:wrap">'+MOT82.map(function(m){return '<button data-act="cnt82m" data-v="'+esc(m)+'" aria-pressed="'+(X.mot===m)+'">'+esc(m)+'</button>'}).join('')+'</div>'+(X.mot==='Otro'?'<div class="field"><label for="cnt82o">Explica qué pasó</label><input id="cnt82o" type="text" data-bind="cnt82.otro" value="'+esc(X.otro||'')+'" style="width:100%;text-align:left"></div>':'')+'</div>';
- return add?h.replace('<button class="btn" style="margin-top:8px" data-act="registrarcnt">',add+'<button class="btn" style="margin-top:8px" data-act="registrarcnt">'):h};
+/* cntCard: pasó a tema-piezas.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cnt82m"]');if(b){e.stopImmediatePropagation();S.cnt82=S.cnt82||{};S.cnt82.mot=b.dataset.v;render();return}
  b=e.target.closest&&e.target.closest('[data-act="registrarcnt"]');if(!b)return;var r=null;try{r=cntCalc()}catch(er){}if(!r||!r.d.length)return;var X=S.cnt82=S.cnt82||{},hay=r.d.some(function(x){return Math.abs(x.dif)>0.001});
  if(hay&&cntGrande82(r)){var firma=JSON.stringify(r.d.map(function(x){return [x.k,x.fis]}));if(X.firma!==firma){if(X.firma&&X.re){/* segundo conteo distinto: se vuelve a pedir */}X.firma=firma;X.re=r.d.filter(function(x){return Math.abs(x.dif)>0.001}).map(function(x){return x.n}).join(', ');
@@ -230,7 +227,7 @@ function sueltosTxt82(){if(S.role!=='admin'&&S.role!=='local')return;var m=docum
 /* ---------- 58 · taras que faltan al recibir al chofer: se le cargan (igual que la fruta) ---------- */
 /* l12 ya suma las taras que faltan al faltante al precio de la tara (recFaltaMonto usa cfg.cajaVal). Lo que faltaba: que el precio sea el de Ajustes → Taras, y las que SOBRAN se abonen. */
 recFaltaMonto=function(d){var pt=num(S.cajaCfg&&S.cajaCfg.precio)||num(S.cfg.cajaVal||45);return r2(Math.max(0,-d.dR)*num(S.precio.R)+Math.max(0,-d.dM)*num(S.precio.M)+Math.max(0,-d.dV)*pt)};
-var _rT82=recFaltaTxt;recFaltaTxt=function(d){var t=_rT82.apply(this,arguments);return t.replace(/caja(s?) vacía(s?)/,'tara$1')};
+/* recFaltaTxt: pasó a tema-piezas.js */
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="recep"]');if(!b)return;setTimeout(function(){try{var r=S.recep;if(!r||r.sob82||!(num(r.dV)>0))return;r.sob82=1;var pt=num(S.cajaCfg&&S.cajaCfg.precio)||num(S.cfg.cajaVal||45),m=r2(num(r.dV)*pt);
  S.faltantes.push({ch:+S.chofHoy,m:-m,fecha:iso(TODAY),desc:true,pend:true,rec:1,txt:'Trajo '+num(r.dV)+' tara'+(num(r.dV)>1?'s':'')+' de más'});S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Recepción: '+chofN(S.chofHoy)+' trajo '+num(r.dV)+' taras de más (se le abonan '+money(m)+')'});toast('Trajo taras de más: se le abonan '+money(m))}catch(er){}},30)},true);
 

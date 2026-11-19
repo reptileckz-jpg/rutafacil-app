@@ -103,20 +103,7 @@ if(typeof nbAplica==='function'){var _nbA77c=nbAplica;nbAplica=function(){var r=
 /* vwPend: pasó a tema-viaje.js */
 
 /* la pantalla de rescate va en un cuadro aparte (iframe): nada de la app le puede quitar los toques ni el deslizar */
-var _fP77b=falloPantalla77;falloPantalla77=function(t){try{falloPausa77();var txt=String(t||'')+'\n\n— Diagnóstico —\n'+diagTxt77();FALLO77.ult=txt;try{localStorage.setItem('pnFallo',txt)}catch(x){}
- var o=document.getElementById('fallo77');if(o)o.remove();var f=document.createElement('iframe');f.id='fallo77';f.setAttribute('style','position:fixed;inset:0;width:100%;height:100%;border:0;z-index:2147483000;background:#F6F1E3');
- var es=function(s){return String(s).replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]})},bt='display:block;width:100%;min-height:56px;margin-top:10px;border-radius:16px;font-size:18px;font-weight:800;font-family:inherit';
- f.srcdoc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#F6F1E3;color:#1E2A1A;font-family:system-ui,sans-serif}pre{white-space:pre-wrap;word-break:break-word;font-size:12px;background:#fff;border-radius:10px;padding:10px;user-select:text;-webkit-user-select:text}</style></head><body><div style="max-width:480px;margin:0 auto;padding:22px 16px 40px">'
-  +'<div style="font-size:40px;text-align:center">🛠️</div><h1 style="font-size:23px;text-align:center;margin:6px 0">La app encontró un problema</h1><p style="font-size:16px;text-align:center;margin:6px 0">No se perdió nada del negocio. Manda este error para arreglarlo.</p>'
-  +'<button id="wa" style="'+bt+';border:0;background:#25D366;color:#fff">📲 Mandar el error por WhatsApp</button><button id="cp" style="'+bt+';border:2px solid #2F7D32;background:#fff;color:#2F7D32">📋 Copiar el error</button>'
-  +'<button id="re" style="'+bt+';border:0;background:#2F7D32;color:#fff">Reintentar</button><button id="nube" style="'+bt+';border:2px solid #B45309;background:#fff;color:#B45309;font-size:16px">☁️ Volver a bajar los datos de la nube</button>'
-  +'<div style="font-size:14px;font-weight:700;margin-top:16px">El error:</div><pre id="tx">'+es(txt)+'</pre></div></body></html>';
- document.body.appendChild(f);
- f.onload=function(){try{var d=f.contentDocument,P=window,g=function(id){return d.getElementById(id)};
-  g('re').onclick=function(){P.location.reload()};
-  g('wa').onclick=function(){var u='https://wa.me/?text='+encodeURIComponent(txt.slice(0,3500));try{P.open(u,'_blank')||(P.location.href=u)}catch(x){P.location.href=u}};
-  g('cp').onclick=function(){var ok=function(){g('cp').textContent='✓ Copiado'};try{(f.contentWindow.navigator.clipboard||P.navigator.clipboard).writeText(txt).then(ok,function(){var r=d.createRange();r.selectNodeContents(g('tx'));var s=f.contentWindow.getSelection();s.removeAllRanges();s.addRange(r);try{d.execCommand('copy');ok()}catch(x){}})}catch(x){}};
-  g('nube').onclick=function(){if(!f.contentWindow.confirm('¿Seguro? Se borra lo guardado en este celular y se vuelve a bajar todo de la nube.'))return;var fin=function(){try{localStorage.setItem('pnFalloNube','1')}catch(x){}P.location.reload()};var listo=false,f2=function(){if(listo)return;listo=true;fin()};try{P._noGuardar77=1;idbAbrir(function(db){if(!db)return f2();try{var tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete('S');tx.oncomplete=f2;tx.onerror=f2}catch(x){f2()}});setTimeout(f2,3000)}catch(x){f2()}}}catch(x){}}}catch(x){try{_fP77b(t)}catch(y){}}};
+/* falloPantalla77: pasó a tema-sueltas.js */
 /* la causa: un viaje que el chofer borró y que el celular del administrador "revivió" al escribir un solo dato (p. ej. que tenía
    abierta la ruta en vivo). En la nube quedaba un pedazo sin su orden ni sus demás datos. Al armar listas desde la nube,
    los pedazos sueltos (sin orden ni marca de elemento) ya no se convierten en elementos. */

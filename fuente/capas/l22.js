@@ -16,7 +16,7 @@ function hdrMedir(){var h=document.querySelector('header');if(h)document.documen
 window.addEventListener('resize',hdrMedir);
 var _r22=render;render=function(){var r=_r22.apply(this,arguments);try{hdrMedir()}catch(e){}return r};
 /* minimizada también se queda arriba */
-var _dfB22=dfBurbuja;dfBurbuja=function(){return _dfB22.apply(this,arguments).replace('<div style="display:flex;justify-content:flex-end;margin-bottom:8px">','<div class="dfmini" style="display:flex;justify-content:flex-end;margin-bottom:8px">')};
+/* dfBurbuja: pasó a tema-piezas.js */
 /* Bodega */
 /* bodega: pasó a tema-bodega.js */
 if(typeof VIEWS!=='undefined')VIEWS.bodega=bodega;
@@ -26,14 +26,7 @@ var REAL=(typeof MODO!=='undefined'&&MODO==='vacio');
 function personasEntrar(){var L=[];(S.admins||[]).forEach(function(a){L.push({k:'a:'+a.k,n:a.n,p:'Administrador',go:{role:'admin',adm:a.k}})});
  S.choferes.forEach(function(c){if(c.baja||c.arch)return;if(typeof esAdm==='function'&&esAdm(c))return;var pu=c.puesto||'chofer';if(pu==='chofer')L.push({k:'c:'+c.id,n:c.n,p:'Chofer',go:{role:'rep',ch:c.id}});else if(pu==='local')L.push({k:'local',n:c.n,p:'Venta local',go:{role:'local'}})});
  if(S.cfg.contador||S.pins.cont)L.push({k:'cont',n:'Contador',p:'Contador',go:{role:'cont'}});return L}
-var _menu22=menuHTML;menuHTML=function(r){var h=_menu22.apply(this,arguments);if(!REAL)return h;
- h=h.replace(/<div class="lbl" style="margin-top:6px">Demo: ¿qué chofer\?<\/div><div class="chips" style="margin:4px 0">[\s\S]*?<\/div>/,'');
- h=h.replace(/<div class="lbl" style="margin-top:8px"><b>Ver como \(solo en la demo\)<\/b><\/div><div class="chips" style="margin-top:4px">[\s\S]*?<\/div>/,'');
- h=h.replace(/<div class="lbl" style="margin-top:6px">Demo: ¿quién eres\?<\/div><div class="chips" style="margin:4px 0">[\s\S]*?<\/div>/,'');
- h=h.replace(/<div class="lbl" style="margin-top:8px">Miércoles 28 de octubre · datos de ejemplo\. Prototipo: lo que haces se guarda solo mientras la página está abierta\.<\/div><button class="link" data-act="reset">Reiniciar demo<\/button>/,'');
- var yo=r==='admin'?adminNom(S.adminYo)+' (Administrador)':(r==='rep'?chofN(S.chofHoy)+' (Chofer)':(r==='local'?'Venta local':'Contador'));
- h=h.replace(/Entraste como: <b>[^<]*<\/b>/,'Entraste como: <b>'+esc(yo)+'</b>');
- return h.replace('</nav></div>','<button class="btn sec" style="margin-top:12px" data-act="usrcambia">Cambiar de usuario</button><button class="btn sec" style="margin-top:8px" data-act="usrsalir">Cerrar sesión</button><div class="lbl" style="margin-top:10px;text-align:center">'+esc(S.cfg.nombre||'')+' · Ruta Fácil</div></nav></div>')};
+/* menuHTML: pasó a tema-sueltas.js */
 var _bienv22=typeof bienvHTML==='function'?bienvHTML:null;
 /* pie de página de "prototipo" */
 var _rFoot22=render;render=function(){var r=_rFoot22.apply(this,arguments);if(REAL){var f=document.querySelector('main .foot');if(f&&f.style.display!=='none')f.style.display='none'}return r};
@@ -72,7 +65,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='pincambia'&&k===pinKey()&&pinTiene(k)&&!b.dataset.ok){e.stopImmediatePropagation();_pin={v:'',modo:'conf',k:k,motivo:'Escribe tu PIN actual',cb:function(){var x=document.createElement('button');x.dataset.act='pincambia';x.dataset.k=k;x.dataset.ok='1';x.style.display='none';document.body.appendChild(x);x.click();x.remove()}};render();return}
  if(a==='pinreset'){e.stopImmediatePropagation();delete S.pins[k];if(S.pinF)delete S.pinF[k];S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Reinició el PIN de '+pinNom(k)});toast('Listo: '+pinNom(k)+' va a crear un PIN nuevo la próxima vez que entre');render();return}},true);
 /* ya no hay "todavía es 1234" en los datos que faltan */
-var _dfL22=dfLista;dfLista=function(){return _dfL22.apply(this,arguments).filter(function(x){return !/PIN propio/.test(x.txt)})};
+/* dfLista: pasó a tema-sueltas.js */
 
 /* ===================== Vehículo: marca, modelo, año, color, serie, capacidad, motor, llantas ===================== */
 var VEH_X=[['marca','Marca','text','ej. Nissan'],['modelo','Modelo','text','ej. NP300'],['anio','Año','number',''],['color','Color','text',''],['vin','Número de serie (VIN)','text',''],['capC','Capacidad de carga (cajas)','number',''],['capK','Capacidad de carga (kg)','number',''],['motor','Motor','text','ej. 2.5 L diésel'],['llanta','Medida de llanta','text','ej. 195/R15']];
@@ -84,7 +77,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* setupHTML: pasó a tema-ajustes.js */
 /* suAplicar: pasó a tema-ajustes.js */
 /* faltantes del vehículo */
-var _dfL22b=dfLista;dfLista=function(){var L=_dfL22b.apply(this,arguments);try{S.veh.forEach(function(v){if(v.baja)return;var g={t:'veh',id:v.id,p:0};var fl=[];if(!v.marca)fl.push('marca');if(!v.modelo)fl.push('modelo');if(!v.anio)fl.push('año');if(!v.color)fl.push('color');if(fl.length)L.push({pr:3,txt:'Datos de '+v.n+': '+fl.join(', '),go:g});var f2=[];if(!v.vin)f2.push('número de serie');if(!v.capC&&!v.capK)f2.push('capacidad');if(!v.motor)f2.push('motor');if(!v.llanta)f2.push('medida de llanta');if(f2.length)L.push({pr:4,txt:'Más datos de '+v.n+': '+f2.join(', '),go:g})})}catch(e){}L.sort(function(a,b){return a.pr-b.pr});return L};
+/* dfLista: pasó a tema-sueltas.js */
 
 /* ===================== Avisos de poca fruta (desde la configuración inicial) ===================== */
 var MIN_K=[['minV','Cajas verdes de roatán','cajas','verdes','Pide carga'],['minMad','Cajas maduras de roatán','cajas','maduras','Saca a madurar'],['minKV','Kilos de macho verde','kg','kgVerde','Pide carga'],['minKMad','Kilos de macho maduro','kg','kgMaduro','Saca a madurar']];

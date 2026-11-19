@@ -55,17 +55,10 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 
 /* ---------- el costo del viaje (para el costo de la caja) ---------- */
 function impBig68(c){return (c.extras||[]).filter(function(x){return (x.imp68||esImp68(x.c))&&(x.mant||num(x.m)>tope68())})}
-var _trC69=trCost;trCost=function(c){var r=_trC69.apply(this,arguments);try{if(!(c.cv&&c.cv.ok))r+=num(c.dsgM)+num(c.suelM);r-=sum(impBig68(c),function(x){return num(x.m)})}catch(e){}return r};
+/* trCost: pasó a tema-piezas.js */
 /* "Costo del viaje más exacto": respeta lo que se contestó de desgaste y sueldo */
-var _cvD69=cvDef;cvDef=function(c){var D=_cvD69.apply(this,arguments);try{if(c.dsgOn===false)D.desgKm=0;if(c.suelOn===false){D.sueldo=0;D.com=0}else if(c.suelOn===true){D.sueldo=num(c.suelM);D.com=0}}catch(e){}return D};
-var _cvP69=cvPasoHTML;cvPasoHTML=function(c,P,wiz){var h=_cvP69.apply(this,arguments);
- /* 111 · en "La fruta": ¿sí se cargó la fruta planeada sin precio? (tema-cargas.js) */
- if(P==='fruta'){try{var fh=fant111HTML(c);if(fh){var j=h.indexOf('<div class="card"');h=j>-1?h.slice(0,j)+fh+h.slice(j):fh+h}}catch(e){}return h}
- if(P!=='costo')return h;try{var D=cvDef(c),vh=D.vh||{n:'el vehículo'},km=Math.round(num(cvCalc(c).km)),tasa=tasa68(vh),z=suelDia68(D.ch),sd=c.suelM!=null&&c.suelM!==''?c.suelM:String(z.s+z.c||''),nom=D.ch&&D.ch.id!==2?D.ch.n:'Tú';
-  var dOn=c.dsgOn===true?'si':(c.dsgOn===false?'no':''),sOn=c.suelOn===true?'si':(c.suelOn===false?'no':''),at=' data-id="'+c.id+'"';
-  h+='<div class="card c68" style="padding:12px 14px;margin-top:12px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Sumar el desgaste del vehículo?</div><div class="row"><span>'+esc(vh.n)+'</span><b>'+km.toLocaleString('es-MX')+' km × '+f2(tasa)+' = '+money(Math.round(km*tasa))+'</b></div>'+ch68('cv68','dOn',[['si','Sí, súmalo'],['no','No']],dOn,at)+suma103(dOn,Math.round(km*tasa),caja103(c),'No se suma el desgaste.')+'</div>'
-   +'<div class="card c68" style="padding:12px 14px;margin-top:10px;border:2px solid var(--accent)"><div style="font-size:19px;font-weight:900">¿Se le asignó un sueldo por este viaje?</div><div class="lbl">Fue: <b>'+esc(nom)+'</b></div>'+ch68('cv68','sOn',[['si','Sí'],['no','No']],sOn,at)
-   +(sOn==='si'?'<div class="field"><label for="cv68s">¿Cuánto por este viaje? $</label><input id="cv68s" type="number" inputmode="decimal" step="any" min="0" data-cf="'+c.id+':suelM" value="'+esc(sd)+'"></div>':'')+suma103(sOn,sd,caja103(c),'No se suma sueldo.')+'</div>'}catch(e){console.error('cv69',e)}return h};
+/* cvDef: pasó a tema-piezas.js */
+/* cvPasoHTML: pasó a tema-piezas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cv68"]');if(!b)return;e.stopImmediatePropagation();var c=S.cargas.filter(function(x){return x.id===+b.dataset.id})[0];if(!c)return;var on=b.dataset.v==='si';
  if(b.dataset.k==='dOn')c.dsgOn=on;else{c.suelOn=on;if(on&&(c.suelM==null||c.suelM==='')){var z=suelDia68(cvDef(c).ch);c.suelM=z.s+z.c}}S.cvf&&(S.cvf._t=Date.now());render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cvpaso"][data-d="1"],[data-act="cvconfirm"]');if(!b)return;var c=S.cargas.filter(function(x){return x.id===+(b.dataset.id||S.cvOpen)})[0];if(!c)return;var f=S.cvf;if(!f||CVP[f.paso||0][0]!=='costo')return;
@@ -114,7 +107,7 @@ desg=function(c,k){var rp=rep68(30),vR=num(c.vCaja)||num(S.precio.R),vM=num(c.vK
 /* meta de ganancia: roatán y macho (o la misma para los dos) */
 /* cfield: pasó a tema-cargas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="mgigual"]');if(!b)return;e.stopImmediatePropagation();S.cfg.mgIgual=S.cfg.mgIgual===false?true:false;toast(S.cfg.mgIgual===false?'Ahora el macho tiene su propia meta':'La misma meta para los dos');render()},true);
-var _bP69=bigPrecio;bigPrecio=function(tit,cost,key,step,unit,mg){if(key==='M'&&mg!=null){var c=S.cargas.filter(function(x){return S.cvOpen&&x.id===+S.cvOpen})[0];if(c)mg=mgM68(c)}return _bP69.call(this,tit,cost,key,step,unit,mg)};
+/* bigPrecio: pasó a tema-piezas.js */
 
 /* ---------- 55 · comida autorizada antes ---------- */
 /* viaje de carga: el administrador decide al mandarlo */
@@ -130,7 +123,7 @@ document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset|
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="gxsave"]');if(!b||S.role!=='rep'||!S.gx||!/^Comida/.test(S.gx.tipo||''))return;var c=cl0(S.chofHoy);if(!c||c.comidaMax==null)return;
  var ya=sum((S.gch||[]).filter(function(x){return /^Comida/.test(x.tipo||'')}),function(x){return num(x.m)});if(ya+num(S.gx.m)>num(c.comidaMax)+0.005){e.preventDefault();e.stopImmediatePropagation();toast('Pasa del presupuesto de comida de hoy ('+money(num(c.comidaMax))+'; llevas '+money(ya)+').')}},true);
 /* en el reparto no hay casetas: no sale la opción */
-var _gxT69=gxTipos;gxTipos=function(){return _gxT69.apply(this,arguments).replace(/<button data-act="gxt2" data-t="Caseta"[^>]*>[^<]*<\/button>/,'')};
+/* gxTipos: pasó a tema-sueltas.js */
 var _rd69c=render;render=function(){var r=_rd69c.apply(this,arguments);try{if(S.role==='rep'){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxtipo"][data-t="Caseta"],[data-act="gxt2"][data-t="Caseta"]'),function(b){b.remove()});if(S.gx&&S.gx.tipo==='Caseta')S.gx.tipo='Ponchadura o reparación'}}catch(e){}return r};
 
 /* ---------- 55 · imprevistos grandes van al mantenimiento del vehículo; el desgaste se ajusta solo ---------- */
@@ -183,12 +176,7 @@ var CU68={
  'Cada gasto fijo pagado hoy salió de la caja':['Un gasto fijo pagado no salió de la caja',1],
  'Ningún gasto fijo se pagó dos veces hoy':['Un gasto fijo se pagó dos veces hoy',0],
  'Faltante del chofer = lo que debía − lo que entregó':['El faltante del chofer no cuadra',1]};
-var _cr69=cuentasRevisar;cuentasRevisar=function(){var R=_cr69.apply(this,arguments);try{R.forEach(function(x){var m=CU68[x.n];if(!m)return;x.n0=x.n;x.n=m[0];x.app=!!m[1];if(x.ok)return;var d=String(x.det||'');
-   if(x.n0==='Los números se pueden calcular'){d='Algún número del inventario, la caja o las deudas quedó vacío'}
-   else if(x.n0==='Todas las cajas están contadas'||x.n0==='Ningún caja se pierde sin registrarse'){var w=cajasDonde(),es=cajasEsperadas(),df=Math.round(es-w.tot);d=isFinite(w.tot)&&isFinite(es)?('La app cuenta '+Math.round(w.tot).toLocaleString('es-MX')+' taras y deberían ser '+Math.round(es).toLocaleString('es-MX')+': '+(df>0?'faltan '+df:'sobran '+(-df))+'. Cuéntalas en Bodega → Taras'):'Un número de las taras quedó vacío'}
-   else if(x.n0==='Las cajas cuadran con dónde están'){var w2=cajasDonde();d='Total '+Math.round(w2.tot)+': vacías en bodega '+num(w2.vac)+', llenas '+num(w2.llenas)+', en camión '+num(w2.cam)+', con clientes '+num(w2.cli)+', con proveedores '+num(w2.pv)}
-   else if(x.n0==='Inventario sin números negativos'){d=d.replace(/cajas vacías/g,'taras vacías')+'. Corrige el conteo en Bodega'}
-   x.det=d+(x.app?'. Es un error de la app, no tuyo; ya quedó anotado':'');if(x.app)apErr('no cuadra',x.n+': '+d,'cuentas')})}catch(e){}return R};
+/* cuentasRevisar: pasó a tema-sueltas.js */
 /* avDestino: pasó a tema-avisos.js */
 /* "¿Cuadra todo?" a la vista en Inicio */
 function cuadraCard68(){var R=[];try{R=cuentasRevisar()}catch(e){}var m=R.filter(function(x){return !x.ok}),d=document.createElement('div');d.dataset.x='cuadra68';

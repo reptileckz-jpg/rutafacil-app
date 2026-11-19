@@ -19,11 +19,10 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* por si algo más intenta cambiar las fotos o reenviar con el cierre ya mandado */
 window.addEventListener('change',function(e){var t=e.target;if(S.role==='rep'&&S.cierre&&S.cierre.sent&&t&&t.type==='file'&&t.closest&&t.closest('main')&&S.tab.rep==='cierre'){e.stopImmediatePropagation();t.value='';toast('El cierre ya se mandó; las fotos se quedan como están')}},true);
 /* ---------- 58 · burbuja de datos que faltan → proveedor: abre su ficha en Datos con el campo listo ---------- */
-var _dfIr45=dfIr;dfIr=function(x){var g=x&&x.go;if(!g||g.t!=='prov')return _dfIr45.apply(this,arguments);S.dfOpen=false;S.menu=false;S.tab.admin='cargas';S.fiLast='openProv';S.openProv=g.n;S.pvEdit=g.n;S.fiTab=S.fiTab||{};S.fiTab['prov:'+g.n]='dat';render();
- var k=/Teléfono/.test(x.txt)?'tel':(/Dirección/.test(x.txt)?'dir':'nota');setTimeout(function(){var el=document.querySelector('[data-pv="'+encodeURIComponent(g.n)+'|'+k+'"]');if(el){marcaFalta(el)}},280)};
+/* dfIr: pasó a tema-piezas.js */
 /* ---------- 63 · nunca "Infinity" ni "NaN" ---------- */
-var _tA45=tiempoAprox;tiempoAprox=function(d){if(!isFinite(d))return '';return _tA45.apply(this,arguments)};
-var _kA45=kmAprox;kmAprox=function(km,v){var h=_kA45.apply(this,arguments);if(!(kmDiaV(v)>0)&&num(km)>0)h=String(h).replace(/\s*\(\s*\)|,\s*$/,'')+' (cuando haya unos días de rutas te digo en cuánto tiempo)';return h};
+/* tiempoAprox: pasó a tema-piezas.js */
+/* kmAprox: pasó a tema-piezas.js */
 function sinRaros(root){if(!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,L=[];while(n=w.nextNode())if(/Infinity|NaN|undefined/.test(n.nodeValue))L.push(n);L.forEach(function(t){console.warn('texto raro:',t.nodeValue);t.nodeValue=t.nodeValue.replace(/(como )?-?Infinity( años| meses| días)?/g,'—').replace(/\$?NaN/g,'—').replace(/\bundefined\b/g,'')})}
 var _r45b=render;render=function(){var r=_r45b.apply(this,arguments);try{sinRaros(document.getElementById('root')||document.body)}catch(e){}return r};
 /* ---------- 67 · el aviso del administrador dice lo que pasó ---------- */

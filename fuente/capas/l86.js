@@ -30,7 +30,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="dia80r"]');if(!b)return;var id=+b.dataset.id;if(+id!==+S.chofHoy||(S.chSt||{})[id])return;e.stopImmediatePropagation();S.rutaAv=S.rutaAv||{};S.rutaAv[id]=(S.rutaAv[id]||[]).concat(['Manda tu cierre '+del80(S.rutaDia80)+' para que te salga tu ruta de hoy.']);toast('Se le avisó a '+chofN(id));render()},true);
 
 /* ---------- 68 · taras que un cliente ya debía = saldo inicial (no "aparecen de la nada") ---------- */
-var _nc86=nuevoCli;nuevoCli=function(o){var c=_nc86.apply(this,arguments);try{if(S.setup&&S.setup.fin&&num(c.vac)>0){S.cajasMov=S.cajasMov||[];S.cajasMov.push({t:'Taras que ya debía '+c.n+' (al darlo de alta)',f:iso(TODAY),n:Math.round(num(c.vac)),ini86:1})}}catch(e){}return c};
+/* nuevoCli: pasó a tema-piezas.js */
 function tarasDif86(){try{if(S.cajasT0==null||(S.setup&&!S.setup.fin))return 0;return Math.round(cajasDonde().tot-cajasEsperadas())}catch(e){return 0}}
 function tarasCard86(){if(S.role!=='admin'||S.encOn||S.tab.admin!=='bodega')return;var m=document.querySelector('main');if(!m||m.querySelector('[data-x="tar86"]'))return;var d0=tarasDif86();if(!d0)return;var w=cajasDonde(),esp=Math.round(cajasEsperadas()),cliT=sum(S.cli.filter(function(c){return !c.oculto}),function(c){return num(c.vac)});
  var d=document.createElement('div');d.dataset.x='tar86';d.className='card alert';d.style.padding='12px 14px';

@@ -61,8 +61,8 @@ function escItems(items,qr){var cols=(S.impr&&S.impr.papel==='80')?48:32,B=[],pu
  put('\n\n\n');raw([0x1D,0x56,0x42,0]);return new Uint8Array(B)}
 function u8b64_39(u){var s='';for(var i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
 function imprimirItems(items,qr){var n=natPl39(),im=S.impr||{};if(!n||!im.mac)return Promise.reject(new Error('sin impresora'));return n.btImprimir({mac:im.mac,base64:u8b64_39(escItems(items,qr))})}
-var _imprOk39=imprOk;imprOk=function(){return !!(S.impr&&S.impr.mac)||_imprOk39.apply(this,arguments)};
-var _tkI39=tkImprimir;tkImprimir=function(n){var r=_tkI39.apply(this,arguments);if(S.impr&&S.impr.mac)imprimirItems(notaItems(n)).then(function(){toast('Ticket impreso')},function(e){n.prOk=false;toast('No se pudo imprimir: revisa que la impresora esté prendida');render()});return r};
+/* imprOk: pasó a tema-piezas.js */
+/* tkImprimir: pasó a tema-piezas.js */
 /* Ajustes: buscar y escoger la impresora */
 function imprCardHTML(){if(!natPl39())return '';var im=S.impr||{},L=S.imprLista;
  return '<details class="card" data-k="ajimpr"'+(S.dOpen.ajimpr?' open':'')+'><summary><b>Impresora de tickets</b><span class="lbl">'+(im.mac?esc(im.nom||im.mac):'sin conectar')+'</span></summary>'

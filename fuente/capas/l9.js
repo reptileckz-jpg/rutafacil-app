@@ -265,7 +265,7 @@ document.addEventListener('focusin',function(e){var x=e.target;if(!esCampo(x))re
  else if(r.top<56){var sc2=x.closest(SCROLLERS);var sub=r.top-72;try{if(sc2&&sc2.scrollHeight>sc2.clientHeight)sc2.scrollBy({top:sub,behavior:'smooth'});else window.scrollBy({top:sub,behavior:'smooth'})}catch(er){}}},380)},true);
 
 /* la animación roja de "falta llenar" se repite cada vez que tocas Siguiente */
-var _faL9=faltaAplica;faltaAplica=function(nuevo){if(nuevo)Array.prototype.forEach.call(document.querySelectorAll('.falta'),function(x){x.classList.remove('falta');x.style.animation='';void x.offsetWidth});return _faL9.apply(this,arguments)};
+/* faltaAplica: pasó a tema-piezas.js */
 
 /* ===================== v4.0 · Transiciones suaves =====================
    Las ventanas (ficha, registrar carga, viaje, ajustes, asistente…) entran deslizándose suave;

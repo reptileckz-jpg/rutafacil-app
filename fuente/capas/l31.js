@@ -16,10 +16,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  c.ped={R:R,M:M,cuando:p.cuando||'hoy',nota:p.nota||''};var tx=c.n+' ('+R+' cajas, '+M+' kg)';pedAsigna(c,+p.ch,p.cuando,tx);
  S.pf={cli:String(c.id),R:'',M:'',cuando:p.cuando,nota:'',ok:'Listo: pedido de '+tx+' para '+(p.cuando||'hoy')+'. Se le avisó a '+chofN(+p.ch)+'.'};S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Registró pedido de '+tx+' para '+chofN(+p.ch)});toast('Pedido registrado');render()},true);
 /* ---- chofer: "+ Pedido de un cliente" ---- */
-var _rpF31=rpForm;rpForm=function(){var p=S.rp,cs=S.cli.filter(function(c){return !c.oculto});if(p.cli!=='__nuevo'&&!cl(+p.cli))p.cli=cs[0]?String(cs[0].id):'__nuevo';var h=_rpF31.apply(this,arguments);
- h=h.replace(/(<select id="rpc"[^>]*>)([\s\S]*?)(<\/select>)/,function(m,a,o,z){return a+o+'<option value="__nuevo"'+(p.cli==='__nuevo'?' selected':'')+'>+ Cliente nuevo</option>'+z});
- var extra=(p.cli==='__nuevo'?'<div class="field"><label for="rpnn">Nombre del cliente</label><input id="rpnn" type="text" data-bind="rp.nn" value="'+esc(p.nn||'')+'" style="width:190px;text-align:left"></div><div class="field"><label for="rpnt">Teléfono</label><input id="rpnt" type="tel" data-bind="rp.nt" value="'+esc(p.nt||'')+'" style="width:190px;text-align:left"></div>':'')+(p.err?'<div class="neg" role="alert" style="font-weight:700;margin:6px 0">'+esc(p.err)+'</div>':'');
- return h.replace('<div style="display:flex;gap:8px"><button class="btn" style="flex:2" data-act="rpsave">',extra+'<div style="display:flex;gap:8px"><button class="btn" style="flex:2" data-act="rpsave">')};
+/* rpForm: pasó a tema-sueltas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rpsave"]');if(!b||!S.rp)return;var p=S.rp;p.err='';
  if(p.cli==='__nuevo'){if(!String(p.nn||'').trim()){e.stopImmediatePropagation();p.err='Escribe el nombre del cliente nuevo';render();return}if(!(num(p.R)>0||num(p.M)>0)){e.stopImmediatePropagation();p.err='Escribe cuántas cajas o kilos pidió';render();return}
   var c=pedNuevoCli(String(p.nn).trim(),String(p.nt||'').trim(),+S.chofHoy);p.cli=String(c.id);S.avPrecio.push(chofN(+S.chofHoy)+' registró un cliente nuevo por pedido: '+c.n+(c.tel?' · tel. '+c.tel:''));return}

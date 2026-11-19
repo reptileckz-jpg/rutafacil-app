@@ -10,9 +10,7 @@ try{if(S.px&&S.px.t==='bio')S.px=null}catch(e){}
 function bioEst73(k){try{return JSON.parse(localStorage.getItem('bio73:'+k)||'{}')||{}}catch(e){return {}}}
 function bioPon73(k,o){try{localStorage.setItem('bio73:'+k,JSON.stringify(o))}catch(e){}}
 function bioToca73(k){if(!k||bioActiva(k))return false;var no=false;try{no=localStorage.getItem(bioLlave(k)+':no')==='1'}catch(e){}var o=bioEst73(k);if(num(o.n)>=2)return false;if(o.next&&o.next>iso(new Date()))return false;if(no&&!o.n)return true;return true}
-var _pxH73=pxHTML;pxHTML=function(){var x=S.px;if(x&&x.t==='bio'&&!x.dentro){S.px=null;return ''}
- var h=_pxH73.apply(this,arguments);if(!x||x.t!=='bio')return h;
- return h.replace('<button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button>','<button class="btn sec" style="margin-top:8px" data-act="biono">Ahora no</button><div class="lbl" style="margin-top:8px;text-align:center">'+(num(bioEst73(x.k).n)>=1?'Ya no te lo vuelvo a preguntar. Está en Ajustes → Huella.':'Te lo vuelvo a sugerir en 3 días. También está en Ajustes → Huella.')+'</div>')};
+/* pxHTML: pasó a tema-piezas.js */
 /* después de crear el PIN y la pista ya no se ofrece ahí */
 pxSigue=function(k){S.px=null;render()};
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="biono"]');if(!b||!S.px||S.px.t!=='bio')return;e.stopImmediatePropagation();var k=S.px.k,o=bioEst73(k);o.n=num(o.n)+1;var d=new Date();d.setDate(d.getDate()+3);o.next=iso(d);bioPon73(k,o);S.px=null;render()},true);

@@ -10,8 +10,7 @@
 ['eqDia','eqDanos','eqTarde'].forEach(function(k){if(NB_SH.indexOf(k)<0)NB_SH.push(k)});
 /* ---------- 82 · billetes: [ − ] número [ + ] ---------- */
 function mmHTML(id,dato,val,extra){return '<div class="mm"><button type="button" data-act="mmmenos" data-for="'+id+'" aria-label="Uno menos">−</button><input id="'+id+'" type="number" inputmode="numeric" min="0" '+dato+' value="'+esc(val)+'" placeholder="0"'+(extra||'')+'><button type="button" data-act="mmmas" data-for="'+id+'" aria-label="Uno más">+</button></div>'}
-var _efP50=efPasoHTML;efPasoHTML=function(){var h=_efP50.apply(this,arguments),b=(S.cierre&&S.cierre.bill)||{};
- BILLETES.forEach(function(d){h=h.replace(new RegExp('<input id="efb'+d+'" type="number" inputmode="numeric" min="0" data-ef="b'+d+'" value="[^"]*" placeholder="0">'),mmHTML('efb'+d,'data-ef="b'+d+'"',b['b'+d]||''))});return h};
+/* efPasoHTML: pasó a tema-piezas.js */
 document.addEventListener('click',function(e){var bt=e.target.closest&&e.target.closest('[data-act="mmmas"],[data-act="mmmenos"]');if(!bt)return;e.stopImmediatePropagation();e.preventDefault();var i=document.getElementById(bt.dataset.for);if(!i)return;
  var v=Math.max(0,Math.round(num(i.value))+(bt.dataset.act==='mmmas'?1:-1));if(i.dataset.paso)v=Math.max(0,r2(num(i.value)+(bt.dataset.act==='mmmas'?1:-1)*num(i.dataset.paso)));i.value=v||'';try{vibrar(12)}catch(er){}i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}))},true);
 /* ---------- 90 · equipo del chofer ---------- */

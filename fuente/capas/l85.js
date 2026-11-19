@@ -39,9 +39,7 @@ function mig85(){if(MODO!=='vacio'||S.mig85||S.role!=='admin'||!(S.setup&&S.setu
 /* ---------- 65 · cliente "sin días": al pasarlo se preguntan sus días ---------- */
 var DS85=[[1,'Lun'],[2,'Mar'],[3,'Mié'],[4,'Jue'],[5,'Vie'],[6,'Sáb'],[0,'Dom']];
 function sinD85(){var R=S.rt81;return Object.keys((R&&R.sel)||{}).map(function(k){return cl(+k.split('|')[0])}).filter(function(c){return c&&!(c.dias&&c.dias.length)})}
-var _sh85=sheet84;sheet84=function(){var h=_sh85.apply(this,arguments),L=sinD85();if(!h||!L.length||h.indexOf('data-act="rt84ok"')<0)return h;var R=S.rt81,D=R.dias85||[];
- var blk='<div class="vg84" style="margin-top:4px">¿Qué días le tocan'+(L.length===1?' a '+esc(L[0].n):' ('+L.length+' sin días)')+'?</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px">'+DS85.map(function(x){var on=D.indexOf(x[0])>-1;return '<button data-act="rt85d" data-v="'+x[0]+'" aria-pressed="'+on+'" style="min-height:48px;border-radius:12px;font-weight:900;font-size:15px;border:2px solid '+(on?'var(--accent)':'var(--line)')+';background:'+(on?'var(--accent)':'var(--surface)')+';color:'+(on?'#fff':'var(--fg)')+'">'+x[1]+'</button>'}).join('')+'</div><div class="lbl" style="margin-bottom:10px">Quedan fijos con el chofer que escojas; el aviso de "sin días" se quita.</div>';
- h=h.replace('<div class="vg84">Vigencia del cambio</div>',blk+'<div class="vg84">Vigencia del cambio</div>');if(!D.length)h=h.replace('<button class="si" data-act="rt84ok">','<button class="si" data-act="rt84ok" disabled>');return h};
+/* sheet84: pasó a tema-piezas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#rt81 [data-act="rt85d"]');if(!b||!S.rt81)return;e.preventDefault();e.stopImmediatePropagation();var R=S.rt81,v=+b.dataset.v;R.dias85=R.dias85||[];var i=R.dias85.indexOf(v);if(i>-1)R.dias85.splice(i,1);else R.dias85.push(v);pon84()},true);
 /* aplica83: pasó a tema-rutas.js */
 

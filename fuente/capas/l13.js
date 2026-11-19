@@ -21,9 +21,7 @@ var _rCaj13=render;render=function(){
   _regRegAnt=hayReg}catch(e){}
  return _rCaj13.apply(this,arguments)};
 /* admin: la foto del chofer junto al conteo, y el aviso en Inicio */
-var _recC13=recepCard;recepCard=function(r){var h=_recC13.apply(this,arguments),ft=S.cierre.fotoReg;if(!ft)return h;
- var img='<details style="margin-top:8px"><summary class="lbl" style="cursor:pointer">Ver la foto que tomó '+esc(chofN(S.chofHoy))+'</summary><img src="'+ft+'" alt="Foto de lo que regresó" style="width:100%;border-radius:12px;margin-top:6px" data-act="fotover"></details>';
- return h.replace(/<\/div>$/,img+'</div>')};
+/* recepCard: pasó a tema-piezas.js */
 /* cierreTop: pasó a tema-cierre.js */
 
 /* ===================== v5 · Mayoreo con control =====================
@@ -44,7 +42,7 @@ function mayVencer(){var ch=false;mayPideL().forEach(function(p){if(p.est==='pen
   if(S.d&&curCli()&&curCli().id===p.c){S.d.may=false;S.d.mayQ='norm'}}});return ch}
 setInterval(function(){try{if(mayVencer())render()}catch(e){}},15000);
 /* el cliente con "nunca mayoreo" no lo lleva ni automático */
-var _mayAuto13=mayAutoOk;mayAutoOk=function(c,d){if(c&&c.mayNo){if(d)d.mayQ='norm';return false}return _mayAuto13.apply(this,arguments)};
+/* mayAutoOk: pasó a tema-piezas.js */
 /* entValida: pasó a tema-ruta.js */
 /* tarjeta de precio del chofer: botón para pedir permiso y su estado */
 function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
@@ -55,7 +53,7 @@ function mayNotaHTML(){var c=curCli(),d=S.d;if(!c||!d)return '';
  else if(p.est==='ok')x='<b class="pos">✓ El administrador dio permiso</b>';
  else x='<div class="neg" style="font-weight:700">'+(p.est==='no'?'El administrador dijo que no.':'No contestó a tiempo.')+' Véndele a precio normal.</div>';
  return '<div class="card note" data-key="maynota" style="margin:8px 0 0;padding:10px 12px">'+x+'</div>'}
-var _prC13=precioCard;precioCard=function(){var h=_prC13.apply(this,arguments),x=mayNotaHTML();return x?h.replace(/<\/div>$/,x+'</div>'):h};
+/* precioCard: pasó a tema-piezas.js */
 /* entrega: pasó a tema-ruta.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act]');if(!b)return;var a=b.dataset.act,D=b.dataset;
  if(a==='may'&&D.v==='1'&&S.role==='rep'){var c=curCli();S.dOpen.entmas=true;if(c&&c.mayNo){e.stopImmediatePropagation();toast('A '+c.n+' no se le da mayoreo (lo decidió el administrador)');return}}

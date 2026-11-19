@@ -37,7 +37,7 @@ function sinDemoTxt(root){if(typeof MODO==='undefined'||MODO!=='vacio'||!root)re
  [].forEach.call(root.querySelectorAll('[data-act="demoreset"],[data-act*="demo"],.foot'),function(el){if(/demo|Prototipo/i.test(el.textContent)||/demo/.test(el.dataset.act||''))el.style.display='none'})}
 var _r46=render;render=function(){var r=_r46.apply(this,arguments);try{sinDemoTxt(document.body)}catch(e){}return r};
 /* toast: pasó a tema-toast.js */
-var _aM46=abrirModal;abrirModal=function(t,m,b){if(typeof MODO!=='undefined'&&MODO==='vacio'){var f=function(s){s=String(s||'');TXT_DEMO.forEach(function(r){s=s.replace(r[0],r[1])});return s};t=f(t);m=f(m);b=(b||[]).filter(function(x){return x[1]!=='wzforce'}).map(function(x){return [f(x[0])].concat(x.slice(1))})}return _aM46.call(this,t,m,b)};
+/* abrirModal: pasó a tema-piezas.js */
 /* ---------- 59 · burbujas: abiertas se ven como pestañas [Viaje] [Faltan N] ---------- */
 function bubVwHay(){try{var L=vwList().filter(function(x){return x.k!=='done'});if(!L.length)return false;var v=L.indexOf(S.vw)>-1?S.vw:L[0];return !v.open}catch(e){return false}}
 function bubDfN(){try{return dfOn()?dfLista().length:0}catch(e){return 0}}
@@ -47,13 +47,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  e.stopImmediatePropagation();if(a==='bubmin2'){S.bubMin=true;S.dfMin=true;render();return}S.bubTab=b.dataset.v;S.bubMin=S.bubTab!=='vw';S.dfMin=S.bubTab!=='df';render()},true);
 /* ---------- 62 · filtros de clientes en cuadrícula, con cuántos hay en cada uno ---------- */
 function cliCuenta(f){var g=S.cliF,q=S.cliQ,c=S.cliCh;S.cliF=f;S.cliQ='';S.cliCh='';try{var L=cliLista();return L.filter(function(x,i){return L.indexOf(x)===i}).length}catch(e){return 0}finally{S.cliF=g;S.cliQ=q;S.cliCh=c}}
-var _cT46=cliTools;cliTools=function(){var h=_cT46.apply(this,arguments),fl=S.cliF||'todos';
- var grid='<div class="cligrid" role="group" aria-label="Filtro">'+[['todos','Todos'],['hoy','Les toca hoy'],['morosos','Morosos'],['deben','Me deben'],['cajas','Deben cajas'],['nuevos','Nuevos']].map(function(x){return '<button data-act="clif" data-v="'+x[0]+'" aria-pressed="'+(fl===x[0])+'"><b>'+cliCuenta(x[0])+'</b>'+x[1]+'</button>'}).join('')+'</div>'
-  +'<div class="field"><label for="clichs">Chofer</label><select id="clichs" data-clich="1" style="width:170px"><option value="">Todos</option>'+choferesL().filter(function(c){return c.id!==2&&!c.baja}).map(function(c){return '<option value="'+c.id+'"'+(fl==='chofer'&&String(S.cliCh||'')===String(c.id)?' selected':'')+'>'+esc(c.n)+'</option>'}).join('')+'</select></div>';
- h=h.replace(/<div class="chips scroll" role="group" aria-label="Filtro"[\s\S]*?<\/div>/,grid);
- h=h.replace(/<div class="chips" style="margin-top:6px"><button data-act="clich"[\s\S]*?<\/div>/,'');
- if(S.role==='admin'&&!S.encOn)h=h.replace('<div class="card cli-tools span" style="padding:10px 12px">','<div class="card cli-tools span" style="padding:10px 12px"><button class="btn" style="margin-bottom:8px" data-act="clialta">+ Agregar cliente</button>');
- return h};
+/* cliTools: pasó a tema-piezas.js */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.clich)return;S.cliCh=t.value;S.cliF=t.value?'chofer':'todos';render()},true);
 /* el viaje de carga y la pantalla de ubicación también van en tarjetas */
 /* vwBody: pasó a tema-viaje.js */

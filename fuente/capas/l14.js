@@ -47,17 +47,17 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
 /* foto del ticket en la gasolina */
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.rcf||!t.files||!t.files[0])return;fotoLeer(t.files[0],function(u){S.rc.foto=u;render()})},true);
 /* recargaCard: pasó a tema-viaje.js */
-var _gchC14=gchCard;gchCard=function(){var h=_gchC14.apply(this,arguments);h=h.replace('Foto del ticket (opcional)','📷 Foto del ticket').replace('<button class="btn" style="margin-top:8px" data-act="gxsave">',(S.gx&&S.gx.foto?'':'<div class="lbl" style="margin-top:4px">Sin foto del ticket no se descuenta hasta que el administrador lo acepte.</div>')+'<button class="btn" style="margin-top:8px" data-act="gxsave">');return h.replace(/<\/details>$/,gxRevChofer('gx')+'</details>')};
+/* gchCard: pasó a tema-piezas.js */
 function gxRevChofer(k){var L=gxRevL().filter(function(x){return x.k===k&&x.ch===+S.chofHoy&&x.f===iso(TODAY)&&x.est!=='ok'});if(!L.length)return '';
  return '<div style="margin-top:8px">'+L.map(function(x){return '<div class="row"><span>'+esc(x.h)+' · '+esc(x.tipo)+(x.litros?' '+x.litros+' L':'')+'<br><span class="lbl '+(x.est==='no'?'neg':'')+'">'+(x.est==='no'?'No aceptado: entrega ese dinero':'Sin ticket · por revisar, no se descuenta')+'</span></span><b>'+money(x.m)+'</b></div>'}).join('')+'</div>'}
 function gxRevHTML(enCierre){var L=[];gxRevL().forEach(function(x,i){if(x.est==='pend')L.push([x,i])});if(!L.length)return '';
  return '<div class="card alert" data-key="gxrev" style="padding:10px 12px;border-width:2px"><b class="neg">Gastos sin ticket por revisar</b><div class="lbl">Si los aceptas, se le descuentan a su efectivo (o se le quita del faltante si ya entregó).</div>'+L.map(function(y){var x=y[0];return '<div style="border-top:1px solid var(--line);padding:8px 0"><b>'+esc(chofN(x.ch))+'</b> · '+esc(x.tipo)+(x.litros?' '+x.litros+' L':'')+(x.nota?' · '+esc(x.nota):'')+' · <b>'+money(x.m)+'</b><div class="lbl">'+fmtF(x.f)+' '+esc(x.h)+'</div><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="gxrevok" data-i="'+y[1]+'">Aceptar</button><button class="btn sm sec" style="flex:1" data-act="gxrevno" data-i="'+y[1]+'">No aceptar</button></div></div>'}).join('')+'</div>'}
 /* permsHTML: pasó a tema-fichas.js */
 /* los litros sin ticket sí cuentan para el rendimiento */
-var _recL14=recL;recL=function(){return _recL14.apply(this,arguments)+sum(gxRevL().filter(function(x){return x.k==='rc'&&x.est!=='ok'&&x.ch===+S.chofHoy&&x.f===iso(TODAY)}),function(x){return x.litros})};
+/* recL: pasó a tema-piezas.js */
 
 /* ---- 4. Cambio de fruta: foto obligatoria y aviso ---- */
-var _cbC14=cambioCard;cambioCard=function(c){return _cbC14.apply(this,arguments).replace('Foto (opcional)','📷 Foto de la fruta mala (obligatoria)').replace('Cambiar foto','Cambiar foto de la fruta mala')};
+/* cambioCard: pasó a tema-piezas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cambio"]');if(!b||S.role!=='rep')return;var x=S.cbx;if(!x||(x.R<=0&&!(num(x.M)>0)))return;
  if(!x.foto){e.stopImmediatePropagation();S.dOpen.cambio=true;window._faltaSel='label[for="cbF"]';toast('Falta la foto de la fruta mala que te llevas');render();return}
  var c=curCli(),R=x.R,M=num(x.M);setTimeout(function(){S.avPrecio.push(chofN(S.chofHoy)+' cambió fruta en mal estado a '+(c?c.n:'un cliente')+': '+R+' cajas'+(M?', '+M+' kg':'')+' (con foto)');render()},0)},true);

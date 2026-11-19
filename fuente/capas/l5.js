@@ -36,7 +36,7 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  if(a==='anmot'){e.stopImmediatePropagation();if(S.anF)S.anF.mot=D.v;Array.prototype.forEach.call(document.querySelectorAll('[data-act="anmot"]'),function(x){x.setAttribute('aria-pressed',String(x===b))});return}
  if(a==='anularok'){e.stopImmediatePropagation();anularHaz();return}},true);
 /* el modal de deslizar un gasto ya no dice "borrar" */
-var _swHK=sw2Hecho;sw2Hecho=function(t,k){if(t==='g'){var x=S.gastos[+k];if(x){anularPide('g',+k,'el gasto '+x.t+' de '+money(x.m));render()}return}if(t==='ch'){var y=S.gch[+k];if(y){anularPide('ch',+k,'el gasto '+y.tipo+' de '+money(y.m));render()}return}return _swHK.apply(this,arguments)};
+/* sw2Hecho: pasó a tema-piezas.js */
 function anuladosHTML(){var L=S.anulados||[];if(!L.length)return '';return '<details class="card" data-k="anul"'+(S.dOpen.anul?' open':'')+'><summary><b>Anulados</b><span class="lbl">'+L.length+' · no cuentan en nada</span></summary>'+L.slice().reverse().map(function(r){var m=r.item&&(r.item.m!=null?r.item.m:(r.item.total!=null?r.item.total:r.item.tot));return '<div class="row"><span><s>'+esc(r.desc)+'</s><br><span class="lbl">'+esc(r.motivo)+' · '+esc(r.por)+' · '+fmtF(r.f)+' '+esc(r.h)+'</span></span><b style="text-decoration:line-through;color:var(--muted)">'+money(num(m))+'</b></div>'}).join('')+'</details>'}
 
 /* ---- 5.3 El chofer puede corregir una entrega ya guardada (te llega aviso, no necesita permiso) ---- */

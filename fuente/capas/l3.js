@@ -41,7 +41,7 @@ function cierrePasos(){if(S.role!=='rep'||S.tab.rep!=='cierre'||!S.cierre||S.cie
  var foot=m.querySelector('.foot');if(nav.innerHTML)(foot?foot.before(nav):m.appendChild(nav))}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="cipaso"]');if(!b)return;e.stopImmediatePropagation();S.cierreP=+b.dataset.v;render();window.scrollTo(0,0)},true);
 /* el tanque: la aguja; los botones quedan guardados por si los prefieren */
-var _ctL=chipsTank;chipsTank=function(a,v,d){var h=_ctL.apply(this,arguments),i=h.indexOf('<div class="chips" role="group" aria-label="Nivel del tanque">');if(i<0)return h;return h.slice(0,i)+'<details style="margin-top:6px"><summary class="lbl">Escoger el nivel con botones</summary>'+h.slice(i)+'</details>'};
+/* chipsTank: pasó a tema-piezas.js */
 
 /* ---- Ruta del chofer: lo de la demo hasta abajo ---- */
 function demoRutaHTML(){if(!S.salida.ok)return '';return '<details class="card" data-k="demor"'+(S.dOpen.demor?' open':'')+'><summary><b>Herramientas de la demo</b><span class="lbl">no salen en la app final</span></summary>'+velDemoBtn(vehHoy())+'<button class="btn sec" style="margin-top:8px" data-act="llamada"'+(S.stops.some(function(s){return s.call})?' disabled':'')+'>Simular llamada de un cliente</button>'+(typeof senalDemoBtn==='function'?senalDemoBtn():'')+'</details>'}

@@ -53,11 +53,10 @@ function comCardHTML(){var c=chofHoyObj(),p=comPct(c),hoy=comHoyDe(c),k=szCalc(c
  return '<div class="compill" data-key="compill" data-v="'+hoy+'"><span class="grow"><span class="cl">Hoy llevas ganado</span><br><span class="cv">'+money(hoy)+'</span>'
   +(mR?'<div class="combar"><i style="width:'+pc+'%"></i></div><div class="cl" style="margin-top:4px">'+(falta?'Te faltan <b>'+falta+' cajas</b> para tu meta · si llegas, ganas ~<b>'+money(extra)+'</b> más':'<b>¡Llegaste a tu meta de hoy!</b>')+'</div>':'')
   +(num(c.meta.M)?'<div class="cl" style="margin-top:2px">Macho: '+r2(sum(S.log,function(l){return l.M}))+' de '+num(c.meta.M)+' kg</div>':'')+'</span><span style="text-align:right;font-size:12px;line-height:1.5"><span class="cl">Esta semana</span><br><b style="font-size:16px">'+money(sem)+'</b>'+(dif!==null?(dif>=0?'<br><span style="color:#C8F2C0;font-weight:800">▲ +'+dif+'%</span> <span class="cl">vs la pasada</span>':'<br><span class="cl">La pasada: '+money(ant)+'</span>'):'')+(rc>=2?'<br>🔥 <b>'+rc+' días</b> en meta':'')+'</span></div>'}
-var _meta18=metaCard;metaCard=function(){var h=_meta18.apply(this,arguments);if(!comOn()||!S.salida.ok)return h;return comCardHTML()};
+/* metaCard: pasó a tema-piezas.js */
 /* siguiente parada: lo que le deja y lo que ganaría si cobra la deuda */
 function comEstimado(c){var p=comPct(chofHoyObj());/* 120 · lo que de verdad compra este cliente (sus entregas guardadas); sin historia no se inventa (antes 4 cajas y 30 kg) */var L=[];(S.rutasHist||[]).forEach(function(e){(e.log||[]).forEach(function(l){if(l&&+l.c===+c.id&&!l.anul)L.push(l)})});(S.log||[]).forEach(function(l){if(l&&+l.c===+c.id&&!l.anul)L.push(l)});L=L.slice(-8);var prom=L.length?sum(L,function(l){return num(l.total)})/L.length:0;return r2(prom*p)}
-var _sig18=sigCard;sigCard=function(i,E){var h=_sig18.apply(this,arguments);if(!comOn())return h;var c=cl(S.stops[i].c),p=comPct(chofHoyObj()),x=(comEstimado(c)>0.5?'<span class="comtip" data-x="tedeja">💵 Esta entrega te deja ~'+money(comEstimado(c))+'</span>':'')+(c.cred>0.5?' <span class="comtip deu" style="background:rgba(242,194,48,.18);color:#8A6A00">Si le cobras su deuda hoy, ganas '+money(r2(c.cred*p))+'</span>':'');
- return h.replace('<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">',x+'<div style="display:flex;gap:14px;margin:8px 0;font-size:14px">')};
+/* sigCard: pasó a tema-piezas.js */
 /* entrega: pasó a tema-ruta.js */
 /* +$ que sube cuando gana */
 var _comPrev=null;

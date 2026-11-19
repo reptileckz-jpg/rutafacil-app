@@ -108,7 +108,7 @@ window.addEventListener('click',function(e){if(!S.encOn||S.role!=='admin'||!e.is
 function chofComida(){var c=cl0(S.chofHoy);return !!(c&&c.comida)}
 function gxTicketObl(t){return !/^Comida/.test(String(t||''))}
 /* la opción de comida solo sale si el administrador la acordó con ese chofer */
-var _gxT63=gxTipos;gxTipos=function(){var h=_gxT63.apply(this,arguments);if(chofComida())return h;return h.replace(/<button data-act="gxt2" data-t="Comida o viáticos"[^>]*>[^<]*<\/button>/,'')+'<div class="lbl">La comida solo se registra si el administrador te la autorizó.</div>'};
+/* gxTipos: pasó a tema-sueltas.js */
 var _rd63b=render;render=function(){var r=_rd63b.apply(this,arguments);try{if(S.role==='rep'&&!chofComida()){Array.prototype.forEach.call(document.querySelectorAll('[data-act="gxt2"][data-t="Comida o viáticos"],[data-act="gxtipo"][data-t="Comida o viáticos"],[data-act="gxtipo"][data-v="Comida o viáticos"]'),function(b){b.remove()});
   if(S.gx&&/^Comida/.test(S.gx.tipo||'')){S.gx.tipo='Caseta'}}
  /* ticket obligatorio: el texto lo dice */
@@ -121,9 +121,7 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="chcomida"]');if(!b)return;e.stopImmediatePropagation();var c=cl0(+b.dataset.id);if(!c)return;c.comida=!c.comida;S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:(c.comida?'Le permitió':'Le quitó')+' agregar comida a '+c.n});toast(c.comida?'Puede agregar comida':'Ya no puede agregar comida');render()},true);
 /* recepción del cierre: "Entregó los tickets" */
 function tkCuantos(){var g=(nbRGet(+S.chofHoy,'gch')||S.gch||[]).filter(function(x){return gxTicketObl(x.tipo)}).length,r=(nbRGet(+S.chofHoy,'recs')||S.recs||[]).length;return g+r}
-var _rcH63=rcHTML;rcHTML=function(){var h=_rcH63.apply(this,arguments);try{if(!h||!S.rcv||S.rcv.p!==0)return h;var n=tkCuantos();if(!n)return h;var on=!!S.rcv.tk;
- var c='<div class="card"><div class="row"><span><b>Entregó sus '+n+' ticket'+(n>1?'s':'')+'</b><br><span class="lbl">Gasolina, casetas y demás gastos (en papel).</span></span><button class="btn sm'+(on?'':' sec')+'" style="width:auto" data-act="rctk" aria-pressed="'+on+'">'+(on?'✓ Sí':'No')+'</button></div></div>';
- var i=h.indexOf('<div style="margin-top:auto');return i>-1?h.slice(0,i)+c+h.slice(i):h}catch(e){return h}};
+/* rcHTML: pasó a tema-sueltas.js */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rctk"]');if(!b||!S.rcv)return;e.stopImmediatePropagation();S.rcv.tk=!S.rcv.tk;render()},true);
 window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="rcfin"]');if(!b||!S.rcv)return;var n=tkCuantos();if(!n)return;var ok=!!S.rcv.tk,ch=+S.chofHoy;
  setTimeout(function(){try{S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:chofN(ch)+(ok?' entregó sus '+n+' tickets':' NO entregó sus '+n+' tickets')});actAdd(ch,ok?'Entregó sus '+n+' tickets':'No entregó sus '+n+' tickets')}catch(er){}},0)},true);

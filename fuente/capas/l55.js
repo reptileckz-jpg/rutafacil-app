@@ -4,7 +4,7 @@
  '.fsform{position:fixed!important;inset:0!important;z-index:89!important;margin:0!important;border-radius:0!important;border:0!important;overflow-y:auto;background:var(--bg)!important;padding:calc(18px + var(--sbar,0px)) 18px 40px!important;font-size:17px}',
  '.fsform>b:first-child{display:block;font-size:24px;font-weight:900;margin-bottom:10px}.fsform .btn{min-height:60px!important;font-size:18px}.fsform input,.fsform select{min-height:52px;font-size:18px}'].join('\n');document.head.appendChild(st)})();
 /* "Ya se hizo" (vehículo) y encargo al chofer: en pantalla completa */
-var _vYa55=vYaHTML;vYaHTML=function(v){var h=_vYa55.apply(this,arguments);return h?h.replace('<div class="card" style="border:2px solid var(--accent)">','<div class="card fsform" role="dialog" aria-label="Ya se hizo">'):h};
+/* vYaHTML: pasó a tema-piezas.js */
 /* encVehHTML: pasó a tema-vehiculos.js */
 /* abono de un cliente y pago a un proveedor: por pasos */
 WZ.abc={tit:'Abono de cliente',fin:'Registrar abono',pasos:[
@@ -22,6 +22,6 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  var bb=document.createElement('button');bb.dataset.act=w.k==='abc'?'cobrar':'abonoprov';if(w.k==='abc')bb.dataset.id=String(d.id);else bb.dataset.n=d.enc;bb.dataset.ok='1';bb.style.display='none';document.body.appendChild(bb);try{bb.click()}finally{bb.remove();if(tmp)tmp.remove()}render()},true);
 /* pedido del chofer, incidente y corrección de una entrega: también en pantalla completa (con su × para salir) */
 function fsDe(h,lbl){return h.replace(/^<div class="card( [a-z]+)?"/,function(m,c){return '<div class="card fsform'+(c||'')+'" role="dialog" aria-label="'+lbl+'"'})}
-var _rpF55=rpForm;rpForm=function(){return fsDe(_rpF55.apply(this,arguments),'Pedido')};
-var _incF55=incForm;incForm=function(){return fsDe(_incF55.apply(this,arguments),'Incidente')};
-var _corF55=corrForm;corrForm=function(){return fsDe(_corF55.apply(this,arguments),'Corrección')};
+/* rpForm: pasó a tema-sueltas.js */
+/* incForm: pasó a tema-piezas.js */
+/* corrForm: pasó a tema-piezas.js */

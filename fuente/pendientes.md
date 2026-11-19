@@ -2773,3 +2773,5 @@ HECHO el código (falta lo que hace Ricardo en Firebase/GitHub y probar lo nativ
 - Pruebas: `t139.js` (9 OK); `t93`, `t124`, `t134` actualizadas (ahora toman la foto de la gasolina). Todas en 0 FAIL (menos `tk.js`).
 - 142 · Ricardo: el primer cierre marcaba ganancia; con el segundo (3 pedidos de WhatsApp) quedó en −$981. Pendiente: captura del Cuadre del día (ahora dice el costo usado) para ver de dónde sale.
 
+
+## 2026-11-19 · Ricardo: "arma el APK con los cambios" → versión 10.3 a main (139 fotos nuevas en cada cierre, gasolina obligatoria, 140 corte desglosado, 141 lo que pasó por cierre, 142 costo usado en el Cuadre). Todas las pruebas en 0 FAIL.

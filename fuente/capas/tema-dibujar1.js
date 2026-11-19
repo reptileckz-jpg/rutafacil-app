@@ -1,5 +1,5 @@
 /* ===================== TEMA · Después de dibujar, parte 1 (aplanado el 19 nov) =====================
-   Antes estaba repartido en 112 envolturas de render encadenadas en las capas l1 a l85.
+   Antes estaba repartido en 113 envolturas de render encadenadas en las capas l1 a l85.
    Aquí están todas juntas, en el MISMO orden, y hacen exactamente lo mismo (comprobado con todas las pruebas de comparación).
    Cada una hace algo DESPUÉS (o antes) de dibujar la pantalla: arreglos, avisos, burbujas, tutoriales, revisar datos…
    Se arma justo antes de tema-rutadia.js (el primer tema que también envuelve render), para que el orden sea el mismo.
@@ -58,6 +58,9 @@ var _rL6=render;render=function(){if(S.role==='admin'&&S.histVisto[S.adminYo]==n
   var ca=cajaAyerHTML();if(ca){var w2=document.createElement('div');w2.innerHTML=ca;root.appendChild(w2.firstElementChild)}
   var ph=pinHTML();if(ph){var w3=document.createElement('div');w3.innerHTML=ph;root.appendChild(w3.firstElementChild)}
  }catch(e){console.error(e)}};
+
+/* render · de l6b */
+var _rL6b=render;render=function(){_rL6b.apply(this,arguments);try{if(S.role!=='admin')return;offIds().forEach(function(id){var n=chofN(id),c=conn(id),w=document.createTreeWalker($('root'),NodeFilter.SHOW_TEXT,null),x,L=[];while(x=w.nextNode())if(x.nodeValue.indexOf('GPS del teléfono de '+n+' · hace')>-1)L.push(x);L.forEach(function(t){t.nodeValue=t.nodeValue.replace(/GPS del teléfono de ([^·]+)· hace [^·]+/,'Sin señal desde las '+c.desde+' · última ubicación: '+(c.pos||'')+' ')})})}catch(e){}};
 
 /* render · de l7 */
 var _rL7=render;render=function(){if(S.tut){var el0=null}_rL7.apply(this,arguments);try{var root=$('root');var su=setupHTML();if(su){var w=document.createElement('div');w.innerHTML=su;root.appendChild(w.firstElementChild)}

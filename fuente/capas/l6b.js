@@ -38,4 +38,4 @@ function datosDemo(s){if(s._v39)return s;s._v39=1;
 var _frL6=fresh;fresh=function(){return datosDemo(_frL6.apply(this,arguments))};
 datosDemo(S);
 /* "con señal / sin señal" también en el mapa y el viaje */
-var _rL6b=render;render=function(){_rL6b.apply(this,arguments);try{if(S.role!=='admin')return;offIds().forEach(function(id){var n=chofN(id),c=conn(id),w=document.createTreeWalker($('root'),NodeFilter.SHOW_TEXT,null),x,L=[];while(x=w.nextNode())if(x.nodeValue.indexOf('GPS del teléfono de '+n+' · hace')>-1)L.push(x);L.forEach(function(t){t.nodeValue=t.nodeValue.replace(/GPS del teléfono de ([^·]+)· hace [^·]+/,'Sin señal desde las '+c.desde+' · última ubicación: '+(c.pos||'')+' ')})})}catch(e){}};
+/* render: pasó a tema-dibujar1.js */

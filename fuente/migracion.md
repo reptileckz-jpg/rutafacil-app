@@ -57,7 +57,7 @@ Se mide con `bash capas/mide.sh`. Al empezar (17 nov, antes de la migración): *
 | Piezas sueltas (rcHTML 3, rpForm 2, menuHTML 2, gxTipos 2, falloPantalla77 2, dfLista 2, cuentasRevisar 2) | 15 | ✅ `tema-sueltas.js` (justo después de `l90.js`). Comprobado con `pruebas/comp-sueltas.js`. rt81HTML NO: l84 la redefine |
 | Piezas de pantalla (40 envolturas de una o dos por función: tarjetas, formularios, precio, cierre, impresora, ventanas…) | 40 | ✅ `tema-piezas.js` (después de `tema-sueltas.js`). Comprobado con TODAS las comparaciones (IDÉNTICO) |
 | Envolturas dentro de un `if` (fxErr, gastos, cargas, clientes, resetDraft, pedAsigna, stock72 ×2) | 8 | ✅ al final de `tema-piezas.js` (bloques enteros, mismo orden). rt81HTML ×3: se quitaron (l84 la rehace completa; no se usaban). Todas las comparaciones IDÉNTICO |
-| "Después de dibujar" (render: 118 envolturas) | 117 | ✅ `tema-dibujar1.js` (112, de l1–l85; va justo antes de `tema-rutadia.js`) y `tema-dibujar2.js` (6, de l86–l90; va justo después de `l90.js`). Mismo orden exacto (se cortaron con un analizador de JavaScript, acorn). Todas las comparaciones IDÉNTICO y todas las pruebas en 0 FAIL. Queda 1 (l45, pegada a otro código) |
+| "Después de dibujar" (render: 118 envolturas) | 117 | ✅ `tema-dibujar1.js` (113, de l1–l85 y l6b; va justo antes de `tema-rutadia.js`) y `tema-dibujar2.js` (6, de l86–l90; va justo después de `l90.js`). Mismo orden exacto (se cortaron con un analizador de JavaScript, acorn). Todas las comparaciones IDÉNTICO y todas las pruebas en 0 FAIL. (la de l6b también: ya no queda ninguna de render). resetDraft de l72 pasó a `tema-piezas.js` |
 | Lo que sobre | resto | pendiente |
 | **Cambiar el armado a Vite** | — | cuando quede 0 |
 

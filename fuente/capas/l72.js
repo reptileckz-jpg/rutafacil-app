@@ -60,7 +60,7 @@ document.addEventListener('input',function(e){var t=e.target;if(t&&t.dataset&&t.
 function rotas72(){if(S.role!=='rep'||S.tab.rep!=='entrega')return;var m=document.querySelector('main');if(!m)return;Array.prototype.forEach.call(m.querySelectorAll('label,span,div'),function(el){if(el.children.length>3)return;if(/^De esas, cuántas vienen rotas/.test((el.textContent||'').trim())){var f=el.closest('.field')||el.parentElement;if(f&&f!==m)f.remove()}});if(S.d&&num(S.d.Vr))S.d.Vr=0}
 
 /* ---------- 79 · "Más opciones" se cierra con cada cliente ---------- */
-var _rD72=resetDraft;resetDraft=function(){try{if(S.dOpen){S.dOpen.entmas=false}}catch(e){}return _rD72.apply(this,arguments)};
+/* resetDraft: pasó a tema-piezas.js */
 
 /* ---------- 78 · taras prestadas ---------- */
 function tarCfg72(){var c=crCfg();return {d1:num(c.bD1)||7,d2:num(c.bD2)||15,d3:num(c.bD3)||30,pr:num(S.cfg.taraDesc)>0?num(S.cfg.taraDesc):(num(S.cajaCfg&&S.cajaCfg.precio)||35)}}

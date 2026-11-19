@@ -184,6 +184,9 @@ if(typeof cargas==='function'){var _car42=cargas;cargas=function(){var h=_car42.
 /* clientes · de l44 */
 if(typeof clientes==='function'){var _cli44=clientes;clientes=function(){var h=_cli44.apply(this,arguments);if(S.role!=='admin'||!qrOn()||!imprOk())return h;var n=S.cli.filter(function(c){return !c.oculto&&!c.rapida&&!c.qr}).length;if(!n)return h;var b='<button class="btn sec" style="margin:6px 0" data-act="qrfaltan">🖨️ Imprimir los '+n+' QR que faltan</button>';var i=h.indexOf('</h1>');return i>-1?h.slice(0,i+5)+b+h.slice(i+5):b+h};if(typeof VIEWS!=='undefined'&&VIEWS.clientes)VIEWS.clientes=clientes}
 
+/* resetDraft · de l72 */
+var _rD72=resetDraft;resetDraft=function(){try{if(S.dOpen){S.dOpen.entmas=false}}catch(e){}return _rD72.apply(this,arguments)};
+
 /* resetDraft · de l80 */
 if(MODO==='vacio'){var _rD80=resetDraft;resetDraft=function(c){var r=_rD80.apply(this,arguments);try{/* 136: si tiene pedido, se queda lo que pidió (antes se cambiaba por la última compra) */if(c&&!c.rapida&&!c.ped){var u=ultPedido(c);S.d.R=u?num(u.R):0;S.d.M=u?num(u.M):0}}catch(e){}return r}}
 

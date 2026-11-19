@@ -27,7 +27,7 @@ ok(/api\.github\.com\/repos\/reptileckz-jpg\/rutafacil-app\/releases\/latest/.te
 r=await ev(()=>{document.querySelector('main [data-act="nv149baja"]').click();return window.__nat.abre.slice(-1)[0]});ok(/RutaFacil-1\.0\.52\.apk$/.test(r),'"Descargar" abre el APK nuevo',r);
 r=await ev(()=>{document.querySelector('main [data-act="nv149x"]').click();return !!document.querySelector('main [data-k="nv149"]')});ok(!r,'"Después" la esconde hasta mañana');
 r=await ev(()=>{APP_VER='1.0.52';try{localStorage.removeItem('nv149x')}catch(e){}render();return !!document.querySelector('main [data-k="nv149"]')});ok(!r,'con la versión al día no sale nada');
-r=await ev(()=>{var d=corteDatos();var L=tkCorte143(d);return [d.ver,L.slice(-1)[0].s]});ok(r[0]==='app 10.12 · APK 1.0.52'&&/Hecho con la app 10\.11 · APK 1\.0\.52/.test(r[1]),'el corte dice con qué versión se hizo',r);
+r=await ev(()=>{var d=corteDatos();var L=tkCorte143(d);return [d.ver,L.slice(-1)[0].s]});ok(r[0]==='app 10.12 · APK 1.0.52'&&/Hecho con la app 10\.12 · APK 1\.0\.52/.test(r[1]),'el corte dice con qué versión se hizo',r);
 
 /* ---------- 151 ---------- */
 r=await ev(()=>{BAT151.rev=0;bat151Revisa();return new Promise(res=>setTimeout(()=>{S.tab.admin='inicio';render();var c=document.querySelector('main [data-k="bat151"]');res(c?c.innerText:'')},300))});

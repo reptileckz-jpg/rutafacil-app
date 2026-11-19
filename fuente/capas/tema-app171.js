@@ -56,11 +56,12 @@ var CH171_CSS = [
  'html.lite171 .floating-nav{background:var(--nav-surface,#fff)!important}',
  'html.ahorro171 *,html.ahorro171 *::before,html.ahorro171 *::after{animation:none!important;transition:none!important}',
  /* 3) íconos 3D en el texto: el emoji queda para leerse, escondido a la vista */
- '.e171{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.22em;position:relative}',
- '.e171 .e171t{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0}',
- '.e171 .ic3d167{width:100%!important;height:100%!important;display:block}',
+ /* nada de bloque ni posición absoluta adentro: si no, el texto que se copia/lee ("💰 Cuadre") tendría un salto de línea */
+ '.e171{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.22em;line-height:0;white-space:nowrap}',
+ '.e171 .e171t{font-size:0;line-height:0;color:transparent}',
+ '.e171 .ic3d167{width:100%!important;height:100%!important;display:inline-block!important;vertical-align:top}',
  '.e171 .ic3d167,.e171 .ic3d167 *{animation:none!important}',
- '.e171 svg{width:100%;height:100%;display:block}'
+ '.e171 svg{width:100%;height:100%;display:inline-block;vertical-align:top}'
 ].join('\n');
 (function () {
   if (document.getElementById('css171')) return;
@@ -138,6 +139,13 @@ function chofer171() {
     });
   } catch (e) { console.error('chofer171', e); }
 }
+
+/* los tutoriales que señalan el botón "Gasto" de la barra de antes (escondida) señalan el de la barra flotante */
+var _tb171 = tutBlanco;
+tutBlanco = function (st) {
+  try { if (st && st[0] && document.querySelector('nav.chofer171')) st = [String(st[0]).replace(/\[data-act="gxsheet"\]/g, 'nav.chofer171 [data-tab="gasto"]')].concat(st.slice(1)); } catch (e) {}
+  return _tb171.call(this, st);
+};
 
 /* ---------- 2) celular sencillo y modo ahorro ---------- */
 function ahorro171() { try { return localStorage.getItem('ahorro171') === '1'; } catch (e) { return false; } }

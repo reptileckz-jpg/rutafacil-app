@@ -8,7 +8,8 @@ const { getFirestore } = require('firebase-admin/firestore');
 const { getMessaging } = require('firebase-admin/messaging');
 initializeApp();
 
-exports.avisoPush = onDocumentCreated('n/{neg}/push/{id}', async (ev) => {
+// la región es la misma de la base de datos (México); si no, el aviso no se engancha
+exports.avisoPush = onDocumentCreated({ document: 'n/{neg}/push/{id}', region: 'northamerica-south1' }, async (ev) => {
   const snap = ev.data; if (!snap) return;
   const d = snap.data() || {}, neg = ev.params.neg;
   if (!d.ch || !d.titulo) { await snap.ref.update({ error: 'aviso incompleto', fin: Date.now() }); return; }

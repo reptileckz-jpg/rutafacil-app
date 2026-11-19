@@ -33,8 +33,10 @@ ok(r[0]===null||r[0]==='quitado','59: el mapa ya no tiene el gesto de "posponer"
 r=await ev(()=>{S.menu=true;render();var c=document.querySelector('.drawer [data-act="sugopen"]').className;S.menu=false;render();return c});ok(/sec/.test(r),'62a: "Sugerencias" ya no se ve seleccionado',r);
 r=await ev(()=>{S.tab.admin='sugerencias';render();navHid=true;document.documentElement.classList.add('navhid');S.pinOk={};pinEntrar();render();S.tab.admin='inicio';S.pinOk[pinKey()]=true;_pin={v:'',modo:null};render();return document.documentElement.classList.contains('navhid')});ok(r===false,'62b: al desbloquear la barra de abajo vuelve a salir');
 const tap=async s=>{const q=await ev(s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]},s);if(q){await p.touchscreen.tap(q[0],q[1]);await W(500)}};
-await ev(()=>{scrollTo(0,0)});await tap('nav.tabs button[data-t="bodega"]');r=await ev(()=>S.tab.admin);ok(r==='bodega','62c: 1er toque va a la sección',r);
-await tap('nav.tabs button[data-t="bodega"]');await W(700);r=await ev(()=>({foco:!!document.querySelector('.avfoco'),lt:!!S.lt53}));ok(r.foco||r.lt,'62c: 2º toque marca el pendiente exacto (o abre el lote)',r);
+/* 165: la barra flotante se toca directo (en este simulador la página sale a 980 px y el dedo no atina a lo que va pegado a la pantalla) */
+const tapB=async t=>{await ev(t=>document.querySelector('nav.floating-nav [data-tab="'+t+'"]').click(),t);await W(500)};
+await ev(()=>{scrollTo(0,0)});await tapB('bodega');r=await ev(()=>S.tab.admin);ok(r==='bodega','62c: 1er toque va a la sección',r);
+await tapB('bodega');await W(900);r=await ev(()=>({foco:!!document.querySelector('.avfoco'),lt:!!S.lt53}));ok(r.foco||r.lt,'62c: 2º toque marca el pendiente exacto (o abre el lote)',r);
 await ev(()=>{S.lt53=null;render()});
 ok(!errs.length,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

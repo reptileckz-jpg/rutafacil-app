@@ -63,7 +63,7 @@ export function armar(op = {}) {
   // 164 · la versión web (para la computadora, se instala desde Chrome o Edge): la del APK + manifiesto, íconos y el trabajador que la deja abrir sin internet
   const tw = '<title>Plátanos · primera vez</title>';
   if (cuenta(www, tw) !== 1) throw new Error('FALLÓ EL ARMADO: no está el título de la versión real');
-  const web = www.replace(tw, '<title>Plátanos Nietos · Ruta Fácil</title>\n<link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#2F7D32">\n<link rel="icon" type="image/png" href="favicon.png">\n<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">\n<script>window.PN_WEB=true;if(\'serviceWorker\' in navigator)window.addEventListener(\'load\',function(){navigator.serviceWorker.register(\'sw.js\').catch(function(){})})</script>');
+  const web = www.replace(tw, '<title>Plátanos Nietos · Ruta Fácil</title>\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#2F7D32">\n<link rel="icon" type="image/png" href="favicon.png">\n<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">\n<script>window.PN_WEB=true;if(\'serviceWorker\' in navigator)window.addEventListener(\'load\',function(){navigator.serviceWorker.register(\'sw.js\').catch(function(){})})</script>');
   return {demo: mapa(demo), real: mapa(real), www: mapa(www), web: mapa(web)};
 }
 

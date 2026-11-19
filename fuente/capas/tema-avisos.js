@@ -158,3 +158,9 @@ function pndRenglon92(){try{var c=document.querySelector('main [data-x="pnd86"]'
  var h=document.createElement('button');h.className='hd92';h.dataset.act='pnd92';h.innerHTML='🔔 '+esc(txt)+'<span class="go">'+(abierto?'cerrar ▲':'ver ›')+'</span>';c.prepend(h)}catch(e){console.error('pnd92',e)}}
 var _pendCardBase=pendCard86;
 pendCard86=function(){_pendCardBase.apply(this,arguments);pndIr88();pndRenglon92()};
+
+/* 165 · el pendiente marcado (avFoco) ya no se borra si la pantalla se vuelve a dibujar mientras está marcado (un aviso que sale justo
+   después redibujaba y la tarjeta nueva salía sin la marca): durante esos 3.4 s, cada redibujado se la vuelve a poner. */
+var foco165={sel:null,hasta:0};
+var _avF165=avFoco;avFoco=function(sel){if(sel)foco165={sel:sel,hasta:Date.now()+3400};return _avF165.apply(this,arguments)};
+var _rd165f=render;render=function(){var r=_rd165f.apply(this,arguments);try{if(foco165.sel&&Date.now()<foco165.hasta){var el=document.querySelector(foco165.sel);if(el){var c=el.closest('.card')||el;if(!c.classList.contains('avfoco')){c.classList.add('avfoco');setTimeout(function(){c.classList.remove('avfoco')},Math.max(0,foco165.hasta-Date.now()))}}}}catch(e){}return r};

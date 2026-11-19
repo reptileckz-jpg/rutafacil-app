@@ -11,7 +11,7 @@ const mide=async(W)=>{const p=await (await b.newContext({viewport:{width:W,heigh
  await p.close();return r};
 let r=await mide(1366);
 ok(r.lista&&r.cols>=3&&r.anchoLista===r.anchoMain,'1366 px: la lista de clientes ocupa todo el ancho, en 3 columnas o más',r);
-ok(r.navLado&&r.mainIzq>=r.navDer,'1366 px: la barra de la izquierda ya no tapa el contenido',r);
+ok(!r.navLado&&r.mainIzq<=20,'1366 px: con la barra flotante (165) ya no hay barra a la izquierda; el contenido usa todo el ancho',r);
 ok(r.sw<=1366,'1366 px: nada se sale por la derecha',r);
 r=await mide(1920);ok(r.lista&&r.cols>=4,'1920 px (DeX a pantalla completa): 4 columnas o más',r);
 r=await mide(390);ok(!r.lista&&r.sw<=390,'celular (390 px): todo igual que antes (lista normal)',r);

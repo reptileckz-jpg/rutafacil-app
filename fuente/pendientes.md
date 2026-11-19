@@ -2885,3 +2885,13 @@ HECHO, prueba `t163.js` (4 OK).
 - **Web para computadora** en Firebase Hosting (https://platanos-nietos.web.app), misma nube y mismas cuentas. Se instala desde Chrome/Edge ("Instalar") con su ícono. Armado: 4ª salida de `fuente/vite/armar.mjs` (`web-index.html` = la del APK + manifiesto, íconos y trabajador `sw.js` que la deja abrir sin internet; siempre trae primero lo nuevo). `fuente/web.sh` arma `web-publica/`; `web-extra/` tiene manifiesto, íconos y `sw.js`. Flujo `.github/workflows/web.yml`: se publica solo con cada subida a main. `firebase.json`: hosting. En "Entrar" dice "en esta computadora".
 - **Pantalla ancha** (`capas/tema-ancha.js`, prueba `t164.js` 6 OK): en ≥900 px una tarjeta-lista (8 renglones iguales o más: Clientes, Pedidos…) ocupa todo el ancho en cuadrícula (3 columnas a 1366 px, 4 a 1920); en ≥1000 px se le deja su espacio a la barra de la izquierda (antes tapaba el contenido). En el celular, igual.
 - `pruebas/tvite.js` 12 OK (la web trae manifiesto y trabajador; la del APK no).
+
+## 2026-11-19 · 165 · Ricardo: "reemplaza la barra de navegación inferior por este componente exacto (HTML, CSS y JS)… aún no publiques en el APK"
+HECHO en `capas/tema-barra.js` (SIN PUBLICAR: solo en la rama). Prueba `t165.js` (14 OK). Capturas `disenos/barra-165*.png`.
+- El HTML y el CSS van byte por byte como los mandó (comprobado); su `switchTab` tal cual (translateX(index*100%), cubic-bezier(0.34, 1.56, 0.64, 1), void offsetWidth) con la conexión en el paso 3. (Su texto decía blur(22px); el CSS que pegó trae blur(20px) saturate(180%): se dejó el CSS.)
+- Barra del ADMINISTRADOR (sus 6 pestañas). Se crea una sola vez. Conexión: toca el botón de la barra de antes (escondida) → abre lo mismo que antes (incluido el 2º toque que lleva al pendiente). Si la pantalla cambia por otro lado, la cápsula se mueve sola; secciones de Más → "Más".
+- Puntos: gris = pendientes, rojo = urgente (de la barra de antes). Rutas y Bodega no traen puntos en su HTML.
+- Integración (no cambia el aspecto): modo oscuro de la app; espacio abajo 232 px (lo que ocupaban barra + espacio del +; si no, al cerrar una sección de hasta abajo brincaba); z-index 25 (las ventanas de la app usan 30+; con 999 tapaba el "Siguiente" de los asistentes); el toque no sigue subiendo a la página (los "tocaste afuera" cerraban lo abierto); los tutoriales señalan la barra nueva; en pantalla ancha ya no hay barra a la izquierda.
+- De paso (`tema-avisos.js`): el pendiente marcado (avFoco) ya no se borra si la pantalla se redibuja durante sus 3.4 s.
+- Web: la versión web declara su ancho para celular (meta viewport) para verse bien en Chrome de celular/tablet (el APK no cambia).
+- Pruebas ajustadas: t68 (toca la barra nueva), t164 (ya no hay barra a la izquierda).

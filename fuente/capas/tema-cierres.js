@@ -99,3 +99,17 @@ if(typeof mas92==='function'){var _mas120=mas92;mas92=function(){var h=_mas120.a
 /* 135 · en cada entrega del historial: el precio, y si fue mayoreo o precio especial */
 function precioMarca135(l,p){var x=preciosLog135(l).filter(function(y){return y.p===p})[0];return x?' · <b>'+esc(x.txt)+'</b>'+(x.n&&Math.abs(x.n-x.pr)>0.005?' (normal '+money(x.n)+')':''):''}
 
+
+/* ---------- 137 · Ricardo: "las fotos del vehículo al regresar deja las mismas que las que tomó al iniciar, deberían ser unas nuevas para evitar fraudes" ----------
+   Al empezar otra vuelta ("seguir" con el cierre recibido) solo se vaciaban ventas, gastos y odómetro: las fotos del regreso seguían
+   tomadas y el siguiente cierre ya no pedía nuevas. Ahora:
+   - otra vuelta: las del regreso de la vuelta anterior pasan a ser "al salir" de la nueva (así estaba el vehículo al volver a salir) y las del regreso se vacían;
+   - reabrir el cierre para seguir trabajando: las del regreso se vacían.
+   (Las fotos de cada cierre ya quedaron guardadas en su historial, fotos121.) Y una foto del regreso no puede ser la misma de la salida. */
+function fotoRepetida137(g,u){if(g!=='fotosFin'||!u)return false;var F=(S.salida&&S.salida.fotos)||{};return Object.keys(F).some(function(k){return F[k]&&F[k]===u})}
+function fotosFinVacias137(){var o={};(typeof FOTOS!=='undefined'?FOTOS:[]).forEach(function(x){o[x[0]]=null});return o}
+window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="seguir"]');if(!b||!S.cierre||!S.cierre.sent||!S.salida)return;
+ var otra=!!S.cierreReg,ff=JSON.parse(JSON.stringify(S.salida.fotosFin||{}));
+ setTimeout(function(){try{if(!S.salida||(S.cierre&&S.cierre.sent))return;/* no se hizo nada */
+  if(otra&&Object.keys(ff).some(function(k){return ff[k]}))S.salida.fotos=ff;
+  S.salida.fotosFin=fotosFinVacias137();render()}catch(er){console.error('137',er)}},0)},true);

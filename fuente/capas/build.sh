@@ -10,7 +10,7 @@ open(D+'libl.js','w',encoding='utf-8').write(src)
 PY
 python3 patch39.py ql.py && python3 -c "
 import re;s=open('/mnt/user-data/outputs/prototipo-platanos.html',encoding='utf-8').read()
-sc=re.findall(r'<script>(.*?)</script>',s,re.S);open('x.js','w').write(max(sc,key=len))" && node --check x.js && echo SYNTAX OK
+sc=re.findall(r'<script>(.*?)</script>',s,re.S);open('x.js','w').write(max(sc,key=len))" && node --check x.js && echo SYNTAX OK || { echo "FALLÓ EL ARMADO: no se cambió nada de la salida (revisa el mensaje de arriba)"; exit 1; }
 python3 - <<'PY'
 s=open('/mnt/user-data/outputs/prototipo-platanos.html',encoding='utf-8').read()
 s=s.replace('<title>Prototipo Plátanos</title>','<title>Plátanos · primera vez</title>\n<script>window.PN_MODO="vacio"</script>',1)

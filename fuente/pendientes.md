@@ -2716,3 +2716,16 @@ HECHO (`tema-ruta.js`, `tema-notas.js`, `tema-cuadre.js`, `tema-cierre.js`, `tem
 - Entregas viejas sin la marca: el mayoreo sí se ve (de `mayT`).
 - Blindaje: no cambia ninguna cuenta. `comp-venta.js` (ahora quita la marca nueva para comparar): 19 ventas idénticas. `comp-cajas.js`: las únicas diferencias son las del ticket (a propósito). Prueba `t135.js` (14 OK). Captura `disenos/ticket-precios.png`. Todas las pruebas en 0 FAIL (menos `tk.js`).
 
+## 2026-11-19 · 137 · Ricardo: "las fotos del vehículo al regresar a la bodega deja las mismas que las que tomó el repartidor al iniciar, deberían ser unas nuevas para evitar fraudes"
+HECHO (`tema-cierres.js` y líneas 137/138 de `ql.py`). **Falta armar APK (preguntar antes).**
+- Causa: al empezar otra vuelta ("seguir" con el cierre recibido) o al reabrir el cierre, se vaciaban ventas, gastos y odómetro pero NO las fotos: el siguiente cierre ya tenía "tomadas" las del regreso y no pedía nuevas, y "al salir" seguían las de la mañana.
+- Ahora: otra vuelta → las fotos con que regresó pasan a ser "al salir" de la nueva vuelta y las del regreso se vacían (hay que tomar nuevas). Reabrir el cierre → las del regreso se vacían. Las de cada cierre ya quedaron en su historial (Cuadre → Fotos del cierre N).
+- Contra fraude: una foto del regreso que sea exactamente la misma que una de la salida no se acepta ("Esa es la misma foto de la salida. Toma una foto nueva…").
+
+## 2026-11-19 · 138 · Ricardo: "las fotos tienen dos marcas de agua iguales con los datos, arriba sale una y abajo otra; solo conserva la de arriba"
+HECHO (líneas 137/138 de `ql.py`, sobre `fotoTomada` de la base).
+- Causa: la cámara de la app pone la marca arriba (fecha, quién, placa) y al guardar la foto del vehículo `fotoTomada` le ponía otra abajo.
+- Ahora queda solo la de arriba. Si la foto viene de la cámara del celular (sin marca), se le pone la misma de arriba.
+- Encontrado: `build.sh` seguía armando aunque un cambio de `ql.py` fallara (dejaba la salida vieja). Ahora se detiene con "FALLÓ EL ARMADO".
+- Prueba `t137.js` (10 OK: píxeles de la marca, foto repetida, otra vuelta, historial, reabrir). Todas las pruebas en 0 FAIL (menos `tk.js`).
+

@@ -2992,3 +2992,7 @@ HECHO (SIN PUBLICAR), `tema-datos181.js` + `base-v38.html` (cierre: odómetro de
 - Causa: el cierre (o la ruta) TRONABA al dibujarse con datos reales de ayer; `falloSeguro77` regresaba a la Ruta y, como seguía sin cierre, volvía "No mandaste tu cierre de ayer" (= "no pasa nada"). Las pruebas viejas (t80) fingían `S.cierre.sent=true` y nunca recorrían el cierre.
 - Casos: (1) `c.odoIni` vacío → `c.odoIni.toLocaleString` tronaba: ahora sale el campo "Odómetro con el que SALIÓ" (`odoIni181`, se queda mientras se escribe: `odoFalta181`); (2)/(3) parada cuyo cliente ya no existe (borrado / venta rápida quitada) → tronaban `estimar` (…km) y la vista ruta (…lat): `datos181` las quita de `S.stops` y `S.chSt[*].stops` antes de dibujar (las entregas y el dinero no se tocan) y lo anota en la nube (`falloAnota77`).
 - Recorrido completo con la app real (sin odómetro de salida + parada rota): 6 pasos, se manda, sale la ruta de hoy.
+
+## 2026-11-20 · 182 · Ricardo: "sí, me gusta esa idea" (resumen de lo que se va a cerrar)
+HECHO (SIN PUBLICAR), `tema-dia182.js`, prueba en `t181.js` (12 OK).
+- En "No mandaste tu cierre de ayer": tarjeta con lo de esa ruta (de `cierreRes` y `S.log`): entregas, cajas/kg vendidos y total, efectivo a entregar, tarjeta/transferencia, crédito, lo que trae en el camión, vacías recogidas. Solo lo que tenga algo.

@@ -49,4 +49,12 @@ for(const [nom,fn] of Object.entries(CASOS)){
   await p.waitForTimeout(300)}
  const r=await ev(()=>({tab:S.tab.rep,dia:S.rutaDia80,hoy:iso(TODAY),dia80:!!document.getElementById('dia80'),stops:S.stops.length,hist:(S.rutasHist||[]).some(x=>x.f===iso(new Date(TODAY.getTime()-864e5))&&x.enviado)}));
  ok(r.tab==='ruta'&&r.dia===r.hoy&&!r.dia80&&r.hist,'el cierre de ayer se manda completo (6 pasos) y sale la ruta de hoy',r);await p.close()}
+/* 182 · el resumen de lo que se va a cerrar cuadra con el cierre */
+{const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();p.on('pageerror',e=>errsT.push(e.message));await p.addInitScript(()=>{window.__pnTest=1;window.__hora93=9});
+ await p.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await p.waitForTimeout(800);
+ const r=await p.evaluate(()=>{S.tutVisto={rep:true,admin:true};S.role='rep';S.chofHoy=1;S.pinOk[pinKey()]=true;S.pinOk['c:1']=true;S.salida.ok=true;S.cierre.sent=false;var c=S.stops.map(s=>s.c);
+  S.log=[{c:c[0],R:5,M:20,pr:260,pm:18,total:1660,pago:1660,abono:0,V:4},{c:c[1],R:3,M:0,pr:260,pm:18,total:780,pago:0,abono:0,V:2,mode:'credito'},{c:c[2],R:4,M:10,pr:260,pm:18,total:1220,pago:1220,abono:200,V:0}];
+  S.rutaDia80=iso(new Date(TODAY.getTime()-864e5));S.tab.rep='ruta';render();var x=document.querySelector('#dia80 [data-x="dia182"]'),t=x?x.innerText.replace(/\s+/g,' '):'',k=cierreRes();
+  return {t,ok:/Ayer: 3 entregas/.test(t)&&t.indexOf(money(k.efectivo))>-1&&t.indexOf(money(k.total))>-1&&/Quedó a crédito \$780/.test(t)&&/recogiste 6/.test(t)}});
+ ok(r.ok,'182 · "No mandaste tu cierre de ayer" muestra lo que se va a cerrar (entregas, vendido, efectivo, crédito, vacías) y cuadra con el cierre',r);await p.close()}
 ok(!errsT.length,'sin errores',errsT);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

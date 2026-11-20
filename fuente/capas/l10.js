@@ -27,11 +27,24 @@ function mNode(a,b){
 function mKids(A,B){
  var keyed={},c;for(c=A.firstChild;c;c=c.nextSibling){var k=mKey(c);if(k)keyed[k]=c}
  var cur=A.firstChild,nb=B.firstChild;
+ /* 175: el campo donde estás escribiendo: la parte que lo tiene adentro solo se reaprovecha para SU mismo lugar en el dibujo nuevo
+    (antes, al buscar y hacerse más corta la lista, esa caja se reusaba para otra cosa y el campo salía de la pantalla: se cerraba el teclado) */
+ var fa=document.activeElement,fsel=null,liveF=null;
+ if(fa&&fa!==document.body&&A.contains(fa)&&/^(INPUT|TEXTAREA|SELECT)$/.test(fa.tagName)){
+  fsel=fa.id?'#'+(window.CSS&&CSS.escape?CSS.escape(fa.id):fa.id):(fa.getAttribute('data-bind')?'[data-bind="'+fa.getAttribute('data-bind')+'"]':(fa.name?fa.tagName.toLowerCase()+'[name="'+fa.name+'"]':null));
+  for(c=A.firstChild;c;c=c.nextSibling)if(c.contains&&c.contains(fa)){liveF=c;break}}
+ var tieneF=function(n){if(!fsel||n.nodeType!==1)return false;try{return n.matches(fsel)||!!n.querySelector(fsel)}catch(e){return false}};
  while(nb){var next=nb.nextSibling,kb=mKey(nb),use=null;
   if(kb&&keyed[kb]&&keyed[kb].parentNode===A&&mSame(keyed[kb],nb))use=keyed[kb];
   else if(cur&&!mKey(cur)&&!kb&&mSame(cur,nb))use=cur;
   else if(cur&&!kb){/* buscar adelante uno igual sin llave (evita recrear al insertar algo arriba) */var s=cur.nextSibling,lim=3;while(s&&lim--){if(!mKey(s)&&mSame(s,nb)&&mLook(s,nb)){use=s;break}s=s.nextSibling}}
-  if(use){if(use!==cur)A.insertBefore(use,cur);mNode(use,nb);cur=use.nextSibling}
+  if(liveF&&liveF.parentNode===A){if(tieneF(nb))use=mSame(liveF,nb)?liveF:use;else if(use===liveF)use=null}
+  if(use){if(use!==cur){
+    /* 175: si lo que hay que mover tiene adentro el campo donde estás escribiendo, NO se mueve: se mueven los de en medio detrás de él
+       (queda el mismo orden). Mover el campo le quitaba el foco y en el celular se cerraba el teclado (al escribir en Buscar, etc.) */
+    if(fa&&fa!==document.body&&use.contains(fa)){var an=use,x=cur;while(x&&x!==use){var nx=x.nextSibling;A.insertBefore(x,an.nextSibling);an=x;x=nx}}
+    else A.insertBefore(use,cur)}
+   mNode(use,nb);cur=use.nextSibling}
   else{A.insertBefore(nb,cur)}/* nuevo: se mueve el de la copia, con sus clases de animación */
   nb=next}
  while(cur){var nx=cur.nextSibling;A.removeChild(cur);cur=nx}}

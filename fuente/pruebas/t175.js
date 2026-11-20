@@ -33,4 +33,16 @@ if(hay){await p.setViewportSize({width:700,height:900});await p.waitForTimeout(6
  const a=r;await ev(()=>document.activeElement.blur());await p.waitForTimeout(300);r=await ev(()=>window.__rend);
  ok(a.rend===0&&a.campo&&r>=1,'si cambia el ancho mientras escribes, se acomoda al salir del campo (no te cierra el teclado)',{escribiendo:a,alSalir:r})}
 else ok(false,'no hubo campo en Clientes');
+/* reparto (Entrega, Cierre) y Buscar cliente: escribir varias letras con el teclado abierto, sin que el campo pierda el foco ni un instante */
+for(const [rol,tab,sel,nom] of [['rep','entrega','main input[type="text"],main input[type="number"],main input[inputmode]','Entrega'],['rep','cierre','main input','Cierre'],['admin','clientes','#cliq','Buscar cliente']]){
+ const q=await b.newContext({viewport:{width:412,height:900},hasTouch:true});const pp=await q.newPage();pp.on('pageerror',e=>errs.push(e.message));pp.on('dialog',d=>d.dismiss());await pp.addInitScript(()=>{window.__pnTest=1;window.__hora93=12});
+ await pp.goto('file:///mnt/user-data/outputs/prototipo-platanos.html');await pp.waitForTimeout(900);
+ const pt=await pp.evaluate(([rol,tab,sel])=>{S.tutVisto={rep:true,admin:true};S.popVisto={admin:iso(TODAY),cont:iso(TODAY)};S.role=rol;S.pinOk[pinKey()]=true;if(rol==='rep')S.salida.ok=true;S.tab[rol]=tab;render();
+  var e=[...document.querySelectorAll(sel)].filter(function(i){return i.offsetParent&&!i.disabled&&!i.readOnly&&!/date|time|checkbox|radio|file/.test(i.type)})[0];if(!e)return null;if(!e.id)e.id='kb175';e.scrollIntoView({block:'center'});var r=e.getBoundingClientRect();
+  window.__blur=0;document.addEventListener('focusout',function(){window.__blur++},true);return {x:r.left+r.width/2,y:r.top+r.height/2,id:e.id}},[rol,tab,sel]);
+ if(!pt){ok(false,nom+': no se encontró un campo');await q.close();continue}
+ await pp.touchscreen.tap(pt.x,pt.y);await pp.waitForTimeout(120);await pp.setViewportSize({width:412,height:520});await pp.waitForTimeout(600);
+ await pp.keyboard.type('12');await pp.waitForTimeout(400);await pp.keyboard.type('3');await pp.waitForTimeout(600);
+ const r2=await pp.evaluate(id=>({act:document.activeElement&&document.activeElement.id,blur:window.__blur}),pt.id);
+ ok(r2.act===pt.id&&r2.blur===0,nom+': con el teclado abierto se escribe sin que el campo se cierre',r2);await q.close()}
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

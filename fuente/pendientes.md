@@ -2983,16 +2983,16 @@ HECHO y PUBLICADO (10.15), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
 - "Cobrar ahora" buscaba el campo del abono, pero la entrega va por pasos y se quedaba en "Cajas vacías y taras" (el abono está en "Cobro", escondido). Ahora primero pone el paso donde está lo que hay que cobrar (`entPasos179`, con la misma regla que arma los pasos) y después baja a los botones del abono (o a las taras si eso es lo que falta).
 
 ## 2026-11-20 · 180 · Ricardo (captura del cierre): "en el kilometraje se contradice la aplicación" (~30 km según Google arriba, ~239 km abajo)
-HECHO (SIN PUBLICAR), `tema-km180.js`, prueba `t180.js` (5 OK).
+HECHO y PUBLICADO (10.16), `tema-km180.js`, prueba `t180.js` (5 OK).
 - Eran dos cálculos: `kmEsp154` usaba Google (`S.rgRes.ahora.km`), que se calcula DESDE donde estaba el chofer al ordenar (a media ruta = solo lo que faltaba); `rutaKmEst` sumaba `c.km` de cada cliente ×1.6 (ida y vuelta por cada uno).
 - Ahora uno solo (`kmRuta180`) para el aviso, el odómetro que viene puesto y `odoValida`: Google solo si se ordenó desde la bodega (≤2.5 km) y sin entregas hechas (`completo180`, se marca al ordenar); si no, bodega → clientes en orden → bodega con `kmE` (lat/lng); si menos de la mitad tiene ubicación, el cálculo de antes.
 
 ## 2026-11-20 · 181 · URGENTE · Ricardo: "sigue el error de no poder mandar el cierre cuando la ruta se queda abierta" → "Mandar mi cierre de ayer" no hace nada
-HECHO (SIN PUBLICAR), `tema-datos181.js` + `base-v38.html` (cierre: odómetro de salida), prueba `t181.js` (11 OK).
+HECHO y PUBLICADO (10.16), `tema-datos181.js` + `base-v38.html` (cierre: odómetro de salida), prueba `t181.js` (11 OK).
 - Causa: el cierre (o la ruta) TRONABA al dibujarse con datos reales de ayer; `falloSeguro77` regresaba a la Ruta y, como seguía sin cierre, volvía "No mandaste tu cierre de ayer" (= "no pasa nada"). Las pruebas viejas (t80) fingían `S.cierre.sent=true` y nunca recorrían el cierre.
 - Casos: (1) `c.odoIni` vacío → `c.odoIni.toLocaleString` tronaba: ahora sale el campo "Odómetro con el que SALIÓ" (`odoIni181`, se queda mientras se escribe: `odoFalta181`); (2)/(3) parada cuyo cliente ya no existe (borrado / venta rápida quitada) → tronaban `estimar` (…km) y la vista ruta (…lat): `datos181` las quita de `S.stops` y `S.chSt[*].stops` antes de dibujar (las entregas y el dinero no se tocan) y lo anota en la nube (`falloAnota77`).
 - Recorrido completo con la app real (sin odómetro de salida + parada rota): 6 pasos, se manda, sale la ruta de hoy.
 
 ## 2026-11-20 · 182 · Ricardo: "sí, me gusta esa idea" (resumen de lo que se va a cerrar)
-HECHO (SIN PUBLICAR), `tema-dia182.js`, prueba en `t181.js` (12 OK).
+HECHO y PUBLICADO (10.16), `tema-dia182.js`, prueba en `t181.js` (12 OK).
 - En "No mandaste tu cierre de ayer": tarjeta con lo de esa ruta (de `cierreRes` y `S.log`): entregas, cajas/kg vendidos y total, efectivo a entregar, tarjeta/transferencia, crédito, lo que trae en el camión, vacías recogidas. Solo lo que tenga algo.

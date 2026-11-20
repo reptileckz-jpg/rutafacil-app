@@ -2977,3 +2977,7 @@ HECHO (SIN PUBLICAR), `tema-vacias177.js`, prueba `t177.js` (6 OK).
 HECHO (SIN PUBLICAR), `tema-calle178.js`, prueba `t178.js` (8 OK).
 - Venta rápida (`calle`) crea parada + cliente escondido; Cliente nuevo crea la parada (`nuevo72`) al guardar el alta. Solo "Cancelar" quitaba la parada; por "Volver a la ruta", la barra o atrás se quedaba.
 - Ahora, al salir de esa entrega por donde sea sin haber escrito nada (R, M, V, nombre, tel, dirección, pago, abono… iguales a como empezó) y sin entrega hecha, se quita la parada (y el cliente escondido de la venta rápida; el cliente nuevo dado de alta se queda). Con algo escrito, se queda.
+
+## 2026-11-20 · 179 · Ricardo: "cliente que debe taras y dinero: pago solo lo de hoy, regresa sus taras y en el recordatorio 'Cobrar ahora' me regresa a la pantalla de las taras, no a donde hay que cobrar"
+HECHO (SIN PUBLICAR), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
+- "Cobrar ahora" buscaba el campo del abono, pero la entrega va por pasos y se quedaba en "Cajas vacías y taras" (el abono está en "Cobro", escondido). Ahora primero pone el paso donde está lo que hay que cobrar (`entPasos179`, con la misma regla que arma los pasos) y después baja a los botones del abono (o a las taras si eso es lo que falta).

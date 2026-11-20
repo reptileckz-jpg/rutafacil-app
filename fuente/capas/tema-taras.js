@@ -80,7 +80,9 @@ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.clo
  e.preventDefault();e.stopImmediatePropagation();S.deb109={c:x.c.id,cr:faltaDin?x.cr:0,ab:num(k.abono),tv:faltaTar?x.tv:0};render()},true);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="deb109cob"],[data-act="deb109pedi"],[data-act="deb109x"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();var y=S.deb109,a=b.dataset.act;S.deb109=null;
  if(a==='deb109x'||!y){render();return}
- if(a==='deb109cob'){render();setTimeout(function(){var el=document.querySelector(y.cr>0?'[data-bind="d.abono"]':'[data-bind="d.V"], #dV, [data-k="d.V"]')||document.querySelector('[data-bind="d.abono"]');if(el){el.scrollIntoView({block:'center'});try{marcaFalta(el)}catch(er){}if(el.focus)el.focus()}toast(y.cr>0?'Escribe cuánto te abona de lo que debía':'Anota las taras que te regresa')},120);return}
+ if(a==='deb109cob'){/* 179: primero al PASO donde está lo que hay que cobrar (la entrega va por pasos; antes se quedaba en "Cajas vacías y taras" y el campo del abono estaba en "Cobro", escondido) */
+  try{if(typeof entPon125==='function'&&entActivo125()){var pasos=entPasos179();entPon125(y.cr>0?pasos.cobro:pasos.vacias)}}catch(er){}
+  render();setTimeout(function(){var vis=function(sel){return Array.prototype.slice.call(document.querySelectorAll(sel)).filter(function(x){return !x.closest('.wz-hide')&&x.getBoundingClientRect().height>0})[0]||null};var el=(y.cr>0?(vis('[data-act="abono115"]')&&vis('[data-act="abono115"]').parentNode)||vis('[data-bind="d.abono"]'):vis('[data-bind="d.V"], #dV, [data-k="d.V"]'))||document.querySelector('[data-bind="d.abono"]');if(el){el.scrollIntoView({block:'center'});try{marcaFalta(el)}catch(er){}if(el.focus)el.focus()}toast(y.cr>0?'Escoge o escribe cuánto te abona de lo que debía':'Anota las taras que te regresa')},350);return}
  /* "Ya le pedí, no tenía": queda registrado y se termina la entrega */
  var c=cl(y.c);if(S.d)S.d._deb109='pedi';render();setTimeout(function(){var bt=document.querySelector('[data-act="entconf"]');if(bt)bt.click();try{if(c)S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:chofN(S.chofHoy),x:'Le pidió a '+c.n+' lo que debía de antes'+(y.cr>0?' ('+money(y.cr)+')':'')+(y.tv>0?' y '+y.tv+' taras':'')+': no tenía'})}catch(er){}},40)},true);
 
@@ -103,3 +105,7 @@ function tarCampo116(ch){var cf=S.cfg.tarCh116==null?'20':S.cfg.tarCh116,pv=ch.t
 document.addEventListener('change',function(e){var t=e.target;if(!t||!t.dataset||!t.dataset.chtar116)return;var ch=S.choferes.filter(function(x){return x.id===+t.dataset.chtar116})[0];if(!ch)return;
  var ant=tarTope116(ch),v=String(t.value).trim()===''?'':String(Math.max(0,Math.round(num(t.value))));ch.tarMax116=v;
  S.hist.push({t:fmtF(iso(TODAY))+' '+hhmm(),q:quien(),x:'Cambió el tope de cajas vacías de '+ch.n+': '+(ant||'sin tope')+' → '+(tarTope116(ch)||'sin tope')});toast('Tope de cajas de '+ch.n+': '+(tarTope116(ch)||'sin tope'));render()});
+
+/* 179: en qué paso de la entrega está cada cosa (Cobro y Cajas vacías/taras), con la misma regla que arma los pasos */
+function entPasos179(){var o={cobro:1,vacias:2};try{var m=document.querySelector('main'),sk=entSalta125();if(sk)o.vacias=1;if(!m)return o;
+ var c=m.querySelector('[data-bind="d.abono"]'),v=m.querySelector('[data-bind="d.V"],#dV');var pc=c?entPasoDe125(c,sk):null,pv=v?entPasoDe125(v,sk):null;if(pc!=null)o.cobro=pc;if(pv!=null)o.vacias=pv}catch(e){}return o}

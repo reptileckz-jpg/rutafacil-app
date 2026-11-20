@@ -2,11 +2,48 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 18 de noviembre de 2026 (versión 10.1, APK 1.0.48).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.16, APK 1.0.64; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
 > Contesta en español sencillo de México. Numera tus sugerencias y di en qué pantalla va cada una.
+
+---
+
+## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
+
+**Versión publicada:** APK **1.0.64** · app **10.16** · web https://platanos-nietos.web.app. **Todo está publicado; no queda nada pendiente.**
+**Numeración:** los puntos de mejora llegaron al 182. **El siguiente punto vuelve a ser el 1** (si se cita uno viejo: "el 181 de antes").
+
+### Cómo se trabaja (reglas de Ricardo)
+- Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
+- **No publicar la APK hasta que Ricardo diga "publica"** (o "arma y publica"). Mientras, todo va a la rama de trabajo con commits `[skip ci]`.
+- Publicar = subir APP_VER en `fuente/vite/parches.mjs` (y las cadenas de versión en `fuente/pruebas/t148.js`), armar (`bash fuente/capas/build.sh`), correr pruebas, commit SIN `[skip ci]`, y *fast-forward* de la rama a `main` → se arman solos la APK (`apk.yml`, sale como release) y la web (`web.yml`).
+- Los números SIEMPRE cuadran (`fuente/REGLAS-NUMEROS.md`); antes de tocar dinero, explicar cómo se protegen.
+- Animaciones solo con transform/opacity (aceleradas por la tarjeta gráfica); con "Modo ahorro" o "reducir movimiento", quietas.
+- Nunca poner secretos en el código (MAPS_KEY y FIREBASE_SA viven solo en secretos de GitHub). No compartir `firma/rutafacil.jks`.
+- El repositorio es PÚBLICO: nada de datos del negocio en registros de GitHub (si alguna vez hay que leer datos de la nube, cifrados y con permiso de Ricardo).
+- Cada arreglo lleva su prueba `fuente/pruebas/tNNN.js` (Playwright, imprime "N OK · N FAIL"). Antes de publicar, correr TODAS (las que no cuentan: `t67.js`, `tk.js`) y `comp-venta` (debe salir IDÉNTICO).
+- La app se arma por capas: `fuente/base-v38.html` + `fuente/capas/*.js` en el orden de `fuente/capas/orden.json`; cada mejora nueva es un `tema-XXX.js` al final. Ojo: el redibujado usa "morph" (compara la copia nueva con la pantalla); lo que deba cambiar el contenido ANTES del morph va en `tema-dibujar1.js` (ver 172 de antes).
+
+### Lo que se hizo del 165 al 182 (19–20 nov)
+- **165–170 Diseño:** barra flotante del administrador (165), "Más" en mosaico (166), Inicio, Ruta y Entrega en estilo Bento Glossy 3D (167–168), animaciones solo por GPU (169) y el estilo en toda la app (170).
+- **171:** barra flotante también para chofer y venta local; celulares sencillos sin efecto vidrio; **Modo ahorro** (Ajustes, por celular); íconos 3D en toda la app; aviso de costo de carga 40 % fuera del promedio.
+- **172:** la pantalla ya no brinca al tocar ✓/Mal en la revisión del vehículo; pantalla ancha (web, Fold, DeX) sin huecos; Ajustes ordenados en grupos con "Acerca de" al final.
+- **173:** viaje de carga que nunca salió: aviso, "Este viaje nunca salió · cancelar" (lo pagado pasa a las otras cargas del mismo proveedor, sin mover la caja) y "Sí llegó · recuperar".
+- **174:** auditoría de los 2,762 botones: "Ir ›" de "Cuadrar la caja" arreglado; sin "toque fantasma" (doble toque que confirmaba "Dar de baja", marcaba el tanque o avanzaba dos pasos).
+- **175:** el teclado ya no se cierra solo (no se redibuja al abrirse el teclado; el morph no mueve ni reusa la caja del campo donde escribes).
+- **176:** mayoreo del macho aparte del roatán ("¿Y el macho?").
+- **177:** tarjeta de cajas vacías que debe, en rojo, y el renglón tiembla al cambiar.
+- **178:** venta rápida / cliente nuevo sin datos ya no se queda como parada al regresar.
+- **179:** "Cobrar ahora" del recordatorio lleva al paso de Cobro (no a las taras).
+- **180:** un solo cálculo de km de la ruta en el cierre (Google solo si se ordenó desde la bodega antes de entregar; si no, de parada en parada).
+- **181 (URGENTE):** "Mandar mi cierre de ayer" no hacía nada: el cierre tronaba con odómetro de salida vacío o con paradas de clientes que ya no existen, y la red de seguridad regresaba a la Ruta. Ahora pide el odómetro de salida y quita esas paradas rotas antes de dibujar (las ventas y el dinero no se tocan).
+- **182:** "No mandaste tu cierre de ayer" muestra el resumen de lo que se va a cerrar.
+
+### Ideas que quedaron solo como idea (no pendientes)
+- Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.
+- Leer los datos reales de la nube para confirmar casos (viaje del 173): requiere permiso de Ricardo y salida cifrada (repo público).
 
 ---
 

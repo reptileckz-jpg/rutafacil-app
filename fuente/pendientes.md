@@ -2996,3 +2996,11 @@ HECHO y PUBLICADO (10.16), `tema-datos181.js` + `base-v38.html` (cierre: odómet
 ## 2026-11-20 · 182 · Ricardo: "sí, me gusta esa idea" (resumen de lo que se va a cerrar)
 HECHO y PUBLICADO (10.16), `tema-dia182.js`, prueba en `t181.js` (12 OK).
 - En "No mandaste tu cierre de ayer": tarjeta con lo de esa ruta (de `cierreRes` y `S.log`): entregas, cajas/kg vendidos y total, efectivo a entregar, tarjeta/transferencia, crédito, lo que trae en el camión, vacías recogidas. Solo lo que tenga algo.
+
+---
+
+# ✅ CORTE 20 nov 2026 · APK 1.0.64 · app 10.16 · TODO PUBLICADO · LA NUMERACIÓN EMPIEZA OTRA VEZ EN 1
+Ricardo: "anota todo lo que llevamos; si no hay nada pendiente empieza los puntos desde el 1 otra vez; pasaré a otro chat".
+- **No queda nada pendiente.** El 142 (ganancia negativa) quedó resuelto en la 10.6 y con aviso de costo raro (150 y 171). Todo lo marcado arriba como "SIN PUBLICAR" ya salió en versiones posteriores.
+- **Desde aquí, el siguiente punto es el 1** (los de arriba, del 1 al 182, son historia; si se cita uno viejo, decir "el 181 de antes").
+- Resumen de lo último (165–182) y reglas de trabajo: ver `fuente/CONTEXTO-PARA-OTRA-IA.md`, sección 0 ("Estado al 20 nov").

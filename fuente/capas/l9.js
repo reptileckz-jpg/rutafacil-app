@@ -123,7 +123,9 @@ function reEsc(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 /* "Qué hacer hoy": si la tarea está en la misma pantalla, baja hasta ella en lugar de subir hasta arriba */
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-act="popgo"]');if(!b)return;var D=b.dataset;
  if(D.t!==S.tab[S.role]||D.x||D.p||D.s||D.c||D.h||D.pop)return;e.stopImmediatePropagation();
- var row=b.closest('.row'),hk=row&&row.querySelector('[data-act="hoyok"]'),k=hk?hk.dataset.k:'',tg=null;
+ var row=b.closest('.row')||b.parentElement,hk=row&&row.querySelector('[data-act="hoyok"]'),k=hk?hk.dataset.k:'',tg=null;
+ /* 174: en el Inicio nuevo los renglones ya no traen la palomita "hoyok": se reconoce la tarea por su texto (antes "Cuadrar la caja › Ir" no hacía nada) */
+ if(!k&&row)try{var tx=(row.textContent||'').replace(/\s+/g,' ').trim(),H=hoyTareas().filter(function(x){return tx.indexOf(x.t)>-1});if(H[0])k=H[0].k}catch(er){}
  if(k==='cj'){S.dOpen.cajadia=true;render();tg=document.querySelector('main details[data-k="cajadia"]')}
  else if(/^pp/.test(k)){tg=Array.prototype.slice.call(document.querySelectorAll('main .card')).filter(function(c){return /^Pagos por hacer/.test((c.textContent||'').trim())})[0]}
  if(tg){tg.scrollIntoView({block:'start'});window.scrollBy(0,-12);tg.classList.remove('flashsc');void tg.offsetWidth;tg.classList.add('flashsc')}},true);

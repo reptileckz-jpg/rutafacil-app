@@ -1,57 +1,49 @@
-/* 6 (nueva numeración) · parte 2: "🔎 Descuadres": junta taras, efectivo (caja y choferes), kilos/cajas llenas y lo que falta recibir; foto diaria;
-   notas, "Revisando", "Ya apareció", ajuste de taras (con motivo) y deshacerlo. La pantalla no cambia ningún número. */
+/* 7 (nueva numeración) · cada día la ruta empieza desde cero: si la ruta dice que es de HOY pero su salida fue de OTRO día (se quedó abierta),
+   se cierra (pasa a cierre atrasado con todo lo que traía) y la de hoy empieza con "Antes de salir". No aplica a la 2ª vuelta, a rutas sin
+   la marca nueva ni a la madrugada. Taras y dinero no se pierden. */
 const {chromium}=require('playwright');let nOK=0,nF=0;const ok=(c,m,x)=>{c?nOK++:nF++;console.log((c?'OK   ':'FAIL ')+m+(x!==undefined?' '+JSON.stringify(x).slice(0,350):''))};
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const arch of ['prototipo-platanos.html','platanos-primera-vez.html']){
 const p=await (await b.newContext({viewport:{width:412,height:900}})).newPage();p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
 await p.addInitScript(()=>{window.__pnTest=1;window.__hora93=9});await p.goto('file:///mnt/user-data/outputs/'+arch);await p.waitForTimeout(800);const ev=(f,a)=>p.evaluate(f,a);let r;
 await ev(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();
- if(S.setup&&!S.setup.fin){var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1000}];U.per=[{n:'Danu',puesto:'chofer',tel:'1'},{n:'Beto',puesto:'chofer',tel:'2'}];U.cli=[{n:'Doña Mary',a:'x',tel:'1',dias:[0,1,2,3,4,5,6],cred:0,vac:5,ch:'0'}];U.prov=[];S.precio.R=275;S.precio.M=20;suAplicar();_pin.modo=null}
- S.role='admin';S.encOn=false;S.tutVisto={rep:true,admin:true};S.cajasT0=S.cajasT0+(cajasDonde().tot-cajasEsperadas());S.cajaCierres=[];S.faltantes=[];S.mermas=[];S.atras93={};S.casos6={};S.foto6={};S.tab.admin='inicio';render()});
-/* todo cuadra: no hay casos ni tarjeta */
-r=await ev(()=>({n:casosAb6().length,card:!!document.querySelector('[data-x="desc6i"]')}));ok(r.n===0&&!r.card,arch+' · si todo cuadra no hay casos ni tarjeta en Inicio',r);
-/* la foto del día y "cuadraba hasta" */
-r=await ev(()=>{var ay=iso(new Date(TODAY.getTime()-864e5));foto6Toma(true);var h=S.foto6[iso(TODAY)];S.foto6[ay]=JSON.parse(JSON.stringify(h));S.foto6[ay].t.dif=0;return {hoy:!!h,dif:h.t.dif,tot:h.t.tot,cuadraba:cuadraba6()===ay}});
-ok(r.hoy&&r.dif===0&&r.cuadraba,arch+' · se guarda la foto del día y se sabe hasta cuándo cuadraba',r);
-/* se pierden 3 vacías de la bodega */
-r=await ev(()=>{S.inv.vacias-=3;var I=invOf(1);if(I!==S.inv)I.vacias-=3;render();var L=casosAb6();var t=L.filter(c=>c.tipo==='T')[0];return {n:L.length,t:t&&t.tit,dif:t&&t.dif,card:!!document.querySelector('[data-x="desc6i"]')}});
-ok(r.t==='Faltan 3 taras'&&r.card,arch+' · faltan 3 taras: sale el caso y la tarjeta en Inicio',r);
-/* caja que no cuadró, faltante de un chofer, kilos que faltaron, cierre sin recibir */
-r=await ev(()=>{var D=S.choferes.filter(c=>esCh(c))[0];var hoy=iso(TODAY),ay=iso(new Date(TODAY.getTime()-864e5));
- S.cajaCierres.push({f:ay,ayer:ay,h:'20:00',esp:5000,cnt:4800,dif:-200,q:'Ricardo'});
- S.faltantes.push({ch:D.id,m:150,fecha:hoy,desc:true,pend:true});S.faltantes.push({ch:D.id,m:900,fecha:hoy,desc:true,pend:true,arrastre:true});
- S.mermas.push({tipo:'Faltante al regresar',fecha:hoy,R:1,M:5,valor:300,txt:D.n});
- var o=chNuevo(+D.id);o.rutaDia80=ay;o.salida.ok=true;o.invR=4;o.log=[{c:S.cli[0].id,R:2,M:0,pr:275,total:550,pago:550,abono:0,V:1}];S.atras93[D.id+'|'+ay]={id:+D.id,f:ay,why:'liberada',env:false,ef:550,cj:4,pack:o};S.cajasT0+=5;/* sus 4 llenas y 1 vacía ya existían */
- var L=casosAb6();return {tipos:L.map(c=>c.tipo).sort().join(''),tits:L.map(c=>c.tit)}});
-ok(r.tipos==='AEFKT',arch+' · salen los 5: taras, caja, faltante del chofer (no el sueldo pendiente), kilos y lo sin recibir',r);
-/* la pantalla */
-const snap=await ev(()=>JSON.stringify([S.inv,S.cli.map(c=>c.vac),S.cajasMov,S.log,S.faltantes,S.mermas,S.cajaCierres,cajaEsp()]));
-r=await ev(()=>{S.tab.admin='mas';render();var b=document.querySelector('[data-act="desc6"]');if(!b)return 'sin entrada en Más';b.click();var m=document.querySelector('main').innerText;return {tab:S.tab.admin,h:/Descuadres/.test(m),grupos:['Taras','Efectivo','Kilos','Sin recibir'].every(g=>m.indexOf(g)>-1)}});
-ok(r.tab==='desc6'&&r.h&&r.grupos,arch+' · Más → Descuadres abre la pantalla con los 4 grupos',r);
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='T')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();var t=document.querySelector('main').innerText;return {t:t.slice(0,1400),tab:S.tab.admin,cards:document.querySelectorAll('main .card').length}});
-ok(r.tab==='caso6'&&r.cards>=4&&/Cuadraban hasta el/.test(r.t)&&/Vacías en bodega/.test(r.t)&&/\(-3\)/.test(r.t)&&/Pistas/.test(r.t)&&/Lo que movió taras/.test(r.t),arch+' · el detalle de taras dice hasta cuándo cuadraba, la tabla por lugar (−3 en bodega), lo que se movió y pistas',r);
-r=await ev(()=>{S.tab.admin='desc6';render();var k=casosAb6().filter(c=>c.tipo==='E')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();return document.querySelector('main').innerText.slice(0,500)});
-ok(/Debía haber/.test(r)&&/\$5,000/.test(r)&&/\$4,800/.test(r),arch+' · el detalle de la caja: debía haber, se contó, diferencia',r);
-r=await ev(()=>{S.tab.admin='desc6';render();var k=casosAb6().filter(c=>c.tipo==='A')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();return document.querySelector('main').innerText.slice(0,500)});
-ok(/Efectivo que debe entregar/.test(r)&&/Ver todo lo de esta ruta/.test(r)&&/Recibirlo ahora/.test(r),arch+' · lo sin recibir enseña lo esencial, "Ver todo lo de esta ruta ›" y "Recibirlo ahora"',r);
-/* la pantalla no cambió ningún número */
-r=await ev(a=>JSON.stringify([S.inv,S.cli.map(c=>c.vac),S.cajasMov,S.log,S.faltantes,S.mermas,S.cajaCierres,cajaEsp()])===a,snap);
-ok(r,arch+' · abrir la pantalla y los detalles no cambia inventario, taras de clientes, movimientos, ventas, faltantes, mermas ni caja',r);
-/* notas y estados */
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='F')[0].k;S.caso6k=k;S.tab.admin='caso6';render();var t=document.querySelector('#nota6');t.value='Dice que pagó una caseta';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="desc6nota"]').click();var s=S.casos6[k];return {est:s.est,n:s.notas.length,x:s.notas[0].x}});
-ok(r.est==='rev'&&r.n===1&&/caseta/.test(r.x),arch+' · "Anotar" guarda la nota con quién y cuándo, y pasa a "Revisando"',r);
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='F')[0].k;document.querySelector('[data-act="desc6ok"][data-k="'+k+'"]').click();return {ab:casosAb6().some(c=>c.k===k),est:S.casos6[k].est,falt:S.faltantes.length}});
-ok(!r.ab&&r.est==='res'&&r.falt===2,arch+' · "Ya apareció" lo pasa a resueltos sin tocar el faltante',r);
-/* ajuste de taras por pasos: 1 motivo · 2 confirmar; sin motivo no avanza; cuadra; y se puede deshacer */
-r=await ev(()=>{var c=casosAb6().filter(c=>c.tipo==='T')[0];S.caso6k=c.k;S.tab.admin='caso6';S.aj6=null;render();document.querySelector('[data-act="aj6"]').click();var p1=/Paso 1 de 2/.test(document.querySelector('main').innerText);
- document.querySelector('[data-act="aj6p"][data-v="1"]').click();var sigue1=S.aj6&&S.aj6.paso===0;var sin=tarasDif86();
- var t=document.querySelector('#aj6m');t.value='Se rompieron 3 en la bodega';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="aj6p"][data-v="1"]').click();var p2=/Paso 2 de 2/.test(document.querySelector('main').innerText)&&/Se rompieron/.test(document.querySelector('main').innerText);
- document.querySelector('[data-act="desc6aj"]').click();return {p1,sigue1,p2,sin,con:tarasDif86(),mov:S.cajasMov[S.cajasMov.length-1],k:c.k,est:S.casos6[c.k].est,aj6:S.aj6}});
-ok(r.p1&&r.sigue1&&r.p2,arch+' · "Ajustar" va por pasos en su pantalla: paso 1 el motivo (sin motivo no avanza), paso 2 revisar',r);
-ok(r.sin===-3&&r.con===0&&r.mov.n===-3&&/Se rompieron/.test(r.mov.t)&&r.est==='res'&&!r.aj6,arch+' · "Sí, ajustar" anota el movimiento (−3) con su motivo y cuadra',r);
-r=await ev(k=>{S.caso6k=k;S.tab.admin='caso6';render();document.querySelector('[data-act="desc6re"][data-k="'+k+'"]').click();return {dif:tarasDif86(),est:S.casos6[k].est,mov:S.cajasMov[S.cajasMov.length-1].n}},r.k);
-ok(r.dif===-3&&r.est==='rev'&&r.mov===3,arch+' · "Reabrir y deshacer el ajuste" anota el movimiento contrario y el caso vuelve',r);
-r=await ev(()=>{S.tab.admin='desc6';render();var v=document.querySelector('main [data-act="tab"][data-t="mas"]');var t=!!v;var nav=document.querySelector('nav.tabs button[data-t="mas"]');return {back:t,mas:nav&&nav.getAttribute('aria-pressed')}});
-ok(r.back&&r.mas==='true',arch+' · Descuadres tiene "← Volver a Más" y la barra marca "Más"',r);
+ if(S.setup&&!S.setup.fin){var U=S.setup;U.veh=[{n:'Camioneta Uno',pl:'AAA1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1000}];U.per=[{n:'Danu',puesto:'chofer',tel:'1'}];U.cli=[{n:'Doña Mary',a:'x',tel:'1',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'},{n:'Don Beto',a:'y',tel:'2',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'}];U.prov=[];S.precio.R=275;S.precio.M=20;suAplicar();_pin.modo=null}
+ var D=S.choferes.filter(c=>esCh(c))[0];S.chofHoy=+D.id;try{chCambiar(+D.id)}catch(e){}S.role='rep';S.tutVisto={rep:true,admin:true};S.pinOk[pinKey()]=true;S.pinOk['c:'+D.id]=true;S.atras93={}});
+const ay=await ev(()=>iso(new Date(TODAY.getTime()-864e5)));
+/* ayer: salió (con la marca de su día), entregó, trae cajas; no mandó cierre */
+const prep=(marca)=>ev(([ay,marca])=>{S.atras93={};S.rutaDia80=ay;S.salida.ok=true;delete S.salida.f7;if(marca)S.salida.f7=ay;var c=S.cli.filter(x=>!x.oculto).slice(0,2);S.stops=c.map(x=>({c:x.id,done:true}));
+ S.log=c.map((x,i)=>({c:x.id,R:3,M:5,pr:275,pm:20,total:925,pago:925,abono:0,V:2,id:'e'+i}));S.inv.reparto=12;S.inv.repartoKg=20;S.cierre.salioR=18;S.cierre.salioM=30;S.cierre.sent=false;S.cierre.odoIni=1000;S.cierre.odo=1060;S.recs=[{tipo:'Gasolina',litros:10,total:240}];S.gch=[];S.dia80=null;S.tab.rep='ruta';},[ay,marca]);
+/* la marca: al salir queda el día de esa ruta */
+r=await ev(()=>{S.rutaDia80=iso(TODAY);S.salida.ok=true;delete S.salida.f7;render();return S.salida.f7===iso(TODAY)});ok(r,arch+' · al salir, la salida queda marcada con el día de su ruta',r);
+/* la ruta de ayer se queda abierta y por algún camino pasa a decir "hoy" */
+await prep(true);
+r=await ev(()=>{var t0=null;try{t0=tarasDif86()}catch(e){}var antes={ef:sum(S.log,l=>l.pago),n:S.log.length};S.rutaDia80=iso(TODAY);render();
+ var k=Object.keys(S.atras93||{})[0],e=k&&S.atras93[k];var d=e&&rutaDet6(e.pack);
+ return {antes,k,why:e&&e.why,ef:e&&e.ef,pack:e&&{log:e.pack.log.length,invR:e.pack.invR,invM:e.pack.invM,gas:(e.pack.recs||[]).length,odo:e.pack.cierre.odo},det:d&&{efectivo:d.efectivo,gasolina:d.gasolina},
+  ahora:{dia:S.rutaDia80,salida:S.salida.ok,log:S.log.length,rec:(S.recs||[]).length,cam:S.inv.reparto,tab:S.tab.rep},hoy:iso(TODAY),hist:(S.rutasHist||[]).filter(x=>x.f===e.f&&+x.ch===+S.chofHoy&&(x.log||[]).length===2).length,t0,t1:(function(){try{return tarasDif86()}catch(e){return null}})()}});
+ok(r.k&&r.pack&&r.pack.log===2&&r.pack.invR===12&&r.pack.invM===20&&r.pack.gas===1&&r.pack.odo===1060&&r.ef===1850,arch+' · la de ayer se CIERRA: pasa a cierre atrasado con sus 2 entregas ($1,850), 12 cajas y 20 kg en el camión, gasolina y odómetro',r);
+ok(r.det&&r.det.efectivo===1610,arch+' · lo que debe entregar (cobrado − gasolina) se ve en el cierre atrasado',r.det);
+ok(r.ahora.dia===r.hoy&&r.ahora.salida===false&&r.ahora.log===0&&r.ahora.rec===0&&r.ahora.tab==='ruta',arch+' · la de hoy empieza desde cero: "Antes de salir" otra vez (vehículo, fotos, odómetro), sin entregas ni gastos de ayer',r.ahora);
+ok(r.hist===1,arch+' · queda en el historial',r.hist);
+ok(r.t0===null||r.t1===r.t0,arch+' · las taras siguen cuadrando (las de ese camión se cuentan en el cierre atrasado)',{t0:r.t0,t1:r.t1});
+r=await ev(()=>{render();render();return Object.keys(S.atras93).length});ok(r===1,arch+' · no se repite al volver a dibujar',r);
+/* NO aplica: 2ª vuelta del mismo día */
+r=await ev(()=>{S.atras93={};S.rutaDia80=iso(TODAY);S.salida.ok=true;S.salida.f7=iso(TODAY);S.log=[{c:S.cli[0].id,R:1,total:275,pago:275,abono:0}];render();return {n:Object.keys(S.atras93).length,log:S.log.length,sal:S.salida.ok}});
+ok(r.n===0&&r.log===1&&r.sal,arch+' · la segunda vuelta del mismo día no se toca',r);
+/* NO aplica: ruta abierta antes de esta versión (sin marca) */
+await prep(false);r=await ev(()=>{S.rutaDia80=iso(TODAY);var s=S.salida;var g=cero7Vieja();return {g,log:S.log.length}});
+ok(r.g===null&&r.log===2,arch+' · una ruta que ya estaba abierta antes de esta versión (sin marca) no se reinicia a medio día',r);
+/* NO aplica: madrugada (12 a 5 a.m.) con la ruta de ayer */
+await prep(true);r=await ev(()=>{window.__hora93=2;render();var x={dia80:!!document.getElementById('dia80'),n:Object.keys(S.atras93).length,log:S.log.length};window.__hora93=9;return x});
+ok(r.n===0&&r.log===2,arch+' · de madrugada la ruta de ayer sigue siendo la de hoy (93): no se toca',r);
+/* el bloqueo normal sigue: ruta de ayer sin cierre → "No mandaste tu cierre" */
+await prep(true);r=await ev(()=>{render();return {dia80:!!document.getElementById('dia80'),n:Object.keys(S.atras93).length}});
+ok(r.dia80&&r.n===0,arch+' · la ruta de ayer sin cierre sigue pidiendo "Mandar mi cierre de ayer" (no se cierra sola)',r);
+/* al MANDAR el cierre atrasado: la de ayer se guarda para recibirla y la de hoy empieza con "Antes de salir" */
+await prep(true);r=await ev(()=>{S.cierre.res=cierreRes();S.cierre.sent=true;render();var k=Object.keys(S.atras93)[0];return {k,env:k&&S.atras93[k].env,dia:S.rutaDia80===iso(TODAY),sal:S.salida.ok,log:S.log.length}});
+ok(r.k&&r.env&&r.dia&&r.sal===false&&r.log===0,arch+' · al mandar el cierre de ayer: se guarda para recibirlo y la ruta de hoy pide "Antes de salir" (vehículo, fotos, odómetro)',r);
+/* al LIBERAR (administrador): la ruta nueva también empieza con "Antes de salir" */
+r=await ev(()=>{var o=chNuevo(+S.chofHoy);return {sal:o.salida.ok,log:o.log.length,f7:o.salida.f7||null}});
+ok(r.sal===false&&r.log===0&&!r.f7,arch+' · la ruta que arma el administrador al liberar empieza sin salida (pide "Antes de salir")',r);
 await p.close()}
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

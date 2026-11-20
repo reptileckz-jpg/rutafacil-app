@@ -3021,3 +3021,8 @@ HECHO (SIN PUBLICAR), `tema-taras2.js`, prueba `t2.js` (17 OK). comp-cajas IDÉN
 - Durante la recepción hay un −1 por la caja rota que ya existía antes (no es de este cambio); al terminar o salir vuelve a cuadrar.
 - La idea del cliente lejano pasa a ser el punto 3.
 - Pedirle a Ricardo: NO tocar "registrar como saldo inicial" en la tarjeta de taras; confirmar en Rutas "📥 Cierre atrasado" de Danu (ahí están el efectivo y las cajas). Si NO sale, la ruta se reemplazó sin guardarse y hay que buscarla en el historial (rutasHist con enviado:false).
+
+## 2026-11-20 · 4 y 5 (numeración nueva)
+HECHO (SIN PUBLICAR).
+- 4 · `tema-may4.js`, `t4.js` (13 OK). Mayoreo igual o más alto que el normal → pide revisarlo: aviso rojo en el paso "Precio de mayoreo" de la carga; "Sí, guardar" (cvconfirm2) abre antes "Revisa el mayoreo" (Sí, así está bien / Corregir); "Usar desde hoy/…" lleva el aviso en la confirmación; "Mayoreo de hoy" igual → botón "Sí, así está bien" (más alto ya se bloqueaba en l71 y sigue).
+- 5 · `tema-tope5.js`, `t5.js` (8 OK). Taras recibidas ≤ cajas que entrega + c.vac (con +, escribiendo, al dibujar y al guardar; aviso "Máximo 6: 4 que le entregas + 2 que debe"). comp-venta: DISTINTO SOLO en "fiado" y "parte" (demo y real): recibía 4 entregando 1–2 a un cliente sin deuda; ahora queda en lo que entrega. Antes esas taras de más aparecían de la nada en el camión (c.vac no baja de 0) → fuente de descuadres. Dinero, inventario y deuda iguales.

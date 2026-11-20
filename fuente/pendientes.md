@@ -2959,25 +2959,25 @@ HECHO y PUBLICADO (10.14), `fuente/capas/tema-toque174.js` + `l9.js`, prueba `t1
 - Doble toque (183 botones que guardan algo y no están en la lista de la 35): ninguno registra dos veces. Pero "toque fantasma" (el 2º toque cae en el botón nuevo que salió en el mismo lugar): "Dar de baja" se confirmaba solo, "Siguiente" del cierre marcaba el tanque en 1/2, "Siguiente" del viaje avanzaba dos pasos. Ahora un toque que empieza <450 ms después del anterior, en el mismo lugar y sobre OTRO control, se ignora completo (pointer/touch/click); "Siguiente" de asistentes: también el mismo botón <700 ms. El mismo botón rápido (+$50) sigue contando.
 
 ## 2026-11-20 · 175 · Ricardo: "en Iniciar el día › Carga, al escribir las cajas de roatán o los kilos de macho el teclado se abre y se cierra inmediatamente" · "no cambies el APK hasta que te diga"
-HECHO (SIN PUBLICAR), `tema-ancha.js`, prueba `t175.js` (5 OK).
+HECHO y PUBLICADO (10.15), `tema-ancha.js`, prueba `t175.js` (5 OK).
 - Causa: desde la 164 (web/pantalla ancha) cada `resize` redibujaba la app a los 250 ms. Al abrirse el teclado la pantalla cambia de ALTO → `resize` → render → el campo perdía el foco y el teclado se cerraba (en cualquier campo; se notaba en la Carga).
 - Ahora solo se redibuja si cambia el ANCHO (girar, Fold, ventana de la computadora); y si estás escribiendo en un campo, espera a que salgas de él.
 - 2ª causa (Ricardo: "pasa en toda la sección de reparto… en todas el teclado se cierra"): al escribir, el redibujado "morph" (`l10.js` `mKids`) MOVÍA o REUSABA para otra cosa la caja que tiene el campo enfocado (solo comparaba el tipo de etiqueta): blur + re-foco → en el celular se cierra el teclado (se veía en Buscar cliente). Ahora la caja con el campo enfocado solo se reaprovecha para su mismo lugar y nunca se mueve (se mueven las de en medio). Recorrido de 31 campos de 15 pantallas con teclado simulado: antes 6 se cerraban, ahora 0. Prueba `t175.js` 8 OK.
 
 ## 2026-11-20 · 176 · Ricardo: "con más de 10 cajas de roatán, si le das mayoreo, en automático también le da mayoreo del macho; ese debe ser aparte"
-HECHO (SIN PUBLICAR), `base-v38.html` (entregaCalc `myaM`, precioLinea) + `tema-may176.js`, prueba `t176.js` (8 OK).
+HECHO y PUBLICADO (10.15), `base-v38.html` (entregaCalc `myaM`, precioLinea) + `tema-may176.js`, prueba `t176.js` (8 OK).
 - El mayoreo por más de 10 cajas es del roatán. El macho va a mayoreo solo si el chofer lo escoge en "¿Y el macho? (va aparte)" (Normal ya marcado), o si el cliente está marcado de mayoreo (los dos, como antes). Si el roatán regresa a normal, el macho también. El letrero de precio dice "macho a precio normal" cuando aplica.
 
 ## 2026-11-20 · 177 · Ricardo: "la tarjeta naranja donde dice que debe taras, que sea roja; y con cada tara que añades/entrega, que el renglón 'queda debiendo X cajas vacías' tiemble (GPU)"
-HECHO (SIN PUBLICAR), `tema-vacias177.js`, prueba `t177.js` (6 OK).
+HECHO y PUBLICADO (10.15), `tema-vacias177.js`, prueba `t177.js` (6 OK).
 - `#vac115` con `.debe177`: fondo `--danger-soft` + borde `--danger`, texto rojo (claro y oscuro). Al corriente, verde como antes.
 - El renglón tiembla (`translate3d`, 0.55 s) cada vez que cambia lo que queda debiendo y todavía debe; al abrir la entrega no. Modo ahorro / reducir movimiento: quieto.
 
 ## 2026-11-20 · 178 · Ricardo: "si selecciono cliente nuevo o venta rápida y le doy para atrás sin poner datos, me lo marca como parada de la ruta"
-HECHO (SIN PUBLICAR), `tema-calle178.js`, prueba `t178.js` (8 OK).
+HECHO y PUBLICADO (10.15), `tema-calle178.js`, prueba `t178.js` (8 OK).
 - Venta rápida (`calle`) crea parada + cliente escondido; Cliente nuevo crea la parada (`nuevo72`) al guardar el alta. Solo "Cancelar" quitaba la parada; por "Volver a la ruta", la barra o atrás se quedaba.
 - Ahora, al salir de esa entrega por donde sea sin haber escrito nada (R, M, V, nombre, tel, dirección, pago, abono… iguales a como empezó) y sin entrega hecha, se quita la parada (y el cliente escondido de la venta rápida; el cliente nuevo dado de alta se queda). Con algo escrito, se queda.
 
 ## 2026-11-20 · 179 · Ricardo: "cliente que debe taras y dinero: pago solo lo de hoy, regresa sus taras y en el recordatorio 'Cobrar ahora' me regresa a la pantalla de las taras, no a donde hay que cobrar"
-HECHO (SIN PUBLICAR), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
+HECHO y PUBLICADO (10.15), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
 - "Cobrar ahora" buscaba el campo del abono, pero la entrega va por pasos y se quedaba en "Cajas vacías y taras" (el abono está en "Cobro", escondido). Ahora primero pone el paso donde está lo que hay que cobrar (`entPasos179`, con la misma regla que arma los pasos) y después baja a los botones del abono (o a las taras si eso es lo que falta).

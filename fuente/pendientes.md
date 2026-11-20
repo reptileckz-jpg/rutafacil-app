@@ -2972,3 +2972,8 @@ HECHO (SIN PUBLICAR), `base-v38.html` (entregaCalc `myaM`, precioLinea) + `tema-
 HECHO (SIN PUBLICAR), `tema-vacias177.js`, prueba `t177.js` (6 OK).
 - `#vac115` con `.debe177`: fondo `--danger-soft` + borde `--danger`, texto rojo (claro y oscuro). Al corriente, verde como antes.
 - El renglón tiembla (`translate3d`, 0.55 s) cada vez que cambia lo que queda debiendo y todavía debe; al abrir la entrega no. Modo ahorro / reducir movimiento: quieto.
+
+## 2026-11-20 · 178 · Ricardo: "si selecciono cliente nuevo o venta rápida y le doy para atrás sin poner datos, me lo marca como parada de la ruta"
+HECHO (SIN PUBLICAR), `tema-calle178.js`, prueba `t178.js` (8 OK).
+- Venta rápida (`calle`) crea parada + cliente escondido; Cliente nuevo crea la parada (`nuevo72`) al guardar el alta. Solo "Cancelar" quitaba la parada; por "Volver a la ruta", la barra o atrás se quedaba.
+- Ahora, al salir de esa entrega por donde sea sin haber escrito nada (R, M, V, nombre, tel, dirección, pago, abono… iguales a como empezó) y sin entrega hecha, se quita la parada (y el cliente escondido de la venta rápida; el cliente nuevo dado de alta se queda). Con algo escrito, se queda.

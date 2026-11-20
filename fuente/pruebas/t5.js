@@ -15,7 +15,8 @@ ok(r.V===6,'entrega 4 y le deben 2: con el + llega hasta 6 y no más',r);ok(/Má
 r=await ev(()=>{var i=document.querySelector('[data-bind="d.V"]');if(!i)return 'sin campo';i.value='10';i.dispatchEvent(new Event('input',{bubbles:true}));return 1});await p.waitForTimeout(80);
 r=await ev(()=>({V:S.d.V,campo:(document.querySelector('[data-bind="d.V"]')||{}).value}));ok(r.V===6&&r.campo==='6','escribiendo 10 se queda en 6 (también en el campo)',r);
 /* las rotas no pasan de las que devuelve */
-r=await ev(()=>{S.d.V=9;S.d.Vr=9;render();return {V:S.d.V,Vr:S.d.Vr}});ok(r.V===6&&r.Vr<=6,'si algo pone 9 (y 9 rotas), al dibujar se queda en 6 y las rotas no pasan de 6',r);
+r=await ev(()=>{S.d.R=0;S.d.V=4;render();var a=S.d.V;S.d.R=2;render();return {antes:a,V:S.d.V}});ok(r.antes===4&&r.V===4,'si anota primero las vacías (4) y después las cajas (2), no se le pierde lo que escribió (4 = 2 + 2 que debe)',r);
+r=await ev(()=>{S.d.R=4;S.d.V=6;render();return S.d.V});
 /* sin deuda: máximo lo que entrega */
 await abre(1,0,4);await mas(3);r=await ev(()=>S.d.V);ok(r===4,'sin deuda y entrega 4: máximo 4',r);
 /* recibir MENOS sigue igual */

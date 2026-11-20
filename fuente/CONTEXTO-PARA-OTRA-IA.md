@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.16, APK 1.0.64; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.17; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,8 +12,8 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** APK **1.0.64** · app **10.16** · web https://platanos-nietos.web.app. **Todo está publicado; no queda nada pendiente.**
-**Numeración:** los puntos de mejora llegaron al 182. **El siguiente punto vuelve a ser el 1** (si se cita uno viejo: "el 181 de antes").
+**Versión publicada:** app **10.17** (20 nov, tarde) · APK la que sale de ese armado (1.0.65 o siguiente; la anterior era 1.0.64) · web https://platanos-nietos.web.app.
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **7** (publicados 1, 2, 4, 5, 6 y 7). **Pendiente: 3** (avisar cuando un cliente queda lejos de su ruta y sugerir pasarlo a la ruta donde quede más cerca; espera el sí de Ricardo). El siguiente punto nuevo es el **8**.
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
@@ -41,6 +41,15 @@
 - **180:** un solo cálculo de km de la ruta en el cierre (Google solo si se ordenó desde la bodega antes de entregar; si no, de parada en parada).
 - **181 (URGENTE):** "Mandar mi cierre de ayer" no hacía nada: el cierre tronaba con odómetro de salida vacío o con paradas de clientes que ya no existen, y la red de seguridad regresaba a la Ruta. Ahora pide el odómetro de salida y quita esas paradas rotas antes de dibujar (las ventas y el dinero no se tocan).
 - **182:** "No mandaste tu cierre de ayer" muestra el resumen de lo que se va a cerrar.
+
+### Lo que se hizo del 1 al 7 (numeración nueva, 20 nov tarde · 10.17)
+- **1:** sin el recuadro azul de Android al tocar; si "Mandar mi cierre de ayer" no puede abrir el cierre, el error sale en esa pantalla (`tema-azul1.js`).
+- **2:** las taras de un cierre atrasado sin recibir siguen contando en "dónde están las cajas" (`tema-taras2.js`).
+- **4:** mayoreo igual o más alto que el normal pide revisarlo (`tema-may4.js`).
+- **5:** el chofer no recibe más taras que las que entrega + las que debe el cliente; solo al mover las vacías y al guardar (`tema-tope5.js`).
+- **6:** cierre atrasado con TODO (dinero, taras, kilos, gasolina, vehículo) en su pantalla `ruta6`; rutas que nadie recibió; "🔎 Descuadres" (taras, efectivo, kilos, sin recibir) con foto diaria `S.foto6`, casos `S.casos6`, notas y ajuste de taras por pasos (`tema-atras6.js`, `tema-desc6.js`).
+- **7:** cada día la ruta empieza desde cero: si una ruta de otro día se queda abierta y pasa a "hoy", se cierra (cierre atrasado) y la de hoy pide "Antes de salir" (`tema-cero7.js`, marca `salida.f7`).
+- Caso real de Danu (20 nov): su ruta de ayer pasó a "hoy" sin cierre ni salida nueva al abrir el admin; no se pudo reproducir el camino exacto (ver pendientes.md). La regla 7 lo cubre desde 10.17.
 
 ### Ideas que quedaron solo como idea (no pendientes)
 - Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.

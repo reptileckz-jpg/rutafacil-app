@@ -2957,3 +2957,8 @@ HECHO y PUBLICADO (10.14), `fuente/capas/tema-toque174.js` + `l9.js`, prueba `t1
 - Recorrido: 2,762 toques (cada botón de cada pantalla de los 4 papeles + un nivel dentro de lo que abren, siempre desde el mismo estado): 0 errores de JS. 32 "no hicieron nada": todos normales (−, opción ya elegida) menos uno.
 - ERROR: Inicio › "Qué hacer hoy" › "Cuadrar la caja · Ir ›" no hacía nada (el renglón del Inicio nuevo ya no trae `hoyok` y el atajo de `l9.js` no sabía qué tarea era). Ahora la reconoce por su texto.
 - Doble toque (183 botones que guardan algo y no están en la lista de la 35): ninguno registra dos veces. Pero "toque fantasma" (el 2º toque cae en el botón nuevo que salió en el mismo lugar): "Dar de baja" se confirmaba solo, "Siguiente" del cierre marcaba el tanque en 1/2, "Siguiente" del viaje avanzaba dos pasos. Ahora un toque que empieza <450 ms después del anterior, en el mismo lugar y sobre OTRO control, se ignora completo (pointer/touch/click); "Siguiente" de asistentes: también el mismo botón <700 ms. El mismo botón rápido (+$50) sigue contando.
+
+## 2026-11-20 · 175 · Ricardo: "en Iniciar el día › Carga, al escribir las cajas de roatán o los kilos de macho el teclado se abre y se cierra inmediatamente" · "no cambies el APK hasta que te diga"
+HECHO (SIN PUBLICAR), `tema-ancha.js`, prueba `t175.js` (5 OK).
+- Causa: desde la 164 (web/pantalla ancha) cada `resize` redibujaba la app a los 250 ms. Al abrirse el teclado la pantalla cambia de ALTO → `resize` → render → el campo perdía el foco y el teclado se cerraba (en cualquier campo; se notaba en la Carga).
+- Ahora solo se redibuja si cambia el ANCHO (girar, Fold, ventana de la computadora); y si estás escribiendo en un campo, espera a que salgas de él.

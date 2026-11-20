@@ -23,4 +23,10 @@ function ancha164(){try{if(window.innerWidth<600)return;var h=document.documentE
   var mejor=Object.keys(cuenta).sort(function(a,b){return cuenta[b]-cuenta[a]})[0];if(cuenta[mejor]<8)return;
   c.classList.add('lista164');Array.prototype.forEach.call(K,function(x){if(firma(x)!==mejor)x.classList.add('full164')})})}catch(e){}}
 var _rd164=render;render=function(){var r=_rd164.apply(this,arguments);ancha164();return r};
-var _rs164=0;window.addEventListener('resize',function(){clearTimeout(_rs164);_rs164=setTimeout(function(){try{render()}catch(e){}},250)});
+/* 175: solo si cambió el ANCHO (girar, abrir el Fold, ventana en la computadora). Al abrirse el teclado solo cambia lo alto, y ese
+   redibujado quitaba el foco del campo: el teclado se abría y se cerraba solo (Iniciar el día › Carga y cualquier campo). Tampoco se
+   redibuja mientras escribes en un campo; se hace al salir de él. */
+var _rs164=0,_rsW164=window.innerWidth,_rsPend164=false;
+function rsCampo164(){var a=document.activeElement;return !!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!/^(button|checkbox|radio|range|file|submit)$/i.test(a.type||''))}
+window.addEventListener('resize',function(){if(window.innerWidth===_rsW164)return;_rsW164=window.innerWidth;clearTimeout(_rs164);_rs164=setTimeout(function(){if(rsCampo164()){_rsPend164=true;return}try{render()}catch(e){}},250)});
+document.addEventListener('focusout',function(){if(!_rsPend164)return;setTimeout(function(){if(!_rsPend164||rsCampo164())return;_rsPend164=false;try{render()}catch(e){}},50)},true);

@@ -2981,3 +2981,8 @@ HECHO y PUBLICADO (10.15), `tema-calle178.js`, prueba `t178.js` (8 OK).
 ## 2026-11-20 · 179 · Ricardo: "cliente que debe taras y dinero: pago solo lo de hoy, regresa sus taras y en el recordatorio 'Cobrar ahora' me regresa a la pantalla de las taras, no a donde hay que cobrar"
 HECHO y PUBLICADO (10.15), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
 - "Cobrar ahora" buscaba el campo del abono, pero la entrega va por pasos y se quedaba en "Cajas vacías y taras" (el abono está en "Cobro", escondido). Ahora primero pone el paso donde está lo que hay que cobrar (`entPasos179`, con la misma regla que arma los pasos) y después baja a los botones del abono (o a las taras si eso es lo que falta).
+
+## 2026-11-20 · 180 · Ricardo (captura del cierre): "en el kilometraje se contradice la aplicación" (~30 km según Google arriba, ~239 km abajo)
+HECHO (SIN PUBLICAR), `tema-km180.js`, prueba `t180.js` (5 OK).
+- Eran dos cálculos: `kmEsp154` usaba Google (`S.rgRes.ahora.km`), que se calcula DESDE donde estaba el chofer al ordenar (a media ruta = solo lo que faltaba); `rutaKmEst` sumaba `c.km` de cada cliente ×1.6 (ida y vuelta por cada uno).
+- Ahora uno solo (`kmRuta180`) para el aviso, el odómetro que viene puesto y `odoValida`: Google solo si se ordenó desde la bodega (≤2.5 km) y sin entregas hechas (`completo180`, se marca al ordenar); si no, bodega → clientes en orden → bodega con `kmE` (lat/lng); si menos de la mitad tiene ubicación, el cálculo de antes.

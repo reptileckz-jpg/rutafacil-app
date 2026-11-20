@@ -2986,3 +2986,9 @@ HECHO y PUBLICADO (10.15), `tema-taras.js` (deb109cob), prueba `t179.js` (4 OK).
 HECHO (SIN PUBLICAR), `tema-km180.js`, prueba `t180.js` (5 OK).
 - Eran dos cálculos: `kmEsp154` usaba Google (`S.rgRes.ahora.km`), que se calcula DESDE donde estaba el chofer al ordenar (a media ruta = solo lo que faltaba); `rutaKmEst` sumaba `c.km` de cada cliente ×1.6 (ida y vuelta por cada uno).
 - Ahora uno solo (`kmRuta180`) para el aviso, el odómetro que viene puesto y `odoValida`: Google solo si se ordenó desde la bodega (≤2.5 km) y sin entregas hechas (`completo180`, se marca al ordenar); si no, bodega → clientes en orden → bodega con `kmE` (lat/lng); si menos de la mitad tiene ubicación, el cálculo de antes.
+
+## 2026-11-20 · 181 · URGENTE · Ricardo: "sigue el error de no poder mandar el cierre cuando la ruta se queda abierta" → "Mandar mi cierre de ayer" no hace nada
+HECHO (SIN PUBLICAR), `tema-datos181.js` + `base-v38.html` (cierre: odómetro de salida), prueba `t181.js` (11 OK).
+- Causa: el cierre (o la ruta) TRONABA al dibujarse con datos reales de ayer; `falloSeguro77` regresaba a la Ruta y, como seguía sin cierre, volvía "No mandaste tu cierre de ayer" (= "no pasa nada"). Las pruebas viejas (t80) fingían `S.cierre.sent=true` y nunca recorrían el cierre.
+- Casos: (1) `c.odoIni` vacío → `c.odoIni.toLocaleString` tronaba: ahora sale el campo "Odómetro con el que SALIÓ" (`odoIni181`, se queda mientras se escribe: `odoFalta181`); (2)/(3) parada cuyo cliente ya no existe (borrado / venta rápida quitada) → tronaban `estimar` (…km) y la vista ruta (…lat): `datos181` las quita de `S.stops` y `S.chSt[*].stops` antes de dibujar (las entregas y el dinero no se tocan) y lo anota en la nube (`falloAnota77`).
+- Recorrido completo con la app real (sin odómetro de salida + parada rota): 6 pasos, se manda, sale la ruta de hoy.

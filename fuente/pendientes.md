@@ -2967,3 +2967,8 @@ HECHO (SIN PUBLICAR), `tema-ancha.js`, prueba `t175.js` (5 OK).
 ## 2026-11-20 · 176 · Ricardo: "con más de 10 cajas de roatán, si le das mayoreo, en automático también le da mayoreo del macho; ese debe ser aparte"
 HECHO (SIN PUBLICAR), `base-v38.html` (entregaCalc `myaM`, precioLinea) + `tema-may176.js`, prueba `t176.js` (8 OK).
 - El mayoreo por más de 10 cajas es del roatán. El macho va a mayoreo solo si el chofer lo escoge en "¿Y el macho? (va aparte)" (Normal ya marcado), o si el cliente está marcado de mayoreo (los dos, como antes). Si el roatán regresa a normal, el macho también. El letrero de precio dice "macho a precio normal" cuando aplica.
+
+## 2026-11-20 · 177 · Ricardo: "la tarjeta naranja donde dice que debe taras, que sea roja; y con cada tara que añades/entrega, que el renglón 'queda debiendo X cajas vacías' tiemble (GPU)"
+HECHO (SIN PUBLICAR), `tema-vacias177.js`, prueba `t177.js` (6 OK).
+- `#vac115` con `.debe177`: fondo `--danger-soft` + borde `--danger`, texto rojo (claro y oscuro). Al corriente, verde como antes.
+- El renglón tiembla (`translate3d`, 0.55 s) cada vez que cambia lo que queda debiendo y todavía debe; al abrir la entrega no. Modo ahorro / reducir movimiento: quieto.

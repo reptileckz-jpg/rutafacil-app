@@ -3004,3 +3004,9 @@ Ricardo: "anota todo lo que llevamos; si no hay nada pendiente empieza los punto
 - **No queda nada pendiente.** El 142 (ganancia negativa) quedó resuelto en la 10.6 y con aviso de costo raro (150 y 171). Todo lo marcado arriba como "SIN PUBLICAR" ya salió en versiones posteriores.
 - **Desde aquí, el siguiente punto es el 1** (los de arriba, del 1 al 182, son historia; si se cita uno viejo, decir "el 181 de antes").
 - Resumen de lo último (165–182) y reglas de trabajo: ver `fuente/CONTEXTO-PARA-OTRA-IA.md`, sección 0 ("Estado al 20 nov").
+
+## 2026-11-20 · 1 (numeración nueva) · Ricardo: sigue "Mandar mi cierre de ayer" sin hacer nada + "el color azul se sale del cuadro verde"
+HECHO (SIN PUBLICAR), `tema-azul1.js`, prueba `t1.js` (6 OK). La captura ya traía la tarjeta del 182 (o sea, la 10.16).
+- Azul: era el `-webkit-tap-highlight-color` de Android (un rectángulo que ignora el `border-radius`). Se quita en toda la app; el efecto propio al presionar (`.btn:active` scale) sigue.
+- Botón: NO se pudo reproducir (demo y real, con 18 entregas, macho, abonos, crédito/transferencia/tarjeta, vacías, gastos, toque real con touch, render a medio toque, candado del PIN). La causa probable sigue siendo la del 181: el cierre truena al dibujarse con algún dato que solo hay en su celular y `falloSeguro77` regresa sin que se note. Ahora `falloAnota77` (envuelta) guarda ese error si pasó al abrir el cierre de un día anterior, y "No mandaste tu cierre" lo enseña en rojo bajo el botón ("No se pudo abrir tu cierre" + mensaje + capa). También queda en Ajustes → Problemas reportados (sube a la nube, `S.probs`): pedirle a Ricardo esa captura para arreglar la causa de verdad.
+- Ojo: `dia80` se quita y se vuelve a poner en cada `render` (`ovPon70`); en Chromium un render a medio toque NO pierde el clic (probado).

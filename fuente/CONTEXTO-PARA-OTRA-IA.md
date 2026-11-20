@@ -21,6 +21,7 @@
 - Publicar = subir APP_VER en `fuente/vite/parches.mjs` (y las cadenas de versión en `fuente/pruebas/t148.js`), armar (`bash fuente/capas/build.sh`), correr pruebas, commit SIN `[skip ci]`, y *fast-forward* de la rama a `main` → se arman solos la APK (`apk.yml`, sale como release) y la web (`web.yml`).
 - Los números SIEMPRE cuadran (`fuente/REGLAS-NUMEROS.md`); antes de tocar dinero, explicar cómo se protegen.
 - Animaciones solo con transform/opacity (aceleradas por la tarjeta gráfica); con "Modo ahorro" o "reducir movimiento", quietas.
+- **Ricardo (20 nov): mantener la MISMA interfaz gráfica** (tarjetas, botones, pestañas `tabs92`, chips, `link pnback` "← Volver", entrada `.fadein`). **Si hay varios pasos, cada paso en su propia pantalla** (barra `wz-hd` + "Paso N de M" + "← Atrás"). **Si es mucha información, que se abra en su propia pantalla** (en la tarjeta solo lo esencial y "Ver todo ›"); una tarjeta por tema, nunca tarjetas dentro de tarjetas.
 - Nunca poner secretos en el código (MAPS_KEY y FIREBASE_SA viven solo en secretos de GitHub). No compartir `firma/rutafacil.jks`.
 - El repositorio es PÚBLICO: nada de datos del negocio en registros de GitHub (si alguna vez hay que leer datos de la nube, cifrados y con permiso de Ricardo).
 - Cada arreglo lleva su prueba `fuente/pruebas/tNNN.js` (Playwright, imprime "N OK · N FAIL"). Antes de publicar, correr TODAS (las que no cuentan: `t67.js`, `tk.js`) y `comp-venta` (debe salir IDÉNTICO).

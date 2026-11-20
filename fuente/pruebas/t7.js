@@ -28,26 +28,30 @@ ok(r.tipos==='AEFKT',arch+' · salen los 5: taras, caja, faltante del chofer (no
 const snap=await ev(()=>JSON.stringify([S.inv,S.cli.map(c=>c.vac),S.cajasMov,S.log,S.faltantes,S.mermas,S.cajaCierres,cajaEsp()]));
 r=await ev(()=>{S.tab.admin='mas';render();var b=document.querySelector('[data-act="desc6"]');if(!b)return 'sin entrada en Más';b.click();var m=document.querySelector('main').innerText;return {tab:S.tab.admin,h:/Descuadres/.test(m),grupos:['Taras','Efectivo','Kilos','Sin recibir'].every(g=>m.indexOf(g)>-1)}});
 ok(r.tab==='desc6'&&r.h&&r.grupos,arch+' · Más → Descuadres abre la pantalla con los 4 grupos',r);
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='T')[0].k;document.querySelector('[data-act="desc6o"][data-k="'+k+'"]').click();var t=document.querySelector('[data-x="caso6"][data-k="'+k+'"]').innerText;return {t:t.slice(0,900)}});
-ok(/Cuadraban hasta el/.test(r.t)&&/Vacías en bodega/.test(r.t)&&/\(-3\)/.test(r.t)&&/Pistas/.test(r.t)&&/Lo que movió taras/.test(r.t),arch+' · el detalle de taras dice hasta cuándo cuadraba, la tabla por lugar (−3 en bodega), lo que se movió y pistas',r);
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='E')[0].k;document.querySelector('[data-act="desc6o"][data-k="'+k+'"]').click();return document.querySelector('[data-x="caso6"][data-k="'+k+'"]').innerText.slice(0,400)});
+r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='T')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();var t=document.querySelector('main').innerText;return {t:t.slice(0,1400),tab:S.tab.admin,cards:document.querySelectorAll('main .card').length}});
+ok(r.tab==='caso6'&&r.cards>=4&&/Cuadraban hasta el/.test(r.t)&&/Vacías en bodega/.test(r.t)&&/\(-3\)/.test(r.t)&&/Pistas/.test(r.t)&&/Lo que movió taras/.test(r.t),arch+' · el detalle de taras dice hasta cuándo cuadraba, la tabla por lugar (−3 en bodega), lo que se movió y pistas',r);
+r=await ev(()=>{S.tab.admin='desc6';render();var k=casosAb6().filter(c=>c.tipo==='E')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();return document.querySelector('main').innerText.slice(0,500)});
 ok(/Debía haber/.test(r)&&/\$5,000/.test(r)&&/\$4,800/.test(r),arch+' · el detalle de la caja: debía haber, se contó, diferencia',r);
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='A')[0].k;document.querySelector('[data-act="desc6o"][data-k="'+k+'"]').click();return document.querySelector('[data-x="caso6"][data-k="'+k+'"]').innerText.slice(0,500)});
-ok(/Todo lo de esta ruta/.test(r)&&/Recibirlo ahora/.test(r),arch+' · lo sin recibir enseña todo lo de esa ruta y "Recibirlo ahora"',r);
+r=await ev(()=>{S.tab.admin='desc6';render();var k=casosAb6().filter(c=>c.tipo==='A')[0].k;document.querySelector('[data-act="caso6"][data-k="'+k+'"]').click();return document.querySelector('main').innerText.slice(0,500)});
+ok(/Efectivo que debe entregar/.test(r)&&/Ver todo lo de esta ruta/.test(r)&&/Recibirlo ahora/.test(r),arch+' · lo sin recibir enseña lo esencial, "Ver todo lo de esta ruta ›" y "Recibirlo ahora"',r);
 /* la pantalla no cambió ningún número */
 r=await ev(a=>JSON.stringify([S.inv,S.cli.map(c=>c.vac),S.cajasMov,S.log,S.faltantes,S.mermas,S.cajaCierres,cajaEsp()])===a,snap);
 ok(r,arch+' · abrir la pantalla y los detalles no cambia inventario, taras de clientes, movimientos, ventas, faltantes, mermas ni caja',r);
 /* notas y estados */
-r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='F')[0].k;S.desc6o=k;render();var t=document.querySelector('#nota6');t.value='Dice que pagó una caseta';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="desc6nota"]').click();var s=S.casos6[k];return {est:s.est,n:s.notas.length,x:s.notas[0].x}});
+r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='F')[0].k;S.caso6k=k;S.tab.admin='caso6';render();var t=document.querySelector('#nota6');t.value='Dice que pagó una caseta';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="desc6nota"]').click();var s=S.casos6[k];return {est:s.est,n:s.notas.length,x:s.notas[0].x}});
 ok(r.est==='rev'&&r.n===1&&/caseta/.test(r.x),arch+' · "Anotar" guarda la nota con quién y cuándo, y pasa a "Revisando"',r);
 r=await ev(()=>{var k=casosAb6().filter(c=>c.tipo==='F')[0].k;document.querySelector('[data-act="desc6ok"][data-k="'+k+'"]').click();return {ab:casosAb6().some(c=>c.k===k),est:S.casos6[k].est,falt:S.faltantes.length}});
 ok(!r.ab&&r.est==='res'&&r.falt===2,arch+' · "Ya apareció" lo pasa a resueltos sin tocar el faltante',r);
-/* ajuste de taras: pide motivo, cuadra, y se puede deshacer */
-r=await ev(()=>{var c=casosAb6().filter(c=>c.tipo==='T')[0];S.desc6o=c.k;S.desc6n='';render();var b=document.querySelector('[data-act="desc6aj"]');b.click();var sin=tarasDif86();
- var t=document.querySelector('#nota6');t.value='Se rompieron 3 en la bodega';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="desc6aj"]').click();
- return {sin,con:tarasDif86(),mov:S.cajasMov[S.cajasMov.length-1],k:c.k,est:S.casos6[c.k].est}});
-ok(r.sin===-3&&r.con===0&&r.mov.n===-3&&/Se rompieron/.test(r.mov.t)&&r.est==='res',arch+' · "Ajustar" sin nota no hace nada; con motivo anota el movimiento (−3) y cuadra',r);
-r=await ev(k=>{S.desc6v='res';S.desc6o=k;render();document.querySelector('[data-act="desc6re"][data-k="'+k+'"]').click();return {dif:tarasDif86(),est:S.casos6[k].est,mov:S.cajasMov[S.cajasMov.length-1].n}},r.k);
+/* ajuste de taras por pasos: 1 motivo · 2 confirmar; sin motivo no avanza; cuadra; y se puede deshacer */
+r=await ev(()=>{var c=casosAb6().filter(c=>c.tipo==='T')[0];S.caso6k=c.k;S.tab.admin='caso6';S.aj6=null;render();document.querySelector('[data-act="aj6"]').click();var p1=/Paso 1 de 2/.test(document.querySelector('main').innerText);
+ document.querySelector('[data-act="aj6p"][data-v="1"]').click();var sigue1=S.aj6&&S.aj6.paso===0;var sin=tarasDif86();
+ var t=document.querySelector('#aj6m');t.value='Se rompieron 3 en la bodega';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-act="aj6p"][data-v="1"]').click();var p2=/Paso 2 de 2/.test(document.querySelector('main').innerText)&&/Se rompieron/.test(document.querySelector('main').innerText);
+ document.querySelector('[data-act="desc6aj"]').click();return {p1,sigue1,p2,sin,con:tarasDif86(),mov:S.cajasMov[S.cajasMov.length-1],k:c.k,est:S.casos6[c.k].est,aj6:S.aj6}});
+ok(r.p1&&r.sigue1&&r.p2,arch+' · "Ajustar" va por pasos en su pantalla: paso 1 el motivo (sin motivo no avanza), paso 2 revisar',r);
+ok(r.sin===-3&&r.con===0&&r.mov.n===-3&&/Se rompieron/.test(r.mov.t)&&r.est==='res'&&!r.aj6,arch+' · "Sí, ajustar" anota el movimiento (−3) con su motivo y cuadra',r);
+r=await ev(k=>{S.caso6k=k;S.tab.admin='caso6';render();document.querySelector('[data-act="desc6re"][data-k="'+k+'"]').click();return {dif:tarasDif86(),est:S.casos6[k].est,mov:S.cajasMov[S.cajasMov.length-1].n}},r.k);
 ok(r.dif===-3&&r.est==='rev'&&r.mov===3,arch+' · "Reabrir y deshacer el ajuste" anota el movimiento contrario y el caso vuelve',r);
+r=await ev(()=>{S.tab.admin='desc6';render();var v=document.querySelector('main [data-act="tab"][data-t="mas"]');var t=!!v;var nav=document.querySelector('nav.tabs button[data-t="mas"]');return {back:t,mas:nav&&nav.getAttribute('aria-pressed')}});
+ok(r.back&&r.mas==='true',arch+' · Descuadres tiene "← Volver a Más" y la barra marca "Más"',r);
 await p.close()}
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

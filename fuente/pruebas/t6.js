@@ -13,7 +13,9 @@ const r=await p.evaluate(()=>{var bv=document.getElementById('bienv');if(bv)bv.r
  o.log=[{c:c0.id,R:3,M:10,pr:275,pm:20,total:1025,pago:825,abono:100,V:5,Vr:1,id:'x1'}];o.recs=[{tipo:'Gasolina',litros:20,total:480}];o.gch=[{tipo:'Comida',m:120,nota:'',}];o.cierre.sent=false;S.chSt=S.chSt||{};S.chSt[id]=o;
  var rr=conRuta6(o,()=>cierreRes());out.mismo=JSON.stringify([S.log,S.cierre,S.inv,S.recs,S.gch])===antes;
  libera86(id);var k=Object.keys(S.atras93)[0];var d=rutaDet6(S.atras93[k].pack);out.d=d;out.ef=rr.efectivo;
- S.tab.admin='rutas';render();var cd=document.querySelector('[data-x="atr93c"]');out.txt=cd?cd.innerText:'';
+ S.tab.admin='rutas';render();var cd=document.querySelector('[data-x="atr93c"]');out.corto=cd?cd.innerText:'';
+ var vb=cd&&cd.querySelector('[data-act="ruta6"]');if(vb)vb.click();out.tab6=S.tab.admin;out.txt=document.querySelector('main').innerText;out.cards=document.querySelectorAll('main .det6').length;
+ var vv=document.querySelector('main [data-act="tab"][data-t="rutas"]');if(vv)vv.click();out.volvio=S.tab.admin;
  /* ruta que nadie recibió */
  var ay2=iso(new Date(TODAY.getTime()-2*864e5));S.rutasHist.push({f:ay2,ch:id,log:[{c:c0.id,R:2,M:0,pr:275,total:550,pago:550,abono:0,V:2}],res:null,enviado:false});
  render();out.h=!!document.querySelector('[data-x="huerf6"]');out.htxt=(document.querySelector('[data-x="huerf6"]')||{}).innerText||'';
@@ -29,7 +31,8 @@ ok(r.d.n===1&&r.d.total===1025&&r.d.cobrado===925&&r.d.gasolina===480&&r.d.gasto
 ok(r.d.salioR===15&&r.d.R===3&&r.d.camR===12&&r.d.V===4&&r.d.Vr===1,arch+' · taras: salió 15, vendió 3, 12 en camión, 4 vacías + 1 rota',r.d);
 ok(r.d.salioM===30&&r.d.M===10&&r.d.camM===20,arch+' · kilos: salió 30, vendió 10, regresan 20',r.d);
 ok(r.d.km===90&&r.d.tank==='1/2'&&!!r.d.veh,arch+' · vehículo: cuál, 90 km, tanque',r.d);
-ok(/Todo lo de esta ruta/.test(r.txt)&&/Efectivo que debe entregar/.test(r.txt)&&/Gasolina/.test(r.txt)&&/Vehículo/.test(r.txt),arch+' · en Rutas, el cierre atrasado enseña todo',r.txt.slice(0,300));
+ok(/Efectivo que debe entregar/.test(r.corto)&&/Ver todo lo de esta ruta/.test(r.corto)&&!/Gasolina/.test(r.corto),arch+' · en Rutas, la tarjeta es corta (efectivo, taras, kilos) con "Ver todo lo de esta ruta ›"',r.corto.slice(0,300));
+ok(r.tab6==='ruta6'&&r.cards===5&&/Dinero/.test(r.txt)&&/Gasolina/.test(r.txt)&&/Vehículo/.test(r.txt)&&/Recibirlo ahora/.test(r.txt)&&r.volvio==='rutas',arch+' · "Ver todo" abre su propia pantalla (una tarjeta por tema) y "← Volver" regresa a Rutas',{tab:r.tab6,cards:r.cards,volvio:r.volvio,t:r.txt.slice(0,200)});
 ok(r.h&&/nadie la recibió/.test(r.htxt)&&/Cobró \$550/.test(r.htxt),arch+' · una ruta que nadie recibió sale en Rutas con lo que cobró',r.htxt.slice(0,200));
 ok(r.atras===2&&r.h2===0&&r.ef2===550,arch+' · "Recibir lo que traía" la pasa a cierre atrasado ($550) y deja de salir como perdida',r);
 ok(r.dup===false,arch+' · no se duplica',r.dup);

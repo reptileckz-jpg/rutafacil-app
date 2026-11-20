@@ -69,8 +69,17 @@ function detHTML6(d) {
     + (d.gch.length ? d.gch.map(function (x) { return row(esc(x.tipo || 'Gasto') + (x.nota ? ' · ' + esc(x.nota) : ''), money(num(x.m))); }).join('') : '');
   var veh = (d.veh ? row('Vehículo', esc(d.veh)) : '') + (d.odoIni != null && d.odoIni !== '' ? row('Odómetro', num(d.odoIni).toLocaleString('es-MX') + ' → ' + (d.odo != null ? num(d.odo).toLocaleString('es-MX') : '—') + (d.km != null ? ' (' + d.km + ' km)' : '')) : row('Odómetro de salida', 'no se anotó'))
     + (d.tankIni || d.tank ? row('Tanque', esc(d.tankIni || '—') + ' → ' + esc(d.tank || '—')) : '');
-  return '<details class="det6" open style="margin-top:8px;background:var(--card,#fff);border-radius:12px;padding:8px 12px"><summary style="font-weight:800">Todo lo de esta ruta</summary>'
-    + sec('💵 Dinero', din) + sec('📦 Taras', tar) + sec('⚖️ Kilos de macho', kg) + sec('⛽ Gasolina y gastos', gas || '<div class="lbl">No anotó gasolina ni gastos.</div>') + sec('🚚 Vehículo', veh) + '</details>';
+  /* una tarjeta por tema (como el resto de la app); se usa en su propia pantalla */
+  var card = function (t, x) { return x ? '<div class="card det6" style="padding:12px 14px"><div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:17px;margin-bottom:4px">' + t + '</div>' + x + '</div>' : ''; };
+  return card('💵 Dinero', din) + card('📦 Taras', tar) + card('⚖️ Kilos de macho', kg) + card('⛽ Gasolina y gastos', gas || '<div class="lbl">No anotó gasolina ni gastos.</div>') + card('🚚 Vehículo', veh);
+}
+/* lo esencial, para la tarjeta corta (en Rutas y en Descuadres) */
+function detCorto6(d) {
+  if (!d) return '';
+  var row = function (a, b) { return '<div class="row" style="border:0;min-height:26px"><span>' + a + '</span><b>' + b + '</b></div>'; };
+  return row(d.env ? 'Efectivo que mandó' : 'Efectivo que debe entregar', money(d.efectivo))
+    + ((d.reg || d.camR || d.V) ? row('Taras', Math.max(d.reg, d.camR) + ' llenas · ' + d.V + ' vacías') : '')
+    + ((d.regK || d.camM) ? row('Kilos de macho', Math.max(d.regK, d.camM) + ' kg') : '');
 }
 /* ---------- rutas que nadie recibió ---------- */
 function huerf6() {
@@ -110,22 +119,22 @@ function huerfRecibir6(k) {
 document.addEventListener('click', function (e) {
   var b = e.target.closest && e.target.closest('[data-act="huerf6"]'); if (!b) return;
   e.preventDefault(); e.stopImmediatePropagation();
-  if (huerfRecibir6(b.dataset.k)) { toast('Listo: ya está en Rutas como cierre atrasado para recibirlo'); }
+  if (huerfRecibir6(b.dataset.k)) { toast('Listo: ya está en Rutas como cierre atrasado para recibirlo'); if (S.tab.admin === 'ruta6') S.ruta6k = 'A|' + b.dataset.k; }
   render();
 }, true);
-/* ---------- en Rutas: el detalle en cada cierre atrasado y las rutas que nadie recibió ---------- */
+/* ---------- en Rutas: tarjeta corta + "Ver todo lo de esta ruta ›" (su propia pantalla) ---------- */
+function verBtn6(k) { return '<button class="btn sec" style="width:100%;margin-top:8px;min-height:48px" data-act="ruta6" data-k="' + esc(k) + '">Ver todo lo de esta ruta ›</button>'; }
 function atras6Pon() {
   if (S.role !== 'admin') return;
   var m = document.querySelector('main'); if (!m) return;
   var cards = m.querySelectorAll('[data-x="atr93c"]');
   Array.prototype.forEach.call(cards, function (cd) {
-    if (cd.querySelector('.det6')) return;
+    if (cd.querySelector('[data-x="corto6"]')) return;
     var b = cd.querySelector('[data-act="atr93"]'); if (!b) return;
     var e = (S.atras93 || {})[b.dataset.k]; if (!e || !e.pack) return;
-    var h = ''; try { h = detHTML6(rutaDet6(e.pack)); } catch (er) { h = ''; }
+    var h = ''; try { h = detCorto6(rutaDet6(e.pack)); } catch (er) { h = ''; }
     if (!h) return;
-    if (e.huerf6) h = '<div class="lbl" style="margin-top:6px">Nadie la había recibido: solo se conocen sus entregas. Cuenta el efectivo y las cajas que llegaron.</div>' + h;
-    b.insertAdjacentHTML('beforebegin', h);
+    b.insertAdjacentHTML('beforebegin', '<div data-x="corto6" style="margin-top:6px">' + h + '</div>' + verBtn6('A|' + b.dataset.k));
   });
   if (S.tab.admin !== 'rutas' || m.querySelector('[data-x="huerf6"]')) return;
   var H = huerf6(); if (!H.length) return;
@@ -134,10 +143,39 @@ function atras6Pon() {
     var p = huerfPack6(x), det = rutaDet6(p);
     return '<div class="card alert" style="padding:12px 14px"><b style="font-size:17px">⚠️ La ruta del ' + esc(fCorta91(x.f)) + ' de ' + esc(chofN(x.ch)) + ': nadie la recibió</b>'
       + '<div class="lbl">No mandó su cierre y no quedó guardada para recibirla. Cobró ' + money(det ? det.cobrado : 0) + ' según sus entregas.</div>'
-      + detHTML6(det)
+      + '<div data-x="corto6" style="margin-top:6px">' + detCorto6(det) + '</div>' + verBtn6('H|' + x.k)
       + '<button class="btn" style="width:100%;margin-top:8px;min-height:50px" data-act="huerf6" data-k="' + esc(x.k) + '">Recibir lo que traía</button></div>';
   }).join('');
   var h1 = m.querySelector('h1'); if (h1) h1.insertAdjacentElement('afterend', d); else m.prepend(d);
 }
+/* ---------- la pantalla "Todo lo de esta ruta" ---------- */
+function ruta6Datos(k) {
+  k = String(k || '');
+  if (/^A\|/.test(k)) { var key = k.slice(2), e = (S.atras93 || {})[key]; if (!e || !e.pack) return null; return { k: key, tipo: 'A', id: e.id, f: e.f, pack: e.pack, huerf: !!e.huerf6, hecho: !!e.hecho }; }
+  if (/^H\|/.test(k)) { var x = huerf6().filter(function (y) { return y.k === k.slice(2); })[0]; if (!x) return null; return { k: x.k, tipo: 'H', id: x.ch, f: x.f, pack: huerfPack6(x), huerf: true }; }
+  return null;
+}
+function ruta6() {
+  var D = ruta6Datos(S.ruta6k), vol = '<button class="link pnback" data-act="tab" data-t="' + esc(S.ruta6de || 'rutas') + '">← Volver</button>';
+  if (!D) return vol + '<h1>Todo lo de esta ruta</h1><div class="card good" style="padding:14px"><b>✓ Esta ruta ya no está pendiente</b><div class="lbl">Ya se recibió.</div></div>';
+  var d = rutaDet6(D.pack);
+  var h = vol + '<h1 style="margin-top:4px">Ruta de ' + esc(chofN(D.id)) + '</h1><div class="lbl" style="margin-bottom:8px">' + esc(fmtF(D.f)) + ' · ' + (D.tipo === 'H' ? 'nadie la recibió' : (d.env ? 'mandó su cierre y no se ha recibido' : 'no mandó su cierre')) + '</div>';
+  if (D.huerf) h += '<div class="card note" style="padding:10px 14px"><b>Solo se conocen sus entregas</b><div class="lbl">No quedó lo que traía en el camión ni sus gastos: al recibirla cuenta el efectivo y las cajas que llegaron.</div></div>';
+  h += '<div class="fadein" key="r6' + esc(D.k) + '">' + detHTML6(d) + '</div>';
+  h += D.tipo === 'A' ? '<button class="btn big" style="width:100%;margin-top:6px" data-act="atr93" data-k="' + esc(D.k) + '">Recibirlo ahora</button>'
+    : '<button class="btn big" style="width:100%;margin-top:6px" data-act="huerf6" data-k="' + esc(D.k) + '">Recibir lo que traía</button>';
+  return h;
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="ruta6"]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  S.ruta6de = S.tab.admin === 'caso6' ? 'caso6' : (S.tab.admin === 'ruta6' ? (S.ruta6de || 'rutas') : S.tab.admin);
+  S.ruta6k = b.dataset.k; S.tab.admin = 'ruta6'; render(); window.scrollTo(0, 0);
+}, true);
 var _rd6a = render;
-render = function () { var r = _rd6a.apply(this, arguments); try { atras6Pon(); } catch (e) { console.error('atras6', e); } return r; };
+render = function () {
+  try { if (typeof VIEWS !== 'undefined' && !VIEWS.ruta6) VIEWS.ruta6 = ruta6; } catch (e) {}
+  var r = _rd6a.apply(this, arguments); try { atras6Pon(); } catch (e) { console.error('atras6', e); } return r;
+};
+/* en la barra de abajo, "Rutas" queda marcada mientras ves una ruta */
+if (typeof barra92 === 'function') { var _b92r6 = barra92; barra92 = function () { var r = _b92r6.apply(this, arguments); try { if (S.role === 'admin' && S.tab.admin === 'ruta6') { var b = document.querySelector('nav.tabs button[data-t="rutas"]'); if (b) b.setAttribute('aria-pressed', 'true'); } } catch (e) {} return r; }; }

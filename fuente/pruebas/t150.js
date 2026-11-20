@@ -34,7 +34,7 @@ r=await ev(()=>{S.cfg.bill153='opc';S.cierreP=4;S.cierre.bill=null;S.cierre.bill
 ok(r[0]&&r[1]===5,'con "Opcional" en Ajustes es como antes ("Entrego $" y puede seguir)',r);
 
 /* ---------- 154 ---------- */
-r=await ev(()=>{S.cierre.odoIni=1000;S.cierre.odo=1300;S.rgRes={f:S.rutaDia80||iso(TODAY),ahora:{km:120,min:200},antes:{km:130,min:220}};S.cierreP=0;render();var x=document.querySelector('main [data-k="km154"]');return [km154(),x?x.innerText:'']});
+r=await ev(()=>{S.cierre.odoIni=1000;S.cierre.odo=1300;S.rgRes={f:S.rutaDia80||iso(TODAY),fuente:'google',completo180:true,ahora:{km:120,min:200},antes:{km:130,min:220}};/* 180: Google ordenado desde la bodega antes de entregar */S.cierreP=0;render();var x=document.querySelector('main [data-k="km154"]');return [km154(),x?x.innerText:'']});
 ok(r[0]&&r[0].t==='mas'&&r[0].rec===300&&r[0].esp===120&&r[0].src==='Google'&&/Recorriste 300 km y la ruta era de ~120 km \(según Google\): 180 km de más/.test(r[1]),'154 · el chofer ve que recorrió 180 km de más (según Google)',r);
 r=await ev(()=>{S.cierre.odo=1130;render();return [km154().t,!!document.querySelector('main [data-k="km154"]')]});ok(r[0]===''&&!r[1],'si cuadra, no sale nada',r);
 r=await ev(()=>{S.cierre.odo=1040;return km154().t});ok(r==='menos','si recorrió la mitad o menos: "revisa que el odómetro esté bien escrito"',r);

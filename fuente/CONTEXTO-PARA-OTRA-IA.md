@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.17, APK 1.0.65; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.18; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,8 +12,8 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.17** (20 nov, tarde) · APK **1.0.65**. **Todo está publicado.** · web https://platanos-nietos.web.app.
-**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **7** (publicados 1, 2, 4, 5, 6 y 7). **Pendiente: 3** (avisar cuando un cliente queda lejos de su ruta y sugerir pasarlo a la ruta donde quede más cerca; espera el sí de Ricardo). El siguiente punto nuevo es el **8**.
+**Versión publicada:** app **10.18** (21 nov) · APK la que sale de ese armado (1.0.66 o siguiente; la anterior era 1.0.65) · web https://platanos-nietos.web.app.
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **13** (publicados 1, 2 y del 4 al 13). **Pendiente: 3** (avisar cuando un cliente queda lejos de su ruta y sugerir pasarlo a la ruta donde quede más cerca; espera el sí de Ricardo). El siguiente punto nuevo es el **14**.
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
@@ -50,6 +50,14 @@
 - **6:** cierre atrasado con TODO (dinero, taras, kilos, gasolina, vehículo) en su pantalla `ruta6`; rutas que nadie recibió; "🔎 Descuadres" (taras, efectivo, kilos, sin recibir) con foto diaria `S.foto6`, casos `S.casos6`, notas y ajuste de taras por pasos (`tema-atras6.js`, `tema-desc6.js`).
 - **7:** cada día la ruta empieza desde cero: si una ruta de otro día se queda abierta y pasa a "hoy", se cierra (cierre atrasado) y la de hoy pide "Antes de salir" (`tema-cero7.js`, marca `salida.f7`).
 - Caso real de Danu (20 nov): su ruta de ayer pasó a "hoy" sin cierre ni salida nueva al abrir el admin; no se pudo reproducir el camino exacto (ver pendientes.md). La regla 7 lo cubre desde 10.17.
+
+### Lo que se hizo del 8 al 13 (21 nov · 10.18)
+- **8:** la pantalla ya no parpadea mientras baja la nube: fotos en tandas y redibujos de la nube con tope de 0.5 s (`tema-calma8.js`).
+- **9:** recordatorio de pago de sueldos el sábado en "Hoy" de Inicio y al recibir el cierre del chofer (`tema-pago9.js`).
+- **10:** "Cargar más" solo arriba de la Ruta cuando la camioneta trae 0 cajas y 0 kg y quedan clientes (`tema-cargar10.js`).
+- **11:** sin rebote al deslizar rápido: mientras el usuario desliza, los redibujos no mueven la pantalla (`tema-scroll11.js`).
+- **12:** tarjetas desplegables se abren suave desde el toque y se cierran al salir de la sección (`tema-desp12.js`).
+- **13:** fotos guardadas en el celular (IndexedDB, hasta 400) y las de vehículos precargadas (`tema-fotos13.js`).
 
 ### Ideas que quedaron solo como idea (no pendientes)
 - Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.

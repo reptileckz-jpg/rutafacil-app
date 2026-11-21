@@ -33,11 +33,23 @@ function cero19HTML() {
   var id = S.cero19id, o = cero19Ruta(id), vol = '<button class="link pnback" data-act="tab" data-t="rutas">← Volver a Rutas</button>';
   if (!o || !cero19Abierta(id)) return vol + '<h1>Cerrar su ruta</h1><div class="card good" style="padding:14px"><b>✓ ' + esc(chofN(id)) + ' ya no tiene una ruta abierta</b></div>';
   var d = null; try { d = rutaDet6(o); } catch (e) {}
+  var hoy = (o.rutaDia80 || iso(TODAY)) === iso(TODAY), va = o.reg20 && !(o.cierre && o.cierre.sent);
   var h = vol + '<h1 style="margin-top:4px">Cerrar la ruta de ' + esc(chofN(id)) + '</h1><div class="fadein" key="c19">';
   h += '<div class="card" style="padding:12px 14px"><b>Lo que trae</b>' + (d ? detCorto6(d) : '') + '<button class="btn sec" style="width:100%;margin-top:8px;min-height:44px" data-act="cero19ver" data-id="' + id + '">Ver todo lo de esta ruta ›</button></div>';
-  h += '<div class="card note" style="padding:12px 14px"><b>Qué pasa</b><div style="font-size:15px;margin-top:4px">• Todo lo de esta ruta (efectivo, entregas, cajas, kilos, gastos y odómetro) queda en Rutas como <b>"📥 Cierre atrasado"</b> para que lo recibas.<br>• A ' + esc(chofN(id)) + ' le sale su ruta de hoy nueva: <b>"Antes de salir"</b> otra vez (vehículo, fotos, odómetro y carga).<br>• No se borra nada.</div></div>';
-  if (cero19Choca(id)) h += '<div class="card alert" style="padding:12px 14px"><b>Primero recibe su cierre atrasado de hoy</b><div class="lbl">Ya hay uno sin recibir de este día. Recíbelo en Rutas y luego cierras esta.</div></div>';
-  else h += '<button class="btn big" style="width:100%" data-act="cero19ok" data-id="' + id + '">Sí, cerrar su ruta y empezar de cero</button>';
+  /* 20 · el mismo día: que regrese y haga su cierre normal (no atrasado) */
+  if (hoy) {
+    if (va) h += '<div class="card good" style="padding:12px 14px"><b>' + (o.reg20.para === 'viaje' ? '🚛 Ya se le pidió hacer su cierre para su viaje de carga' : '🏭 Ya va de regreso a la bodega a hacer su cierre') + '</b><div class="lbl">En cuanto lo mande, te sale "Recibir su cierre". Si le agregas pedidos, los entrega antes de llegar.</div>'
+      + '<button class="btn sec" style="width:100%;margin-top:8px;min-height:44px" data-act="reg20x" data-id="' + id + '">Ya no: que siga con su ruta</button></div>';
+    else h += '<div class="card" style="padding:12px 14px"><b>¿Qué hace?</b><div class="lbl" style="margin-top:2px">Hace su cierre de siempre con lo que vendió (cierre #1 del día). No queda atrasado.</div>'
+      + '<button class="btn big" style="width:100%;margin-top:10px" data-act="reg20" data-v="bodega" data-id="' + id + '">🏭 Que regrese a la bodega y haga su cierre</button>'
+      + '<div class="lbl" style="margin:4px 2px 0">Le sale la bodega como siguiente parada, con "Cómo llegar". Solo puede entregar los pedidos que tú le agregues. Si ya está en la bodega, va directo a su cierre.</div>'
+      + '<button class="btn sec big" style="width:100%;margin-top:10px" data-act="reg20" data-v="viaje" data-id="' + id + '">🚛 Va a un viaje de carga: que haga su cierre ahora</button>'
+      + '<div class="lbl" style="margin:4px 2px 0">Hace su cierre donde esté (efectivo, cajas y kilos que trae). Queda "por recibir" hasta que cuentes el dinero.</div></div>';
+  }
+  /* emergencia (o ruta de otro día): lo de antes, guardado como cierre atrasado */
+  var emer = '<div class="lbl" style="font-size:15px;margin-top:4px">' + (hoy ? 'Solo si no hay forma de que regrese (celular apagado, robo, accidente). ' : 'Esta ruta es de otro día. ') + 'Todo lo de esta ruta queda en Rutas como <b>"📥 Cierre atrasado"</b> para que lo recibas, y a ' + esc(chofN(id)) + ' le sale su ruta nueva con <b>"Antes de salir"</b>. No se borra nada.</div>'
+    + (cero19Choca(id) ? '<div class="card alert" style="padding:10px 12px;margin-top:8px"><b>Primero recibe su cierre atrasado de este día</b></div>' : '<button class="btn sec" style="width:100%;margin-top:8px;min-height:48px" data-act="cero19ok" data-id="' + id + '">Cerrar ya, sin esperar</button>');
+  h += hoy ? '<details class="card" data-k="c19emer" style="padding:10px 14px"><summary><b>¿No puede regresar? Cerrar ya, sin esperar</b></summary>' + emer + '</details>' : '<div class="card note" style="padding:12px 14px"><b>Cerrar su ruta</b>' + emer + '</div>';
   return h + '</div>';
 }
 document.addEventListener('click', function (e) {

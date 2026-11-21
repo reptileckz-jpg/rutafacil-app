@@ -24,6 +24,6 @@ ok(r.x&&r.x.fijo===0&&r.x.min===2&&r.x.minG===3&&r.x.malo,'2ª salida: el sueldo
 ok(/Con 2 cajas esta vuelta casi no deja ganancia/.test(r.t)&&/se comen casi toda la ganancia/.test(r.t)&&!/gastos del día/.test(r.t),'el aviso lo dice (sin gastos del día pendientes)',r.t);
 r=await ev(()=>{S.inv.reparto=5;render();return !!document.querySelector('main [data-k="viaje160"]')});ok(!r,'2ª salida con 5 cajas: ya no sale aviso (deja ganancia)');
 /* el administrador */
-r=await ev(()=>{S.inv.reparto=2;S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';render();var x=document.querySelector('main [data-k="viaje160"]');return x?x.innerText:''});
+r=await ev(()=>{/* 20 (nueva numeración): la vuelta 2 pide "Antes de salir"; aquí ya lo hizo */S.salida.ok=true;S.inv.reparto=2;S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';render();var x=document.querySelector('main [data-k="viaje160"]');return x?x.innerText:''});
 ok(/Danu salió con 2 cajas: la vuelta casi no deja ganancia/.test(r)&&/mínimo 2 cajas/.test(r)&&/el sueldo del día ya lo cubrió una salida anterior/.test(r)&&/costó \$200/.test(r),'el administrador lo ve en Inicio',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

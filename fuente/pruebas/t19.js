@@ -12,8 +12,8 @@ await ev(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();if(S.set
  S.cajasT0=S.cajasT0+(cajasDonde().tot-cajasEsperadas());S.tab.admin='rutas';render()});
 r=await ev(()=>{var cd=document.querySelector('main [data-x="ch92"][data-id="'+__D+'"]');return {card:!!cd,bt:!!(cd&&cd.querySelector('[data-act="cero19"]'))}});
 ok(r.card&&r.bt,arch+' · en Rutas, la tarjeta del chofer con la ruta abierta trae "🔄 Cerrar su ruta y empezar de cero"',r);
-r=await ev(()=>{document.querySelector('main [data-x="ch92"][data-id="'+__D+'"] [data-act="cero19"]').click();var m=document.querySelector('main').innerText;return {tab:S.tab.admin,efe:/Efectivo que debe entregar/.test(m),que:/Cierre atrasado/.test(m)&&/Antes de salir/.test(m),bt:!!document.querySelector('[data-act="cero19ok"]')}});
-ok(r.tab==='cero19'&&r.efe&&r.que&&r.bt,arch+' · abre su pantalla: lo que trae, qué va a pasar y "Sí, cerrar su ruta"',r);
+r=await ev(()=>{document.querySelector('main [data-x="ch92"][data-id="'+__D+'"] [data-act="cero19"]').click();var dd=document.querySelector('details[data-k="c19emer"]');if(dd)dd.open=true;var m=document.querySelector('main').innerText;return {tab:S.tab.admin,efe:/Efectivo que debe entregar/.test(m),que:/Cierre atrasado/.test(m)&&/Antes de salir/.test(m),bt:!!document.querySelector('[data-act="cero19ok"]')}});
+ok(r.tab==='cero19'&&r.efe&&r.que&&r.bt,arch+' · abre su pantalla; la emergencia "Cerrar ya, sin esperar" (cierre atrasado) está abajo',r);
 const antes=await ev(()=>{var t=0;try{t=tarasDif86()}catch(e){}return {t,log:JSON.stringify(S.chSt[__D].log)}});
 r=await ev(()=>{document.querySelector('[data-act="cero19ok"]').click();var k=__D+'|'+iso(TODAY),e=S.atras93[k],n=S.chSt[__D];return {tab:S.tab.admin,guardado:!!e,log:e&&JSON.stringify(e.pack.log),invR:e&&e.pack.invR,ef:e&&e.ef,nueva:{sal:n.salida.ok,log:(n.log||[]).length,dia:n.rutaDia80===iso(TODAY)},av:(S.rutaAv[__D]||[]).slice(-1)[0],hist:S.hist.some(h=>/Cerró la ruta de/.test(h.x)),t:(function(){try{return tarasDif86()}catch(e){return 0}})()}});
 ok(r.guardado&&r.log===antes.log&&r.invR===5&&r.ef===550,arch+' · lo que traía (entregas, $550, 5 cajas) queda como cierre atrasado para recibirlo',r);
@@ -21,7 +21,7 @@ ok(r.nueva.sal===false&&r.nueva.log===0&&r.nueva.dia,arch+' · su ruta nueva emp
 ok(/empezar de cero/.test(r.av||'')&&r.hist&&r.tab==='rutas',arch+' · al chofer le llega el aviso y queda en el historial',r);
 ok(r.t===antes.t,arch+' · las taras siguen cuadrando',{antes:antes.t,despues:r.t});
 /* candado: otra ruta abierta el mismo día con un cierre atrasado sin recibir */
-r=await ev(()=>{var o=S.chSt[__D];o.salida.ok=true;o.log=[{c:S.cli[0].id,R:1,M:0,pr:275,total:275,pago:275,abono:0}];S.tab.admin='rutas';render();var bt=document.querySelector('main [data-x="ch92"][data-id="'+__D+'"] [data-act="cero19"]');if(bt)bt.click();var m=document.querySelector('main').innerText;return {bt:!!bt,aviso:/Primero recibe su cierre atrasado/.test(m),ok:!!document.querySelector('[data-act="cero19ok"]')}});
+r=await ev(()=>{var o=S.chSt[__D];o.salida.ok=true;o.log=[{c:S.cli[0].id,R:1,M:0,pr:275,total:275,pago:275,abono:0}];S.tab.admin='rutas';render();var bt=document.querySelector('main [data-x="ch92"][data-id="'+__D+'"] [data-act="cero19"]');if(bt)bt.click();var dd=document.querySelector('details[data-k="c19emer"]');if(dd)dd.open=true;var m=document.querySelector('main').innerText;return {bt:!!bt,aviso:/Primero recibe su cierre atrasado/.test(m),ok:!!document.querySelector('[data-act="cero19ok"]')}});
 ok(r.bt&&r.aviso&&!r.ok,arch+' · si ya hay un cierre atrasado de ese día sin recibir, primero hay que recibirlo (no se pierde nada)',r);
 /* ruta con cierre mandado: no sale el botón */
 r=await ev(()=>{var o=S.chSt[__D];o.cierre.sent=true;S.tab.admin='rutas';render();var x=!!document.querySelector('main [data-x="ch92"][data-id="'+__D+'"] [data-act="cero19"]');o.cierre.sent=false;return x});

@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.18; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.18, APK 1.0.66; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,7 +12,7 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.18** (21 nov) · APK la que sale de ese armado (1.0.66 o siguiente; la anterior era 1.0.65) · web https://platanos-nietos.web.app.
+**Versión publicada:** app **10.18** (21 nov) · APK **1.0.66**. **Todo está publicado.** · web https://platanos-nietos.web.app.
 **Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **13** (publicados 1, 2 y del 4 al 13). **Pendiente: 3** (avisar cuando un cliente queda lejos de su ruta y sugerir pasarlo a la ruta donde quede más cerca; espera el sí de Ricardo). El siguiente punto nuevo es el **14**.
 
 ### Cómo se trabaja (reglas de Ricardo)

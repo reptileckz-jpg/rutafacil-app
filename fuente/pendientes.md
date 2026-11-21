@@ -3101,3 +3101,19 @@ HECHO (SIN PUBLICAR), `tema-regreso20.js` + pantalla de `tema-cero19.js` rehecha
 - Chofer (reg20 activo y cierre sin mandar): tarjeta arriba "🏭 Regresa a la bodega a cerrar tu vuelta" (pedidos primero, "Tu otro cliente queda en pausa", "Cómo llegar" / "✓ Ya estás en la bodega" a ≤ 300 m, "Ya llegué: hacer mi cierre"); `curStop` solo da pedidos (ped:true); "Entregar" en un cliente en pausa → aviso; sin "Cargar más". Viaje: "🚛 Te toca un viaje de carga · Hacer mi cierre". Al mandar su cierre se borra reg20.
 - Ya existía (se confirmó): "seguir" sin cierreReg reabre el MISMO cierre (sin fotos); con cierreReg empieza el cierre #2. Ahora el #2 pone salida.ok=false (v2) conservando S.inspR del día y las fotos (137 de antes: las de regreso ya cuentan como de salida) → pide odómetro y carga. Pruebas viejas al día: t19 (pantalla nueva), t160 (la vuelta 2 ya hizo "Antes de salir").
 - Admin, tarjeta del chofer en Rutas: "🏭 Regresando a la bodega a hacer su cierre · trae $…, N cajas, M kg".
+
+
+## 21 y 22 (nueva numeración) · Terminó su ruta → regresa a la bodega; aviso al admin cuando llega (21 nov)
+HECHO, `tema-fin21.js`, prueba `t21.js` (19 OK).
+- Ricardo (opción múltiple): tarjeta + abrir Maps solo una vez; aviso en Inicio cuando llega a la bodega.
+- Chofer (salida ok, log > 0, sin paradas pendientes, cierre sin mandar, sin reg20): tarjeta arriba de la Ruta con "📍 Cómo llegar a la bodega" (bodLugar110) o "✓ Ya estás en la bodega" (≤ 0.3 km) y "Ya llegué: hacer mi cierre".
+- Maps solo: al tocar "Seguir con la ruta" (notaseguir) y quedar en Ruta; llave S.fin21 = chofer|día|nº de cierre|nº de entregas (si agrega otra entrega y la termina, se abre otra vez). Si falta mandar el ticket no se abre (l17 detiene el botón).
+- Admin "Hoy": GPS.devs con d.ch, última ubicación ≤ 15 min y ≤ 0.3 km de la bodega, ruta terminada (o reg20 de hoy), sin cierre → "🏭 X ya llegó a la bodega (hh:mm) · trae $…, N cajas" → Rutas.
+
+## 3 (nueva numeración) · Cliente lejos de su ruta (21 nov)
+HECHO, `tema-lejos3.js`, prueba `t3.js` (8 OK). Ricardo: "Sugerir y yo decido".
+- lejos3(f): por chofer, clientes no entregados con ubicación (lista81); distancia al más cercano de su ruta (kmE) vs. al más cercano de la ruta de otro chofer. Sugiere si ≥ 3 km, el otro ≤ la mitad y ahorro ≥ 2 km; ruta con al menos 3 clientes con ubicación.
+- Tarjeta en Armar rutas (rt81, arriba de .bd84): "Pasarlo con B · solo hoy/mañana" (aplica81 modo dia), "Siempre con B" (modo siempre), "No, dejarlo" (S.lejos3No[cid|de|a], va en NB_SH). Aviso en "Hoy" → abre Armar rutas en el día que toca.
+- comp-cajas (demo): solo cambia el texto de Inicio por este aviso nuevo (la demo tiene un cliente lejos). comp-venta IDÉNTICO en las dos.
+
+Revisión antes de publicar 10.19: TODAS las pruebas (133, sin t67/tk) en 0 FAIL (t122 y t172 fallaron solo corriendo 6 a la vez; solas pasan).

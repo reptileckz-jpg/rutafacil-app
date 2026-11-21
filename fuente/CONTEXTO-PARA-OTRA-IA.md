@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 20 de noviembre de 2026 (versión 10.18, APK 1.0.66; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 21 de noviembre de 2026 (versión 10.19, APK 1.0.67; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,8 +12,8 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.18** (21 nov) · APK **1.0.66**. **Todo está publicado.** · web https://platanos-nietos.web.app.
-**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **13** (publicados 1, 2 y del 4 al 13). **Pendiente: 3** (avisar cuando un cliente queda lejos de su ruta y sugerir pasarlo a la ruta donde quede más cerca; espera el sí de Ricardo). El siguiente punto nuevo es el **14**.
+**Versión publicada:** app **10.19** (21 nov) · APK **1.0.67**. **Todo está publicado.** · web https://platanos-nietos.web.app.
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **22**: todos publicados (del 1 al 22, incluido el 3: cliente lejos de su ruta → sugerir pasarlo, el administrador decide). El siguiente punto nuevo es el **23**.
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
@@ -58,6 +58,18 @@
 - **11:** sin rebote al deslizar rápido: mientras el usuario desliza, los redibujos no mueven la pantalla (`tema-scroll11.js`).
 - **12:** tarjetas desplegables se abren suave desde el toque y se cierran al salir de la sección (`tema-desp12.js`).
 - **13:** fotos guardadas en el celular (IndexedDB, hasta 400) y las de vehículos precargadas (`tema-fotos13.js`).
+
+### Lo que se hizo del 14 al 22 y el 3 (21 nov · 10.19)
+- **14:** se quita el aviso viejo "Solo traes X" cuando lo pedido ya cabe (`tema-falta14.js`).
+- **15:** la pantalla no brinca (nota de remisión y toda la app): lugar reservado para imágenes y ancla al redibujar (`tema-quieto15.js`).
+- **16:** kilometraje imposible (falta odómetro de salida o más de 1000 km) no se cuenta; el admin lo corrige en "⚠️ Kilometraje por corregir" (`tema-km16.js`).
+- **17:** contar por billetes vuelve a ser opcional (obligatorio solo si se pone en Ajustes → Controles) (`tema-bill17.js`).
+- **18:** en el Cuadre, lo que se resta va en rojo (`tema-rojo18.js`).
+- **19:** "🔄 Cerrar su ruta" en Rutas para una ruta que se abrió sola o se quedó abierta; estimado de km si no se anotó (`tema-cero19.js`).
+- **20:** cerrar la ruta el MISMO día = que regrese a la bodega (o viaje de carga) y haga su cierre normal; pedidos siguen; vuelta 2 = cierre #2 con "Antes de salir" (`tema-regreso20.js`).
+- **21:** al entregar a todos: tarjeta "🏁 Terminaste tu ruta: regresa a la bodega" + Google Maps se abre solo UNA vez al tocar "Seguir con la ruta" (`tema-fin21.js`).
+- **22:** en "Hoy" de Inicio: "🏭 Danu ya llegó a la bodega · trae $…, N cajas" (GPS de ≤ 15 min a ≤ 300 m, ruta terminada o regreso pedido, sin cierre) (`tema-fin21.js`).
+- **3:** "📍 Quedan lejos de su ruta" en Armar rutas (≥ 3 km del resto de su ruta, con otro chofer a la mitad o menos y ≥ 2 km de ahorro): Pasarlo solo hoy/mañana, Siempre, o No (no vuelve a sugerirlo, `S.lejos3No` en la nube) + aviso en "Hoy" (`tema-lejos3.js`).
 
 ### Ideas que quedaron solo como idea (no pendientes)
 - Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.

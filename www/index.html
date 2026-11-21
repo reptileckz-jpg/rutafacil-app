@@ -2726,7 +2726,7 @@ var _confMsg0=confMsg;confMsg=function(D){if(D.act==='lphoy'||D.act==='lpinter'|
 
 /* ===== 2. Ajustes con tuerca ===== */
 var GEAR='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
-var APP_VER='10.18';
+var APP_VER='10.19';
 function acercaHTML(){var lg=(document.querySelector('.logo img')||{}).src;return '<div class="card" style="text-align:center;padding:18px 16px">'+(lg?'<img src="'+lg+'" alt="Logo de Plátanos Nietos" style="width:72px;height:72px;border-radius:20px;object-fit:cover">':'')+'<div style="font-size:19px;font-weight:800;margin-top:8px">Plátanos Nietos</div><div class="lbl">Control de reparto · versión '+APP_VER+'</div><div style="margin-top:10px;font-size:15px">Desarrollada por <b>Ricardo Nieto Mejía</b></div><div class="lbl" style="margin-top:10px;font-size:13px">© '+TODAY.getFullYear()+' Ricardo Nieto Mejía. Todos los derechos reservados. Prohibida su copia o distribución sin permiso del autor.</div></div>'}
 function ajHTML(){if(!S.aj)return '';var adm=S.role==='admin'&&!S.encOn;
  return '<div id="ajov" style="position:fixed;inset:0;z-index:70;background:var(--bg);overflow-y:auto"><div style="max-width:440px;margin:0 auto;padding:12px 16px 40px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><span class="gear" style="border:0;background:none">'+GEAR+'</span><b class="grow" style="font-size:21px">Ajustes</b><button class="helpb" style="margin:0" data-act="ajx" aria-label="Cerrar ajustes">×</button></div>'
@@ -9772,7 +9772,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4401,"l10.js"],[4456,"l11.js"],[4473,"l12.js"],[4519,"l13.js"],[4644,"l14.js"],[4714,"l15.js"],[4774,"l16.js"],[4868,"l17.js"],[4892,"l18.js"],[4962,"l19.js"],[5021,"l20.js"],[5068,"l21.js"],[5112,"l22.js"],[5287,"l23.js"],[5336,"l24.js"],[5352,"l25.js"],[5379,"l26.js"],[5500,"l27.js"],[5549,"l28.js"],[5680,"l29.js"],[5805,"l30.js"],[5848,"l31.js"],[5874,"l32.js"],[5962,"l33.js"],[5980,"l34.js"],[6035,"l35.js"],[6090,"l36.js"],[6182,"l37.js"],[6201,"l38.js"],[6285,"l39.js"],[6365,"l40.js"],[6482,"l41.js"],[6541,"l42.js"],[6640,"l43.js"],[6729,"l44.js"],[6824,"l45.js"],[6907,"l46.js"],[6964,"l47.js"],[7078,"l48.js"],[7131,"l49.js"],[7167,"l50.js"],[7268,"l51.js"],[7278,"l52.js"],[7408,"l53.js"],[7428,"l54.js"],[7501,"l55.js"],[7530,"l56.js"],[7610,"l57.js"],[7672,"l58.js"],[7790,"l59.js"],[7839,"l60.js"],[7993,"l61.js"],[8049,"l62.js"],[8186,"l63.js"],[8344,"l64.js"],[8370,"l65.js"],[8471,"l66.js"],[8566,"l67.js"],[8593,"l68.js"],[8715,"l69.js"],[8906,"l70.js"],[9108,"l71.js"],[9211,"l72.js"],[9322,"l73.js"],[9396,"l74.js"],[9513,"l75.js"],[9663,"l76.js"],[9766,"l77.js"],[9876,"l78.js"],[10009,"l79.js"],[10117,"l80.js"],[10240,"l81.js"],[10388,"l82.js"],[10629,"l83.js"],[10697,"l84.js"],[10810,"l85.js"],[10869,"tema-fresco2.js"],[10910,"tema-dibujar1.js"],[11414,"tema-rutadia.js"],[11579,"l86.js"],[11638,"l87.js"],[11679,"l88.js"],[11729,"l89.js"],[11777,"l90.js"],[11882,"tema-dibujar2.js"],[11909,"tema-sueltas.js"],[12000,"tema-piezas.js"],[12206,"tema-ruta.js"],[12434,"tema-fichas.js"],[12551,"tema-cierre.js"],[12712,"tema-inicio.js"],[12840,"tema-ajustes.js"],[13088,"tema-nube.js"],[13146,"tema-viaje.js"],[13287,"tema-ubica.js"],[13428,"tema-personal.js"],[13491,"tema-pin.js"],[13608,"tema-navega.js"],[13653,"tema-cajas.js"],[13689,"tema-camara.js"],[13721,"tema-rutas.js"],[13763,"tema-estadisticas.js"],[13804,"tema-guia.js"],[13854,"tema-bodega.js"],[13923,"tema-cobranza.js"],[14083,"tema-pantallas.js"],[14304,"tema-avisos.js"],[14472,"tema-reparte.js"],[14538,"tema-vehiculos.js"],[14689,"tema-notas.js"],[14764,"tema-taras.js"],[14877,"tema-cargarmas.js"],[14916,"tema-cargas.js"],[15032,"tema-cobro.js"],[15068,"tema-horario.js"],[15107,"tema-sueldos.js"],[15249,"tema-ganado.js"],[15294,"tema-cierres.js"],[15427,"tema-finanzas.js"],[15500,"tema-cuadre.js"],[15894,"tema-retencion.js"],[15985,"tema-iniciodia.js"],[16090,"tema-entregapasos.js"],[16163,"tema-push.js"],[16257,"tema-ticket.js"],[16343,"tema-toast.js"],[16383,"tema-version.js"],[16437,"tema-angosta.js"],[16477,"tema-ancha.js"],[16511,"tema-barra.js"],[16595,"tema-mas.js"],[16656,"tema-glossy.js"],[16984,"tema-ruta168.js"],[17271,"tema-app170.js"],[17385,"tema-app171.js"],[17627,"tema-ancho172.js"],[17697,"tema-ajorden172.js"],[17770,"tema-carga173.js"],[17903,"tema-toque174.js"],[17951,"tema-may176.js"],[17984,"tema-vacias177.js"],[18036,"tema-calle178.js"],[18083,"tema-km180.js"],[18137,"tema-datos181.js"],[18177,"tema-dia182.js"],[18215,"tema-azul1.js"],[18271,"tema-taras2.js"],[18331,"tema-may4.js"],[18426,"tema-tope5.js"],[18476,"tema-atras6.js"],[18659,"tema-desc6.js"],[18972,"tema-cero7.js"],[19032,"tema-calma8.js"],[19077,"tema-pago9.js"],[19133,"tema-cargar10.js"],[19167,"tema-scroll11.js"],[19210,"tema-desp12.js"],[19285,"tema-fotos13.js"],[19362,"tema-falta14.js"],[19386,"tema-quieto15.js"],[19489,"tema-km16.js"],[19611,"tema-bill17.js"],[19641,"tema-rojo18.js"],[19696,"tema-cero19.js"],[19819,"tema-regreso20.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4401,"l10.js"],[4456,"l11.js"],[4473,"l12.js"],[4519,"l13.js"],[4644,"l14.js"],[4714,"l15.js"],[4774,"l16.js"],[4868,"l17.js"],[4892,"l18.js"],[4962,"l19.js"],[5021,"l20.js"],[5068,"l21.js"],[5112,"l22.js"],[5287,"l23.js"],[5336,"l24.js"],[5352,"l25.js"],[5379,"l26.js"],[5500,"l27.js"],[5549,"l28.js"],[5680,"l29.js"],[5805,"l30.js"],[5848,"l31.js"],[5874,"l32.js"],[5962,"l33.js"],[5980,"l34.js"],[6035,"l35.js"],[6090,"l36.js"],[6182,"l37.js"],[6201,"l38.js"],[6285,"l39.js"],[6365,"l40.js"],[6482,"l41.js"],[6541,"l42.js"],[6640,"l43.js"],[6729,"l44.js"],[6824,"l45.js"],[6907,"l46.js"],[6964,"l47.js"],[7078,"l48.js"],[7131,"l49.js"],[7167,"l50.js"],[7268,"l51.js"],[7278,"l52.js"],[7408,"l53.js"],[7428,"l54.js"],[7501,"l55.js"],[7530,"l56.js"],[7610,"l57.js"],[7672,"l58.js"],[7790,"l59.js"],[7839,"l60.js"],[7993,"l61.js"],[8049,"l62.js"],[8186,"l63.js"],[8344,"l64.js"],[8370,"l65.js"],[8471,"l66.js"],[8566,"l67.js"],[8593,"l68.js"],[8715,"l69.js"],[8906,"l70.js"],[9108,"l71.js"],[9211,"l72.js"],[9322,"l73.js"],[9396,"l74.js"],[9513,"l75.js"],[9663,"l76.js"],[9766,"l77.js"],[9876,"l78.js"],[10009,"l79.js"],[10117,"l80.js"],[10240,"l81.js"],[10388,"l82.js"],[10629,"l83.js"],[10697,"l84.js"],[10810,"l85.js"],[10869,"tema-fresco2.js"],[10910,"tema-dibujar1.js"],[11414,"tema-rutadia.js"],[11579,"l86.js"],[11638,"l87.js"],[11679,"l88.js"],[11729,"l89.js"],[11777,"l90.js"],[11882,"tema-dibujar2.js"],[11909,"tema-sueltas.js"],[12000,"tema-piezas.js"],[12206,"tema-ruta.js"],[12434,"tema-fichas.js"],[12551,"tema-cierre.js"],[12712,"tema-inicio.js"],[12840,"tema-ajustes.js"],[13088,"tema-nube.js"],[13146,"tema-viaje.js"],[13287,"tema-ubica.js"],[13428,"tema-personal.js"],[13491,"tema-pin.js"],[13608,"tema-navega.js"],[13653,"tema-cajas.js"],[13689,"tema-camara.js"],[13721,"tema-rutas.js"],[13763,"tema-estadisticas.js"],[13804,"tema-guia.js"],[13854,"tema-bodega.js"],[13923,"tema-cobranza.js"],[14083,"tema-pantallas.js"],[14304,"tema-avisos.js"],[14472,"tema-reparte.js"],[14538,"tema-vehiculos.js"],[14689,"tema-notas.js"],[14764,"tema-taras.js"],[14877,"tema-cargarmas.js"],[14916,"tema-cargas.js"],[15032,"tema-cobro.js"],[15068,"tema-horario.js"],[15107,"tema-sueldos.js"],[15249,"tema-ganado.js"],[15294,"tema-cierres.js"],[15427,"tema-finanzas.js"],[15500,"tema-cuadre.js"],[15894,"tema-retencion.js"],[15985,"tema-iniciodia.js"],[16090,"tema-entregapasos.js"],[16163,"tema-push.js"],[16257,"tema-ticket.js"],[16343,"tema-toast.js"],[16383,"tema-version.js"],[16437,"tema-angosta.js"],[16477,"tema-ancha.js"],[16511,"tema-barra.js"],[16595,"tema-mas.js"],[16656,"tema-glossy.js"],[16984,"tema-ruta168.js"],[17271,"tema-app170.js"],[17385,"tema-app171.js"],[17627,"tema-ancho172.js"],[17697,"tema-ajorden172.js"],[17770,"tema-carga173.js"],[17903,"tema-toque174.js"],[17951,"tema-may176.js"],[17984,"tema-vacias177.js"],[18036,"tema-calle178.js"],[18083,"tema-km180.js"],[18137,"tema-datos181.js"],[18177,"tema-dia182.js"],[18215,"tema-azul1.js"],[18271,"tema-taras2.js"],[18331,"tema-may4.js"],[18426,"tema-tope5.js"],[18476,"tema-atras6.js"],[18659,"tema-desc6.js"],[18972,"tema-cero7.js"],[19032,"tema-calma8.js"],[19077,"tema-pago9.js"],[19133,"tema-cargar10.js"],[19167,"tema-scroll11.js"],[19210,"tema-desp12.js"],[19285,"tema-fotos13.js"],[19362,"tema-falta14.js"],[19386,"tema-quieto15.js"],[19489,"tema-km16.js"],[19611,"tema-bill17.js"],[19641,"tema-rojo18.js"],[19696,"tema-cero19.js"],[19819,"tema-regreso20.js"],[19955,"tema-fin21.js"],[20050,"tema-lejos3.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -19951,6 +19951,196 @@ render = function () {
   try { reg20Card(); reg20Rutas(); } catch (e) { console.error('reg20', e); }
   return r;
 };
+
+//@@capa tema-fin21.js
+/* ===================== TEMA · Terminó su ruta: regresa a la bodega + aviso al admin cuando llega (21 nov · puntos 21 y 22 de la nueva numeración) =====================
+   Ricardo: "al terminar la última entrega, en automático mándale la ubicación para regresar a la bodega". Escogió (opción múltiple): tarjeta + que se
+   abra Google Maps solo UNA vez; y "avísame en Inicio cuando el chofer llega a la bodega".
+   21 · En el celular del chofer, cuando ya entregó a todos (salió, tiene entregas, no le quedan paradas y no ha mandado su cierre):
+        - Arriba de su Ruta: "🏁 Terminaste tu ruta: regresa a la bodega" con "📍 Cómo llegar a la bodega" (o "✓ Ya estás en la bodega" a ≤ 300 m)
+          y "Ya llegué: hacer mi cierre".
+        - Google Maps se abre solo UNA vez, cuando toca "Seguir con la ruta" después de su última nota (así primero manda la nota al cliente).
+        Si el administrador le pidió regresar (20), sale esa tarjeta en su lugar.
+   22 · En el celular del administrador, en "Hoy" de Inicio: "🏭 Danu ya llegó a la bodega · trae $…, N cajas" cuando su última ubicación
+        (de hace ≤ 15 min) está a ≤ 300 m de la bodega y terminó su ruta (o le pidieron regresar) sin mandar su cierre. "Ir ›" lleva a Rutas.
+   Solo avisa y abre el mapa; no cambia ninguna cuenta. Se arma al final.
+   ============================================================================================ */
+function fin21Bod() { try { var B = typeof bodLugar110 === 'function' ? bodLugar110() : null; return B && B.lat != null ? B : null; } catch (e) { return null; } }
+function fin21Url() { var B = fin21Bod(); return B ? 'https://www.google.com/maps/dir/?api=1&destination=' + B.lat + ',' + B.lng : ''; }
+function fin21Termino(o) {
+  try {
+    o = o || S; var c = o.cierre || {};
+    if (!(o.salida && o.salida.ok) || c.sent || !(o.log || []).length) return false;
+    return !(o.stops || []).some(function (s) { return s && !s.done; });
+  } catch (e) { return false; }
+}
+function fin21Mio() { return S.role === 'rep' && S.chofHoy != null && !S.arOn && fin21Termino(S) && !(typeof reg20Activo === 'function' && reg20Activo()); }
+function fin21Card() {
+  if (!fin21Mio() || S.tab.rep !== 'ruta') return;
+  var m = document.querySelector('main'); if (!m || m.querySelector('[data-x="fin21"]')) return;
+  var u = fin21Url(), cerca = typeof reg20Cerca === 'function' && reg20Cerca(), d = document.createElement('div');
+  d.className = 'card'; d.dataset.x = 'fin21';
+  d.setAttribute('style', 'padding:14px;border:3px solid #166534;background:color-mix(in srgb,#166534 8%,var(--surface))');
+  d.innerHTML = '<div class="lbl" style="font-weight:800;color:#166534">YA ENTREGASTE A TODOS</div><div style="font-size:21px;font-weight:900;margin-top:2px">🏁 Terminaste tu ruta: regresa a la bodega</div>'
+    + (cerca ? '<div style="font-size:16px;margin-top:6px;font-weight:800">✓ Ya estás en la bodega</div>' : (u ? '<a class="btn sec" style="margin-top:10px;min-height:54px;display:flex;align-items:center;justify-content:center;text-decoration:none" href="' + u + '" target="_blank" rel="noopener" data-x="fin21mapa">📍 Cómo llegar a la bodega</a>' : ''))
+    + '<button class="btn" style="margin-top:8px;min-height:58px;font-size:18px;width:100%" data-act="fin21ci">' + (cerca ? 'Hacer mi cierre' : 'Ya llegué: hacer mi cierre') + '</button>';
+  var h = m.querySelector('.hola89, .hello'); if (h) h.after(d); else m.prepend(d);
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="fin21ci"]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation(); S.tab.rep = 'cierre'; S.cierreP = 0; render(); window.scrollTo(0, 0);
+}, true);
+/* Google Maps una sola vez: al tocar "Seguir con la ruta" después de la última nota */
+function fin21Llave() { return (S.chofHoy || '') + '|' + (S.rutaDia80 || iso(TODAY)) + '|' + ((S.cierresPrev || []).length) + '|' + ((S.log || []).length); }
+function fin21Abre(u) {
+  try { if (typeof window.__fin21Abre === 'function') return window.__fin21Abre(u); } catch (e) {}
+  try { var w = window.open(u, '_system'); if (!w) window.open(u, '_blank'); } catch (e) { try { location.href = u; } catch (er) {} }
+}
+window.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="notaseguir"]'); if (!b || S.role !== 'rep') return;
+  var antes = S.tab.rep;
+  /* después de que "Seguir con la ruta" haga lo suyo (si falta mandar el ticket, no se mueve y no se abre nada):
+     si ya entregó a todos, se abre el mapa (una vez por ruta y vuelta) */
+  setTimeout(function () {
+    try {
+      if (S.tab.rep !== 'ruta' || antes === 'ruta') return;
+      if (!fin21Termino(S) || (typeof reg20Activo === 'function' && reg20Activo())) return;
+      var u = fin21Url(); if (!u) return;
+      var k = fin21Llave(); if (S.fin21 === k) return;
+      if (typeof reg20Cerca === 'function' && reg20Cerca()) return;
+      S.fin21 = k; fin21Abre(u); try { toast('Te abrí el camino de regreso a la bodega'); } catch (er) {}
+    } catch (er) {}
+  }, 0);
+}, true);
+/* 22 · el administrador: "ya llegó a la bodega" */
+function fin22Lista() {
+  var L = [];
+  try {
+    if (S.role !== 'admin' || typeof GPS === 'undefined' || !GPS.devs) return L;
+    var B = fin21Bod(); if (!B) return L;
+    var ahora = Date.now(), visto = {};
+    Object.keys(GPS.devs).forEach(function (dev) {
+      var d = GPS.devs[dev], ch = d && d.ch; if (ch == null || visto[ch]) return;
+      var u = gpsUlt(d); if (u.lat == null || !(ahora - num(u.t) <= 15 * 60000)) return;
+      var km = kmE({ lat: +u.lat, lng: +u.lng }, B); if (km == null || km > 0.3) return;
+      var o = typeof rutaObj81 === 'function' ? rutaObj81(+ch) : null; if (!o) return;
+      var pidio = o.reg20 && o.reg20.f === iso(TODAY) && !(o.cierre && o.cierre.sent);
+      if (!fin21Termino(o) && !pidio) return;
+      visto[ch] = 1;
+      var det = null; try { det = rutaDet6(o); } catch (e) {}
+      L.push({ ch: +ch, h: hmDe(u.t), det: det });
+    });
+  } catch (e) {}
+  return L;
+}
+var _hT22 = hoyTareas;
+hoyTareas = function () {
+  var L = _hT22.apply(this, arguments);
+  try {
+    if (S.role === 'admin' && !S.encOn) fin22Lista().forEach(function (x) {
+      var d = x.det, cj = d ? Math.max(d.reg, d.camR) : 0;
+      L.unshift({ k: 'fin22' + x.ch, t: '🏭 ' + chofN(x.ch) + ' ya llegó a la bodega (' + x.h + ')' + (d ? ' · trae ' + money(d.efectivo) + (cj ? ', ' + cj + ' cajas' : '') : '') + ': recibe su cierre en cuanto lo mande', go: 'rutas', ok: false });
+    });
+  } catch (e) {}
+  return L;
+};
+var _rd21 = render;
+render = function () { var r = _rd21.apply(this, arguments); try { fin21Card(); } catch (e) { console.error('fin21', e); } return r; };
+
+//@@capa tema-lejos3.js
+/* ===================== TEMA · Cliente que queda lejos de su ruta: sugerir pasarlo a otra (21 nov · punto 3 de la nueva numeración) =====================
+   Ricardo: que la app marque al cliente que queda lejos de los demás de su ruta. Escogió (opción múltiple): "Sugerir y yo decido".
+   Cómo se calcula (con la ubicación de cada cliente; el que no tiene ubicación no se toma en cuenta):
+     · "Qué tan lejos queda de su ruta" = la distancia al cliente más cercano de esa misma ruta (del mismo día).
+     · "Con otro chofer" = la distancia al cliente más cercano de la ruta de ese otro chofer ese día.
+     · Se sugiere si queda a 3 km o más de su ruta, con el otro quedaría a la mitad o menos y se ahorran al menos 2 km.
+   Dónde sale: en "Armar rutas" (Hoy / Mañana) una tarjeta "📍 Quedan lejos de su ruta" con, por cliente:
+     "Pasarlo con Beto · solo hoy/mañana", "Siempre con Beto" o "No, dejarlo" (no vuelve a sugerirlo para ese mismo cambio).
+     Y en "Hoy" de Inicio un aviso que abre "Armar rutas". Pasarlo usa lo mismo que el botón "Pasar a otro chofer" (avisos e historial igual).
+   No mueve a nadie solo; el administrador decide. Se arma al final.
+   ============================================================================================ */
+var LEJ3 = { min: 3, ahorro: 2 };
+try { if (NB_SH.indexOf('lejos3No') < 0) NB_SH.push('lejos3No'); } catch (e) {}
+function lejos3(f) {
+  var out = [];
+  try {
+    var No = S.lejos3No || {}, CH = chs81(), R = {};
+    CH.forEach(function (ch) {
+      var L = [];
+      try { L = lista81(+ch.id, f).L || []; } catch (e) {}
+      R[ch.id] = L.filter(function (x) { return !x.done; }).map(function (x) { var c = cl(x.c); return c && c.lat != null ? { x: x, c: c } : null; }).filter(Boolean);
+    });
+    var cerca = function (c, L) { var m = null; L.forEach(function (o) { if (o.c.id === c.id) return; var d = kmE(c, o.c); if (d != null && (m == null || d < m)) m = d; }); return m; };
+    CH.forEach(function (ch) {
+      var L = R[ch.id]; if (L.length < 3) return;
+      L.forEach(function (o) {
+        var d0 = cerca(o.c, L); if (d0 == null || d0 < LEJ3.min) return;
+        var mejor = null;
+        CH.forEach(function (b) { if (+b.id === +ch.id || !R[b.id].length) return; var d = cerca(o.c, R[b.id]); if (d != null && (!mejor || d < mejor.d)) mejor = { ch: +b.id, d: d }; });
+        if (!mejor || mejor.d > d0 * 0.5 || d0 - mejor.d < LEJ3.ahorro) return;
+        if (No[o.c.id + '|' + ch.id + '|' + mejor.ch]) return;
+        out.push({ c: o.c, de: +ch.id, a: mejor.ch, d0: d0, d1: mejor.d });
+      });
+    });
+  } catch (e) {}
+  return out.sort(function (a, b) { return (b.d0 - b.d1) - (a.d0 - a.d1); });
+}
+function lejos3Km(k) { return k < 10 ? (Math.round(k * 10) / 10) : Math.round(k); }
+function lejos3HTML(f, hoy) {
+  var L = lejos3(f); if (!L.length) return '';
+  var cuando = hoy ? 'solo hoy' : 'solo mañana';
+  return '<div class="card" data-x="lejos3" style="padding:12px 14px;border-left:5px solid #b45309"><b>📍 Quedan lejos de su ruta</b><div class="lbl">Tú decides; si lo pasas, se le avisa a los dos choferes.</div>'
+    + L.slice(0, 4).map(function (x) {
+      var k = x.c.id + '|' + x.de + '|' + x.a;
+      return '<div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px"><div style="font-weight:800">' + esc(x.c.n) + '</div>'
+        + '<div style="font-size:15px">Queda a ' + lejos3Km(x.d0) + ' km del resto de la ruta de ' + esc(chofN(x.de)) + '; con ' + esc(chofN(x.a)) + ' quedaría a ' + lejos3Km(x.d1) + ' km.</div>'
+        + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" style="flex:1 1 140px;min-height:48px" data-act="lejos3si" data-k="' + k + '" data-m="dia">Pasarlo con ' + esc(chofN(x.a)) + ' · ' + cuando + '</button>'
+        + '<button class="btn sec" style="flex:1 1 110px;min-height:48px" data-act="lejos3si" data-k="' + k + '" data-m="siempre">Siempre con ' + esc(chofN(x.a)) + '</button>'
+        + '<button class="btn sec" style="flex:1 1 90px;min-height:48px" data-act="lejos3no" data-k="' + k + '">No, dejarlo</button></div></div>';
+    }).join('')
+    + (L.length > 4 ? '<div class="lbl" style="margin-top:8px">Y ' + (L.length - 4) + ' más: aparecen al decidir estos.</div>' : '') + '</div>';
+}
+var _rt3 = rt81HTML;
+rt81HTML = function () {
+  var h = _rt3.apply(this, arguments);
+  try {
+    var R = S.rt81; if (!h || !R || R.pick) return h;
+    var hoy = R.dia === 'hoy', x = lejos3HTML(hoy ? hoy81() : man81(), hoy); if (!x) return h;
+    var m = '<div class="bd84">', i = h.indexOf(m);
+    if (i < 0) { i = h.indexOf('</div>', h.indexOf('data-act="rt81d"')); if (i < 0) return h; i += 6; } else i += m.length;
+    return h.slice(0, i) + x + h.slice(i);
+  } catch (e) { return h; }
+};
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="lejos3si"],[data-act="lejos3no"]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  var R = S.rt81; if (!R) return;
+  var p = b.dataset.k.split('|'), cid = +p[0], de = +p[1], a = +p[2], c = cl(cid); if (!c) return;
+  if (b.dataset.act === 'lejos3no') {
+    S.lejos3No = S.lejos3No || {}; S.lejos3No[b.dataset.k] = Date.now();
+    try { S.hist.push({ t: fmtF(hoy81()) + ' ' + hhmm(), q: quien(), x: 'Rutas: ' + c.n + ' se queda con ' + chofN(de) + ' (no se pasó con ' + chofN(a) + ')' }); } catch (er) {}
+    toast('Listo: ' + c.n + ' se queda con ' + chofN(de)); render(); return;
+  }
+  R.sel = {}; R.sel[cid + '|' + de] = 1; R.pick = null;
+  aplica81(a, b.dataset.m === 'siempre' ? 'siempre' : 'dia'); render();
+}, true);
+/* aviso en "Hoy" de Inicio */
+var _hT3 = hoyTareas;
+hoyTareas = function () {
+  var L = _hT3.apply(this, arguments);
+  try {
+    if (S.role === 'admin' && !S.encOn) {
+      var a = lejos3(hoy81()).length, m = a ? 0 : lejos3(man81()).length;
+      if (a || m) L.push({ k: 'lejos3' + (a ? 'h' : 'm') + (a || m), t: '📍 ' + (a || m) + ((a || m) === 1 ? ' cliente queda' : ' clientes quedan') + ' lejos de su ruta ' + (a ? 'de hoy' : 'de mañana') + ': ¿pasarlo' + ((a || m) === 1 ? '' : 's') + ' a otra?', go: 'lejos3:' + (a ? 'hoy' : 'man'), ok: false });
+    }
+  } catch (e) {}
+  return L;
+};
+window.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="popgo"][data-t^="lejos3:"]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  S.tab.admin = 'rutas'; S.rt81 = { dia: b.dataset.t.split(':')[1] === 'man' ? 'man' : 'hoy', sel: {} }; render();
+}, true);
 
 
 /* ---------- Estructura ---------- */

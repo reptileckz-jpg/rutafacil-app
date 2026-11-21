@@ -3074,3 +3074,11 @@ HECHO (SIN PUBLICAR), `tema-quieto15.js`, prueba `t15.js` (37 OK, con barrido de
 - Causa 1 (toda la app): la barra "💰 $… hoy" (gan117sp) y otras tarjetas se agregan DESPUÉS del morph; en cada redibujo el morph las quita (la página queda 72 px más corta), el morph/l86 regresan a y pero el teléfono la limita (743 → 671) y luego la barra vuelve a entrar: todo baja 72 px (medido). Ahora: ancla = lo que está a la vista (elementFromPoint, sin fijos/sticky) antes del redibujo; al final (ya con todo agregado) se regresa a su lugar con scrollTop. No aplica si cambió la vista, si alguien movió a propósito (ANC82.t, __scrollPedido) o mientras se desliza (11).
 - Causa 2: el logo de la nota (<img> sin alto) crecía ~90 px al cargar. Ahora 90×90 reservado; y en toda la app, si una <img> ARRIBA de lo visible cambia de alto fuera de un redibujo (ResizeObserver), se compensa.
 - Barrido (t15): en todas las pantallas del admin y del chofer, a media pantalla y hasta abajo, 4 redibujos: lo que se ve se mueve ≤ 2 px (antes la nota 72 px).
+
+## 2026-11-21 · 16 (numeración nueva) · Ricardo: "en lugar de contar la diferencia contó el total de kilómetros … sale que perdí con esa ruta" (Cuadre vie 20 nov: 50,593 km × $0.70 = −$35,415.10)
+HECHO (SIN PUBLICAR), `tema-km16.js`, prueba `t16.js` (23 OK).
+- Causa: km = odo − odoIni. La ruta de Danu del 20 arrancó sin "Antes de salir" (el error que tapó el punto 7) → odoIni vacío (0) → 50,593 − 0. El cierre (181) mostraba el campo de salida pero dejaba mandar sin llenarlo.
+- 1) Chofer: "enviar" bloqueado si falta odoIni o km > 1,000 / negativo (odoFalta181 → campo "Odómetro con el que SALIÓ" + aviso con el número). Cada cierre guarda odo16/odoIni16.
+- 2) Cierres guardados con km > 1,000 (rutasHist y rutas vivas): res.km → 0 y res.km16 = {orig, f} (en la viva también odoIni→odo, guardando el original), historial. El Cuadre deja de contar ese desgaste.
+- 3) Cuadre: "⚠️ Kilometraje por corregir" → pantalla `km16` (llegada prellenada = orig, salida la escribe el admin) → res.km = llegada − salida (1–1,000), km16.corr {km, oi, q, t}, historial "de X a Y km". Se puede volver a corregir.
+- Lo de Danu del 20: al publicar, en el Cuadre sale el aviso; Ricardo escribe el odómetro con el que salió (el de su tablero/foto de salida o el último del día anterior).

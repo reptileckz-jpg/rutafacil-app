@@ -21,7 +21,8 @@ await ev(()=>{S.cm.paso--;render()});dlg=[];p1=await sig();ok(p1===p0+1&&dlg.len
 await ev(()=>{S.cm=null;render()});
 
 /* ---------- 153 ---------- */
-await ev(()=>{var D=S.choferes.filter(c=>c.n==='Danu')[0];window.__D=D.id;S.role='rep';S.chofHoy=D.id;chCambiar(D.id);S.pinOk[pinKey()]=true;S.salida.ok=true;
+/* 17 (nueva numeración): por omisión es opcional; aquí se prueba el modo "Obligatorio" (escogido en Ajustes → Controles) */
+await ev(()=>{S.cfg=S.cfg||{};S.cfg.bill153='obl';var D=S.choferes.filter(c=>c.n==='Danu')[0];window.__D=D.id;S.role='rep';S.chofHoy=D.id;chCambiar(D.id);S.pinOk[pinKey()]=true;S.salida.ok=true;
  S.log.push({c:S.cli[0].id,R:4,M:0,V:0,pr:275,pm:20,total:1100,pago:1100,abono:0});S.stops=[{c:S.cli[0].id,done:true}];S.tab.rep='cierre';S.cierreP=4;render()});
 r=await ev(()=>{var m=document.querySelector('main [data-key="efpaso"]');return {t:m?m.innerText:'',ent:!!document.getElementById('efent'),open:!!(m&&m.querySelector('details[data-k="efbilld"][open]'))}});
 ok(/Cuenta tus billetes/.test(r.t)&&!r.ent&&r.open,'153 · en "¿Cuánto entregas?" sale abierto "Cuenta tus billetes" (ya no el "Entrego $")',r);

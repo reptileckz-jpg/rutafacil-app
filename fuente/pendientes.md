@@ -3117,3 +3117,5 @@ HECHO, `tema-lejos3.js`, prueba `t3.js` (8 OK). Ricardo: "Sugerir y yo decido".
 - comp-cajas (demo): solo cambia el texto de Inicio por este aviso nuevo (la demo tiene un cliente lejos). comp-venta IDÉNTICO en las dos.
 
 Revisión antes de publicar 10.19: TODAS las pruebas (133, sin t67/tk) en 0 FAIL (t122 y t172 fallaron solo corriendo 6 a la vez; solas pasan).
+
+Publicado 10.19 (APK 1.0.67) el 21 nov: web y APK en verde.

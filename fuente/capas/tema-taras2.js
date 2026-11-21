@@ -18,13 +18,17 @@ function atrasCuenta2() {
   var L = [];
   try {
     var A = S.atras93 || {}, rec = S.atr93 && S.atr93.k;
+    /* 19: "la misma ruta" = mismo chofer, mismo día Y lo mismo adentro (entregas y cajas en el camión); una ruta nueva del mismo día
+       (al cerrar y empezar de cero) NO es la misma y el cierre atrasado sí se cuenta */
+    var firma = function (log, invR) { return (log || []).length + '|' + num(invR) + '|' + (log || []).map(function (l) { return (l && (l.id || l.c)) + ':' + num(l && l.R) + ':' + num(l && l.V); }).join(','); };
     var vivas = [];
-    try { if (S.chofHoy != null) vivas.push({ id: +S.chofHoy, f: S.rutaDia80 }); } catch (e) {}
-    Object.keys(S.chSt || {}).forEach(function (id) { var o = S.chSt[id]; if (o) vivas.push({ id: +id, f: o.rutaDia80 }); });
+    try { if (S.chofHoy != null) vivas.push({ id: +S.chofHoy, f: S.rutaDia80, s: firma(S.log, S.inv && S.inv.reparto) }); } catch (e) {}
+    Object.keys(S.chSt || {}).forEach(function (id) { var o = S.chSt[id]; if (o) vivas.push({ id: +id, f: o.rutaDia80, s: firma(o.log, o.invR) }); });
     Object.keys(A).forEach(function (k) {
       var e = A[k];
       if (!e || e.hecho || k === rec || !e.pack) return;
-      if (vivas.some(function (v) { return v.id === +e.id && v.f && v.f === e.f; })) return;
+      var fe = firma(e.pack.log, e.pack.invR);
+      if (vivas.some(function (v) { return v.id === +e.id && v.f && v.f === e.f && v.s === fe; })) return;
       L.push(e.pack);
     });
   } catch (e) {}

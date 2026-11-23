@@ -48,7 +48,7 @@ r=await ev(()=>{S.avPrecio.push('URGENTE: '+chofN(1)+' pide reabrir su ruta para
 /* ---- 22 · Hoy te toca ---- */
 r=await ev(()=>hoyItems().map(x=>x[0]));ok(r.some(x=>/^Recibir los cierres · /.test(x)),'22 · "Recibir los cierres" dice cómo va',r);
 await ev(()=>{window.__t=[];const t0=toast;toast=function(m){__t.push(m);return t0.apply(this,arguments)};S.tab.admin='inicio';render()});
-const toca=async re=>{await ev(re=>{const L=hoyItems();const i=L.findIndex(x=>new RegExp(re).test(x[0]));const b=document.querySelector('[data-act="hoyir"][data-i="'+i+'"]');b.click()},re);await W(150);return ev(()=>({t:__t.slice(-1)[0]||'',tab:S.tab.admin,res:S.resHoy}))};
+const toca=async re=>{await ev(re=>{const L=hoyItems();const i=L.findIndex(x=>new RegExp(re).test(x[0]));/* 30: los pendientes se atienden en el centro de pendientes */c30Ver('hi:'+L[i][0]);var b=document.querySelector('#c30ov [data-act="hoyir"][data-i="'+i+'"]');if(!b){b=document.createElement('button');b.dataset.act='hoyir';b.dataset.i=String(i);document.body.appendChild(b)}b.click();if(b.parentNode===document.body)b.remove()},re);await W(150);return ev(()=>({t:__t.slice(-1)[0]||'',tab:S.tab.admin,res:S.resHoy}))};
 r=await ev(()=>{S.salida.ok=true;S.cierre.sent=false;render();return 1});r=await toca('^Recibir');ok(/Faltan|no ha salido|Ya recibiste/.test(r.t),'22 · "Recibir los cierres" sin cierres: dice por qué',r);
 r=await toca('^Mandarte');ok(/faltan/i.test(r.t)&&!r.res,'22 · "Mandarte el resumen" con cierres pendientes: dice cuáles faltan',r);
 r=await ev(()=>{S.cierre.sent=true;S.cierreReg=null;S.recep=null;render();return 1});r=await toca('^Recibir');ok(r.tab==='cierreadm','22 · con un cierre mandado: lleva a recibirlo',r);

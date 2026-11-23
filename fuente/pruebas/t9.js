@@ -10,14 +10,14 @@ await ev(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();if(S.set
  S.role='admin';S.encOn=false;S.tutVisto={rep:true,admin:true};S.popVisto={admin:iso(TODAY)};
  window.__CH=(S.choferes||[]).filter(c=>esCh(c)&&!esAdm(c))[0];var c=window.__CH;c.sz={tipo:'semana',monto:'2600'};c.ing='2026-01-01';c.pagoHasta118='2026-11-14';c.baja=false;
  (S.choferes||[]).forEach(x=>{if(x!==c&&!esAdm(x))x.sz={tipo:'ninguno'}})});
-const dia=(f)=>ev(f=>{TODAY=new Date(f+'T12:00:00');S.modal=null;S.tab.admin='inicio';render();return document.querySelector('main').innerText},f);
+const dia=(f)=>ev(f=>{TODAY=new Date(f+'T12:00:00');S.modal=null;S.tab.admin='inicio';render();/* 30: también los del centro de pendientes */return document.querySelector('main').innerText+'\n'+c30Items().map(o=>o.t).join('\n')},f);
 /* un viernes: todavía no */
 r=await dia('2026-11-20');ok(!/toca pagarle su semana/.test(r),arch+' · el viernes todavía no sale',r.slice(0,80));
 /* el sábado: sale en "Hoy" con el monto de su ficha */
 r=await dia('2026-11-21');const k=await ev(()=>{var k=szCalc(window.__CH);return {pagar:k.pagar,n:window.__CH.n}});
 ok(r.indexOf('Hoy toca pagarle su semana a '+k.n)>-1&&r.indexOf(money0(k.pagar))>-1,arch+' · el sábado sale "💵 Hoy toca pagarle su semana a … : $" (el mismo monto de su ficha)',{k,t:r.slice(0,300)});
 function money0(n){return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:2})}
-r=await ev(()=>{var b=[...document.querySelectorAll('main [data-act="popgo"]')].filter(x=>/^sz9:/.test(x.dataset.t))[0];if(!b)return 'sin Ir';b.click();var ov=document.getElementById('fiov');return {tab:S.tab.admin,ch:S.openCh,pest:(S.fiTab||{})['emp:'+S.openCh],sueldo:ov?/Total a pagarle/.test(ov.innerText):false}});
+r=await ev(()=>{var o=c30Items().find(o=>o.tarea&&/^sz9:/.test(o.tarea.go));if(o)c30Ver(o.id);var b=[...document.querySelectorAll('main [data-act="popgo"],#c30ov [data-act="popgo"]')].filter(x=>/^sz9:/.test(x.dataset.t))[0];if(!b)return 'sin Ir';b.click();var ov=document.getElementById('fiov');return {tab:S.tab.admin,ch:S.openCh,pest:(S.fiTab||{})['emp:'+S.openCh],sueldo:ov?/Total a pagarle/.test(ov.innerText):false}});
 ok(r.tab==='personal'&&r.pest==='sue'&&r.sueldo,arch+' · "Ir ›" abre su ficha en Sueldo',r);
 /* si ya pasó el sábado y no se le pagó */
 r=await dia('2026-11-23');ok(/Falta pagarle a .* la semana del/.test(r),arch+' · el lunes, si no se le pagó: "Falta pagarle a … la semana del …"',r.slice(0,200));

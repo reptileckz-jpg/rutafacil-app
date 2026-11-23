@@ -3158,3 +3158,9 @@ HECHO, `tema-pin29.js`, prueba `t29.js`. keydown con #pinov: 0-9 → pind, Retro
 
 ## 31 · Cerrar viaje de carga que no llegó (23 nov)
 HECHO, `tema-viaje31.js`, prueba `t31.js`. Ricardo: "que la app pregunte cada vez". En la carga de un viaje que ya empezó (173 no lo deja cancelar): "Este viaje no llegó · cerrarlo" → 4 pasos (qué pasó, efectivo regresó/gastó, vacías que regresaron, revisar). Cuentas: viaje en pantalla (S.vws): vjEfeBack += regresó; programado (c.viaje.efe): c173Cancela regresa todo y vjEfeOut += lo que no regresó. Faltante = dio − gastó − regresó → S.faltantes (como liquidación). Vacías: vacEnv = las que regresaron (las demás salen en Descuadres). Carga Cancelada + c.cerr31; sin "Recuperar". Aviso: en curso ≥ 2 días. SIN PUBLICAR.
+
+## 30 · Centro de pendientes + crédito (23 nov)
+HECHO, `tema-centro30.js` + `tema-cred30.js`, prueba `t30.js`. Ricardo (opción múltiple): Centro de pendientes; botones Resolver (o Ir), Recordarme mañana, Listo; sin la pregunta de crédito a las 5 compras; al pedir fiar, pantalla con compras de semana y mes.
+- c30Items(): avisos (pendTodos92) + hoyTareas + hoyItems + créditos por decidir; sección por destino (c30Sec). Inicio "Hoy": urgentes (hasta 5, primero los "URGENTE:") y completa hasta 3, + "🔔 Atender los N pendientes". Pantalla c30ov: secciones con número → tarjeta "1 de N"; Resolver usa el MISMO botón de siempre (avgo/popgo/hoyir/cli92/cob155) y la pantalla se cierra; Recordarme mañana = avLater88 (avisos) o S.later30; Listo = quita88 / hoyOk / S.ok30. c30Ver(id) abre un pendiente (lo usan pruebas).
+- tema-cred30: avisos sin "ya lleva 5 compras pagadas: ¿le das crédito?"; permsHTML con "Semana: N compras · $ — Mes" y "📊 Ver sus compras" (comp30: rutasHist + rutas vivas, sin repetir).
+- Pruebas al día: t150, t174, t60, t9, t91cob (buscan en el centro de pendientes). TODAS en 0 FAIL; comp-venta IDÉNTICO; comp-cajas solo cambia el texto de Inicio. SIN PUBLICAR.

@@ -3146,3 +3146,6 @@ HECHO en `tema-antes23.js` (t23: 15 OK). Captura de Ricardo: sin escoger vehícu
 
 ## 26 · Fotos de cierres pasados (23 nov)
 HECHO, `tema-fotos26.js`, prueba `t26.js`. fotos121 ahora trae `otras` (Lo que regresó = cierre.fotoReg; Cargó en ruta = S.extras con foto del chofer y día; las cargas nuevas quedan con ch y f). En "📷 Fotos del cierre" sale "Carga y regreso" y "⛽ Gasolina al llegar · no la tomó" si falta. La de gasolina ya se guardaba si se tomó (fotosFin.gas); lo probable es que no se tomó (opcional en Ajustes). Los cierres viejos no tienen estas fotos (no se guardaron). SIN PUBLICAR.
+
+## 27 · Pendientes de cada sección a la vista (23 nov)
+HECHO, `tema-pend27.js`, prueba `t27.js`. Al entrar a una sección (no Inicio ni Más) con pendientes, S.pnd92 = sección (la lista "🔔 N pendientes" se abre) y destella una vez (pnd27, GPU). "cerrar ▲" la cierra hasta que vuelvas a entrar. SIN PUBLICAR.

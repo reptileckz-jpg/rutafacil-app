@@ -3137,3 +3137,5 @@ HECHO, `tema-avisos25.js` + `functions/avisos25.js` + regla `n/{neg}/av/plan` en
 - Si ningún celular abre la app en una semana, no hay plan para ese día y no avisa.
 
 Revisión antes de publicar 10.20: TODAS las pruebas (136, sin t67/tk) en 0 FAIL. comp-venta IDÉNTICO (demo y real); comp-cajas real IDÉNTICO, demo solo cambia el orden de Inicio (precio sin fijar arriba).
+
+Publicado 10.20 (APK 1.0.68) el 23 nov: web, APK, reglas y avisoPush en verde; "Avisos al administrador" (avisos.yml) corre cada hora.

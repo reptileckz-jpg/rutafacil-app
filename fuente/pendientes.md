@@ -3133,7 +3133,7 @@ HECHO, `tema-precio24.js`, prueba `t24.js` (en pruebas la pantalla grande solo s
 ## 25 · Avisos al administrador con la app cerrada (23 nov)
 HECHO, `tema-avisos25.js` + `functions/avisos25.js` + regla `n/{neg}/av/plan` en firestore.rules, prueba `t25.js` (decodifica igual que la nube).
 - Ricardo (opción múltiple): los 4 avisos, a las 9, a todos los administradores, publicar junto.
-- Necesita correr el workflow funciones.yml (publica funciones y reglas). La función programada usa Cloud Scheduler (lo activa firebase deploy).
+- Primero se hizo como función programada (onSchedule) pero el deploy falló: la cuenta de servicio no puede poner el permiso de quién la llama (IAM invoker; falta roles/functions.admin). Se cambió a un workflow de GitHub cada hora (.github/workflows/avisos.yml, minuto 7, con FIREBASE_SA) que corre herramientas/avisos-admin.js + functions/avisos25.js y no imprime datos del negocio. Funciona a cualquier minuto de la hora del aviso (GitHub a veces se atrasa); av/env evita repetir.
 - Si ningún celular abre la app en una semana, no hay plan para ese día y no avisa.
 
 Revisión antes de publicar 10.20: TODAS las pruebas (136, sin t67/tk) en 0 FAIL. comp-venta IDÉNTICO (demo y real); comp-cajas real IDÉNTICO, demo solo cambia el orden de Inicio (precio sin fijar arriba).

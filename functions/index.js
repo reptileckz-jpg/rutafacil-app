@@ -6,18 +6,10 @@ const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const { getMessaging } = require('firebase-admin/messaging');
-const { onSchedule } = require('firebase-functions/v2/scheduler');
-const { avisosDeNegocio } = require('./avisos25');
 initializeApp();
 
-// 25 · avisos al administrador aunque no abra la app (ver avisos25.js): cada hora, al minuto 2
-exports.avisosAdmin = onSchedule({ schedule: '2 * * * *', region: 'us-central1', timeZone: 'UTC' }, async () => {
-  const db = getFirestore();
-  const negs = await db.collection('n').listDocuments();
-  for (const ref of negs) {
-    try { await avisosDeNegocio(db, ref.id); } catch (e) { console.error('avisosAdmin', String((e && e.code) || 'error')); }
-  }
-});
+// 25 · los avisos al administrador (avisos25.js) los corre cada hora el workflow .github/workflows/avisos.yml
+
 
 // la función corre en us-central1 (en México no hay funciones); el aviso se engancha desde la región de la base de datos (northamerica-south1)
 exports.avisoPush = onDocumentCreated({ document: 'n/{neg}/push/{id}', region: 'us-central1' }, async (ev) => {

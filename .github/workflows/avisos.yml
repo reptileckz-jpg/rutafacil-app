@@ -1,0 +1,31 @@
+name: Avisos al administrador
+
+# 25 · Cada hora revisa cómo va el día y manda avisos push a los administradores aunque no abran la app
+# (8:00 precio y fruta madura · 9:00 y 10:00 rutas sin iniciar · 14:00 y 17:00 entregas · 21:00 cierres), a la hora del negocio.
+# La lógica está en functions/avisos25.js. El repositorio es público: no imprime datos del negocio.
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+jobs:
+  avisos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Revisar y mandar avisos
+        env:
+          SA: ${{ secrets.FIREBASE_SA }}
+        run: |
+          if [ -z "$SA" ]; then echo "Falta el secreto FIREBASE_SA."; exit 1; fi
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          export GOOGLE_CLOUD_PROJECT=platanos-nietos
+          mkdir -p "$RUNNER_TEMP/av" && cp herramientas/avisos-admin.js functions/avisos25.js "$RUNNER_TEMP/av/" && cd "$RUNNER_TEMP/av"
+          npm i firebase-admin@13 --no-audit --no-fund >/dev/null
+          node avisos-admin.js
+          rm -f "$RUNNER_TEMP/sa.json"

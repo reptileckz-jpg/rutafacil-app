@@ -1,5 +1,5 @@
 /* 25 · Avisos al administrador aunque no abra la app (23 nov).
-   Cada hora (al minuto 2), por negocio: lee n/{neg}/av/plan (lo deja la app: quién tiene clientes cada día, zona horaria, días que dura la fruta)
+   Cada hora (workflow .github/workflows/avisos.yml, con la llave FIREBASE_SA), por negocio: lee n/{neg}/av/plan (lo deja la app: quién tiene clientes cada día, zona horaria, días que dura la fruta)
    y el estado de cada ruta (n/{neg}/d/r~{chofer}~salida, stops, cierre, cierreReg, rutaDia80), y a la hora del negocio manda:
      8:00  precio de hoy sin fijar · fruta madura que se pasa hoy o mañana
      9:00 y 10:00  choferes con clientes hoy que no han hecho "Iniciar el día"
@@ -43,7 +43,7 @@ const SLOTS = { 8: 'manana', 9: 'inicio', 10: 'inicio', 14: 'entregas', 17: 'ent
 
 /* arma los avisos de un negocio. leer(id) = valor decodificado de n/{neg}/d/{id}. Regresa [[titulo, texto], ...] */
 async function armaAvisos(plan, ahora, leer) {
-  const tipo = SLOTS[ahora.h]; if (!tipo || ahora.m >= 30) return [];
+  const tipo = SLOTS[ahora.h]; if (!tipo) return [];
   const hoy = (plan.dias || {})[ahora.f] || {}, ids = Object.keys(hoy);
   const ruta = async (ch) => {
     const v = await Promise.all(['salida', 'stops', 'cierre', 'cierreReg', 'rutaDia80'].map((k) => leer('r~' + ch + '~' + k)));
@@ -96,7 +96,7 @@ async function avisosDeNegocio(db, neg, cuando) {
   const base = 'n/' + neg;
   const planS = await db.doc(base + '/av/plan').get(); if (!planS.exists) return 0;
   const plan = planS.data() || {}, ahora = ahoraEn(plan.tz || 'America/Mexico_City', cuando);
-  if (!ahora || ahora.m >= 30 || !SLOTS[ahora.h]) return 0;
+  if (!ahora || !SLOTS[ahora.h]) return 0;
   const llave = ahora.f + '_' + ahora.h, envRef = db.doc(base + '/av/env'), env = (await envRef.get()).data() || {};
   if (env[llave]) return 0;
   const leer = async (id) => { const s = await db.doc(base + '/d/' + id).get(); return s.exists ? decodifica(s.data()) : undefined; };

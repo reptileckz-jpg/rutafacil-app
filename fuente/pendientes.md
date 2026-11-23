@@ -3152,3 +3152,6 @@ HECHO, `tema-pend27.js`, prueba `t27.js`. Al entrar a una sección (no Inicio ni
 
 ## 28 · Versión web: mapas en grande y "esta computadora" (23 nov)
 HECHO, `tema-web28.js`, prueba `t28.js`. Cada [data-vivo] trae "⤢ Ver en grande" (clase mapa28g, pantalla completa, rueda del mouse; "✕ Cerrar mapa" o Esc); salvo el mapa nativo del APK (el._gm). En computadora (pointer fine y ≥900 px) los mapas de 220+ px salen ×1.9 (máx 560). "este celular" → "esta computadora" con TreeWalker. t92 al día (pendientes abiertos al entrar, 27). TODAS las pruebas en 0 FAIL. SIN PUBLICAR.
+
+## 29 · PIN con el teclado (23 nov)
+HECHO, `tema-pin29.js`, prueba `t29.js`. keydown con #pinov: 0-9 → pind, Retroceso/Supr → pinb, Esc → pinx. pnBloqueada (l58) se comía las teclas: con #pinov el keydown pasa. SIN PUBLICAR.

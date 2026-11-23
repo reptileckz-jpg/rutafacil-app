@@ -3149,3 +3149,6 @@ HECHO, `tema-fotos26.js`, prueba `t26.js`. fotos121 ahora trae `otras` (Lo que r
 
 ## 27 · Pendientes de cada sección a la vista (23 nov)
 HECHO, `tema-pend27.js`, prueba `t27.js`. Al entrar a una sección (no Inicio ni Más) con pendientes, S.pnd92 = sección (la lista "🔔 N pendientes" se abre) y destella una vez (pnd27, GPU). "cerrar ▲" la cierra hasta que vuelvas a entrar. SIN PUBLICAR.
+
+## 28 · Versión web: mapas en grande y "esta computadora" (23 nov)
+HECHO, `tema-web28.js`, prueba `t28.js`. Cada [data-vivo] trae "⤢ Ver en grande" (clase mapa28g, pantalla completa, rueda del mouse; "✕ Cerrar mapa" o Esc); salvo el mapa nativo del APK (el._gm). En computadora (pointer fine y ≥900 px) los mapas de 220+ px salen ×1.9 (máx 560). "este celular" → "esta computadora" con TreeWalker. t92 al día (pendientes abiertos al entrar, 27). TODAS las pruebas en 0 FAIL. SIN PUBLICAR.

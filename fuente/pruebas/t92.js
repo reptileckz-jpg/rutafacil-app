@@ -27,7 +27,7 @@ r=await ev(()=>{S.tab.admin='clientes';S.cli92='cli';render();var t=[...document
 T(P+'Clientes: pestañas Clientes · Pedidos · Cobranza',r.t.length===3&&/^Clientes/.test(r.t[0])&&/^Pedidos/.test(r.t[1])&&/^Cobranza/.test(r.t[2])&&r.cob&&r.ped,r);
 /* pendientes en un renglón */
 r=await ev(()=>{S.avPrecio.push('Le debes $500 a Prueba desde hace 9 días');S.tab.admin='cargas';render();var c=document.querySelector('main [data-x="pnd86"]');if(!c)return null;var hd=c.querySelector('.hd92'),h0=hd?hd.textContent:'(sin renglón) '+c.outerHTML.slice(0,200);var cerr=c.classList.contains('cerr92'),vis=[...c.children].filter(x=>getComputedStyle(x).display!=='none').length;if(hd)hd.click();var c2=document.querySelector('main [data-x="pnd86"]');var vis2=[...c2.children].filter(x=>getComputedStyle(x).display!=='none').length;return {cerr,vis,vis2,h:h0}});
-T(P+'Pendientes: un renglón que se abre al tocarlo',r&&r.cerr&&r.vis===1&&r.vis2>1&&/pendiente/.test(r.h),r);
+T(P+'Pendientes: al entrar a la sección se abren solos (27) y el renglón los cierra',r&&!r.cerr&&r.vis>1&&r.vis2===1&&/pendiente/.test(r.h),r);
 r=await ev(()=>{render();return [...document.querySelectorAll('nav.tabs .tbadge')].map(b=>b.className+':'+b.textContent)});T(P+'Numeritos: los no urgentes son puntito gris (sin número)',r.every(x=>/dot92:$/.test(x)||!/suave/.test(x)),r);
 /* viaje en curso solo en Inicio y Cargas */
 r=await ev(()=>{var o={};['inicio','cargas','clientes','bodega','rutas'].forEach(t=>{S.tab.admin=t;render();o[t]=!!document.querySelector('main .vbub')});return o});

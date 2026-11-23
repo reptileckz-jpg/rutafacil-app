@@ -3155,3 +3155,6 @@ HECHO, `tema-web28.js`, prueba `t28.js`. Cada [data-vivo] trae "⤢ Ver en grand
 
 ## 29 · PIN con el teclado (23 nov)
 HECHO, `tema-pin29.js`, prueba `t29.js`. keydown con #pinov: 0-9 → pind, Retroceso/Supr → pinb, Esc → pinx. pnBloqueada (l58) se comía las teclas: con #pinov el keydown pasa. SIN PUBLICAR.
+
+## 31 · Cerrar viaje de carga que no llegó (23 nov)
+HECHO, `tema-viaje31.js`, prueba `t31.js`. Ricardo: "que la app pregunte cada vez". En la carga de un viaje que ya empezó (173 no lo deja cancelar): "Este viaje no llegó · cerrarlo" → 4 pasos (qué pasó, efectivo regresó/gastó, vacías que regresaron, revisar). Cuentas: viaje en pantalla (S.vws): vjEfeBack += regresó; programado (c.viaje.efe): c173Cancela regresa todo y vjEfeOut += lo que no regresó. Faltante = dio − gastó − regresó → S.faltantes (como liquidación). Vacías: vacEnv = las que regresaron (las demás salen en Descuadres). Carga Cancelada + c.cerr31; sin "Recuperar". Aviso: en curso ≥ 2 días. SIN PUBLICAR.

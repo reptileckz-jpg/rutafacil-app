@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(String(e)));await p.addInitScript(()=>{window.__pnTest=1});
+await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(900);const ev=(f,a)=>p.evaluate(f,a);
+await ev(()=>{var U=S.setup;U.veh=[{n:'NP300',pl:'A1',plEdo:'Baja California',comb:'Gasolina',img:0,odo:1000}];U.per=[{n:'Danu',puesto:'chofer',tel:'1'}];U.cli=[{n:'C1',a:'x',tel:'1',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'}];U.prov=[];S.precio.R=300;S.precio.M=20;suAplicar();_pin.modo=null;
+ var mk=t=>{var c=document.createElement('canvas');c.width=30;c.height=30;var x=c.getContext('2d');x.fillStyle=t;x.fillRect(0,0,30,30);return c.toDataURL('image/jpeg')};window.MK=mk;
+ var ch=S.choferes.find(c=>c.n==='Danu').id;window.CH=ch;S.role='rep';S.chofHoy=ch;S.pinOk['c:'+ch]=true;arLoad(chNuevo(ch));S.salida.ok=true;S.salida.f7=iso(TODAY);S.rutaDia80=iso(TODAY);S.inv.reparto=10;
+ S.salida.fotos={frente:mk('#a00'),atras:mk('#0a0'),izq:mk('#00a'),der:mk('#aa0'),odo:mk('#0aa'),gas:mk('#a0a')};
+ S.stops[0].done=true;S.log.push({c:S.stops[0].c,R:2,M:0,total:600,pago:600,abono:0,h:'13:10',f:iso(TODAY)});S.extras=[{R:3,M:0,foto:mk('#333'),h:'12:00'}];
+ S.salida.fotosFin={frente:mk('#b00'),atras:mk('#0b0'),izq:mk('#00b'),der:mk('#bb0'),odo:mk('#0bb'),gas:mk('#b0b')};S.cierre.fotoReg=mk('#777');S.cierre.odo=num(S.cierre.odoIni)+40;S.cierre.tankOk=true;
+ S.cierre.res=cierreRes();S.cierre.sent=true;render();
+ var F=fotosRuta121(S);window.__F=F;});
+console.log(JSON.stringify(await ev(()=>({ini:Object.keys(__F.ini),fin:Object.keys(__F.fin),tk:__F.tk.length}))));
+await b.close()})();

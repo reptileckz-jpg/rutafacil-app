@@ -3142,3 +3142,4 @@ Publicado 10.20 (APK 1.0.68) el 23 nov: web, APK, reglas y avisoPush en verde; "
 
 ## 23c · Cierre antes de iniciar el día (23 nov)
 HECHO en `tema-antes23.js` (t23: 15 OK). Captura de Ricardo: sin escoger vehículo, la pestaña Cierre abría "Paso 1 de 6 · Odómetro" con el odómetro ya puesto (odoIni + rutaKmEst, prellenado de siempre al escoger vehículo) y "Recorriste 262 km… de más". Ahora sin salida y sin entregas: "Todavía no inicias el día" + "Ir a Ruta" (cierre() y cierrePasos no arman nada). SIN PUBLICAR.
+- 23d: al iniciar el día (sin entregas) cierre.odo = odoIni (marca cierre.odo23); en el cierre la casilla sale vacía con "Escribe lo que marca el tablero" (referencia: lo que mide la ruta), sin "recorrió"/"de más" hasta que escribe; no deja seguir ni enviar sin escribirlo. t72 y t93 ahora escriben el odómetro. SIN PUBLICAR.

@@ -21,5 +21,12 @@ r=await ev(()=>{S.borr={};S.salida.ok=true;S.inv.reparto=20;S.tab.rep='ruta';ren
 r=await tab('viaje');ok(r.tab==='viaje'&&!r.modal,arch+' · ya iniciado: abrir una entrega y salir sin tocar nada no pregunta',r);
 r=await ev(()=>{S.tab.rep='entrega';render();S.d.R=3;var b=document.createElement('button');b.dataset.act='tab';b.dataset.t='viaje';document.body.appendChild(b);b.click();b.remove();return {modal:!!S.modal,tab:S.tab.rep}});
 ok(r.modal,arch+' · ya iniciado y con algo escrito: sí pregunta (como siempre)',r);
+/* 23d · el odómetro final no viene inventado */
+r=await ev(()=>{S.log=[];S.cierre.odoFalta181=false;S.cierre.odoIni=100430;S.cierre.odo=100692;S.cierre.odo23=0;S.cierre.sent=false;S.salida.ok=true;S.modal=null;S.tab.rep='cierre';S.cierreP=0;render();var m=document.querySelector('main');return {odo:S.cierre.odo,val:m.querySelector('#odo')&&m.querySelector('#odo').value,t:m.innerText}});
+ok(r.odo===100430&&r.val===''&&!/recorrió|Recorriste|de más/.test(r.t)&&/Salió con 100,430 km/.test(r.t)&&/Escribe lo que marca el tablero/.test(r.t),arch+' · al iniciar el día el odómetro final no viene puesto: casilla vacía, sin "recorrió" ni "de más"',r.t.slice(0,300));
+r=await ev(()=>{var b=document.querySelector('.wz-nav [data-act="cipaso"]');if(b)b.click();return {p:S.cierreP||0,toast:S.toast}});
+ok(r.p===0,arch+' · sin escribir el odómetro no deja seguir',r);
+r=await ev(()=>{S.cierre.odo=100520;render();var m=document.querySelector('main');return {val:m.querySelector('#odo').value,t:m.innerText}});
+ok(/100,?520/.test(r.val)&&/recorrió 90|Recorriste 90/.test(r.t),arch+' · ya escrito: dice cuánto recorrió (lo que él escribió)',[r.val,r.t.slice(0,250)]);
 await p.close()}
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

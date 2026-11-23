@@ -43,3 +43,41 @@ cierre = function () {
 };
 var _ciP23 = cierrePasos;
 cierrePasos = function () { if (antes23Nada()) return; return _ciP23.apply(this, arguments); };
+/* 23d · (23 nov) "dice cuántos km recorrí y ni siquiera la inicié": al escoger el vehículo la app ponía sola el odómetro final
+   (salida + un cálculo de la ruta) y el cierre decía "recorrió 262 km … 128 km de más" con un número que nadie escribió.
+   Ahora: al iniciar el día (antes de la primera entrega) el odómetro final queda IGUAL al de salida (0 km); en el cierre la casilla
+   sale vacía ("Escribe lo que marca el tablero", con lo que mide la ruta como referencia), no dice "recorrió" ni "de más" hasta que el
+   chofer escribe su número, y no deja seguir sin escribirlo. Solo los km que escribe el chofer cuentan. */
+function odo23Falta() { try { var c = S.cierre; return !!(c && !c.sent && S.salida && S.salida.ok && num(c.odo) === num(c.odoIni)); } catch (e) { return false; } }
+function odo23Limpia() {
+  try {
+    var c = S.cierre; if (S.role !== 'rep' || !c || c.sent || c.odo23 || !(S.salida && S.salida.ok) || (S.log || []).length) return;
+    c.odo23 = 1; if (c.odoIni !== '' && c.odoIni != null) c.odo = num(c.odoIni);
+  } catch (e) {}
+}
+function odo23Pinta() {
+  if (S.role !== 'rep' || S.tab.rep !== 'cierre' || !odo23Falta()) return;
+  var m = document.querySelector('main'), i = m && m.querySelector('#odo'); if (!i) return;
+  if (document.activeElement !== i) i.value = '';
+  i.placeholder = 'Lo que marca';
+  var k = m.querySelector('#kmr'), l = k && k.closest('.lbl'); if (l) l.textContent = 'Salió con ' + num(S.cierre.odoIni).toLocaleString('es-MX') + ' km';
+  var x = m.querySelector('[data-k="km154"]'); if (x) x.remove();
+  Array.prototype.forEach.call(m.querySelectorAll('.card.note'), function (n) {
+    if (!/Revisa el odómetro del tablero/.test(n.textContent)) return;
+    var est = 0; try { est = Math.round(num(rutaKmEst())); } catch (e) {}
+    n.innerHTML = '<b>Escribe lo que marca el tablero</b><div style="font-size:14px">' + (est > 0 ? 'Tu ruta mide ~' + est + ' km: debería marcar cerca de ' + (num(S.cierre.odoIni) + est).toLocaleString('es-MX') + ' km.' : 'El número del odómetro al llegar.') + '</div>';
+  });
+}
+window.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="cipaso"],[data-act="enviar"]'); if (!b || S.role !== 'rep' || !odo23Falta()) return;
+  if (b.dataset.act === 'cipaso' && !((S.cierreP || 0) === 0 && +b.dataset.v > 0)) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  S.cierreP = 0; toast('Escribe el odómetro que marca el tablero'); render(); window.scrollTo(0, 0);
+}, true);
+var _rd23 = render;
+render = function () {
+  odo23Limpia();
+  var r = _rd23.apply(this, arguments);
+  try { odo23Pinta(); } catch (e) {}
+  return r;
+};

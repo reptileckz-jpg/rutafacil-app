@@ -33,6 +33,6 @@ await ev(()=>{S.role='rep';S.dOpen.entmas=true;var i=curStop();resetDraft(cl(S.s
 await ev(()=>{S.tab.rep='ruta';render();document.querySelector('[data-act="rpnew"]').click()});await p.waitForTimeout(150);
 ok(await ev(()=>document.getElementById('rpR').parentElement.classList.contains('step')&&!!document.querySelector('.rp72')),'pedido de un cliente: + y − en las cajas y en su tarjeta');
 await ck('[data-act=kgd][data-p="rp.R"][data-d="1"]');ok(await ev(()=>num(S.rp.R)===1),'el + de las cajas suma');
-await ev(()=>{S.rp=null;S.inv.reparto=10;S.cierre.salioR=20;S.tab.rep='cierre';S.cierreP=5;render()});await p.waitForTimeout(150);await ck('[data-act="enviar"]');await p.waitForTimeout(300);
+await ev(()=>{S.rp=null;S.inv.reparto=10;S.cierre.salioR=20;S.cierre.odo=num(S.cierre.odoIni)+40;S.tab.rep='cierre';S.cierreP=5;render()});await p.waitForTimeout(150);await ck('[data-act="enviar"]');await p.waitForTimeout(300);
 ok(await ev(()=>{var e=document.getElementById('regFb');return S.cierreP!==5&&e&&e.offsetParent!==null}),'cierre: si falta la foto de lo que regresa, lleva al paso de esa foto');
 ok(errs.length===0,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

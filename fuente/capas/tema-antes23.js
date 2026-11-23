@@ -32,3 +32,14 @@ resetDraft = function (c) {
   try { if (S.d) S._d0 = JSON.stringify(S.d); } catch (e) {}
   return r;
 };
+/* 23c · (23 nov, captura de Ricardo) la pestaña Cierre, sin haber iniciado el día, abría el cierre por pasos con un odómetro "ya puesto"
+   y "Recorriste 262 km… 128 km de más". Sin salida y sin ninguna entrega no hay nada que cerrar: solo se avisa. */
+function antes23Nada() { try { return antes23() && !(S.log || []).length && !(S.cierre && S.cierre.sent); } catch (e) { return false; } }
+var _cie23 = cierre;
+cierre = function () {
+  if (!antes23Nada()) return _cie23.apply(this, arguments);
+  return '<h1>Cierre del día</h1><div class="card note" data-x="cie23"><b>Todavía no inicias el día</b><div style="font-size:15px;margin-top:4px">No hay nada que cerrar: el cierre se hace al terminar tu ruta. Primero escoge el vehículo y haz "Iniciar el día" en la pestaña Ruta.</div>'
+    + '<button class="btn" style="margin-top:10px;min-height:56px" data-act="tab" data-t="ruta">Ir a Ruta</button></div>';
+};
+var _ciP23 = cierrePasos;
+cierrePasos = function () { if (antes23Nada()) return; return _ciP23.apply(this, arguments); };

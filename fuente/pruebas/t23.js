@@ -11,6 +11,9 @@ r=await tab('entrega');
 ok(/Primero inicia el reparto/.test(r.m)&&!/Ubicación de/.test(r.m),arch+' · sin iniciar el día, Entrega solo dice "Primero inicia el reparto" (sin la ubicación del primer cliente)',r.m.slice(0,200));
 r=await ev(()=>{S.d&&(S.d.R=7);return 1});r=await tab('viaje');
 ok(r.tab==='viaje'&&!r.modal&&!r.borr,arch+' · al cambiar de pestaña no pregunta "¿Dejas esto a medio llenar?" ni guarda "Sin terminar"',r);
+r=await ev(()=>{S.cierre.odo='';S.tab.rep='cierre';render();var m=document.querySelector('main').innerText;return {m,wz:!!document.querySelector('main .wz-hd'),odo:S.cierre.odo}});
+ok(/Todavía no inicias el día/.test(r.m)&&!/Odómetro final|Revisa el kilometraje/.test(r.m)&&!r.wz&&!r.odo,arch+' · sin iniciar el día, Cierre dice "Todavía no inicias el día" (sin odómetro ni kilometraje)',r.m.slice(0,200));
+r=await ev(()=>{document.querySelector('[data-x="cie23"] [data-act="tab"]').click();return S.tab.rep});ok(r==='ruta',arch+' · "Ir a Ruta" lleva a Ruta',r);
 r=await ev(()=>{S.borr={ent:{c:S.stops[0].c,cur:0,d:JSON.parse(JSON.stringify(S.d||{}))}};S.tab.rep='ruta';render();var b=document.querySelector('[data-act="borrir"][data-k="ent"]');if(b)b.click();return {hay:!!b,tab:S.tab.rep}});
 ok(r.hay&&r.tab==='ruta',arch+' · un "Sin terminar" viejo: "Continuar" no abre la entrega hasta iniciar el día',r);
 /* ya iniciado: abrir la entrega y salir sin tocar nada no pregunta */

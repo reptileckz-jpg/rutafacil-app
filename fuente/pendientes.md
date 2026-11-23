@@ -3139,3 +3139,6 @@ HECHO, `tema-avisos25.js` + `functions/avisos25.js` + regla `n/{neg}/av/plan` en
 Revisión antes de publicar 10.20: TODAS las pruebas (136, sin t67/tk) en 0 FAIL. comp-venta IDÉNTICO (demo y real); comp-cajas real IDÉNTICO, demo solo cambia el orden de Inicio (precio sin fijar arriba).
 
 Publicado 10.20 (APK 1.0.68) el 23 nov: web, APK, reglas y avisoPush en verde; "Avisos al administrador" (avisos.yml) corre cada hora.
+
+## 23c · Cierre antes de iniciar el día (23 nov)
+HECHO en `tema-antes23.js` (t23: 15 OK). Captura de Ricardo: sin escoger vehículo, la pestaña Cierre abría "Paso 1 de 6 · Odómetro" con el odómetro ya puesto (odoIni + rutaKmEst, prellenado de siempre al escoger vehículo) y "Recorriste 262 km… de más". Ahora sin salida y sin entregas: "Todavía no inicias el día" + "Ir a Ruta" (cierre() y cierrePasos no arman nada). SIN PUBLICAR.

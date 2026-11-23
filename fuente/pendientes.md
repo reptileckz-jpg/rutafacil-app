@@ -3119,3 +3119,21 @@ HECHO, `tema-lejos3.js`, prueba `t3.js` (8 OK). Ricardo: "Sugerir y yo decido".
 Revisión antes de publicar 10.19: TODAS las pruebas (133, sin t67/tk) en 0 FAIL (t122 y t172 fallaron solo corriendo 6 a la vez; solas pasan).
 
 Publicado 10.19 (APK 1.0.67) el 21 nov: web y APK en verde.
+
+
+## 23 · Entrega antes de iniciar el día (23 nov)
+HECHO, `tema-antes23.js`, prueba `t23.js`. Ricardo: "me moví a otra pantalla y ya da por hecho que estoy en la primera parada" ("Sin terminar · Entrega a Benavides").
+- Sin salida: BF.ent.abierto = false (no pregunta ni guarda borrador), sin tarjeta "📍 Ubicación de…", "Continuar" de un borrador de entrega no abre nada.
+- 23b: resetDraft vuelve a tomar S._d0 al final (tema-piezas 136 ponía el último pedido después de la foto → salir sin tocar preguntaba). Se probó poner V = R: cambia el flujo de t108 (109) → NO se tocan los números.
+
+## 24 · Precio de hoy (23 nov)
+HECHO, `tema-precio24.js`, prueba `t24.js` (en pruebas la pantalla grande solo sale con window.__pr24Test). t92 acepta el destello en ::after.
+- 24b: pnArranqueListo espera mientras queden urgentes ("Ir" a Vehículos regresaba a Inicio por el tutorial pendiente; t59).
+
+## 25 · Avisos al administrador con la app cerrada (23 nov)
+HECHO, `tema-avisos25.js` + `functions/avisos25.js` + regla `n/{neg}/av/plan` en firestore.rules, prueba `t25.js` (decodifica igual que la nube).
+- Ricardo (opción múltiple): los 4 avisos, a las 9, a todos los administradores, publicar junto.
+- Necesita correr el workflow funciones.yml (publica funciones y reglas). La función programada usa Cloud Scheduler (lo activa firebase deploy).
+- Si ningún celular abre la app en una semana, no hay plan para ese día y no avisa.
+
+Revisión antes de publicar 10.20: TODAS las pruebas (136, sin t67/tk) en 0 FAIL. comp-venta IDÉNTICO (demo y real); comp-cajas real IDÉNTICO, demo solo cambia el orden de Inicio (precio sin fijar arriba).

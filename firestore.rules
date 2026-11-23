@@ -124,6 +124,18 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
+    // 25 · resumen para los avisos al administrador (quién tiene clientes cada día, zona horaria, días que dura la fruta madura):
+    // lo escribe cualquier celular con la app abierta; lo lee la función de la nube "avisosAdmin". "env" lo escribe solo la función.
+    match /n/{neg}/av/plan {
+      allow read: if activo();
+      allow write: if activo() && request.method != 'delete'
+                   && request.resource.data.keys().hasOnly(['v', 'tz', 'vida', 'dias', 'sinCh', 't'])
+                   && request.resource.data.tz is string && request.resource.data.tz.size() < 60;
+    }
+    match /n/{neg}/av/{otro} {
+      allow read, write: if false;
+    }
+
     // todo lo demás, cerrado
     match /{todo=**} {
       allow read, write: if false;

@@ -2726,7 +2726,7 @@ var _confMsg0=confMsg;confMsg=function(D){if(D.act==='lphoy'||D.act==='lpinter'|
 
 /* ===== 2. Ajustes con tuerca ===== */
 var GEAR='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
-var APP_VER='10.19';
+var APP_VER='10.20';
 function acercaHTML(){var lg=(document.querySelector('.logo img')||{}).src;return '<div class="card" style="text-align:center;padding:18px 16px">'+(lg?'<img src="'+lg+'" alt="Logo de Plátanos Nietos" style="width:72px;height:72px;border-radius:20px;object-fit:cover">':'')+'<div style="font-size:19px;font-weight:800;margin-top:8px">Plátanos Nietos</div><div class="lbl">Control de reparto · versión '+APP_VER+'</div><div style="margin-top:10px;font-size:15px">Desarrollada por <b>Ricardo Nieto Mejía</b></div><div class="lbl" style="margin-top:10px;font-size:13px">© '+TODAY.getFullYear()+' Ricardo Nieto Mejía. Todos los derechos reservados. Prohibida su copia o distribución sin permiso del autor.</div></div>'}
 function ajHTML(){if(!S.aj)return '';var adm=S.role==='admin'&&!S.encOn;
  return '<div id="ajov" style="position:fixed;inset:0;z-index:70;background:var(--bg);overflow-y:auto"><div style="max-width:440px;margin:0 auto;padding:12px 16px 40px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><span class="gear" style="border:0;background:none">'+GEAR+'</span><b class="grow" style="font-size:21px">Ajustes</b><button class="helpb" style="margin:0" data-act="ajx" aria-label="Cerrar ajustes">×</button></div>'
@@ -9772,7 +9772,7 @@ try{if(typeof NB_SH!=='undefined')['fac76'].forEach(function(k){if(NB_SH.indexOf
    - el error queda anotado (Ajustes → Problemas reportados) para poder arreglar la causa ===================== */
 var FALLO77={n:0,ult:null,enRender:false};
 /* mapa de errores: el armado pone aquí en qué renglón empieza cada capa, para que "index.html:40123" diga "l80.js:57" */
-var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4401,"l10.js"],[4456,"l11.js"],[4473,"l12.js"],[4519,"l13.js"],[4644,"l14.js"],[4714,"l15.js"],[4774,"l16.js"],[4868,"l17.js"],[4892,"l18.js"],[4962,"l19.js"],[5021,"l20.js"],[5068,"l21.js"],[5112,"l22.js"],[5287,"l23.js"],[5336,"l24.js"],[5352,"l25.js"],[5379,"l26.js"],[5500,"l27.js"],[5549,"l28.js"],[5680,"l29.js"],[5805,"l30.js"],[5848,"l31.js"],[5874,"l32.js"],[5962,"l33.js"],[5980,"l34.js"],[6035,"l35.js"],[6090,"l36.js"],[6182,"l37.js"],[6201,"l38.js"],[6285,"l39.js"],[6365,"l40.js"],[6482,"l41.js"],[6541,"l42.js"],[6640,"l43.js"],[6729,"l44.js"],[6824,"l45.js"],[6907,"l46.js"],[6964,"l47.js"],[7078,"l48.js"],[7131,"l49.js"],[7167,"l50.js"],[7268,"l51.js"],[7278,"l52.js"],[7408,"l53.js"],[7428,"l54.js"],[7501,"l55.js"],[7530,"l56.js"],[7610,"l57.js"],[7672,"l58.js"],[7790,"l59.js"],[7839,"l60.js"],[7993,"l61.js"],[8049,"l62.js"],[8186,"l63.js"],[8344,"l64.js"],[8370,"l65.js"],[8471,"l66.js"],[8566,"l67.js"],[8593,"l68.js"],[8715,"l69.js"],[8906,"l70.js"],[9108,"l71.js"],[9211,"l72.js"],[9322,"l73.js"],[9396,"l74.js"],[9513,"l75.js"],[9663,"l76.js"],[9766,"l77.js"],[9876,"l78.js"],[10009,"l79.js"],[10117,"l80.js"],[10240,"l81.js"],[10388,"l82.js"],[10629,"l83.js"],[10697,"l84.js"],[10810,"l85.js"],[10869,"tema-fresco2.js"],[10910,"tema-dibujar1.js"],[11414,"tema-rutadia.js"],[11579,"l86.js"],[11638,"l87.js"],[11679,"l88.js"],[11729,"l89.js"],[11777,"l90.js"],[11882,"tema-dibujar2.js"],[11909,"tema-sueltas.js"],[12000,"tema-piezas.js"],[12206,"tema-ruta.js"],[12434,"tema-fichas.js"],[12551,"tema-cierre.js"],[12712,"tema-inicio.js"],[12840,"tema-ajustes.js"],[13088,"tema-nube.js"],[13146,"tema-viaje.js"],[13287,"tema-ubica.js"],[13428,"tema-personal.js"],[13491,"tema-pin.js"],[13608,"tema-navega.js"],[13653,"tema-cajas.js"],[13689,"tema-camara.js"],[13721,"tema-rutas.js"],[13763,"tema-estadisticas.js"],[13804,"tema-guia.js"],[13854,"tema-bodega.js"],[13923,"tema-cobranza.js"],[14083,"tema-pantallas.js"],[14304,"tema-avisos.js"],[14472,"tema-reparte.js"],[14538,"tema-vehiculos.js"],[14689,"tema-notas.js"],[14764,"tema-taras.js"],[14877,"tema-cargarmas.js"],[14916,"tema-cargas.js"],[15032,"tema-cobro.js"],[15068,"tema-horario.js"],[15107,"tema-sueldos.js"],[15249,"tema-ganado.js"],[15294,"tema-cierres.js"],[15427,"tema-finanzas.js"],[15500,"tema-cuadre.js"],[15894,"tema-retencion.js"],[15985,"tema-iniciodia.js"],[16090,"tema-entregapasos.js"],[16163,"tema-push.js"],[16257,"tema-ticket.js"],[16343,"tema-toast.js"],[16383,"tema-version.js"],[16437,"tema-angosta.js"],[16477,"tema-ancha.js"],[16511,"tema-barra.js"],[16595,"tema-mas.js"],[16656,"tema-glossy.js"],[16984,"tema-ruta168.js"],[17271,"tema-app170.js"],[17385,"tema-app171.js"],[17627,"tema-ancho172.js"],[17697,"tema-ajorden172.js"],[17770,"tema-carga173.js"],[17903,"tema-toque174.js"],[17951,"tema-may176.js"],[17984,"tema-vacias177.js"],[18036,"tema-calle178.js"],[18083,"tema-km180.js"],[18137,"tema-datos181.js"],[18177,"tema-dia182.js"],[18215,"tema-azul1.js"],[18271,"tema-taras2.js"],[18331,"tema-may4.js"],[18426,"tema-tope5.js"],[18476,"tema-atras6.js"],[18659,"tema-desc6.js"],[18972,"tema-cero7.js"],[19032,"tema-calma8.js"],[19077,"tema-pago9.js"],[19133,"tema-cargar10.js"],[19167,"tema-scroll11.js"],[19210,"tema-desp12.js"],[19285,"tema-fotos13.js"],[19362,"tema-falta14.js"],[19386,"tema-quieto15.js"],[19489,"tema-km16.js"],[19611,"tema-bill17.js"],[19641,"tema-rojo18.js"],[19696,"tema-cero19.js"],[19819,"tema-regreso20.js"],[19955,"tema-fin21.js"],[20050,"tema-lejos3.js"]];/*@@MAPA*/
+var CAPAS77=[[3304,"l1.js"],[3395,"l2.js"],[3550,"l3.js"],[3643,"l4.js"],[3721,"l5.js"],[3836,"l6.js"],[3929,"l6b.js"],[3972,"tema-fresco1.js"],[3988,"l7.js"],[4116,"l8.js"],[4127,"l9.js"],[4401,"l10.js"],[4456,"l11.js"],[4473,"l12.js"],[4519,"l13.js"],[4644,"l14.js"],[4714,"l15.js"],[4774,"l16.js"],[4868,"l17.js"],[4892,"l18.js"],[4962,"l19.js"],[5021,"l20.js"],[5068,"l21.js"],[5112,"l22.js"],[5287,"l23.js"],[5336,"l24.js"],[5352,"l25.js"],[5379,"l26.js"],[5500,"l27.js"],[5549,"l28.js"],[5680,"l29.js"],[5805,"l30.js"],[5848,"l31.js"],[5874,"l32.js"],[5962,"l33.js"],[5980,"l34.js"],[6035,"l35.js"],[6090,"l36.js"],[6182,"l37.js"],[6201,"l38.js"],[6285,"l39.js"],[6365,"l40.js"],[6482,"l41.js"],[6541,"l42.js"],[6640,"l43.js"],[6729,"l44.js"],[6824,"l45.js"],[6907,"l46.js"],[6964,"l47.js"],[7078,"l48.js"],[7131,"l49.js"],[7167,"l50.js"],[7268,"l51.js"],[7278,"l52.js"],[7408,"l53.js"],[7428,"l54.js"],[7501,"l55.js"],[7530,"l56.js"],[7610,"l57.js"],[7672,"l58.js"],[7790,"l59.js"],[7839,"l60.js"],[7993,"l61.js"],[8049,"l62.js"],[8186,"l63.js"],[8344,"l64.js"],[8370,"l65.js"],[8471,"l66.js"],[8566,"l67.js"],[8593,"l68.js"],[8715,"l69.js"],[8906,"l70.js"],[9108,"l71.js"],[9211,"l72.js"],[9322,"l73.js"],[9396,"l74.js"],[9513,"l75.js"],[9663,"l76.js"],[9766,"l77.js"],[9876,"l78.js"],[10009,"l79.js"],[10117,"l80.js"],[10240,"l81.js"],[10388,"l82.js"],[10629,"l83.js"],[10697,"l84.js"],[10810,"l85.js"],[10869,"tema-fresco2.js"],[10910,"tema-dibujar1.js"],[11414,"tema-rutadia.js"],[11579,"l86.js"],[11638,"l87.js"],[11679,"l88.js"],[11729,"l89.js"],[11777,"l90.js"],[11882,"tema-dibujar2.js"],[11909,"tema-sueltas.js"],[12000,"tema-piezas.js"],[12206,"tema-ruta.js"],[12434,"tema-fichas.js"],[12551,"tema-cierre.js"],[12712,"tema-inicio.js"],[12840,"tema-ajustes.js"],[13088,"tema-nube.js"],[13146,"tema-viaje.js"],[13287,"tema-ubica.js"],[13428,"tema-personal.js"],[13491,"tema-pin.js"],[13608,"tema-navega.js"],[13653,"tema-cajas.js"],[13689,"tema-camara.js"],[13721,"tema-rutas.js"],[13763,"tema-estadisticas.js"],[13804,"tema-guia.js"],[13854,"tema-bodega.js"],[13923,"tema-cobranza.js"],[14083,"tema-pantallas.js"],[14304,"tema-avisos.js"],[14472,"tema-reparte.js"],[14538,"tema-vehiculos.js"],[14689,"tema-notas.js"],[14764,"tema-taras.js"],[14877,"tema-cargarmas.js"],[14916,"tema-cargas.js"],[15032,"tema-cobro.js"],[15068,"tema-horario.js"],[15107,"tema-sueldos.js"],[15249,"tema-ganado.js"],[15294,"tema-cierres.js"],[15427,"tema-finanzas.js"],[15500,"tema-cuadre.js"],[15894,"tema-retencion.js"],[15985,"tema-iniciodia.js"],[16090,"tema-entregapasos.js"],[16163,"tema-push.js"],[16257,"tema-ticket.js"],[16343,"tema-toast.js"],[16383,"tema-version.js"],[16437,"tema-angosta.js"],[16477,"tema-ancha.js"],[16511,"tema-barra.js"],[16595,"tema-mas.js"],[16656,"tema-glossy.js"],[16984,"tema-ruta168.js"],[17271,"tema-app170.js"],[17385,"tema-app171.js"],[17627,"tema-ancho172.js"],[17697,"tema-ajorden172.js"],[17770,"tema-carga173.js"],[17903,"tema-toque174.js"],[17951,"tema-may176.js"],[17984,"tema-vacias177.js"],[18036,"tema-calle178.js"],[18083,"tema-km180.js"],[18137,"tema-datos181.js"],[18177,"tema-dia182.js"],[18215,"tema-azul1.js"],[18271,"tema-taras2.js"],[18331,"tema-may4.js"],[18426,"tema-tope5.js"],[18476,"tema-atras6.js"],[18659,"tema-desc6.js"],[18972,"tema-cero7.js"],[19032,"tema-calma8.js"],[19077,"tema-pago9.js"],[19133,"tema-cargar10.js"],[19167,"tema-scroll11.js"],[19210,"tema-desp12.js"],[19285,"tema-fotos13.js"],[19362,"tema-falta14.js"],[19386,"tema-quieto15.js"],[19489,"tema-km16.js"],[19611,"tema-bill17.js"],[19641,"tema-rojo18.js"],[19696,"tema-cero19.js"],[19819,"tema-regreso20.js"],[19955,"tema-fin21.js"],[20050,"tema-lejos3.js"],[20145,"tema-antes23.js"],[20181,"tema-precio24.js"],[20265,"tema-avisos25.js"]];/*@@MAPA*/
 function capaDe77(n){n=+n;if(!n||!CAPAS77.length)return '';var c=null;for(var i=0;i<CAPAS77.length;i++){if(CAPAS77[i][0]<n)c=CAPAS77[i];else break}return c?c[1]+':'+(n-c[0]):'base:'+n}
 function capasPila77(st){var L=[];String(st||'').split('\n').forEach(function(x){var m=/(\.html|localhost\/?)[^\s()]*:(\d+):\d+\)?\s*$/.exec(x);if(m)m[1]=m[2];if(m){var c=capaDe77(m[1]);if(c&&L.indexOf(c)<0)L.push(c)}});return L.slice(0,5).join(' ← ')}
 function falloTxt77(e,donde){var m=(e&&(e.message||String(e)))||'error',st=String(e&&e.stack||'').split('\n').slice(0,6).join('\n');
@@ -20141,6 +20141,174 @@ window.addEventListener('click', function (e) {
   e.preventDefault(); e.stopImmediatePropagation();
   S.tab.admin = 'rutas'; S.rt81 = { dia: b.dataset.t.split(':')[1] === 'man' ? 'man' : 'hoy', sel: {} }; render();
 }, true);
+
+//@@capa tema-antes23.js
+/* ===================== TEMA · Antes de iniciar el día, la pestaña Entrega no arma ninguna entrega (23 nov · punto 23 de la nueva numeración) =====================
+   Ricardo: "quiero iniciar mi ruta … por curiosidad me moví a otra pantalla y ya da por hecho que estoy en la primera parada"
+   (le salió "Sin terminar · Entrega a Benavides" y "¿Dejas esto a medio llenar?" sin haber empezado).
+   Causa: la pestaña Entrega, sin salida, decía "Primero inicia el reparto" pero abajo seguía la tarjeta "📍 Ubicación de Benavides" y el
+   formulario de la primera parada contaba como abierto; al cambiar de pestaña preguntaba si dejarlo a medio llenar.
+   Ahora, mientras no termina "Iniciar el día":
+     - Entrega solo dice "Primero inicia el reparto" (sin tarjeta de ubicación de ningún cliente).
+     - No hay formulario de entrega abierto: no pregunta "¿Dejas esto a medio llenar?" ni guarda "Sin terminar".
+     - Un "Sin terminar · Entrega a …" que se haya guardado así: "Continuar" no abre nada hasta iniciar el día (sí se puede borrar).
+   No cambia ninguna cuenta. Se arma al final.
+   ============================================================================================ */
+function antes23() { return S.role === 'rep' && !(S.salida && S.salida.ok); }
+try {
+  var _bfEnt23 = BF.ent.abierto;
+  BF.ent.abierto = function () { if (antes23()) return false; return _bfEnt23.apply(this, arguments); };
+} catch (e) {}
+var _cfUb23 = cfUb70;
+cfUb70 = function () { if (antes23()) { var x = document.querySelector('main [data-x="cfub70"]'); if (x) x.remove(); return; } return _cfUb23.apply(this, arguments); };
+window.addEventListener('click', function (e) {
+  if (!antes23()) return;
+  var b = e.target.closest && e.target.closest('[data-act]'); if (!b) return;
+  var a = b.dataset.act;
+  if (a === 'borrir' && b.dataset.k === 'ent') {
+    e.preventDefault(); e.stopImmediatePropagation(); toast('Primero inicia el día; luego sigues esa entrega'); return;
+  }
+}, true);
+/* 23b · al abrir una entrega (app real) el último pedido del cliente se ponía DESPUÉS de tomar la "foto" del formulario (tema-piezas 136):
+   salir sin tocar nada preguntaba "¿Dejas esto a medio llenar?". Ahora la foto se toma al final. Los números del formulario no se tocan. */
+var _rD23 = resetDraft;
+resetDraft = function (c) {
+  var r = _rD23.apply(this, arguments);
+  try { if (S.d) S._d0 = JSON.stringify(S.d); } catch (e) {}
+  return r;
+};
+
+//@@capa tema-precio24.js
+/* ===================== TEMA · Precio de hoy: pantalla grande al abrir y tarjeta que destella (23 nov · punto 24 de la nueva numeración) =====================
+   Ricardo: "antes al abrir la app el administrador por primera vez se abría una pantalla grande que le pedía fijar el precio de hoy;
+   ahora solo lo hace en la tarjeta y la tarjeta no tiene animaciones … que brinque o destelle, por si omite el precio de hoy".
+   Causa: el aviso grande salía dentro de la ventanita "¿Qué sigue?" junto con otros avisos y, después de las 12 sin movimiento, se quitaba;
+   la tarjeta tenía un contorno rojo muy leve.
+   Ahora, mientras el precio de hoy no esté fijado (administrador):
+     - La primera vez del día que abre la app (en ese celular) sale una pantalla grande "💲 Fija el precio de hoy" con el precio de ayer y
+       "Cambiar el precio" / "Está bien, el de ayer" / "Después". Sale a cualquier hora.
+     - En Inicio la tarjeta "Precio de hoy" sube hasta arriba, en rojo, con un destello que late (solo transform/opacity, GPU) y da un
+       brinquito al entrar a Inicio. Al fijarlo, vuelve a su lugar y se calma.
+   No cambia ninguna cuenta (los botones son los mismos de siempre). Se arma al final.
+   ============================================================================================ */
+var PR24 = { k: 'pr24' };
+function pr24Falta() { try { return S.role === 'admin' && !S.encOn && S.precio && num(S.precio.R) > 0 && S.precio.conf !== iso(TODAY); } catch (e) { return false; } }
+function pr24Visto() { try { return localStorage.getItem(PR24.k) === iso(TODAY); } catch (e) { return PR24.v === iso(TODAY); } }
+function pr24Marca() { PR24.v = iso(TODAY); try { localStorage.setItem(PR24.k, iso(TODAY)); } catch (e) {} }
+(function () {
+  var st = document.createElement('style'); st.id = 'pr24css';
+  st.textContent = [
+    '[data-x="precio65"].pr24{position:relative;border:3px solid #DC2626!important;background:color-mix(in srgb,#DC2626 7%,var(--surface))!important;animation:none!important;overflow:visible}',
+    '[data-x="precio65"].pr24::after{content:"";position:absolute;inset:-3px;border-radius:inherit;border:3px solid #DC2626;pointer-events:none;will-change:transform,opacity;animation:pr24ring 1.6s ease-out infinite}',
+    '[data-x="precio65"].pr24.pr24b{animation:pr24brinco .9s ease-in-out 2!important}',
+    '@keyframes pr24ring{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.06);opacity:0}}',
+    '@keyframes pr24brinco{0%,100%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(0)}70%{transform:translateY(-4px)}}',
+    '#pr24ov{position:fixed;inset:0;z-index:75;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}',
+    '#pr24ov .w{background:var(--surface);border-radius:22px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3)}',
+    '#pr24ov .pp{display:flex;gap:10px;margin:12px 0}#pr24ov .pp>div{flex:1;border:1px solid var(--line);border-radius:14px;padding:10px 12px}#pr24ov .pp b{display:block;font-size:26px}',
+    '#pr24ov .btn{width:100%;min-height:56px;margin-top:8px;font-size:18px}'
+  ].join('');
+  document.head.appendChild(st);
+})();
+function pr24Pantalla() {
+  var ov = document.getElementById('pr24ov');
+  var ver = !(window.__pnTest && !window.__pr24Test) && pr24Falta() && !pr24Visto() && S.tab.admin === 'inicio' && !S.menu && !(S.vac || {})[S.adminYo] && !(typeof _pin !== 'undefined' && _pin && _pin.modo) && !(S.setup && !S.setup.fin) && !document.getElementById('bienv') && !S.modal;
+  if (!ver) { if (ov) ov.remove(); return; }
+  if (ov) return;
+  var P = S.precio || {};
+  ov = document.createElement('div'); ov.id = 'pr24ov'; ov.className = 'fadein';
+  ov.innerHTML = '<div class="w popin" role="dialog" aria-label="Precio de hoy"><div style="font-size:24px;font-weight:900">💲 Fija el precio de hoy</div>'
+    + '<div class="lbl" style="font-size:15px;margin-top:4px">Todavía no lo fijas. Mientras, los choferes cobran con el de ayer:</div>'
+    + '<div class="pp"><div><span class="lbl">Caja de roatán</span><b>' + money(num(P.R)) + '</b></div><div><span class="lbl">Kilo de macho</span><b>' + money(num(P.M)) + '</b></div></div>'
+    + '<button class="btn" data-act="pr24cam">Cambiar el precio</button><button class="btn sec" data-act="pr24ayer">Está bien, el de ayer</button>'
+    + '<button class="link" style="width:100%;min-height:48px;margin-top:6px" data-act="pr24x">Después</button></div>';
+  document.body.appendChild(ov);
+}
+function pr24Tarjeta() {
+  var c = document.querySelector('main [data-x="precio65"]'); if (!c) return;
+  if (S.role !== 'admin' || S.tab.admin !== 'inicio' || !pr24Falta()) { c.classList.remove('pr24', 'pr24b'); return; }
+  if (!c.classList.contains('pr24')) c.classList.add('pr24');
+  var m = c.parentElement, primero = m && m.querySelector(':scope > .card, :scope > [data-x]');
+  if (m && primero && primero !== c) m.insertBefore(c, primero);
+  if (PR24.vista !== 'inicio') { c.classList.remove('pr24b'); void c.offsetWidth; c.classList.add('pr24b'); setTimeout(function () { c.classList.remove('pr24b'); }, 1900); }
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('[data-act="pr24cam"],[data-act="pr24ayer"],[data-act="pr24x"]'); if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation(); pr24Marca();
+  var ov = document.getElementById('pr24ov'); if (ov) ov.remove();
+  var a = b.dataset.act;
+  if (a === 'pr24ayer') { var y = document.createElement('button'); y.dataset.act = 'precioayer'; y.style.display = 'none'; document.body.appendChild(y); y.click(); y.remove(); return; }
+  if (a === 'pr24cam') { render(); var ed = document.querySelector('main [data-x="precio65"] [data-act="precioed"]'); if (ed) ed.click(); else { var c = document.querySelector('main [data-x="precio65"]'); if (c) c.scrollIntoView({ block: 'center' }); } return; }
+  render();
+}, true);
+/* el aviso "Precio de hoy" de la ventanita "¿Qué sigue?" lo hace ahora la pantalla grande */
+var _pI24 = popItems;
+popItems = function () { var L = _pI24.apply(this, arguments); try { L = L.filter(function (x) { return !(x && x.t === 'Precio de hoy'); }); } catch (e) {} return L; };
+var _rd24 = render;
+render = function () {
+  var r = _rd24.apply(this, arguments);
+  try { pr24Tarjeta(); pr24Pantalla(); } catch (e) { console.error('pr24', e); }
+  try { PR24.vista = S.role === 'admin' ? S.tab.admin : ''; } catch (e) {}
+  return r;
+};
+/* 24b · al tocar "Ir" en un aviso urgente que lleva a otra pantalla (p. ej. "Mensualidad por vencer" → Vehículos), el tutorial que esperaba
+   a que se terminaran los urgentes arrancaba en ese momento y regresaba a Inicio. Ahora sigue esperando mientras queden urgentes por ver. */
+var _pal24 = pnArranqueListo;
+pnArranqueListo = function () {
+  if (!_pal24.apply(this, arguments)) return false;
+  try {
+    if (typeof _popPausa !== 'undefined' && _popPausa && (S.popVisto || {})[S.role] !== iso(TODAY) && (S.popI || 0) < popItems().length) return false;
+  } catch (e) {}
+  return true;
+};
+
+//@@capa tema-avisos25.js
+/* ===================== TEMA · Avisos al administrador aunque no abra la app (23 nov · punto 25 de la nueva numeración) =====================
+   Ricardo: "al administrador, si no abre la app, no hay nada que le diga que no se inició la ruta, que hay clientes con entregas pendientes,
+   que la fruta se va a madurar…". Escogió (opción múltiple): los 4 avisos, a las 9, a todos los administradores.
+   Cómo funciona:
+     1) Cualquier celular con la app abierta (administrador o chofer) deja en la nube un resumen chico: n/{neg}/av/plan =
+        { tz (zona horaria del celular), vida (días que dura la fruta madura), dias: { 'AAAA-MM-DD': { idChofer: { n, k (cuántos clientes),
+          ped (pedidos) } } } para hoy y los 6 días siguientes, sinCh (pedidos de hoy sin chofer) }. Lo arma con lo mismo que "Armar rutas"
+        (lista81), así la nube no repite las cuentas de la app. Solo se vuelve a escribir si cambió (y cuando mucho cada 2 minutos).
+     2) La función de la nube "avisosAdmin" (functions/index.js) revisa cada hora, a la hora del negocio:
+        8:00  precio de hoy sin fijar · fruta madura que se pasa hoy o mañana
+        9:00 y 10:00  choferes con clientes hoy que no han hecho "Iniciar el día"
+        14:00 y 17:00  cómo van las entregas ("Danu lleva 5 de 12") y pedidos de hoy sin chofer
+        21:00  choferes que no mandaron su cierre y cierres sin recibir
+        y los manda a todos los celulares de administrador (el mismo camino que los permisos: n/{neg}/push con ch "admins").
+   No cambia ninguna cuenta. Se arma al final.
+   ============================================================================================ */
+var AV25 = { h: '', t: 0 };
+function av25Plan() {
+  var tz = 'America/Mexico_City';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
+  var P = { v: 1, tz: tz, vida: 3, dias: {}, sinCh: [] };
+  try { P.vida = num(vidaDias()) || 3; } catch (e) {}
+  var CH = chs81().filter(function (c) { return esCh(c); });
+  for (var i = 0; i < 7; i++) {
+    var f = iso(new Date(TODAY.getTime() + i * 864e5)), D = {};
+    CH.forEach(function (c) {
+      var L = []; try { L = lista81(+c.id, f).L || []; } catch (e) {}
+      if (!L.length) return;
+      D[c.id] = { n: String(c.n || 'Chofer').split(' ')[0], k: L.length, ped: L.filter(function (x) { return x.ped; }).length };
+    });
+    P.dias[f] = D;
+  }
+  try { P.sinCh = sinCh81(iso(TODAY)).filter(function (c) { return c.ped; }).map(function (c) { return String(c.n || '').slice(0, 40); }).slice(0, 10); } catch (e) {}
+  return P;
+}
+function av25Sube() {
+  try {
+    if (typeof NB === 'undefined' || !NB.on || !NB.listo || !NB.ad || !NB.ad.set) return;
+    if (Date.now() - AV25.t < 120000) return;
+    var P = av25Plan(), h = JSON.stringify(P);
+    if (h === AV25.h) return;
+    AV25.t = Date.now(); P.t = Date.now();
+    NB.ad.set(nbP('av/plan'), P, false).then(function () { AV25.h = h; }, function (e) { console.error('av25', e); });
+  } catch (e) {}
+}
+setInterval(av25Sube, 60000); setTimeout(av25Sube, 8000);
 
 
 /* ---------- Estructura ---------- */

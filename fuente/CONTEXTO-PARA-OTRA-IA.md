@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 21 de noviembre de 2026 (versión 10.19, APK 1.0.67; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 23 de noviembre de 2026 (versión 10.20, APK 1.0.68; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,8 +12,8 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.19** (21 nov) · APK **1.0.67**. **Todo está publicado.** · web https://platanos-nietos.web.app.
-**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **22**: todos publicados (del 1 al 22, incluido el 3: cliente lejos de su ruta → sugerir pasarlo, el administrador decide). El siguiente punto nuevo es el **23**.
+**Versión publicada:** app **10.20** (23 nov) · APK **1.0.68**. **Todo está publicado.** · web https://platanos-nietos.web.app.
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **25**: todos publicados (del 1 al 25). El siguiente punto nuevo es el **26**. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
@@ -70,6 +70,11 @@
 - **21:** al entregar a todos: tarjeta "🏁 Terminaste tu ruta: regresa a la bodega" + Google Maps se abre solo UNA vez al tocar "Seguir con la ruta" (`tema-fin21.js`).
 - **22:** en "Hoy" de Inicio: "🏭 Danu ya llegó a la bodega · trae $…, N cajas" (GPS de ≤ 15 min a ≤ 300 m, ruta terminada o regreso pedido, sin cierre) (`tema-fin21.js`).
 - **3:** "📍 Quedan lejos de su ruta" en Armar rutas (≥ 3 km del resto de su ruta, con otro chofer a la mitad o menos y ≥ 2 km de ahorro): Pasarlo solo hoy/mañana, Siempre, o No (no vuelve a sugerirlo, `S.lejos3No` en la nube) + aviso en "Hoy" (`tema-lejos3.js`).
+
+### Lo que se hizo del 23 al 25 (23 nov · 10.20)
+- **23:** antes de "Iniciar el día", la pestaña Entrega solo dice "Primero inicia el reparto": no arma la entrega del primer cliente ni pregunta "¿Dejas esto a medio llenar?"; y abrir una entrega y salir sin tocar nada ya no pregunta (la foto del formulario se tomaba antes de poner el último pedido, tema-piezas 136) (`tema-antes23.js`).
+- **24:** precio de hoy sin fijar: pantalla grande "💲 Fija el precio de hoy" la primera vez del día (por celular, a cualquier hora) y la tarjeta sube arriba en rojo con destello (GPU) y brinquito; el aviso salió de la ventanita "¿Qué sigue?". También: el tutorial ya no arranca (y te regresa a Inicio) al tocar "Ir" en un aviso urgente que lleva a otra pantalla (`tema-precio24.js`).
+- **25:** avisos push al administrador con la app cerrada: la app deja `n/{neg}/av/plan` (tz, vida de la fruta, choferes y clientes por día para 7 días, pedidos sin chofer) y la función programada `avisosAdmin` (functions/avisos25.js, cada hora al minuto 2) manda: 8:00 precio sin fijar y fruta madura que se pasa; 9:00 y 10:00 rutas sin iniciar; 14:00 y 17:00 entregas pendientes; 21:00 cierres sin mandar / sin recibir. Una vez cada uno (`av/env`), a todos los administradores (push "admins", tipo "aviso"). Se publica con el workflow "Publicar avisos push y reglas de la nube" (funciones.yml) (`tema-avisos25.js`).
 
 ### Ideas que quedaron solo como idea (no pendientes)
 - Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.

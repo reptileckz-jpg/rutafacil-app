@@ -41,10 +41,10 @@ function arr33Txt() {
 function arr33Banner() {
   if (S.role !== 'admin' || S.tab.admin !== 'bodega' || !arr33Activo()) return;
   var m = document.querySelector('main'); if (!m || m.querySelector('[data-x="arr33"]')) return;
-  var d = document.createElement('div'); d.className = 'card'; d.dataset.x = 'arr33';
-  d.setAttribute('style', 'padding:12px 14px;border:2px solid #F59E0B;background:color-mix(in srgb,#F59E0B 10%,var(--surface))');
+  var d = document.createElement('div'); d.className = 'card a42c a42-o'; d.dataset.x = 'arr33';
+  d.setAttribute('style', 'padding:14px 16px');
   var q = arr33Quedan();
-  d.innerHTML = '<b>🟡 Periodo de arranque · ' + (q <= 1 ? 'hoy es el último día' : 'te quedan ' + q + ' días') + ' (hasta el ' + esc(fmtF(S.arr33.fin)) + ')</b><div style="font-size:15px;margin-top:4px">' + arr33Txt() + '</div>';
+  d.innerHTML = (typeof A42 !== 'undefined' ? '<span class="a42i" aria-hidden="true" style="float:left;margin:0 12px 6px 0">' + A42.ic.o + '</span>' : '') + '<b>Periodo de arranque · ' + (q <= 1 ? 'hoy es el último día' : 'te quedan ' + q + ' días') + ' (hasta el ' + esc(fmtF(S.arr33.fin)) + ')</b><div style="font-size:15px;margin-top:4px">' + arr33Txt() + '</div>';
   var h = m.querySelector('h1'); if (h) h.after(d); else m.prepend(d);
 }
 /* contar la bodega: no pide volver a contar y la diferencia no es merma */

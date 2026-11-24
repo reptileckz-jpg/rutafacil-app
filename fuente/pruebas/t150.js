@@ -46,7 +46,7 @@ ok(/Kilometraje de más/.test(r)&&/Recorrió 300 km/.test(r),'al recibir el cier
 /* ---------- 155 ---------- */
 await ev(()=>{S.role='admin';S.pinOk[pinKey()]=true;var c=S.cli[1];c.cred=800;c.credDesde=iso(new Date(TODAY.getTime()-20*864e5));c.recF91=null;S.tab.admin='inicio';render()});
 r=await ev(()=>{/* 30: los pendientes se atienden en el centro de pendientes */c30Ver('ht:cb');var o=document.getElementById('c30ov');var t=o?o.innerText.replace(/\s+/g,' '):'';S.c30=null;render();return [toca155().length,t.replace('Resolver ›','Ir ›')]});
-ok(r[0]===1&&/Cobrar a 1 clientes? con plazo vencido \(\$800\) · 📲 hoy toca recordarle a 1/.test(r[1])&&/Ir ›/.test(r[1]),'155 · en "Hoy" (Inicio): "Cobrar a 1 cliente… · 📲 hoy toca recordarle a 1" · Ir ›',r);
+ok(r[0]===1&&/Cobrar a 1 clientes? con plazo vencido \(\$800\)(?: ·)?\s+📲 hoy toca recordarle a 1/.test(r[1])&&/Ir ›/.test(r[1]),'155 · en "Hoy" (Inicio): "Cobrar a 1 cliente… · 📲 hoy toca recordarle a 1" · Ir ›',r);
 r=await ev(()=>{c30Ver('ht:cb');document.querySelector('#c30ov [data-act="cob155"],#c30ov [data-act="cli92"]').click();return [S.tab.admin,S.cob91&&S.cob91.seq,document.querySelector('main').innerText.match(/Mandando a los vencidos: 1 de 1/)!=null]});
 ok(r[0]==='clientes'&&r[1].length===1&&r[2],'lo toca y empieza a mandar uno por uno',r);
 r=await ev(()=>{S.cli[1].recF91=iso(new Date(TODAY.getTime()-3*864e5));S.cob91=null;S.tab.admin='inicio';render();return [toca155().length,c30Items().some(o=>/hoy toca recordarle/i.test(o.t))]});

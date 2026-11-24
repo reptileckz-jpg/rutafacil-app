@@ -71,7 +71,7 @@ function vc40HTML() {
 /* Inicio: los cobros que vas a hacer tú */
 function vc40Card() {
   var L = vc40Pend().filter(function (x) { return x.quien === 'yo'; }); if (!L.length) return '';
-  return '<div class="card" data-x="vc40ini" style="padding:12px 14px;border:2px solid #16A34A"><b>💵 Vas a cobrar</b>' + L.map(function (x) {
+  return '<div class="card" data-x="vc40ini" style="padding:12px 14px"><b>💵 Vas a cobrar</b>' + L.map(function (x) {
     var c = cl(x.c) || { n: '¿?', cred: 0 };
     return '<div style="border-top:1px solid var(--line);padding:8px 0;margin-top:6px"><div style="display:flex;justify-content:space-between;gap:8px"><b>' + esc(c.n) + '</b><span>debe ' + money(num(c.cred)) + '</span></div>'
       + '<div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm" style="flex:2;min-height:46px" data-act="vc40ya" data-i="' + esc(x.id) + '">Ya cobré</button><button class="btn sm sec" style="flex:1;min-height:46px" data-act="vc40quita" data-i="' + esc(x.id) + '">Quitar</button></div></div>';

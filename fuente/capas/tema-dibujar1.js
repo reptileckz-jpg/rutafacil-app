@@ -129,6 +129,9 @@ var _rTr=render;render=function(){var antes={};OV_ANIM.forEach(function(x){antes
    no mueve tarjetas en cada redibujado (moverlas quitaba el foco del campo donde escribes) */
 var _rAj172=render;render=function(){var r=_rAj172.apply(this,arguments);try{if(typeof ajOrden172==='function')ajOrden172()}catch(e){console.error('aj172',e)}return r};
 
+/* render · 42 (24 nov): tarjetas de aviso nuevas (tema-alerta42.js). Va AQUÍ, antes de "morph": se arregla la copia nueva y la pantalla no parpadea */
+var _rA42=render;render=function(){var r=_rA42.apply(this,arguments);try{if(typeof a42Deco==='function')a42Deco()}catch(e){console.error('a42',e)}return r};
+
 /* render · de l10 */
 var _rMorph=render;render=function(){
  var live=document.getElementById('root');

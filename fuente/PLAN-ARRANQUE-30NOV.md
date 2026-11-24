@@ -83,6 +83,12 @@ plátanos y baja de peso; así se sabe cuánto se pierde de lo que se cargó). E
 - **41 Libreta para imprimir** (`fuente/ayuda/hacer-libreta.py`): hoja del chofer por día, hoja del dueño por día, hoja para comparar
   cada noche (libreta / app / diferencia / qué pasó) y hoja de préstamos y cobros fuera de ruta.
 
+- **42 Tarjetas de aviso nuevas** (`tema-alerta42.js`, t42): Ricardo mandó un diseño y escogió la Opción 1 (Bento 3D: tarjeta blanca,
+  ícono cuadrado con relieve, título + etiqueta una sola vez + explicación + números en pastillas, botones grandes) para todos los
+  avisos y la Opción 3 (tarjeta oscura) solo para "no cuadra". Se quitó el molde genérico (fondo rosa + franja gruesa) en "Hoy",
+  el Centro de pendientes, las tarjetas `card alert/good/note`, las de franja, "Precio de hoy" y "Pendientes en …". Se aplica antes
+  del morph (gancho en `tema-dibujar1.js`). El texto original queda escondido en cada aviso (otras partes lo reconocen por texto).
+
 ## Otras decisiones de ese día
 - Reporte de errores: **todos** lo pueden usar; va a la app + WhatsApp.
 - Revisión de pantallas (Bodega, Cargas, Clientes): ver `concepts_brief.md` (revisado por 7 revisores). Piloto solo en Bodega primero.

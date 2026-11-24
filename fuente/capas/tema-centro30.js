@@ -96,12 +96,23 @@ function c30HTML() {
   var g = G[x.sec], i = Math.min(x.i || 0, g.length - 1), o = g[i];
   h += '<button class="link" style="min-height:44px" data-act="c30sec" data-v="">← Secciones</button>'
     + '<div class="lbl"><b>' + C30.sec[x.sec] + ' · ' + (i + 1) + ' de ' + g.length + '</b></div><div class="wz-hd">' + g.map(function (_, j) { return '<i class="' + (j <= i ? 'on' : '') + '"></i>'; }).join('') + '</div>'
-    + '<div class="card" style="padding:18px 16px;margin-top:8px;border:' + (o.u ? '2.5px solid #DC2626' : '1px solid var(--line)') + '"><div style="font-size:13px;font-weight:800;color:' + (o.u ? '#B91C1C' : 'var(--muted)') + '">' + (o.u ? '🔴 URGENTE' : '🟡 PENDIENTE') + '</div>'
-    + '<div style="font-size:21px;font-weight:900;margin-top:4px;line-height:1.25">' + esc(o.t) + '</div>' + (o.d ? '<div style="font-size:15px;margin-top:6px">' + esc(o.d) + '</div>' : '')
+    + c30Tarjeta42(o)
     + '<button class="btn" style="width:100%;margin-top:14px;min-height:56px;font-size:18px" ' + c30Attr(o) + '>Resolver ›</button>'
     + '<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec" style="flex:1;min-height:50px" data-act="c30man" data-id="' + esc(o.id) + '">Recordarme mañana</button><button class="btn sec" style="flex:1;min-height:50px" data-act="c30ok" data-id="' + esc(o.id) + '">✓ Listo</button></div></div>'
     + '<div style="display:flex;gap:8px;margin-top:10px">' + (i > 0 ? '<button class="btn sec" style="flex:1" data-act="c30i" data-v="' + (i - 1) + '">← Anterior</button>' : '') + (i < g.length - 1 ? '<button class="btn sec" style="flex:1" data-act="c30i" data-v="' + (i + 1) + '">Siguiente →</button>' : '') + '</div>';
   return ovW70('c30ov', '🔔 Pendientes', h, 'c30x');
+}
+/* 42 · la tarjeta con el diseño nuevo (Bento 3D; oscura si no cuadra; "Urgente" una sola vez) */
+function c30Tarjeta42(o) {
+  var dd0 = String(o.d || ''), src = dd0 && dd0.indexOf(String(o.t || '')) > -1 ? dd0 : o.t;
+  var P = typeof a42Partes === 'function' ? a42Partes(src) : { tit: o.t, desc: '', met: null }, dark = typeof A42 !== 'undefined' && A42.noCuadra.test(o.t), niv = o.u ? 'r' : 'o';
+  var dd = src === dd0 ? '' : dd0, dup = !dd || dd.toLowerCase().indexOf(String(P.tit).toLowerCase().slice(0, 18)) > -1;
+  var desc = [P.desc, dup ? '' : dd].filter(function (x) { return x; }).join(' · ');
+  return '<div class="card a42c a42-' + niv + (dark ? ' a42k' : '') + '" style="padding:18px 16px;margin-top:8px">'
+    + '<div style="display:flex;gap:12px;align-items:flex-start"><span class="a42i" aria-hidden="true">' + (typeof A42 !== 'undefined' ? A42.ic[niv] : '') + '</span><div style="flex:1;min-width:0">'
+    + '<span class="a42g">' + (dark ? 'No cuadra' : (o.u ? 'Urgente' : 'Pendiente')) + '</span>'
+    + '<div class="a42t" style="font-size:21px;font-weight:900;margin-top:6px;line-height:1.25">' + esc(P.tit) + '</div>' + (desc ? '<div class="a42d" style="font-size:16px;margin-top:6px;color:var(--muted)">' + esc(desc) + '</div>' : '')
+    + (typeof a42MetHTML === 'function' ? a42MetHTML(P.met) : '') + '<span hidden>' + esc(o.t) + '</span></div></div>';
 }
 function c30Attr(o) {
   var d = o.av ? { act: 'avgo', k: encodeURIComponent(o.av) } : o.tarea ? (o.tarea.k === 'cb' ? (o.tarea.r155 ? { act: 'cob155' } : { act: 'cli92', v: 'cob' }) : { act: 'popgo', t: String(o.tarea.go || 'inicio') }) : o.item != null ? { act: 'hoyir', i: String(o.item) } : { act: 'cli92', v: 'cob' };

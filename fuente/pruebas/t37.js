@@ -51,6 +51,13 @@ r=await ev(()=>{var p=S.probs.filter(x=>!x.auto&&!x.res)[0];var b=document.creat
 ok(r.res,'"✓ Arreglado" marca el reporte',r);
 await clic('dev37v',{v:'cel'});r=await ev(()=>(document.querySelector('main')||{}).innerText||'');
 ok(/celular/i.test(r),'pestaña de celulares',r.slice(0,200));
+/* compartir con Claude: texto + capturas en una imagen */
+r=await ev(async()=>{S.dev37={v:'rep'};S.tab.admin='dev37';render();var bt=[...document.querySelectorAll('main [data-act="dev37comp"]')].map(b=>b.textContent);var llam=null;window.natCompartir=function(img,nom,o){llam={img:img.slice(0,23),nom,o};return Promise.resolve(true)};
+ var b=document.createElement('button');b.dataset.act='dev37comp';b.dataset.p='0';document.body.appendChild(b);b.click();b.remove();await new Promise(r=>setTimeout(r,800));
+ var img=await dev37Hoja(dev37ConCaptura().slice(0,5),0,1);var im=new Image();await new Promise(r=>{im.onload=r;im.src=img});return {bt,llam,w:im.width,h:im.height}});
+ok(r.bt.length>=1&&/Compartir con Claude \(con capturas\)/.test(r.bt[0]),'pantalla de desarrollador: "📤 Compartir con Claude (con capturas)"',r.bt);
+ok(r.llam&&/^data:image\/jpeg/.test(r.llam.img)&&r.llam.o.wa===false,'arma UNA imagen con el texto y las capturas y abre "Compartir" (no WhatsApp directo)',r.llam);
+ok(r.w===800&&r.h>300,'la imagen trae los reportes con su captura (alto '+r.h+' px)',{w:r.w,h:r.h});
 /* en camino no pregunta (chofer moviéndose) */
 r=await ev(async()=>{S.role='rep';R37.ult=0;S.sk37=null;S.rp56=null;navigator.geolocation.getCurrentPosition=function(ok){ok({coords:{speed:12}})};var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(30);f(-30);f(30);await new Promise(r=>setTimeout(r,100));return !!S.sk37});
 ok(!r,'si el chofer va manejando, sacudir no pregunta nada',r);

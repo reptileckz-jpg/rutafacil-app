@@ -190,10 +190,45 @@ document.addEventListener('click', function (e) {
   if (a === 'dev37x') { S.tab.admin = 'inicio'; render(); return; }
   if (a === 'dev37claude') {
     var tx = dev37Paquete(); try { navigator.clipboard.writeText(tx).then(function () { toast('Copiado: pégalo en el chat con Claude'); }, function () { toast('No se pudo copiar'); }); } catch (er) {}
-    try { window.open('https://wa.me/?text=' + encodeURIComponent(tx.slice(0, 3500)), '_blank'); } catch (er) {}
+    return;
+  }
+  /* compartir con Claude: el texto y las capturas, juntos en UNA imagen (el APK comparte un archivo a la vez), de 5 en 5 */
+  if (a === 'dev37comp') {
+    var pg = +b.dataset.p || 0, R = dev37ConCaptura(), parte = R.slice(pg * 5, pg * 5 + 5);
+    if (!parte.length) { toast('No hay reportes pendientes'); return; }
+    try { navigator.clipboard.writeText(dev37Paquete()).catch(function () {}); } catch (er) {}
+    dev37Hoja(parte, pg, Math.ceil(R.length / 5)).then(function (img) {
+      return natCompartir(img, 'reportes-' + (pg + 1) + '.jpg', { mime: 'image/jpeg', wa: false, texto: 'Reportes de la app ' + (pg + 1) + ' de ' + Math.ceil(R.length / 5) });
+    }).then(function (ok) { toast(ok ? 'Escoge la app de Claude. El texto también quedó copiado: pégalo en el chat.' : 'No se pudo compartir: el texto quedó copiado'); }, function () { toast('No se pudo armar la imagen'); });
     return;
   }
 }, true);
+function dev37ConCaptura() { return (S.probs || []).filter(function (p) { return p && !p.res; }).slice(-60).reverse(); }
+/* una imagen larga: por cada reporte, su texto y debajo su captura */
+function dev37Hoja(L, pg, tot) {
+  var W = 800, M = 20, cargar = function (src) { return new Promise(function (ok) { if (!src || String(src).slice(0, 5) !== 'data:') return ok(null); var im = new Image(); im.onload = function () { ok(im); }; im.onerror = function () { ok(null); }; im.src = src; }); };
+  return Promise.all(L.map(function (p) { return cargar(p.foto); })).then(function (IM) {
+    var cv = document.createElement('canvas'), x = cv.getContext('2d'), lin = function (t, max) { var o = [], w = '', P = String(t || '').split(/\s+/); x.font = '20px sans-serif'; P.forEach(function (q) { var n = w ? w + ' ' + q : q; if (x.measureText(n).width > max && w) { o.push(w); w = q; } else w = n; }); if (w) o.push(w); return o; };
+    var bloques = L.map(function (p, i) {
+      var cab = (p.auto ? '⚙️ automático' : '🐞 #' + p.n) + ' · ' + (p.f || '') + ' ' + (p.h || '') + ' · ' + (p.rol || '') + ' · v' + (p.v || '?') + ' · ' + (p.donde || '');
+      var T = lin(cab, W - 2 * M).concat(lin(p.txt || p.k || '', W - 2 * M)).concat(p.errs && p.errs.length ? lin('Errores: ' + p.errs.join(' | '), W - 2 * M).slice(0, 4) : []).concat(p.aud37 ? ['(trae audio: se mandó por WhatsApp)'] : []);
+      var im = IM[i], ih = im ? Math.min(1500, Math.round(im.height * (W - 2 * M) / im.width)) : (p.foto ? 30 : 0);
+      return { T: T, im: im, ih: ih, sinCarga: !im && !!p.foto };
+    });
+    var H = 70 + bloques.reduce(function (a, k) { return a + 30 + k.T.length * 28 + k.ih + 30; }, 0);
+    cv.width = W; cv.height = Math.min(H, 30000); x.fillStyle = '#fff'; x.fillRect(0, 0, W, cv.height);
+    x.fillStyle = '#111'; x.font = 'bold 24px sans-serif'; x.fillText('Reportes de la app · ' + (pg + 1) + ' de ' + tot + ' · ' + fmtF(iso(TODAY)), M, 40);
+    var y = 70;
+    bloques.forEach(function (k) {
+      x.strokeStyle = '#ddd'; x.beginPath(); x.moveTo(M, y); x.lineTo(W - M, y); x.stroke(); y += 30;
+      x.fillStyle = '#111'; k.T.forEach(function (t, j) { x.font = (j === 0 ? 'bold ' : '') + '20px sans-serif'; x.fillText(t, M, y); y += 28; });
+      if (k.im) { x.drawImage(k.im, M, y, W - 2 * M, k.ih); x.strokeStyle = '#999'; x.strokeRect(M, y, W - 2 * M, k.ih); y += k.ih; }
+      else if (k.sinCarga) { x.fillStyle = '#888'; x.font = '18px sans-serif'; x.fillText('(la captura todavía no baja de la nube: abre el reporte y vuelve a intentar)', M, y + 20); y += 30; }
+      y += 30;
+    });
+    return cv.toDataURL('image/jpeg', 0.82);
+  });
+}
 function dev37SinNombres(t) { t = String(t || ''); try { (S.cli || []).forEach(function (c) { if (c && c.n && c.n.length > 2) t = t.split(c.n).join('cliente #' + c.id); }); } catch (e) {} return t; }
 function dev37Paquete() {
   var L = (S.probs || []).filter(function (p) { return p && !p.res; }).slice(-60), v = (typeof PN_VER !== 'undefined' ? PN_VER : '');
@@ -207,7 +242,8 @@ function dev37HTML() {
   var man = P.filter(function (p) { return p && !p.auto; }), aut = P.filter(function (p) { return p && p.auto; });
   var h = '<button class="link" data-act="dev37x">← Volver</button><h1>🛠️ Desarrollador</h1><div class="chips" role="group" style="margin:6px 0;flex-wrap:wrap">'
     + [['rep', 'Reportes (' + man.filter(function (p) { return !p.res; }).length + ')'], ['aut', 'Errores automáticos (' + aut.filter(function (p) { return !p.res; }).length + ')'], ['cel', 'Celulares']].map(function (o) { return '<button data-act="dev37v" data-v="' + o[0] + '" aria-pressed="' + (v === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div>'
-    + '<button class="btn" style="width:100%;min-height:52px;margin:6px 0 10px" data-act="dev37claude">🤖 Mandar todo a Claude (sin nombres de clientes)</button>';
+    + (function () { var n = dev37ConCaptura().length, k = Math.ceil(n / 5), o = ''; for (var i = 0; i < k; i++) o += '<button class="btn" style="width:100%;min-height:54px;margin:6px 0 0" data-act="dev37comp" data-p="' + i + '">📤 Compartir con Claude (con capturas)' + (k > 1 ? ' · ' + (i * 5 + 1) + ' a ' + Math.min(n, i * 5 + 5) : '') + '</button>'; return o; })()
+    + '<button class="btn sec" style="width:100%;min-height:48px;margin:8px 0 10px" data-act="dev37claude">📋 Copiar solo el texto (sin nombres de clientes)</button>';
   var tarjeta = function (p) {
     return '<div class="card" style="padding:12px 14px' + (p.res ? ';opacity:.6' : '') + '"><div style="display:flex;gap:8px;align-items:baseline"><b style="flex:1">' + (p.auto ? '⚙️ ' : '🐞 #' + p.n + ' ') + esc(String(p.txt || p.k || '').slice(0, 140)) + '</b></div>'
       + '<div class="lbl">' + esc(p.f || '') + ' ' + esc(p.h || '') + ' · ' + esc(p.q || '') + ' · ' + esc(p.donde || '') + (p.v ? ' · v' + esc(p.v) : '') + '</div>'

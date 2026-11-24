@@ -10,7 +10,7 @@ const doble=async(p,pt)=>{await p.touchscreen.tap(pt.x,pt.y);await p.waitForTime
 let p,r,pt;
 /* (1) Ir › de Cuadrar la caja */
 p=await nueva();await p.evaluate(()=>{S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='inicio';render();scrollTo(0,0)});
-/* 30: se atiende desde el centro de pendientes */await p.evaluate(()=>{var o=c30Items().find(o=>o.tarea&&o.tarea.go==='inicio');c30Ver(o.id)});await p.waitForTimeout(200);
+/* 30: se atiende desde el centro de pendientes · 34: "Cerrar la caja" es del sábado */await p.evaluate(()=>{TODAY=new Date('2026-11-28T12:00:00');S.cajaAyerSkip=true;render();var o=c30Items().find(o=>o.tarea&&o.tarea.go==='inicio');c30Ver(o.id)});await p.waitForTimeout(200);
 pt=await punto(p,'#c30ov [data-act="popgo"][data-t="inicio"]');await p.touchscreen.tap(pt.x,pt.y);await p.waitForTimeout(600);
 r=await p.evaluate(()=>{var t=document.querySelector('main details[data-k="cajadia"]');return {abierta:!!(t&&t.open),visible:t?t.getBoundingClientRect().top<innerHeight&&t.getBoundingClientRect().bottom>0:false,y:scrollY}});
 ok(r.abierta&&r.visible&&r.y>0,'Inicio › "Cuadrar la caja · Ir ›" abre el cierre de caja y baja hasta él',r);await p.close();

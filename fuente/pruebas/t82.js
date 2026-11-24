@@ -5,6 +5,7 @@ const p=await (await b.newContext({viewport:{width:400,height:860}})).newPage();
 await p.goto('file:///mnt/user-data/outputs/platanos-primera-vez.html');await p.waitForTimeout(900);const ev=(f,a)=>p.evaluate(f,a);let r;
 // la app real armada con el asistente (y un gasto viejo sin fecha, de antes de la 8.2)
 await ev(()=>{var U=S.setup;U.yo='Dueño';U.veh=[{n:'Camioneta A',pl:'A1',plEdo:'Baja California',comb:'Diésel',img:0,odo:1000}];U.per=[{n:'Chofer Uno',puesto:'chofer',tel:'1'}];U.cli=[{n:'Cliente Uno',a:'Calle 1',tel:'1',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'},{n:'Cliente Dos',a:'Calle 2',tel:'2',dias:[0,1,2,3,4,5,6],cred:0,vac:0,ch:'0'}];U.prov=[];S.precio.R=300;S.precio.M=20;suAplicar();
+ /* 33: esta prueba revisa el conteo normal (sin periodo de arranque) */S.arr33={ini:'2000-01-01',fin:'2000-01-14'};S.cnt82=null;
  S.role='admin';S.pinOk[pinKey()]=true;S.tab.admin='estadisticas';render()});
 r=await ev(()=>({h:HIST.length,t:document.querySelector('main').innerText.slice(0,200)}));ok(r.h===0&&/Todavía no hay historial/.test(r.t),'sin movimientos: Estadísticas dice que todavía no hay historial',r);
 // un día de trabajo archivado (ayer): 2 entregas, gastos y una merma; y una venta en bodega hoy
@@ -85,6 +86,6 @@ ok(r.n===1&&r.m===-180,'58 · taras de más: se le abonan al chofer',r);
 // 59 · día sin movimientos
 r=await ev(()=>{S.chofHoy=null;S.chSt={};S.rutasHist=[];S.vlVentas=[];S.gastos=S.gastos.filter(g=>(g.f||g.f82)!==iso(TODAY));var F=cuadre82(iso(TODAY));return {ok:F.every(o=>o.e==='ok'&&/sin movimientos/.test(o.L[0])),sm:sinMov82(iso(TODAY))}});
 ok(r.sm&&r.ok,'59 · día sin movimientos: "¿Cuadran las cuentas?" lo dice y todo en verde',r);
-r=await ev(()=>{var y=ayerIso();S.gastos=S.gastos.filter(g=>(g.f||g.f82)!==y);S.cargas=S.cargas.filter(c=>c.fecha!==y);S.primerDia=false;S.cajaAyerSkip=false;S.cajaCierres=[];S.sinTrabajo=[];var p=cajaAyerPend();return {p,st:S.sinTrabajo}});ok(r.p===false&&r.st.length===1,'59 · ayer sin movimientos: no pide el cierre de caja',r);
+r=await ev(()=>{var y=ayerIso();S.gastos=S.gastos.filter(g=>(g.f||g.f82)!==y);S.cargas=S.cargas.filter(c=>c.fecha!==y);S.primerDia=false;S.cajaAyerSkip=false;S.cajaCierres=[];S.sinTrabajo=[];var p=cajaAyerPend();return {p,st:S.sinTrabajo}});ok(r.p===false,'59 · ayer sin movimientos: no pide el cierre de caja (34: el cierre ahora es semanal)',r);
 ok(errs.length===0,'sin errores',errs);
 console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

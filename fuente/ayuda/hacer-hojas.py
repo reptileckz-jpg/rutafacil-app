@@ -17,10 +17,10 @@ pdfmetrics.registerFontFamily('S', normal='S', bold='SB', italic='S', boldItalic
 AQUI = os.path.dirname(os.path.abspath(__file__))
 VERDE = colors.HexColor('#166534')
 
-tit = ParagraphStyle('t', fontName='SB', fontSize=22, leading=27, textColor=VERDE, spaceAfter=4)
+tit = ParagraphStyle('t', fontName='SB', fontSize=20, leading=24, textColor=VERDE, spaceAfter=4)
 sub = ParagraphStyle('s', fontName='S', fontSize=12.5, leading=16, textColor=colors.HexColor('#444444'), spaceAfter=10)
 sec = ParagraphStyle('h', fontName='SB', fontSize=15.5, leading=19, textColor=colors.white)
-txt = ParagraphStyle('p', fontName='S', fontSize=12.5, leading=16)
+txt = ParagraphStyle('p', fontName='S', fontSize=12, leading=15.2)
 nota = ParagraphStyle('n', fontName='S', fontSize=11.5, leading=15, textColor=colors.HexColor('#444444'))
 
 
@@ -63,6 +63,8 @@ hoja('hoja-duenio.pdf', 'Ruta Fácil · Hoja del dueño',
              'Si un chofer pide permiso (fiar, mayoreo u otro precio), te llega un aviso al celular: contesta <b>Sí</b> o <b>No</b>.',
              'Cuando llega fruta: <b>Cargas</b> y recibe la carga (cajas, kilos y vacías).',
              'Cuando pagues algo o compres algo: <b>Más → Gastos</b>.',
+             'Si vas a cobrarle a un cliente fuera de la ruta: en su ficha toca <b>"Voy a cobrarle"</b> y escoge quién va (tú o un chofer). Cuando cobres, en <b>Inicio</b> toca <b>"Ya cobré"</b>; si fuiste solo a eso en tu carro, el negocio te paga la gasolina.',
+             'Si un empleado te pide prestado: <b>Más → Personal → Sueldos</b>, en su tarjeta toca <b>"Prestarle dinero"</b>. Escoge si se lo descuentas de su sueldo o si te lo paga en efectivo; sale el recibo para WhatsApp.',
          ]),
          ('En la tarde, cuando regresa cada chofer', [
              'En <b>Inicio</b> sale <b>"ya llegó a la bodega"</b>. Revisa su cierre y <b>recibe el efectivo</b> que te entrega.',
@@ -107,6 +109,7 @@ hoja('hoja-chofer.pdf', 'Ruta Fácil · Hoja del chofer',
              'Al final toca <b>"Revisar y guardar"</b> y luego manda la <b>nota</b> por WhatsApp al cliente.',
              'Si quiere <b>fiado, mayoreo u otro precio</b>, pídelo en la app y espera la respuesta del administrador.',
              'Si es un cliente nuevo, agrégalo desde tu ruta.',
+             'Si te sale <b>"Pasa a cobrarle a …"</b>: es solo para cobrar. No le dejas fruta: anota lo que te pagó y lo entregas en tu cierre.',
          ]),
          ('Al terminar la ruta', [
              'La app te dice <b>"Terminaste tu ruta: regresa a la bodega"</b>. Toca <b>"Cómo llegar a la bodega"</b> si lo necesitas.',

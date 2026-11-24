@@ -72,12 +72,16 @@ toca "Empezar", "¿Qué hago aquí?" y "Pedir ayuda") + hojas de ayuda en `fuent
 plátanos y baja de peso; así se sabe cuánto se pierde de lo que se cargó). El arranque solo ajusta las **cajas**. La app le dice al papá:
 "ve contando; con cada conteo se ajusta; tienes hasta el … ; después las diferencias cuentan como merma", y los últimos 4 días sale en "Hoy".
 
-## Para DESPUÉS del arranque (Ricardo, 24 nov: "primero termina lo que ya llevamos")
-- **Préstamo o adelanto a empleados:** "Don Ricardo, ¿me adelanta $1,000 o $2,000 y me los descuenta en una o dos quincenas, o se los
-  pago en tantos días?". Ojo: la app ya guarda `adelantos` y `prestamos` (NB_SH); revisar qué hace hoy antes de hacer algo nuevo.
-- **"Cobrar después" a un cliente:** al terminar la ruta (o al salir a comer en su carro particular) el dueño o el chofer dice "le voy a
-  cobrar a tal cliente". Falta ver cómo se anota ese cobro fuera de la ruta. Con el carro particular: ¿se paga la gasolina como gasto del
-  negocio, la mitad, o nada (porque aprovechó la salida)? Entrevistar a Ricardo con opciones.
+## Hecho después (24 nov, Ricardo pidió adelantarlo) · puntos 39 a 41
+- **39 Préstamos a empleados** (`tema-prest39.js`, t39): solo lo anota el dueño (Personal → Sueldos → "💵 Prestarle dinero", por pasos).
+  Cada vez se escoge: descontado del sueldo en N pagos, o en efectivo para una fecha (recordatorio en "Hoy" si se pasa). Avisa si ya
+  debe otro y si pasa de 2 semanas de su sueldo; recibo por WhatsApp; si deja de trabajar se descuenta del finiquito. Prestar baja la
+  caja pero NO es gasto; el descuento del sueldo se anota como gasto de Sueldos con caja:false (el gasto de sueldos sigue completo).
+- **40 "🚗 Voy a cobrarle"** (`tema-cobrar40.js`, t40): en la ficha del cliente que debe → ¿quién va? Yo (queda en Inicio, "Ya cobré":
+  cuánto y ¿cómo fuiste? → si fue solo a cobrar en su carro, el negocio paga la gasolina como "Mi carro (para el negocio)") o un chofer
+  (le llega como parada de solo cobro, 0 cajas; lo entrega en su siguiente cierre). El chofer también se lo puede poner él mismo.
+- **41 Libreta para imprimir** (`fuente/ayuda/hacer-libreta.py`): hoja del chofer por día, hoja del dueño por día, hoja para comparar
+  cada noche (libreta / app / diferencia / qué pasó) y hoja de préstamos y cobros fuera de ruta.
 
 ## Otras decisiones de ese día
 - Reporte de errores: **todos** lo pueden usar; va a la app + WhatsApp.

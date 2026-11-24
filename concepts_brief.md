@@ -1,197 +1,182 @@
-# Bodega, Cargas y Clientes más fáciles de leer y de llenar (y el error "Las taras no cuadran por lugar")
+# Bodega, Cargas y Clientes más fáciles de usar (y el error "Las taras no cuadran por lugar")
 
-**Autor:** Ricardo Nieto
-**Fecha:** 23 de noviembre de 2026
-**Tipo:** lluvia de ideas antes de programar (todavía no se cambia nada de la app)
-
-> **Cómo se hizo este documento.** Se pidió revisarlo con 7 revisores, cada uno desde un punto de vista distinto. En esta sesión no se pudieron lanzar: **ninguno corrió** (ver la tabla al final). Lo que sigue sale de leer directamente el código de la app (base, capas, pruebas y bitácora). Por eso hay que tomarlo como una primera revisión hecha por una sola persona, no como el resultado de los 7 revisores. Si se quiere la revisión completa, hay que volver a pedirla.
+* **Autor:** Ricardo Nieto (la idea) · redactado con Claude
+* **Para:** Ricardo Nieto (decide y prueba)
+* **Fecha:** 24 de noviembre de 2026
+* **Revisión:** 7 revisores independientes ("peces dorados"), cada uno desde un ángulo distinto. Todos terminaron (ver el anexo al final).
+* **Documentos que se citan:** `fuente/CONTEXTO-PARA-OTRA-IA.md` (contexto y reglas) · `fuente/REGLAS-NUMEROS.md` (reglas de los números) · `fuente/pendientes.md` (bitácora). "Punto N" es siempre de la numeración nueva.
 
 ---
 
 ## 1. Resumen
 
-Ricardo se confunde al capturar y al buscar datos en **Bodega**, **Cargas (viajes de carga)** y **Clientes** porque cada pantalla enseña todo al mismo tiempo. La propuesta es:
+**El problema.** Ricardo se confunde al capturar y al consultar en **Bodega**, **Cargas** (los viajes de carga del administrador) y **Clientes**. Esas pantallas enseñan todo al mismo tiempo.
 
-- **Mismo diseño de siempre.** Mismas tarjetas, botones, pestañas, chips, "← Volver" y la misma forma de entrar a cada pantalla. No se rediseña nada.
-- **Arriba, solo lo esencial.** Lo demás se abre con **"Ver todo ›"** en su propia pantalla. Una tarjeta por tema, nunca tarjetas dentro de tarjetas.
-- **Todo lo que se captura va por pasos.** Un paso por pantalla, con "Paso N de M" y "← Atrás", igual que "Iniciar el día" y la venta en ruta.
-- **No se pierde ningún dato.** Todo lo que hoy se ve sigue en la app, aunque quede en otra pantalla.
-- **Se revisa el único error que llegó a la nube en 14 días:** "Las taras no cuadran por lugar". Salió 2 veces, en las versiones 10.11 y 10.20.
+**La propuesta.**
+- Mismo diseño de siempre (mismas tarjetas, colores, letra y animaciones). Lo que cambia es el **acomodo** y el **orden de los pasos**.
+- Arriba de cada pantalla, solo lo esencial. Todo lo demás, con "Ver todo ›".
+- Las capturas largas, por pasos. Las cortas no se tocan.
+- No se pierde ningún dato.
 
-Ricardo es quien dirá si funcionó, probando la app él mismo.
+**Lo que encontraron los revisores (lo más importante primero).**
 
-**Lo más importante que se encontró:**
+1. **El error de las taras tiene otra causa de la que creíamos, y probablemente es pequeño.** No se perdieron taras.
+   - La revisión que falla compara las taras de los clientes **sin convertirlas a número**.
+   - Basta un cliente con ese dato guardado como texto ("3") o vacío para que diga "no cuadra", aunque las sumas sí cuadren.
+   - Pasa por un momento: justo después de que baja algo de la nube y antes de que la pantalla se redibuje. Por eso salió solo 2 veces.
+   - El aviso no dice qué parte falló, por eso parecía que todo sumaba bien.
+2. **Riesgo real de perder taras sin que nadie lo note.** Cuando la app encuentra un número que no puede leer (por ejemplo "1,200" con coma), lo cambia por **0** "por seguridad". Ese 0 se sube a la nube como si fuera una resta de verdad. Esto va contra la regla de no borrar nada y hay que corregirlo con tu permiso.
+3. **La herramienta que lee los errores de la nube los imprime sin cifrar en GitHub, que es público.** Algunos tipos de error podrían llevar nombres de clientes. Hay que cifrarla antes de volver a usarla. La vez que la usamos solo salieron números de taras.
+4. **Reorganizar las 3 pantallas a la vez es arriesgado.** Muchas partes de la app (avisos con "Ir ›", el centro de pendientes, el tutorial) llegan a lugares exactos de esas pantallas. Si algo se mueve, esos botones pueden dejar de llevar al lugar correcto sin que nadie lo note.
+   - Los revisores proponen una salida simple: **"Ver todo" es la pantalla de hoy tal cual**, y arriba se pone una versión corta.
+   - Probarlo primero solo en **Bodega**.
+5. **Ya existe la pieza para capturar por pasos** (la misma de "alta de cliente" y del abono). No hay que construir otra. El abono a cliente y el pago a proveedor **ya van por pasos con "¿Seguro?"**. Lo que sí falta es "Pagó todo", que no pide confirmación.
 
-1. **El error de las taras se esconde solo.** La app tiene una regla que marca como "arreglado en la 9.9" ese mismo error cada vez que vuelve a salir. Además, el detalle que manda no enseña todas las partes de la cuenta. Así no se puede saber de dónde viene.
-2. **Muchas partes de la app "buscan" cosas en estas pantallas por su texto o por su lugar.** Hay unas 87 referencias en unos 50 archivos, entre ellas los avisos con "Ir ›"/"Atender", el tutorial y "Pendientes". Si algo se mueve a "Ver todo", esos botones pueden dejar de llevar al lugar correcto **sin que nadie lo note**.
-3. **Mover lo que se captura a pasos toca dinero y cajas.** Pasa al recibir una carga y anotar las cajas vacías que regresaron, al meter a madurar y al registrar un abono. Hay que usar exactamente las mismas cuentas de hoy y comprobarlo con las pruebas de comparación.
-
----
-
-## 2. Análisis
-
-### 2.1 Qué pasa hoy en cada pantalla
-
-**Bodega** (`bodega()` en la base y `tema-bodega.js`, más muchas capas que le agregan tarjetas):
-- Hasta arriba salen la sugerencia de cuánto meter a madurar y las existencias (roatán y macho, y adentro la parte de maduración). Luego vienen otras frutas, una tarjeta por cada lote madurando y la fruta madura por antigüedad. Después siguen las cajas sin contar, el buró de taras, la tarjeta de taras, el conteo de bodega, las bodegas y el aviso "Las taras no cuadran".
-- **"Meter a maduración" es un formulario de 5 datos en la misma pantalla:** producto, cantidad, clima, temperatura, horas y método. Es justo lo que Ricardo pidió que fuera por pasos.
-- El conteo de bodega ("Registrar conteo") también es un formulario largo en la pantalla.
-
-**Cargas** (`cargas()` y `cargaCard()` en la base, más `tema-viaje.js`, `tema-carga173.js` y `tema-viaje31.js`):
-- Arriba salen el pronóstico y el próximo lote. Abajo, **todas** las cargas, que se abren ahí mismo. Al final vienen el historial de viajes, las plantillas, las básculas y los proveedores.
-- **Al abrir una carga salen a la vez:** el viaje programado, "Completar con lo que se compre" (5 campos), la tarjeta de costos, "Ver detalle", la liquidación del viaje, "Cajas vacías que regresaron", "Llega a", "Marcar como recibida", la calidad con su nota, "Pagar al proveedor", "Modificar", el historial de cambios y "Agregar un gasto que se pasó" (2 campos).
-- **Hay una tarjeta dentro de otra tarjeta** (la de "Pagaste / Viaje / Le debes", dentro de la tarjeta de la carga). Va contra la regla de Ricardo.
-
-**Clientes** (`tema-pantallas.js` `cli92` y la ficha `fiCli` en `l2.js`, más `tema-fichas.js` y `tema-cobranza.js`):
-- La lista ya tiene las pestañas Clientes · Pedidos · Cobranza. Esas pestañas funcionan **escondiendo** pedazos de la pantalla según su texto ("si empieza con 'Cobranza'…"). Si un texto cambia, algo puede quedar visible o escondido donde no va.
-- La ficha del cliente ya tiene pestañas (Cuenta · Datos · Visitas · Más). Pero **"Abonó $" se escribe ahí mismo**, sin pasos y sin "¿Estás seguro?", y **"Editar datos" abre todos los campos al mismo tiempo**.
-
-### 2.2 El error "Las taras no cuadran por lugar"
-
-**Qué revisa.** No compara contra lo que *debería* haber; eso lo hace otra revisión, "Las taras no cuadran". Esta revisa que el **total** de taras sea igual a la **suma de sus partes**: vacías en bodega, llenas, en camión, vacías en el camión, con clientes y con proveedores. Si todos los números fueran números de verdad, nunca podría fallar. **Cuando falla, casi siempre es porque un dato quedó guardado como texto o vacío y la suma se rompe**, no porque falten taras de verdad.
-
-**Lo que se encontró en el código:**
-
-1. **La cuenta base no limpia los números.** `cajasDonde()` (base, línea 281) suma sin pasar por `num()`:
-   - lo que debe cada cliente (`c.vac`);
-   - las cajas de los lotes madurando (`l.q`, en `madR()`);
-   - las vacías que se mandaron al proveedor (`c.vacEnv`);
-   - las existencias de la bodega.
-
-   Si uno de estos llega como texto (por ejemplo, desde la nube, una importación o un campo de captura), el total se arma "pegando" textos en vez de sumar. Las capas de encima sí usan `num()`, pero la base no. Ya pasó antes: la bitácora tiene "Total —" (13 y 16 nov) y "Total NaN" (arreglado en la 121).
-2. **El detalle que se manda engaña.** Al armar el mensaje (`tema-sueltas.js`, línea 64), cada parte se pasa por `num()`, así que en el detalle **todas las partes se ven bien y sí suman**, aunque el total esté roto. Tampoco salen las "vacías en el camión" (`camV`), las de un cierre sin contar ni las de un cierre atrasado (`atras2`). Con ese mensaje no se puede saber cuál dato falló.
-3. **El error se marca como arreglado solo.** En `tema-retencion.js` (línea 86), la lista `ARREG122` incluye "Las taras no cuadran por lugar". Una vez al día, cuando el administrador abre la app, cualquier reporte automático con ese texto queda como "Arreglado en la versión 9.9", **aunque sea de la 10.20**. Por eso puede parecer que "solo salió 2 veces", cuando quizá salió más y se escondió en "Problemas reportados".
-4. **Las dos versiones dan una pista.** La 10.11 es de antes del arreglo de las taras de cierres atrasados (punto 2, versión 10.17) y la 10.20 es de después. Ese arreglo era para otra revisión ("deberían ser"). Que siga saliendo en la 10.20 apoya la idea de que la causa es un dato mal guardado y no un conteo.
-5. **Algo aparte que conviene confirmar:** `cajasDonde()` solo mira la bodega principal (`S.inv`), no las demás bodegas (`S.invB`). Si un día se usa una segunda bodega, sus cajas no saldrían en "dónde están". Eso daría otro aviso ("deberían ser"), no este.
-
-**Qué falta para cerrar el caso.** Hay que leer el texto completo de los 2 reportes de la nube: dicen "Total …" seguido de un número, "NaN" o "—". El repositorio es público, así que **se necesita el permiso de Ricardo y que los datos salgan cifrados** (ya está decidido así en el documento de contexto).
-
-### 2.3 Objeciones y riesgos (de mayor a menor)
-
-**Bloqueadores (resolver antes de empezar):**
-
-- **B1. El error de las taras se esconde y no se puede diagnosticar.** Vienen de los puntos 1 a 3 de la sección 2.2. Primero hay que dejar de marcarlo como arreglado en automático (solo marcar los de antes de la 9.9) y mandar en el detalle **todas** las partes, con el valor tal como está guardado (número o texto). Sin eso, cualquier arreglo es a ciegas.
-- **B2. Botones que llevan a un lugar exacto.** Los avisos ("Atender", "Ir ›"), "Pendientes" (punto 27), el centro de pendientes (punto 30), el tutorial y "Aprende la app" buscan cosas dentro de Bodega, Cargas y Clientes. Si esas cosas pasan a "Ver todo", el botón puede abrir la pantalla correcta pero no enseñar nada. En el punto 174 ya se revisaron 2,762 botones; esta reorganización puede descomponer varios. **Cada destino tiene que abrir directo su pantalla de "Ver todo" o su primer paso**, y hay que comprobarlo con una prueba.
-
-**Importantes:**
-
-- **I1. Las capas que cambian la pantalla "por texto".** Varias capas insertan o esconden cosas buscando un texto o un pedazo de HTML. Por ejemplo, "ponerlo después de `</h1>`", "esconder si empieza con 'Cobranza'" o "esconder si dice 'Avanzar el reloj'". Si una de ellas ya no encuentra lo que busca, **no avisa**: deja la pantalla como estaba o pone la cosa en otro lugar. Hay que hacer la lista de estas capas por pantalla antes de mover nada.
-- **I2. Las cuentas no deben cambiar.** Pasar a pasos lo que mueve dinero o cajas (recibir carga y vacías que regresaron, meter a madurar, sacar maduro, abono, pagar al proveedor, conteo de bodega) debe **llamar a las mismas acciones de hoy** con los mismos datos. Las pruebas `comp-bodega`, `comp-cajas` y `comp-venta` deben salir IDÉNTICAS, y `t61`, `t120`, `t121`, `t122` y `t123nube` en 0 FAIL (reglas de los números).
-- **I3. "No perder ningún dato" hay que poder comprobarlo.** Si no, es solo una promesa. Propuesta: una prueba que haga la lista de todo lo que hoy se ve (textos, números y botones) en cada pantalla, con datos de prueba, y revise que **cada cosa siga apareciendo** en la pantalla principal o en su "Ver todo".
-- **I4. Editar un solo dato por pasos puede ser más lento.** Si Ricardo solo quiere cambiar el teléfono de un cliente, pasar por 8 pasos es peor que hoy. Ver la idea 3 de la sección 2.4.
-- **I5. Ricardo usa la versión web en una computadora.** Los pasos de una sola pregunta se ven vacíos en pantalla ancha y obligan a usar mucho el ratón. Conviene: ancho máximo como hoy, **Enter = Siguiente** y **Esc = Atrás** (ya hay algo parecido en el PIN con teclado, punto 29).
-- **I6. El teclado y los brincos.** Ya se arreglaron el teclado que se cierra solo (175) y la pantalla que brinca (15). Las pantallas nuevas con campos deben seguir esas mismas reglas del redibujado; si no, regresan esos errores.
-
-**Menores:**
-
-- **M1.** El documento de contexto dice que "el siguiente punto es el 26", pero ya existen del 26 al 31. Esta mejora debería numerarse desde el **32**.
-- **M2.** En Cargas, "Ver detalle" y la tarjeta de costos repiten parte de lo mismo. Al reorganizar se puede dejar una sola vez, sin quitar ningún número.
-- **M3.** Los textos de "Ver todo" deben decir qué se va a ver ("Ver todo lo de esta carga ›"), como ya se hace en "Ver todo lo de esta ruta ›" (`tema-atras6.js`). Ese ejemplo ya funciona y conviene copiarlo.
-
-### 2.4 Choques entre metas y cómo resolverlos
-
-1. **"Menos cosas a la vista" contra "no perder nada".** Se resuelve sin quitar nada: lo esencial sale arriba y "Ver todo ›" abre su pantalla. Para comprobar que nada se perdió, se usa la prueba de la lista (I3). Ya existe un ejemplo en la app: la pantalla "Ver todo lo de esta ruta" (`ruta6`), con su "← Volver" a la pantalla de donde vino.
-2. **"Capturar por pasos" contra "no cambiar las cuentas".** Los pasos solo **juntan los datos**. Al final, en "Revisar y guardar", se llama al mismo botón y a la misma acción de hoy. Así se hizo la venta en ruta por pasos (125) y `comp-venta` salió idéntico.
-3. **"Un paso por pantalla" contra "cambiar un solo dato rápido".** Para **dar de alta** algo nuevo se usan todos los pasos. Para **corregir** algo que ya existe, se toca el renglón (por ejemplo, "Teléfono") y se abre **un solo paso** con ese dato y "Guardar". Sigue siendo una pregunta por pantalla, pero sin recorrer todo.
-4. **"Lo esencial arriba" contra "lo urgente".** Si algo está mal (taras que no cuadran, cajas sin contar, carga sin precio, cliente con deuda vencida), su aviso **sube arriba** aunque normalmente esté en "Ver todo", como ya se hace con el precio de hoy (24).
-5. **"Mismo diseño" contra "pantallas nuevas".** Las pantallas nuevas solo usan piezas que ya existen: barra de pasos, "Paso N de M", "← Atrás", "← Volver", tarjetas, chips y pestañas `tabs92`. No se crea ningún estilo nuevo.
+**Lo que necesito que decidas** (detalle en la sección 5.2):
+1. ¿Quién prueba: tú en la computadora, tu papá en el celular, o los dos?
+2. ¿Empezamos con un piloto solo en Bodega?
+3. ¿Haces antes la lista de prueba (sección 5.3) con la versión de hoy, para ver dónde te atoras de verdad?
+4. ¿Me das permiso de corregir lo del 0 que se sube a la nube (punto 2 de arriba)?
 
 ---
 
-## 3. Metas y lo que no se busca
+## 2. Definiciones (para que todos entendamos lo mismo)
 
-**Metas:**
+- **Mismo diseño:** mismas piezas visuales (estilos, tarjetas, colores, letra, animaciones). **Sí cambian** el acomodo y el flujo: qué va arriba, qué va en "Ver todo" y qué va por pasos.
+- **Lo esencial:** lo que se usa todos los días en esa pantalla, más lo que está en rojo (urgente). Se decide con lo que te atore en la lista de prueba (5.3), no por suposición. Meta medible: cabe en una pantalla del celular sin bajar.
+- **Ver todo:** abre la pantalla completa de hoy, sin cambios, con "← Volver". **Un solo nivel**: no hay "Ver todo" dentro de otro. Los avisos "Ir ›" y el tutorial llevan directo a esa vista completa. Ahí no se oculta nada.
+- **Por pasos:** una pregunta por pantalla, "Paso N de M" y "← Atrás".
+  - Solo para capturas de **varios datos**: meter a madurar, conteo de bodega, recibir una carga con las cajas vacías que regresaron, completar lo que se compre.
+  - **No** para capturas de un dato. El abono ya tiene sus pasos. Para un dato suelto, como el teléfono de un cliente, se toca el renglón y se abre solo ese dato.
+  - Los datos que ya conocemos (por ejemplo el clima del último lote) vienen puestos. En la computadora: Enter = Siguiente, Esc = Atrás.
+  - Antes de guardar dinero o cajas siempre hay un paso **"Revisa"**.
+  - Si sales a medias, la app pregunta "¿Dejas esto a medio llenar?", igual que hoy en la entrega.
+- **Viajes:** solo entra la pestaña **Cargas** del administrador. El viaje paso a paso del chofer queda fuera.
 
-- Que Ricardo encuentre lo que busca en Bodega, Cargas y Clientes sin bajar mucho la pantalla.
-- Que cada captura en esas pantallas sea por pasos, una pregunta por pantalla, con "Paso N de M" y "← Atrás".
-- Que ningún dato, número o botón deje de estar en la app (con una prueba que lo revise).
-- Que todos los "Ir ›", "Atender", "Pendientes" y el tutorial sigan llevando al lugar exacto.
-- Que las cuentas salgan idénticas a las de hoy (pruebas de comparación).
-- Entender y cerrar el error "Las taras no cuadran por lugar", y que si vuelve a salir **no se esconda**.
+---
+
+## 3. Análisis
+
+### 3.1 Qué pasa hoy en cada pantalla
+- **Bodega:** existencias, lotes madurando, fruta madura, cajas sin contar, buró de taras, conteo y bodegas, todo seguido. "Meter a maduración" es un formulario de 6 datos (producto, cantidad, clima, temperatura, horas y método) en la misma pantalla. El conteo también es un formulario largo.
+- **Cargas:** cada carga abierta trae mucho detalle. Además, en una carga abierta hay **una tarjeta dentro de otra** (la caja de costos), algo que la regla de diseño prohíbe.
+- **Clientes:** la ficha tiene muchos campos. "Editar datos" sale en varios lugares. "Pagó todo" no pide confirmación.
+
+### 3.2 El error de las taras, explicado
+- La app revisa dos cosas: (a) que el total sea igual a la suma por lugar, y (b) que las taras "con clientes" sean iguales a la suma de las taras de cada cliente.
+- La (a) ya está protegida contra números raros desde el punto 120.
+- La (b) compara contra los datos **tal como están guardados**. Si un cliente tiene "3" como texto o el dato vacío, falla.
+- Esto pasa en un momento puntual: cuando la revisión corre justo después de recibir algo de la nube, antes de que la app limpie esos datos al redibujar.
+- No se movió ninguna caja: es la revisión la que se equivoca. Pero sí hay que arreglarla, porque además el aviso esconde qué falló.
+- **Aclaración:** la app marca ese aviso como "arreglado en la 9.9" ella sola, pero eso solo pasa en tu lista de "Problemas reportados". No esconde los reportes que llegan a la nube. Los 2 reportes sí son pocos de verdad.
+
+### 3.3 Riesgos que hay que cuidar
+- **Botones que llevan a un lugar exacto:** unos 87 lugares en 50 archivos llevan a Bodega, Cargas o Clientes. Con "Ver todo = la pantalla de hoy", la mayoría siguen funcionando igual. Igual hay una prueba que los recorre todos.
+- **Las capturas por pasos tocan dinero y cajas.** Cada paso solo junta los datos, y al final se llama **la misma acción de hoy**, con cada número convertido a número. No hay cuentas nuevas. Las comparaciones de números deben salir idénticas.
+- **Dos administradores a la vez:** mientras uno llena los pasos, el otro podría recibir la misma carga. Al guardar se revisa de nuevo y, si ya la recibieron, avisa en vez de guardar dos veces.
+- **Nada de la pantalla sube a la nube:** qué paso estás llenando o de dónde vienes vive solo en tu aparato. Así no se le mueve la pantalla al otro administrador.
+- **Rapidez en celulares viejos:** cada paso redibuja la pantalla. Se mide antes. Si tarda más de 0.1 s, se ajusta.
+
+### 3.4 Lo ideal
+Mover algo entre "arriba" y "Ver todo" debería ser cambiar un dato, no reescribir pantallas. Y una revisión de números nunca debería fallar por cómo está guardado un dato; si falla, debe decir qué cliente y qué dato.
+
+---
+
+## 4. Metas y lo que no se busca
+
+**Metas** (y cómo se comprueba cada una):
+- Ricardo hace las 7 tareas de la lista 5.3 sin preguntar → la lista misma.
+- Lo esencial de cada pantalla cabe sin bajar en el celular → revisión visual en la prueba.
+- No se pierde ningún dato → prueba automática que busca cada tarjeta y botón por su marca.
+- El error de las taras deja de salir y, si vuelve, dice qué falló → prueba con un cliente con "3" como texto y con dato vacío.
+- Ningún número cambia → comparaciones de ventas y cajas idénticas.
 
 **Lo que no se busca:**
+- Rediseño visual.
+- Pantallas del chofer (incluido su viaje).
+- Buscador nuevo o "modo sencillo" aparte (quedan para después).
+- **"Pulir lo que salga" sin límite:** solo entra lo que Ricardo anote en estas 3 pantallas durante la prueba. Lo demás va a la bitácora como puntos nuevos.
 
-- Rediseñar colores, letras, íconos o animaciones.
-- Cambiar cómo se calculan dinero, cajas o kilos (solo se arregla que un dato guardado como texto rompa la suma).
-- Borrar o resumir datos.
-- Tocar las pantallas del chofer, Inicio, Gastos, Vehículos o Personal (pueden venir después con lo aprendido aquí).
-- Proponer el "modo papá" o un modo sencillo aparte. Ya está anotado para después (sección 9 del contexto).
+**Cómo se resuelven los choques entre metas:**
+- *Enseñar menos* contra *no perder nada*: "Ver todo" es la pantalla completa de hoy.
+- *Por pasos* contra *rápido en la computadora*: pasos solo en capturas largas, datos ya puestos y Enter/Esc.
+- *Mismo diseño* contra *quitar la tarjeta dentro de otra en Cargas*: se acepta porque cumple la regla de diseño.
 
 ---
 
-## 4. Opciones que se pesaron
+## 5. Decisiones y orden de trabajo
+
+### 5.1 Ya decidido
+- No se publica nada hasta que Ricardo diga "publica".
+- La numeración de esta mejora empieza en el **punto 32** (ya existen del 26 al 31).
+- El error de las taras va **primero y solo**, en una entrega chica.
+- Las capturas por pasos usan la pieza que ya existe y llaman a la misma acción de hoy.
+- "Ver todo" = la pantalla de hoy completa, con "← Volver".
+- Lo del asistente y de "Ver todo" no sube a la nube.
+
+### 5.2 Falta que decida Ricardo
+1. **Quién prueba y en qué aparato:** ¿tú en la computadora, tu papá en el celular, o los dos? Si es tu papá, la prueba debe ser en celular.
+2. **Piloto en Bodega:** ¿hacemos primero solo Bodega, la pruebas y luego decidimos Cargas y Clientes?
+3. **Lista de prueba antes:** ¿la haces con la versión de hoy para ver dónde te atoras? Eso define "lo esencial".
+4. **El 0 que se sube a la nube:** ¿me das permiso de cambiarlo para que avise y no ponga 0? Toca cómo se guardan los números, aunque no mueve ninguna caja.
+5. **Herramienta de errores:** ¿la cifro antes de volver a leer los 2 reportes?
+6. **Puntos 26 al 31** (ya hechos, sin publicar): ¿salen antes o junto con el arreglo de las taras?
+
+### 5.3 Lista de prueba para Ricardo
+Se hace dos veces: **antes** (con la versión de hoy) y **después**. Mismo aparato y mismos datos de prueba (la demo). Pasa si las 7 salen a la primera, sin preguntar, y "¿Cuadran las cuentas?" queda en verde.
+1. Ver cuántas cajas maduras hay y cuáles se pasan pronto.
+2. Meter un lote a madurar.
+3. Contar la bodega.
+4. Recibir una carga con las cajas vacías que regresaron.
+5. Pagarle al proveedor.
+6. Ver cuánto debe un cliente y registrar un abono.
+7. Corregir el teléfono de un cliente.
+
+### 5.4 Etapas
+- **Etapa 0 · Error de las taras (punto 32).**
+  - Qué incluye: la revisión (b) compara con números ya convertidos; el aviso dice qué condición falló, qué cliente tiene el dato raro y desde dónde se revisó; la marca automática de "arreglado" solo aplica a reportes de antes de la 9.9; el 0 "por seguridad" deja de escribirse (si das permiso); la herramienta de errores se cifra.
+  - Se termina cuando pasan su prueba y las anteriores, las comparaciones de números salen idénticas y, ya publicada, no llegan reportes nuevos en una semana.
+- **Etapa 1 · Piloto en Bodega.**
+  - Qué incluye: versión corta arriba y "Ver todo ›"; meter a madurar y el conteo por pasos.
+  - Se termina cuando la prueba de "no se perdió nada" pasa, los avisos "Ir ›" llegan, las comparaciones de bodega salen idénticas y Ricardo aprueba las tareas 1 a 3.
+- **Etapa 2 · Cargas** (solo si el piloto funcionó).
+  - Qué incluye: tarjeta corta por carga con "Ver todo lo de esta carga ›"; recibir carga por pasos; quitar la tarjeta dentro de otra; revisar de nuevo al guardar por si otro administrador ya la recibió.
+  - Se termina cuando pasan sus pruebas (incluida la de dos celulares) y Ricardo aprueba las tareas 4 y 5.
+- **Etapa 3 · Clientes.**
+  - Qué incluye: lo esencial arriba; corregir un dato tocando su renglón; "¿Seguro?" en "Pagó todo".
+  - Se termina cuando Ricardo aprueba las tareas 6 y 7.
+
+---
+
+## 6. Opciones que se pesaron
 
 | Opción | A favor | En contra | Decisión |
-|---|---|---|---|
-| **A. Desplegables dentro de la misma pantalla** (como el "Ver detalle" de hoy) | Poco trabajo | Lo de adentro se sigue viendo en la misma pantalla y en Cargas termina en tarjetas dentro de tarjetas. Es lo que hoy confunde | No |
-| **B. Lo esencial en la tarjeta + "Ver todo ›" en su propia pantalla; capturas por pasos** | Es lo que pidió Ricardo. Ya hay un ejemplo que funciona (`ruta6`) y una barra de pasos (`wz-hd`) | Hay que corregir los destinos de avisos y del tutorial (B2) y las capas que buscan por texto (I1) | **Sí** |
-| **C. Pestañas arriba en cada pantalla** (por ejemplo, Bodega: Hoy · Maduración · Taras) | Ya existe la pieza (`tabs92`) | Si se usa sola, cada pestaña puede volver a llenarse de cosas | Solo como ayuda a B, donde ya hay pestañas (Clientes) |
-| **D. Un buscador arriba** | Útil en la computadora | No resuelve las capturas largas y es algo nuevo en el diseño | Para después |
-| **E. Un modo sencillo aparte** | — | Dos versiones de cada pantalla para mantener. Ya está anotado para después | No |
+| :-- | :-- | :-- | :-- |
+| A. Esconder partes en desplegables dentro de la misma pantalla | Rápido | Ya existe en Bodega y no quitó la confusión; los avisos buscan tarjetas que quedan cerradas | Rechazada (revisores: zoom-out, catalyst) |
+| B. Reescribir las 3 pantallas en piezas nuevas | Queda más ordenado | Rompe en silencio los "Ir ›", el tutorial y las capas que agregan tarjetas | Rechazada (revisores: diseño, código) |
+| C. "Ver todo" = la pantalla de hoy y arriba una versión corta | No se pierde nada; casi no se tocan los enlaces | Dos vistas que mantener | **Elegida**, con piloto en Bodega |
+| D. Buscador general | Ayuda a encontrar | No resuelve capturar; es trabajo grande | Para después |
+| E. "Modo sencillo" aparte para tu papá | Simple para él | Duplica la app | Para después (está en pendientes) |
+| F. Construir otra pieza para pasos | — | Ya existe una con pasos, validación y "Revisa" | Rechazada: se reusa la que hay |
 
 ---
 
-## 5. Decisiones clave y orden de trabajo
+## 7. Para quien programa (referencias)
 
-### 5.1 Preguntas para Ricardo (antes de programar)
-
-1. **¿Qué es "lo esencial" en cada pantalla?** Propuesta para que la corrija:
-   - **Bodega:** existencias de roatán y macho, los lotes madurando (cuánto falta) y avisos en rojo si los hay. Botones "Meter a madurar" y "Contar la bodega". Lo demás va a "Ver todo".
-   - **Cargas:** cada carga en una tarjeta corta (proveedor, fruta, fecha, estado, cajas y lo que se debe) con "Ver todo lo de esta carga ›". El pronóstico y el próximo lote, como hoy. Historial, plantillas, básculas y proveedores van a "Ver todo".
-   - **Clientes:** en la lista, nombre, si debe dinero o taras y su día de visita. En la ficha, lo que hay hoy arriba ("Te debe…", Ir, Llamar, WhatsApp), con el abono y la edición por pasos.
-2. **Para corregir un solo dato:** ¿le gusta "tocar el renglón y que se abra un solo paso", o prefiere todos los pasos?
-3. **¿Da permiso de leer los 2 reportes de la nube** de "Las taras no cuadran por lugar", con salida cifrada?
-4. **¿En qué orden quiere probar las pantallas?** Propuesta: Bodega, luego Cargas, luego Clientes. Cada una en su versión, para probarla antes de seguir.
-
-### 5.2 Etapas
-
-**Etapa 0 – El error de las taras (primero; no cambia nada que se vea):**
-- Dejar de marcar como "arreglado en la 9.9" los reportes de ese error que sean de versiones nuevas.
-- Que el detalle diga todas las partes (también vacías en el camión, cierres sin contar y cierres atrasados) y cuál dato está guardado como texto o vacío.
-- Con permiso de Ricardo, leer los 2 reportes y confirmar la causa.
-- Que la cuenta base pase cada dato por `num()`, con su prueba (un dato como texto no debe romper la suma). **Antes de tocarlo, explicarle a Ricardo cómo se protegen los números** (reglas de los números): no se mueve ninguna caja ni ningún registro; solo se suma bien lo que ya está.
-
-**Etapa 1 – Piezas comunes y redes de seguridad:**
-- Una forma única de abrir "Ver todo ›" como pantalla propia con "← Volver", copiando lo que ya hace `ruta6`.
-- Una forma única de capturar por pasos con la barra que ya existe (`wz-hd`, "Paso N de M", "← Atrás"), con Enter y Esc en la computadora.
-- Prueba de "no se perdió nada" (I3) y prueba de "todos los Ir ›, Atender, Pendientes y tutorial llegan" (B2). Se corren **antes** de mover nada, para tener la lista de hoy.
-
-**Etapa 2 – Bodega** (punto 32): lo esencial arriba, "Ver todo", "Meter a madurar" por pasos (producto, cantidad, clima y temperatura, horas, método, revisar) y "Contar la bodega" por pasos.
-
-**Etapa 3 – Cargas** (punto 33): tarjeta corta, sin tarjeta dentro de tarjeta, "Ver todo lo de esta carga ›". Por pasos: "Completar con lo que se compre", "Recibir en bodega" (con las cajas vacías que regresaron y a qué bodega llega), "Agregar un gasto que se pasó", "Pagar al proveedor" y "Calificar". Es la etapa con más riesgo para los números: `comp-cajas` y las pruebas de viaje (`t31`, `t173`, `t96viaje`) deben salir iguales.
-
-**Etapa 4 – Clientes** (punto 34): lista más corta. En la ficha, "Registrar abono" por pasos (cuánto, cómo pagó, revisar) con "¿Estás seguro?", y corregir datos tocando el renglón.
-
-**Etapa 5 – Pulido de lo que salga** cuando Ricardo pruebe.
-
-Cada etapa lleva su prueba `tNNN.js` y todas las pruebas en 0 FAIL. Se sube a la rama de trabajo con `[skip ci]` y **no se publica la APK hasta que Ricardo diga "publica"**.
-
-### 5.3 Lista de prueba para Ricardo (cómo se mide si funcionó)
-
-En la computadora, sin ayuda, que intente:
-
-1. Saber cuántas cajas de roatán maduras hay y cuándo sale el siguiente lote.
-2. Meter 30 cajas a madurar.
-3. Encontrar cuánto se le debe a Roly y pagarle una parte.
-4. Recibir una carga y anotar 5 cajas vacías que regresaron sin llenar.
-5. Ver cuánto debe un cliente (dinero y taras) y registrar un abono de $200.
-6. Cambiar el teléfono de un cliente.
-7. Tocar un aviso con "Ir ›" o "Atender" de cada pantalla y ver que llega al lugar exacto.
-
-Para cada una, anotar si la encontró a la primera, si se confundió y en qué. Después, en Inicio, revisar que "¿Cuadran las cuentas?" siga en verde.
+- **Revisión que falla:** `fuente/capas/l5.js:76`, condición `w.cli===sum(...c.vac)` sin `num()`. El detalle está en `fuente/capas/tema-sueltas.js:64`: no dice qué condición falló y pasa todo por `num()`. Prueba base: `fuente/pruebas/t69.js:50` (`vac='abc'`).
+- **`cajasDonde` ya usa `num()`:** `fuente/vite/parches.mjs:548-553` (punto 120). La base `fuente/base-v38.html:281` NO es lo que corre.
+- **Limpieza de datos:** `sano68()` en `fuente/capas/l69.js:153-157`, solo antes de `render()` (`tema-dibujar1.js:419`). Usa `Number()`, así que "1,200" se vuelve 0, y `salPuente()` (`l61.js:17`) lo sube como movimiento. `cuentasRevisar()` también se llama desde `tema-avisos.js:18` y `tema-toast.js:22,35`, fuera del redibujado. Sugerencia: limpiar al recibir de la nube (`nbAplica`).
+- **Marca automática de arreglado:** `ARREG122` en `tema-retencion.js:86-89`; solo afecta `S.probs`. Envío a la nube: `apErr` (`l69.js:20`) → `err148Pon` (`tema-version.js:21-27`, corta a 300 letras). Mandar el diagnóstico como objeto aparte y con tamaño máximo.
+- **Herramienta de errores en claro:** `herramientas/leer-errores.js:22` + `.github/workflows/errores.yml`. Algunos `apErr` llevan nombres (`l69.js:154,157`, `l5.js:81`).
+- **Motor de pasos:** `WZ`/`wzAbre` en `fuente/capas/l47.js:8-36`. Guarda texto (`S.wz.d[k]=t.value`, línea 27): en cada `guardar`, pasar por `num()`/`r2()` y llamar la acción de hoy. Ya existentes: abono `WZ.abc` y pago a proveedor `WZ.abp` (`l55.js:10-22`), completar datos `WZ.cliF` (`l74.js:72`). Le falta Enter/Esc. No copiar los pasos de `l3.js`, que esconden HTML buscando texto.
+- **"Ver todo":** base en `ruta6` (`tema-atras6.js:126-181`). Hacer una sola función y un registro de pantallas hijas (`esPantalla('bodega')` que también cuente "bodega-todo"), porque muchas capas preguntan por `S.tab.admin==='bodega'`.
+- **Destinos:** `avDestino` (`base-v38.html:240`, `tema-avisos.js:65,83,86`), `S.dOpen`/`data-k` (31 capas), centro de pendientes `tema-centro30.js`.
+- **Comparaciones:** `comp-venta`, `comp-cajas`, `comp-bodega`, `comp-fichas`, `comp-viaje`, `comp-avisos`, `comp-navega`. Se escribe **antes** cuáles deben salir idénticas (números y lo guardado) y qué diferencias de pantalla se esperan.
+- **Cargas:** tarjeta dentro de otra en `base-v38.html:565`. "Pagó todo" sin confirmar: `cobrartodo` (`base-v38.html:421/726`).
+- **Volver atrás:** cada etapa es un solo `tema-*.js` al final de `orden.json`. Sin campos nuevos en `S` que suban a la nube. Para regresar, se quita y se vuelve a publicar.
 
 ---
 
-## Estado de los revisores
+## Anexo: cómo se revisó
 
-| Revisor | Estado |
-|---|---|
-| `egm-design` | no se corrió |
-| `egm-codebase-details` | no se corrió |
-| `egm-zoom-out` | no se corrió |
-| `egm-comprehension` | no se corrió |
-| `egm-implementation-readiness` | no se corrió |
-| `egm-structural` | no se corrió |
-| `egm-inventive-catalyst` | no se corrió |
-
-En esta sesión no estaba disponible la herramienta para lanzar revisores, así que no se pudo lanzar ninguno ni reintentarlo. Todo lo anterior sale de una sola lectura directa del código. Se recomienda volver a pedir la revisión con los 7 revisores antes de empezar a programar.
+Revisores (todos terminaron): diseño, detalles del código, simplicidad y alcance, comprensión, preparación para construir, estructura del documento e "inventiva" (resolver contradicciones). Los 7 trabajaron por separado, sin ver esta conversación. El borrador anterior, hecho sin revisores, tenía mal la causa de las taras (decía que faltaba `num()` en la base), y la creía sobre el abono (ya tiene pasos). Ambas cosas se corrigieron aquí.

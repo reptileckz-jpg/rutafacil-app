@@ -17,7 +17,7 @@ export default [
 [
 "R",
 "APP_VER='3.8'",
-"APP_VER='10.22'",
+"APP_VER='10.23'",
 1
 ],
 [

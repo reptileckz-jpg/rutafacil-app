@@ -54,6 +54,17 @@ await prueba('admin (no dueño): da contraseña nueva a otro admin (lo reemplaza
 });
 await prueba('admin (no dueño): NO reemplaza al dueño', () => assertFails(setDoc(doc(db('admin2'), 'usuarios_app/x'), { rol: 'admin', activo: true, reemplaza: 'duenio' })));
 await prueba('admin: cierra la sesión de otro admin en sus celulares', () => assertSucceeds(setDoc(doc(db('admin2'), 'usuarios_app/admin3b'), { corte: Date.now() }, { merge: true })));
+await prueba('37 · dueño: se pone a sí mismo la marca de desarrollador (y se la quita)', async () => {
+  await assertSucceeds(setDoc(doc(db('duenio'), 'usuarios_app/duenio'), { dev: true }, { merge: true }));
+  await assertSucceeds(setDoc(doc(db('duenio'), 'usuarios_app/duenio'), { dev: false }, { merge: true }));
+});
+await prueba('37 · dueño: a sí mismo NO se cambia otra cosa (papel, activo)', async () => {
+  await assertFails(setDoc(doc(db('duenio'), 'usuarios_app/duenio'), { rol: 'chofer' }, { merge: true }));
+  await assertFails(setDoc(doc(db('duenio'), 'usuarios_app/duenio'), { dev: true, activo: false }, { merge: true }));
+});
+await prueba('37 · admin (no dueño): NO se pone la marca de desarrollador', () => assertFails(setDoc(doc(db('admin2'), 'usuarios_app/admin2'), { dev: true }, { merge: true })));
+await prueba('37 · admin (no dueño): NO se la pone a otro', () => assertFails(setDoc(doc(db('admin2'), 'usuarios_app/danu'), { dev: true }, { merge: true })));
+await prueba('37 · dueño: se la pone a otro administrador', () => assertSucceeds(setDoc(doc(db('duenio'), 'usuarios_app/admin2'), { dev: true }, { merge: true })));
 await prueba('nadie toma el lugar del dueño', () => assertFails(setDoc(doc(db('admin2'), 'meta/duenio'), { uid: 'admin2' })));
 await prueba('fotos: el chofer sube, el admin borra', async () => { await assertSucceeds(setDoc(doc(db('pepe'), 'n/pn/f/1'), { d: 'x' })); await assertFails(deleteDoc(doc(db('pepe'), 'n/pn/f/1'))); await assertSucceeds(deleteDoc(doc(db('duenio'), 'n/pn/f/1'))); });
 await prueba('GPS: el celular del chofer sube su ubicación; el chofer NO la lee', async () => {

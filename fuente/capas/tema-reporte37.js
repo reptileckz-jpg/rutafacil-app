@@ -166,9 +166,12 @@ ajHTML = function () {
     var x = '<div class="card" data-k="wa37aj"><b>📲 WhatsApp para los reportes</b><div class="lbl" style="margin-top:4px">Cuando alguien reporta un problema (sacudiendo el celular o desde el menú), se lo puede mandar a este número.</div><div class="field"><label for="wa37n">Número (10 dígitos)</label><input id="wa37n" type="tel" inputmode="tel" data-bind="cfg.wa37" value="' + esc((S.cfg || {}).wa37 || '') + '"></div></div>';
     if (dev37()) x += '<button class="btn" style="width:100%;min-height:54px;margin-top:8px" data-act="dev37ab">🛠️ Pantalla de desarrollador</button>';
     if (typeof NB !== 'undefined' && NB.on && NB.perfil && NB.perfil.duenio) {
-      var U = NB.usuarios || {}, L = Object.keys(U).filter(function (u) { return U[u] && U[u].rol === 'admin' && U[u].activo !== false; });
+      var U = Object.assign({}, NB.usuarios || {});
+      /* el dueño también se puede marcar a sí mismo (si él es quien programa la app) */
+      try { if (NB.user && NB.user.uid && !U[NB.user.uid]) U[NB.user.uid] = Object.assign({ rol: 'admin', activo: true }, NB.perfil, { nombre: (NB.perfil && NB.perfil.nombre) || 'Tú' }); } catch (e) {}
+      var L = Object.keys(U).filter(function (u) { return U[u] && U[u].rol === 'admin' && U[u].activo !== false; });
       if (L.length) x += '<div class="card" data-k="dev37aj"><b>🛠️ Desarrollador de la app</b><div class="lbl" style="margin-top:4px">Quien tiene esta marca ve los reportes, los errores y los datos personales de tu sueldo. Solo tú (el dueño) la puedes poner.</div>'
-        + L.map(function (u) { var p = U[u]; return '<div class="row" style="min-height:48px"><span>' + esc(p.nombre || p.email || u) + '</span><button class="btn sm ' + (p.dev ? '' : 'sec') + '" data-act="dev37set" data-uid="' + esc(u) + '" data-v="' + (p.dev ? '0' : '1') + '">' + (p.dev ? '✓ Desarrollador' : 'Hacer desarrollador') + '</button></div>'; }).join('') + '</div>';
+        + L.map(function (u) { var p = U[u]; return '<div class="row" style="min-height:48px"><span>' + esc(p.nombre || p.email || u) + (NB.user && NB.user.uid === u ? ' (tú)' : '') + '</span><button class="btn sm ' + (p.dev ? '' : 'sec') + '" data-act="dev37set" data-uid="' + esc(u) + '" data-v="' + (p.dev ? '0' : '1') + '">' + (p.dev ? '✓ Desarrollador' : 'Hacer desarrollador') + '</button></div>'; }).join('') + '</div>';
     }
     var i = h.lastIndexOf('</div></div>'); return i > -1 ? h.slice(0, i) + x + h.slice(i) : h + x;
   } catch (e) { return h; }
@@ -178,7 +181,7 @@ document.addEventListener('click', function (e) {
   e.preventDefault(); e.stopImmediatePropagation(); var a = b.dataset.act;
   if (a === 'dev37set') {
     var uid = b.dataset.uid, v = b.dataset.v === '1'; if (!NB || !NB.ad) return;
-    NB.ad.set('usuarios_app/' + uid, { dev: v }, true).then(function () { if (NB.usuarios && NB.usuarios[uid]) NB.usuarios[uid].dev = v; toast(v ? 'Ya es desarrollador' : 'Se le quitó la marca'); render(); }, function (er) { toast(typeof nbErrTxt === 'function' ? nbErrTxt(er) : 'No se pudo'); });
+    NB.ad.set('usuarios_app/' + uid, { dev: v }, true).then(function () { if (NB.usuarios && NB.usuarios[uid]) NB.usuarios[uid].dev = v; try { if (NB.user && NB.user.uid === uid && NB.perfil) NB.perfil.dev = v; } catch (e2) {} toast(v ? 'Ya es desarrollador' : 'Se le quitó la marca'); render(); }, function (er) { toast(typeof nbErrTxt === 'function' ? nbErrTxt(er) : 'No se pudo'); });
     return;
   }
   if (!dev37()) return;

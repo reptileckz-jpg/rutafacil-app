@@ -61,6 +61,10 @@ service cloud.firestore {
                     && (antes().rol != 'admin' || esDuenio()
                         || nuevo().diff(antes()).affectedKeys().hasOnly(['corte'])
                         || (nuevo().diff(antes()).affectedKeys().hasOnly(['activo', 'reemplazo']) && nuevo().activo == false));
+      // 37 · el dueño se puede poner (o quitar) a sí mismo SOLO la marca de desarrollador (si él mismo es quien programa la app)
+      allow update: if esDuenio() && request.auth.uid == uid
+                    && nuevo().diff(antes()).affectedKeys().hasOnly(['dev'])
+                    && nuevo().dev is bool;
       allow delete: if esDuenio() && request.auth.uid != uid;
     }
 

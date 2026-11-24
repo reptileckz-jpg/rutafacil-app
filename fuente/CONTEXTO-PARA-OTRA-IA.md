@@ -2,7 +2,7 @@
 
 > **Antes que nada lee `fuente/REGLAS-NUMEROS.md` (reglas obligatorias de los números).**
 
-> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 23 de noviembre de 2026 (versión 10.20, APK 1.0.68; ver sección 0).
+> **Para la IA que lea esto.** Este documento resume TODO lo que ya existe en la app al 24 de noviembre de 2026 (versión 10.21, APK 1.0.69; ver sección 0).
 > Antes de sugerir algo, revisa que no esté en la sección 6 ("Lo que YA hace la app") ni en la sección 8 ("Decisiones tomadas").
 > Si una idea ya existe pero crees que está mal hecha, dilo así: "Ya existe X, pero propongo cambiar Y porque Z".
 > No propongas cosas descartadas o dejadas para después (sección 8) como si fueran nuevas.
@@ -12,8 +12,8 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.20** (23 nov) · APK **1.0.68**. **Todo está publicado.** · web https://platanos-nietos.web.app.
-**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **25**: todos publicados (del 1 al 25). El siguiente punto nuevo es el **26**. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
+**Versión publicada:** app **10.21** (24 nov) · APK **1.0.69**. **Todo está publicado.** · web https://platanos-nietos.web.app.
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **32**: todos publicados (del 1 al 32). El siguiente punto nuevo es el **33**. Plan en curso: `concepts_brief.md` (raíz del repo) — piloto de Bodega más fácil (lo esencial arriba, "Ver todo" = pantalla de hoy, capturas largas por pasos con WZ de l47); Ricardo prueba en su celular y primero hace la lista de 7 tareas con la versión de hoy. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.
@@ -75,6 +75,15 @@
 - **23:** antes de "Iniciar el día", la pestaña Entrega solo dice "Primero inicia el reparto": no arma la entrega del primer cliente ni pregunta "¿Dejas esto a medio llenar?"; y abrir una entrega y salir sin tocar nada ya no pregunta (la foto del formulario se tomaba antes de poner el último pedido, tema-piezas 136) (`tema-antes23.js`).
 - **24:** precio de hoy sin fijar: pantalla grande "💲 Fija el precio de hoy" la primera vez del día (por celular, a cualquier hora) y la tarjeta sube arriba en rojo con destello (GPU) y brinquito; el aviso salió de la ventanita "¿Qué sigue?". También: el tutorial ya no arranca (y te regresa a Inicio) al tocar "Ir" en un aviso urgente que lleva a otra pantalla (`tema-precio24.js`).
 - **25:** avisos push al administrador con la app cerrada: la app deja `n/{neg}/av/plan` (tz, vida de la fruta, choferes y clientes por día para 7 días, pedidos sin chofer) y el workflow de GitHub `avisos.yml` (cada hora, minuto 7, corre herramientas/avisos-admin.js con functions/avisos25.js; no imprime datos del negocio) manda: 8:00 precio sin fijar y fruta madura que se pasa; 9:00 y 10:00 rutas sin iniciar; 14:00 y 17:00 entregas pendientes; 21:00 cierres sin mandar / sin recibir. Una vez cada uno (`av/env`), a todos los administradores (push "admins", tipo "aviso"). La función programada en Firebase no se pudo (falta permiso IAM de la cuenta de servicio) (`tema-avisos25.js`).
+
+### Lo que se hizo del 23c al 32 (24 nov · 10.21)
+- **23c/23d:** sin iniciar el día, Cierre solo dice "Todavía no inicias el día"; el odómetro final ya no viene inventado (al iniciar queda = salida; el chofer escribe el del tablero) (`tema-antes23.js`).
+- **26:** fotos de lo que regresó y de lo que cargó en ruta en los cierres pasados; "Gasolina · no la tomó" (`tema-fotos26.js`).
+- **27:** al entrar a una sección con pendientes, la lista se abre sola y destella (`tema-pend27.js`).
+- **28/29:** web: mapas "⤢ Ver en grande" y más altos; "esta computadora"; PIN con el teclado (`tema-web28.js`, `tema-pin29.js`).
+- **30:** centro de pendientes (Inicio "Hoy": urgentes + 3; pantalla por secciones; uno por uno con Resolver / Recordarme mañana / Listo); sin la pregunta de crédito a las 5 compras; al pedir fiar, compras de semana y mes (`tema-centro30.js`, `tema-cred30.js`).
+- **31:** cerrar un viaje de carga que empezó y no llegó, por pasos (qué pasó, efectivo regresó/gastó, vacías); cuentas como la liquidación (`tema-viaje31.js`).
+- **32:** "Las taras no cuadran por lugar": la revisión ya no da aviso falso por un dato guardado como texto; el aviso dice qué falló (sin nombres); un número ilegible ya no se vuelve 0 (antes se subía como resta); "Arreglado en la 9.9" solo para reportes de antes del 19 nov; `herramientas/leer-errores.js` solo imprime números y palabras conocidas (repo público) (`tema-taras32.js`).
 
 ### Ideas que quedaron solo como idea (no pendientes)
 - Registrar una entrega olvidada de ayer desde el cierre atrasado: se recomendó NO hacerlo (movería inventario y cobranza de dos días); el admin lo ajusta al recibir.

@@ -47,8 +47,9 @@ r=await ev(()=>{S.role='rep';S.chofHoy=1;S.pinOk[pinKey()]=true;var h=gxTipos();
 /* comida en viaje: no autorizada */
 r=await ev(()=>{S.vw=S.vw||{};var v=S.vw;v.comOk=false;v.gx=v.gx||[];v.gxt='Comida';v.gxm='100';var h='';try{h=vwSideHTML('gasto')}catch(e){h='ERR '+e.message}return /no está autorizada/.test(h)&&!/data-v="Comida"/.test(h)});ok(r,'viaje sin comida autorizada: no sale la opción');
 /* cuentas claras */
-r=await ev(()=>{S.inv.vacias='';S.cli[0].vac='abc';render();var R=cuentasRevisar().filter(x=>!x.ok);return {inv:S.inv.vacias,cv:S.cli[0].vac,mal:R.map(x=>x.n+' · '+x.det),prob:(S.probs||[]).length}});
-ok(r.inv===0&&r.cv===0,'número vacío o inválido: se pone en 0 y no rompe las cuentas',r);
+r=await ev(()=>{S.inv.vacias='';S.cli[0].vac='abc';render();var R=cuentasRevisar().filter(x=>!x.ok);var av=(S.avPrecio||[]).some(x=>/no se puede leer \(no se cambió\)/.test(x));S.cli[0].vac=0;render();return {inv:S.inv.vacias,cv:'abc',av,mal:R.map(x=>x.n+' · '+x.det),prob:(S.probs||[]).length}});
+/* 32: un vacío vale 0 (igual que antes); un número ilegible ya NO se vuelve 0 (se subía como resta a la nube): se deja y se avisa */
+ok(r.inv===0&&r.av,'número vacío: 0; número ilegible: no se cambia y se avisa (32)',r);
 ok(!r.mal.some(x=>/Falta un número/.test(x)),'ya no sale "Algún número salió vacío"',r.mal);
 ok(r.prob>0,'el error quedó anotado solo',r.prob);
 r=await ev(()=>{S.cajasT0=(S.cajasT0||0)+12;var x=cuentasRevisar().filter(y=>y.n==='Las taras no cuadran')[0];var av=avisos().filter(a=>/no cuadra/.test(a));return {x,av}});

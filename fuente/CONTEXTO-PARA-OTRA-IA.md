@@ -12,9 +12,9 @@
 
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
-**Versión publicada:** app **10.21** (24 nov) · APK **1.0.69**. **Todo está publicado.** · web https://platanos-nietos.web.app.
+**Versión publicada:** app **10.21** (24 nov) · APK **1.0.69**. **En la rama, sin publicar: 10.22** = puntos 33 a 38 del plan del 30 nov (arranque, caja/banco/sueldo del dueño, Mi sueldo, aguinaldo y recibo, reportar sacudiendo + desarrollador, configuración inicial con ayuda a distancia + hojas de ayuda en `fuente/ayuda/`). La APK nueva lleva permiso de micrófono y `html2canvas-pro` (captura). Al publicar, correr también `funciones.yml` (reglas: marca `dev` solo la pone el dueño; avisos `ch:'dev'`). · web https://platanos-nietos.web.app.
 **PLAN EN CURSO (24 nov): leer también `fuente/PLAN-ARRANQUE-30NOV.md` — arranque real el lunes 30 de noviembre, con todas las decisiones de Ricardo.**
-**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **32**: todos publicados (del 1 al 32). El siguiente punto nuevo es el **33**. Plan en curso: `concepts_brief.md` (raíz del repo) — piloto de Bodega más fácil (lo esencial arriba, "Ver todo" = pantalla de hoy, capturas largas por pasos con WZ de l47); Ricardo prueba en su celular y primero hace la lista de 7 tareas con la versión de hoy. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
+**Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **38** (33–38 en la rama, sin publicar). El siguiente punto nuevo es el **39**. Pendientes para después del arranque (préstamo a empleados, "cobrar después"): ver el plan. Plan en curso: `concepts_brief.md` (raíz del repo) — piloto de Bodega más fácil (lo esencial arriba, "Ver todo" = pantalla de hoy, capturas largas por pasos con WZ de l47); Ricardo prueba en su celular y primero hace la lista de 7 tareas con la versión de hoy. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
 
 ### Cómo se trabaja (reglas de Ricardo)
 - Contestar SIEMPRE en español sencillo de México. Ricardo no es programador: explicar qué pasaba, qué se hizo y una lista corta de qué probar.

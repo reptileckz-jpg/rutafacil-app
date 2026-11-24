@@ -13,6 +13,7 @@
 ## 0. Estado al 20 nov 2026 (léelo primero si vienes de otro chat)
 
 **Versión publicada:** app **10.21** (24 nov) · APK **1.0.69**. **Todo está publicado.** · web https://platanos-nietos.web.app.
+**PLAN EN CURSO (24 nov): leer también `fuente/PLAN-ARRANQUE-30NOV.md` — arranque real el lunes 30 de noviembre, con todas las decisiones de Ricardo.**
 **Numeración:** los puntos viejos llegaron al 182 ("el 181 de antes"). La numeración nueva va en el **32**: todos publicados (del 1 al 32). El siguiente punto nuevo es el **33**. Plan en curso: `concepts_brief.md` (raíz del repo) — piloto de Bodega más fácil (lo esencial arriba, "Ver todo" = pantalla de hoy, capturas largas por pasos con WZ de l47); Ricardo prueba en su celular y primero hace la lista de 7 tareas con la versión de hoy. Ricardo pidió: SIEMPRE hablarle en español (aunque su ubicación salga en EUA; está en Tijuana).
 
 ### Cómo se trabaja (reglas de Ricardo)

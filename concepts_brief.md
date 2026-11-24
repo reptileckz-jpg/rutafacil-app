@@ -109,21 +109,21 @@ Mover algo entre "arriba" y "Ver todo" debería ser cambiar un dato, no reescrib
 ### 5.1 Ya decidido
 - No se publica nada hasta que Ricardo diga "publica".
 - La numeración de esta mejora empieza en el **punto 32** (ya existen del 26 al 31).
-- El error de las taras va **primero y solo**, en una entrega chica.
+- El error de las taras va **primero**, en una entrega chica.
 - Las capturas por pasos usan la pieza que ya existe y llaman a la misma acción de hoy.
 - "Ver todo" = la pantalla de hoy completa, con "← Volver".
 - Lo del asistente y de "Ver todo" no sube a la nube.
+- **(24 nov, Ricardo)** Prueba **Ricardo en su celular**.
+- **(24 nov, Ricardo)** **Piloto solo en Bodega**; Cargas y Clientes después, si funciona.
+- **(24 nov, Ricardo)** Ricardo hace la lista de prueba **antes** con la versión de hoy (ver 5.3).
+- **(24 nov, Ricardo)** Permiso para que el 0 "por seguridad" deje de escribirse (avisar en vez de poner 0) y para cifrar la herramienta de errores.
+- **(24 nov, Ricardo)** Los puntos 26 al 31 se publican **junto** con el arreglo de las taras (Etapa 0).
 
 ### 5.2 Falta que decida Ricardo
-1. **Quién prueba y en qué aparato:** ¿tú en la computadora, tu papá en el celular, o los dos? Si es tu papá, la prueba debe ser en celular.
-2. **Piloto en Bodega:** ¿hacemos primero solo Bodega, la pruebas y luego decidimos Cargas y Clientes?
-3. **Lista de prueba antes:** ¿la haces con la versión de hoy para ver dónde te atoras? Eso define "lo esencial".
-4. **El 0 que se sube a la nube:** ¿me das permiso de cambiarlo para que avise y no ponga 0? Toca cómo se guardan los números, aunque no mueve ninguna caja.
-5. **Herramienta de errores:** ¿la cifro antes de volver a leer los 2 reportes?
-6. **Puntos 26 al 31** (ya hechos, sin publicar): ¿salen antes o junto con el arreglo de las taras?
+- Nada por ahora. Lo esencial de Bodega se decide con lo que anote en la lista de prueba.
 
 ### 5.3 Lista de prueba para Ricardo
-Se hace dos veces: **antes** (con la versión de hoy) y **después**. Mismo aparato y mismos datos de prueba (la demo). Pasa si las 7 salen a la primera, sin preguntar, y "¿Cuadran las cuentas?" queda en verde.
+Se hace dos veces: **antes** (con la versión de hoy) y **después**, en el celular de Ricardo. En las tareas que mueven dinero o cajas (2 a 6) se llega hasta el último botón ("Guardar", "Registrar", "Recibir") **sin tocarlo**, para no cambiar los números reales. Por cada tarea se anota: ¿la hice sin preguntar?, ¿dónde dudé o me perdí?, ¿tuve que bajar mucho la pantalla?, ¿qué sobraba o qué faltaba a la vista? Pasa si las 7 salen a la primera, sin preguntar, y "¿Cuadran las cuentas?" queda en verde.
 1. Ver cuántas cajas maduras hay y cuáles se pasan pronto.
 2. Meter un lote a madurar.
 3. Contar la bodega.

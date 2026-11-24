@@ -143,6 +143,10 @@ function a42Deco(raiz) {
     Array.prototype.forEach.call(raiz.querySelectorAll('.av[data-c68]'), a42Row);
     Array.prototype.forEach.call(raiz.querySelectorAll('.card.alert,.card.good,.card.note'), a42Card);
     Array.prototype.forEach.call(raiz.querySelectorAll('[style*="border-left:"],[style*="border-left: "]'), a42Franja);
+    /* avisos sueltos sin color (por ejemplo, el del aceite en Vehículos): mismo diseño, en azul */
+    Array.prototype.forEach.call(raiz.querySelectorAll('.av:not([data-c68])'), function (r) { if (r.querySelector(':scope > .grow')) { r.setAttribute('data-c68', 'v'); a42Row(r); } });
+    /* tarjetas teñidas de color completo (maduración en Bodega): blancas; el color se queda en su barra */
+    Array.prototype.forEach.call(raiz.querySelectorAll('.card[style*="-soft)"]'), function (c) { if (c.classList.contains('a42c')) return; var s = c.getAttribute('style') || ''; if (!/background:\s*var\(--(danger|banana|ok|info|orange)-soft\)/.test(s)) return; c.style.background = ''; c.style.borderColor = ''; c.classList.add('a42c'); });
   } catch (e) { console.error('a42', e); }
 }
 /* después de dibujar: las ventanas (fuera de #root) y lo que otras capas agregan después del morph */

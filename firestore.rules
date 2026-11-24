@@ -12,6 +12,8 @@ service cloud.firestore {
     function activo() { return existePerfil() && yo().activo == true; }
     function esAdmin() { return activo() && yo().rol == 'admin'; }
     function esDuenio() { return esAdmin() && yo().get('duenio', false) == true; }
+    // 35/37 · el desarrollador de la app (marca 'dev' en su perfil; la pone el dueño)
+    function esDev() { return activo() && yo().get('dev', false) == true; }
     function esContador() { return activo() && yo().rol == 'cont'; }
     // un chofer que el administrador dejó de encargado (hasta cierta fecha)
     function esEncargado() { return activo() && yo().rol == 'chofer' && yo().get('encHasta', 0) > request.time.toMillis(); }
@@ -122,6 +124,11 @@ service cloud.firestore {
                     && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 200
                     && request.resource.data.texto is string && request.resource.data.texto.size() <= 1000;
       allow read, update, delete: if false;
+    }
+
+    // 35 · datos personales del sueldo del dueño: solo el dueño y el desarrollador
+    match /n/{neg}/priv/{id} {
+      allow read, write: if esDuenio() || esDev();
     }
 
     // 25 · resumen para los avisos al administrador (quién tiene clientes cada día, zona horaria, días que dura la fruta madura):

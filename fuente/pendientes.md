@@ -3181,3 +3181,13 @@ Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.
    horizontal abajo. Al arreglar 2, que la animación no se salga del ancho (por ejemplo, recortar con `overflow-x: clip` en el
    contenedor o que el aro no pase del borde) y probarlo en pantalla ancha (web) y en celular. Agregar prueba: el ancho de la página
    no cambia mientras late (`document.documentElement.scrollWidth <= innerWidth`).
+
+## Reportes de Ricardo desde la app (24 nov, v10.22) — revisados, falta arreglar
+- #1 Bodega: la tarjeta del periodo de arranque (arr33Banner) se mete entre el h1 y su renglón (subtítulo + botón de bodega): ponerla después de ese renglón.
+- #1/#2 "Señalar" (dib37ov, z-index 95) queda DETRÁS del reporte (.ov70 z-index 97): subirlo.
+- #2/#5 Cargas: "Ir ›" de "N pendientes en Cargas" (pnd86) no hace nada estando ya en Cargas: que abra/señale la carga.
+- #3 Clientes: la pantalla brinca ~1 s después de abrir y después de "Ir ›" (¿pend27 / redibujo con setTimeout?).
+- #4 sacudir dentro de una pantalla de pasos: sk37ov (z 90) queda detrás de #wzov (92) y #setov: subirlo.
+- #4 pendiente "Tu ruta · Entregas $X…" sale aunque no haya ruta abierta (el admin también es chofer).
+- #4/#6 captura37: partes negras (html2canvas backgroundColor null) → usar el color de fondo de la app.
+- #6 Cargas: "Este viaje nunca salió · cancelar" sale en un viaje ya empezado y luego dice que no se puede: no mostrarlo; y al cancelar pedir "Sí, cancelar / No".

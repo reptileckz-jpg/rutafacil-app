@@ -9,7 +9,7 @@ await ev(()=>{var bv=document.getElementById('bienv');if(bv)bv.remove();if(S.set
 r=await ev(()=>{var o=document.getElementById('pr24ov');return {o:o?o.innerText:'',pop:popItems().some(x=>x.t==='Precio de hoy')}});
 ok(/Fija el precio de hoy/.test(r.o)&&/Cambiar el precio/.test(r.o)&&/el de ayer/.test(r.o)&&!r.pop,arch+' · al abrir sin precio de hoy sale la pantalla grande "💲 Fija el precio de hoy"',r);
 r=await ev(()=>{document.querySelector('[data-act="pr24x"]').click();render();var c=document.querySelector('main [data-x="precio65"]');var m=c.parentElement;var prim=m.querySelector(':scope > .card, :scope > [data-x]');var cs=getComputedStyle(c,'::after');return {ov:!!document.getElementById('pr24ov'),cls:c.className,arriba:prim===c,ring:cs.animationName}});
-ok(!r.ov&&/pr24/.test(r.cls)&&r.arriba&&r.ring==='pr24ring',arch+' · "Después": ya no sale ese día; la tarjeta queda hasta arriba, en rojo y destellando',r);
+ok(!r.ov&&/pr24/.test(r.cls)&&r.arriba&&/pr(24|43)ring/.test(r.ring),arch+' · "Después": ya no sale (por 1 hora, desde el 43); la tarjeta queda hasta arriba, en rojo y destellando',r);
 r=await ev(()=>{S.tab.admin='clientes';render();S.tab.admin='inicio';render();var c=document.querySelector('main [data-x="precio65"]');return {b:/pr24b/.test(c.className),ov:!!document.getElementById('pr24ov')}});
 ok(r.b&&!r.ov,arch+' · al volver a Inicio la tarjeta brinca (y la pantalla grande no vuelve a salir)',r);
 r=await ev(()=>{try{localStorage.removeItem('pr24')}catch(e){}PR24.v=null;render();document.querySelector('[data-act="pr24ayer"]').click();render();var c=document.querySelector('main [data-x="precio65"]');return {conf:S.precio.conf===iso(TODAY),cls:c?c.className:'',ov:!!document.getElementById('pr24ov')}});

@@ -45,7 +45,9 @@ function arr33Banner() {
   d.setAttribute('style', 'padding:14px 16px');
   var q = arr33Quedan();
   d.innerHTML = (typeof A42 !== 'undefined' ? '<span class="a42i" aria-hidden="true" style="float:left;margin:0 12px 6px 0">' + A42.ic.o + '</span>' : '') + '<b>Periodo de arranque · ' + (q <= 1 ? 'hoy es el último día' : 'te quedan ' + q + ' días') + ' (hasta el ' + esc(fmtF(S.arr33.fin)) + ')</b><div style="font-size:15px;margin-top:4px">' + arr33Txt() + '</div>';
-  var h = m.querySelector('h1'); if (h) h.after(d); else m.prepend(d);
+  /* al final de la columna del título (debajo de "Lo que hay y la maduración"), no entre el título y su renglón (#1 de Ricardo).
+     */
+  var h = m.querySelector('h1'), cab = h && (h.closest('.t65') || h); if (cab) cab.after(d); else m.prepend(d);
 }
 /* contar la bodega: no pide volver a contar y la diferencia no es merma */
 var _cg33 = cntGrande82;

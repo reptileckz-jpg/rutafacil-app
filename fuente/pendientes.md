@@ -3171,7 +3171,7 @@ Revisión antes de publicar 10.21: TODAS las pruebas en 0 FAIL; comp-venta IDÉN
 
 Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.
 
-## Notas de Ricardo (25 nov, después de publicar 10.22 / APK 1.0.70) — SOLO ANOTADO, falta arreglar
+## Notas de Ricardo (25 nov, después de publicar 10.22 / APK 1.0.70) — ARREGLADAS en el punto 43 (v10.26)
 1. **Se perdió la pantalla grande del precio** (punto 24): al abrir la app la primera vez del día ya no sale la pantalla que obliga a
    poner el precio de la fruta. Revisar `tema-precio24.js` (¿se dejó de llamar? ¿la tapa el centro de pendientes o el tutorial?).
 2. **Se perdió la animación de la tarjeta "Precio de hoy"** cuando no se puso el precio: antes temblaba/vibraba y brillaba en rojo en
@@ -3182,7 +3182,7 @@ Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.
    contenedor o que el aro no pase del borde) y probarlo en pantalla ancha (web) y en celular. Agregar prueba: el ancho de la página
    no cambia mientras late (`document.documentElement.scrollWidth <= innerWidth`).
 
-## Reportes de Ricardo desde la app (24 nov, v10.22) — revisados, falta arreglar
+## Reportes de Ricardo desde la app (24 nov, v10.22) — ARREGLADOS en el punto 43 (v10.26, tema-arreglos43.js, t43)
 - #1 Bodega: la tarjeta del periodo de arranque (arr33Banner) se mete entre el h1 y su renglón (subtítulo + botón de bodega): ponerla después de ese renglón.
 - #1/#2 "Señalar" (dib37ov, z-index 95) queda DETRÁS del reporte (.ov70 z-index 97): subirlo.
 - #2/#5 Cargas: "Ir ›" de "N pendientes en Cargas" (pnd86) no hace nada estando ya en Cargas: que abra/señale la carga.

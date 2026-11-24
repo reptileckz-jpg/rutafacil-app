@@ -22,7 +22,7 @@ const antes=r.antes;
 r=await ev(()=>{var c=S.cargas.filter(function(x){return x.id===window.__ids.h})[0];return /data-act="c173can"/.test(cargaCard(c))&&!/data-act="c173can"/.test(cargaCard(S.cargas.filter(function(x){return x.id===window.__ids.v})[0]))});
 ok(r,'la carga del viaje tiene "Este viaje nunca salió · cancelar"; la recibida no');
 /* cancelar */
-r=await ev(()=>{var d=document.createElement('button');d.dataset.act='c173can';d.dataset.id=window.__ids.h;document.body.appendChild(d);d.click();d.remove();
+r=await ev(()=>{var d=document.createElement('button');d.dataset.act='c173can';d.dataset.id=window.__ids.h;document.body.appendChild(d);d.click();d.remove();/* 43 · ahora pregunta con dos botones */var y=document.createElement('button');y.dataset.act='c43si';document.body.appendChild(y);y.click();y.remove();
  var c=S.cargas.filter(function(x){return x.id===window.__ids.h})[0],v=S.cargas.filter(function(x){return x.id===window.__ids.v})[0];
  return {f:window.__foto(),est:c.est,pagH:c.pag,pagV:v.pag,baseV:v.pagBase,aviso:avisos().filter(function(x){return /nunca llegó/.test(x)}).length,hist:S.hist.slice(-1)[0].x}});
 ok(r.est==='Cancelada'&&r.f.saldo===2000&&r.f.pend===2000,'cancelar: la deuda baja exactamente 10,000 y lo pagado (3,000) se descuenta de la otra carga (saldo = lista de pendientes = 2,000)',r);

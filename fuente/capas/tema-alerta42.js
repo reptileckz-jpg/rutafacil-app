@@ -50,7 +50,7 @@
     '.av.a42row.a42k>.a42go,.av.a42row.a42k>.lbl[aria-hidden]{background:#FB7185!important;color:#09090B!important}',
     /* 2) tarjetas de aviso de toda la app */
     '.card.a42c{background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:20px!important;box-shadow:var(--a42sh)!important}',
-    '.card.a42c>.a42i{float:left;margin:0 12px 6px 0}.card.a42c::after{content:"";display:table;clear:both}',
+    '.card.a42c>.a42i{float:left;margin:0 12px 6px 0}.card.a42c:not([data-x="precio65"])::after{content:"";display:table;clear:both}',
     '.card.a42c.a42k{background:#18181B!important;border-color:#27272A!important}',
     /* 3) sin franja gruesa: borde fino y un puntito de color */
     '.a42f{border-left-width:1px!important;border-left-color:var(--line)!important;position:relative}',

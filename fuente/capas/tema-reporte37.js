@@ -18,10 +18,12 @@ function h2c37() {
     document.head.appendChild(s); setTimeout(function () { no(new Error('tarde')); }, 6000);
   });
 }
+/* el fondo de la app (si no se le dice, la captura salía con partes negras) */
+function a37Fondo() { try { var c = getComputedStyle(document.body).backgroundColor; if (!c || /rgba\(0, 0, 0, 0\)|transparent/.test(c)) c = getComputedStyle(document.documentElement).backgroundColor; return (!c || /rgba\(0, 0, 0, 0\)|transparent/.test(c)) ? '#F3F5F0' : c; } catch (e) { return '#FFFFFF'; } }
 function captura37() {
   return h2c37().then(function (h2c) {
     var w = window.innerWidth, h = window.innerHeight;
-    return h2c(document.body, { x: window.scrollX, y: window.scrollY, width: w, height: h, scale: Math.min(1, 720 / Math.max(w, h)) * (window.devicePixelRatio > 1 ? 1.4 : 1), useCORS: true, logging: false, backgroundColor: null, ignoreElements: function (el) { return el && (el.id === 'rp56ov' || el.id === 'sk37ov' || el.id === 'dib37ov'); } })
+    return h2c(document.body, { x: window.scrollX, y: window.scrollY, width: w, height: h, scale: Math.min(1, 720 / Math.max(w, h)) * (window.devicePixelRatio > 1 ? 1.4 : 1), useCORS: true, logging: false, backgroundColor: a37Fondo(), ignoreElements: function (el) { return el && (el.id === 'rp56ov' || el.id === 'sk37ov' || el.id === 'dib37ov'); } })
       .then(function (cv) { return cv.toDataURL('image/jpeg', 0.72); });
   }).catch(function () { return null; });
 }
@@ -58,13 +60,13 @@ function sacude37(e) {
 window.addEventListener('devicemotion', sacude37);
 function sk37HTML() {
   if (!S.sk37) return '';
-  return '<div id="sk37ov" role="dialog" aria-label="¿Reportar un problema?" style="position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px"><div class="card" style="max-width:420px;width:100%;padding:18px"><div style="font-size:22px;font-weight:900">🐞 ¿Reportar un problema?</div><div class="lbl" style="margin-top:6px">Sacudiste el celular. La app toma una captura de lo que estabas viendo.</div>'
+  return '<div id="sk37ov" role="dialog" aria-label="¿Reportar un problema?" style="position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px"><div class="card" style="max-width:420px;width:100%;padding:18px"><div style="font-size:22px;font-weight:900">🐞 ¿Reportar un problema?</div><div class="lbl" style="margin-top:6px">Sacudiste el celular. La app toma una captura de lo que estabas viendo.</div>'
     + '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn" style="flex:2;min-height:56px" data-act="sk37si">Sí, reportar</button><button class="btn sec" style="flex:1;min-height:56px" data-act="sk37no">No</button></div></div></div>';
 }
 /* ---------- dibujar encima de la captura ---------- */
 function dib37HTML() {
   var x = S.dib37; if (!x || !S.rp56 || !S.rp56.foto) return '';
-  return '<div id="dib37ov" role="dialog" aria-label="Señala el problema" style="position:fixed;inset:0;z-index:95;background:#111;display:flex;flex-direction:column"><div style="color:#fff;padding:10px 14px;font-weight:800">✏️ Con el dedo, encierra o raya dónde está el problema</div>'
+  return '<div id="dib37ov" role="dialog" aria-label="Señala el problema" style="position:fixed;inset:0;z-index:130;background:#111;display:flex;flex-direction:column"><div style="color:#fff;padding:10px 14px;font-weight:800">✏️ Con el dedo, encierra o raya dónde está el problema</div>'
     + '<div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden"><canvas id="dib37c" style="max-width:100%;max-height:100%;touch-action:none;background:#fff"></canvas></div>'
     + '<div style="display:flex;gap:8px;padding:10px"><button class="btn sec" style="flex:1" data-act="dib37undo">↶ Deshacer</button><button class="btn sec" style="flex:1" data-act="dib37x">Cancelar</button><button class="btn" style="flex:2" data-act="dib37ok">Listo</button></div></div>';
 }

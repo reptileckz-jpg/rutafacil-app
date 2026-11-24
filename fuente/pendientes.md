@@ -3168,3 +3168,5 @@ HECHO, `tema-centro30.js` + `tema-cred30.js`, prueba `t30.js`. Ricardo (opción 
 ## 32 · "Las taras no cuadran por lugar" (24 nov)
 HECHO, `tema-taras32.js`, prueba `t32.js`. Revisión de 7 revisores (concepts_brief.md, Etapa 0). Causa: l5.js:76 condición (b) `w.cli===sum(c.vac)` sin num(); un c.vac "3"/"" llegado de la nube antes del redibujo (sano68 solo corre en render) daba aviso falso. Ahora cuentasRevisar limpia antes (solo números legibles, mismo valor); apErr agrega "falla: a|b", ids de clientes con dato ilegible, camV/atrasados y si fue fuera de redibujo (≤300 letras, sin nombres). sano68 ya no pone 0 a lo ilegible (Number() no leía "1,200" y salPuente lo subía como resta): lee con comas y deja lo ilegible con aviso (en la app con nombre, a la nube con #id). probs122 solo marca reportes con f < 2026-11-19. leer-errores.js: limpio32() (solo números y palabras de una lista). t69 al día.
 Revisión antes de publicar 10.21: TODAS las pruebas en 0 FAIL; comp-venta IDÉNTICO; comp-cajas solo cambia el texto de Inicio (centro de pendientes).
+
+Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.

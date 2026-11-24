@@ -3191,3 +3191,8 @@ Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.
 - #4 pendiente "Tu ruta · Entregas $X…" sale aunque no haya ruta abierta (el admin también es chofer).
 - #4/#6 captura37: partes negras (html2canvas backgroundColor null) → usar el color de fondo de la app.
 - #6 Cargas: "Este viaje nunca salió · cancelar" sale en un viaje ya empezado y luego dice que no se puede: no mostrarlo; y al cancelar pedir "Sí, cancelar / No".
+
+## Pruebas en celulares reales (Ricardo, 25 nov)
+- ✅ Avisos con la app cerrada · ✅ Cámara · ✅ Sin señal ("Buscando señal, guardando N datos") · ✅ Dos celulares (Z Fold y Moto Z)
+- ✅ Día completo de chofer (en prueba; falta el de campo) · ✅ Sacudir (estaba muy sensible: ahora 4 sacudidas más fuertes en 1.3 s)
+- Falta: GPS y "ya llegó a la bodega", celular viejo, configuración inicial con 2 personas a la vez, ensayo del domingo 29.

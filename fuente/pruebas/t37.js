@@ -8,12 +8,12 @@ const ev=(f,a)=>p.evaluate(f,a);let r;
 const clic=(act,extra)=>ev(([act,extra])=>{var d=document.createElement('button');d.dataset.act=act;Object.assign(d.dataset,extra||{});document.body.appendChild(d);d.click();d.remove()},[act,extra]);
 await ev(()=>{S.role='admin';S.encOn=false;S.pinOk[pinKey()]=true;S.tutVisto={admin:true,rep:true};S.popVisto={admin:iso(TODAY)};S.cajaAyerSkip=true;S.tab.admin='inicio';render()});
 /* sacudir */
-r=await ev(()=>{var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(30);f(-30);f(30);return {sk:!!S.sk37,ov:!!document.getElementById('sk37ov'),t:(document.getElementById('sk37ov')||{}).innerText||''}});
-ok(r.sk&&r.ov&&/Reportar un problema/.test(r.t),'al sacudir pregunta "¿Reportar un problema?"',r);
+r=await ev(()=>{var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(30);f(-30);f(30);var tres=!!S.sk37;f(-30);return {tres,sk:!!S.sk37,ov:!!document.getElementById('sk37ov'),t:(document.getElementById('sk37ov')||{}).innerText||''}});
+ok(!r.tres&&r.sk&&r.ov&&/Reportar un problema/.test(r.t),'al sacudir 4 veces (3 ya no basta) pregunta "¿Reportar un problema?"',r);
 await clic('sk37no');r=await ev(()=>({sk:S.sk37,ov:!!document.getElementById('sk37ov'),rp:!!S.rp56}));
 ok(!r.sk&&!r.ov&&!r.rp,'"No" cierra sin abrir el reporte',r);
-r=await ev(()=>{S.sk37=null;var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(1);f(2);f(1);return !!S.sk37});
-ok(!r,'un movimiento normal no pregunta nada',r);
+r=await ev(()=>{S.sk37=null;var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(15);f(-15);f(15);f(-15);return !!S.sk37});
+ok(!r,'un movimiento normal (aunque sea fuerte, como al caminar o en el carro) no pregunta nada',r);
 /* abrir: captura automática */
 await ev(()=>{R37.ult=0;S.sk37={t:1};render()});await clic('sk37si');await p.waitForTimeout(2500);
 r=await ev(()=>({rp:!!S.rp56,foto:S.rp56&&String(S.rp56.foto||'').slice(0,15),auto:S.rp56&&S.rp56.auto37,t:(document.getElementById('rp56ov')||{}).innerText||''}));
@@ -63,6 +63,6 @@ ok(r.llam.length===1&&r.llam[0].nom==='reporte-7.jpg'&&r.llam[0].o.wa===false,'"
 ok(r.guard.length===r.n&&r.guard.every(g=>g[1]==='image/jpeg'),'"Guardar todas" deja una imagen por reporte en Descargas ('+r.guard.length+')',r.guard);
 ok(r.w===800&&r.h>400&&r.h<2200,'la imagen de un reporte es de tamaño normal (texto + su captura), no una tira larga',{w:r.w,h:r.h});
 /* en camino no pregunta (chofer moviéndose) */
-r=await ev(async()=>{S.role='rep';R37.ult=0;S.sk37=null;S.rp56=null;navigator.geolocation.getCurrentPosition=function(ok){ok({coords:{speed:12}})};var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(30);f(-30);f(30);await new Promise(r=>setTimeout(r,100));return !!S.sk37});
+r=await ev(async()=>{S.role='rep';R37.ult=0;S.sk37=null;S.rp56=null;navigator.geolocation.getCurrentPosition=function(ok){ok({coords:{speed:12}})};var f=(x)=>window.dispatchEvent(Object.assign(new Event('devicemotion'),{accelerationIncludingGravity:{x:x,y:0,z:9.8}}));f(30);f(-30);f(30);f(-30);await new Promise(r=>setTimeout(r,100));return !!S.sk37});
 ok(!r,'si el chofer va manejando, sacudir no pregunta nada',r);
 ok(!errs.length,'sin errores',errs);console.log(nOK+' OK · '+nF+' FAIL');await b.close()})();

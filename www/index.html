@@ -21584,9 +21584,9 @@ function sacude37(e) {
   try {
     var a = e.accelerationIncludingGravity || e.acceleration; if (!a || a.x == null) return;
     var g = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z), ahora = Date.now();
-    if (Math.abs(g - 9.8) < 14) return;
-    R37.t = R37.t.filter(function (t) { return ahora - t < 900; }); R37.t.push(ahora);
-    if (R37.t.length < 3 || ahora - R37.ult < 6000) return;
+    if (Math.abs(g - 9.8) < 17) return; /* 25 nov · Ricardo: "lo hace muy rápido, quizás una sacudidita más": más fuerte y 4 veces */
+    R37.t = R37.t.filter(function (t) { return ahora - t < 1300; }); R37.t.push(ahora);
+    if (R37.t.length < 4 || ahora - R37.ult < 6000) return;
     R37.t = []; R37.ult = ahora;
     if (S.rp56 || S.sk37 || document.getElementById('pinov') || S.modal) return;
     var pide = function () { S.sk37 = { t: ahora }; render(); try { if (navigator.vibrate) navigator.vibrate(60); } catch (er) {} };

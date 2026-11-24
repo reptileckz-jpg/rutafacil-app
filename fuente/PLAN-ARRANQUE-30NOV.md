@@ -63,6 +63,22 @@ Ricardo pidió **"todo o nada"**: no se entrega a medias. Si algo no queda bien 
 14. **Hoja de ayuda (PDF para imprimir):** una para el dueño y otra para los choferes, con los pasos del día y cómo reportar un error.
 15. **APK nuevo** (permiso de micrófono para el audio). Ricardo lo prueba conforme salga.
 
+## Hecho en la rama (24 nov) · puntos 33 a 38
+33 arranque · 34 caja/banco/sueldo del dueño · 35 Mi sueldo · 36 aguinaldo y recibo · 37 reportar sacudiendo + desarrollador + avisos ·
+38 configuración inicial con ayuda a distancia (el paso es de cada celular, las listas se juntan, aviso de dos personas, solo el dueño
+toca "Empezar", "¿Qué hago aquí?" y "Pedir ayuda") + hojas de ayuda en `fuente/ayuda/` (se rehacen con `python3 fuente/ayuda/hacer-hojas.py`).
+
+**Ajuste del arranque (Ricardo, 24 nov):** el **macho siempre es merma**, también en las 2 semanas (al madurar y al moverlo se caen
+plátanos y baja de peso; así se sabe cuánto se pierde de lo que se cargó). El arranque solo ajusta las **cajas**. La app le dice al papá:
+"ve contando; con cada conteo se ajusta; tienes hasta el … ; después las diferencias cuentan como merma", y los últimos 4 días sale en "Hoy".
+
+## Para DESPUÉS del arranque (Ricardo, 24 nov: "primero termina lo que ya llevamos")
+- **Préstamo o adelanto a empleados:** "Don Ricardo, ¿me adelanta $1,000 o $2,000 y me los descuenta en una o dos quincenas, o se los
+  pago en tantos días?". Ojo: la app ya guarda `adelantos` y `prestamos` (NB_SH); revisar qué hace hoy antes de hacer algo nuevo.
+- **"Cobrar después" a un cliente:** al terminar la ruta (o al salir a comer en su carro particular) el dueño o el chofer dice "le voy a
+  cobrar a tal cliente". Falta ver cómo se anota ese cobro fuera de la ruta. Con el carro particular: ¿se paga la gasolina como gasto del
+  negocio, la mitad, o nada (porque aprovechó la salida)? Entrevistar a Ricardo con opciones.
+
 ## Otras decisiones de ese día
 - Reporte de errores: **todos** lo pueden usar; va a la app + WhatsApp.
 - Revisión de pantallas (Bodega, Cargas, Clientes): ver `concepts_brief.md` (revisado por 7 revisores). Piloto solo en Bodega primero.

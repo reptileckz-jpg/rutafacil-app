@@ -8,6 +8,10 @@
    - Contar la bodega: el motivo de la diferencia ya viene como "Ajuste de arranque" y no pide volver a contar aunque la diferencia sea
      grande. Lo que salga NO es merma: se anota con valor $0 (queda la cantidad y el valor que habría sido, para el historial).
    - Ajustar taras (descuadre): el motivo ya viene como "Ajuste de arranque". No se le descuenta a nadie.
+   24 nov (Ricardo, después): el MACHO siempre cuenta como merma, también en el arranque (al madurar y al moverlo se caen plátanos de la
+   penca y baja de peso; así sabe cuánto se pierde de lo que cargó). El arranque solo ajusta las cajas (vacías, verdes, en maduración, maduras).
+   Textos: "ve contando, con cada conteo el número se ajusta; tienes hasta el … para dejarlo bien; después las diferencias son merma".
+   Los últimos 4 días sale en "Hoy" cuántos días quedan.
    No borra nada: todo queda en el historial. Se arma al final.
    ============================================================================================ */
 try { if (NB_SH.indexOf('arr33') < 0) NB_SH.push('arr33'); } catch (e) {}
@@ -28,12 +32,19 @@ render = function () {
   try { arr33Banner(); } catch (e) {}
   return r;
 };
+function arr33Quedan() { try { return Math.round((new Date(S.arr33.fin + 'T12:00:00') - new Date(iso(TODAY) + 'T12:00:00')) / 864e5) + 1; } catch (e) { return 0; } }
+function arr33Txt() {
+  return 'Ve contando la bodega: con cada conteo el número de <b>cajas</b> (vacías, verdes, en maduración y maduras) se va ajustando, y esa diferencia es <b>ajuste de arranque</b>: no es merma ni se le descuenta a nadie. '
+    + 'Tienes hasta el <b>' + esc(fmtF(S.arr33.fin)) + '</b> para dejar bien tus números. <b>Después, las diferencias al contar ya cuentan como merma.</b> '
+    + 'El <b>macho</b> siempre cuenta como merma (al madurar y al moverlo se caen plátanos y baja de peso): así sabes cuánto se pierde de lo que cargaste.';
+}
 function arr33Banner() {
   if (S.role !== 'admin' || S.tab.admin !== 'bodega' || !arr33Activo()) return;
   var m = document.querySelector('main'); if (!m || m.querySelector('[data-x="arr33"]')) return;
   var d = document.createElement('div'); d.className = 'card'; d.dataset.x = 'arr33';
   d.setAttribute('style', 'padding:12px 14px;border:2px solid #F59E0B;background:color-mix(in srgb,#F59E0B 10%,var(--surface))');
-  d.innerHTML = '<b>🟡 Periodo de arranque · hasta el ' + esc(fmtF(S.arr33.fin)) + '</b><div style="font-size:15px;margin-top:4px">Los números de la bodega son aproximados. Cuando cuentes, la diferencia se anota como <b>ajuste de arranque</b>: no es merma ni se le descuenta a nadie.</div>';
+  var q = arr33Quedan();
+  d.innerHTML = '<b>🟡 Periodo de arranque · ' + (q <= 1 ? 'hoy es el último día' : 'te quedan ' + q + ' días') + ' (hasta el ' + esc(fmtF(S.arr33.fin)) + ')</b><div style="font-size:15px;margin-top:4px">' + arr33Txt() + '</div>';
   var h = m.querySelector('h1'); if (h) h.after(d); else m.prepend(d);
 }
 /* contar la bodega: no pide volver a contar y la diferencia no es merma */
@@ -46,8 +57,10 @@ window.addEventListener('click', function (e) {
     try {
       (S.mermas || []).slice(n0).forEach(function (m) {
         if (!m || m.aj33) return;
-        m.aj33 = { valor: num(m.valor), f: iso(TODAY) }; m.valor = 0; m.mot82 = m.mot82 || ARR33.mot;
-        m.txt = (m.txt ? m.txt + ' · ' : '') + 'Ajuste de arranque (no es merma)';
+        /* el macho sigue siendo merma; solo las cajas son ajuste de arranque */
+        var v = num(m.valor), vM = num(m.M) > 0 ? Math.min(v, r2(num(m.M) * costoKgMAct())) : 0, vR = r2(v - vM);
+        m.aj33 = { valor: vR, R: num(m.R), f: iso(TODAY) }; m.R = 0; m.valor = vM; m.mot82 = m.mot82 || ARR33.mot;
+        m.txt = (m.txt ? m.txt + ' · ' : '') + (num(m.aj33.R) ? 'Cajas: ajuste de arranque (no es merma)' : '') + (num(m.M) ? (num(m.aj33.R) ? ' · ' : '') + 'Macho: sí es merma' : '');
       });
     } catch (er) {}
   }, 30);
@@ -65,7 +78,7 @@ ajHTML = function () {
     if (!h || S.role !== 'admin' || S.encOn) return h;
     var a = S.arr33, act = arr33Activo();
     var x = '<div class="card" data-k="arr33aj"><b>🟡 Periodo de arranque</b><div class="lbl" style="margin-top:4px">'
-      + (act ? 'Activo hasta el ' + esc(fmtF(a.fin)) + '. Los números de la bodega son aproximados; las diferencias al contar son "ajuste de arranque", no merma.' : (a ? 'Terminó' + (a.term ? ' el ' + esc(fmtF(a.term)) : ' el ' + esc(fmtF(a.fin))) + '. Ya todo cuenta normal.' : 'No se ha usado. Sirve para las primeras 2 semanas, cuando los números de la bodega todavía son aproximados.'))
+      + (act ? 'Activo (' + arr33Quedan() + ' días). ' + arr33Txt() : (a ? 'Terminó' + (a.term ? ' el ' + esc(fmtF(a.term)) : ' el ' + esc(fmtF(a.fin))) + '. Ya todo cuenta normal.' : 'No se ha usado. Sirve para las primeras 2 semanas, cuando los números de la bodega todavía son aproximados.'))
       + '</div>' + (act ? '<button class="btn sec" style="margin-top:8px" data-act="arr33fin">Ya está todo contado: terminar el arranque</button>' : (!a ? '<button class="btn sec" style="margin-top:8px" data-act="arr33ini">Empezar el periodo de arranque (2 semanas)</button>' : '')) + '</div>';
     var i = h.lastIndexOf('</div></div>'); return i > -1 ? h.slice(0, i) + x + h.slice(i) : h + x;
   } catch (e) { return h; }
@@ -78,3 +91,10 @@ document.addEventListener('click', function (e) {
   S.arr33.term = iso(TODAY); try { S.hist.push({ t: fmtF(iso(TODAY)) + ' ' + hhmm(), q: quien(), x: 'Terminó el periodo de arranque' }); } catch (er) {}
   toast('Listo: el arranque terminó'); render();
 }, true);
+/* los últimos 4 días: recordatorio en "Hoy" */
+var _hT33 = hoyTareas;
+hoyTareas = function () {
+  var L = _hT33.apply(this, arguments);
+  try { if (S.role === 'admin' && !S.encOn && arr33Activo()) { var q = arr33Quedan(); if (q <= 4) L.push({ k: 'arr33q', t: '🟡 ' + (q <= 1 ? 'Hoy termina' : 'Quedan ' + q + ' días del') + ' periodo de arranque: cuenta la bodega para dejar bien tus cajas. Después, las diferencias cuentan como merma.', go: 'bodega', ok: false }); } } catch (e) {}
+  return L;
+};

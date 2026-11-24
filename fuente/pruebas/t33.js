@@ -16,10 +16,17 @@ await p.waitForTimeout(200);
 r=await ev(n0=>{var m=(S.mermas||[]).slice(n0);return {n:m.length,inv:S.inv.maduras,valor:m[0]&&m[0].valor,aj:m[0]&&m[0].aj33,mot:m[0]&&m[0].mot82}},r);
 ok(r.n===1&&r.inv===30,'contar con una diferencia grande: no pide volver a contar y la bodega queda con lo contado',r);
 ok(r.valor===0&&r.aj&&r.aj.valor>0&&/Ajuste de arranque/.test(r.mot||''),'la diferencia es "ajuste de arranque": valor $0 (no es merma) y queda el valor que habría sido',r);
+/* 24 nov: el macho siempre es merma, también en el arranque */
+r=await ev(()=>{costoKgMAct=function(){return 10};var n0=(S.mermas||[]).length;S.inv.maduras=30;S.inv.kgMaduro=100;['rv','ra','mv','ma'].forEach(k=>S.cnt[k]='');S.cnt.ra='28';S.cnt.ma='90';S.cnt82={};S.tab.admin='bodega';render();var k=Object.keys(S.cnt);document.querySelector('[data-act="registrarcnt"]').click();return n0});
+await p.waitForTimeout(200);
+r=await ev(n0=>{var m=(S.mermas||[]).slice(n0)[0];return m&&{M:m.M,R:m.R,valor:m.valor,aj:m.aj33,txt:m.txt}},r);
+ok(r&&r.M===10&&r.valor===100&&r.R===0&&r.aj&&r.aj.R===2,'en el arranque: las cajas son ajuste, pero los kilos de macho que faltan SÍ son merma',r);
+r=await ev(()=>{var t=TODAY;TODAY=new Date(new Date(S.arr33.fin+'T12:00:00').getTime()-2*864e5);var x=hoyTareas().filter(x=>x.k==='arr33q').map(x=>x.t);S.tab.admin='bodega';render();var c=(document.querySelector('main [data-x="arr33"]')||{}).innerText||'';TODAY=t;return {x,c}});
+ok(r.x.length===1&&/Quedan 3 días/.test(r.x[0])&&/te quedan 3 días/.test(r.c)&&/macho/.test(r.c)&&/merma/.test(r.c),'los últimos días: "Quedan N días" en Hoy y en Bodega, y explica que después es merma',r);
 /* terminar */
 r=await ev(()=>{S.aj={};var b=document.createElement('button');b.dataset.act='arr33fin';document.body.appendChild(b);b.click();b.remove();return {act:arr33Activo(),term:S.arr33.term}});
 ok(!r.act&&r.term,'"Ya está todo contado: terminar el arranque" lo termina',r);
-r=await ev(()=>{var n0=(S.mermas||[]).length;S.cnt.ra='29';S.cnt82={mot:'Se echó a perder'};S.tab.admin='bodega';render();document.querySelector('[data-act="registrarcnt"]').click();return n0});
+r=await ev(()=>{var n0=(S.mermas||[]).length;S.inv.maduras=30;['rv','ra','mv','ma'].forEach(k=>S.cnt[k]='');S.cnt.ra='29';S.cnt82={mot:'Se echó a perder'};S.tab.admin='bodega';render();document.querySelector('[data-act="registrarcnt"]').click();return n0});
 await p.waitForTimeout(200);
 r=await ev(n0=>{var m=(S.mermas||[]).slice(n0)[0];return {valor:m&&m.valor,aj:m&&m.aj33}},r);
 ok(r.valor>0&&!r.aj,'ya terminado, la diferencia sí cuenta como merma (normal)',r);

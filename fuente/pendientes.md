@@ -3170,3 +3170,14 @@ HECHO, `tema-taras32.js`, prueba `t32.js`. Revisión de 7 revisores (concepts_br
 Revisión antes de publicar 10.21: TODAS las pruebas en 0 FAIL; comp-venta IDÉNTICO; comp-cajas solo cambia el texto de Inicio (centro de pendientes).
 
 Publicado 10.21 (APK 1.0.69) el 24 nov: web y APK en verde.
+
+## Notas de Ricardo (25 nov, después de publicar 10.22 / APK 1.0.70) — SOLO ANOTADO, falta arreglar
+1. **Se perdió la pantalla grande del precio** (punto 24): al abrir la app la primera vez del día ya no sale la pantalla que obliga a
+   poner el precio de la fruta. Revisar `tema-precio24.js` (¿se dejó de llamar? ¿la tapa el centro de pendientes o el tutorial?).
+2. **Se perdió la animación de la tarjeta "Precio de hoy"** cuando no se puso el precio: antes temblaba/vibraba y brillaba en rojo en
+   Inicio. Sospecha: el rediseño del punto 42 (`tema-alerta42.js`) cambió fondo y borde de `[data-x="precio65"].pr24/.sinfijar92`;
+   revisar que no haya quitado el aro que late (`.pr24::after`, `pr24ring`) ni el brinco (`pr24b`). Debe seguir llamando la atención.
+3. **Versión web: la animación de esa tarjeta hacía crecer y achicar la página** y aparecía/desaparecía una barra de desplazamiento
+   horizontal abajo. Al arreglar 2, que la animación no se salga del ancho (por ejemplo, recortar con `overflow-x: clip` en el
+   contenedor o que el aro no pase del borde) y probarlo en pantalla ancha (web) y en celular. Agregar prueba: el ancho de la página
+   no cambia mientras late (`document.documentElement.scrollWidth <= innerWidth`).

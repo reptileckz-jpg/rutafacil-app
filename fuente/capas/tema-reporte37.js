@@ -192,14 +192,23 @@ document.addEventListener('click', function (e) {
     var tx = dev37Paquete(); try { navigator.clipboard.writeText(tx).then(function () { toast('Copiado: pégalo en el chat con Claude'); }, function () { toast('No se pudo copiar'); }); } catch (er) {}
     return;
   }
-  /* compartir con Claude: el texto y las capturas, juntos en UNA imagen (el APK comparte un archivo a la vez), de 5 en 5 */
-  if (a === 'dev37comp') {
-    var pg = +b.dataset.p || 0, R = dev37ConCaptura(), parte = R.slice(pg * 5, pg * 5 + 5);
-    if (!parte.length) { toast('No hay reportes pendientes'); return; }
+  /* compartir o guardar: UNA imagen por reporte (su texto arriba y su captura abajo), para que se lea bien */
+  if (a === 'dev37comp' || a === 'dev37guarda') {
+    var R = dev37ConCaptura(), uno = b.dataset.id ? R.filter(function (p) { return String(p.id) === b.dataset.id; }) : R;
+    if (!uno.length) { toast('No hay reportes pendientes'); return; }
     try { navigator.clipboard.writeText(dev37Paquete()).catch(function () {}); } catch (er) {}
-    dev37Hoja(parte, pg, Math.ceil(R.length / 5)).then(function (img) {
-      return natCompartir(img, 'reportes-' + (pg + 1) + '.jpg', { mime: 'image/jpeg', wa: false, texto: 'Reportes de la app ' + (pg + 1) + ' de ' + Math.ceil(R.length / 5) });
-    }).then(function (ok) { toast(ok ? 'Escoge la app de Claude. El texto también quedó copiado: pégalo en el chat.' : 'No se pudo compartir: el texto quedó copiado'); }, function () { toast('No se pudo armar la imagen'); });
+    var nom = function (p) { return 'reporte-' + (p.auto ? 'auto-' + String(p.id).slice(-4) : p.n) + '.jpg'; };
+    if (a === 'dev37comp') {
+      var p0 = uno[0];
+      dev37Hoja([p0], 0, 1).then(function (img) { return natCompartir(img, nom(p0), { mime: 'image/jpeg', wa: false, texto: 'Reporte ' + (p0.auto ? '(automático)' : '#' + p0.n) + ' de la app' }); })
+        .then(function (ok) { toast(ok ? 'Listo. El texto de todos también quedó copiado.' : 'No se pudo compartir'); }, function () { toast('No se pudo armar la imagen'); });
+      return;
+    }
+    var k = 0, sig = function () {
+      if (k >= uno.length) { toast('Listo: ' + uno.length + ' imagen' + (uno.length === 1 ? '' : 'es') + ' en Descargas. El texto también quedó copiado.'); return; }
+      var p1 = uno[k++]; dev37Hoja([p1], 0, 1).then(function (img) { return natGuardar(img.split(',')[1], nom(p1), 'image/jpeg'); }).then(sig, function () { toast('No se pudo guardar el reporte ' + (p1.n || '')); sig(); });
+    };
+    toast('Guardando ' + uno.length + ' imagen' + (uno.length === 1 ? '' : 'es') + '…'); sig();
     return;
   }
 }, true);
@@ -217,7 +226,7 @@ function dev37Hoja(L, pg, tot) {
     });
     var H = 70 + bloques.reduce(function (a, k) { return a + 30 + k.T.length * 28 + k.ih + 30; }, 0);
     cv.width = W; cv.height = Math.min(H, 30000); x.fillStyle = '#fff'; x.fillRect(0, 0, W, cv.height);
-    x.fillStyle = '#111'; x.font = 'bold 24px sans-serif'; x.fillText('Reportes de la app · ' + (pg + 1) + ' de ' + tot + ' · ' + fmtF(iso(TODAY)), M, 40);
+    x.fillStyle = '#111'; x.font = 'bold 24px sans-serif'; x.fillText((tot > 1 ? 'Reportes de la app · ' + (pg + 1) + ' de ' + tot : 'Reporte de la app') + ' · ' + fmtF(iso(TODAY)), M, 40);
     var y = 70;
     bloques.forEach(function (k) {
       x.strokeStyle = '#ddd'; x.beginPath(); x.moveTo(M, y); x.lineTo(W - M, y); x.stroke(); y += 30;
@@ -242,7 +251,7 @@ function dev37HTML() {
   var man = P.filter(function (p) { return p && !p.auto; }), aut = P.filter(function (p) { return p && p.auto; });
   var h = '<button class="link" data-act="dev37x">← Volver</button><h1>🛠️ Desarrollador</h1><div class="chips" role="group" style="margin:6px 0;flex-wrap:wrap">'
     + [['rep', 'Reportes (' + man.filter(function (p) { return !p.res; }).length + ')'], ['aut', 'Errores automáticos (' + aut.filter(function (p) { return !p.res; }).length + ')'], ['cel', 'Celulares']].map(function (o) { return '<button data-act="dev37v" data-v="' + o[0] + '" aria-pressed="' + (v === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div>'
-    + (function () { var n = dev37ConCaptura().length, k = Math.ceil(n / 5), o = ''; for (var i = 0; i < k; i++) o += '<button class="btn" style="width:100%;min-height:54px;margin:6px 0 0" data-act="dev37comp" data-p="' + i + '">📤 Compartir con Claude (con capturas)' + (k > 1 ? ' · ' + (i * 5 + 1) + ' a ' + Math.min(n, i * 5 + 5) : '') + '</button>'; return o; })()
+    + '<button class="btn" style="width:100%;min-height:54px;margin:6px 0 0" data-act="dev37guarda">💾 Guardar todas en el celular (' + dev37ConCaptura().length + ')</button><div class="lbl" style="margin:4px 2px 0">Una imagen por reporte, con su texto y su captura. Quedan en Descargas: adjúntalas en el chat con Claude.</div>'
     + '<button class="btn sec" style="width:100%;min-height:48px;margin:8px 0 10px" data-act="dev37claude">📋 Copiar solo el texto (sin nombres de clientes)</button>';
   var tarjeta = function (p) {
     return '<div class="card" style="padding:12px 14px' + (p.res ? ';opacity:.6' : '') + '"><div style="display:flex;gap:8px;align-items:baseline"><b style="flex:1">' + (p.auto ? '⚙️ ' : '🐞 #' + p.n + ' ') + esc(String(p.txt || p.k || '').slice(0, 140)) + '</b></div>'
@@ -250,7 +259,8 @@ function dev37HTML() {
       + (p.foto && String(p.foto).slice(0, 5) === 'data:' ? '<img src="' + p.foto + '" alt="Captura del reporte" style="width:100%;max-height:260px;object-fit:contain;margin-top:6px;border-radius:10px;border:1px solid var(--line)">' : (p.foto ? '<div class="lbl">(captura guardada en la nube)</div>' : ''))
       + (p.aud37 ? '<div class="lbl">🎙️ Trae audio (' + (p.audS || 0) + ' s): se mandó por WhatsApp.</div>' : '')
       + (p.errs && p.errs.length ? '<details><summary class="lbl">Errores internos de ese momento</summary><div class="lbl">' + esc(p.errs.join(' · ')) + '</div></details>' : '')
-      + '<button class="btn sm ' + (p.res ? 'sec' : '') + '" style="margin-top:6px" data-act="pr56res" data-id="' + esc(p.id) + '">' + (p.res ? 'Reabrir' : '✓ Arreglado') + '</button></div>';
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">' + (p.res ? '' : '<button class="btn sm sec" style="width:auto" data-act="dev37comp" data-id="' + esc(p.id) + '">📤 Compartir</button><button class="btn sm sec" style="width:auto" data-act="dev37guarda" data-id="' + esc(p.id) + '">💾 Guardar</button>')
+      + '<button class="btn sm ' + (p.res ? 'sec' : '') + '" style="width:auto" data-act="pr56res" data-id="' + esc(p.id) + '">' + (p.res ? 'Reabrir' : '✓ Arreglado') + '</button></div></div>';
   };
   if (v === 'rep') h += man.length ? man.slice(0, 80).map(tarjeta).join('') : '<div class="card">Sin reportes.</div>';
   else if (v === 'aut') h += aut.length ? aut.slice(0, 80).map(tarjeta).join('') : '<div class="card">Sin errores automáticos.</div>';

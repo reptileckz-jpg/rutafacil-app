@@ -2,7 +2,7 @@
    Siempre intenta primero lo nuevo de internet (así cada versión publicada se ve al abrir) y, si no hay internet, usa la última copia.
    Los datos del negocio NO pasan por aquí: los guarda Firebase en el navegador, como en el celular. */
 var CACHE = 'rf-web-__VER__';
-var BASE = ['./', 'index.html', 'firebase.js', 'mapas-cfg.js', 'mapas.js', 'leaflet/leaflet.js', 'leaflet/leaflet.css', 'manifest.webmanifest', 'iconos/icono-192.png'];
+var BASE = ['./', 'index.html', 'firebase.js', 'mapas-cfg.js', 'mapas.js', 'leaflet/leaflet.js', 'leaflet/leaflet.css', 'h2c/html2canvas.min.js', 'manifest.webmanifest', 'iconos/icono-192.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(BASE); }).then(function () { return self.skipWaiting(); }));
 });

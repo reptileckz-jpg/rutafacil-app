@@ -4,12 +4,14 @@
 set -e
 R="$(cd "$(dirname "$0")/.." && pwd)"; cd "$R"; V="${1:-local}"
 npm run build >/dev/null
-rm -rf web-publica && mkdir -p web-publica/leaflet
+rm -rf web-publica && mkdir -p web-publica/leaflet web-publica/h2c
 cp dist-vite/web-index.html web-publica/index.html
 cp -r web-extra/. web-publica/
 npx esbuild nube/entrada.js --bundle --minify --format=iife --target=es2020 --outfile=web-publica/firebase.js --log-level=warning
 npx esbuild nube/mapas.js --bundle --minify --format=iife --target=es2020 --outfile=web-publica/mapas.js --log-level=warning
 echo "window.PN_GMAPS=false" > web-publica/mapas-cfg.js
 cp node_modules/leaflet/dist/leaflet.js node_modules/leaflet/dist/leaflet.css web-publica/leaflet/
+# 37 · captura de pantalla para el reporte de errores (sin internet)
+cp node_modules/html2canvas-pro/dist/html2canvas-pro.min.js web-publica/h2c/html2canvas.min.js
 sed -i "s/__VER__/$V/" web-publica/sw.js
 echo "web-publica/ lista (versión $V):"; ls web-publica

@@ -59,6 +59,10 @@ jobs:
           mkdir -p www/leaflet
           cp node_modules/leaflet/dist/leaflet.js node_modules/leaflet/dist/leaflet.css www/leaflet/
           ls -la www/leaflet
+          # 37 · captura de pantalla para el reporte de errores (sin internet)
+          mkdir -p www/h2c
+          cp node_modules/html2canvas-pro/dist/html2canvas-pro.min.js www/h2c/html2canvas.min.js
+          ls -la www/h2c
 
       - name: Crear el proyecto de Android
         run: npx cap add android
@@ -66,7 +70,7 @@ jobs:
       - name: Permiso de ubicación (GPS)
         run: |
           M=android/app/src/main/AndroidManifest.xml
-          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-feature android:name="android.hardware.location.gps" android:required="false" />\n</manifest>#' $M
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n    <uses-feature android:name="android.hardware.location.gps" android:required="false" />\n</manifest>#' $M
           grep -n "LOCATION" $M
 
       - name: Partes nativas (huella, WhatsApp, impresora Bluetooth, Descargas, escáner, GPS, avisos push)

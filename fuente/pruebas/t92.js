@@ -34,7 +34,7 @@ r=await ev(()=>{var o={};['inicio','cargas','clientes','bodega','rutas'].forEach
 T(P+'"Viaje en curso" no sale en Clientes, Bodega ni Rutas',!r.clientes&&!r.bodega&&!r.rutas,r);
 /* Más */
 r=await ev(()=>{S.tab.admin='mas';render();var m=document.querySelector('main');var bs=[...m.querySelectorAll('.mas92 button')].map(x=>x.dataset.t||x.dataset.act);m.querySelector('[data-act="act92"]').click();var ov=!!document.getElementById('act92ov');document.querySelector('[data-act="act92x"]').click();return {bs,ov}});
-T(P+'Más (mosaico 166): Cuadre, Gastos, Estadísticas, Vehículos, Personal, Bienes, Ajustes y "Lo que pasó hoy"',JSON.stringify(r.bs)===JSON.stringify(['cu121ver','gastos','estadisticas','vehiculos','personal','bienes','ajopen'])&&r.ov,r);
+T(P+'Más (mosaico 166): Cuadre, Gastos, Estadísticas, Vehículos, Personal, Bienes, Ajustes y "Lo que pasó hoy"',JSON.stringify(r.bs)===JSON.stringify(['cu121ver','gastos','estadisticas','vehiculos','personal','suel35ab','bienes','ajopen'])&&r.ov,r);
 /* tutoriales: cada paso señala algo que sí está */
 r=await ev(()=>{var out=[];Object.keys(TUT).filter(k=>k==='admin'||/^d:admin:|^n:/.test(k)&&!/rep/.test(k)).forEach(function(k){S.tab.admin='inicio';S.tut={k:k,i:0,prev:{tab:'inicio'},tab:'inicio'};TUT[k].forEach(function(st,i){S.tut.i=i;render();if(!tutBlanco(st))out.push(k+'#'+(i+1))});S.tut=null});render();
  var viejo=[];Object.keys(TUT).filter(k=>k==='admin'||/^d:admin:/.test(k)).forEach(k=>TUT[k].forEach(st=>{if(/Hoy te toca|Por atender|Rutas de hoy|Finanzas|rt81e/.test(st[0]+' '+st[2]))viejo.push(k+':'+st[1])}));return {out,viejo}});

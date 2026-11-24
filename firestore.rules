@@ -47,6 +47,7 @@ service cloud.firestore {
       // otro administrador solo puede darle "contraseña nueva" a un administrador que ya existe (reemplaza)
       allow create: if esAdmin() && request.auth.uid != uid
                     && nuevo().get('duenio', false) == false
+                    && nuevo().get('dev', false) == false
                     && (nuevo().rol != 'admin' || esDuenio()
                         || (nuevo().get('reemplaza', '') != '' && perfilDe(nuevo().reemplaza).rol == 'admin'
                             && perfilDe(nuevo().reemplaza).get('duenio', false) == false));
@@ -54,6 +55,8 @@ service cloud.firestore {
       // otro administrador solo le cierra la sesión o lo reemplaza con su contraseña nueva
       allow update: if esAdmin() && request.auth.uid != uid
                     && nuevo().get('duenio', false) == antes().get('duenio', false)
+                    // 37 · la marca de desarrollador solo la pone o la quita el dueño
+                    && (nuevo().get('dev', false) == antes().get('dev', false) || esDuenio())
                     && (nuevo().rol == antes().rol || esDuenio())
                     && (antes().rol != 'admin' || esDuenio()
                         || nuevo().diff(antes()).affectedKeys().hasOnly(['corte'])
@@ -117,8 +120,10 @@ service cloud.firestore {
     }
     // un aviso para un chofer: solo lo crea el administrador (o el encargado); la función de la nube lo manda y lo borra.
     // 152 · un chofer también puede avisar a los administradores (ch == 'admins'), solo para pedir permiso (fiar, mayoreo, precio)
+    // 37 · cualquiera avisa al desarrollador (ch == 'dev') de un reporte o un error
     match /n/{neg}/push/{id} {
-      allow create: if (mandaComoAdmin() || (activo() && request.resource.data.ch == 'admins' && request.resource.data.tipo == 'permiso'))
+      allow create: if (mandaComoAdmin() || (activo() && request.resource.data.ch == 'admins' && request.resource.data.tipo == 'permiso')
+                       || (activo() && request.resource.data.ch == 'dev' && request.resource.data.tipo == 'reporte'))
                     && request.resource.data.keys().hasOnly(['ch', 'titulo', 'texto', 'tipo', 't'])
                     && request.resource.data.ch is string
                     && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 200

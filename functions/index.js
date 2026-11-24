@@ -17,9 +17,16 @@ exports.avisoPush = onDocumentCreated({ document: 'n/{neg}/push/{id}', region: '
   const d = snap.data() || {}, neg = ev.params.neg;
   if (!d.ch || !d.titulo) { await snap.ref.update({ error: 'aviso incompleto', fin: Date.now() }); return; }
   // 152 · "admins": un chofer pide permiso (fiar, mayoreo, precio) → a todos los celulares de administrador (tok/a~{uid})
-  if (d.ch === 'admins') {
+  // 37 · "dev": un reporte o un error → solo a los celulares de los usuarios con la marca de desarrollador
+  if (d.ch === 'admins' || d.ch === 'dev') {
     const q = await getFirestore().collection(`n/${neg}/tok`).get();
-    const L = q.docs.filter(x => x.id.startsWith('a~')).map(x => ({ ref: x.ref, t: x.get('t') })).filter(x => x.t);
+    let L = q.docs.filter(x => x.id.startsWith('a~')).map(x => ({ ref: x.ref, t: x.get('t'), uid: x.id.slice(2) })).filter(x => x.t);
+    if (d.ch === 'dev') {
+      const devs = await getFirestore().collection('usuarios_app').where('dev', '==', true).get();
+      const U = new Set(devs.docs.filter(x => x.get('activo') !== false).map(x => x.id));
+      L = L.filter(x => U.has(x.uid));
+      if (!L.length) { await snap.ref.delete(); return; }
+    }
     if (!L.length) { await snap.ref.update({ error: 'ningún celular de administrador registra sus avisos', fin: Date.now() }); return; }
     let bien = 0, err = '';
     for (const x of L) {

@@ -44,7 +44,7 @@ r=await ev(c=>{var e=est57(cl(c));return {ch:e.ch&&e.ch.n,av:JSON.stringify(S.ru
 ok(!!r.ch&&r.av,'asignado: queda en la ruta del chofer y le llega el aviso',r.ch);
 ok(/asignado|en reparto/.test(r.txt)&&/Ver todos/.test(r.txt),'ya asignado: se ve chiquito y "Ver todos"',r.txt.slice(0,200));
 /* 56 */
-r=await ev(()=>{S.menu=true;render();var b=document.querySelector('.drawer [data-act="rp56"]');if(!b)return 'sin botón';b.click();return {ov:!!document.getElementById('rp56ov'),donde:S.rp56&&S.rp56.donde}});
+r=await ev(async()=>{S.menu=true;render();var b=document.querySelector('.drawer [data-act="rp56"]');if(!b)return 'sin botón';b.click();/* 37 · primero toma la captura y luego abre */for(var i=0;i<40&&!document.getElementById('rp56ov');i++)await new Promise(r=>setTimeout(r,100));return {ov:!!document.getElementById('rp56ov'),donde:S.rp56&&S.rp56.donde}});
 ok(r.ov&&/Administrador/.test(r.donde),'menú → "Reportar un problema": sabe dónde estás',r);
 r=await ev(()=>{document.querySelector('#rp56ov [data-act="rp56ok"]').click();return S.toast});ok(/Escribe qué pasó/.test(r),'pide escribir qué pasó',r);
 r=await ev(()=>{S.rp56.txt='El botón no hace nada';S.rp56.g='traba';render();document.querySelector('#rp56ov [data-act="rp56ok"]').click();var p=S.probs.filter(x=>!x.auto).slice(-1)[0];return p&&{n:p.n,donde:p.donde,txt:p.txt,v:p.v!==undefined,q:p.q}});

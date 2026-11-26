@@ -126,4 +126,38 @@ hoja('hoja-chofer.pdf', 'Ruta Fácil · Hoja del chofer',
          ], AZUL),
      ],
      'La primera semana también se anota en la libreta, como siempre, para comparar cada noche.')
+hoja('guia-arranque.pdf', 'Guía del arranque · viernes a lunes',
+     'Para Ricardo (y su papá). Cada paso en orden. Si algo no sale como dice aquí, para y avísale a Claude con una captura.',
+     [
+         ('Viernes 27 · preparar', [
+             'Instala el <b>APK nuevo</b> en TODOS los celulares (tu papá, los choferes, tus dos celulares).',
+             'Imprime las hojas de ayuda y la libreta.',
+             'Pídele a tu papá el <b>correo</b> que va a usar para su cuenta (será el dueño) y que piense una contraseña que no olvide.',
+         ]),
+         ('Sábado 28 · cuenta nueva desde cero (tú, en GitHub)', [
+             'GitHub → Actions → <b>"Reiniciar la nube (cuenta nueva)"</b> → Run workflow con modo <b>contar</b>. Solo cuenta: no cambia nada.',
+             'Si todo bien: otra vez, modo <b>borrar</b> y en confirma escribe <b>BORRAR TODO</b>. Primero guarda un respaldo dentro de la nube y luego borra todo (también las cuentas de entrada).',
+             'Revisa que al final diga <b>"Quedan 0 documentos … La nube está como nueva"</b>. Si dice que el respaldo no está completo, no borró nada: avisa.',
+         ], ROJO),
+         ('Sábado 28 · en cada celular', [
+             'Android → Ajustes → Apps → Ruta Fácil → Almacenamiento → <b>Borrar datos</b> (así no queda nada de las pruebas).',
+         ]),
+         ('Sábado 28 · tu papá abre la cuenta (él es el dueño)', [
+             'En su celular abre la app → <b>"Crear la cuenta del negocio"</b> con su correo y contraseña.',
+             'Si pregunta "¿Qué subimos a la nube?", toca <b>"Empezar desde cero (recomendado)"</b>.',
+             'Hace la <b>configuración inicial</b> (8 pasos). En el paso 1 pone tu WhatsApp en "quien te ayuda".',
+             'En <b>Más → Personal → "Accesos a la app"</b> te da acceso a ti como <b>administrador</b> y a cada chofer con su usuario y contraseña.',
+             'Tú entras con tu usuario en tu celular y lo ayudas a agregar clientes. Si salen los dos en la configuración, la app lo avisa.',
+             'Al final, solo él toca <b>"Empezar"</b>. Luego en Ajustes te marca como <b>Desarrollador</b> y pone tu número en "WhatsApp para los reportes".',
+         ], AZUL),
+         ('Domingo 29 · ensayo', [
+             'Tu papá y un chofer hacen un día de mentira: precio, salida, entregas, cobros, cierre, caja.',
+             'En la noche: Ajustes → <b>"Borrar los datos de prueba"</b> (borra ventas, cargas, cierres, gastos, préstamos, banco… y se quedan clientes, personal y vehículos). Al final pregunta <b>cuánto efectivo hay</b>: cuéntalo y escríbelo.',
+         ]),
+         ('Lunes 30 · arranque', [
+             'Todos trabajan con la app y también con la <b>libreta</b>. Cada noche, la hoja <b>"Comparar"</b>.',
+             'Lo que falle: <b>sacudir el celular</b> (4 veces) y reportarlo.',
+         ]),
+     ],
+     'El respaldo del sábado queda guardado en la nube (privado). Si se necesitara regresar algo, Claude lo puede recuperar desde ahí.')
 print('listo')

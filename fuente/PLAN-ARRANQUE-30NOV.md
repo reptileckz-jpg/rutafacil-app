@@ -89,6 +89,18 @@ plátanos y baja de peso; así se sabe cuánto se pierde de lo que se cargó). E
   el Centro de pendientes, las tarjetas `card alert/good/note`, las de franja, "Precio de hoy" y "Pendientes en …". Se aplica antes
   del morph (gancho en `tema-dibujar1.js`). El texto original queda escondido en cada aviso (otras partes lo reconocen por texto).
 
+## Revisión del 26 nov (punto 44) · decisiones de Ricardo
+- **Sábado: CUENTA NUEVA DESDE CERO.** La nube solo admite UN dueño (meta/duenio) y hoy es Ricardo; varias cosas son solo del dueño
+  ("Empezar" de la configuración, "Mi sueldo", crear administradores, marcar desarrollador). Ricardo escogió borrar toda la nube para que
+  su papá abra la cuenta nueva como dueño. Herramienta: GitHub → Actions → "Reiniciar la nube (cuenta nueva)" (`herramientas/reiniciar-nube.js`):
+  modo contar (no cambia nada) y modo borrar con "BORRAR TODO" (antes guarda un respaldo completo en `respaldos/{fecha}` dentro de la
+  nube, privado; borra meta, usuarios, usuarios_app, n/… y las cuentas de entrada). Probado con el simulador de Firebase (12/12).
+- **"Todo y configuración de nuevo"** el sábado; el domingo después del ensayo se usa "Borrar los datos de prueba" (movimientos), ya
+  arreglado para que borre todo lo nuevo, vacíe la ruta de cada chofer en la nube y pregunte el efectivo inicial.
+- Pasos completos: `fuente/ayuda/guia-arranque.pdf`.
+- Viaje a Roly del 17 nov repetido: Ricardo no recuerda si lo hizo dos veces; con la cuenta nueva desaparece. Si vuelve a pasar con datos
+  reales, revisar si la sincronización entre dos celulares duplica cargas.
+
 ## Otras decisiones de ese día
 - Reporte de errores: **todos** lo pueden usar; va a la app + WhatsApp.
 - Revisión de pantallas (Bodega, Cargas, Clientes): ver `concepts_brief.md` (revisado por 7 revisores). Piloto solo en Bodega primero.

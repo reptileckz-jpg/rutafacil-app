@@ -1,0 +1,36 @@
+name: Reiniciar la nube (cuenta nueva)
+
+# 44 · Se corre A MANO desde la pestaña Actions. Primero con modo "contar" (no cambia nada). Para borrar: modo "borrar" y escribir
+# exactamente BORRAR TODO. Antes de borrar guarda un respaldo completo DENTRO de la nube (respaldos/…, privado). Solo imprime números.
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'contar = solo cuenta, no cambia nada · borrar = respalda y borra TODO'
+        default: 'contar'
+      confirma:
+        description: 'Para borrar, escribe exactamente: BORRAR TODO'
+        default: ''
+
+jobs:
+  reiniciar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Reiniciar
+        env:
+          SA: ${{ secrets.FIREBASE_SA }}
+          MODO: ${{ github.event.inputs.modo }}
+          CONFIRMA: ${{ github.event.inputs.confirma }}
+        run: |
+          if [ -z "$SA" ]; then echo "Falta el secreto FIREBASE_SA."; exit 1; fi
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          export GOOGLE_CLOUD_PROJECT=platanos-nietos
+          mkdir -p "$RUNNER_TEMP/rn" && cp herramientas/reiniciar-nube.js "$RUNNER_TEMP/rn/" && cd "$RUNNER_TEMP/rn"
+          npm i firebase-admin@13 --no-audit --no-fund >/dev/null
+          node reiniciar-nube.js
+          rm -f "$RUNNER_TEMP/sa.json"

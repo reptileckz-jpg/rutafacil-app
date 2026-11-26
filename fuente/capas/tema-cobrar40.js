@@ -65,8 +65,8 @@ fiCli = function (f) {
 function vc40HTML() {
   var x = S.vc40; if (!x || S.role !== 'admin') return ''; var c = cl(x.c); if (!c) { S.vc40 = null; return ''; }
   var chs = []; try { chs = chofsDia57(); } catch (e) {}
-  return ovW70('vc40ov', '🚗 Cobrarle a ' + esc(c.n), '<div class="lbl">Debe ' + money(num(c.cred)) + '. ¿Quién va a cobrarle?</div><div class="opc" role="group" style="margin-top:8px">'
-    + '<button data-act="vc40q" data-v="yo">Yo</button>' + chs.map(function (ch) { return '<button data-act="vc40q" data-v="' + ch.id + '">' + esc(ch.n) + ' (lo entrega en su cierre)</button>'; }).join('') + '</div>', 'vc40x');
+  return ovW70('vc40ov', '🚗 Cobrarle a ' + esc(c.n), '<div class="lbl" style="font-size:16px">Debe <b>' + money(num(c.cred)) + '</b>. ¿Quién va a cobrarle?</div><div role="group" aria-label="Quién va a cobrarle" style="margin-top:8px">'
+    + '<button class="btn" style="width:100%;min-height:56px;margin-top:8px;font-size:18px" data-act="vc40q" data-v="yo">Yo</button>' + chs.map(function (ch) { return '<button class="btn sec" style="width:100%;min-height:56px;margin-top:8px;font-size:17px;display:block;line-height:1.2" data-act="vc40q" data-v="' + ch.id + '">' + esc(ch.n) + '<span style="display:block;font-size:13px;font-weight:600;opacity:.75">lo entrega en su cierre</span></button>'; }).join('') + '</div>', 'vc40x');
 }
 /* Inicio: los cobros que vas a hacer tú */
 function vc40Card() {
